@@ -1,3 +1,4 @@
 {
-  "name": "@service/horizon"
+  "name": "@service/horizon",
+  "description": "Gateway de l'application. Le nom 'Horizon' fait référence à l'horizon, symbolisant la vue d'ensemble et la gestion des services de l'application."
 }

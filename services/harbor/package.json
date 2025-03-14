@@ -1,3 +1,4 @@
 {
-  "name": "@service/harbor"
+  "name": "@service/harbor",
+  "description": "Microservice de gestion des utilisateurs et des rôles. Le nom 'Harbor' fait référence à un port, symbolisant l'accueil et la gestion des utilisateurs dans le système."
 }

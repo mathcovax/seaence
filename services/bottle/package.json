@@ -1,3 +1,4 @@
 {
-  "name": "@service/bottle"
+  "name": "@service/bottle",
+  "description": "Microservice de gestion des notifications utilisateurs. Le nom 'Bottle' fait référence à la métaphore de la bouteille à la mer, symbolisant l'envoi de messages aux utilisateurs."
 }

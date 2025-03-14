@@ -1,3 +1,4 @@
 {
-  "name": "@service/colossal"
+  "name": "@service/colossal",
+  "description": "Back-office du service Abys. Nommé en référence au calamar colossal, le plus grand mollusque connu des abysses, illustrant sa fonction de supervision et de gestion."
 }

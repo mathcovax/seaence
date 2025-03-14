@@ -1,3 +1,4 @@
 {
-  "name": "@service/tide"
+  "name": "@service/tide",
+  "description": "Back-office du service Marine-snow. Nommé en référence à la marée, il orchestre les données récupérées par Marine-snow pour les rendre accessibles aux autres services."
 }

@@ -1,0 +1,186 @@
+services:
+  node-installer:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm install
+  horizon:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm run dev:horizon
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  harbor:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm run dev:harbor
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  harbor-postgres:
+    image: postgres:17.4-alpine3.21
+    env_file: ./services/harbor/.env
+    volumes:
+      - harbor-postgres-data:/var/lib/postgresql/data
+    attach: false
+  abys:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm run dev:abys
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  abys-mongo:
+    image: mongo:8.0.6
+    env_file: ./services/abys/.env
+    volumes:
+      - "abys-mongo-data:/data/db"
+    attach: false
+  colossal:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    ports:
+      - 3000:3000 # machine:container
+    command: npm run dev:colossal
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  marine-snow:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm run dev:marine-snow
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  tide:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    ports:
+      - 3001:3000 # machine:container
+    command: npm run dev:tide
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  sea:
+    image: elasticsearch:8.17.3
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - sea-es-data:/usr/share/elasticsearch/data
+  school:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm run dev:school
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  school-mongo:
+    image: mongo:8.0.6
+    env_file: ./services/school/.env
+    volumes:
+      - "school-mongo-data:/data/db"
+    attach: false
+  pilot:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    ports:
+      - 3002:3000 # machine:container
+    command: npm run dev:pilot
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  bottle:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm run dev:bottle
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  bottle-mongo:
+    image: mongo:8.0.6
+    env_file: ./services/bottle/.env
+    volumes:
+      - "bottle-mongo-data:/data/db"
+    attach: false
+  spotter:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    ports:
+      - 3003:3000 # machine:container
+    command: npm run dev:marine-snow
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+  rosetta:
+    # port 5000
+    build:
+      context: ./services/rosetta
+      dockerfile: ./.docker/rosetta-prod.dockerfile
+    healthcheck:
+      test: [ 'CMD-SHELL', '/venv/bin/python scripts/healthcheck.py' ]
+
+volumes:
+  harbor-postgres-data:
+  abys-mongo-data:
+  school-mongo-data:
+  bottle-mongo-data:
+  sea-es-data:

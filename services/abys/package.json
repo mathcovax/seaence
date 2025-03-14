@@ -1,3 +1,4 @@
 {
-  "name": "@service/abys"
+  "name": "@service/abys",
+  "description": "Microservice fondamental situé à la couche la plus basse de l'infrastructure. Nommé 'Abys' en référence aux abysses, il constitue la source de vérité pour les données du système."
 }

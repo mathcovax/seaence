@@ -1,11 +1,9 @@
 {
   "name": "seaence",
-  "scripts": {
-    
-  },
+  "scripts": {},
   "workspaces": [
     "libs/**",
     "services/**"
   ],
-  "license": "MIT"
+  "license": "./LICENSE"
 }

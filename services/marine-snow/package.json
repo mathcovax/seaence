@@ -1,3 +1,4 @@
 {
-  "name": "@service/marine-snow"
+  "name": "@service/marine-snow",
+  "description": "Microservice de scrapping de données. Nommé d'après la neige marine, il récupère des données provenant de sources externes et les agrège pour les rendre accessibles aux autres services."
 }

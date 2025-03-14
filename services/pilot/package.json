@@ -1,3 +1,4 @@
 {
-  "name": "@service/pilot"
+  "name": "@service/pilot",
+  "description": "Back-office du service School. Nommé en référence aux poissons pilotes qui guident les requins dans les eaux profondes, illustrant son rôle d'interface de gestion."
 }

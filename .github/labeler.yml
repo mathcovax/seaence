@@ -1,0 +1,55 @@
+package: 
+  - "package.json"
+
+github:
+  - ".github/**/*"
+
+wip:
+  - "**/*"
+  
+md:
+  - "*.md"
+
+abys:
+  - "services/abys/**/*"
+
+bottle:
+  - "services/bottle/**/*"
+
+colossal:
+  - "services/colossal/**/*"
+
+harbor:
+  - "services/harbor/**/*"
+
+horizon:
+  - "services/horizon/**/*"
+
+marine-snow:
+  - "services/marine-snow/**/*"
+
+pilot:
+  - "services/pilot/**/*"
+
+rosetta:
+  - "services/rosetta/**/*"
+
+school:
+  - "services/school/**/*"
+
+sea:
+  - "services/sea/**/*"
+
+spotter:
+  - "services/spotter/**/*"
+
+tide:
+  - "services/tide/**/*"
+
+design-system:
+  - "libs/design-system/**/*"
+
+docker:
+  - ".docker/**/*"
+  - "compose.yml"
+  - "compose.prod.yml"

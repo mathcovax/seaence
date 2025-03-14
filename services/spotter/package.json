@@ -1,3 +1,4 @@
 {
-  "name": "@service/spotter"
+  "name": "@service/spotter",
+  "description": "frontend de l'application. Le nom 'Spotter' fait référence à l'observation (regarde vers l'horizon)"
 }
