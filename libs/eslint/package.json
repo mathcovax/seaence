@@ -1,0 +1,12 @@
+{
+  "name": "@lib/eslint",
+  "type": "module",
+  "devDependencies": {
+    "@duplojs/eslint": "0.4.0",
+    "eslint": "9.22.0",
+    "eslint-plugin-vue": "^10.0.0",
+    "jiti": "^2.4.2",
+    "typescript-eslint": "^8.26.1",
+    "vue-eslint-parser": "^10.1.1"
+  }
+}

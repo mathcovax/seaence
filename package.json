@@ -1,6 +1,9 @@
 {
   "name": "seaence",
-  "scripts": {},
+  "type": "module",
+  "scripts": {
+    
+  },
   "workspaces": [
     "libs/**",
     "services/**"

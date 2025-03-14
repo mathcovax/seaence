@@ -1,0 +1,42 @@
+{
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+
+	"files.autoSave": "off",
+
+	"[yaml]": {
+		"editor.tabSize": 2,
+		"editor.insertSpaces": true,
+	},
+
+	"[json]": {
+		"editor.tabSize": 2,
+		"editor.insertSpaces": true,
+	},
+    
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+
+	"eslint.workingDirectories": [
+		"libs/clients-type",
+		"libs/design-system",
+		"libs/eslint",
+
+		"services/abys",
+		"services/bottle",
+		"services/colossal",
+		"services/harbor",
+		"services/horizon",
+		"services/marine-snow",
+		"services/pilot",
+		"services/rosetta",
+		"services/school",
+		"services/sea",
+		"services/spotter",
+		"services/tide",
+	],
+	
+	"typescript.tsdk": "node_modules/typescript/lib",
+}
