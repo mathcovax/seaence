@@ -1,0 +1,25 @@
+{
+    "vue-template": {
+        "prefix": "vuet",
+        "scope": "vue",
+        "body": [
+            "<script setup lang=\"ts\">",
+            "$1",
+            "</script>",
+            "",
+            "<template>",
+            "   <div></div>",
+            "</template>"
+        ],
+        "description": "vue template"
+    },
+    "duplo-route": {
+        "prefix": "route",
+        "scope": "typescript",
+        "body": [
+            "useBuilder()",
+            "   .createRoute($1, $2)",
+            "   .handler((pickup) => {$3});"
+        ]
+    },
+}
