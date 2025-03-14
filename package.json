@@ -1,0 +1,11 @@
+{
+  "name": "seaence",
+  "scripts": {
+    
+  },
+  "workspaces": [
+    "libs/**",
+    "services/**"
+  ],
+  "license": "MIT"
+}
