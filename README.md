@@ -23,20 +23,20 @@
 
 ## Infrastructure
 
-| Service | Nom | Description | Technologies |
-|----------|----------|----------|----------|
-| Frontend client | Spotter | application web client | Vue, Vite |
-| Gateway | Horizon | API Gateway | Duplo |
-| Backend authentification / User | Harbor | Authentification unique | Duplo, firebase SSO, Postgres |
-| Backend elasticSearch | Sea | Base de donnée vectorielle | ElasticSearch |
-| Backend de contenue | Abys | Contient les documents originaux | MongoDB, Duplo |
-| Service de scrapping | MarineSnow | Scrapping de donnée | Duplo, WokerThread, SQLLite |
-| Frontend contenue (BO) | Colossal | Backoffice | Vue, Vite |
-| Frontend scrapping (BO) | Tide | Backoffice | Vue, Vite |
-| Service de forum | School | Service de gestion de forum | Duplo, MongoDB |
-| Frontend forum (BO) | Pilot | BackOffice | Vue, Vite |
-| Service de notification | Bottle | | Duplo, MongoDB |
-| Service de traduction | Rosetta | | Duplo, MongoDB |
+| Service | Nom | Description | Technologies | Équipe |
+|----------|----------|----------|----------|---------|
+| Frontend client | Spotter | application web client | Vue, Vite | @Maubry94 |
+| Gateway | Horizon | API Gateway | Duplo | @Vitaalx |
+| Backend authentification / User | Harbor | Authentification unique | Duplo, firebase SSO, Postgres | @ZeRiix, @Vitaalx, @Maubry94 |
+| Backend elasticSearch | Sea | Base de donnée vectorielle | ElasticSearch, Duplo | @ZeRiix, @mathcovax |
+| Backend de contenue | Abys | Contient les documents originaux | MongoDB, Duplo | @Vitaalx, @mathcovax |
+| Service de scrapping | MarineSnow | Scrapping de donnée | Duplo, WokerThread, SQLLite | @mathcovax, @ZeRiix |
+| Frontend contenue (BO) | Colossal | Backoffice | Vue, Vite | @Vitaalx |
+| Frontend scrapping (BO) | Tide | Backoffice | Vue, Vite | @ZeRiix |
+| Service de forum | School | Service de gestion de forum | Duplo, MongoDB | @Vitaalx |
+| Frontend forum (BO) | Pilot | BackOffice | Vue, Vite | @Vitaalx |
+| Service de notification | Bottle | | Duplo, MongoDB | @ZeRiix |
+| Service de traduction | Rosetta | | Duplo, MongoDB | @ZeRiix |
 
 ### Description des services
 
