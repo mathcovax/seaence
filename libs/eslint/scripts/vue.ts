@@ -4,7 +4,7 @@ import vueParser from "vue-eslint-parser";
 import pluginVue from "eslint-plugin-vue";
 import globals from "globals";
 
-export const eslingConfigVue = [
+export const eslintConfigVue = [
 	...pluginVue.configs["flat/strongly-recommended"],
 	{
 		...duplojsEslintBase,
