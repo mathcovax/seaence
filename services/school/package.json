@@ -1,4 +1,21 @@
 {
   "name": "@service/school",
-  "description": "Microservice de gestion du contenu éditorial. Nommé d'après les bancs de poissons ('school' en anglais), il orchestre les articles et leurs sujets, reflétant ainsi leur organisation collective et structurée."
+  "description": "Microservice de gestion du contenu éditorial. Nommé d'après les bancs de poissons ('school' en anglais), il orchestre les articles et leurs sujets, reflétant ainsi leur organisation collective et structurée.",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch interfaces/main.ts",
+    "generate-types": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/routes/index.ts --output ../../libs/clients-type/types/school/duplojsTypesCodegen.d.ts"
+  },
+  "dependencies": {
+    "@duplojs/core": "1.0.3",
+    "@duplojs/node": "1.0.1",
+    "dotenv": "16.4.5",
+		"dotenv-expand": "12.0.1"
+  },
+  "devDependencies": {
+    "@duplojs/types-codegen": "1.0.1",
+    "@types/node": "22.13.10",
+    "tsx": "4.19.3",
+    "typescript": "5.8.2"
+  }
 }
