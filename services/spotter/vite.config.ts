@@ -3,7 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
 import autoImport from "unplugin-auto-import/vite";
 import autoImportComponents from "unplugin-vue-components/vite";
-import { aliasDesignSystem, typeResolverDesignSystem } from "@lib/design-system/config";
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
 	plugins: [
@@ -22,12 +22,9 @@ export default defineConfig({
 			ignore: ["_**"],
 		}),
 		autoImportComponents({
-			dirs: ["src/components"],
-			resolvers: [typeResolverDesignSystem],
+			dirs: ["src/components", "vendors/design-system"],
+			resolvers: [],
 		}),
+		tsconfigPaths()
 	],
-	resolve: {
-		preserveSymlinks: true,
-		alias: [aliasDesignSystem],
-	},
 });

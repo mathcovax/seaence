@@ -1,2 +1,2 @@
 @import "tailwindcss";
-@import "@lib/design-system/style";
+@import "../vendors/design-system/index.css";

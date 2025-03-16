@@ -1,7 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
-	"preserveSymlinks": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 	
     /* Linting */
@@ -9,7 +8,20 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+	
+	"baseUrl": "./",
+	"paths": {
+		"@vendors/*": ["./vendors/*"]
+	}
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "*.d.ts"],
+  "include": [
+	"src/**/*.ts", 
+	"src/**/*.tsx", 
+	"src/**/*.vue",
+	"vendors/**/*.ts", 
+	"vendors/**/*.tsx", 
+	"vendors/**/*.vue",
+	"*.d.ts"
+  ],
 }
