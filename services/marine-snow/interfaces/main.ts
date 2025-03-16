@@ -16,5 +16,5 @@ duplo.register(
 );
 
 await duplo.launch(
-	() => void console.log("Harbor service is running !"),
+	() => void console.log("Marine Snow service is running !"),
 );
