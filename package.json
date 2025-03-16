@@ -1,8 +1,30 @@
 {
   "name": "seaence",
+  "author": {
+    "name": "Seaence",
+    "url": "https://github.com/mathcovax/seaence"
+  },
+  "contributors": [
+    {
+      "name": "mathcovax",
+      "url": "https://github.com/mathcovax"
+    },
+    {
+      "name": "ZeRiix",
+      "url": "https://github.com/ZeRiix"
+    },
+    {
+      "name": "Maubry94",
+      "url": "https://github.com/Maubry94"
+    },
+    {
+      "name": "Vitaalx",
+      "url": "https://github.com/Vitaalx"
+    }
+  ],
   "type": "module",
   "scripts": {
-    
+    "dev": "docker compose up"
   },
   "workspaces": [
     "libs/**",

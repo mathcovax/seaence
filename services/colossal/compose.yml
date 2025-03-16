@@ -3,4 +3,4 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm run dev:colossal
+    command: npm -w services/colossal run dev

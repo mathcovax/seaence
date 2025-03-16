@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm run dev:harbor
+    command: npm -w services/harbor run dev
     depends_on:
       - harbor-postgres
   harbor-postgres:

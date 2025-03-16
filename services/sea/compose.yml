@@ -1,5 +1,5 @@
 services:
-  sea:
+  sea-es:
     image: elasticsearch:8.17.3
     ports:
       - 9200:9200
@@ -9,5 +9,10 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - sea-es-data:/usr/share/elasticsearch/data
+  sea:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm -w services/sea run dev
 volumes:
   sea-es-data:

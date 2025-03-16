@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm run dev:school
+    command: npm -w services/school run dev
     depends_on:
       - school-mongo
   school-mongo:

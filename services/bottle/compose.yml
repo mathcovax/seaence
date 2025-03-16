@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm run dev:bottle
+    command: npm -w services/bottle run dev
     depends_on:
       - bottle-mongo
   bottle-mongo:

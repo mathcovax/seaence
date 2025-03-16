@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm run dev:abys
+    command: npm -w services/abys run dev
     depends_on:
       - abys-mongo
   abys-mongo:
