@@ -3,5 +3,7 @@
 </script>
 
 <template>
+	<TheLoader />
+
 	<RouterView />
 </template>
