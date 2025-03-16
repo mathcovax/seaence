@@ -1,0 +1,8 @@
+services:
+  rosetta:
+    # port 5000
+    build:
+      context: ${INCLUDE_PATH}/rosetta
+      dockerfile: ${INCLUDE_PATH}/rosetta/Dockerfile
+    healthcheck:
+      test: [ 'CMD-SHELL', '/venv/bin/python scripts/healthcheck.py' ]

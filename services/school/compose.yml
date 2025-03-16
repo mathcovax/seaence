@@ -1,0 +1,17 @@
+services:
+  school:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm run dev:school
+    depends_on:
+      - school-mongo
+  school-mongo:
+    extends:
+      file: ${TEMPLATE_COMPOSE_MONGO_DEV}
+      service: template-mongo
+    env_file: ${INCLUDE_PATH}/school/.env
+    volumes:
+      - "school-mongo-data:/data/db"
+volumes:
+  school-mongo-data:

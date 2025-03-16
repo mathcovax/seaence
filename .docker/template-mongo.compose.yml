@@ -1,0 +1,4 @@
+services:
+  template-mongo:
+    image: mongo:8.0.5
+    attach: false

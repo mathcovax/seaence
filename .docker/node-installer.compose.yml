@@ -1,0 +1,10 @@
+services:
+  node-installer:
+    image: node:22.14
+    volumes:
+      - ./:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm install

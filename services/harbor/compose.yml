@@ -1,0 +1,16 @@
+services:
+  harbor:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm run dev:harbor
+    depends_on:
+      - harbor-postgres
+  harbor-postgres:
+    image: postgres:17.4-alpine3.21
+    env_file: ${INCLUDE_PATH}/harbor/.env
+    volumes:
+      - harbor-postgres-data:/var/lib/postgresql/data
+    attach: false
+volumes:
+  harbor-postgres-data:

@@ -1,0 +1,17 @@
+services:
+  abys:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm run dev:abys
+    depends_on:
+      - abys-mongo
+  abys-mongo:
+    extends:
+      file: ${TEMPLATE_COMPOSE_MONGO_DEV}
+      service: template-mongo
+    env_file: ${INCLUDE_PATH}/abys/.env
+    volumes:
+      - "abys-mongo-data:/data/db"
+volumes:
+  abys-mongo-data:

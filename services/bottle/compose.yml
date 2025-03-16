@@ -1,0 +1,17 @@
+services:
+  bottle:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm run dev:bottle
+    depends_on:
+      - bottle-mongo
+  bottle-mongo:
+    extends:
+      file: ${TEMPLATE_COMPOSE_MONGO_DEV}
+      service: template-mongo
+    env_file: ${INCLUDE_PATH}/bottle/.env
+    volumes:
+      - "bottle-mongo-data:/data/db"
+volumes:
+  bottle-mongo-data:

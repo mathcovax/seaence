@@ -1,186 +1,48 @@
-services:
-  node-installer:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    command: npm install
-  horizon:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    command: npm run dev:horizon
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  harbor:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    command: npm run dev:harbor
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  harbor-postgres:
-    image: postgres:17.4-alpine3.21
-    env_file: ./services/harbor/.env
-    volumes:
-      - harbor-postgres-data:/var/lib/postgresql/data
-    attach: false
-  abys:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    command: npm run dev:abys
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  abys-mongo:
-    image: mongo:8.0.6
-    env_file: ./services/abys/.env
-    volumes:
-      - "abys-mongo-data:/data/db"
-    attach: false
-  colossal:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
+include:
+  # installer node global
+  - path:
+      - ./.docker/node-installer.compose.yml
+  # spotter service (client front)
+  - path:
+      - ${INCLUDE_PATH}/spotter/compose.yml
     ports:
-      - 3000:3000 # machine:container
-    command: npm run dev:colossal
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  marine-snow:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    command: npm run dev:marine-snow
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  tide:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
+      - 3000:3000
+  # rosetta service (libre translate)
+  - path:
+      - ${INCLUDE_PATH}/rosetta/compose.yml
+  # sea service (elastic search)
+  - path:
+      - ${INCLUDE_PATH}/sea/compose.yml
+  # school service
+  - path:
+      - ${INCLUDE_PATH}/school/compose.yml
+  # pilot service (BO school)
+  - path:
+      - ${INCLUDE_PATH}/pilot/compose.yml
     ports:
-      - 3001:3000 # machine:container
-    command: npm run dev:tide
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  sea:
-    image: elasticsearch:8.17.3
+      - 3001:3000
+  # marine-snow service
+  - path:
+      - ${INCLUDE_PATH}/marine-snow/compose.yml
+  # tide service (BO marine-snow)
+  - path:
+      - ${INCLUDE_PATH}/tide/compose.yml
     ports:
-      - 9200:9200
-      - 9300:9300
-    environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    volumes:
-      - sea-es-data:/usr/share/elasticsearch/data
-  school:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    command: npm run dev:school
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  school-mongo:
-    image: mongo:8.0.6
-    env_file: ./services/school/.env
-    volumes:
-      - "school-mongo-data:/data/db"
-    attach: false
-  pilot:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
+      - 3002:3000
+  # horizon service (gateway)
+  - path:
+      - ${INCLUDE_PATH}/horizon/compose.yml
+  # harbor service (auth)
+  - path:
+      - ${INCLUDE_PATH}/harbor/compose.yml
+  # abys service
+  - path:
+      - ${INCLUDE_PATH}/abys/compose.yml
+  # colossal service (BO abys)
+  - path:
+      - ${INCLUDE_PATH}/colossal/compose.yml
     ports:
-      - 3002:3000 # machine:container
-    command: npm run dev:pilot
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  bottle:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    command: npm run dev:bottle
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  bottle-mongo:
-    image: mongo:8.0.6
-    env_file: ./services/bottle/.env
-    volumes:
-      - "bottle-mongo-data:/data/db"
-    attach: false
-  spotter:
-    image: node:22.14
-    volumes:
-      - ./:/home/node/project
-    environment:
-      npm_config_cache: /home/node/cache
-    working_dir: /home/node/project
-    user: 1000:1000
-    ports:
-      - 3003:3000 # machine:container
-    command: npm run dev:marine-snow
-    depends_on:
-      node-installer:
-        condition: service_completed_successfully
-  rosetta:
-    # port 5000
-    build:
-      context: ./services/rosetta
-      dockerfile: ./.docker/rosetta-prod.dockerfile
-    healthcheck:
-      test: [ 'CMD-SHELL', '/venv/bin/python scripts/healthcheck.py' ]
-
-volumes:
-  harbor-postgres-data:
-  abys-mongo-data:
-  school-mongo-data:
-  bottle-mongo-data:
-  sea-es-data:
+      - 3003:3000
+  # bottle service (notification)
+  - path:
+      - ${INCLUDE_PATH}/bottle/compose.yml
