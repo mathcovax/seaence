@@ -1,18 +1,37 @@
 services:
   sea-es:
-    image: elasticsearch:8.17.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.3 # 8.17.0
+    #platform: linux/arm64/v8
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # desactive les credentials
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      #- "ES_JAVA_OPTS=-XX:UseSVE=0"
+      #- "CLI_JAVA_OPTS=-XX:UseSVE=0"
     ports:
       - 9200:9200
-      - 9300:9300
-    environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - elastic
+    deploy:
+      resources:
+        limits:
+          memory: 1GB
     volumes:
       - sea-es-data:/usr/share/elasticsearch/data
-  sea:
-    extends:
-      file: ${TEMPLATE_COMPOSE_NODE_DEV}
-      service: template-node
-    command: npm -w services/sea run dev
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.3 # 8.17.0
+    platform: linux/amr64
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    environment:
+      - ELASTICSEARCH_HOSTS=http://sea-es:9200
+    depends_on:
+      - sea-es
+
+networks:
+  elastic:
+    driver: bridge
 volumes:
   sea-es-data:
