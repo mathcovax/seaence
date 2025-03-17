@@ -20,7 +20,6 @@ services:
       - sea-es-data:/usr/share/elasticsearch/data
   kibana:
     image: docker.elastic.co/kibana/kibana:8.17.3 # 8.17.0
-    platform: linux/amr64
     ports:
       - 5601:5601
     networks:

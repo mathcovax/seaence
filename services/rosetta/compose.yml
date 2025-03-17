@@ -1,8 +1,22 @@
 services:
   rosetta:
-    # port 5000
     build:
       context: ${INCLUDE_PATH}/rosetta
-      dockerfile: ${INCLUDE_PATH}/rosetta/Dockerfile
+      # linux:
+      dockerfile: ${INCLUDE_PATH}/rosetta/docker/Dockerfile
+      # macos:
+      # dockerfile: ${INCLUDE_PATH}/rosetta/docker/arm.Dockerfile
     healthcheck:
-      test: [ 'CMD-SHELL', '/venv/bin/python scripts/healthcheck.py' ]
+      test: [ "CMD-SHELL", "/venv/bin/python scripts/healthcheck.py" ]
+    ports:
+      - "5001:5000" # delete this line if you want to use only in api mode
+    command: --host 0.0.0.0
+    environment:
+      - LT_UPDATE_MODELS=true
+      - LT_LOAD_ONLY=en,fr,it,es # add more languages if you want
+      - LT_FRONTEND_LANGUAGE_TARGET=fr
+    volumes:
+      - rosetta-data-models:/home/libretranslate/.local:rw
+
+volumes:
+  rosetta-data-models:
