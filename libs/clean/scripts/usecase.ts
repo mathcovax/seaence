@@ -1,13 +1,15 @@
-import { getTypedEntries, type ObjectKey } from "@duplojs/utils";
+import { type SimplifyObjectTopLevel, type ObjectKey } from "@duplojs/utils";
 import { isRepositoryHandler, type RepositoryBase, type GetRepository, type RepositoryHandler } from "./repository";
 
 const usecaseBrand = Symbol("brand");
 
 export interface UsecaseHandler<
+	GenericName extends string = string,
 	GenericDependencies extends RawDependencies = RawDependencies,
 	GenericInput extends unknown = unknown,
 	GenericOutput extends unknown = unknown,
 > {
+	name: GenericName;
 	rawDependencies: GenericDependencies;
 	execute(
 		input: GenericInput,
@@ -54,74 +56,66 @@ export type BuildDependencies<
 	GenericDependencies[Prop] extends RepositoryHandler
 		? GetRepository<GenericDependencies[Prop]>
 		: GenericDependencies[Prop] extends UsecaseHandler
-			? GenericDependencies[Prop]
+			? GetUsecase<GenericDependencies[Prop]>
 			: never
 };
 
 export function createUsecaseHandler<
+	GenericName extends string,
 	GenericRawDependencies extends RawDependencies,
 	GenericInput extends unknown,
 	GenericOutput extends unknown,
 >(
+	name: GenericName,
 	rawDependencies: GenericRawDependencies,
 	callback: (
-		dependencies: BuildDependencies<GenericRawDependencies>,
+		dependencies: SimplifyObjectTopLevel<
+			BuildDependencies<GenericRawDependencies>
+		>,
 		input: GenericInput
 	) => GenericOutput,
 ): UsecaseHandler<
+		GenericName,
 		GenericRawDependencies,
 		GenericInput,
 		GenericOutput
 	> {
-	type DependenciesGetter = Record<
-		string,
-		(dependencies: BuildDependencies<GenericRawDependencies>) => Dependence
-	>;
-
-	const dependenciesGetter = (
-		function findDependencies(rawDependencies: RawDependencies): DependenciesGetter {
-			return getTypedEntries(rawDependencies)
-				.reduce(
-					(pv, [key, dependence]) => {
-						if (isUsecaseHandler(dependence)) {
-							return {
-								...pv,
-								...findDependencies(dependence.rawDependencies),
-								[key]: (dependencies) => (
-									(input, dependencies) => dependence.execute(
-										input,
-										dependencies,
-									)
-								),
-							};
-						} else if (isRepositoryHandler(dependence)) {
-							return {
-								...pv,
-								[key]: () => {
-									if (!dependence.default) {
-										throw new Error("");
-									}
-
-									return dependence.default;
-								},
-							};
-						}
-
-						return pv;
-					},
-					{} as DependenciesGetter,
-				);
-		}
-	)(rawDependencies);
-
 	return {
+		name,
 		rawDependencies,
 		execute(input, dependencies = {}) {
 			const dependenciesProxy = new Proxy(
-				dependencies as BuildDependencies<GenericRawDependencies>,
+				dependencies as SimplifyObjectTopLevel<
+					BuildDependencies<GenericRawDependencies>
+				>,
 				{
 					get(target, prop: string) {
-						return target[prop] ?? dependenciesGetter[prop](dependenciesProxy);
+						const rawDependence = rawDependencies[prop];
+
+						if (isRepositoryHandler(rawDependence)) {
+							if (target[prop]) {
+								return target[prop];
+							} else if (rawDependence.default) {
+								return rawDependence.default;
+							}
+
+							throw new Error(`In usecase ${name}: The repository at property "${prop}" has not been injected and its repository Handler has no default value.`);
+						} else if (isUsecaseHandler(rawDependence)) {
+							const usecaseHandler = target[prop] as GetUsecase<UsecaseHandler> ?? rawDependence.execute;
+
+							return (
+								input: never,
+								currentDependencies: object,
+							) => usecaseHandler(
+								input,
+								{
+									...dependencies,
+									...currentDependencies,
+								},
+							);
+						}
+
+						throw new Error(`In usecase ${name}: The property "${prop}" was used to call a dependency that does not exist in this usecase.`);
 					},
 				},
 			);
@@ -131,6 +125,10 @@ export function createUsecaseHandler<
 		[usecaseBrand]: true,
 	};
 }
+
+export type GetUsecase<
+	GenericUsecaseHandler extends UsecaseHandler,
+> = GenericUsecaseHandler["execute"];
 
 export function isUsecaseHandler(usecase: any): usecase is UsecaseHandler {
 	return usecase && typeof usecase === "object" && usecaseBrand in usecase;

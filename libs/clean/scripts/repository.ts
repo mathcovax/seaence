@@ -26,7 +26,7 @@ export function createRepositoryHandler<
 
 export type GetRepository<
 	GenericRepositoryHandler extends RepositoryHandler,
-> = Exclude<GenericRepositoryHandler["default"], undefined>;
+> = Exclude<GenericRepositoryHandler["default"], null>;
 
 export function isRepositoryHandler(repository: any): repository is RepositoryHandler {
 	return repository && typeof repository === "object" && repositoryBrand in repository;
