@@ -57,5 +57,6 @@ export const eslintConfigVue = [
 			"@typescript-eslint/no-unsafe-unary-minus": "off",
 		},
 		files: ["**/*.vue", "**/*.ts"],
+		ignores: ["**/*.test.ts", "vendors/**"],
 	},
 ];

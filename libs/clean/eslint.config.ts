@@ -1,3 +1,3 @@
-import { eslintConfig } from "./vendors/eslint";
+import { eslintConfigOpen } from "./vendors/eslint";
 
-export default eslintConfig;
+export default eslintConfigOpen;

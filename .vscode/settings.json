@@ -20,6 +20,7 @@
 	},
 
 	"eslint.workingDirectories": [
+		"libs/clean",
 		"libs/clients-type",
 		"libs/design-system",
 		"libs/eslint",

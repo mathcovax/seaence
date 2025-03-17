@@ -1,4 +1,4 @@
-import { duplojsEslintBase, duplojsEslintTest } from "@duplojs/eslint";
+import { duplojsEslintBase, duplojsEslintOpen, duplojsEslintTest } from "@duplojs/eslint";
 
 export const eslintConfig = [
 	{
@@ -8,6 +8,18 @@ export const eslintConfig = [
 	{
 		...duplojsEslintBase,
 		files: ["**/*.ts"],
-		ignores: ["**/*.test.ts"],
+		ignores: ["**/*.test.ts", "vendors/**"],
+	},
+];
+
+export const eslintConfigOpen = [
+	{
+		...duplojsEslintTest,
+		files: ["**/*.test.ts"],
+	},
+	{
+		...duplojsEslintOpen,
+		files: ["**/*.ts"],
+		ignores: ["**/*.test.ts", "vendors/**"],
 	},
 ];
