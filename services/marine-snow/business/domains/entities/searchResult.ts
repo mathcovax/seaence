@@ -18,14 +18,10 @@ export const searchResultEntityHandler = createEntityHandler(
 		articleType,
 		createdAt,
 	},
-	{
-		constructor(value: SearchResultEntityInput) {
-			return {
-				...value,
-				createdAt: createdAt.unsafeCreate(new Date()),
-			};
-		},
-	},
+	(value: SearchResultEntityInput) => ({
+		...value,
+		createdAt: createdAt.unsafeCreate(new Date()),
+	}),
 );
 
 export type SearchResultEntity = GetEntity<typeof searchResultEntityHandler>;
