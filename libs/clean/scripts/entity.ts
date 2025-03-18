@@ -1,6 +1,6 @@
 import { ValueObjectError, type ValueObjecter } from "./valueObject";
-import { type infer as zodInfer } from "zod";
-import { type AnyFunction, getTypedEntries, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { never, type infer as zodInfer } from "zod";
+import { getTypedEntries, getTypedKeys, type SimplifyObjectTopLevel } from "@duplojs/utils";
 
 const entityHandlerBrand = Symbol("brand");
 
@@ -14,11 +14,9 @@ export type PropertiesDefinitionToRawType<
 
 export type PropertiesDefinitionToObjectValue<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
-> = SimplifyObjectTopLevel<
-	{
-		[Prop in keyof GenericPropertiesDefinition]: ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>
-	}
->;
+> = {
+	[Prop in keyof GenericPropertiesDefinition]: ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>
+};
 
 export type GetPropertiesDefinitionName<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
@@ -53,25 +51,26 @@ export type BuildPatchers<
 export type Entity<
 	GenericName extends string = string,
 	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
-	GenericSymbol extends symbol = symbol,
 > = SimplifyObjectTopLevel<
 	Readonly<
 		{
 			_entityName: GenericName;
 		} & PropertiesDefinitionToObjectValue<
 			GenericPropertiesDefinition
-		> & {
-			[Prop in GenericSymbol]: true;
-		} & {
-			_new: boolean;
-			_updatedValues?: Readonly<
-				PropertiesDefinitionToObjectValue<
-					GenericPropertiesDefinition
-				>
-			>;
-		}
+		>
 	>
 >;
+
+export interface EntityInformation<
+	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
+> {
+	isNew: boolean;
+	updatedValues?: Partial<
+		PropertiesDefinitionToRawType<
+			GenericPropertiesDefinition
+		>
+	>;
+}
 
 export interface EntityHandler<
 	GenericName extends string = string,
@@ -79,7 +78,6 @@ export interface EntityHandler<
 	GenericInputConstructor extends Partial<
 		PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
 	> = {},
-	GenericSymbol extends symbol = symbol,
 > {
 	name: GenericName;
 	propertiesDefinition: GenericPropertiesDefinition;
@@ -88,8 +86,7 @@ export interface EntityHandler<
 		properties: PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>,
 	): Entity<
 		GenericName,
-		GenericPropertiesDefinition,
-		GenericSymbol
+		GenericPropertiesDefinition
 	>;
 	"new"(input: GenericInputConstructor): ReturnType<this["create"]>;
 	mapper(
@@ -105,23 +102,42 @@ export interface EntityHandler<
 	): ReturnType<this["create"]>;
 	creatorOf(entity: Entity<any, any>): entity is Entity<
 		GenericName,
-		GenericPropertiesDefinition,
-		GenericSymbol
+		GenericPropertiesDefinition
 	>;
 	update(
 		entity: Entity<
 			GenericName,
-			GenericPropertiesDefinition,
-			GenericSymbol
+			GenericPropertiesDefinition
 		>,
 		values: Partial<
 			PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
 		>
 	): Entity<
 		GenericName,
-		GenericPropertiesDefinition,
-		GenericSymbol
+		GenericPropertiesDefinition
 	>;
+	toJSON(
+		entity: Entity<
+			GenericName,
+			GenericPropertiesDefinition
+		>,
+	): SimplifyObjectTopLevel<PropertiesDefinitionToRawType<GenericPropertiesDefinition>>;
+	informations: WeakMap<
+		Entity<
+			GenericName,
+			GenericPropertiesDefinition
+		>,
+		EntityInformation<GenericPropertiesDefinition>
+	>;
+	clearInformation(
+		entity: Entity<
+			GenericName,
+			GenericPropertiesDefinition
+		>,
+	): Entity<
+		GenericName,
+		GenericPropertiesDefinition
+	>,
 }
 
 export type EntityConstructor<
@@ -147,34 +163,44 @@ export function createEntityHandler<
 ): EntityHandler<
 		GenericName,
 		GenericPropertiesDefinition,
-		GenericInputConstructor,
-		typeof entityBrand
+		GenericInputConstructor
 	> {
-	const entityBrand = Symbol("brand");
+	type CurrentEntity = Entity<
+		GenericName,
+		GenericPropertiesDefinition
+	>;
+
+	const entitiesInformations = new WeakMap<
+		CurrentEntity,
+		EntityInformation<GenericPropertiesDefinition>
+	>();
 
 	return {
 		name,
 		propertiesDefinition,
 		[entityHandlerBrand]: true,
 		create(properties) {
-			return {
+			const entity = {
 				_entityName: name,
-				[entityBrand]: true,
 				...properties,
-				_new: false,
-			} as Entity<
-				GenericName,
-				GenericPropertiesDefinition,
-				typeof entityBrand
-			>;
+			} as CurrentEntity;
+
+			entitiesInformations.set(entity, {
+				isNew: false,
+			});
+
+			return entity;
 		},
 		new(input) {
-			return {
-				...this.create(
-					constructor(input),
-				),
-				_new: true,
-			};
+			const entity = this.create(
+				constructor(input),
+			);
+
+			entitiesInformations.set(entity, {
+				isNew: true,
+			});
+
+			return entity;
 		},
 		mapper(rawProperties) {
 			const properties = getTypedEntries(rawProperties)
@@ -229,21 +255,56 @@ export function createEntityHandler<
 			return this.create(properties);
 		},
 		creatorOf(entity): entity is never {
-			return entityBrand in entity;
+			return !!entitiesInformations.has(entity as never);
 		},
 		update(
 			entity,
 			values,
 		) {
-			return {
+			const informationsEntity = entitiesInformations.get(entity);
+
+			const newEntity = {
 				...entity,
 				...values,
-				_updatedValues: {
-					...entity._updatedValues,
-					...values,
-				},
 			};
+
+			entitiesInformations.set(
+				newEntity,
+				{
+					isNew: false,
+					...informationsEntity,
+					updatedValues: {
+						...informationsEntity?.updatedValues,
+						...getTypedKeys(values)
+							.reduce(
+								(pv, key) => ({
+									...pv,
+									[key]: values?.[key]?.value,
+								}),
+								{} as any,
+							),
+					},
+				},
+			);
+
+			return newEntity;
 		},
+		toJSON(entity) {
+			return getTypedKeys(propertiesDefinition)
+				.reduce(
+					(pv, key) => ({
+						...pv,
+						[key]: entity[key].value,
+					}),
+					{} as any,
+				);
+		},
+		informations: entitiesInformations,
+		clearInformation(entity) {
+			entitiesInformations.set(entity, {isNew: false});
+			
+			return entity
+		}
 	};
 }
 

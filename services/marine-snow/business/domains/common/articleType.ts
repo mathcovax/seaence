@@ -1,6 +1,6 @@
 import { type GetValueObject } from "@vendors/clean";
 
-export const articleTypeValues = ["meta-analysis"] as const;
+export const articleTypeValues = ["metaAnalysis"] as const;
 
 export const articleTypeObjecter = zod.enum(articleTypeValues).createValueObjecter("articleType");
 
