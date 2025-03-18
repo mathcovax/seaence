@@ -5,15 +5,21 @@ const usecaseBrand = Symbol("brand");
 
 export interface UsecaseHandler<
 	GenericName extends string = string,
-	GenericDependencies extends RawDependencies = RawDependencies,
+	GenericRawDependencies extends RawDependencies = RawDependencies,
 	GenericInput extends unknown = unknown,
 	GenericOutput extends unknown = unknown,
 > {
 	name: GenericName;
-	rawDependencies: GenericDependencies;
+	rawDependencies: GenericRawDependencies;
 	execute(
 		input: GenericInput,
-		dependencies: Partial<BuildDependencies<GenericDependencies>>
+		dependencies?: Partial<
+			BuildDependencies<
+				FlatDependencies<GenericRawDependencies> extends RawDependencies
+					? FlatDependencies<GenericRawDependencies>
+					: never
+			>
+		>
 	): GenericOutput;
 	[usecaseBrand]: true;
 }
@@ -32,22 +38,24 @@ export interface DependenceItem<
 }
 
 export type FindDependencies<
-	GenericDependencies extends RawDependencies,
+	GenericRawDependencies extends RawDependencies,
 > = {
-	[Prop in keyof GenericDependencies]:
-	GenericDependencies[Prop] extends RepositoryHandler
-		? DependenceItem<Prop, GenericDependencies[Prop]>
-		: GenericDependencies[Prop] extends UsecaseHandler
-			? FindDependencies<GenericDependencies[Prop]["rawDependencies"]> | DependenceItem<Prop, GenericDependencies[Prop]>
+	[Prop in keyof GenericRawDependencies]:
+	GenericRawDependencies[Prop] extends RepositoryHandler
+		? DependenceItem<Prop, GenericRawDependencies[Prop]>
+		: GenericRawDependencies[Prop] extends UsecaseHandler
+			? FindDependencies<GenericRawDependencies[Prop]["rawDependencies"]> | DependenceItem<Prop, GenericRawDependencies[Prop]>
 			: never
-}[keyof GenericDependencies];
+}[keyof GenericRawDependencies];
 
 export type FlatDependencies<
-	GenericDependencies extends RawDependencies,
-	GenericAllDependenceItem extends DependenceItem = FindDependencies<GenericDependencies>,
+	GenericRawDependencies extends RawDependencies,
+	GenericAllDependenceItem extends DependenceItem = FindDependencies<GenericRawDependencies>,
 > = {
 	[DependenceItem in GenericAllDependenceItem as DependenceItem["key"]]: DependenceItem["value"]
-};
+} extends infer InferedResult
+	? InferedResult
+	: never;
 
 export type BuildDependencies<
 	GenericDependencies extends RawDependencies,

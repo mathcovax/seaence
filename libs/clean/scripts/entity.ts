@@ -1,6 +1,6 @@
 import { ValueObjectError, type ValueObjecter } from "./valueObject";
 import { type infer as zodInfer } from "zod";
-import { getTypedEntries, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type AnyFunction, getTypedEntries, type SimplifyObjectTopLevel } from "@duplojs/utils";
 
 const entityHandlerBrand = Symbol("brand");
 
@@ -79,7 +79,6 @@ export interface EntityHandler<
 	GenericInputConstructor extends Partial<
 		PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
 	> = {},
-	GenericPatchers extends Patchers<GenericPropertiesDefinition> = {},
 	GenericSymbol extends symbol = symbol,
 > {
 	name: GenericName;
@@ -104,7 +103,7 @@ export interface EntityHandler<
 	unsafeMapper(
 		rawProperties: PropertiesDefinitionToRawType<GenericPropertiesDefinition>
 	): ReturnType<this["create"]>;
-	creatorOf(entity: Entity): entity is Entity<
+	creatorOf(entity: Entity<any, any>): entity is Entity<
 		GenericName,
 		GenericPropertiesDefinition,
 		GenericSymbol
@@ -123,34 +122,14 @@ export interface EntityHandler<
 		GenericPropertiesDefinition,
 		GenericSymbol
 	>;
-	patchers: BuildPatchers<
-		GenericPatchers,
-		Entity<
-			GenericName,
-			GenericPropertiesDefinition,
-			GenericSymbol
-		>
-	>;
 }
 
 export type EntityConstructor<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 	GenericInputConstructor extends object,
-> = (input: GenericInputConstructor) => PropertiesDefinitionToObjectValue<
+> = ((input: GenericInputConstructor) => PropertiesDefinitionToObjectValue<
 	GenericPropertiesDefinition
->;
-
-export interface EntityHandlerParams<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
-	GenericInputConstructor extends object = PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>,
-	GenericPatchers extends Patchers<GenericPropertiesDefinition> = {},
-> {
-	constructor: EntityConstructor<
-		GenericPropertiesDefinition,
-		GenericInputConstructor
-	>;
-	patchers: GenericPatchers;
-}
+>);
 
 export function createEntityHandler<
 	GenericName extends string,
@@ -158,53 +137,20 @@ export function createEntityHandler<
 	GenericInputConstructor extends object = SimplifyObjectTopLevel<
 		PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
 	>,
-	GenericPatchers extends Patchers<GenericPropertiesDefinition> = {},
 >(
 	name: GenericName,
 	propertiesDefinition: GenericPropertiesDefinition,
-	rawParams: Partial<
-		EntityHandlerParams<
-			GenericPropertiesDefinition,
-			GenericInputConstructor,
-			GenericPatchers
-		>
-	> = {},
+	constructor: EntityConstructor<
+		GenericPropertiesDefinition,
+		GenericInputConstructor
+	> = ((input: any) => input),
 ): EntityHandler<
 		GenericName,
 		GenericPropertiesDefinition,
 		GenericInputConstructor,
-		GenericPatchers,
 		typeof entityBrand
 	> {
-	const params: EntityHandlerParams<
-		GenericPropertiesDefinition,
-		GenericInputConstructor,
-		GenericPatchers
-	> = {
-		constructor: rawParams.constructor ?? ((input: any) => input),
-		patchers: rawParams.patchers ?? {} as never,
-	};
 	const entityBrand = Symbol("brand");
-
-	function update(
-		entity: Entity<
-			GenericName,
-			GenericPropertiesDefinition,
-			typeof entityBrand
-		>,
-		values: Partial<
-			PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
-		>,
-	) {
-		return {
-			...entity,
-			...values,
-			_updatedValues: {
-				...entity._updatedValues,
-				...values,
-			},
-		};
-	}
 
 	return {
 		name,
@@ -225,7 +171,7 @@ export function createEntityHandler<
 		new(input) {
 			return {
 				...this.create(
-					params.constructor(input),
+					constructor(input),
 				),
 				_new: true,
 			};
@@ -285,25 +231,19 @@ export function createEntityHandler<
 		creatorOf(entity): entity is never {
 			return entityBrand in entity;
 		},
-		update,
-		patchers: getTypedEntries(params.patchers)
-			.reduce(
-				(pv, [key, patcher]) => ({
-					...pv,
-					[key]: (entity: Entity, ...args: [any]) => {
-						const patchedValues = patcher.call(
-							entity as never,
-							...args,
-						);
-
-						return update(
-							entity as never,
-							patchedValues,
-						);
-					},
-				}),
-				{},
-			) as never,
+		update(
+			entity,
+			values,
+		) {
+			return {
+				...entity,
+				...values,
+				_updatedValues: {
+					...entity._updatedValues,
+					...values,
+				},
+			};
+		},
 	};
 }
 
