@@ -13,6 +13,7 @@ export default defineConfig({
 			dirs: [
 				"src/composables",
 				"src/i18n",
+				"./src/router/routerPageName/*.ts",
 			],
 			imports: [
 				"vue",
