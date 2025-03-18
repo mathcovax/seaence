@@ -27,6 +27,6 @@
 		"eslint.config.ts"
 	],
 	"exclude": [
-		"vendors/**/*"
+		"vendors/**/*.test.ts",
 	]
 }

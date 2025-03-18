@@ -108,6 +108,6 @@
 		"**/*.vue"
 	],
 	"exclude": [
-		"vendors/**/*",
+		"vendors/**/*.test.ts",
 	]
 }
