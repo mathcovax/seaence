@@ -26,7 +26,7 @@ export default defineConfig({
 			dirs: ["src/components", "vendors/design-system"],
 			resolvers: [],
 		}),
-		tsconfigPaths()
+		tsconfigPaths(),
 	],
 	server: {
 		host: "0.0.0.0",

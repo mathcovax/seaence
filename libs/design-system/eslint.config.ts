@@ -1,3 +1,3 @@
-import { eslingConfigVue } from "./vendors/eslint/vue";
+import { eslintConfigVue } from "./vendors/eslint/vue";
 
-export default eslingConfigVue;
+export default eslintConfigVue;

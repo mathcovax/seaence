@@ -24,11 +24,19 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "docker compose up"
+    "dev": "docker compose up",
+    "test:lint": "npm -w libs/design-system run test:lint && npm -w libs/clean run test:lint && npm -w services/abys run test:lint && npm -w services/bottle run test:lint && npm -w services/colossal run test:lint && npm -w services/harbor run test:lint && npm -w services/horizon run test:lint && npm -w services/marine-snow run test:lint && npm -w services/pilot run test:lint && npm -w services/school run test:lint && npm -w services/sea run test:lint && npm -w services/spotter run test:lint && npm -w services/tide run test:lint",
+    "test:types": "npm -w libs/design-system run test:types && npm -w libs/clean run test:types && npm -w services/abys run test:types && npm -w services/bottle run test:types && npm -w services/colossal run test:types && npm -w services/harbor run test:types && npm -w services/horizon run test:types && npm -w services/marine-snow run test:types && npm -w services/pilot run test:types && npm -w services/school run test:types && npm -w services/sea run test:types && npm -w services/spotter run test:types && npm -w services/tide run test:types",
+    "prepare": "husky"
   },
   "workspaces": [
     "libs/**",
     "services/**"
   ],
-  "license": "./LICENSE"
+  "license": "./LICENSE",
+  "devDependencies": {
+    "husky": "9.1.7",
+    "@commitlint/cli": "19.7.1",
+    "@commitlint/config-conventional": "19.2.2"
+  }
 }

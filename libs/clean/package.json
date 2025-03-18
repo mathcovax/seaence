@@ -3,7 +3,9 @@
   "type": "module",
   "scripts": {
     "test:tu": "vitest --coverage",
-    "test:tu:watch": "vitest --coverage --watch"
+    "test:tu:watch": "vitest --coverage --watch",
+    "test:lint": "eslint",
+    "test:types": "tsc"
   },
   "dependencies": {
     "@duplojs/utils": "0.3.1",

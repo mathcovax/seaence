@@ -8,5 +8,8 @@ export function useLoader() {
 		document.body.classList.toggle("overflow-hidden", value);
 	}
 
-	return { isLoading, setLoading };
+	return {
+		isLoading,
+		setLoading,
+	};
 }

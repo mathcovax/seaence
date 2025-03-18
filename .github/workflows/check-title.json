@@ -1,0 +1,14 @@
+{
+  "LABEL": {
+    "name": "wrong title",
+    "color": "f00020"
+  },
+  "CHECKS": {
+    "regexp": "^((feat|fix|doc|refacto|github|config)(\\(([0-9]+|hf)\\)|:(\\w+)(\\(([0-9]+|hf)\\))?)):"
+  },
+  "MESSAGES": {
+    "success": "All OK",
+    "failure": "Failing CI test",
+    "notice": "Le format des titres doit être : 'feat(123):', 'fix(hf):', 'feat:abys(01):' ou similaire."
+  }
+}

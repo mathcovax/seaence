@@ -1,0 +1,9 @@
+services:
+  rosetta-template:
+    healthcheck:
+      test: [ "CMD-SHELL", "/venv/bin/python scripts/healthcheck.py" ]
+    command: --host 0.0.0.0
+    env_file:
+      - ${INCLUDE_PATH}/rosetta/.env
+    volumes:
+      - rosetta-data-models:/home/libretranslate/.local:rw

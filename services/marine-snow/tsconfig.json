@@ -29,4 +29,7 @@
 		"**/*.ts",
 		"eslint.config.ts"
 	],
+	"exclude": [
+		"vendors/**/*.test.ts"
+	]
 }

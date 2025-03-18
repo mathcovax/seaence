@@ -1,5 +1,9 @@
 {
   "name": "@lib/design-system",
+  "scripts": {
+    "test:lint": "eslint",
+    "test:types": "vue-tsc -b"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./config": {
@@ -23,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
-    "vite": "^6.2.2"
+    "vite": "^6.2.2",
+    "vue-tsc": "^2.2.4"
   }
 }
