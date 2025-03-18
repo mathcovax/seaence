@@ -1,8 +1,7 @@
 import { createEntityHandler, type GetEntity } from "@vendors/clean";
-import { type Provider, provider } from "../common/provider";
-import { createdAt } from "../common/createdAt";
-import { type Url, url } from "../common/url";
-import { articleType, type ArticleType } from "../common/articleType";
+import { type Provider, providerObjecter } from "../common/provider";
+import { type Url, urlObjecter } from "../common/url";
+import { articleTypeObjecter, type ArticleType } from "../common/articleType";
 
 export interface SearchResultEntityInput {
 	provider: Provider;
@@ -13,15 +12,10 @@ export interface SearchResultEntityInput {
 export const searchResultEntityHandler = createEntityHandler(
 	"searchResult",
 	{
-		provider,
-		url,
-		articleType,
-		createdAt,
+		provider: providerObjecter,
+		url: urlObjecter,
+		articleType: articleTypeObjecter,
 	},
-	(value: SearchResultEntityInput) => ({
-		...value,
-		createdAt: createdAt.unsafeCreate(new Date()),
-	}),
 );
 
 export type SearchResultEntity = GetEntity<typeof searchResultEntityHandler>;

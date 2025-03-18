@@ -1,5 +1,5 @@
 import { type GetValueObject } from "@vendors/clean";
 
-export const createdAt = zod.date().createValueObjecter("createdAt");
+export const createdAtObjecter = zod.date().createValueObjecter("createdAt");
 
-export type CreatedAt = GetValueObject<typeof createdAt>;
+export type CreatedAt = GetValueObject<typeof createdAtObjecter>;

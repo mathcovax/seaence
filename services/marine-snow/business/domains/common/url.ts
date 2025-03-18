@@ -1,5 +1,5 @@
 import { type GetValueObject } from "@vendors/clean";
 
-export const url = zod.string().url().createValueObjecter("url");
+export const urlObjecter = zod.string().url().createValueObjecter("url");
 
-export type Url = GetValueObject<typeof url>;
+export type Url = GetValueObject<typeof urlObjecter>;

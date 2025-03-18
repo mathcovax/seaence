@@ -6,6 +6,6 @@ export const providerValues = [
 	"sciencedirect",
 ] as const;
 
-export const provider = zod.enum(providerValues).createValueObjecter("provider");
+export const providerObjecter = zod.enum(providerValues).createValueObjecter("provider");
 
-export type Provider = GetValueObject<typeof provider>;
+export type Provider = GetValueObject<typeof providerObjecter>;
