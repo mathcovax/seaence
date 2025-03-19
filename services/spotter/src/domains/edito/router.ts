@@ -10,9 +10,10 @@ export default (): RouteRecordRaw[] => [
 		name: routerPageNameMain.HOME_PAGE,
 		path: "/",
 		component: () => import("./pages/HomePage.vue"),
-	}
+	},
 ];
 
+// eslint-disable-next-line func-style
 export const notFound = (): RouteRecordRaw => ({
 	path: "/:notFoundPath(.*)*",
 	children: [
@@ -20,6 +21,6 @@ export const notFound = (): RouteRecordRaw => ({
 			name: routerPageNameMain.NOT_FOUND_PAGE,
 			path: "/:notFoundPath(.*)*",
 			component: () => import("./pages/NotFoundPage.vue"),
-		}
-	]
+		},
+	],
 });

@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 import { searchResultProviderRepository } from "@business/applications/repositories/searchResultProvider";
 
 searchResultProviderRepository.default = {

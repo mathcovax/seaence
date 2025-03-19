@@ -5,7 +5,7 @@ services:
       service: rosetta-template
     build:
       context: ${INCLUDE_PATH}/rosetta
-      dockerfile: ${INCLUDE_PATH}/rosetta/docker/Dockerfile
+      dockerfile: ${INCLUDE_PATH}/rosetta/docker/arm.Dockerfile
     ports:
       - 5001:5000 # delete this line if you want to use only in api mode
 volumes:

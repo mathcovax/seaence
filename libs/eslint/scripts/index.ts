@@ -9,6 +9,10 @@ export const eslintConfig = [
 		...duplojsEslintBase,
 		files: ["**/*.ts"],
 		ignores: ["**/*.test.ts", "vendors/**"],
+		rules: {
+			...duplojsEslintBase.rules,
+			"@typescript-eslint/no-empty-object-type": "off",
+		},
 	},
 ];
 

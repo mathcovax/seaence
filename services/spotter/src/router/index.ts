@@ -9,22 +9,22 @@ export const router = createRouter({
 			component: () => import("../layouts/BaseLayout.vue"),
 			children: [
 				...main(),
-				notFound()
+				notFound(),
 			],
 		},
 	],
-	scrollBehavior(to, from, savedPosition) {
+	scrollBehavior(_to, _from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;
 		} else {
 			return { top: 0 };
 		}
-	}
+	},
 });
 
 const { setLoading } = useLoader();
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((_to, _from, next) => {
 	setLoading(true);
 	next();
 });

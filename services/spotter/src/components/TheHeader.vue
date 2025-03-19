@@ -1,7 +1,7 @@
-!<script setup lang="ts">
+<script setup lang="ts">
 
 </script>
 
 <template>
-   <header>Header</header>
+	<header>Header</header>
 </template>

@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "test:lint": "eslint",
+    "test:types": "vue-tsc",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

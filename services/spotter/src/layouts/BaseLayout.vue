@@ -1,11 +1,11 @@
-!<script setup lang="ts">
+<script setup lang="ts">
 </script>
 
 <template>
 	<TheHeader />
 
-   	<main>
-	  <RouterView />
+	<main>
+		<RouterView />
 	</main>
 
 	<TheFooter />

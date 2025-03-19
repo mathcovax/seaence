@@ -24,11 +24,20 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "docker compose up"
+    "dev": "docker compose up",
+    "test:lint": "./scripts/lint.sh",
+    "test:types": "./scripts/types.sh",
+    "test:unit": "./scripts/unit.sh",
+    "prepare": "husky"
   },
   "workspaces": [
     "libs/**",
     "services/**"
   ],
-  "license": "./LICENSE"
+  "license": "./LICENSE",
+  "devDependencies": {
+    "husky": "9.1.7",
+    "@commitlint/cli": "19.7.1",
+    "@commitlint/config-conventional": "19.2.2"
+  }
 }

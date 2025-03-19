@@ -3,6 +3,12 @@ services:
     extends:
       file: ${INCLUDE_PATH}/sea/compose.template.yml
       service: sea-es-template
+    platform: linux/arm64/v8
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # desactive les credentials
+      - "ES_JAVA_OPTS=-XX:UseSVE=0"
+      - "CLI_JAVA_OPTS=-XX:UseSVE=0"
     ports:
       - 9200:9200
   kibana:

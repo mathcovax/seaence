@@ -1,5 +1,5 @@
 import { ValueObjectError, type ValueObjecter } from "./valueObject";
-import { never, type infer as zodInfer } from "zod";
+import { type infer as zodInfer } from "zod";
 import { getTypedEntries, getTypedKeys, type SimplifyObjectTopLevel } from "@duplojs/utils";
 
 const entityHandlerBrand = Symbol("brand");
@@ -137,7 +137,7 @@ export interface EntityHandler<
 	): Entity<
 		GenericName,
 		GenericPropertiesDefinition
-	>,
+	>;
 }
 
 export type EntityConstructor<
@@ -301,10 +301,10 @@ export function createEntityHandler<
 		},
 		informations: entitiesInformations,
 		clearInformation(entity) {
-			entitiesInformations.set(entity, {isNew: false});
-			
-			return entity
-		}
+			entitiesInformations.set(entity, { isNew: false });
+
+			return entity;
+		},
 	};
 }
 
