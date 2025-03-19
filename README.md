@@ -28,8 +28,8 @@
 | Frontend client | Spotter | application web client | Vue, Vite | @Maubry94 |
 | Gateway | Horizon | API Gateway | Duplo | @Vitaalx |
 | Backend authentification / User | Harbor | Authentification unique | Duplo, firebase SSO, Postgres | @ZeRiix, @Vitaalx, @Maubry94 |
-| Backend elasticSearch | Sea | Base de donnée vectorielle | ElasticSearch, Duplo | @ZeRiix, @mathcovax |
-| Backend de contenue | Abys | Contient les documents originaux | MongoDB, Duplo | @Vitaalx, @mathcovax, @ZeRiix |
+| Backend elasticSearch | Sea | Base de donnée vectorielle | ElasticSearch, Duplo | @Vitaalx, @ZeRiix, @mathcovax |
+| Backend de contenue | Abys | Contient les documents originaux | MongoDB, Duplo | @mathcovax, @ZeRiix |
 | Service de scrapping | MarineSnow | Scrapping de donnée | Duplo, WokerThread, SQLLite | @mathcovax, @ZeRiix |
 | Frontend contenue (BO) | Colossal | Backoffice | Vue, Vite | @Vitaalx |
 | Frontend scrapping (BO) | Tide | Backoffice | Vue, Vite | @ZeRiix |

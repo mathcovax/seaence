@@ -1,13 +1,7 @@
 import { createEntityHandler, type GetEntity } from "@vendors/clean";
-import { type Provider, providerObjecter } from "../common/provider";
-import { type Url, urlObjecter } from "../common/url";
-import { articleTypeObjecter, type ArticleType } from "../common/articleType";
-
-export interface SearchResultEntityInput {
-	provider: Provider;
-	url: Url;
-	articleType: ArticleType;
-}
+import { providerObjecter } from "../common/provider";
+import { urlObjecter } from "../common/url";
+import { articleTypeObjecter } from "../common/articleType";
 
 export const searchResultEntityHandler = createEntityHandler(
 	"searchResult",
