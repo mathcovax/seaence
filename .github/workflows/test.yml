@@ -11,6 +11,7 @@ jobs:
         with:
           node-version: '22.x'
       - run: npm ci
+      - run: npm -w services/marine-snow run prisma:generate
       - run: npm run test:types
 
   lint:
@@ -21,4 +22,5 @@ jobs:
         with:
           node-version: '22.x'
       - run: npm ci
+      - run: npm -w services/marine-snow run prisma:generate
       - run: npm run test:lint
