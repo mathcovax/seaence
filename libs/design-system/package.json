@@ -2,7 +2,7 @@
   "name": "@lib/design-system",
   "scripts": {
     "test:lint": "eslint",
-    "test:types": "vue-tsc -b"
+    "test:types": "vue-tsc"
   },
   "exports": {
     ".": "./src/index.ts",

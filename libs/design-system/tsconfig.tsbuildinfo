@@ -1,1 +1,0 @@
-{"root":["./eslint.config.ts","./src/components/ui/button/index.ts","./src/components/ui/input/index.ts","./src/lib/utils.ts","./vendors/eslint/index.ts","./vendors/eslint/vue.ts","./src/components/ui/button/dsbutton.vue","./src/components/ui/input/dsinput.vue"],"version":"5.7.3"}

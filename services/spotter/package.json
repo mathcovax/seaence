@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "test:lint": "eslint",
-    "test:types": "vue-tsc -b",
-    "build": "vue-tsc -b && vite build",
+    "test:types": "vue-tsc",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

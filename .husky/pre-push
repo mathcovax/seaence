@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
-npx concurrently --kill-others-on-fail "npm run test:lint" "npm run test:types"
+npm run test:lint
+npm run test:types
 # npm run test:tu
