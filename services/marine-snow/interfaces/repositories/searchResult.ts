@@ -1,24 +1,21 @@
 import { searchResultRepository } from "@business/applications/repositories/searchResult";
-import { searchResultEntityHandler } from "@business/domains/entities/searchResult";
 import { prismaClient } from "@interfaces/providers/prisma";
 
 searchResultRepository.default = {
 	async save(searchResult) {
-		const { updatedValues } = searchResultEntityHandler.informations.get(searchResult)!;
+		const updatedValues = searchResult.getUpdatedValues();
 
 		await prismaClient.searchResult.upsert({
 			where: {
 				url: searchResult.url.value,
 			},
 			create: {
-				...searchResultEntityHandler.toJSON(searchResult),
+				...searchResult.toJSON(),
 			},
 			update: {
 				...updatedValues,
 			},
 		});
-
-		searchResultEntityHandler.clearInformation(searchResult);
 
 		return searchResult;
 	},
@@ -29,7 +26,7 @@ searchResultRepository.default = {
 				url: searchResult.url.value,
 			},
 			create: {
-				...searchResultEntityHandler.toJSON(searchResult),
+				...searchResult.toJSON(),
 			},
 			update: {},
 		});

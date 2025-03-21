@@ -1,15 +1,14 @@
-import { createEntityHandler, type GetEntity } from "@vendors/clean";
+import { EntityHandler, type GetEntityProperties } from "@vendors/clean";
 import { providerObjecter } from "../common/provider";
 import { urlObjecter } from "../common/url";
 import { articleTypeObjecter } from "../common/articleType";
 
-export const searchResultEntityHandler = createEntityHandler(
-	"searchResult",
-	{
-		provider: providerObjecter,
-		url: urlObjecter,
-		articleType: articleTypeObjecter,
-	},
-);
-
-export type SearchResultEntity = GetEntity<typeof searchResultEntityHandler>;
+export class SearchResultEntity extends EntityHandler.create({
+	provider: providerObjecter,
+	url: urlObjecter,
+	articleType: articleTypeObjecter,
+}) {
+	public static create(params: GetEntityProperties<SearchResultEntity>) {
+		return new SearchResultEntity(params);
+	}
+}

@@ -1,9 +1,9 @@
-import { type Entity } from "./entity";
+import { type EntityInstance } from "./entity";
 
 const repositoryBrand = Symbol("brand");
 
 export interface RepositoryBase<
-	GenericEntity extends Entity<any, any> = Entity<any, any>,
+	GenericEntity extends EntityInstance<any, any> = EntityInstance<any, any>,
 > {
 	save(entity: GenericEntity): Promise<GenericEntity>;
 }
