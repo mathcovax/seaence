@@ -14,9 +14,5 @@ export const getPostsFromArticleUsecase = createUsecaseHandler(
 	async(
 		{ postRepository },
 		{ articleId }: GetPostsFromArticleInput,
-	) => {
-		const posts = await postRepository.findByArticleId(articleId);
-
-		return posts;
-	},
+	) => postRepository.findByArticleId(articleId),
 );

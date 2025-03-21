@@ -25,8 +25,6 @@ export const replyToPostUsecase = createUsecaseHandler(
 			responderId,
 		});
 
-		await answerRepository.replyToPost(answer);
-
-		return answer;
+		return answerRepository.replyToPost(answer);
 	},
 );
