@@ -27,8 +27,6 @@ export const createPostUsecase = createUsecaseHandler(
 			creatorId,
 		});
 
-		await postRepository.save(post);
-
-		return post;
+		return postRepository.save(post);
 	},
 );

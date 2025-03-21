@@ -14,9 +14,5 @@ export const getAnswersFromPostUsecase = createUsecaseHandler(
 	async(
 		{ answerRepository },
 		{ postId }: GetAnswersFromPostInput,
-	) => {
-		const answers = await answerRepository.findByPostId(postId);
-
-		return answers;
-	},
+	) => answerRepository.findByPostId(postId),
 );
