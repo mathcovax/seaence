@@ -1,0 +1,31 @@
+import { missionRepository } from "@business/applications/repositories/missions";
+import { type ArticleType } from "@business/domains/common/articleType";
+import { type Provider } from "@business/domains/common/provider";
+import { type PublishDateSearched, SearchResultMissionEntity } from "@business/domains/entities/mission/searchResultMission";
+import { createUsecaseHandler } from "@vendors/clean";
+
+interface Input {
+	publishDateSearched: PublishDateSearched;
+	articleType: ArticleType;
+	provider: Provider;
+}
+
+export const startSearchResultMissionUsecase = createUsecaseHandler(
+	"startSearchResultMission",
+	{
+		missionRepository,
+	},
+	(
+		{ missionRepository },
+		{ publishDateSearched, articleType, provider }: Input,
+	) => {
+		const mission = SearchResultMissionEntity.create({
+			id: missionRepository.generateMissionId(),
+			publishDateSearched,
+			articleType,
+			provider,
+		});
+
+		return missionRepository.start(mission);
+	},
+);

@@ -141,3 +141,13 @@ export type GetUsecase<
 export function isUsecaseHandler(usecase: any): usecase is UsecaseHandler {
 	return usecase && typeof usecase === "object" && usecaseBrand in usecase;
 }
+
+export class UsecaseError<
+	GenericInformation extends string,
+> extends Error {
+	public constructor(
+		public information: GenericInformation,
+	) {
+		super(information);
+	}
+}

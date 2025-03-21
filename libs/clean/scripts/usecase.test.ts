@@ -1,5 +1,5 @@
 import { createRepositoryHandler, type RepositoryBase } from "./repository";
-import { createUsecaseHandler, isUsecaseHandler } from "./usecase";
+import { createUsecaseHandler, isUsecaseHandler, UsecaseError } from "./usecase";
 
 describe("usecase", () => {
 	interface Repo3 extends RepositoryBase {
@@ -123,5 +123,11 @@ describe("usecase", () => {
 
 		expect(() => myUsecase.execute("test return"))
 			.toThrowError("In usecase myUsecase: The property \"toto\" was used to call a dependency that does not exist in this usecase.");
+	});
+
+	it("usecaseError", () => {
+		const usecaseError = new UsecaseError("test");
+
+		expect(usecaseError).instanceOf(Error);
 	});
 });
