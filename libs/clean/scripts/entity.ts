@@ -1,313 +1,275 @@
-import { ValueObjectError, type ValueObjecter } from "./valueObject";
-import { type infer as zodInfer } from "zod";
-import { getTypedEntries, getTypedKeys, type SimplifyObjectTopLevel } from "@duplojs/utils";
-
-const entityHandlerBrand = Symbol("brand");
+import { type ValueObject, ValueObjectError, type ValueObjecter } from "./valueObject";
+import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction } from "@duplojs/utils";
 
 export type EntityPropertiesDefinition = Record<string, ValueObjecter>;
 
-export type PropertiesDefinitionToRawType<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition,
-> = {
-	[Prop in keyof GenericPropertiesDefinition]: zodInfer<GenericPropertiesDefinition[Prop]["zodSchema"]>
-};
-
-export type PropertiesDefinitionToObjectValue<
+export type EntityPropertiesDefinitionToEntityProperties<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 > = {
 	[Prop in keyof GenericPropertiesDefinition]: ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>
 };
 
-export type GetPropertiesDefinitionName<
+export type EntityProperties = EntityPropertiesDefinitionToEntityProperties<EntityPropertiesDefinition>;
+
+export type EntityPropertiesDefinitionToRawProperties<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
-> = {
-	[Prop in keyof GenericPropertiesDefinition]: GenericPropertiesDefinition[Prop]["name"]
-}[keyof GenericPropertiesDefinition];
-
-export type Patchers<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
-> = Record<
-	string,
-	(
-		(
-			this: PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>,
-			input: any
-		) => Partial<
-			PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
-		>
-	)
->;
-
-export type BuildPatchers<
-	GenericPatchers extends Patchers<any> = Patchers,
-	GenericEntity extends Entity = Entity,
-> = {
-	[Prop in keyof GenericPatchers]: (
-		entity: GenericEntity,
-		...args: Parameters<GenericPatchers[Prop]>
-	) => GenericEntity
-};
-
-export type Entity<
-	GenericName extends string = string,
-	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
-> = SimplifyObjectTopLevel<
-	Readonly<
-		{
-			_entityName: GenericName;
-		} & PropertiesDefinitionToObjectValue<
-			GenericPropertiesDefinition
-		>
+> = EntityPropertiesToRawProperties<
+	EntityPropertiesDefinitionToEntityProperties<
+		GenericPropertiesDefinition
 	>
 >;
 
-export interface EntityInformation<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
-> {
-	isNew: boolean;
-	updatedValues?: Partial<
-		PropertiesDefinitionToRawType<
-			GenericPropertiesDefinition
-		>
-	>;
-}
+export type EntityPropertiesToRawProperties<
+	GenericProperties extends EntityProperties,
+> = SimplifyObjectTopLevel<
+	{
+		[Prop in keyof GenericProperties]: GenericProperties[Prop]["value"]
+	}
+>;
 
-export interface EntityHandler<
-	GenericName extends string = string,
-	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
-	GenericInputConstructor extends Partial<
-		PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
-	> = {},
+export type EntityUpdatedValues<
+	GenericProperties extends EntityProperties= EntityProperties,
+> = Partial<
+	EntityPropertiesToRawProperties<
+		GenericProperties
+	>
+>;
+
+const updatedValuesKey = Symbol("updatedValues");
+
+export interface EntityInstanceMethods<
+	GenericProperties extends EntityProperties = EntityProperties,
 > {
-	name: GenericName;
-	propertiesDefinition: GenericPropertiesDefinition;
-	[entityHandlerBrand]: true;
-	create(
-		properties: PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>,
-	): Entity<
-		GenericName,
-		GenericPropertiesDefinition
-	>;
-	"new"(input: GenericInputConstructor): ReturnType<this["create"]>;
-	mapper(
-		rawProperties: PropertiesDefinitionToRawType<GenericPropertiesDefinition>
-	):
-		| ReturnType<this["create"]>
-		| ValueObjectError<GetPropertiesDefinitionName<GenericPropertiesDefinition>>;
-	throwMapper(
-		rawProperties: PropertiesDefinitionToRawType<GenericPropertiesDefinition>
-	): ReturnType<this["create"]>;
-	unsafeMapper(
-		rawProperties: PropertiesDefinitionToRawType<GenericPropertiesDefinition>
-	): ReturnType<this["create"]>;
-	creatorOf(entity: Entity<any, any>): entity is Entity<
-		GenericName,
-		GenericPropertiesDefinition
-	>;
 	update(
-		entity: Entity<
-			GenericName,
-			GenericPropertiesDefinition
-		>,
-		values: Partial<
-			PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
+		values: SimplifyObjectTopLevel<
+			Partial<GenericProperties>
 		>
-	): Entity<
-		GenericName,
-		GenericPropertiesDefinition
+	): this;
+	toJSON(): SimplifyObjectTopLevel<
+		EntityPropertiesToRawProperties<GenericProperties>
 	>;
-	toJSON(
-		entity: Entity<
-			GenericName,
-			GenericPropertiesDefinition
-		>,
-	): SimplifyObjectTopLevel<PropertiesDefinitionToRawType<GenericPropertiesDefinition>>;
-	informations: WeakMap<
-		Entity<
-			GenericName,
-			GenericPropertiesDefinition
-		>,
-		EntityInformation<GenericPropertiesDefinition>
-	>;
-	clearInformation(
-		entity: Entity<
-			GenericName,
-			GenericPropertiesDefinition
-		>,
-	): Entity<
-		GenericName,
-		GenericPropertiesDefinition
+	getUpdatedValues(): EntityUpdatedValues<GenericProperties>;
+}
+
+export type EntityInstance<
+	GenericProperties extends EntityProperties,
+	GenericInheritMethod extends Record<string, AnyFunction>,
+> = GenericProperties
+	& GenericInheritMethod
+	& EntityInstanceMethods<GenericProperties>;
+
+export interface EntityClass<
+	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
+	GenericProperties extends EntityProperties = EntityProperties,
+	GenericInheritMethod extends Record<string, AnyFunction> = {},
+> {
+	propertiesDefinition: GenericPropertiesDefinition;
+
+	new(
+		properties: GenericProperties
+	): EntityInstance<
+		GenericProperties,
+		GenericInheritMethod
 	>;
 }
 
-export type EntityConstructor<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition,
-	GenericInputConstructor extends object,
-> = ((input: GenericInputConstructor) => PropertiesDefinitionToObjectValue<
-	GenericPropertiesDefinition
->);
+type AnyRecord = Record<any, any>;
 
-export function createEntityHandler<
-	GenericName extends string,
-	GenericPropertiesDefinition extends EntityPropertiesDefinition,
-	GenericInputConstructor extends object = SimplifyObjectTopLevel<
-		PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>
-	>,
->(
-	name: GenericName,
-	propertiesDefinition: GenericPropertiesDefinition,
-	constructor: EntityConstructor<
-		GenericPropertiesDefinition,
-		GenericInputConstructor
-	> = ((input: any) => input),
-): EntityHandler<
-		GenericName,
-		GenericPropertiesDefinition,
-		GenericInputConstructor
-	> {
-	type CurrentEntity = Entity<
-		GenericName,
-		GenericPropertiesDefinition
-	>;
+function setProperty(object: any, prop: string, value: any) {
+	(object as AnyRecord)[prop] = value;
+}
 
-	const entitiesInformations = new WeakMap<
-		CurrentEntity,
-		EntityInformation<GenericPropertiesDefinition>
-	>();
+function entityPropertiesToRawProperties(
+	properties: object,
+	props?: string[],
+): Record<string, any> {
+	const object = {};
+	const eachableProps = props ?? Object.keys(properties);
 
-	return {
-		name,
-		propertiesDefinition,
-		[entityHandlerBrand]: true,
-		create(properties) {
-			const entity = {
-				_entityName: name,
-				...properties,
-			} as CurrentEntity;
+	for (const prop of eachableProps) {
+		setProperty(object, prop, (properties as Record<string, ValueObject>)[prop].value);
+	}
 
-			entitiesInformations.set(entity, {
-				isNew: false,
-			});
+	return object;
+}
 
-			return entity;
-		},
-		new(input) {
-			const entity = this.create(
-				constructor(input),
-			);
+export class EntityHandler {
+	public static create<
+		GenericPropertiesDefinition extends EntityPropertiesDefinition,
+		GenericEntityParent extends EntityClass<{}, any> = never,
+	>(
+		propertiesDefinition: GenericPropertiesDefinition,
+		Parent: GenericEntityParent = (class {}) as any,
+	) {
+		const propertiesDefinitionKeys = Object.keys(propertiesDefinition);
+		const parentPropertiesDefinitionKeys = Object.keys(Parent?.propertiesDefinition ?? {});
 
-			entitiesInformations.set(entity, {
-				isNew: true,
-			});
+		type PropertiesDefinition = SimplifyObjectTopLevel<
+			UnionToIntersection<
+				| GenericPropertiesDefinition
+				| GenericEntityParent["propertiesDefinition"]
+			> & {}
+		>;
 
-			return entity;
-		},
-		mapper(rawProperties) {
-			const properties = getTypedEntries(rawProperties)
-				.reduce(
-					(pv, [key, value]) => {
-						if (pv instanceof ValueObjectError) {
-							return pv;
-						}
+		type Properties = SimplifyObjectTopLevel<
+			UnionToIntersection<
+				| EntityPropertiesDefinitionToEntityProperties<GenericPropertiesDefinition>
+				| EntityPropertiesDefinitionToEntityProperties<
+					GenericEntityParent["propertiesDefinition"]
+				>
+			> & {}
+		>;
 
-						const valueObject = propertiesDefinition[key].create(value);
-
-						if (valueObject instanceof ValueObjectError) {
-							return valueObject;
-						}
-
-						return {
-							...pv,
-							[key]: valueObject,
-						};
-					},
-					{} as PropertiesDefinitionToObjectValue<GenericPropertiesDefinition> | ValueObjectError,
-				);
-
-			if (properties instanceof ValueObjectError) {
-				return properties;
-			}
-
-			return this.create(properties);
-		},
-		throwMapper(rawProperties) {
-			const properties = getTypedEntries(rawProperties)
-				.reduce(
-					(pv, [key, value]) => ({
-						...pv,
-						[key]: propertiesDefinition[key].throwCreate(value),
-					}),
-					{} as PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>,
-				);
-
-			return this.create(properties);
-		},
-		unsafeMapper(rawProperties) {
-			const properties = getTypedEntries(rawProperties)
-				.reduce(
-					(pv, [key, value]) => ({
-						...pv,
-						[key]: propertiesDefinition[key].unsafeCreate(value),
-					}),
-					{} as PropertiesDefinitionToObjectValue<GenericPropertiesDefinition>,
-				);
-
-			return this.create(properties);
-		},
-		creatorOf(entity): entity is never {
-			return !!entitiesInformations.has(entity as never);
-		},
-		update(
-			entity,
-			values,
-		) {
-			const informationsEntity = entitiesInformations.get(entity);
-
-			const newEntity = {
-				...entity,
-				...values,
+		class Entity extends (Parent as new(arg: any) => any) {
+			public static propertiesDefinition = {
+				...Parent?.propertiesDefinition,
+				...propertiesDefinition,
 			};
 
-			entitiesInformations.set(
-				newEntity,
-				{
-					isNew: false,
-					...informationsEntity,
-					updatedValues: {
-						...informationsEntity?.updatedValues,
-						...getTypedKeys(values)
-							.reduce(
-								(pv, key) => ({
-									...pv,
-									[key]: values?.[key]?.value,
-								}),
-								{} as any,
-							),
-					},
+			public [updatedValuesKey]: EntityUpdatedValues = {};
+
+			public constructor(input: Properties) {
+				// eslint-disable-next-line constructor-super
+				super(input);
+
+				for (const prop of propertiesDefinitionKeys) {
+					setProperty(this, prop, (input as AnyRecord)[prop]);
+				}
+			}
+
+			public update(values: Properties) {
+				const constructor = this.constructor as typeof Entity;
+				const updatedEntity = new constructor({
+					...this,
+					...values,
+				});
+
+				updatedEntity[updatedValuesKey] = {
+					...this[updatedValuesKey],
+					...entityPropertiesToRawProperties(values),
+				};
+
+				return updatedEntity;
+			}
+
+			public toJSON() {
+				return {
+					...entityPropertiesToRawProperties(this, propertiesDefinitionKeys),
+					...entityPropertiesToRawProperties(this, parentPropertiesDefinitionKeys),
+				};
+			}
+
+			public getUpdatedValues() {
+				return simpleClone(this[updatedValuesKey]);
+			}
+		}
+
+		type ParentMethods = {
+			[
+			Prop in Exclude<
+				keyof InstanceType<GenericEntityParent>,
+					| keyof GenericEntityParent["propertiesDefinition"]
+					| keyof EntityInstanceMethods
+			>
+			]: InstanceType<GenericEntityParent>[Prop]
+		};
+
+		return Entity as unknown as EntityClass<
+			PropertiesDefinition,
+			Properties,
+			ParentMethods
+		>;
+	}
+
+	public static mapper<
+		GenericEntity extends EntityClass<any, any>,
+	>(
+		Entity: GenericEntity,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
+	): InstanceType<GenericEntity> | ValueObjectError {
+		const properties = Object.entries(rawProperties)
+			.reduce(
+				(pv, [key, value]) => {
+					if (pv instanceof ValueObjectError) {
+						return pv;
+					}
+
+					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
+
+					const valueObject = propertiesDefinition[key].create(value);
+
+					if (valueObject instanceof ValueObjectError) {
+						return valueObject;
+					}
+
+					return {
+						...pv,
+						[key]: valueObject,
+					};
 				},
+				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]> | ValueObjectError,
 			);
 
-			return newEntity;
-		},
-		toJSON(entity) {
-			return getTypedKeys(propertiesDefinition)
-				.reduce(
-					(pv, key) => ({
-						...pv,
-						[key]: entity[key].value,
-					}),
-					{} as any,
-				);
-		},
-		informations: entitiesInformations,
-		clearInformation(entity) {
-			entitiesInformations.set(entity, { isNew: false });
+		if (properties instanceof ValueObjectError) {
+			return properties;
+		}
 
-			return entity;
-		},
-	};
+		return new Entity(properties);
+	}
+
+	public static throwMapper<
+		GenericEntity extends EntityClass<any, any>,
+	>(
+		Entity: GenericEntity,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
+	): InstanceType<GenericEntity> {
+		const properties = Object.entries(rawProperties)
+			.reduce(
+				(pv, [key, value]) => {
+					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
+
+					return {
+						...pv,
+						[key]: propertiesDefinition[key].throwCreate(value),
+					};
+				},
+				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
+			);
+
+		return new Entity(properties);
+	}
+
+	public static unsafeMapper<
+		GenericEntity extends EntityClass<any, any>,
+	>(
+		Entity: GenericEntity,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
+	): InstanceType<GenericEntity> {
+		const properties = Object.entries(rawProperties)
+			.reduce(
+				(pv, [key, value]) => {
+					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
+
+					return {
+						...pv,
+						[key]: propertiesDefinition[key].unsafeCreate(value),
+					};
+				},
+				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
+			);
+
+		return new Entity(properties);
+	}
 }
 
-export type GetEntity<
-	GenericEntityHandler extends EntityHandler<any, any>,
-> = ReturnType<GenericEntityHandler["create"]>;
+export type GetEntityProperties<
+	GenericEntityInstance extends EntityInstance<any, any>,
+
+> = {
+	[
+	Prop in keyof GenericEntityInstance as
+	GenericEntityInstance[Prop] extends ValueObject
+		? Prop
+		: never
+	]: GenericEntityInstance[Prop]
+};

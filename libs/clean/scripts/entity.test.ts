@@ -1,5 +1,5 @@
 import { z as zod } from "zod";
-import { createEntityHandler } from "./entity";
+import { EntityHandler } from "./entity";
 import { type ExpectType } from "@duplojs/utils";
 import { type GetValueObject, ValueObjectError, type ValueObject } from "./valueObject";
 
@@ -13,19 +13,34 @@ describe("entity", () => {
 		.string()
 		.createValueObjecter("lastName");
 
-	const userEntityHandler = createEntityHandler(
-		"user",
+	class User extends EntityHandler.create({
+		firstName: firstNameType,
+		lastName: lastNameType,
+	}) {
+		public getName() {
+			return this.firstName;
+		}
+	}
+
+	type check = ExpectType<
+		typeof User.propertiesDefinition,
 		{
-			firstName: firstNameType,
-			lastName: lastNameType,
+			firstName: typeof firstNameType;
+			lastName: typeof lastNameType;
 		},
-	);
+		"strict"
+	>;
+
+	expect(User.propertiesDefinition).toEqual({
+		firstName: firstNameType,
+		lastName: lastNameType,
+	});
 
 	const firstName = firstNameType.throwCreate("firstName");
 	const lastName = lastNameType.throwCreate("lastName");
 
 	it("create entity", () => {
-		const user = userEntityHandler.create({
+		const user = new User({
 			firstName,
 			lastName,
 		});
@@ -33,121 +48,106 @@ describe("entity", () => {
 		type check = ExpectType<
 			typeof user,
 			{
-				readonly _entityName: "user";
 				readonly firstName: ValueObject<"firstName", string>;
 				readonly lastName: ValueObject<"lastName", string>;
 			},
-			"strict"
+			"one-extends-two"
 		>;
 
-		expect(user).toEqual(
+		expect(user).toMatchObject(
 			{
-				_entityName: "user",
 				firstName,
 				lastName,
 			},
 		);
-
-		expect(userEntityHandler.informations.get(user))
-			.toEqual({
-				isNew: false,
-			});
 	});
 
 	it("update entity", () => {
 		const newFirstName = firstNameType.throwCreate("newFirstName");
 
-		const user = userEntityHandler.create({
+		const user = new User({
 			firstName,
 			lastName,
 		});
 
-		const updatedUser1 = userEntityHandler.update(
-			user,
+		const updatedUser1 = user.update(
 			{ firstName: newFirstName },
 		);
 
-		expect(updatedUser1).toEqual(
+		expect(updatedUser1).toMatchObject(
 			{
-				_entityName: "user",
 				firstName: newFirstName,
 				lastName,
 			},
 		);
 
-		console.log(userEntityHandler.informations.get(updatedUser1), newFirstName);
-
-		expect(userEntityHandler.informations.get(updatedUser1))
+		expect(updatedUser1.getUpdatedValues())
 			.toEqual({
-				isNew: false,
-				updatedValues: {
-					firstName: newFirstName.value,
-				},
+				firstName: newFirstName.value,
 			});
 
 		const newLastName = lastNameType.throwCreate("newLastName");
 
-		const updatedUser2 = userEntityHandler.update(
-			updatedUser1,
+		const updatedUser2 = updatedUser1.update(
 			{ lastName: newLastName },
 		);
 
-		expect(updatedUser2).toEqual(
+		expect(updatedUser2).toMatchObject(
 			{
-				_entityName: "user",
 				firstName: newFirstName,
 				lastName: newLastName,
 			},
 		);
 
-		expect(userEntityHandler.informations.get(updatedUser2))
+		expect(updatedUser2.getUpdatedValues())
 			.toEqual({
-				isNew: false,
-				updatedValues: {
-					firstName: newFirstName.value,
-					lastName: newLastName.value,
-				},
+				firstName: newFirstName.value,
+				lastName: newLastName.value,
 			});
 	});
 
 	it("mapper entity", () => {
-		const user1 = userEntityHandler.mapper({
-			firstName: "firstName",
-			lastName: "lastName",
-		});
-
-		expect(user1).toEqual(
+		const user1 = EntityHandler.mapper(
+			User,
 			{
-				_entityName: "user",
+				firstName: "firstName",
+				lastName: "lastName",
+			},
+		);
+
+		expect(user1).toMatchObject(
+			{
 				firstName,
 				lastName,
 			},
 		);
 
-		const user2 = userEntityHandler.mapper({
-			firstName: "",
-			lastName: "lastName",
-		});
+		const user2 = EntityHandler.mapper(
+			User,
+			{
+				firstName: "",
+				lastName: "lastName",
+			},
+		);
 
 		expect(user2).instanceOf(ValueObjectError);
 	});
 
 	it("throwMapper entity", () => {
-		const user = userEntityHandler.throwMapper({
+		const user = EntityHandler.throwMapper(User, {
 			firstName: "firstName",
 			lastName: "lastName",
 		});
 
-		expect(user).toEqual(
+		expect(user).toMatchObject(
 			{
-				_entityName: "user",
 				firstName,
 				lastName,
 			},
 		);
 
 		expect(
-			() => userEntityHandler.throwMapper({
+			() => EntityHandler.throwMapper(User, {
 				firstName: "",
 				lastName: "lastName",
 			}),
@@ -155,134 +155,26 @@ describe("entity", () => {
 	});
 
 	it("unsafeMapper entity", () => {
-		const user = userEntityHandler.unsafeMapper({
+		const user = EntityHandler.unsafeMapper(User, {
 			firstName: "",
 			lastName: "lastName",
 		});
 
-		expect(user).toEqual(
+		expect(user).toMatchObject(
 			{
-				_entityName: "user",
 				firstName: firstNameType.unsafeCreate(""),
 				lastName,
 			},
 		);
-
-		expect(userEntityHandler.informations.get(user))
-			.toEqual({
-				isNew: false,
-			});
-	});
-
-	it("creatorOf", () => {
-		const user = userEntityHandler.create({
-			firstName,
-			lastName,
-		});
-
-		expect(userEntityHandler.creatorOf(user)).toBe(true);
-	});
-
-	describe("new entity", () => {
-		it("without constructor", () => {
-			type check = ExpectType<
-				Parameters<
-					typeof userEntityHandler.new
-				>,
-				[
-					{
-						firstName: GetValueObject<typeof firstNameType>;
-						lastName: GetValueObject<typeof lastNameType>;
-					},
-				],
-				"strict"
-			>;
-
-			const user = userEntityHandler.new({
-				firstName,
-				lastName,
-			});
-
-			expect(user).toMatchObject(
-				{
-					_entityName: "user",
-					firstName,
-					lastName,
-				},
-			);
-
-			expect(userEntityHandler.informations.get(user))
-				.toEqual({
-					isNew: true,
-				});
-		});
-
-		it("with constructor", () => {
-			const createdAtType = zod
-				.date()
-				.createValueObjecter("createdAt");
-
-			const date = new Date();
-
-			const userEntityHandler = createEntityHandler(
-				"user",
-				{
-					firstName: firstNameType,
-					lastName: lastNameType,
-					createdAt: createdAtType,
-				},
-				(
-					input: {
-						firstName: GetValueObject<typeof firstNameType>;
-						lastName: GetValueObject<typeof lastNameType>;
-					},
-				) => ({
-					...input,
-					createdAt: createdAtType.unsafeCreate(date),
-				}),
-			);
-
-			type check = ExpectType<
-				Parameters<
-					typeof userEntityHandler.new
-				>,
-				[
-					{
-						firstName: GetValueObject<typeof firstNameType>;
-						lastName: GetValueObject<typeof lastNameType>;
-					},
-				],
-				"strict"
-			>;
-
-			const user = userEntityHandler.new({
-				firstName,
-				lastName,
-			});
-
-			expect(user).toEqual(
-				{
-					_entityName: "user",
-					firstName,
-					lastName,
-					createdAt: createdAtType.unsafeCreate(date),
-				},
-			);
-
-			expect(userEntityHandler.informations.get(user))
-				.toEqual({
-					isNew: true,
-				});
-		});
 	});
 
 	it("toJSON", () => {
-		const user = userEntityHandler.create({
+		const user = new User({
 			firstName,
 			lastName,
 		});
 
-		const jsonUser = userEntityHandler.toJSON(user);
+		const jsonUser = user.toJSON();
 
 		type check = ExpectType<
 			typeof jsonUser,
@@ -301,19 +193,74 @@ describe("entity", () => {
 		);
 	});
 
-	it("clearInformation", () => {
-		const user = userEntityHandler.new({
+	it("extends", () => {
+		const date = new Date();
+		const createdAtType = zod
+			.date()
+			.createValueObjecter("createdAt");
+
+		class SubUser extends EntityHandler.create(
+			{ createdAt: createdAtType },
+			User,
+		) { }
+
+		type check1 = ExpectType<
+			typeof SubUser.propertiesDefinition,
+			{
+				firstName: typeof firstNameType;
+				lastName: typeof lastNameType;
+				createdAt: typeof createdAtType;
+			},
+			"strict"
+		>;
+
+		const subUser = new SubUser({
 			firstName,
 			lastName,
+			createdAt: createdAtType.unsafeCreate(date),
 		});
 
-		userEntityHandler.update(user, { firstName });
+		type check = ExpectType<
+			typeof subUser,
+			{
+				readonly firstName: ValueObject<"firstName", string>;
+				readonly lastName: ValueObject<"lastName", string>;
+				readonly createdAt: ValueObject<"createdAt", Date>;
+			},
+			"one-extends-two"
+		>;
 
-		userEntityHandler.clearInformation(user);
+		expect(subUser).toMatchObject(
+			{
+				firstName,
+				lastName,
+				createdAt: createdAtType.unsafeCreate(date),
+			},
+		);
 
-		expect(userEntityHandler.informations.get(user))
-			.toEqual({
-				isNew: false,
-			});
+		expect(subUser.getName()).toBe(firstName);
+
+		const jsonUser = subUser.toJSON();
+
+		type check2 = ExpectType<
+			typeof jsonUser,
+			{
+				firstName: string;
+				lastName: string;
+				createdAt: Date;
+			},
+			"strict"
+		>;
+
+		expect(jsonUser).toEqual(
+			{
+				firstName: "firstName",
+				lastName: "lastName",
+				createdAt: date,
+			},
+		);
+
+		expect(subUser).instanceof(SubUser);
+		expect(subUser).instanceof(User);
 	});
 });

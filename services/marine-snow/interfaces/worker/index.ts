@@ -2,7 +2,7 @@ import { resolve } from "path";
 import { Worker } from "worker_threads";
 import { type SearchResultMisson } from "./missions/searchResult";
 
-export interface WorkersMission<
+export interface WorkersMissionStruct<
 	GenericName extends string,
 	GenericParams extends object,
 > {
@@ -10,10 +10,13 @@ export interface WorkersMission<
 	params: GenericParams;
 }
 
+export type WorkersMission =
+	| SearchResultMisson;
+
 export class WorkersCluster {
 	public static workers: Worker[];
 
-	public static missons: (SearchResultMisson)[];
+	public static missons: (WorkersMission)[];
 
 	public static up(numberOfWorkersToBeRaised: number) {
 		const newWorkers = Array

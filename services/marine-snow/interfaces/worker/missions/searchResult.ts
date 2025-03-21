@@ -1,7 +1,7 @@
-import { type WorkersMission } from "..";
+import { type WorkersMissionStruct } from "..";
 
 export interface SearchResultParamsMisson {
 
 }
 
-export type SearchResultMisson = WorkersMission<"searchResult", SearchResultParamsMisson>;
+export type SearchResultMisson = WorkersMissionStruct<"searchResult", SearchResultParamsMisson>;
