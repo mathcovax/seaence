@@ -147,7 +147,8 @@ export class UsecaseError<
 > extends Error {
 	public constructor(
 		public information: GenericInformation,
+		message?: string,
 	) {
-		super(information);
+		super(message ?? information);
 	}
 }

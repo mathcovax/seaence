@@ -29,6 +29,12 @@ export class MissionEntity extends EntityHandler.create({
 		});
 	}
 
+	public start() {
+		return this.update({
+			status: missionStatusObjecter.unsafeCreate("inProgress"),
+		});
+	}
+
 	public success() {
 		return this.update({
 			status: missionStatusObjecter.unsafeCreate("success"),

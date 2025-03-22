@@ -1,3 +1,4 @@
+import { toJSON, type ToJSON } from "./toJSON";
 import { type ValueObject, ValueObjectError, type ValueObjecter } from "./valueObject";
 import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction } from "@duplojs/utils";
 
@@ -45,7 +46,10 @@ export interface EntityInstanceMethods<
 			Partial<GenericProperties>
 		>
 	): this;
-	toJSON(): SimplifyObjectTopLevel<
+	toJSON(): ToJSON<
+		EntityPropertiesToRawProperties<GenericProperties>
+	>;
+	toSimpleObject(): SimplifyObjectTopLevel<
 		EntityPropertiesToRawProperties<GenericProperties>
 	>;
 	getUpdatedValues(): EntityUpdatedValues<GenericProperties>;
@@ -153,6 +157,10 @@ export class EntityHandler {
 			}
 
 			public toJSON() {
+				return toJSON(this.toSimpleObject());
+			}
+
+			public toSimpleObject() {
 				return {
 					...entityPropertiesToRawProperties(this, propertiesDefinitionKeys),
 					...entityPropertiesToRawProperties(this, parentPropertiesDefinitionKeys),
@@ -259,6 +267,15 @@ export class EntityHandler {
 			);
 
 		return new Entity(properties);
+	}
+
+	public static instanceof<
+		GenericEntity extends EntityClass<any, any>,
+	>(
+		Entity: GenericEntity,
+		entity: EntityInstance<any, any>,
+	): entity is GenericEntity {
+		return entity instanceof Entity;
 	}
 }
 

@@ -1,4 +1,4 @@
-import { missionRepository } from "@business/applications/repositories/missions";
+import { missionRepository } from "@business/applications/repositories/mission";
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type Provider } from "@business/domains/common/provider";
 import { createUsecaseHandler } from "@vendors/clean";

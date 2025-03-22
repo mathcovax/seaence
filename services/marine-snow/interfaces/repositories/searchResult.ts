@@ -10,7 +10,7 @@ searchResultRepository.default = {
 				url: searchResult.url.value,
 			},
 			create: {
-				...searchResult.toJSON(),
+				...searchResult.toSimpleObject(),
 			},
 			update: {
 				...updatedValues,
@@ -26,7 +26,7 @@ searchResultRepository.default = {
 				url: searchResult.url.value,
 			},
 			create: {
-				...searchResult.toJSON(),
+				...searchResult.toSimpleObject(),
 			},
 			update: {},
 		});

@@ -11,6 +11,9 @@ interface FindMissionBetweenDateParams {
 	articleType: ArticleType;
 }
 
+export type Mission =
+	| SearchResultMissionEntity;
+
 export interface MissionRepository extends RepositoryBase<MissionEntity> {
 	generateMissionId(): MissionId;
 	findSearchResultMissionBetweenDate(

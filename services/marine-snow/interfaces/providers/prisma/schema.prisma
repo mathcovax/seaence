@@ -29,3 +29,18 @@ model searchResult {
     articleType articleType
     createdAt   DateTime    @default(now())
 }
+
+enum missionStatus {
+    inQueue
+    inProgress
+    failed
+    success
+}
+
+model searchResultMission {
+    id                  String        @id
+    articleType         articleType
+    publishDateSearched DateTime
+    provider            provider
+    status              missionStatus
+}

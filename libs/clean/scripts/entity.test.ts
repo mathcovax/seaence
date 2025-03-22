@@ -247,7 +247,7 @@ describe("entity", () => {
 			{
 				firstName: string;
 				lastName: string;
-				createdAt: Date;
+				createdAt: string;
 			},
 			"strict"
 		>;
@@ -256,7 +256,7 @@ describe("entity", () => {
 			{
 				firstName: "firstName",
 				lastName: "lastName",
-				createdAt: date,
+				createdAt: date.toJSON(),
 			},
 		);
 

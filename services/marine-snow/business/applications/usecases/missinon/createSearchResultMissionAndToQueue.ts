@@ -1,4 +1,4 @@
-import { missionRepository } from "@business/applications/repositories/missions";
+import { missionRepository } from "@business/applications/repositories/mission";
 import { queueRepository } from "@business/applications/repositories/queue";
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type Provider } from "@business/domains/common/provider";

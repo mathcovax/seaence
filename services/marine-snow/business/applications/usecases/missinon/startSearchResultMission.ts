@@ -6,8 +6,8 @@ interface Input {
 	mission: MissionEntity;
 }
 
-export const searchResultMissionSuccessUsecase = createUsecaseHandler(
-	"searchResultMissionSuccess",
+export const startSearchResultMissionUsecase = createUsecaseHandler(
+	"startSearchResultMission",
 	{
 		missionRepository,
 	},
@@ -15,12 +15,12 @@ export const searchResultMissionSuccessUsecase = createUsecaseHandler(
 		{ missionRepository },
 		{ mission }: Input,
 	) => {
-		if (mission.status.value !== "inProgress") {
+		if (mission.status.value !== "inQueue") {
 			return new UsecaseError("wrong-mission-status");
 		}
 
-		const successMission = mission.success();
+		const inProgressMission = mission.start();
 
-		return missionRepository.save(successMission);
+		return missionRepository.save(inProgressMission);
 	},
 );

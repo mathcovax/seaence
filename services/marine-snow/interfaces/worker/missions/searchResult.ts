@@ -1,7 +1,23 @@
-import { type WorkersMissionStruct } from "..";
+import { type SearchResultMissionEntity } from "@business/domains/entities/mission/searchResultMission";
+import { type SearchResultEntity } from "@business/domains/entities/searchResult";
+import { type WorkerSuccessResult } from "../main";
 
-export interface SearchResultParamsMisson {
+const scienceDatabaseWrapper = {
 
+};
+
+export type SearchResultWorkerResult = WorkerSuccessResult<
+	"searchResult",
+	ReturnType<SearchResultEntity["toSimpleObject"]>[]
+>;
+
+export async function executeMission(
+	mission: ReturnType<SearchResultMissionEntity["toSimpleObject"]>,
+): Promise<SearchResultWorkerResult | Error> {
+	await Promise.resolve();
+
+	return {
+		name: "searchResult",
+		data: [],
+	};
 }
-
-export type SearchResultMisson = WorkersMissionStruct<"searchResult", SearchResultParamsMisson>;
