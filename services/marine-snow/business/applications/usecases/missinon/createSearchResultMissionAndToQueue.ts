@@ -1,4 +1,5 @@
 import { missionRepository } from "@business/applications/repositories/missions";
+import { queueRepository } from "@business/applications/repositories/queue";
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type Provider } from "@business/domains/common/provider";
 import { type PublishDateSearched, SearchResultMissionEntity } from "@business/domains/entities/mission/searchResultMission";
@@ -10,13 +11,14 @@ interface Input {
 	provider: Provider;
 }
 
-export const startSearchResultMissionUsecase = createUsecaseHandler(
-	"startSearchResultMission",
+export const createSearchResultMissionAndToQueueUsecase = createUsecaseHandler(
+	"createSearchResultMissionAndToQueue",
 	{
 		missionRepository,
+		queueRepository,
 	},
 	(
-		{ missionRepository },
+		{ missionRepository, queueRepository },
 		{ publishDateSearched, articleType, provider }: Input,
 	) => {
 		const mission = SearchResultMissionEntity.create({
@@ -26,6 +28,6 @@ export const startSearchResultMissionUsecase = createUsecaseHandler(
 			provider,
 		});
 
-		return missionRepository.start(mission);
+		return queueRepository.addInQueue(mission);
 	},
 );

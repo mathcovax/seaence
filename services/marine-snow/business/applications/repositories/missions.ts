@@ -11,17 +11,11 @@ interface FindMissionBetweenDateParams {
 	articleType: ArticleType;
 }
 
-type Mission = typeof SearchResultMissionEntity;
-
 export interface MissionRepository extends RepositoryBase<MissionEntity> {
 	generateMissionId(): MissionId;
-	start(mission: MissionEntity): Promise<void>;
-	findMissionBetweenDate<
-		GenericEntity extends Mission,
-	>(
-		entity: GenericEntity,
+	findSearchResultMissionBetweenDate(
 		params: FindMissionBetweenDateParams,
-	): Promise<InstanceType<GenericEntity>>;
+	): Promise<SearchResultMissionEntity[]>;
 }
 
 export const missionRepository = createRepositoryHandler<

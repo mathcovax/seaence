@@ -1,7 +1,6 @@
 import { missionRepository } from "@business/applications/repositories/missions";
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type Provider } from "@business/domains/common/provider";
-import { SearchResultMissionEntity } from "@business/domains/entities/mission/searchResultMission";
 import { createUsecaseHandler } from "@vendors/clean";
 
 interface Input {
@@ -19,8 +18,7 @@ export const findSearchResultMissionUsecase = createUsecaseHandler(
 	(
 		{ missionRepository },
 		{ fromDate, toDate, provider, articleType }: Input,
-	) => missionRepository.findMissionBetweenDate(
-		SearchResultMissionEntity,
+	) => missionRepository.findSearchResultMissionBetweenDate(
 		{
 			fromDate,
 			toDate,

@@ -1,4 +1,4 @@
-import { EntityHandler, type GetEntityProperties } from "@vendors/clean";
+import { EntityHandler, zod, type GetEntityProperties } from "@vendors/clean";
 
 export const workerIdObjecter = zod
 	.string()

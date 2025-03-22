@@ -1,4 +1,4 @@
-import { EntityHandler, type GetValueObject, type GetEntityProperties } from "@vendors/clean";
+import { EntityHandler, type GetValueObject, type GetEntityProperties, zod } from "@vendors/clean";
 import { MissionEntity, missionStatusObjecter } from ".";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 

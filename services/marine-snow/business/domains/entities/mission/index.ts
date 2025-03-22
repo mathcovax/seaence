@@ -1,5 +1,5 @@
 import { providerObjecter } from "@business/domains/common/provider";
-import { EntityHandler, type GetValueObject, type GetEntityProperties } from "@vendors/clean";
+import { EntityHandler, zod, type GetValueObject } from "@vendors/clean";
 
 export const missionIdObjecter = zod
 	.string()
@@ -23,10 +23,15 @@ export class MissionEntity extends EntityHandler.create({
 	provider: providerObjecter,
 	status: missionStatusObjecter,
 }) {
-	public static create(params: Omit<GetEntityProperties<MissionEntity>, "status">) {
-		return new MissionEntity({
-			...params,
-			status: missionStatusObjecter.unsafeCreate("inQueue"),
+	public failed() {
+		return this.update({
+			status: missionStatusObjecter.unsafeCreate("failed"),
+		});
+	}
+
+	public success() {
+		return this.update({
+			status: missionStatusObjecter.unsafeCreate("success"),
 		});
 	}
 }
