@@ -63,14 +63,14 @@ export interface EntityClass<
 	GenericProperties extends EntityProperties = EntityProperties,
 	GenericInheritMethod extends Record<string, AnyFunction> = {},
 > {
-	propertiesDefinition: GenericPropertiesDefinition;
-
 	new(
 		properties: GenericProperties
 	): EntityInstance<
 		GenericProperties,
 		GenericInheritMethod
 	>;
+
+	propertiesDefinition: GenericPropertiesDefinition;
 }
 
 type AnyRecord = Record<any, any>;
