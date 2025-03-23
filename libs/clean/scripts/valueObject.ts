@@ -60,6 +60,13 @@ export interface ValueObjecter<
 			GenericName,
 			zodInfer<GenericZodSchema>
 		>;
+	toZodSchema():
+		| ZodType<
+			ValueObject<
+				GenericName,
+				zodInfer<GenericZodSchema>
+			>
+		>;
 	readonly zodSchema: GenericZodSchema;
 	readonly [valueObjecterBrand]: true;
 }
@@ -93,6 +100,15 @@ ZodType.prototype.createValueObjecter = function<
 		},
 		unsafeCreate(rawData) {
 			return new ValueObject(name, rawData);
+		},
+		toZodSchema() {
+			return this.zodSchema
+				.transform(
+					(value) => new ValueObject(
+						this.name,
+						value,
+					),
+				);
 		},
 		zodSchema: this,
 		[valueObjecterBrand]: true,

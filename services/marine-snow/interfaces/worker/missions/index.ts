@@ -1,6 +1,6 @@
 import { type Mission } from "@business/applications/repositories/mission";
 import { parentPort } from "worker_threads";
-import { type SearchResultWorkerResult } from "./missions/searchResult";
+import { type SearchResultWorkerResult } from "./searchResult";
 
 if (!parentPort) {
 	throw new Error("This script is done to run with worker thread.");
@@ -19,7 +19,7 @@ export type WorkerResult =
 
 const missionFileWrapper = {
 	searchResult: () => import(
-		"./missions/searchResult",
+		"./searchResult",
 	),
 };
 

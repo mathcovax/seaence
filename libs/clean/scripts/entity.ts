@@ -1,4 +1,4 @@
-import { toJSON, type ToJSON } from "./toJSON";
+import { toJSON, type ToJSON } from "./utils";
 import { type ValueObject, ValueObjectError, type ValueObjecter } from "./valueObject";
 import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction } from "@duplojs/utils";
 

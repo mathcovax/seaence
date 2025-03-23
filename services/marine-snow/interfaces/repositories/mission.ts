@@ -3,7 +3,7 @@ import { missionIdObjecter } from "@business/domains/entities/mission";
 import { SearchResultMissionEntity } from "@business/domains/entities/mission/searchResultMission";
 import { prismaClient } from "@interfaces/providers/prisma";
 import { queue } from "@interfaces/providers/queue";
-import { WorkersCluster } from "@interfaces/worker";
+import { WorkerCluster } from "@interfaces/worker";
 import { EntityHandler } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
@@ -44,7 +44,7 @@ missionRepository.default = {
 	async findSearchResultMissionBetweenDate(params) {
 		const inCacheMission = [
 			...queue,
-			...WorkersCluster
+			...WorkerCluster
 				.workers
 				.map((workersCluster) => workersCluster.currentMission),
 		]

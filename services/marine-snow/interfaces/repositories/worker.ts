@@ -1,23 +1,23 @@
 import { workerRepository } from "@business/applications/repositories/worker";
-import { WorkersCluster } from "@interfaces/worker";
+import { WorkerCluster } from "@interfaces/worker";
 
 workerRepository.default = {
 	save() {
 		throw new Error("This method is not allowed");
 	},
 	up(quantity) {
-		WorkersCluster.up(quantity);
+		WorkerCluster.up(quantity);
 
 		return Promise.resolve();
 	},
 	close(quantity) {
-		WorkersCluster.close(quantity);
+		WorkerCluster.close(quantity);
 
 		return Promise.resolve();
 	},
 	count() {
 		return Promise.resolve(
-			WorkersCluster.workers.length,
+			WorkerCluster.workers.length,
 		);
 	},
 };

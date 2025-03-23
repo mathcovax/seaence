@@ -1,6 +1,6 @@
 import { type SearchResultMissionEntity } from "@business/domains/entities/mission/searchResultMission";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
-import { type WorkerSuccessResult } from "../main";
+import { type WorkerSuccessResult } from ".";
 
 const scienceDatabaseWrapper = {
 

@@ -2,19 +2,22 @@ import { resolve } from "path";
 import { Worker } from "worker_threads";
 import { type Mission } from "@business/applications/repositories/mission";
 import { searchResultMissionFailedUsecase } from "@business/applications/usecases/missinon/searchResultMissionFailed";
-import { type WorkerResult } from "./main";
+import { type WorkerResult } from "./missions";
 import { providerObjecter } from "@business/domains/common/provider";
 import { urlObjecter } from "@business/domains/common/url";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { createSearchResultUsecase } from "@business/applications/usecases/searchResult/createSearchResult";
 import { searchResultMissionSuccessUsecase } from "@business/applications/usecases/missinon/searchResultMissionSuccess";
+import { getFirstMissionOfTheQueueUsecase } from "@business/applications/usecases/queue/getFirstMissionOfTheQueue";
+import { queue } from "@interfaces/providers/queue";
+import { Observable } from "@gullerya/object-observer";
 
-export class WorkersCluster {
+export class WorkerCluster {
 	public plannedClosure = false;
 
 	public currentMission: Mission | null = null;
 
-	public worker = new Worker(resolve(import.meta.dirname, "main.ts"));
+	public worker = new Worker(resolve(import.meta.dirname, "./missions/index.ts"));
 
 	public constructor() {
 		this.worker.on(
@@ -42,8 +45,18 @@ export class WorkersCluster {
 
 		this.worker.emit(
 			"message",
-			this.currentMission.toJSON(),
+			this.currentMission.toSimpleObject(),
 		);
+	}
+
+	public async finishMission() {
+		this.currentMission = null;
+
+		if (this.plannedClosure) {
+			await WorkerCluster.shutdownWorker(this);
+		} else {
+			await WorkerCluster.loopMatchMission();
+		}
 	}
 
 	private async successMission(result: WorkerResult) {
@@ -74,7 +87,7 @@ export class WorkersCluster {
 			},
 		);
 
-		this.currentMission = null;
+		await this.finishMission();
 	}
 
 	private async failedMission(data: string) {
@@ -90,7 +103,7 @@ export class WorkersCluster {
 			},
 		);
 
-		this.currentMission = null;
+		await this.finishMission();
 	}
 
 	private async error(data: unknown) {
@@ -107,15 +120,17 @@ export class WorkersCluster {
 		this.currentMission = null;
 		this.plannedClosure = true;
 
-		await WorkersCluster.shutdownWorker(this);
+		await WorkerCluster.shutdownWorker(this);
 	}
 
-	public static workers: WorkersCluster[];
+	public static workers: WorkerCluster[];
+
+	private static preSelectedWorker = new Set<WorkerCluster>();
 
 	public static up(quantity: number) {
 		const newWorkers = Array
 			.from({ length: quantity })
-			.map(() => new WorkersCluster());
+			.map(() => new WorkerCluster());
 
 		this.workers.push(...newWorkers);
 	}
@@ -137,11 +152,46 @@ export class WorkersCluster {
 		}
 	}
 
-	private static async shutdownWorker(workersCluster: WorkersCluster) {
+	private static async shutdownWorker(workerCluster: WorkerCluster) {
 		this.workers = this.workers.filter(
-			(worker) => worker !== workersCluster,
+			(worker) => worker !== workerCluster,
 		);
 
-		await workersCluster.worker.terminate();
+		await workerCluster.worker.terminate();
+	}
+
+	private static async loopMatchMission() {
+		const availableWorker = this.workers.find(
+			(worker) => !worker.currentMission
+			&& !worker.plannedClosure
+			&& !this.preSelectedWorker.has(worker),
+		);
+
+		if (!availableWorker) {
+			return;
+		}
+
+		this.preSelectedWorker.add(availableWorker);
+
+		const mission = await getFirstMissionOfTheQueueUsecase.execute({});
+
+		this.preSelectedWorker.delete(availableWorker);
+
+		if (!mission) {
+			return;
+		}
+
+		availableWorker.startMission(mission);
+	}
+
+	static {
+		Observable.observe(
+			queue,
+			([change]) => {
+				if (change.type === "insert") {
+					void this.loopMatchMission();
+				}
+			},
+		);
 	}
 }
