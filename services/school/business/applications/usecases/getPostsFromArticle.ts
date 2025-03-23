@@ -2,7 +2,7 @@ import { createUsecaseHandler } from "@vendors/clean";
 import { type ArticleId } from "@business/domains/entities/article";
 import { postRepository } from "../repositories/post";
 
-interface GetPostsFromArticleInput {
+interface Input {
 	articleId: ArticleId;
 }
 
@@ -13,6 +13,6 @@ export const getPostsFromArticleUsecase = createUsecaseHandler(
 	},
 	async(
 		{ postRepository },
-		{ articleId }: GetPostsFromArticleInput,
+		{ articleId }: Input,
 	) => postRepository.findByArticleId(articleId),
 );

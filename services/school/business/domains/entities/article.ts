@@ -9,6 +9,7 @@ export type ArticleTitle = GetValueObject<typeof articleTitleObjecter>;
 export type ArticleContent = GetValueObject<typeof articleContentObjecter>;
 
 export class ArticleEntity extends EntityHandler.create({
+	articleId: articleIdObjecter,
 	title: articleTitleObjecter,
 	content: articleContentObjecter,
 }) {

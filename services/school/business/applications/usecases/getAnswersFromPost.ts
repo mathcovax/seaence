@@ -2,7 +2,7 @@ import { createUsecaseHandler } from "@vendors/clean";
 import { answerRepository } from "../repositories/answer";
 import { type PostId } from "@business/domains/entities/post";
 
-interface GetAnswersFromPostInput {
+interface Input {
 	postId: PostId;
 }
 
@@ -13,6 +13,6 @@ export const getAnswersFromPostUsecase = createUsecaseHandler(
 	},
 	async(
 		{ answerRepository },
-		{ postId }: GetAnswersFromPostInput,
+		{ postId }: Input,
 	) => answerRepository.findByPostId(postId),
 );

@@ -1,14 +1,12 @@
 import { createUsecaseHandler } from "@vendors/clean";
 import { postRepository } from "../repositories/post";
-import { PostEntity, type PostContent, type PostTopic } from "@business/domains/entities/post";
+import { type PostCreator, PostEntity, type PostContent, type PostTopic } from "@business/domains/entities/post";
 import { type ArticleId } from "@business/domains/entities/article";
-import { type UserId } from "@business/domains/entities/user";
-
-interface CreatePostInput {
+interface Input {
 	topic: PostTopic;
 	content: PostContent;
 	articleId: ArticleId;
-	creatorId: UserId;
+	creator: PostCreator;
 }
 
 export const createPostUsecase = createUsecaseHandler(
@@ -18,13 +16,14 @@ export const createPostUsecase = createUsecaseHandler(
 	},
 	async(
 		{ postRepository },
-		{ topic, content, articleId, creatorId }: CreatePostInput,
+		{ topic, content, articleId, creator }: Input,
 	) => {
 		const post = PostEntity.create({
+			postId: await postRepository.generateId(),
 			topic,
 			content,
 			articleId,
-			creatorId,
+			creator,
 		});
 
 		return postRepository.save(post);
