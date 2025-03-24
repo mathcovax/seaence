@@ -8,6 +8,10 @@ export { }
 /* prettier-ignore */
 declare module 'vue' {
 	export interface GlobalComponents {
+		DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/DSAccordion.vue')['default']
+		DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
+		DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
+		DSAccordionTrigger: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionTrigger.vue')['default']
 		DSButton: typeof import('./vendors/design-system/components/ui/button/DSButton.vue')['default']
 		DSButtonOutline: typeof import('./vendors/design-system/components/DSButtonOutline.vue')['default']
 		DSButtonPrimary: typeof import('./vendors/design-system/components/DSButtonPrimary.vue')['default']
