@@ -1,13 +1,15 @@
 import { toJSON, type ToJSON } from "./utils";
-import { type ValueObject, ValueObjectError, type ValueObjecter } from "./valueObject";
+import { NullableValueObjecter, type ValueObject, ValueObjectError, type ValueObjecter } from "./valueObject";
 import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction } from "@duplojs/utils";
 
-export type EntityPropertiesDefinition = Record<string, ValueObjecter>;
+export type EntityPropertiesDefinition = Record<string, ValueObjecter | NullableValueObjecter>;
 
 export type EntityPropertiesDefinitionToEntityProperties<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 > = {
-	[Prop in keyof GenericPropertiesDefinition]: ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>
+	[Prop in keyof GenericPropertiesDefinition]: GenericPropertiesDefinition[Prop] extends NullableValueObjecter
+		? ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]> | null
+		: ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>
 };
 
 export type EntityProperties = EntityPropertiesDefinitionToEntityProperties<EntityPropertiesDefinition>;
@@ -24,7 +26,9 @@ export type EntityPropertiesToRawProperties<
 	GenericProperties extends EntityProperties,
 > = SimplifyObjectTopLevel<
 	{
-		[Prop in keyof GenericProperties]: GenericProperties[Prop]["value"]
+		[Prop in keyof GenericProperties]: null extends GenericProperties[Prop]
+			? Extract<GenericProperties[Prop], ValueObject>["value"] | null
+			: GenericProperties[Prop]["value"]
 	}
 >;
 
@@ -91,7 +95,7 @@ function entityPropertiesToRawProperties(
 	const eachableProps = props ?? Object.keys(properties);
 
 	for (const prop of eachableProps) {
-		setProperty(object, prop, (properties as Record<string, ValueObject>)[prop].value);
+		setProperty(object, prop, (properties as Record<string, ValueObject>)[prop]?.value ?? null);
 	}
 
 	return object;
@@ -203,6 +207,14 @@ export class EntityHandler {
 					}
 
 					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
+					const propertyDefinition = propertiesDefinition[key];
+
+					if (propertyDefinition instanceof NullableValueObjecter && value === null) {
+						return {
+							...pv,
+							[key]: null,
+						};
+					}
 
 					const valueObject = propertiesDefinition[key].create(value);
 
@@ -235,10 +247,13 @@ export class EntityHandler {
 			.reduce(
 				(pv, [key, value]) => {
 					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
+					const propertyDefinition = propertiesDefinition[key];
 
 					return {
 						...pv,
-						[key]: propertiesDefinition[key].throwCreate(value),
+						[key]: propertyDefinition instanceof NullableValueObjecter && value === null
+							? null
+							: propertiesDefinition[key].throwCreate(value),
 					};
 				},
 				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
@@ -257,10 +272,13 @@ export class EntityHandler {
 			.reduce(
 				(pv, [key, value]) => {
 					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
+					const propertyDefinition = propertiesDefinition[key];
 
 					return {
 						...pv,
-						[key]: propertiesDefinition[key].unsafeCreate(value),
+						[key]: propertyDefinition instanceof NullableValueObjecter && value === null
+							? null
+							: propertyDefinition.unsafeCreate(value),
 					};
 				},
 				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
@@ -281,12 +299,13 @@ export class EntityHandler {
 
 export type GetEntityProperties<
 	GenericEntityInstance extends EntityInstance<any, any>,
-
-> = {
-	[
-	Prop in keyof GenericEntityInstance as
-	GenericEntityInstance[Prop] extends ValueObject
-		? Prop
-		: never
-	]: GenericEntityInstance[Prop]
-};
+> = SimplifyObjectTopLevel<
+	{
+		[
+		Prop in keyof GenericEntityInstance as
+		ValueObject<any, any> extends GenericEntityInstance[Prop]
+			? Prop
+			: never
+		]: GenericEntityInstance[Prop]
+	}
+>;

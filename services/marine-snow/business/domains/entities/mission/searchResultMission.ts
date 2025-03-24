@@ -1,5 +1,5 @@
 import { EntityHandler, type GetValueObject, type GetEntityProperties, zod } from "@vendors/clean";
-import { MissionEntity, missionStatusObjecter } from ".";
+import { MissionEntity } from ".";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 
 export const publishDateSearchedObjecter = zod
@@ -26,7 +26,6 @@ export class SearchResultMissionEntity extends EntityHandler.create(
 		return new SearchResultMissionEntity({
 			...params,
 			name: searchResultMissionNameObjecter.unsafeCreate("searchResult"),
-			status: missionStatusObjecter.unsafeCreate("inQueue"),
 		});
 	}
 }
