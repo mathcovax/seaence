@@ -15,13 +15,13 @@ const { HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 			<div class="hidden md:block space-x-2">
 				<DSButtonOutline as-child>
 					<RouterLink :to="{ name: REGISTER_PAGE }">
-						S'inscrire
+						{{ $t("cta.register") }}
 					</RouterLink>
 				</DSButtonOutline>
 
 				<DSButtonPrimary as-child>
 					<RouterLink :to="{ name: LOGIN_PAGE }">
-						Se connecter
+						{{ $t("cta.login") }}
 					</RouterLink>
 				</DSButtonPrimary>
 			</div>
