@@ -1,0 +1,343 @@
+{
+  "mappings": {
+    "properties": {
+      "article_id": {
+        "type": "keyword",
+        "fields": {
+          "text": {
+            "type": "text"
+          }
+        }
+      },
+      "source": {
+        "type": "keyword",
+        "fields": {
+          "text": {
+            "type": "text"
+          }
+        }
+      },
+      "external_ids": {
+        "properties": {
+          "pmid": {
+            "type": "keyword"
+          },
+          "doi": {
+            "type": "keyword"
+          },
+          "pii": {
+            "type": "keyword"
+          },
+          "other_ids": {
+            "type": "nested",
+            "properties": {
+              "id": {
+                "type": "keyword"
+              },
+              "type": {
+                "type": "keyword"
+              },
+              "source": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "standard",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "abstract": {
+        "type": "text",
+        "analyzer": "standard"
+      },
+      "abstract_structured": {
+        "type": "nested",
+        "properties": {
+          "label": {
+            "type": "keyword"
+          },
+          "text": {
+            "type": "text"
+          },
+          "category": {
+            "type": "keyword"
+          }
+        }
+      },
+      "publication_types": {
+        "type": "keyword"
+      },
+      "journal": {
+        "properties": {
+          "title": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "iso_abbreviation": {
+            "type": "keyword"
+          },
+          "issn": {
+            "type": "keyword"
+          },
+          "issn_type": {
+            "type": "keyword"
+          },
+          "volume": {
+            "type": "keyword"
+          },
+          "issue": {
+            "type": "keyword"
+          }
+        }
+      },
+      "authors": {
+        "type": "nested",
+        "properties": {
+          "last_name": {
+            "type": "text"
+          },
+          "fore_name": {
+            "type": "text"
+          },
+          "initials": {
+            "type": "keyword"
+          },
+          "full_name": {
+            "type": "text"
+          },
+          "affiliations": {
+            "type": "nested",
+            "properties": {
+              "name": {
+                "type": "text"
+              },
+              "identifier": {
+                "type": "keyword"
+              },
+              "source": {
+                "type": "keyword"
+              }
+            }
+          },
+          "contact": {
+            "properties": {
+              "email": {
+                "type": "keyword"
+              },
+              "phone": {
+                "type": "keyword"
+              },
+              "site": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "publication_date": {
+        "type": "date",
+        "format": "yyyy-MM-dd||yyyy-MM||yyyy"
+      },
+      "pub_date_parts": {
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "month": {
+            "type": "integer"
+          },
+          "day": {
+            "type": "integer"
+          }
+        }
+      },
+      "keywords": {
+        "type": "nested",
+        "properties": {
+          "text": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "major_topic": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "keyword"
+          }
+        }
+      },
+      "mesh_terms": {
+        "type": "nested",
+        "properties": {
+          "descriptor": {
+            "properties": {
+              "name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "ui": {
+                "type": "keyword"
+              },
+              "major_topic": {
+                "type": "boolean"
+              }
+            }
+          },
+          "qualifiers": {
+            "type": "nested",
+            "properties": {
+              "name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "ui": {
+                "type": "keyword"
+              },
+              "major_topic": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "chemicals": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "registry_number": {
+            "type": "keyword"
+          },
+          "ui": {
+            "type": "keyword"
+          }
+        }
+      },
+      "grants": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "acronym": {
+            "type": "keyword"
+          },
+          "agency": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "country": {
+            "type": "keyword"
+          }
+        }
+      },
+      "full_text_url": {
+        "type": "keyword"
+      },
+      "language": {
+        "type": "keyword"
+      },
+      "references": {
+        "type": "nested",
+        "properties": {
+          "citation": {
+            "type": "text"
+          },
+          "article_ids": {
+            "type": "nested",
+            "properties": {
+              "id": {
+                "type": "keyword"
+              },
+              "type": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "last_index_date": {
+        "type": "date"
+      }
+    }
+  },
+  "settings": {
+    "index": {
+      "number_of_shards": 5,
+      "number_of_replicas": 1,
+      "analysis": {
+        "analyzer": {
+          "scientific_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "scientific_stopwords",
+              "scientific_synonyms"
+            ]
+          }
+        },
+        "filter": {
+          "scientific_stopwords": {
+            "type": "stop",
+            "stopwords": [
+              "and",
+              "the",
+              "of",
+              "with",
+              "in",
+              "on",
+              "at",
+              "to",
+              "a",
+              "an"
+            ]
+          },
+          "scientific_synonyms": {
+            "type": "synonym",
+            "synonyms": [
+              "cancer, neoplasm, tumor, tumour",
+              "heart attack, myocardial infarction, MI",
+              "kidney, renal",
+              "liver, hepatic"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
