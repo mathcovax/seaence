@@ -4,7 +4,8 @@ const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 
 <template>
 	<section
-		class="text-center md:text-start mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center">
+		class="text-center md:text-start mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center"
+	>
 		<div class="space-y-6">
 			<h1 class="text-4xl font-bold">
 				{{ $t("page.home.hero.title.begin") }}
@@ -20,34 +21,53 @@ const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 
 			<div class="space-x-2">
 				<DSButtonOutline as-child>
-					<RouterLink :to="{ name: REGISTER_PAGE }">{{ $t("cta.register") }}</RouterLink>
+					<RouterLink :to="{ name: REGISTER_PAGE }">
+						{{ $t("cta.register") }}
+					</RouterLink>
 				</DSButtonOutline>
+
 				<DSButtonPrimary as-child>
-					<RouterLink :to="{ name: LOGIN_PAGE }">{{ $t("cta.login") }}</RouterLink>
+					<RouterLink :to="{ name: LOGIN_PAGE }">
+						{{ $t("cta.login") }}
+					</RouterLink>
 				</DSButtonPrimary>
 			</div>
 		</div>
 
-		<img src="/images/edito/hero.png" alt="hero" class="w-full max-w-96 aspect-square" />
+		<img
+			src="/images/edito/hero.png"
+			alt="hero"
+			class="w-full max-w-96 aspect-square"
+		>
 	</section>
 
 	<section class="text-center md:text-start mb-12 space-y-6">
-		<h2 class="text-center text-4xl font-bold">{{ $t("page.home.about.title") }}</h2>
+		<h2 class="text-center text-4xl font-bold">
+			{{ $t("page.home.about.title") }}
+		</h2>
 
 		<p>{{ $t("page.home.about.content") }}</p>
 	</section>
 
 	<section class="text-center md:text-start mb-12 space-y-6">
-		<h2 class="text-center text-4xl font-bold">{{ $t("page.home.faq.title") }}</h2>
+		<h2 class="text-center text-4xl font-bold">
+			{{ $t("page.home.faq.title") }}
+		</h2>
 
-		<DSAccordion type="multiple" collapsible class="w-full max-w-3xl mx-auto">
+		<DSAccordion
+			type="multiple"
+			collapsible
+			class="w-full max-w-3xl mx-auto"
+		>
 			<DSAccordionItem value="item-1">
 				<DSAccordionTrigger>{{ $t("page.home.faq.accordion.item1.question") }}</DSAccordionTrigger>
+
 				<DSAccordionContent>{{ $t("page.home.faq.accordion.item1.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-2">
 				<DSAccordionTrigger>{{ $t("page.home.faq.accordion.item2.question") }}</DSAccordionTrigger>
+
 				<DSAccordionContent>{{ $t("page.home.faq.accordion.item2.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 		</DSAccordion>
