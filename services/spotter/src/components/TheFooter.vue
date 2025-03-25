@@ -7,13 +7,21 @@
 			<nav>
 				<ul class="flex gap-4 md:gap-8">
 					<li>
-						<RouterLink to="">Conditions d'utilisation</RouterLink>
+						<RouterLink to="">
+							Conditions d'utilisation
+						</RouterLink>
 					</li>
+
 					<li>
-						<RouterLink to="">À propos</RouterLink>
+						<RouterLink to="">
+							À propos
+						</RouterLink>
 					</li>
+
 					<li>
-						<RouterLink to="">Support</RouterLink>
+						<RouterLink to="">
+							Support
+						</RouterLink>
 					</li>
 				</ul>
 			</nav>
