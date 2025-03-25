@@ -1,5 +1,5 @@
 import { createRepositoryHandler, type RepositoryBase } from "./repository";
-import { createUsecaseHandler, isUsecaseHandler, UsecaseError } from "./usecase";
+import { isUsecase, UsecaseError, UsecaseHandler } from "./usecase";
 
 describe("usecase", () => {
 	interface Repo3 extends RepositoryBase {
@@ -21,30 +21,28 @@ describe("usecase", () => {
 		};
 		repo1.default = defaultRepo;
 
-		const myUsecase = createUsecaseHandler(
-			"myUsecase",
-			{
-				repo1,
-				repo2,
-				repo3,
-			},
-			({ repo1, repo2, repo3 }, params: string) => {
-				expect(repo1).toBe(defaultRepo);
-				expect(repo2).toBe(defaultRepo);
-				expect(repo3).toBe(defaultRepo);
+		class MyUsecase extends UsecaseHandler.create({
+			repo1,
+			repo2,
+			repo3,
+		}) {
+			public execute(arg: string) {
+				expect(this.repo1).toBe(defaultRepo);
+				expect(this.repo2).toBe(defaultRepo);
+				expect(this.repo3).toBe(defaultRepo);
 
-				return params;
-			},
-		);
+				return arg;
+			}
+		}
 
 		expect(
-			() => myUsecase.execute("test"),
-		).toThrowError("In usecase myUsecase: The repository at property \"repo2\" has not been injected and its repository Handler has no default value.");
+			() => void new MyUsecase().execute("test"),
+		).toThrowError("In usecase MyUsecase: The repository at property \"repo2\" has not been injected and its repository Handler has no default value.");
 
 		repo2.default = defaultRepo;
 
 		expect(
-			myUsecase.execute("test return", { repo3: defaultRepo }),
+			new MyUsecase({ repo3: defaultRepo }).execute("test return"),
 		).toBe("test return");
 	});
 
@@ -54,75 +52,83 @@ describe("usecase", () => {
 		};
 		repo1.default = defaultRepo;
 
-		const myDeepUsecase = createUsecaseHandler(
-			"myDeepUsecase",
-			{
-				repo3,
-			},
-			({ repo3 }, params: string) => {
-				expect(repo3).toBe(defaultRepo);
-				return params;
-			},
-		);
+		class MyDeepUsecase extends UsecaseHandler.create({
+			repo3,
+		}) {
+			public execute(arg: string) {
+				expect(this.repo3).toBe(defaultRepo);
 
-		const mySubUsecase = createUsecaseHandler(
-			"mySubUsecase",
-			{
-				repo1,
-				myDeepUsecase,
-			},
-			({ repo1, myDeepUsecase }, params: string) => {
-				expect(repo1).toBe(defaultRepo);
-				return myDeepUsecase(params);
-			},
-		);
+				return arg;
+			}
+		}
 
-		const myUsecase = createUsecaseHandler(
-			"myUsecase",
-			{
-				repo2,
-				mySubUsecase,
-			},
-			({ repo2, mySubUsecase }, params: string) => {
-				expect(repo2).toBe(defaultRepo);
-				return mySubUsecase(params);
-			},
-		);
+		class MySubUsecase extends UsecaseHandler.create({
+			repo1,
+			MyDeepUsecase,
+		}) {
+			public execute(arg: string) {
+				expect(this.repo1).toBe(defaultRepo);
+				this.MyDeepUsecase(arg);
+
+				return arg;
+			}
+		}
+
+		class MyUsecase extends UsecaseHandler.create({
+			repo2,
+			MySubUsecase,
+		}) {
+			public execute(arg: string) {
+				expect(this.repo2).toBe(defaultRepo);
+				this.MySubUsecase(arg);
+
+				return arg;
+			}
+		}
 
 		expect(
-			() => myUsecase.execute("test"),
-		).toThrowError("In usecase myUsecase: The repository at property \"repo2\" has not been injected and its repository Handler has no default value.");
+			() => new MyUsecase().execute("test"),
+		).toThrowError("In usecase MyUsecase: The repository at property \"repo2\" has not been injected and its repository Handler has no default value.");
 
 		repo2.default = defaultRepo;
 
 		expect(
-			() => myUsecase.execute("test"),
-		).toThrowError("In usecase myDeepUsecase: The repository at property \"repo3\" has not been injected and its repository Handler has no default value.");
+			() => new MyUsecase().execute("test"),
+		).toThrowError("In usecase MyDeepUsecase: The repository at property \"repo3\" has not been injected and its repository Handler has no default value.");
 
 		expect(
-			myUsecase.execute("test return", { repo3: defaultRepo }),
+			new MyUsecase({ repo3: defaultRepo }).execute("test return"),
 		).toBe("test return");
 	});
 
 	it("isUsecaseHandler", () => {
-		const myUsecase = createUsecaseHandler(
-			"myUsecase",
-			{},
-			(dependencies, params: string) => params,
-		);
+		class MyUsecase extends UsecaseHandler.create({}) {
+			public execute(arg: string) {
+				return arg;
+			}
+		}
 
-		expect(isUsecaseHandler(myUsecase)).toBe(true);
+		expect(isUsecase(MyUsecase)).toBe(true);
 	});
 
 	it("error when call dependencies whitch not exist", () => {
-		const myUsecase = createUsecaseHandler(
-			"myUsecase",
-			{},
-			({ toto }: any, params: string) => params,
-		);
+		class MyUsecase extends UsecaseHandler.create({ toto: {} as never }) {
+			public execute(arg: string) {
+				return arg;
+			}
+		}
 
-		expect(() => myUsecase.execute("test return"))
-			.toThrowError("In usecase myUsecase: The property \"toto\" was used to call a dependency that does not exist in this usecase.");
+		expect(() => new MyUsecase().execute("test return"))
+			.toThrowError("In usecase MyUsecase: The property \"toto\" was used to call a dependency that does not exist in this usecase.");
+	});
+
+	it("missing execute implementtaion", () => {
+		class MyUsecase extends UsecaseHandler.create({ }) {
+
+		}
+
+		expect(() => new MyUsecase().execute("test return"))
+			.toThrowError("In usecase MyUsecase: Missing \"execute\" method implementation.");
 	});
 
 	it("usecaseError", () => {

@@ -5,7 +5,9 @@ const repositoryBrand = Symbol("brand");
 export interface RepositoryBase<
 	GenericEntity extends EntityInstance<any, any> = EntityInstance<any, any>,
 > {
-	save(entity: GenericEntity): Promise<GenericEntity>;
+	save<
+		GenericSavedEntity extends GenericEntity,
+	>(entity: GenericSavedEntity): Promise<GenericSavedEntity>;
 }
 
 export interface RepositoryHandler<

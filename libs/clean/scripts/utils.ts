@@ -1,4 +1,5 @@
 import { type AnyFunction } from "@duplojs/utils";
+import { type UsecaseHandler } from "./usecase";
 
 export type ToJSON<
 	GenericValue extends unknown,

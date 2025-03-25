@@ -1,6 +1,6 @@
 import { toJSON, type ToJSON } from "./utils";
 import { NullableValueObjecter, type ValueObject, ValueObjectError, type ValueObjecter } from "./valueObject";
-import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction } from "@duplojs/utils";
+import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
 
 export type EntityPropertiesDefinition = Record<string, ValueObjecter | NullableValueObjecter>;
 
@@ -61,24 +61,24 @@ export interface EntityInstanceMethods<
 
 export type EntityInstance<
 	GenericProperties extends EntityProperties,
-	GenericInheritMethod extends Record<string, AnyFunction>,
+	GenericInheritProperties extends Record<string, AnyFunction>,
 > = GenericProperties
-	& GenericInheritMethod
-	& EntityInstanceMethods<GenericProperties>;
+	& EntityInstanceMethods<GenericProperties>
+	& GenericInheritProperties;
 
 export interface EntityClass<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties = EntityProperties,
-	GenericInheritMethod extends Record<string, AnyFunction> = {},
+	GenericInheritProperties extends Record<string, AnyFunction> = {},
 > {
 	new(
 		properties: GenericProperties
 	): EntityInstance<
 		GenericProperties,
-		GenericInheritMethod
+		GenericInheritProperties
 	>;
 
-	propertiesDefinition: GenericPropertiesDefinition;
+	readonly propertiesDefinition: GenericPropertiesDefinition;
 }
 
 type AnyRecord = Record<any, any>;
@@ -176,20 +176,12 @@ export class EntityHandler {
 			}
 		}
 
-		type ParentMethods = {
-			[
-			Prop in Exclude<
-				keyof InstanceType<GenericEntityParent>,
-					| keyof GenericEntityParent["propertiesDefinition"]
-					| keyof EntityInstanceMethods
-			>
-			]: InstanceType<GenericEntityParent>[Prop]
-		};
-
 		return Entity as unknown as EntityClass<
 			PropertiesDefinition,
 			Properties,
-			ParentMethods
+			true extends IsEqual<never, GenericEntityParent>
+				? {}
+				: InstanceType<GenericEntityParent>
 		>;
 	}
 
