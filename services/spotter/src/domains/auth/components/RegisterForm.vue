@@ -55,6 +55,17 @@ const { LOGIN_PAGE } = routerPageName;
 					</dsinput>
 				</div>
 
+				<div class="flex items-center space-x-2">
+					<DSCheckbox id="terms" />
+
+					<DSLabel
+						for="terms"
+						class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+					>
+						{{ $t("page.register.form.terms") }}
+					</DSLabel>
+				</div>
+
 				<DSButtonPrimary
 					type="submit"
 					class="w-full"

@@ -46,6 +46,7 @@ export const FRfr = {
 				email: "Adresse e-mail",
 				password: "Mot de passe",
 				confirmPassword: "Confirmer le mot de passe",
+				terms: "J'accepte les conditions d'utilisation",
 				orElse: "Ou inscrivez-vous avec",
 				alreadyHaveAccount: "Vous avez déjà un compte ?",
 			},
