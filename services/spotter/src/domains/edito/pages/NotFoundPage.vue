@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { HOME_PAGE } = routerPageName;
+const $pt = usePageTranslate();
 </script>
 
 <template>
@@ -13,11 +14,11 @@ const { HOME_PAGE } = routerPageName;
 		>
 
 		<h1 class="text-4xl font-bold text-center">
-			{{ $t("page.notFound.title") }}
+			{{ $pt("title") }}
 		</h1>
 
 		<p class="text-center text-muted-foreground">
-			{{ $t("page.notFound.subtitle") }}
+			{{ $pt("subtitle") }}
 		</p>
 
 		<DSButtonPrimary as-child>

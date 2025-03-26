@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { LOGIN_PAGE } = routerPageName;
+const $pt = usePageTranslate();
 </script>
 
 <template>
@@ -8,18 +9,18 @@ const { LOGIN_PAGE } = routerPageName;
 			<form class="flex flex-col gap-6">
 				<div class="text-center">
 					<h1 class="text-2xl font-bold">
-						{{ $t("page.forgotPassword.title") }}
+						{{ $pt("title") }}
 					</h1>
 
 					<p class="text-sm text-muted-foreground">
-						{{ $t("page.forgotPassword.subtitle") }}
+						{{ $pt("subtitle") }}
 					</p>
 				</div>
 
 				<div class="grid gap-6">
 					<div class="grid gap-2">
 						<DSLabel for="email">
-							{{ $t("page.forgotPassword.form.email") }}
+							{{ $pt("form.email") }}
 						</DSLabel>
 
 						<DSInput
@@ -40,7 +41,7 @@ const { LOGIN_PAGE } = routerPageName;
 			</form>
 
 			<div class="text-center text-sm mt-6">
-				{{ $t("page.forgotPassword.form.rememberPassword") }}
+				{{ $pt("form.rememberPassword") }}
 				<RouterLink
 					:to="{ name: LOGIN_PAGE }"
 					class="underline underline-offset-4"

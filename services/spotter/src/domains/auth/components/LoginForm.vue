@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { FORGOT_PASSWORD_PAGE, REGISTER_PAGE } = routerPageName;
+const $pt = usePageTranslate();
 </script>
 
 <template>
@@ -7,18 +8,18 @@ const { FORGOT_PASSWORD_PAGE, REGISTER_PAGE } = routerPageName;
 		<form class="flex flex-col gap-6">
 			<div class="flex flex-col items-center gap-2 text-center">
 				<h1 class="text-2xl font-bold">
-					{{ $t("page.login.title") }}
+					{{ $pt("title") }}
 				</h1>
 
 				<p class="text-balance text-sm text-muted-foreground">
-					{{ $t("page.login.subtitle") }}
+					{{ $pt("subtitle") }}
 				</p>
 			</div>
 
 			<div class="grid gap-6">
 				<div class="grid gap-2">
 					<DSLabel for="email">
-						{{ $t("page.login.form.email") }}
+						{{ $pt("form.email") }}
 					</DSLabel>
 
 					<DSInput
@@ -31,14 +32,14 @@ const { FORGOT_PASSWORD_PAGE, REGISTER_PAGE } = routerPageName;
 				<div class="grid gap-2">
 					<div class="flex items-center">
 						<DSLabel for="password">
-							{{ $t("page.login.form.password") }}
+							{{ $pt("form.password") }}
 						</DSLabel>
 
 						<RouterLink
 							:to="{ name: FORGOT_PASSWORD_PAGE }"
 							class="ml-auto text-sm underline-offset-4 hover:underline"
 						>
-							{{ $t("page.login.form.forgotPassword") }}
+							{{ $pt("form.forgotPassword") }}
 						</RouterLink>
 					</div>
 
@@ -60,7 +61,7 @@ const { FORGOT_PASSWORD_PAGE, REGISTER_PAGE } = routerPageName;
 
 		<div class="relative text-center text-sm">
 			<span class="relative z-10 bg-background px-2 text-muted-foreground">
-				{{ $t("page.login.form.orElse") }}
+				{{ $pt("form.orElse") }}
 			</span>
 
 			<div class="absolute inset-0 top-1/2 z-0 flex items-center border-t border-border" />
@@ -82,7 +83,7 @@ const { FORGOT_PASSWORD_PAGE, REGISTER_PAGE } = routerPageName;
 		</DSButtonOutline>
 
 		<div class="text-center text-sm">
-			{{ $t("page.login.form.noAccount") }}
+			{{ $pt("form.noAccount") }}
 			<RouterLink
 				:to="{ name: REGISTER_PAGE }"
 				class="underline underline-offset-4"
