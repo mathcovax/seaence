@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import DSButton from './ui/button/DSButton.vue';
+import DSButton from "./ui/button/DSButton.vue";
 </script>
 
 <template>
-	<DSButton variant="outline" class="text-primary">
+	<DSButton
+		variant="outline"
+		class="text-primary border-primary hover:text-primary"
+	>
 		<slot />
 	</DSButton>
 </template>
