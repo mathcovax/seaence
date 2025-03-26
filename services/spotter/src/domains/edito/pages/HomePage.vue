@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
+const $pt = usePageTranslate();
 </script>
 
 <template>
@@ -8,15 +9,15 @@ const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 	>
 		<div class="space-y-6">
 			<h1 class="text-4xl font-bold">
-				{{ $t("page.home.hero.title.begin") }}
-				<span class="text-blue-seaence">{{ $t("page.home.hero.title.spanBlue") }}</span>
-				{{ $t("page.home.hero.title.middle") }}
-				<span class="text-secondary">{{ $t("page.home.hero.title.spanRed") }}</span>
-				{{ $t("page.home.hero.title.end") }}
+				{{ $pt("hero.title.begin") }}
+				<span class="text-blue-seaence">{{ $pt("hero.title.spanBlue") }}</span>
+				{{ $pt("hero.title.middle") }}
+				<span class="text-secondary">{{ $pt("hero.title.spanRed") }}</span>
+				{{ $pt("hero.title.end") }}
 			</h1>
 
 			<p>
-				{{ $t("page.home.hero.subtitle") }}
+				{{ $pt("hero.subtitle") }}
 			</p>
 
 			<div class="space-x-2">
@@ -43,15 +44,15 @@ const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 
 	<section class="text-center md:text-start mb-12 space-y-6">
 		<h2 class="text-center text-4xl font-bold">
-			{{ $t("page.home.about.title") }}
+			{{ $pt("about.title") }}
 		</h2>
 
-		<p>{{ $t("page.home.about.content") }}</p>
+		<p>{{ $pt("about.content") }}</p>
 	</section>
 
 	<section class="text-center md:text-start mb-12 space-y-6">
 		<h2 class="text-center text-4xl font-bold">
-			{{ $t("page.home.faq.title") }}
+			{{ $pt("faq.title") }}
 		</h2>
 
 		<DSAccordion
@@ -60,15 +61,15 @@ const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 			class="w-full max-w-3xl mx-auto"
 		>
 			<DSAccordionItem value="item-1">
-				<DSAccordionTrigger>{{ $t("page.home.faq.accordion.item1.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>{{ $pt("faq.accordion.item1.question") }}</DSAccordionTrigger>
 
-				<DSAccordionContent>{{ $t("page.home.faq.accordion.item1.answer") }}</DSAccordionContent>
+				<DSAccordionContent>{{ $pt("faq.accordion.item1.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-2">
-				<DSAccordionTrigger>{{ $t("page.home.faq.accordion.item2.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>{{ $pt("faq.accordion.item2.question") }}</DSAccordionTrigger>
 
-				<DSAccordionContent>{{ $t("page.home.faq.accordion.item2.answer") }}</DSAccordionContent>
+				<DSAccordionContent>{{ $pt("faq.accordion.item2.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 		</DSAccordion>
 	</section>

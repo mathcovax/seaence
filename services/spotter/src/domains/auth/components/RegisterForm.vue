@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { LOGIN_PAGE } = routerPageName;
+const $pt = usePageTranslate();
 </script>
 
 <template>
@@ -7,18 +8,18 @@ const { LOGIN_PAGE } = routerPageName;
 		<form class="flex flex-col gap-6">
 			<div class="text-center">
 				<h1 class="text-2xl font-bold">
-					{{ $t("page.register.title") }}
+					{{ $pt("title") }}
 				</h1>
 
 				<p class="text-sm text-muted-foreground">
-					{{ $t("page.register.subtitle") }}
+					{{ $pt("subtitle") }}
 				</p>
 			</div>
 
 			<div class="grid gap-6">
 				<div class="grid gap-2">
 					<DSLabel for="email">
-						{{ $t("page.register.form.email") }}
+						{{ $pt("form.email") }}
 					</DSLabel>
 
 					<DSInput
@@ -31,7 +32,7 @@ const { LOGIN_PAGE } = routerPageName;
 
 				<div class="grid gap-2">
 					<DSLabel for="password">
-						{{ $t("page.register.form.password") }}
+						{{ $pt("form.password") }}
 					</DSLabel>
 
 					<DSInput
@@ -43,7 +44,7 @@ const { LOGIN_PAGE } = routerPageName;
 
 				<div class="grid gap-2">
 					<DSLabel for="confirm-password">
-						{{ $t("page.register.form.confirmPassword") }}
+						{{ $pt("form.confirmPassword") }}
 					</DSLabel>
 
 					<DSInput
@@ -62,7 +63,7 @@ const { LOGIN_PAGE } = routerPageName;
 						for="terms"
 						class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 					>
-						{{ $t("page.register.form.terms") }}
+						{{ $pt("form.terms") }}
 					</DSLabel>
 				</div>
 
@@ -77,7 +78,7 @@ const { LOGIN_PAGE } = routerPageName;
 
 		<div class="relative text-center text-sm">
 			<span class="relative z-10 bg-background px-2 text-muted-foreground">
-				{{ $t("page.register.form.orElse") }}
+				{{ $pt("form.orElse") }}
 			</span>
 
 			<div class="absolute inset-0 top-1/2 z-0 flex items-center border-t border-border" />
@@ -99,7 +100,7 @@ const { LOGIN_PAGE } = routerPageName;
 		</DSButtonOutline>
 
 		<div class="text-center text-sm">
-			{{ $t("page.register.form.alreadyHaveAccount") }}
+			{{ $pt("form.alreadyHaveAccount") }}
 			<RouterLink
 				:to="{ name: LOGIN_PAGE }"
 				class="underline underline-offset-4"
