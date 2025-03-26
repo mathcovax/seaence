@@ -1,28 +1,43 @@
-import { type ZodError, ZodType, type infer as zodInfer } from "zod";
+import { type ZodEffects, type ZodError, ZodType, type ZodTypeDef, type infer as zodInfer } from "zod";
+import { toJSON } from "./utils";
 
 declare module "zod" {
-	interface ZodType {
+	interface ZodType<
+		Output = any,
+		Def extends ZodTypeDef = ZodTypeDef,
+		Input = Output,
+	> {
 		createValueObjecter<
 			GenericName extends string,
-		>(name: GenericName): ValueObjecter<GenericName, this>;
+		>(name: GenericName): ValueObjecter<
+			GenericName,
+			ZodType<
+				Output
+			>,
+			[]
+		> ;
 	}
 }
 
-const valueObjectBrand = Symbol("brand");
-
 export class ValueObject<
 	GenericName extends string = string,
-	GenericType extends unknown = unknown,
+	GenericType extends unknown = any,
 > {
 	public constructor(
 		public readonly _name: GenericName,
 		public readonly value: GenericType,
 	) {}
 
-	public readonly [valueObjectBrand] = true;
-}
+	public toJSON() {
+		return toJSON<
+			GenericType extends infer R ? R : never
+		>(this.value as never);
+	}
 
-const valueObjectErrorBrand = Symbol("brand");
+	public toSimpleObject() {
+		return this.value;
+	}
+}
 
 export class ValueObjectError<
 	GenericName extends string = string,
@@ -33,22 +48,19 @@ export class ValueObjectError<
 	) {
 		super(zodError.message);
 	}
-
-	public readonly [valueObjectErrorBrand] = true;
 }
 
-const valueObjecterBrand = Symbol("brand");
+export type ValueObjecterAttribute = "nullable" | "array";
 
 export class ValueObjecter<
 	GenericName extends string = string,
 	GenericZodSchema extends ZodType = ZodType,
+	GenericAttribute extends ValueObjecterAttribute[] = ValueObjecterAttribute[],
 > {
-	public readonly [valueObjecterBrand] = true;
-
 	public constructor(
 		public readonly name: GenericName,
 		public readonly zodSchema: GenericZodSchema,
-
+		public readonly attributes: GenericAttribute,
 	) {}
 
 	public create(rawData: zodInfer<GenericZodSchema>):
@@ -88,48 +100,42 @@ export class ValueObjecter<
 		return new ValueObject(this.name, rawData);
 	}
 
-	public toZodSchema():
-		| ZodType<
-			ValueObject<
-				GenericName,
-				zodInfer<GenericZodSchema>
-			>
-		> {
+	public toZodSchema() {
 		return this.zodSchema
 			.transform(
-				(value) => new ValueObject(
+				(value) => new ValueObject<
+					GenericName,
+					zodInfer<GenericZodSchema>
+				>(
 					this.name,
-					value,
+					value as never,
 				),
 			);
 	}
 
-	public nullable(): NullableValueObjecter<
-		GenericName,
-		GenericZodSchema
-	> {
-		return new NullableValueObjecter(this.name, this.zodSchema);
+	public nullable() {
+		return new ValueObjecter(
+			this.name,
+			this.zodSchema,
+			["nullable", ...this.attributes] as const,
+		);
 	}
-}
 
-const nullableValueObjecterBrand = Symbol("brand");
-
-export class NullableValueObjecter<
-	GenericName extends string = string,
-	GenericZodSchema extends ZodType = ZodType,
-> extends ValueObjecter<
-		GenericName,
-		GenericZodSchema
-	> {
-	public readonly [nullableValueObjecterBrand] = true;
+	public array() {
+		return new ValueObjecter(
+			this.name,
+			this.zodSchema,
+			["array", ...this.attributes] as const,
+		);
+	}
 }
 
 export type GetValueObject<
 	GenericValueObjecter extends ValueObjecter,
-> = ReturnType<GenericValueObjecter["unsafeCreate"]>;
+> = | ReturnType<GenericValueObjecter["unsafeCreate"]>;
 
 ZodType.prototype.createValueObjecter = function<
 	GenericName extends string,
 >(name: GenericName) {
-	return new ValueObjecter(name, this);
+	return new ValueObjecter(name, this, []);
 };

@@ -1,7 +1,7 @@
 import { z as zod } from "zod";
-import { EntityHandler, type GetEntityProperties } from "./entity";
+import { AttributeError, applyAttributes, EntityHandler, type GetEntityProperties } from "./entity";
 import { type ExpectType } from "@duplojs/utils";
-import { type GetValueObject, ValueObjectError, type ValueObject } from "./valueObject";
+import { ValueObjectError, type ValueObject } from "./valueObject";
 
 describe("entity", () => {
 	const firstNameType = zod
@@ -781,5 +781,87 @@ describe("entity", () => {
 				},
 			);
 		});
+	});
+
+	it("applyAttributes", () => {
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				"test",
+				[],
+			),
+		)
+			.toEqual(firstNameType.create("test"));
+
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				"test",
+				["nullable"],
+			),
+		)
+			.toEqual(firstNameType.create("test"));
+
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				null,
+				["nullable"],
+			),
+		)
+			.toEqual(null);
+
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				["test"],
+				["array"],
+			),
+		)
+			.toEqual([firstNameType.create("test")]);
+
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				null,
+				["nullable", "array"],
+			),
+		)
+			.toEqual(null);
+
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				null,
+				["nullable", "array"],
+			),
+		)
+			.toEqual(null);
+
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				[],
+				["nullable", "array"],
+			),
+		)
+			.toEqual([]);
+
+		expect(
+			applyAttributes(
+				(value) => firstNameType.create(value),
+				firstNameType.name,
+				"toto",
+				["array"],
+			),
+		)
+			.toEqual(new AttributeError("firstName", "array"));
 	});
 });

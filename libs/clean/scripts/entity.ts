@@ -1,15 +1,31 @@
 import { toJSON, type ToJSON } from "./utils";
-import { NullableValueObjecter, type ValueObject, ValueObjectError, type ValueObjecter } from "./valueObject";
+import { type ValueObject, type ValueObjectError, type ValueObjecter, type ValueObjecterAttribute } from "./valueObject";
 import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
 
-export type EntityPropertiesDefinition = Record<string, ValueObjecter | NullableValueObjecter>;
+export type ApplyValueObjecterAttribute<
+	GenericValue extends unknown,
+	GenericValueObjecterAttribute extends unknown[],
+> = GenericValueObjecterAttribute extends [infer InferedLast, ...unknown[]]
+	? InferedLast extends "array"
+		? GenericValueObjecterAttribute extends [unknown, ...infer InferedRest]
+			? ApplyValueObjecterAttribute<GenericValue[], InferedRest>
+			: never
+		: InferedLast extends "nullable"
+			? GenericValueObjecterAttribute extends [unknown, ...infer InferedRest]
+				? ApplyValueObjecterAttribute<null | GenericValue, InferedRest>
+				: never
+			: never
+	: GenericValue;
+
+export type EntityPropertiesDefinition = Record<string, ValueObjecter>;
 
 export type EntityPropertiesDefinitionToEntityProperties<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 > = {
-	[Prop in keyof GenericPropertiesDefinition]: GenericPropertiesDefinition[Prop] extends NullableValueObjecter
-		? ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]> | null
-		: ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>
+	[Prop in keyof GenericPropertiesDefinition]: ApplyValueObjecterAttribute<
+		ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>,
+		GenericPropertiesDefinition[Prop]["attributes"]
+	>
 };
 
 export type EntityProperties = EntityPropertiesDefinitionToEntityProperties<EntityPropertiesDefinition>;
@@ -17,32 +33,32 @@ export type EntityProperties = EntityPropertiesDefinitionToEntityProperties<Enti
 export type EntityPropertiesDefinitionToRawProperties<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 > = EntityPropertiesToRawProperties<
-	EntityPropertiesDefinitionToEntityProperties<
-		GenericPropertiesDefinition
-	>
+	GenericPropertiesDefinition
 >;
 
 export type EntityPropertiesToRawProperties<
-	GenericProperties extends EntityProperties,
+	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 > = SimplifyObjectTopLevel<
 	{
-		[Prop in keyof GenericProperties]: null extends GenericProperties[Prop]
-			? Extract<GenericProperties[Prop], ValueObject>["value"] | null
-			: GenericProperties[Prop]["value"]
+		[Prop in keyof GenericPropertiesDefinition]: ApplyValueObjecterAttribute<
+			ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>["value"],
+			GenericPropertiesDefinition[Prop]["attributes"]
+		>
 	}
 >;
 
 export type EntityUpdatedValues<
-	GenericProperties extends EntityProperties= EntityProperties,
+	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
 > = Partial<
 	EntityPropertiesToRawProperties<
-		GenericProperties
+		GenericPropertiesDefinition
 	>
 >;
 
 const updatedValuesKey = Symbol("updatedValues");
 
 export interface EntityInstanceMethods<
+	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties = EntityProperties,
 > {
 	update(
@@ -51,19 +67,23 @@ export interface EntityInstanceMethods<
 		>
 	): this;
 	toJSON(): ToJSON<
-		EntityPropertiesToRawProperties<GenericProperties>
+		SimplifyObjectTopLevel<this>
 	>;
 	toSimpleObject(): SimplifyObjectTopLevel<
-		EntityPropertiesToRawProperties<GenericProperties>
+		EntityPropertiesToRawProperties<GenericPropertiesDefinition>
 	>;
-	getUpdatedValues(): EntityUpdatedValues<GenericProperties>;
+	getUpdatedValues(): EntityUpdatedValues<GenericPropertiesDefinition>;
 }
 
 export type EntityInstance<
+	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties,
 	GenericInheritProperties extends Record<string, AnyFunction>,
 > = GenericProperties
-	& EntityInstanceMethods<GenericProperties>
+	& EntityInstanceMethods<
+		GenericPropertiesDefinition,
+		GenericProperties
+	>
 	& GenericInheritProperties;
 
 export interface EntityClass<
@@ -74,11 +94,23 @@ export interface EntityClass<
 	new(
 		properties: GenericProperties
 	): EntityInstance<
+		GenericPropertiesDefinition,
 		GenericProperties,
 		GenericInheritProperties
 	>;
 
 	readonly propertiesDefinition: GenericPropertiesDefinition;
+}
+
+export class AttributeError<
+	GenericName extends string = string,
+> extends Error {
+	public constructor(
+		public readonly valueObjectName: GenericName,
+		public readonly attribute: ValueObjecterAttribute,
+	) {
+		super(`${attribute} attribute Error on ${valueObjectName} value object.`);
+	}
 }
 
 type AnyRecord = Record<any, any>;
@@ -99,6 +131,60 @@ function entityPropertiesToRawProperties(
 	}
 
 	return object;
+}
+
+type MybePromise<
+	GenericValue extends unknown,
+> = GenericValue | GenericValue[];
+
+export function applyAttributes(
+	getValue: (rawValue: any) => ValueObject | ValueObjectError,
+	valueObjecterName: string,
+	rawValue: any,
+	attributes: ValueObjecterAttribute[],
+): MybePromise<
+	| ValueObject
+	| AttributeError
+	| ValueObjectError
+	| null
+	> {
+	const [currentAttribute, ...restAttributes] = attributes;
+
+	if (currentAttribute === undefined) {
+		return getValue(rawValue);
+	} else if (currentAttribute === "nullable") {
+		return rawValue === null
+			? null
+			: applyAttributes(
+				getValue,
+				valueObjecterName,
+				rawValue,
+				restAttributes,
+			);
+	} else if (currentAttribute === "array") {
+		if (!Array.isArray(rawValue)) {
+			return new AttributeError(
+				valueObjecterName,
+				currentAttribute,
+			);
+		}
+
+		const results = rawValue.map(
+			(mappedRawValue) => applyAttributes(
+				getValue,
+				valueObjecterName,
+				mappedRawValue,
+				restAttributes,
+			),
+		);
+
+		return results.find((result) => result instanceof Error) ?? results as never;
+	} else {
+		return new AttributeError(
+			valueObjecterName,
+			currentAttribute,
+		);
+	}
 }
 
 export class EntityHandler {
@@ -161,7 +247,7 @@ export class EntityHandler {
 			}
 
 			public toJSON() {
-				return toJSON(this.toSimpleObject());
+				return toJSON({ ...this });
 			}
 
 			public toSimpleObject() {
@@ -190,39 +276,36 @@ export class EntityHandler {
 	>(
 		Entity: GenericEntity,
 		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
-	): InstanceType<GenericEntity> | ValueObjectError {
-		const properties = Object.entries(rawProperties)
+	): InstanceType<GenericEntity> | ValueObjectError | AttributeError {
+		const properties = Object.entries(Entity.propertiesDefinition as EntityPropertiesDefinition)
 			.reduce(
-				(pv, [key, value]) => {
-					if (pv instanceof ValueObjectError) {
+				(pv, [key, propertyDefinition]) => {
+					if (pv instanceof Error) {
 						return pv;
 					}
 
-					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
-					const propertyDefinition = propertiesDefinition[key];
+					const value = rawProperties[key];
 
-					if (propertyDefinition instanceof NullableValueObjecter && value === null) {
-						return {
-							...pv,
-							[key]: null,
-						};
-					}
+					const result = applyAttributes(
+						(value) => propertyDefinition.create(value),
+						propertyDefinition.name,
+						value,
+						propertyDefinition.attributes,
+					);
 
-					const valueObject = propertiesDefinition[key].create(value);
-
-					if (valueObject instanceof ValueObjectError) {
-						return valueObject;
+					if (result instanceof Error) {
+						return result;
 					}
 
 					return {
 						...pv,
-						[key]: valueObject,
+						[key]: result,
 					};
 				},
-				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]> | ValueObjectError,
+				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]> | ValueObjectError | AttributeError,
 			);
 
-		if (properties instanceof ValueObjectError) {
+		if (properties instanceof Error) {
 			return properties;
 		}
 
@@ -235,23 +318,13 @@ export class EntityHandler {
 		Entity: GenericEntity,
 		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
 	): InstanceType<GenericEntity> {
-		const properties = Object.entries(rawProperties)
-			.reduce(
-				(pv, [key, value]) => {
-					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
-					const propertyDefinition = propertiesDefinition[key];
+		const result = this.mapper(Entity, rawProperties);
 
-					return {
-						...pv,
-						[key]: propertyDefinition instanceof NullableValueObjecter && value === null
-							? null
-							: propertiesDefinition[key].throwCreate(value),
-					};
-				},
-				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
-			);
+		if (result instanceof Error) {
+			throw result;
+		}
 
-		return new Entity(properties);
+		return result;
 	}
 
 	public static unsafeMapper<
@@ -260,20 +333,32 @@ export class EntityHandler {
 		Entity: GenericEntity,
 		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
 	): InstanceType<GenericEntity> {
-		const properties = Object.entries(rawProperties)
+		const properties = Object.entries(Entity.propertiesDefinition as EntityPropertiesDefinition)
 			.reduce(
-				(pv, [key, value]) => {
-					const propertiesDefinition: EntityPropertiesDefinition = Entity.propertiesDefinition;
-					const propertyDefinition = propertiesDefinition[key];
+				(pv, [key, propertyDefinition]) => {
+					if (pv instanceof Error) {
+						return pv;
+					}
+
+					const value = rawProperties[key];
+
+					const result = applyAttributes(
+						(value) => propertyDefinition.unsafeCreate(value),
+						propertyDefinition.name,
+						value,
+						propertyDefinition.attributes,
+					);
+
+					if (result instanceof Error) {
+						return result;
+					}
 
 					return {
 						...pv,
-						[key]: propertyDefinition instanceof NullableValueObjecter && value === null
-							? null
-							: propertyDefinition.unsafeCreate(value),
+						[key]: result,
 					};
 				},
-				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
+				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]> | ValueObjectError | AttributeError,
 			);
 
 		return new Entity(properties);
@@ -283,14 +368,14 @@ export class EntityHandler {
 		GenericEntity extends EntityClass<any, any>,
 	>(
 		Entity: GenericEntity,
-		entity: EntityInstance<any, any>,
+		entity: EntityInstance<any, any, any>,
 	): entity is GenericEntity {
 		return entity instanceof Entity;
 	}
 }
 
 export type GetEntityProperties<
-	GenericEntityInstance extends EntityInstance<any, any>,
+	GenericEntityInstance extends EntityInstance<any, any, any>,
 > = SimplifyObjectTopLevel<
 	{
 		[

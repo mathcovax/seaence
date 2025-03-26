@@ -1,17 +1,34 @@
 import { type AnyFunction } from "@duplojs/utils";
-import { type UsecaseHandler } from "./usecase";
 
 export type ToJSON<
 	GenericValue extends unknown,
 > = GenericValue extends number | string | null | undefined
 	? GenericValue
-	: GenericValue extends Record<number, unknown>
-		? {
-			[Prop in keyof GenericValue]: ToJSON<GenericValue[Prop]>
-		}
-		: GenericValue extends ({ toJSON(...args: any[]): any })
-			? ReturnType<GenericValue["toJSON"]>
-			: undefined;
+	: GenericValue extends [infer InferedFirst, ...infer InferedRest]
+		? [
+			ToJSON<InferedFirst>,
+			...(
+				ToJSON<InferedRest> extends [
+					infer InferedSubFirst,
+					...infer InferedSubRest,
+				]
+					? [InferedSubFirst, ...InferedSubRest]
+					: []
+			),
+		]
+		: GenericValue extends any[]
+			? ToJSON<GenericValue[number]>[]
+			: GenericValue extends Record<number, unknown>
+				? {
+					[
+					Prop in keyof GenericValue as GenericValue[Prop] extends AnyFunction
+						? never
+						: Prop
+					]: ToJSON<GenericValue[Prop]>
+				}
+				: GenericValue extends ({ toJSON(...args: any[]): any })
+					? ReturnType<GenericValue["toJSON"]>
+					: undefined;
 
 export function toJSON<
 	GenericValue extends unknown,
@@ -40,6 +57,11 @@ export function toJSON<
 			}),
 			{},
 		) as never;
+	} else if (
+		value instanceof Array
+		&& value.constructor.name === "Array"
+	) {
+		return value.map(toJSON) as never;
 	} else {
 		return (
 			typeof value === "object"

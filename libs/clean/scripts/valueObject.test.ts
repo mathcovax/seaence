@@ -1,5 +1,5 @@
 import { z as zod } from "zod";
-import { ValueObject, ValueObjectError } from "./valueObject";
+import { ValueObject, ValueObjecter, ValueObjectError } from "./valueObject";
 
 describe("valueObject", () => {
 	const firstName = zod
@@ -31,5 +31,23 @@ describe("valueObject", () => {
 		expect(
 			firstName.unsafeCreate("test1111"),
 		).toMatchObject(new ValueObject("firstName", "test1111"));
+	});
+
+	it("nullable objecter", () => {
+		expect(
+			firstName.nullable(),
+		).toMatchObject(new ValueObjecter("firstName", firstName.zodSchema, ["nullable"]));
+	});
+
+	it("array objecter", () => {
+		expect(
+			firstName.array(),
+		).toMatchObject(new ValueObjecter("firstName", firstName.zodSchema, ["array"]));
+	});
+
+	it("conbine objecter", () => {
+		expect(
+			firstName.array().nullable(),
+		).toMatchObject(new ValueObjecter("firstName", firstName.zodSchema, ["nullable", "array"]));
 	});
 });
