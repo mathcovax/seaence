@@ -9,6 +9,13 @@ const { HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 				<img
 					src="/images/logos/logo-text.svg"
 					alt="Spotter"
+					class="hidden md:block"
+				>
+
+				<img
+					src="/images/logos/logo.svg"
+					alt="Spotter"
+					class="md:hidden"
 				>
 			</RouterLink>
 
@@ -25,6 +32,8 @@ const { HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 					</RouterLink>
 				</DSButtonPrimary>
 			</div>
+
+			<MobileSidebar />
 		</div>
 	</header>
 </template>
