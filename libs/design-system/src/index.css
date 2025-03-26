@@ -83,6 +83,8 @@
 	--color-blue-seaence: var(--blue-seaence);
 
 	/* Animations */
+
+	/* Accordion */
 	@keyframes accordion-down {
 		from { height: 0 }
 		to { height: var(--reka-accordion-content-height) }
