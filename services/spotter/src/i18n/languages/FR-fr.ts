@@ -1,6 +1,6 @@
 export const FRfr = {
 	page: {
-		home: {
+		[routerPageName.HOME_PAGE]: {
 			hero: {
 				title: {
 					begin: "L’exploration de",
@@ -26,20 +26,24 @@ export const FRfr = {
 				accordion: {
 					item1: {
 						question: "Comment puis-je m'inscrire ?",
-						answer: "Pour vous inscrire, vous devez cliquer sur le bouton \"S'inscrire\" en haut à droite de la page d'accueil.",
+						answer:
+							"Pour vous inscrire, vous devez cliquer sur le bouton \"S'inscrire\" "
+							+ "en haut à droite de la page d'accueil.",
 					},
 					item2: {
 						question: "Comment puis-je me connecter ?",
-						answer: "Pour vous connecter, vous devez cliquer sur le bouton \"Se connecter\" en haut à droite de la page d'accueil.",
+						answer:
+							"Pour vous connecter, vous devez cliquer sur le bouton \"Se connecter\" "
+							+ "en haut à droite de la page d'accueil.",
 					},
 				},
 			},
 		},
-		notFound: {
+		[routerPageName.NOT_FOUND_PAGE]: {
 			title: "404 - Page non trouvée",
 			subtitle: "Désolé, la page que vous recherchez n'existe pas.",
 		},
-		register: {
+		[routerPageName.REGISTER_PAGE]: {
 			title: "Inscription",
 			subtitle: "Créez un compte",
 			form: {
@@ -51,7 +55,7 @@ export const FRfr = {
 				alreadyHaveAccount: "Vous avez déjà un compte ?",
 			},
 		},
-		login: {
+		[routerPageName.LOGIN_PAGE]: {
 			title: "Connexion",
 			subtitle: "Connectez-vous à votre compte",
 			form: {
@@ -62,7 +66,7 @@ export const FRfr = {
 				noAccount: "Vous n'avez pas de compte ?",
 			},
 		},
-		forgotPassword: {
+		[routerPageName.FORGOT_PASSWORD_PAGE]: {
 			title: "Mot de passe oublié",
 			subtitle: "Réinitialisez votre mot de passe",
 			form: {
