@@ -1,25 +1,83 @@
 {
-    "vue-template": {
-        "prefix": "vuet",
-        "scope": "vue",
-        "body": [
-            "<script setup lang=\"ts\">",
-            "$1",
-            "</script>",
-            "",
-            "<template>",
-            "   <div></div>",
-            "</template>"
-        ],
-        "description": "vue template"
-    },
-    "duplo-route": {
-        "prefix": "route",
-        "scope": "typescript",
-        "body": [
-            "useBuilder()",
-            "   .createRoute($1, $2)",
-            "   .handler((pickup) => {$3});"
-        ]
-    },
+	"vue-template": {
+		"prefix": "vuet",
+		"scope": "vue",
+		"body": [
+			"<script setup lang=\"ts\">",
+			"$1",
+			"</script>",
+			"",
+			"<template>",
+			"   <div></div>",
+			"</template>"
+		],
+		"description": "vue template"
+	},
+	"duplo-route": {
+		"prefix": "route",
+		"scope": "typescript",
+		"body": [
+			"useBuilder()",
+			"   .createRoute($1, $2)",
+			"   .handler((pickup) => {$3});"
+		]
+	},
+	"clean-usecase": {
+		"prefix": "cuc",
+		"scope": "typescript",
+		"body": [
+			"import { createUsecaseHandler } from \"@vendors/clean\";",
+			"",
+			"interface Input {",
+			"",
+			"}",
+			"",
+			"export const $1Usecase = createUsecaseHandler(",
+			"\t\"$1\",",
+			"\t{",
+			"",
+			"\t},",
+			"\t({}, {}: Input) => {",
+			"\t\t$2",
+			"\t}",
+			");",
+			"",
+		]
+	},
+	"clean-entity": {
+		"prefix": "ce",
+		"scope": "typescript",
+		"body": [
+			"import { EntityHandler, type GetValueObject, type GetEntityProperties } from \"@vendors/clean\"",
+			"",
+			"export const $1IdObjecter = zod",
+			"\t.string()",
+			"\t.createValueObjecter(\"$1Id\");",
+			"",
+			"export type $2Id = GetValueObject<typeof $1IdObjecter>;",
+			"",
+			"export class $2Entity extends EntityHandler.create({",
+			"\t$1Id: $1IdObjecter,",
+			"}) {",
+			"\tpublic static create(params: GetEntityProperties<$2Entity>) {",
+			"\t\treturn new $2Entity(params);",
+			"\t}",
+			"}",
+		]
+	},
+	"clean-repository": {
+		"prefix": "cr",
+		"scope": "typescript",
+		"body": [
+			"import { createRepositoryHandler, type RepositoryBase } from \"@vendors/clean\";",
+			"",
+			"export interface $1Repository extends RepositoryBase<$3> {",
+			"",
+			"}",
+			"",
+			"export const $2Repository = createRepositoryHandler<",
+			"\t$1Repository",
+			">();",
+		]
+	},
 }

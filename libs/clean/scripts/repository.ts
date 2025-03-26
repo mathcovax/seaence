@@ -3,9 +3,11 @@ import { type EntityInstance } from "./entity";
 const repositoryBrand = Symbol("brand");
 
 export interface RepositoryBase<
-	GenericEntity extends EntityInstance<any, any> = EntityInstance<any, any>,
+	GenericEntity extends EntityInstance<any, any, any> = EntityInstance<any, any, any>,
 > {
-	save(entity: GenericEntity): Promise<GenericEntity>;
+	save<
+		GenericSavedEntity extends GenericEntity,
+	>(entity: GenericSavedEntity): Promise<GenericSavedEntity>;
 }
 
 export interface RepositoryHandler<

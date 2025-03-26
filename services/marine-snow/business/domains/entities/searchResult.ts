@@ -6,7 +6,7 @@ import { articleTypeObjecter } from "../common/articleType";
 export class SearchResultEntity extends EntityHandler.create({
 	provider: providerObjecter,
 	url: urlObjecter,
-	articleType: articleTypeObjecter,
+	articleType: articleTypeObjecter.nullable(),
 }) {
 	public static create(params: GetEntityProperties<SearchResultEntity>) {
 		return new SearchResultEntity(params);

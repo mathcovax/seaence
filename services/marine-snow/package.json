@@ -13,10 +13,12 @@
   "dependencies": {
     "@duplojs/core": "1.0.3",
     "@duplojs/node": "1.0.1",
+    "@gullerya/object-observer": "^6.1.4",
     "@prisma/client": "^6.5.0",
     "dotenv": "16.4.5",
     "dotenv-expand": "12.0.1",
-    "prisma": "^6.5.0"
+    "prisma": "^6.5.0",
+    "uuidv7": "^1.0.2"
   },
   "devDependencies": {
     "@duplojs/types-codegen": "1.0.1",

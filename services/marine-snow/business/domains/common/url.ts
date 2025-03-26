@@ -1,4 +1,4 @@
-import { type GetValueObject } from "@vendors/clean";
+import { zod, type GetValueObject } from "@vendors/clean";
 
 export const urlObjecter = zod.string().url().createValueObjecter("url");
 
