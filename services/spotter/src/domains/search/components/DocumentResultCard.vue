@@ -18,7 +18,7 @@ defineProps<{
 			<img
 				:src="document.imageUrl"
 				alt="document"
-				class="w-full h-full object-cover"
+				class="w-full h-full object-cover rounded"
 			>
 		</DSCardHeader>
 
