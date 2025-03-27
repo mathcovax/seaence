@@ -7,7 +7,7 @@ import DSButton from "./ui/button/DSButton.vue";
 	<DSButton
 		variant="outline"
 		size="icon"
-		class="shrink-0"
+		class="shrink-0 cursor-pointer"
 	>
 		<slot />
 	</DSButton>

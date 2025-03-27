@@ -5,7 +5,7 @@ import DSButton from "./ui/button/DSButton.vue";
 <template>
 	<DSButton
 		variant="outline"
-		class="text-primary border-primary hover:text-primary"
+		class="text-primary border-primary cursor-pointer hover:text-primary"
 	>
 		<slot />
 	</DSButton>
