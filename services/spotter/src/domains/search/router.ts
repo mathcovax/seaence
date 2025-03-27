@@ -11,4 +11,9 @@ export default (): RouteRecordRaw[] => [
 		path: "/search",
 		component: () => import("./pages/SearchPage.vue"),
 	},
+	{
+		name: routerPageNameSearch.SEARCH_RESULTS_PAGE,
+		path: "/search-results",
+		component: () => import("./pages/SearchResultsPage.vue"),
+	},
 ];
