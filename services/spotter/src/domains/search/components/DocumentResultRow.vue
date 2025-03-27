@@ -14,14 +14,12 @@ defineProps<{
 
 <template>
 	<div class="flex items-start gap-4 p-4 border-b border-muted">
-		<!-- Image -->
 		<img
 			:src="document.imageUrl"
 			alt="document"
-			class="w-24 h-24 object-cover rounded-md"
+			class="w-24 h-24 object-cover rounded"
 		>
 
-		<!-- Content -->
 		<div class="flex-1">
 			<h3 class="text-lg font-semibold text-primary">
 				{{ document.title }}
