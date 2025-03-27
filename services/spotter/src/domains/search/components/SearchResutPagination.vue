@@ -29,7 +29,7 @@ function update(page: number) {
 		show-edges
 		:page="currentPage"
 		@update:page="update"
-		class="flex justify-center my-8"
+		class="flex justify-center my-8 scale-75 sm:scale-100"
 	>
 		<DSPaginationList
 			v-slot="{ items }"
