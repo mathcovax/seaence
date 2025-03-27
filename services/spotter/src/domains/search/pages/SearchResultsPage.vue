@@ -18,7 +18,7 @@ const documents = Array.from({ length: 18 }, (unused, index) => ({
         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     `,
 	author: "Albert Einstein",
-	imageUrl: "https://picsum.photos/100/100",
+	imageUrl: "https://picsum.photos/300",
 }));
 const START_PAGE = 1;
 const currentPage = ref(START_PAGE);
