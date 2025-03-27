@@ -3,7 +3,7 @@ import DSButton from "./ui/button/DSButton.vue";
 </script>
 
 <template>
-	<DSButton>
+	<DSButton class="cursor-pointer">
 		<slot />
 	</DSButton>
 </template>
