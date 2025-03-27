@@ -24,7 +24,7 @@ function update(page: number) {
 	<DSPagination
 		v-slot="{ page }"
 		:items-per-page="productPerPage"
-		:total="total * 10 / productPerPage"
+		:total="total * productPerPage / productPerPage"
 		:sibling-count="1"
 		show-edges
 		:page="currentPage"

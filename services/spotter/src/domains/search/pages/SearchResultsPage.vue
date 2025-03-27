@@ -7,7 +7,7 @@ import { computed, ref } from "vue";
 
 // Mock data
 const START_INDEX = 1;
-const documents = Array.from({ length: 18 }, (unused, index) => ({
+const documents = Array.from({ length: 180 }, (unused, index) => ({
 	id: index + START_INDEX,
 	title: `Document ${index + START_INDEX}`,
 	description: `
