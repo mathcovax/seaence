@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
+const { HOME_PAGE, SEARCH_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 </script>
 
 <template>
@@ -18,6 +18,16 @@ const { HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 					class="md:hidden"
 				>
 			</RouterLink>
+
+			<nav class="hidden md:block">
+				<ul>
+					<li>
+						<RouterLink :to="{ name: SEARCH_PAGE }">
+							{{ $t("layout.base.header.nav.search") }}
+						</RouterLink>
+					</li>
+				</ul>
+			</nav>
 
 			<div class="hidden md:block space-x-2">
 				<DSButtonOutline as-child>

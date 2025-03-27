@@ -74,10 +74,23 @@ export const FRfr = {
 				rememberPassword: "Vous vous souvenez de votre mot de passe ?",
 			},
 		},
+		[routerPageName.SEARCH_PAGE]: {
+			tabs: {
+				simpleSearch: "Recherche simple",
+				advancedSearch: "Recherche avancée",
+			},
+			inputSearch: {
+				placeholder: "Recherche : Titre, Auteur, Contenu...",
+			},
+		},
 	},
 	layout: {
 		base: {
-			header: {},
+			header: {
+				nav: {
+					search: "Recherche",
+				},
+			},
 			footer: {
 				nav: {
 					conditions: "Conditions d'utilisation",
@@ -92,5 +105,6 @@ export const FRfr = {
 		register: "S'inscrire",
 		login: "Se connecter",
 		resetPassword: "Réinitialiser le mot de passe",
+		search: "Rechercher",
 	},
 };
