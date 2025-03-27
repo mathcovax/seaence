@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import main, { notFound } from "@/domains/edito/router";
+import search from "@/domains/search/router";
 import auth from "@/domains/auth/router";
 
 export const router = createRouter({
@@ -10,6 +11,7 @@ export const router = createRouter({
 			component: () => import("../layouts/BaseLayout.vue"),
 			children: [
 				...main(),
+				...search(),
 				...auth(),
 				notFound(),
 			],

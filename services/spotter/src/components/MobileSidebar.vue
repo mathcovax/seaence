@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { mdiMenu } from "@mdi/js";
 
-const { CONNECTION_PAGE } = routerPageName;
+const { SEARCH_PAGE, CONNECTION_PAGE } = routerPageName;
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { CONNECTION_PAGE } = routerPageName;
 		</DSSheetTrigger>
 
 		<DSSheetContent>
-			<DSSheetHeader>
+			<DSSheetHeader class="mb-4">
 				<img
 					src="/images/logos/logo-text.svg"
 					alt="Spotter"
@@ -24,7 +24,19 @@ const { CONNECTION_PAGE } = routerPageName;
 				>
 			</DSSheetHeader>
 
-			<div class="grid gap-4 py-4">
+			<div class="grid gap-8 py-4">
+				<nav>
+					<ul>
+						<li>
+							<DSSheetClose as-child>
+								<RouterLink :to="{ name: SEARCH_PAGE }">
+									{{ $t("layout.base.header.nav.search") }}
+								</RouterLink>
+							</DSSheetClose>
+						</li>
+					</ul>
+				</nav>
+
 				<div class="flex flex-col gap-2">
 					<DSSheetClose as-child>
 						<DSButtonPrimary as-child>
