@@ -14,7 +14,7 @@ import { mdiMenu } from "@mdi/js";
 		</DSSheetTrigger>
 
 		<DSSheetContent>
-			<DSSheetHeader>
+			<DSSheetHeader class="mb-4">
 				<img
 					src="/images/logos/logo-text.svg"
 					alt="Spotter"
@@ -22,7 +22,7 @@ import { mdiMenu } from "@mdi/js";
 				>
 			</DSSheetHeader>
 
-			<div class="grid gap-4 py-4">
+			<div class="grid gap-8 py-4">
 				<div class="flex flex-col gap-2">
 					<DSSheetClose as-child>
 						<DSButtonPrimary as-child>
