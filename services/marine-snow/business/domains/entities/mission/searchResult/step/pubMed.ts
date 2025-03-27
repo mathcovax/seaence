@@ -10,7 +10,7 @@ export class SearchResultPubMedMissionStepEntity extends EntityHandler.create(
 	},
 	SearchResultMissionStepEntity,
 ) {
-	public static create(params: GetEntityProperties<SearchResultPubMedMissionStepEntity>) {
+	public static create(params: GetEntityProperties<typeof SearchResultPubMedMissionStepEntity>) {
 		return new SearchResultPubMedMissionStepEntity(params);
 	}
 }

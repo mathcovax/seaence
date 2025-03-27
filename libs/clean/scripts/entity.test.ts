@@ -1,7 +1,21 @@
 import { z as zod } from "zod";
-import { AttributeError, applyAttributes, EntityHandler, type GetEntityProperties } from "./entity";
-import { type ExpectType } from "@duplojs/utils";
-import { ValueObjectError, type ValueObject } from "./valueObject";
+import { AttributeError, applyAttributes, EntityHandler, type EntityInstance } from "./entity";
+import { type SimplifyObjectTopLevel, type ExpectType } from "@duplojs/utils";
+import { ValueObject, ValueObjectError } from "./valueObject";
+import { ToSimpleObject } from "./utils";
+
+export type GetEntityProperties<
+	GenericEntityInstance extends EntityInstance<any, any>,
+> = SimplifyObjectTopLevel<
+	{
+		[
+		Prop in keyof GenericEntityInstance as
+		GenericEntityInstance[Prop] extends ValueObject<any, any> | null | ValueObject<any, any>[]
+			? Prop
+			: never
+		]: GenericEntityInstance[Prop]
+	}
+>;
 
 describe("entity", () => {
 	const firstNameType = zod
@@ -68,13 +82,11 @@ describe("entity", () => {
 				"strict"
 			>;
 
-			expect(user).toMatchObject(
-				{
-					firstName,
-					lastName,
-					createdAt,
-				},
-			);
+			expect(user).toMatchObject({
+				firstName,
+				lastName,
+				createdAt,
+			});
 		});
 
 		it("update entity", () => {
@@ -98,7 +110,19 @@ describe("entity", () => {
 				},
 			);
 
-			expect(updatedUser1.getUpdatedValues())
+			const updatedEntity = updatedUser1.getUpdatedValues();
+
+			type check = ExpectType<
+				typeof updatedEntity,
+				{
+					firstName?: string | undefined;
+					lastName?: string | undefined;
+					createdAt?: Date | undefined;
+				},
+				"strict"
+			>;
+
+			expect(updatedEntity)
 				.toEqual({
 					firstName: newFirstName.value,
 				});
@@ -312,14 +336,12 @@ describe("entity", () => {
 				"strict"
 			>;
 
-			expect(user).toEqual(
-				new SubUser({
-					firstName,
-					lastName,
-					createdAt,
-					pseudo,
-				}),
-			);
+			expect(user).toMatchObject({
+				firstName,
+				lastName,
+				createdAt,
+				pseudo,
+			});
 		});
 
 		it("update entity", () => {
@@ -345,7 +367,20 @@ describe("entity", () => {
 				},
 			);
 
-			expect(updatedUser1.getUpdatedValues())
+			const updatedEntity = updatedUser1.getUpdatedValues();
+
+			type check = ExpectType<
+				typeof updatedEntity,
+				{
+					pseudo?: string | undefined;
+					firstName?: string | undefined;
+					lastName?: string | undefined;
+					createdAt?: Date | undefined;
+				},
+				"strict"
+			>;
+
+			expect(updatedEntity)
 				.toEqual({
 					firstName: newFirstName.value,
 				});
@@ -525,7 +560,8 @@ describe("entity", () => {
 	describe("optional", () => {
 		const pseudoType = zod
 			.string()
-			.createValueObjecter("pseudo").nullable();
+			.createValueObjecter("pseudo")
+			.nullable();
 
 		class SubUser extends EntityHandler.create(
 			{
@@ -573,14 +609,12 @@ describe("entity", () => {
 				"strict"
 			>;
 
-			expect(user).toEqual(
-				new SubUser({
-					firstName,
-					lastName,
-					createdAt,
-					pseudo: null,
-				}),
-			);
+			expect(user).toMatchObject({
+				firstName,
+				lastName,
+				createdAt,
+				pseudo: null,
+			});
 		});
 
 		it("update entity", () => {
@@ -606,7 +640,20 @@ describe("entity", () => {
 				},
 			);
 
-			expect(updatedUser1.getUpdatedValues())
+			const updatedEntity = updatedUser1.getUpdatedValues();
+
+			type check = ExpectType<
+				typeof updatedEntity,
+				{
+					pseudo?: string | null | undefined;
+					firstName?: string | undefined;
+					lastName?: string | undefined;
+					createdAt?: Date | undefined;
+				},
+				"strict"
+			>;
+
+			expect(updatedEntity)
 				.toEqual({
 					firstName: newFirstName.value,
 				});
@@ -778,6 +825,500 @@ describe("entity", () => {
 					lastName: "lastName",
 					createdAt: date.toJSON(),
 					pseudo: null,
+				},
+			);
+		});
+	});
+
+	describe("array", () => {
+		const subNameType = zod
+			.string()
+			.min(4)
+			.createValueObjecter("subName")
+			.array();
+
+		const subName = subNameType.throwCreate("math");
+
+		class SubUser extends EntityHandler.create(
+			{
+				subName: subNameType,
+			},
+			User,
+		) {}
+
+		it("properties definition equal", () => {
+			type check = ExpectType<
+				typeof SubUser.propertiesDefinition,
+				{
+					firstName: typeof firstNameType;
+					lastName: typeof lastNameType;
+					createdAt: typeof createdAtType;
+					subName: typeof subNameType;
+				},
+				"strict"
+			>;
+
+			expect(SubUser.propertiesDefinition).toEqual({
+				firstName: firstNameType,
+				lastName: lastNameType,
+				createdAt: createdAtType,
+				subName: subNameType,
+			});
+		});
+
+		it("create entity", () => {
+			const user = new SubUser({
+				firstName,
+				lastName,
+				createdAt,
+				subName: [subName],
+			});
+
+			type check = ExpectType<
+				GetEntityProperties<typeof user>,
+				{
+					firstName: ValueObject<"firstName", string>;
+					lastName: ValueObject<"lastName", string>;
+					createdAt: ValueObject<"createdAt", Date>;
+					subName: ValueObject<"subName", string>[];
+				},
+				"strict"
+			>;
+
+			expect(user).toMatchObject({
+				firstName,
+				lastName,
+				createdAt,
+				subName: [subName],
+			});
+		});
+
+		it("update entity", () => {
+			const newSubName = subNameType.throwCreate("toto");
+
+			const user = new SubUser({
+				firstName,
+				lastName,
+				createdAt,
+				subName: [subName],
+			});
+
+			const updatedUser1 = user.update(
+				{ subName: [newSubName] },
+			);
+
+			expect(updatedUser1).toMatchObject(
+				{
+					firstName,
+					lastName,
+					createdAt,
+					subName: [newSubName],
+				},
+			);
+
+			const updatedEntity = updatedUser1.getUpdatedValues();
+
+			type check = ExpectType<
+				typeof updatedEntity,
+				{
+					subName?: string[] | undefined;
+					firstName?: string | undefined;
+					lastName?: string | undefined;
+					createdAt?: Date | undefined;
+				},
+				"strict"
+			>;
+
+			expect(updatedUser1.getUpdatedValues())
+				.toEqual({
+					subName: [newSubName.value],
+				});
+
+			const newLastName = lastNameType.throwCreate("newLastName");
+
+			const updatedUser2 = updatedUser1.update(
+				{ lastName: newLastName },
+			);
+
+			expect(updatedUser2).toMatchObject(
+				{
+					firstName,
+					lastName: newLastName,
+					createdAt,
+					subName: [newSubName],
+				},
+			);
+
+			expect(updatedUser2.getUpdatedValues())
+				.toEqual({
+					subName: [newSubName.value],
+					lastName: newLastName.value,
+				});
+		});
+
+		it("mapper entity", () => {
+			const user1 = EntityHandler.mapper(
+				SubUser,
+				{
+					firstName: "firstName",
+					lastName: "lastName",
+					createdAt: date,
+					subName: [subName.value],
+				},
+			);
+
+			expect(user1).toMatchObject(
+				{
+					firstName,
+					lastName,
+					createdAt,
+					subName: [subName],
+				},
+			);
+
+			const user2 = EntityHandler.mapper(
+				SubUser,
+				{
+					firstName: "firstName",
+					lastName: "lastName",
+					createdAt: date,
+					subName: ["tot"],
+				},
+			);
+
+			expect(user2).instanceOf(ValueObjectError);
+		});
+
+		it("throwMapper entity", () => {
+			const user = EntityHandler.throwMapper(
+				SubUser,
+				{
+					firstName: "firstName",
+					lastName: "lastName",
+					createdAt: date,
+					subName: [subName.value],
+				},
+			);
+
+			expect(user).toMatchObject(
+				{
+					firstName,
+					lastName,
+					createdAt,
+					subName: [subName],
+				},
+			);
+
+			expect(
+				() => EntityHandler.throwMapper(
+					SubUser,
+					{
+						firstName: "firstName",
+						lastName: "lastName",
+						createdAt: date,
+						subName: ["tot"],
+					},
+				),
+			).toThrowError(ValueObjectError);
+		});
+
+		it("unsafeMapper entity", () => {
+			const user = EntityHandler.unsafeMapper(
+				SubUser,
+				{
+					firstName: "firstName",
+					lastName: "lastName",
+					createdAt: date,
+					subName: ["tot"],
+				},
+			);
+
+			expect(user).toMatchObject(
+				{
+					firstName,
+					lastName,
+					createdAt,
+					subName: [subNameType.unsafeCreate("tot")],
+				},
+			);
+		});
+
+		it("toSimpleObject", () => {
+			const user = new SubUser({
+				firstName,
+				lastName,
+				createdAt,
+				subName: [subName],
+			});
+
+			const simpleUser = user.toSimpleObject();
+
+			type check = ExpectType<
+				typeof simpleUser,
+				{
+					firstName: string;
+					lastName: string;
+					createdAt: Date;
+					subName: string[];
+				},
+				"strict"
+			>;
+
+			expect(simpleUser).toEqual(
+				{
+					firstName: "firstName",
+					lastName: "lastName",
+					createdAt: date,
+					subName: [subName.value],
+				},
+			);
+		});
+
+		it("toJSON", () => {
+			const user = new SubUser({
+				firstName,
+				lastName,
+				createdAt,
+				subName: [subName],
+			});
+
+			const jsonUser = user.toJSON();
+
+			type check = ExpectType<
+				typeof jsonUser,
+				{
+					firstName: string;
+					lastName: string;
+					createdAt: string;
+					subName: string[];
+				},
+				"strict"
+			>;
+
+			expect(jsonUser).toEqual(
+				{
+					firstName: "firstName",
+					lastName: "lastName",
+					createdAt: date.toJSON(),
+					subName: [subName.value],
+				},
+			);
+		});
+	});
+
+	describe("with author entity", () => {
+		const creatorType = zod
+			.instanceof(User)
+			.createValueObjecter("creator");
+
+		const creator = creatorType.throwCreate(
+			new User({
+				firstName,
+				lastName,
+				createdAt,
+			}),
+		);
+
+		class Post extends EntityHandler.create({
+			creator: creatorType,
+		}) {}
+
+		it("properties definition equal", () => {
+			type check = ExpectType<
+				typeof Post.propertiesDefinition,
+				{
+					creator: typeof creatorType;
+				},
+				"strict"
+			>;
+
+			expect(Post.propertiesDefinition).toEqual({
+				creator: creatorType,
+			});
+		});
+
+		it("create entity", () => {
+			const post = new Post({
+				creator,
+			});
+
+			type check = ExpectType<
+				GetEntityProperties<typeof post>,
+				{
+					creator: ValueObject<"creator", User>;
+				},
+				"strict"
+			>;
+
+			expect(post).toMatchObject({
+				creator,
+			});
+		});
+
+		it("update entity", () => {
+			const user = new User({
+				firstName: firstNameType.throwCreate("math"),
+				lastName,
+				createdAt,
+			});
+
+			const newCreator = creatorType.throwCreate(user);
+
+			const post = new Post({
+				creator,
+			});
+
+			const updatedPost = post.update(
+				{ creator: newCreator },
+			);
+
+			expect(updatedPost).toMatchObject(
+				{ creator: newCreator },
+			);
+
+			const updatedFields = updatedPost.getUpdatedValues();
+
+			type check = ExpectType<
+				typeof updatedFields,
+				{
+					creator?: {
+						firstName: string;
+						lastName: string;
+						createdAt: Date;
+					} | undefined;
+				},
+				"strict"
+			>;
+
+			expect(updatedFields)
+				.toEqual({
+					creator: {
+						firstName: "math",
+						lastName: lastName.value,
+						createdAt: date,
+					},
+				});
+		});
+
+		it("mapper entity", () => {
+			const post1 = EntityHandler.mapper(
+				Post,
+				{
+					creator: creator.value,
+				},
+			);
+
+			expect(post1).toMatchObject(
+				{
+					creator,
+				},
+			);
+
+			const post2 = EntityHandler.mapper(
+				Post,
+				{
+					creator: Date as any,
+				},
+			);
+
+			expect(post2).instanceOf(ValueObjectError);
+		});
+
+		it("throwMapper entity", () => {
+			const post = EntityHandler.throwMapper(
+				Post,
+				{
+					creator: creator.value,
+				},
+			);
+
+			expect(post).toMatchObject(
+				{
+					creator,
+				},
+			);
+
+			expect(
+				() => EntityHandler.throwMapper(
+					Post,
+					{
+						creator: Date as any,
+					},
+				),
+			).toThrowError(ValueObjectError);
+		});
+
+		it("unsafeMapper entity", () => {
+			const post = EntityHandler.unsafeMapper(
+				Post,
+				{
+					creator: Date as any,
+				},
+			);
+
+			expect(post).toMatchObject(
+				{
+					creator: new ValueObject("creator", Date),
+				},
+			);
+		});
+
+		it("toSimpleObject", () => {
+			const post = new Post({
+				creator,
+			});
+
+			const simplePost = post.toSimpleObject();
+
+			type check = ExpectType<
+				typeof simplePost,
+				{
+					creator: {
+						firstName: string;
+						lastName: string;
+						createdAt: Date;
+					};
+				},
+				"strict"
+			>;
+
+			expect(simplePost).toEqual(
+				{
+					creator: {
+						firstName: "firstName",
+						lastName: "lastName",
+						createdAt: date,
+					},
+				},
+			);
+		});
+
+		it("toJSON", () => {
+			const post = new Post({
+				creator,
+			});
+
+			const jsonUser = post.toJSON();
+
+			type check = ExpectType<
+				typeof jsonUser,
+				{
+					creator: {
+						firstName: string;
+						lastName: string;
+						createdAt: string;
+					};
+				},
+				"strict"
+			>;
+
+			expect(jsonUser).toEqual(
+				{
+					creator: {
+						firstName: "firstName",
+						lastName: "lastName",
+						createdAt: date.toJSON(),
+					},
 				},
 			);
 		});

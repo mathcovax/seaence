@@ -1,5 +1,5 @@
-import { type ZodEffects, type ZodError, ZodType, type ZodTypeDef, type infer as zodInfer } from "zod";
-import { toJSON } from "./utils";
+import { type ZodError, ZodType, type ZodTypeDef, type infer as zodInfer } from "zod";
+import { toJSON, toSimpleObject } from "./utils";
 
 declare module "zod" {
 	interface ZodType<
@@ -29,13 +29,15 @@ export class ValueObject<
 	) {}
 
 	public toJSON() {
-		return toJSON<
-			GenericType extends infer R ? R : never
-		>(this.value as never);
+		return toJSON(this.value as GenericType extends infer R ? R : never);
 	}
 
 	public toSimpleObject() {
-		return this.value;
+		return toSimpleObject<
+			GenericType
+		>(
+			this.value,
+		);
 	}
 }
 

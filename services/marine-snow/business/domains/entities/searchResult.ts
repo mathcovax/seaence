@@ -8,7 +8,7 @@ export class SearchResultEntity extends EntityHandler.create({
 	url: urlObjecter,
 	articleType: articleTypeObjecter.nullable(),
 }) {
-	public static create(params: GetEntityProperties<SearchResultEntity>) {
+	public static create(params: GetEntityProperties<typeof SearchResultEntity>) {
 		return new SearchResultEntity(params);
 	}
 }

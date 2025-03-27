@@ -1,17 +1,17 @@
-import { toJSON, type ToJSON } from "./utils";
+import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject } from "./utils";
 import { type ValueObject, type ValueObjectError, type ValueObjecter, type ValueObjecterAttribute } from "./valueObject";
-import { simpleClone, type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
+import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
 
 export type ApplyValueObjecterAttribute<
 	GenericValue extends unknown,
 	GenericValueObjecterAttribute extends unknown[],
-> = GenericValueObjecterAttribute extends [infer InferedLast, ...unknown[]]
+> = GenericValueObjecterAttribute extends [...unknown[], infer InferedLast]
 	? InferedLast extends "array"
-		? GenericValueObjecterAttribute extends [unknown, ...infer InferedRest]
+		? GenericValueObjecterAttribute extends [...infer InferedRest, unknown]
 			? ApplyValueObjecterAttribute<GenericValue[], InferedRest>
 			: never
 		: InferedLast extends "nullable"
-			? GenericValueObjecterAttribute extends [unknown, ...infer InferedRest]
+			? GenericValueObjecterAttribute extends [...infer InferedRest, unknown]
 				? ApplyValueObjecterAttribute<null | GenericValue, InferedRest>
 				: never
 			: never
@@ -47,18 +47,10 @@ export type EntityPropertiesToRawProperties<
 	}
 >;
 
-export type EntityUpdatedValues<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
-> = Partial<
-	EntityPropertiesToRawProperties<
-		GenericPropertiesDefinition
-	>
->;
-
 const updatedValuesKey = Symbol("updatedValues");
 
-export interface EntityInstanceMethods<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
+export interface EntityInstanceBase<
+	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties = EntityProperties,
 > {
 	update(
@@ -67,20 +59,28 @@ export interface EntityInstanceMethods<
 		>
 	): this;
 	toJSON(): ToJSON<
-		SimplifyObjectTopLevel<this>
+		SimplifyObjectTopLevel<
+			GenericProperties
+		>
 	>;
-	toSimpleObject(): SimplifyObjectTopLevel<
-		EntityPropertiesToRawProperties<GenericPropertiesDefinition>
+	toSimpleObject(): ToSimpleObject<
+		GenericProperties
 	>;
-	getUpdatedValues(): EntityUpdatedValues<GenericPropertiesDefinition>;
+	getUpdatedValues(): ToSimpleObject<
+		Partial<
+			EntityPropertiesToRawProperties<
+				GenericPropertiesDefinition
+			>
+		>
+	>;
 }
 
 export type EntityInstance<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
-	GenericProperties extends EntityProperties,
-	GenericInheritProperties extends Record<string, AnyFunction>,
+	GenericProperties extends EntityProperties = EntityProperties,
+	GenericInheritProperties extends Record<string, unknown> = Record<string, unknown>,
 > = GenericProperties
-	& EntityInstanceMethods<
+	& EntityInstanceBase<
 		GenericPropertiesDefinition,
 		GenericProperties
 	>
@@ -119,21 +119,7 @@ function setProperty(object: any, prop: string, value: any) {
 	(object as AnyRecord)[prop] = value;
 }
 
-function entityPropertiesToRawProperties(
-	properties: object,
-	props?: string[],
-): Record<string, any> {
-	const object = {};
-	const eachableProps = props ?? Object.keys(properties);
-
-	for (const prop of eachableProps) {
-		setProperty(object, prop, (properties as Record<string, ValueObject>)[prop]?.value ?? null);
-	}
-
-	return object;
-}
-
-type MybePromise<
+type MybeArray<
 	GenericValue extends unknown,
 > = GenericValue | GenericValue[];
 
@@ -142,7 +128,7 @@ export function applyAttributes(
 	valueObjecterName: string,
 	rawValue: any,
 	attributes: ValueObjecterAttribute[],
-): MybePromise<
+): MybeArray<
 	| ValueObject
 	| AttributeError
 	| ValueObjectError
@@ -193,11 +179,8 @@ export class EntityHandler {
 		GenericEntityParent extends EntityClass<{}, any> = never,
 	>(
 		propertiesDefinition: GenericPropertiesDefinition,
-		Parent: GenericEntityParent = (class {}) as any,
+		Parent: GenericEntityParent = (EntityHandler) as any,
 	) {
-		const propertiesDefinitionKeys = Object.keys(propertiesDefinition);
-		const parentPropertiesDefinitionKeys = Object.keys(Parent?.propertiesDefinition ?? {});
-
 		type PropertiesDefinition = SimplifyObjectTopLevel<
 			UnionToIntersection<
 				| GenericPropertiesDefinition
@@ -220,13 +203,13 @@ export class EntityHandler {
 				...propertiesDefinition,
 			};
 
-			public [updatedValuesKey]: EntityUpdatedValues = {};
+			public [updatedValuesKey] = {};
 
 			public constructor(input: Properties) {
 				// eslint-disable-next-line constructor-super
-				super(input);
+				super({});
 
-				for (const prop of propertiesDefinitionKeys) {
+				for (const prop in Entity.propertiesDefinition) {
 					setProperty(this, prop, (input as AnyRecord)[prop]);
 				}
 			}
@@ -240,25 +223,40 @@ export class EntityHandler {
 
 				updatedEntity[updatedValuesKey] = {
 					...this[updatedValuesKey],
-					...entityPropertiesToRawProperties(values),
+					...values,
 				};
 
 				return updatedEntity;
 			}
 
 			public toJSON() {
-				return toJSON({ ...this });
+				return toJSON(
+					Object.keys(Entity.propertiesDefinition)
+						.reduce(
+							(pv, key) => ({
+								...pv,
+								[key]: this[key],
+							}),
+							{},
+						),
+				);
 			}
 
 			public toSimpleObject() {
-				return {
-					...entityPropertiesToRawProperties(this, propertiesDefinitionKeys),
-					...entityPropertiesToRawProperties(this, parentPropertiesDefinitionKeys),
-				};
+				return toSimpleObject(
+					Object.keys(Entity.propertiesDefinition)
+						.reduce(
+							(pv, key) => ({
+								...pv,
+								[key]: this[key],
+							}),
+							{},
+						),
+				);
 			}
 
 			public getUpdatedValues() {
-				return simpleClone(this[updatedValuesKey]);
+				return toSimpleObject(this[updatedValuesKey]);
 			}
 		}
 
@@ -368,21 +366,18 @@ export class EntityHandler {
 		GenericEntity extends EntityClass<any, any>,
 	>(
 		Entity: GenericEntity,
-		entity: EntityInstance<any, any, any>,
+		entity: EntityInstance<any, any>,
 	): entity is GenericEntity {
 		return entity instanceof Entity;
 	}
 }
 
 export type GetEntityProperties<
-	GenericEntityInstance extends EntityInstance<any, any, any>,
-> = SimplifyObjectTopLevel<
-	{
-		[
-		Prop in keyof GenericEntityInstance as
-		ValueObject<any, any> extends GenericEntityInstance[Prop]
-			? Prop
-			: never
-		]: GenericEntityInstance[Prop]
-	}
->;
+	GenericEntityInstance extends EntityClass<any, any, any>,
+> = GenericEntityInstance extends EntityClass<infer InferedEntityPropertiesDefinition, any, any>
+	? SimplifyObjectTopLevel<
+		EntityPropertiesDefinitionToEntityProperties<
+			InferedEntityPropertiesDefinition
+		>
+	>
+	: never;

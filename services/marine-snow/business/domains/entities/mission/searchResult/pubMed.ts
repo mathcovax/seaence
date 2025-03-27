@@ -12,7 +12,7 @@ export class SearchResultPubMedMissionEntity extends EntityHandler.create(
 	SearchResultMissionEntity,
 ) {
 	public static create(
-		params: Omit<GetEntityProperties<SearchResultPubMedMissionEntity>, "name" | "status">,
+		params: Omit<GetEntityProperties<typeof SearchResultPubMedMissionEntity>, "name" | "status">,
 	) {
 		return new SearchResultMissionEntity({
 			...params,

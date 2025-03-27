@@ -7,7 +7,7 @@ export const workerIdObjecter = zod
 export class WorkerEntity extends EntityHandler.create({
 	workerId: workerIdObjecter,
 }) {
-	public static create(params: GetEntityProperties<WorkerEntity>) {
+	public static create(params: GetEntityProperties<typeof WorkerEntity>) {
 		return new WorkerEntity(params);
 	}
 }
