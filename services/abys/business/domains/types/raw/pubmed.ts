@@ -1,0 +1,121 @@
+import { type GetValueObject } from "@vendors/clean";
+import { authorObjecter } from "./document";
+import { urlObjecter } from "../common";
+
+const figureObjecter = zod.object({
+	name: zod.string(),
+	url: urlObjecter.zodSchema,
+}).createValueObjecter("figure");
+type Figure = GetValueObject<typeof figureObjecter>;
+
+const commentObjecter = zod.object({
+	text: zod.string(),
+	source: zod.string().nullable(),
+}).createValueObjecter("comment");
+type Comment = GetValueObject<typeof commentObjecter>;
+
+const associatedDataObjecter = zod.object({
+	name: zod.string(),
+	urls: urlObjecter.zodSchema.array(),
+}).createValueObjecter("associatedData");
+type AssociatedData = GetValueObject<typeof associatedDataObjecter>;
+
+const relatedInformationObjecter = zod.object({
+	type: zod.enum([
+		"book",
+		"article",
+	]),
+	name: zod.string(),
+	url: urlObjecter.zodSchema,
+}).createValueObjecter("relatedInformation");
+type RelatedInformation = GetValueObject<typeof relatedInformationObjecter>;
+
+const linkOutObjecter = zod.object({
+	name: zod.string(),
+	url: urlObjecter.zodSchema,
+}).createValueObjecter("linkOut");
+type LinkOut = GetValueObject<typeof linkOutObjecter>;
+
+const substanceObjecter = zod.object({
+	name: zod.string(),
+	urls: urlObjecter.zodSchema.array(),
+}).createValueObjecter("substance");
+type Substance = GetValueObject<typeof substanceObjecter>;
+
+const meshTermObjecter = zod.object({
+	term: zod.string(),
+	urls: urlObjecter.zodSchema.array(),
+}).createValueObjecter("meshTerm");
+type MeshTerm = GetValueObject<typeof meshTermObjecter>;
+
+const chemicalObjecter = zod.object({
+	name: zod.string(),
+	registryNumber: zod.string(),
+}).createValueObjecter("chemical");
+type Chemical = GetValueObject<typeof chemicalObjecter>;
+
+const issnObjecter = zod.string().regex(/^\d{4}-\d{4}/).createValueObjecter("issn");
+type Issn = GetValueObject<typeof issnObjecter>;
+
+const journalObjecter = zod.object({
+	title: zod.string(),
+	issn: issnObjecter.zodSchema,
+	volume: zod.number(),
+	issue: zod.number(),
+}).createValueObjecter("journal");
+type Journal = GetValueObject<typeof journalObjecter>;
+
+const citedByObjecter = zod.object({
+	title: zod.string(),
+	authors: authorObjecter.zodSchema.array(),
+	journal: journalObjecter.zodSchema,
+}).createValueObjecter("citedBy");
+type CitedBy = GetValueObject<typeof citedByObjecter>;
+
+const similarArticleObjecter = zod.object({
+	title: zod.string(),
+	authors: authorObjecter.zodSchema.array(),
+	journal: journalObjecter.zodSchema,
+}).createValueObjecter("similarArticle");
+type SimilarArticle = GetValueObject<typeof similarArticleObjecter>;
+
+const referenceObjecter = zod.object({
+	title: zod.string(),
+	authors: authorObjecter.zodSchema.array(),
+	journal: journalObjecter.zodSchema,
+}).createValueObjecter("reference");
+type Reference = GetValueObject<typeof referenceObjecter>;
+
+const pubmedIdObjecter = zod.string().createValueObjecter("pubmedId");
+type PubmedId = GetValueObject<typeof pubmedIdObjecter>;
+
+export {
+	pubmedIdObjecter,
+	PubmedId,
+	figureObjecter,
+	Figure,
+	commentObjecter,
+	Comment,
+	associatedDataObjecter,
+	AssociatedData,
+	relatedInformationObjecter,
+	RelatedInformation,
+	linkOutObjecter,
+	LinkOut,
+	substanceObjecter,
+	Substance,
+	meshTermObjecter,
+	MeshTerm,
+	chemicalObjecter,
+	Chemical,
+	citedByObjecter,
+	CitedBy,
+	journalObjecter,
+	Journal,
+	similarArticleObjecter,
+	SimilarArticle,
+	referenceObjecter,
+	Reference,
+	issnObjecter,
+	Issn,
+};
