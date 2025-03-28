@@ -13,5 +13,7 @@ export const envs = zod
 		PORT: zod.coerce.number(),
 		HOST: zod.enum(["0.0.0.0"]),
 		ENVIROMENT: zod.enum(["DEV", "PROD"]),
+		MONGO_DB_URI: zod.string(),
+		MONGO_DB_NAME: zod.string(),
 	})
 	.parse(process.env);
