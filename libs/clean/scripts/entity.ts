@@ -367,7 +367,7 @@ export class EntityHandler {
 	>(
 		Entity: GenericEntity,
 		entity: EntityInstance<any, any>,
-	): entity is GenericEntity {
+	): entity is InstanceType<GenericEntity> {
 		return entity instanceof Entity;
 	}
 }
@@ -381,3 +381,11 @@ export type GetEntityProperties<
 		>
 	>
 	: never;
+
+export type EntityToSimpleObject<
+	GenericEntityInstance extends EntityClass<any, any, any>,
+> = ToSimpleObject<
+	GetEntityProperties<
+		GenericEntityInstance
+	>
+>;

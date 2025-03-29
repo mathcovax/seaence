@@ -3,9 +3,10 @@ import { type SearchResultPubMedMissionEntity } from "@business/domains/entities
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
 export type Mission =
+	| MissionEntity
 	| SearchResultPubMedMissionEntity;
 
-export interface MissionRepository extends RepositoryBase<MissionEntity> {
+export interface MissionRepository extends RepositoryBase<Mission> {
 	generateMissionId(): MissionId;
 }
 

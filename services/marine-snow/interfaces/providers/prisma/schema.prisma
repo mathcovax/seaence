@@ -21,26 +21,37 @@ enum provider {
 
 enum articleType {
     metaAnalysis
+    randomizedControlledTrial
 }
 
 model searchResult {
-    url         String      @id
-    provider    provider
-    articleType articleType
-    createdAt   DateTime    @default(now())
+    reference String
+    provider  provider
+    createdAt DateTime @default(now())
+
+    @@id([reference, provider], name: "id")
 }
 
 enum missionStatus {
-    inQueue
+    created
     inProgress
     failed
     success
 }
 
-model searchResultMission {
-    id                  String        @id
-    articleType         articleType
-    publishDateSearched DateTime
-    provider            provider
-    status              missionStatus
+model SearchResultPubMedMission {
+    id                            String                          @id
+    articleType                   articleType
+    searchDateFrom                DateTime
+    searchDateTo                  DateTime
+    provider                      provider
+    status                        missionStatus
+    SearchResultPubMedMissionStep SearchResultPubMedMissionStep[]
+}
+
+model SearchResultPubMedMissionStep {
+    mission   SearchResultPubMedMission @relation(fields: [missionId], references: [id])
+    missionId String                    @id
+    date      DateTime
+    page      Int
 }

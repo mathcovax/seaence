@@ -1,12 +1,12 @@
-import { EntityHandler, type GetEntityProperties } from "@vendors/clean";
+import { EntityHandler, zod, type GetEntityProperties } from "@vendors/clean";
 import { providerObjecter } from "../common/provider";
-import { urlObjecter } from "../common/url";
-import { articleTypeObjecter } from "../common/articleType";
 
+export const searchResultReferenceObjecter = zod
+	.string()
+	.createValueObjecter("searchResultReference");
 export class SearchResultEntity extends EntityHandler.create({
 	provider: providerObjecter,
-	url: urlObjecter,
-	articleType: articleTypeObjecter.nullable(),
+	reference: searchResultReferenceObjecter,
 }) {
 	public static create(params: GetEntityProperties<typeof SearchResultEntity>) {
 		return new SearchResultEntity(params);
