@@ -159,7 +159,7 @@ export function isUsecase(usecase: new(...args: any[]) => any): usecase is Useca
 }
 
 export class UsecaseError<
-	GenericInformation extends string,
+	GenericInformation extends string = string,
 > extends Error {
 	public constructor(
 		public information: GenericInformation,
