@@ -72,7 +72,7 @@ sienceDatabaseRepository.default = {
 
 			yield match(result)
 				.with(
-					{ type: "PubMed" },
+					{ type: "pubmed" },
 					({ step, searchResults }) => ({
 						currentStep: EntityHandler.unsafeMapper(
 							SearchResultPubMedMissionStepEntity,

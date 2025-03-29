@@ -13,7 +13,7 @@ searchResultRepository.default = {
 				},
 			},
 			create: simpleEntity,
-			update: entity.getUpdatedValues(),
+			update: simpleEntity,
 		});
 
 		return entity;

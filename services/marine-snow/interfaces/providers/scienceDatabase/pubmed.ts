@@ -2,15 +2,20 @@
 import { type ArticleType } from "@business/domains/common/articleType";
 import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
+import { retry } from "@interfaces/utils/retrying";
 import { convertXML } from "simple-xml-to-json";
+import { type PubMedRoute } from "./pubmedType";
 
 export class PubMedAPI {
 	private static config = {
 		offsetMonth: 1,
 		quantityParPage: 50,
+		maxRetry: 30,
+		httpCodeWichMakeRetry: 429,
+		timeToSleepBetweenRetry: 100,
 	};
 
-	private static httpClient: HttpClient;
+	private static httpClient: HttpClient<PubMedRoute>;
 
 	private static articleTypeMapper: Record<ArticleType["value"], string> = {
 		metaAnalysis: "meta-analysis",
@@ -29,16 +34,23 @@ export class PubMedAPI {
 		const monthDay = date.getDate();
 		const publicationDate = `${fullYear}/${month}/${monthDay}`;
 
-		return this.httpClient.get(
-			"/entrez/eutils/esearch.fcgi",
-			{
-				query: {
-					db: "pubmed",
-					term: `(${publicationDate}[Date - Publication]) AND (${filterArticleType}[Filter])`,
-					retmax: this.config.quantityParPage,
-					retstart: this.config.quantityParPage * page,
-					retmode: "json",
+		return retry(
+			() => this.httpClient.get(
+				"/entrez/eutils/esearch.fcgi",
+				{
+					query: {
+						db: "pubmed",
+						term: `(${publicationDate}[Date - Publication]) AND (${filterArticleType}[Filter])`,
+						retmax: this.config.quantityParPage.toString(),
+						retstart: (this.config.quantityParPage * page).toString(),
+						retmode: "json",
+					},
 				},
+			),
+			(response) => response.code === this.config.httpCodeWichMakeRetry,
+			{
+				maxRetry: this.config.maxRetry,
+				timeToSleep: this.config.timeToSleepBetweenRetry,
 			},
 		);
 	}

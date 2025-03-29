@@ -12,7 +12,7 @@ searchResultMissionStepRepository.default = {
 					missionId: simpleEntity.missionId,
 				},
 				create: simpleEntity,
-				update: entity.getUpdatedValues(),
+				update: simpleEntity,
 			});
 		} else {
 			throw new Error(`Unsupport search result mission step: ${entity.constructor.name}`);
