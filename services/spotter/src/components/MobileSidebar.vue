@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { mdiMenu } from "@mdi/js";
 
-const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
+const { CONNECTION_PAGE } = routerPageName;
 </script>
 
 <template>
@@ -27,17 +27,9 @@ const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 			<div class="grid gap-4 py-4">
 				<div class="flex flex-col gap-2">
 					<DSSheetClose as-child>
-						<DSButtonOutline as-child>
-							<RouterLink :to="{ name: REGISTER_PAGE }">
-								{{ $t("cta.register") }}
-							</RouterLink>
-						</DSButtonOutline>
-					</DSSheetClose>
-
-					<DSSheetClose as-child>
 						<DSButtonPrimary as-child>
-							<RouterLink :to="{ name: LOGIN_PAGE }">
-								{{ $t("cta.login") }}
+							<RouterLink :to="{ name: CONNECTION_PAGE }">
+								{{ $t("cta.connection") }}
 							</RouterLink>
 						</DSButtonPrimary>
 					</DSSheetClose>

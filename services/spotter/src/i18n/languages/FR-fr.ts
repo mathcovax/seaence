@@ -43,36 +43,9 @@ export const FRfr = {
 			title: "404 - Page non trouvée",
 			subtitle: "Désolé, la page que vous recherchez n'existe pas.",
 		},
-		[routerPageName.REGISTER_PAGE]: {
-			title: "Inscription",
-			subtitle: "Créez un compte",
-			form: {
-				email: "Adresse e-mail",
-				password: "Mot de passe",
-				confirmPassword: "Confirmer le mot de passe",
-				terms: "J'accepte les conditions d'utilisation",
-				orElse: "Ou inscrivez-vous avec",
-				alreadyHaveAccount: "Vous avez déjà un compte ?",
-			},
-		},
-		[routerPageName.LOGIN_PAGE]: {
-			title: "Connexion",
-			subtitle: "Connectez-vous à votre compte",
-			form: {
-				email: "Adresse e-mail",
-				password: "Mot de passe",
-				forgotPassword: "Mot de passe oublié ?",
-				orElse: "Ou connectez-vous avec",
-				noAccount: "Vous n'avez pas de compte ?",
-			},
-		},
-		[routerPageName.FORGOT_PASSWORD_PAGE]: {
-			title: "Mot de passe oublié",
-			subtitle: "Réinitialisez votre mot de passe",
-			form: {
-				email: "Adresse e-mail",
-				rememberPassword: "Vous vous souvenez de votre mot de passe ?",
-			},
+		[routerPageName.CONNECTION_PAGE]: {
+			title: "Inscription / Connexion",
+			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 		},
 	},
 	layout: {
@@ -89,8 +62,7 @@ export const FRfr = {
 	},
 	cta: {
 		backHome: "Retour à l'accueil",
-		register: "S'inscrire",
-		login: "Se connecter",
+		connection: "Inscription / Connexion",
 		resetPassword: "Réinitialiser le mot de passe",
 	},
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
+const { CONNECTION_PAGE } = routerPageName;
 const $pt = usePageTranslate();
 </script>
 
@@ -20,19 +20,11 @@ const $pt = usePageTranslate();
 				{{ $pt("hero.subtitle") }}
 			</p>
 
-			<div class="space-x-2">
-				<DSButtonOutline as-child>
-					<RouterLink :to="{ name: REGISTER_PAGE }">
-						{{ $t("cta.register") }}
-					</RouterLink>
-				</DSButtonOutline>
-
-				<DSButtonPrimary as-child>
-					<RouterLink :to="{ name: LOGIN_PAGE }">
-						{{ $t("cta.login") }}
-					</RouterLink>
-				</DSButtonPrimary>
-			</div>
+			<DSButtonPrimary as-child>
+				<RouterLink :to="{ name: CONNECTION_PAGE }">
+					{{ $t("cta.connection") }}
+				</RouterLink>
+			</DSButtonPrimary>
 		</div>
 
 		<img
