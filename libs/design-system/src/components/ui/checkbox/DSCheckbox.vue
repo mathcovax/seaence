@@ -14,7 +14,7 @@ const props = defineProps<CheckboxRootProps & { class?: HTMLAttributes["class"] 
 const emits = defineEmits<CheckboxRootEmits>();
 
 const delegatedProps = computed(() => {
-	const { class: _, ...delegated } = props;
+	const { class: _class, ...delegated } = props;
 
 	return delegated;
 });
