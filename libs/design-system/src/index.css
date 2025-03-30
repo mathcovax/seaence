@@ -109,8 +109,20 @@
 	--animate-accordion-up: accordion-up 0.2s ease-out;
 	--animate-collapsible-down: collapsible-down 0.2s ease-in-out;
 	--animate-collapsible-up: collapsible-up 0.2s ease-in-out;
-}
+	
+	/* Loading waves */
+	@keyframes wave {
+		from, to {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-1.25px);
+		}
+	}
 
+	--animate-wave: wave 2s ease-in-out infinite;
+
+}	
 @utility container {
 	margin-inline: auto;
 	padding-inline: 2rem;
