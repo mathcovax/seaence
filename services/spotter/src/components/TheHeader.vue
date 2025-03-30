@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
+const { HOME_PAGE, CONNECTION_PAGE } = routerPageName;
 </script>
 
 <template>
@@ -20,15 +20,9 @@ const { HOME_PAGE, REGISTER_PAGE, LOGIN_PAGE } = routerPageName;
 			</RouterLink>
 
 			<div class="hidden md:block space-x-2">
-				<DSButtonOutline as-child>
-					<RouterLink :to="{ name: REGISTER_PAGE }">
-						{{ $t("cta.register") }}
-					</RouterLink>
-				</DSButtonOutline>
-
 				<DSButtonPrimary as-child>
-					<RouterLink :to="{ name: LOGIN_PAGE }">
-						{{ $t("cta.login") }}
+					<RouterLink :to="{ name: CONNECTION_PAGE }">
+						{{ $t("cta.connection") }}
 					</RouterLink>
 				</DSButtonPrimary>
 			</div>
