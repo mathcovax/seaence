@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<PaginationNextProps & { class?: HTMLAttri
 });
 
 const delegatedProps = computed(() => {
-	const { class: _, ...delegated } = props;
+	const { class: _class, ...delegated } = props;
 
 	return delegated;
 });
