@@ -6,7 +6,7 @@ import { computed, type HTMLAttributes } from "vue";
 const props = defineProps<DialogTitleProps & { class?: HTMLAttributes["class"] }>();
 
 const delegatedProps = computed(() => {
-	const { class: _, ...delegated } = props;
+	const { class: _class, ...delegated } = props;
 
 	return delegated;
 });
