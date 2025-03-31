@@ -14,7 +14,9 @@ export interface RepositoryHandler<
 	GenericRepository extends RepositoryBase = RepositoryBase,
 > {
 	default: GenericRepository | null;
+	get use(): GenericRepository;
 	[repositoryBrand]: true;
+
 }
 
 export function createRepositoryHandler<
@@ -22,6 +24,13 @@ export function createRepositoryHandler<
 >(): RepositoryHandler<GenericRepository> {
 	return {
 		default: null,
+		get use() {
+			if (!this.default) {
+				throw new Error("Default repository value is not defined.");
+			}
+
+			return this.default;
+		},
 		[repositoryBrand]: true,
 	};
 }

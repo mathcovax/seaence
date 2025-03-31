@@ -21,7 +21,7 @@ export type SearchResultMissionOutput =
 	| "finish";
 
 function sendSearchResultMissionOutput(data: SearchResultMissionOutput) {
-	parentPort!.emit("message", data);
+	parentPort!.postMessage(data);
 }
 
 const dateAdvancement = 1;
@@ -53,6 +53,10 @@ export async function mission(mission: SupportedSearchResultMission) {
 							throw new WorkerMissionError("Unexpected response", mission, { response });
 						}
 
+						if (!response.body.esearchresult.idlist.length) {
+							break;
+						}
+
 						sendSearchResultMissionOutput({
 							type: "pubmed",
 							step: {
@@ -69,18 +73,6 @@ export async function mission(mission: SupportedSearchResultMission) {
 						});
 					}
 				}
-			},
-		)
-		.with(
-			{ provider: "pedro" },
-			() => {
-				throw new WorkerMissionError("Unsupport provider pedro", mission);
-			},
-		)
-		.with(
-			{ provider: "sciencedirect" },
-			() => {
-				throw new WorkerMissionError("Unsupport provider sciencedirect", mission);
 			},
 		)
 		.exhaustive();

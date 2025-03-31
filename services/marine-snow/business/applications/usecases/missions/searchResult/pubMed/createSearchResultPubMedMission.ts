@@ -1,14 +1,13 @@
 import { missionRepository } from "@business/applications/repositories/mission";
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type DateInterval } from "@business/domains/common/dateInterval";
-import { type Provider } from "@business/domains/common/provider";
-import { SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { type PubMedProvider, SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { UsecaseHandler } from "@vendors/clean";
 
 interface Input {
 	interval: DateInterval;
 	articleType: ArticleType;
-	provider: Provider;
+	provider: PubMedProvider;
 }
 
 export class CreateSearchResultPubMedMissionUsecase extends UsecaseHandler.create(

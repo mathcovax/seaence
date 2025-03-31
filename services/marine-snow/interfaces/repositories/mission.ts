@@ -7,8 +7,7 @@ import { uuidv7 } from "uuidv7";
 missionRepository.default = {
 	async save(entity) {
 		if (entity instanceof SearchResultPubMedMissionEntity) {
-			const { interval, ...restSimpleEntity } = entity.toSimpleObject();
-			const { interval: updatedInterval, ...restUpdatedEntity } = entity.getUpdatedValues();
+			const { interval, name: _name, ...restSimpleEntity } = entity.toSimpleObject();
 
 			await prismaClient.searchResultPubMedMission.upsert({
 				where: {
@@ -20,9 +19,9 @@ missionRepository.default = {
 					searchDateTo: interval.to,
 				},
 				update: {
-					...restUpdatedEntity,
-					searchDateFrom: updatedInterval?.from,
-					searchDateTo: updatedInterval?.to,
+					...restSimpleEntity,
+					searchDateFrom: interval.from,
+					searchDateTo: interval.to,
 				},
 			});
 		} else {

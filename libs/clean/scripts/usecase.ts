@@ -158,13 +158,18 @@ export function isUsecase(usecase: new(...args: any[]) => any): usecase is Useca
 	return usecase?.prototype instanceof UsecaseHandler;
 }
 
+interface UsecaseErrorMoreData {
+	message?: string;
+	error?: Error;
+}
+
 export class UsecaseError<
 	GenericInformation extends string = string,
 > extends Error {
 	public constructor(
 		public information: GenericInformation,
-		message?: string,
+		public moreData?: UsecaseErrorMoreData,
 	) {
-		super(message ?? information);
+		super(moreData?.message ?? information);
 	}
 }

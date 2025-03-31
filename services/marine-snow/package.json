@@ -8,6 +8,8 @@
     "test:types": "tsc",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "mission:launch": "tsx interfaces/commands/launchMission.ts",
     "generate-types": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/routes/index.ts --output ../../libs/clients-type/types/marine-snow/duplojsTypesCodegen.d.ts"
   },
   "dependencies": {
@@ -15,19 +17,20 @@
     "@duplojs/http-client": "^1.0.0",
     "@duplojs/node": "1.0.1",
     "@duplojs/utils": "^0.3.1",
-    "@gullerya/object-observer": "^6.1.4",
     "@prisma/client": "^6.5.0",
+    "@vue/reactivity": "^3.5.13",
+    "commander": "^13.1.0",
     "dotenv": "16.4.5",
     "dotenv-expand": "12.0.1",
+    "fast-xml-parser": "^5.0.9",
     "prisma": "^6.5.0",
-    "simple-xml-to-json": "^1.2.3",
     "ts-pattern": "^5.6.2",
+    "tsx": "^4.19.3",
     "uuidv7": "^1.0.2"
   },
   "devDependencies": {
     "@duplojs/types-codegen": "1.0.1",
     "@types/node": "22.13.10",
-    "tsx": "4.19.3",
     "typescript": "5.8.2"
   },
   "prisma": {

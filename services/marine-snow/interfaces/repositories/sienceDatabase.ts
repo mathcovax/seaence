@@ -1,7 +1,7 @@
 import { sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
 import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/step/pubMed";
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
-import { type Change, Observable } from "@gullerya/object-observer";
+import { reactive, watch } from "@vue/reactivity";
 import { type SearchResultMissionOutput } from "@interfaces/workers/missions/searchResult";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
 import { resolve } from "path";
@@ -16,40 +16,33 @@ sienceDatabaseRepository.default = {
 	async *startSearchResultMission(mission) {
 		const worker = new Worker(
 			resolve(import.meta.dirname, "../workers/main.js"),
-			{ workerData: mission },
+			{
+				workerData: mission.toSimpleObject(),
+			},
 		);
 
-		const messageQueue = Observable.from<(SearchResultMissionOutput | Error)[]>([]);
+		const messageQueue = reactive<(SearchResultMissionOutput | Error)[]>([]);
 
-		worker.on(
-			"message",
-			(data) => messageQueue.push(data as never),
-		);
-
-		worker.on(
-			"error",
-			(data) => messageQueue.push(data),
-		);
+		worker
+			.on(
+				"message",
+				(data) => messageQueue.push(data as never),
+			)
+			.on(
+				"error",
+				(data) => messageQueue.push(data),
+			);
 
 		while (true) {
 			if (!messageQueue.length) {
 				await new Promise<void>(
 					(resolve) => {
-						function observeChange(changes: Change[]) {
-							if (!changes.find((change) => change.type === "insert")) {
-								return;
-							}
-
-							Observable.unobserve(
-								messageQueue,
-								observeChange,
-							);
-							resolve();
-						}
-
-						Observable.observe(
+						const watchHandle = watch(
 							messageQueue,
-							observeChange,
+							() => {
+								watchHandle.stop();
+								resolve();
+							},
 						);
 					},
 				);
