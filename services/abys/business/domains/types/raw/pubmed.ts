@@ -80,9 +80,9 @@ const similarArticleObjecter = zod.object({
 type SimilarArticle = GetValueObject<typeof similarArticleObjecter>;
 
 const referenceObjecter = zod.object({
-	title: zod.string(),
+	citation: zod.string(),
 	authors: authorObjecter.zodSchema.array(),
-	journal: journalObjecter.zodSchema,
+	sourceUrl: urlObjecter.zodSchema,
 }).createValueObjecter("reference");
 type Reference = GetValueObject<typeof referenceObjecter>;
 

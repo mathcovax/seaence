@@ -56,7 +56,7 @@ const commentSchema = zod.object({
 
 const figureSchema = zod.object({
 	name: zod.string(),
-	url: zod.string().nullable(),
+	url: zod.string(),
 });
 
 const associatedDataSchema = zod.object({

@@ -16,9 +16,11 @@ const baseInputSchema = zod.object({
 	id: zod.string(),
 	title: zod.string(),
 	authors: authorSchema.array().nullable(),
-	publicationDate: zod.string(),
+	publicationDate: zod.coerce.date(),
 	sourceUrl: zod.string().url(),
 	grants: grantSchema.array().nullable(),
+	digitalObjectIdentifier: zod.string().nullable(),
+	bookshelfIdentifier: zod.string().nullable(),
 });
 
 const inputSchema = zod.union([

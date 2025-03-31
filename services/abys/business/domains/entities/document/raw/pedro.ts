@@ -6,7 +6,7 @@ import { urlObjecter } from "@business/domains/types/common";
 export class PedroRawDocumentEntity extends EntityHandler.create(
 	{
 		method: methodObjecter,
-		content: contentObjecter,
+		content: contentObjecter.nullable(),
 		structureContent: strutureContentObjecter.array().nullable(),
 		links: urlObjecter.array(),
 	},

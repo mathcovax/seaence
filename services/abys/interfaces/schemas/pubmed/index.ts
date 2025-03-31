@@ -17,7 +17,7 @@ import {
 } from "./generic";
 
 const pubmedBaseArticleSchema = baseInputSchema.extend({
-	source: zod.literal("PubMed"),
+	source: zod.literal("Pubmed"),
 	pubmedId: zod.string(),
 	keywords: zod.string().array(),
 	figures: figureSchema.array().nullable(),
@@ -31,16 +31,16 @@ const pubmedBaseArticleSchema = baseInputSchema.extend({
 	relatedInformations: relatedInformationSchema.array().nullable(),
 	linkOuts: linkOutSchema.array().nullable(),
 	chemicals: chemicalSchema.array().nullable(),
-	digitalObjectIdentifier: zod.string().nullable(),
 	articleTypes: articleTypeEnumSchema.array(),
-	bookshelfIdentifier: zod.string().nullable(),
 });
 
 const pubmedArticleTypeWithExpectSchema = pubmedBaseArticleSchema.extend({
+	type: zod.literal("expect"),
 	expect: expectSchema,
 });
 
 const pubmedArticleTypeWithAbstractSchema = pubmedBaseArticleSchema.extend({
+	type: zod.literal("abstract"),
 	abstract: abstractSchema.nullable(),
 });
 

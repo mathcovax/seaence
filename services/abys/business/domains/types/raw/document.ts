@@ -27,6 +27,12 @@ const documentIdObjecter = zod.string().uuid().createValueObjecter(
 );
 type DocumentId = GetValueObject<typeof documentIdObjecter>;
 
+const digitalObjectIdentifierObjecter = zod.string().createValueObjecter("digitalObjectIdentifier");
+type DigitalObjectIdentifier = GetValueObject<typeof digitalObjectIdentifierObjecter>;
+
+const bookshelfIdentifierObjecter = zod.string().createValueObjecter("bookshelfIdentifier");
+type BookshelfIdentifier = GetValueObject<typeof bookshelfIdentifierObjecter>;
+
 export {
 	titleObjecter,
 	Title,
@@ -38,4 +44,8 @@ export {
 	Keyword,
 	documentIdObjecter,
 	DocumentId,
+	digitalObjectIdentifierObjecter,
+	DigitalObjectIdentifier,
+	bookshelfIdentifierObjecter,
+	BookshelfIdentifier,
 };
