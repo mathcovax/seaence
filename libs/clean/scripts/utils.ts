@@ -1,4 +1,4 @@
-import { type AnyFunction } from "@duplojs/utils";
+import { type UnionToIntersection, type AnyFunction } from "@duplojs/utils";
 
 export type ToJSON<
 	GenericValue extends unknown,

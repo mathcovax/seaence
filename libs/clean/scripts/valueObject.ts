@@ -1,5 +1,6 @@
-import { type ZodError, ZodType, type ZodTypeDef, type infer as zodInfer } from "zod";
+import { ZodEnum, type ZodError, type ZodLiteral, type ZodSchema, ZodType, type ZodTypeDef, any, type infer as zodInfer } from "zod";
 import { toJSON, toSimpleObject } from "./utils";
+import { zod } from ".";
 
 declare module "zod" {
 	interface ZodType<
@@ -11,13 +12,17 @@ declare module "zod" {
 			GenericName extends string,
 		>(name: GenericName): ValueObjecter<
 			GenericName,
-			ZodType<
-				Output
-			>,
+			this,
 			[]
 		> ;
 	}
 }
+
+ZodType.prototype.createValueObjecter = function<
+	GenericName extends string,
+>(name: GenericName) {
+	return new ValueObjecter(name, this, []);
+};
 
 export class ValueObject<
 	GenericName extends string = string,
@@ -65,12 +70,9 @@ export class ValueObjecter<
 		public readonly attributes: GenericAttribute,
 	) {}
 
-	public create(rawData: zodInfer<GenericZodSchema>):
-		| ValueObjectError<GenericName>
-		| ValueObject<
-			GenericName,
-			zodInfer<GenericZodSchema>
-		> {
+	public unknownCreate(rawData: unknown):
+		| ValueObject<GenericName, zodInfer<GenericZodSchema>>
+		| ValueObjectError<GenericName> {
 		const { success, error, data } = this.zodSchema.safeParse(rawData);
 
 		if (success) {
@@ -80,11 +82,10 @@ export class ValueObjecter<
 		}
 	}
 
-	public throwCreate(rawData: zodInfer<GenericZodSchema>):
-		| ValueObject<
-			GenericName,
-			zodInfer<GenericZodSchema>
-		> {
+	public unknownThrowCreate(rawData: unknown): ValueObject<
+		GenericName,
+		zodInfer<GenericZodSchema>
+	> {
 		const result = this.create(rawData);
 
 		if (result instanceof ValueObjectError) {
@@ -94,12 +95,23 @@ export class ValueObjecter<
 		return result;
 	}
 
-	public unsafeCreate(rawData: zodInfer<GenericZodSchema>):
-		| ValueObject<
-			GenericName,
-			zodInfer<GenericZodSchema>
-		> {
+	public unknownUnsafeCreate(rawData: unknown): ValueObject<
+		GenericName,
+		zodInfer<GenericZodSchema>
+	> {
 		return new ValueObject(this.name, rawData);
+	}
+
+	public create(rawData: zodInfer<GenericZodSchema>) {
+		return this.unknownCreate(rawData);
+	}
+
+	public throwCreate(rawData: zodInfer<GenericZodSchema>) {
+		return this.unknownThrowCreate(rawData);
+	}
+
+	public unsafeCreate(rawData: zodInfer<GenericZodSchema>) {
+		return this.unknownUnsafeCreate(rawData);
 	}
 
 	public toZodSchema() {
@@ -130,14 +142,35 @@ export class ValueObjecter<
 			["array", ...this.attributes] as const,
 		);
 	}
+
+	public specify: GenericZodSchema extends ZodEnum<infer InferedValue>
+		? <
+			GenericEnumValue extends InferedValue[number] | [InferedValue[number], ...InferedValue[number][]],
+		>(
+			value: GenericEnumValue
+		) => ValueObjecter<
+			GenericName,
+			GenericEnumValue extends [string, ...string[]]
+				? ZodEnum<GenericEnumValue>
+				: ZodLiteral<GenericEnumValue>,
+			GenericAttribute
+		>
+		: never
+		= function(this: ValueObjecter, value: unknown) {
+			if (this.zodSchema instanceof ZodEnum) {
+				return new ValueObjecter(
+					this.name,
+					value instanceof Array
+						? zod.enum(value as never)
+						: zod.literal(value as never),
+					this.attributes,
+				);
+			} else {
+				throw new Error("Unsupport specify.");
+			}
+		} as never;
 }
 
 export type GetValueObject<
 	GenericValueObjecter extends ValueObjecter,
-> = | ReturnType<GenericValueObjecter["unsafeCreate"]>;
-
-ZodType.prototype.createValueObjecter = function<
-	GenericName extends string,
->(name: GenericName) {
-	return new ValueObjecter(name, this, []);
-};
+> = ReturnType<GenericValueObjecter["unsafeCreate"]>;

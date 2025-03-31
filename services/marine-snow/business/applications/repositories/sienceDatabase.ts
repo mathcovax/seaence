@@ -2,7 +2,11 @@ import { type SearchResultMissionEntity } from "@business/domains/entities/missi
 import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/step/pubMed";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
-import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
+import { createRepositoryHandler, type RepositoryError, type RepositoryBase } from "@vendors/clean";
+
+export type SearchResultMission =
+	| SearchResultMissionEntity
+	| SearchResultPubMedMissionEntity;
 
 interface StartSearchResultPubMedMissionItem {
 	currentStep: SearchResultPubMedMissionStepEntity;
@@ -10,7 +14,7 @@ interface StartSearchResultPubMedMissionItem {
 }
 
 type GetStartSearchResultItem<
-	GenericSearchResultMission extends SearchResultMissionEntity,
+	GenericSearchResultMission extends SearchResultMission,
 > = Extract<
 	| [SearchResultPubMedMissionEntity, StartSearchResultPubMedMissionItem],
 	[GenericSearchResultMission, unknown]
@@ -18,10 +22,10 @@ type GetStartSearchResultItem<
 
 export interface SienceDatabaseRepository extends RepositoryBase<never> {
 	startSearchResultMission<
-		GenericSearchResultMission extends SearchResultMissionEntity,
+		GenericSearchResultMission extends SearchResultMission,
 	>(mission: GenericSearchResultMission): AsyncGenerator<
 		| GetStartSearchResultItem<GenericSearchResultMission>
-		| Error
+		| RepositoryError
 	>;
 }
 
