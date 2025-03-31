@@ -2,9 +2,9 @@ import { EntityHandler, type GetEntityProperties, type GetValueObject } from "@v
 import { articleIdObjecter } from "./article";
 import { UserEntity } from "./user";
 
-const postTopicObjecter = zod.string().createValueObjecter("postTopic");
-const postContentObjecter = zod.string().createValueObjecter("postContent");
-const creatorObjecter = zod.instanceof(UserEntity).createValueObjecter("creator");
+export const postTopicObjecter = zod.string().createValueObjecter("postTopic");
+export const postContentObjecter = zod.string().createValueObjecter("postContent");
+export const creatorObjecter = zod.instanceof(UserEntity).createValueObjecter("creator");
 export const postIdObjecter = zod.string().createValueObjecter("postId");
 
 export type PostTopic = GetValueObject<typeof postTopicObjecter>;
@@ -19,7 +19,7 @@ export class PostEntity extends EntityHandler.create({
 	articleId: articleIdObjecter,
 	creator: creatorObjecter,
 }) {
-	public static create(params: GetEntityProperties<PostEntity>) {
+	public static create(params: GetEntityProperties<typeof PostEntity>) {
 		return new PostEntity(params);
 	}
 }

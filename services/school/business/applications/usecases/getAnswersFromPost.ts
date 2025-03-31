@@ -1,4 +1,4 @@
-import { createUsecaseHandler } from "@vendors/clean";
+import { UsecaseHandler } from "@vendors/clean";
 import { answerRepository } from "../repositories/answer";
 import { type PostId } from "@business/domains/entities/post";
 
@@ -6,13 +6,12 @@ interface Input {
 	postId: PostId;
 }
 
-export const getAnswersFromPostUsecase = createUsecaseHandler(
-	"getAnswersFromPost",
+export class GetAnswersFromPostUsecase extends UsecaseHandler.create(
 	{
 		answerRepository,
 	},
-	async(
-		{ answerRepository },
-		{ postId }: Input,
-	) => answerRepository.findByPostId(postId),
-);
+) {
+	public execute({ postId: post }: Input) {
+		return this.answerRepository.findByPostId(post);
+	}
+}

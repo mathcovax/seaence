@@ -1,4 +1,4 @@
-import { createUsecaseHandler } from "@vendors/clean";
+import { UsecaseHandler } from "@vendors/clean";
 import { answerRepository } from "../repositories/answer";
 import { type UserId } from "@business/domains/entities/user";
 import { AnswerEntity, type AnswerContent } from "@business/domains/entities/answer";
@@ -10,22 +10,19 @@ interface Input {
 	responderId: UserId;
 }
 
-export const replyToPostUsecase = createUsecaseHandler(
-	"replyToPost",
+export class ReplyToPostUsecase extends UsecaseHandler.create(
 	{
 		answerRepository,
 	},
-	async(
-		{ answerRepository },
-		{ postId, content, responderId }: Input,
-	) => {
+) {
+	public execute({ postId, content, responderId }: Input) {
 		const answer = AnswerEntity.create({
-			answerId: await answerRepository.generateId(),
+			answerId: this.answerRepository.generateAnswerId(),
 			postId,
 			content,
 			responderId,
 		});
 
-		return answerRepository.replyToPost(answer);
-	},
-);
+		return this.answerRepository.save(answer);
+	}
+}

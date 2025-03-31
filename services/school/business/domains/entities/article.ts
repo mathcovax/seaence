@@ -1,8 +1,8 @@
 import { EntityHandler, type GetEntityProperties, type GetValueObject } from "@vendors/clean";
 
 export const articleIdObjecter = zod.string().createValueObjecter("articleId");
-const articleTitleObjecter = zod.string().createValueObjecter("articleTitle");
-const articleContentObjecter = zod.string().createValueObjecter("articleContent");
+export const articleTitleObjecter = zod.string().createValueObjecter("articleTitle");
+export const articleContentObjecter = zod.string().createValueObjecter("articleContent");
 
 export type ArticleId = GetValueObject<typeof articleIdObjecter>;
 export type ArticleTitle = GetValueObject<typeof articleTitleObjecter>;
@@ -13,7 +13,7 @@ export class ArticleEntity extends EntityHandler.create({
 	title: articleTitleObjecter,
 	content: articleContentObjecter,
 }) {
-	public static create(params: GetEntityProperties<ArticleEntity>) {
+	public static create(params: GetEntityProperties<typeof ArticleEntity>) {
 		return new ArticleEntity(params);
 	}
 }
