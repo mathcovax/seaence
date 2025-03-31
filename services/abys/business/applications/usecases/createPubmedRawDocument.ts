@@ -6,7 +6,7 @@ import { PubmedRawDocumentEntity } from "@business/domains/entities/document/raw
 // types
 import { type Url, type Date } from "@business/domains/types/common";
 import { type Keyword, type Author, type Grant } from "@business/domains/types/raw/document";
-import { type AssociatedData, type CitedBy, type MeshTerm, type Reference, type RelatedInformation, type SimilarArticle, type Comment, type Figure, type LinkOut, type Chemical, type PubmedId } from "@business/domains/types/raw/pubmed";
+import { type AssociatedData, type CitedBy, type MeshTerm, type Reference, type RelatedInformation, type SimilarArticle, type Comment, type Figure, type LinkOut, type Chemical, type PubmedId, type Expect, type Abtstract, type ArticleType } from "@business/domains/types/raw/pubmed";
 
 interface Input {
 	publicationDate: Date;
@@ -25,6 +25,9 @@ interface Input {
 	relatedInformations: RelatedInformation[] | null;
 	linkOuts: LinkOut[] | null;
 	chemicals: Chemical[] | null;
+	articleTypes: ArticleType[];
+	expect: Expect | null;
+	abstract: Abtstract | null;
 }
 
 export class CreatePubmedRawDocumentUsecase extends UsecaseHandler.create(

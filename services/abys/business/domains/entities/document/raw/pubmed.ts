@@ -1,7 +1,7 @@
 import { EntityHandler, type GetEntityProperties } from "@vendors/clean";
 import { RawBaseDocumentEntity } from "./base";
 import { keywordObjecter } from "@business/domains/types/raw/document";
-import { associatedDataObjecter, chemicalObjecter, citedByObjecter, commentObjecter, figureObjecter, linkOutObjecter, meshTermObjecter, pubmedIdObjecter, referenceObjecter, relatedInformationObjecter, similarArticleObjecter } from "@business/domains/types/raw/pubmed";
+import { abstractObjecter, articleTypeObjecter, associatedDataObjecter, chemicalObjecter, citedByObjecter, commentObjecter, expectObjecter, figureObjecter, linkOutObjecter, meshTermObjecter, pubmedIdObjecter, referenceObjecter, relatedInformationObjecter, similarArticleObjecter } from "@business/domains/types/raw/pubmed";
 
 export class PubmedRawDocumentEntity extends EntityHandler.create(
 	{
@@ -17,6 +17,9 @@ export class PubmedRawDocumentEntity extends EntityHandler.create(
 		relatedInformations: relatedInformationObjecter.array().nullable(),
 		linkOuts: linkOutObjecter.array().nullable(),
 		chemicals: chemicalObjecter.array().nullable(),
+		articleTypes: articleTypeObjecter.array(),
+		expect: expectObjecter.nullable(),
+		abstract: abstractObjecter.nullable(),
 	},
 	RawBaseDocumentEntity,
 ) {

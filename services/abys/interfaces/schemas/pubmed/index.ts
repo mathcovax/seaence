@@ -1,22 +1,12 @@
 import { baseInputSchema } from "../input";
+import { articleTypeEnumSchema } from "./articleType";
 import {
-	adaptiveClinicalTrialArticleTypeSchema,
-	autobiographyArticleTypeSchema,
-	addressArticleTypeSchema,
-	bibliographyArticleTypeSchema,
-	biographyArticleTypeSchema,
-	booksAndDocumentsArticleTypeSchema,
-	caseReportsArticleTypeSchema,
-	classicalArticleArticleTypeSchema,
-	clinicalConferenceArticleTypeSchema,
-	clinicalStudyArticleTypeSchema,
-	clinicalTrialArticleTypeSchema,
-} from "./articleType";
-import {
+	abstractSchema,
 	associatedDataSchema,
 	chemicalSchema,
 	citedBySchema,
 	commentSchema,
+	expectSchema,
 	figureSchema,
 	linkOutSchema,
 	meshTermSchema,
@@ -41,23 +31,25 @@ const pubmedBaseArticleSchema = baseInputSchema.extend({
 	relatedInformations: relatedInformationSchema.array().nullable(),
 	linkOuts: linkOutSchema.array().nullable(),
 	chemicals: chemicalSchema.array().nullable(),
+	digitalObjectIdentifier: zod.string().nullable(),
+	articleTypes: articleTypeEnumSchema.array(),
+	bookshelfIdentifier: zod.string().nullable(),
+});
+
+const pubmedArticleTypeWithExpectSchema = pubmedBaseArticleSchema.extend({
+	expect: expectSchema,
+});
+
+const pubmedArticleTypeWithAbstractSchema = pubmedBaseArticleSchema.extend({
+	abstract: abstractSchema.nullable(),
 });
 
 const pubmedArticleSchema = zod.union([
-	adaptiveClinicalTrialArticleTypeSchema,
-	autobiographyArticleTypeSchema,
-	addressArticleTypeSchema,
-	bibliographyArticleTypeSchema,
-	biographyArticleTypeSchema,
-	booksAndDocumentsArticleTypeSchema,
-	caseReportsArticleTypeSchema,
-	classicalArticleArticleTypeSchema,
-	clinicalConferenceArticleTypeSchema,
-	clinicalStudyArticleTypeSchema,
-	clinicalTrialArticleTypeSchema,
+	pubmedArticleTypeWithAbstractSchema,
+	pubmedArticleTypeWithExpectSchema,
 ]);
 
 export {
-	pubmedBaseArticleSchema,
+	articleTypeEnumSchema,
 	pubmedArticleSchema,
 };

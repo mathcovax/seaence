@@ -1,66 +1,29 @@
-import { MongoClient, type Db, type Collection } from "mongodb";
-
-class MongoDBProvider {
-	private client: MongoClient | null = null;
-
-	private db: Db | null = null;
-
-	public constructor(
-		private readonly uri: string,
-		private readonly dbName: string,
-	) {}
-
-	public async connect(): Promise<void> {
-		if (this.client) {
-			return;
-		}
-
-		this.client = new MongoClient(this.uri);
-		await this.client.connect();
-		this.db = this.client.db(this.dbName);
-	}
-
-	public async disconnect(): Promise<void> {
-		if (!this.client) {
-			return;
-		}
-
-		await this.client.close();
-		this.client = null;
-		this.db = null;
-	}
-
-	public getCollection(collectionName: string): Collection {
-		if (!this.db) {
-			throw new Error("Non connecté à MongoDB. Appelez connect() d'abord.");
-		}
-		return this.db.collection(collectionName);
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public async upsert(collectionName: string, filter: object, document: any) {
-		const collection = this.getCollection(collectionName);
-		const result = await collection.updateOne(
-			filter,
-			{ $set: document },
-			{ upsert: true },
-		);
-		return result;
-	}
-
-	public async findMany(collectionName: string, filter: object = {}, options: object = {}) {
-		const collection = this.getCollection(collectionName);
-		return collection.find(filter, options).toArray();
-	}
-
-	public async findOne(collectionName: string, filter: object, options: object = {}) {
-		const collection = this.getCollection(collectionName);
-		return collection.findOne(filter, options);
-	}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { type ToSimpleObject, type EntityClass, type GetEntityProperties } from "@vendors/clean";
+import { MongoClient, type ObjectId } from "mongodb";
+interface MongoBaseProps {
+	_id?: ObjectId;
+	createdAt?: Date;
+	updatedAt: Date;
 }
 
-export async function createMongoDBClient(uri: string, dbName: string) {
-	const mongoDBProvider = new MongoDBProvider(uri, dbName);
-	await mongoDBProvider.connect();
-	return mongoDBProvider;
+interface DynamicProps {
+	[key: string]: any;
 }
+
+type MongoEntityType<
+	GenericEntity extends EntityClass<any, any, any>,
+> = ToSimpleObject<GetEntityProperties<GenericEntity> & MongoBaseProps & DynamicProps>;
+
+async function createMongoClient(uri: string, dbName: string) {
+	const client = new MongoClient(uri);
+	await client.connect();
+	return client.db(dbName);
+}
+
+export {
+	createMongoClient,
+	type MongoEntityType,
+	type MongoBaseProps,
+	type DynamicProps,
+};
