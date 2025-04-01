@@ -47,21 +47,16 @@ export const FRfr = {
 			title: "Inscription / Connexion",
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 		},
-		[routerPageName.SEARCH_PAGE]: {
-			tabs: {
-				simpleSearch: "Recherche simple",
-				advancedSearch: "Recherche avancée",
-			},
-			inputSearch: {
-				placeholder: "Recherche : Titre, Auteur, Contenu...",
-			},
-		},
 	},
 	layout: {
 		base: {
 			header: {
-				nav: {
-					search: "Recherche",
+				search: {
+					tabs: {
+						simpleSearch: "Recherche simple",
+						advancedSearch: "Recherche avancée",
+					},
+					placeholder: "Recherche : Titre, Auteur, Contenu...",
 				},
 			},
 			footer: {

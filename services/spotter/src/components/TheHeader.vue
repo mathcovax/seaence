@@ -1,22 +1,42 @@
 <script setup lang="ts">
+const isScrolled = ref(false);
+
+const SCROLL_THRESHOLD = 0;
+function handleScroll() {
+	isScrolled.value = window.scrollY > SCROLL_THRESHOLD;
+}
+
+onMounted(() => {
+	window.addEventListener("scroll", handleScroll);
+	handleScroll();
+});
+
+onUnmounted(() => {
+	window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
-	<header class="sticky top-0 left-0 z-50 bg-white">
+	<header
+		class="sticky top-0 left-0 z-50 bg-white  transition-shadow duration-300"
+		:class="{ 'shadow-md': isScrolled }"
+	>
 		<div class="container h-24 flex items-center justify-between">
 			<RouterLink :to="homePage.createTo()">
 				<img
 					src="/images/logos/logo-text.svg"
 					alt="Spotter"
-					class="hidden md:block"
+					class="block md:hidden lg:block"
 				>
 
 				<img
 					src="/images/logos/logo.svg"
 					alt="Spotter"
-					class="md:hidden"
+					class="hidden md:block lg:hidden"
 				>
 			</RouterLink>
+
+			<SearchOverlay />
 
 			<div class="hidden md:block space-x-2">
 				<DSButtonPrimary as-child>

@@ -13,7 +13,7 @@ import { mdiMenu } from "@mdi/js";
 			</DSButtonIcon>
 		</DSSheetTrigger>
 
-		<DSSheetContent>
+		<DSSheetContent class="flex flex-col">
 			<DSSheetHeader class="mb-4">
 				<img
 					src="/images/logos/logo-text.svg"
@@ -22,7 +22,13 @@ import { mdiMenu } from "@mdi/js";
 				>
 			</DSSheetHeader>
 
-			<div class="grid gap-8 py-4">
+			<div class="flex-1 py-4 flex flex-col justify-between">
+				<DSInputSearch
+					:placeholder="$t('cta.search')"
+					:button-text="$t('cta.search')"
+					no-shadow
+				/>
+
 				<div class="flex flex-col gap-2">
 					<DSSheetClose as-child>
 						<DSButtonPrimary as-child>

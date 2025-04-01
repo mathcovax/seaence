@@ -41,7 +41,8 @@ function handlePageChange(page: number) {
 <template>
 	<section class="min-h-[calc(100vh-6rem-2rem)] space-y-12 flex flex-col">
 		<DSInputSearch
-			button-text="Rechercher"
+			:placeholder="$t('cta.search')"
+			:button-text="$t('cta.search')"
 			class="sticky top-28 z-10 w-full max-w-xl mx-auto"
 		/>
 
