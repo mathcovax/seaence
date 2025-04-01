@@ -1,9 +1,10 @@
 import { missionRepository } from "@business/applications/repositories/mission";
 import { searchResultRepository } from "@business/applications/repositories/searchResult";
-import { searchResultMissionStepRepository } from "@business/applications/repositories/searchResultMissionStep";
+import { missionStepRepository } from "@business/applications/repositories/missionStep";
 import { sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
 import { type SearchResultMissionEntity } from "@business/domains/entities/mission/searchResult";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
+import { StartMissionUsecase } from "../startMission";
 
 interface Input {
 	mission: SearchResultMissionEntity;
@@ -11,18 +12,17 @@ interface Input {
 
 export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
 	sienceDatabaseRepository,
-	searchResultMissionStepRepository,
+	missionStepRepository,
 	searchResultRepository,
 	missionRepository,
+	startMission: StartMissionUsecase,
 }) {
 	public async execute({ mission }: Input) {
-		if (mission.status.value !== "created") {
-			return new UsecaseError("wrong-mission-status");
+		const startedMission = await this.startMission({ mission });
+
+		if (startedMission instanceof Error) {
+			return startedMission;
 		}
-
-		const startedMission = mission.start();
-
-		await this.missionRepository.save(startedMission);
 
 		for await (
 			const result of this.sienceDatabaseRepository
@@ -39,7 +39,7 @@ export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
 				searchResults,
 			} = result;
 
-			await this.searchResultMissionStepRepository.save(currentStep);
+			await this.missionStepRepository.save(currentStep);
 
 			await Promise.all(
 				searchResults.map(

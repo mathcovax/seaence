@@ -42,6 +42,7 @@ await match(provider)
 			});
 
 			const result = await startSearchResultMissionUsecase.execute({ mission });
+
 			console.log(result);
 		},
 	)

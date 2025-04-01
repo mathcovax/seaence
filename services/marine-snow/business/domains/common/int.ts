@@ -2,4 +2,4 @@ import { zod, type GetValueObject } from "@vendors/clean";
 
 export const intObjecter = zod.number().int().createValueObjecter("int");
 
-export type IntObjecter = GetValueObject<typeof intObjecter>;
+export type Int = GetValueObject<typeof intObjecter>;
