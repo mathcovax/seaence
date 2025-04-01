@@ -13,9 +13,9 @@ type RawDocumentMongoEntity = (
 	| (EntityToSimpleObject<typeof ScienceDirectRawDocumentEntity> & { source: "ScienceDirect" })
 );
 
-const client = new MongoClient(envs.MONGO_DB_URI);
+const client = new MongoClient(envs.MONGO_DATABASE_URL);
 await client.connect();
-const db = client.db(envs.MONGO_DB_NAME);
+const db = client.db(envs.MONGO_DB);
 
 const mongo = {
 	db,

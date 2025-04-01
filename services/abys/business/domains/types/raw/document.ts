@@ -1,4 +1,4 @@
-import { type GetValueObject } from "@vendors/clean";
+import { type GetValueObject, zod } from "@vendors/clean";
 
 const titleObjecter = zod.string().createValueObjecter("title");
 type Title = GetValueObject<typeof titleObjecter>;

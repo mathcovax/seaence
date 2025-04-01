@@ -1,4 +1,4 @@
-import { type GetValueObject } from "@vendors/clean";
+import { type GetValueObject, zod } from "@vendors/clean";
 import { authorObjecter } from "./document";
 import { urlObjecter } from "../common";
 

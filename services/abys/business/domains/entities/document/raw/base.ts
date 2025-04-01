@@ -1,9 +1,10 @@
 import { EntityHandler, type GetEntityProperties } from "@vendors/clean";
 import { dateObjecter, urlObjecter } from "@business/domains/types/common";
-import { authorObjecter, bookshelfIdentifierObjecter, digitalObjectIdentifierObjecter, documentIdObjecter, grantObjecter } from "@business/domains/types/raw/document";
+import { authorObjecter, bookshelfIdentifierObjecter, digitalObjectIdentifierObjecter, documentIdObjecter, grantObjecter, titleObjecter } from "@business/domains/types/raw/document";
 
 export class RawBaseDocumentEntity extends EntityHandler.create({
 	id: documentIdObjecter,
+	title: titleObjecter,
 	publicationDate: dateObjecter,
 	sourceUrl: urlObjecter,
 	authors: authorObjecter.array().nullable(),

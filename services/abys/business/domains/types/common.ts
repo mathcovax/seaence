@@ -1,4 +1,4 @@
-import { type GetValueObject } from "@vendors/clean";
+import { type GetValueObject, zod } from "@vendors/clean";
 
 const dateObjecter = zod.date().createValueObjecter("date");
 type Date = GetValueObject<typeof dateObjecter>;

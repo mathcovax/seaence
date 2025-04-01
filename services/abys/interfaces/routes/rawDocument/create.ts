@@ -1,17 +1,14 @@
 import { CreatePedroRawDocumentUsecase } from "@business/applications/usecases/createPedroRawDocument";
 import { CreatePubmedRawDocumentUsecase } from "@business/applications/usecases/createPubmedRawDocument";
 import { CreateScienceDirectRawDocumentUsecase } from "@business/applications/usecases/createScienceDirectRawDocument";
-import { PedroRawDocumentEntity } from "@business/domains/entities/document/raw/pedro";
-import { PubmedRawDocumentEntity } from "@business/domains/entities/document/raw/pubmed";
-import { ScienceDirectRawDocumentEntity } from "@business/domains/entities/document/raw/scienceDirect";
+import { dateObjecter } from "@business/domains/types/common";
 import { rawDocumentShouldNotExistBySourceUrl } from "@interfaces/checkers/rawDocument";
-import { inputSchema } from "@interfaces/schemas/input";
-import { EntityHandler } from "@vendors/clean";
+import { rawDocumentInputSchema } from "@interfaces/schemas/document/raw/input";
 
 useBuilder()
 	.createRoute("POST", "/raw-document")
 	.extract({
-		body: inputSchema,
+		body: rawDocumentInputSchema,
 	})
 	.presetCheck(
 		rawDocumentShouldNotExistBySourceUrl,
@@ -23,45 +20,31 @@ useBuilder()
 
 			if (input.source === "Pedro") {
 				const createPedroRawDocumentUsecase = new CreatePedroRawDocumentUsecase();
-				const rawDocumentPedro = EntityHandler.unsafeMapper(
-					PedroRawDocumentEntity,
-					{
-						...input,
-						content: input.content !== null ? input.content.full : null,
-						structureContent: input.content !== null ? input.content.structure : null,
-					},
-				);
-				await createPedroRawDocumentUsecase.execute(rawDocumentPedro);
+				await createPedroRawDocumentUsecase.execute({
+					...input,
+					publicationDate: dateObjecter.throwCreate(input.publicationDate),
+				});
 			} else if (input.source === "Pubmed") {
 				const createPubmedRawDocumentUsecase = new CreatePubmedRawDocumentUsecase();
 				if (input.type === "expect") {
-					const rawDocumentPubmed = EntityHandler.unsafeMapper(
-						PubmedRawDocumentEntity,
-						{
-							...input,
-							expect: input.expect,
-							abstract: null,
-						},
-					);
-					await createPubmedRawDocumentUsecase.execute(rawDocumentPubmed);
+					await createPubmedRawDocumentUsecase.execute({
+						...input,
+						publicationDate: dateObjecter.throwCreate(input.publicationDate),
+						abstract: null,
+					});
 				} else if (input.type === "abstract") {
-					const rawDocumentPubmed = EntityHandler.unsafeMapper(
-						PubmedRawDocumentEntity,
-						{
-							...input,
-							expect: null,
-							abstract: input.abstract,
-						},
-					);
-					await createPubmedRawDocumentUsecase.execute(rawDocumentPubmed);
+					await createPubmedRawDocumentUsecase.execute({
+						...input,
+						publicationDate: dateObjecter.throwCreate(input.publicationDate),
+						expect: null,
+					});
 				}
 			} else if (input.source === "ScienceDirect") {
 				const createScienceDirectRawDocumentUsecase = new CreateScienceDirectRawDocumentUsecase();
-				const rawDocumentScienceDirect = EntityHandler.unsafeMapper(
-					ScienceDirectRawDocumentEntity,
-					input,
-				);
-				await createScienceDirectRawDocumentUsecase.execute(rawDocumentScienceDirect);
+				await createScienceDirectRawDocumentUsecase.execute({
+					...input,
+					publicationDate: dateObjecter.throwCreate(input.publicationDate),
+				});
 			}
 
 			return new OkHttpResponse("rawDocument.created", undefined);

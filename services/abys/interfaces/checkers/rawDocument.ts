@@ -1,11 +1,11 @@
-import { urlObjecter } from "@business/domains/types/common";
-import { documentIdObjecter } from "@business/domains/types/raw/document";
+import { type Url } from "@business/domains/types/common";
+import { type DocumentId } from "@business/domains/types/raw/document";
 import { type GetTypeInput } from "@duplojs/core";
 import { rawDocumentRepository } from "@interfaces/repositories/rawDocument";
 
 export const inpurRawDocumentExist = createTypeInput<{
-	documentId: string;
-	sourceUrl: string;
+	documentId: DocumentId;
+	sourceUrl: Url;
 }>();
 
 export const rawDocumentExistCheck = createChecker("rawDocumentExist")
@@ -14,11 +14,9 @@ export const rawDocumentExistCheck = createChecker("rawDocumentExist")
 			let rawDocument = null;
 
 			if (inputName === "documentId") {
-				const documentId = documentIdObjecter.throwCreate(value);
-				rawDocument = await rawDocumentRepository.use.findByDocumentId(documentId);
+				rawDocument = await rawDocumentRepository.use.findByDocumentId(value);
 			} else if (inputName === "sourceUrl") {
-				const sourceUrl = urlObjecter.throwCreate(value);
-				rawDocument = await rawDocumentRepository.use.findBySourceUrl(sourceUrl);
+				rawDocument = await rawDocumentRepository.use.findBySourceUrl(value);
 			}
 
 			if (rawDocument) {
