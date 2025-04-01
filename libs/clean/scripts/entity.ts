@@ -36,7 +36,7 @@ export type EntityPropertiesToRawProperties<
 const updatedValuesKey = Symbol("updatedValues");
 
 export interface EntityInstanceBase<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition,
+	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties = EntityProperties,
 > {
 	update(
@@ -65,7 +65,8 @@ export type EntityInstance<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties = EntityProperties,
 	GenericInheritProperties extends Record<string, unknown> = Record<string, unknown>,
-> = GenericProperties
+> =
+	& GenericProperties
 	& EntityInstanceBase<
 		GenericPropertiesDefinition,
 		GenericProperties

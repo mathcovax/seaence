@@ -1,8 +1,9 @@
-import { searchResultMissionStepRepository } from "@business/applications/repositories/searchResultMissionStep";
-import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/step/pubMed";
+
+import { missionStepRepository } from "@business/applications/repositories/missionStep";
+import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { prismaClient } from "@interfaces/providers/prisma";
 
-searchResultMissionStepRepository.default = {
+missionStepRepository.default = {
 	async save(entity) {
 		if (entity instanceof SearchResultPubMedMissionStepEntity) {
 			const simpleEntity = entity.toSimpleObject();

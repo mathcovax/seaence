@@ -1,5 +1,4 @@
 import { sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
-import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/step/pubMed";
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
 import { reactive, watch } from "@vue/reactivity";
 import { type SearchResultMissionOutput } from "@interfaces/workers/missions/searchResult";
@@ -7,6 +6,7 @@ import { EntityHandler, RepositoryError } from "@vendors/clean";
 import { resolve } from "path";
 import { match } from "ts-pattern";
 import { Worker } from "worker_threads";
+import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 
 sienceDatabaseRepository.default = {
 	save() {

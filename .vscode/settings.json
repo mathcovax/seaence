@@ -18,6 +18,7 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
+  "vue.codeActions.askNewComponentName": false,
   "prettier.enable": false,
   "javascript.format.enable": false,
   "typescript.format.enable": false,
