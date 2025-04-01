@@ -4,7 +4,7 @@ import { type PostId } from "@business/domains/entities/post";
 export const postExistCheck = createChecker("postExist")
 	.handler(
 		async(input: PostId, output) => {
-			const post = await postRepository.default?.findOneById(input);
+			const post = await postRepository.use.findOneById(input);
 
 			if (post) {
 				return output("post.exist", post);

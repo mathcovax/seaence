@@ -1,26 +1,24 @@
 import { UsecaseHandler } from "@vendors/clean";
 import { answerRepository } from "../repositories/answer";
-import { type UserId } from "@business/domains/entities/user";
 import { AnswerEntity, type AnswerContent } from "@business/domains/entities/answer";
-import { type PostId } from "@business/domains/entities/post";
+import { type PostEntity } from "@business/domains/entities/post";
+import { type User } from "@business/domains/common/user";
 
 interface Input {
-	postId: PostId;
+	post: PostEntity;
 	content: AnswerContent;
-	responderId: UserId;
+	author: User;
 }
 
-export class ReplyToPostUsecase extends UsecaseHandler.create(
-	{
-		answerRepository,
-	},
-) {
-	public execute({ postId, content, responderId }: Input) {
+export class ReplyToPostUsecase extends UsecaseHandler.create({
+	answerRepository,
+}) {
+	public execute({ post, content, author }: Input) {
 		const answer = AnswerEntity.create({
-			answerId: this.answerRepository.generateAnswerId(),
-			postId,
+			id: this.answerRepository.generateAnswerId(),
+			postId: post.id,
 			content,
-			responderId,
+			author,
 		});
 
 		return this.answerRepository.save(answer);

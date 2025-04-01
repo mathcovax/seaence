@@ -1,71 +1,75 @@
 import { postRepository } from "@business/applications/repositories/post";
-import { articleIdObjecter } from "@business/domains/entities/article";
-import { creatorObjecter, postContentObjecter, PostEntity, postIdObjecter, postTopicObjecter } from "@business/domains/entities/post";
-import { UserEntity, userIdObjecter, usernameObjecter } from "@business/domains/entities/user";
+import { PostEntity, postIdObjecter } from "@business/domains/entities/post";
+import { UserEntity } from "@business/domains/entities/user";
+import { ArticleEntity } from "@business/domains/entities/article";
 import { mongo } from "@interfaces/providers/mongo";
+import { EntityHandler } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
 postRepository.default = {
 	generatePostId() {
 		return postIdObjecter.unsafeCreate(uuidv7());
 	},
-	async findByArticleId(articleId) {
+	async findByArticleId(articleId, { quantityPerPage, page }) {
 		const mongoPosts = mongo.postCollection.find({
-			articleId: articleId.value,
+			"article.id": articleId.value,
 		});
 
-		return mongoPosts.map(
-			(mongoPost) => PostEntity.create({
-				postId: postIdObjecter.unsafeCreate(mongoPost.postId),
-				topic: postTopicObjecter.unsafeCreate(mongoPost.topic),
-				content: postContentObjecter.unsafeCreate(mongoPost.content),
-				articleId: articleIdObjecter.unsafeCreate(mongoPost.articleId),
-				creator: creatorObjecter.unsafeCreate(
-					UserEntity.create({
-						userId: userIdObjecter.unsafeCreate(mongoPost.creator.userId),
-						username: usernameObjecter.unsafeCreate(mongoPost.creator.username),
-					}),
+		return mongoPosts
+			.skip(page.value * quantityPerPage.value)
+			.limit(quantityPerPage.value)
+			.map(
+				(mongoPost) => EntityHandler.unsafeMapper(
+					PostEntity,
+					{
+						...mongoPost,
+						article: EntityHandler.unsafeMapper(
+							ArticleEntity,
+							mongoPost.article,
+						),
+						author: EntityHandler.unsafeMapper(
+							UserEntity,
+							mongoPost.author,
+						),
+					},
 				),
-			}),
-		).toArray();
+			)
+			.toArray();
 	},
 	async findOneById(postId) {
 		const mongoPost = await mongo.postCollection.findOne({
-			postId: postId.value,
+			id: postId.value,
 		});
 
 		if (!mongoPost) {
 			return null;
 		}
 
-		const creatorObjecterEntity = creatorObjecter.unsafeCreate(
-			UserEntity.create({
-				userId: userIdObjecter.unsafeCreate(mongoPost.creator.userId),
-				username: usernameObjecter.unsafeCreate(mongoPost.creator.username),
-			}),
+		return EntityHandler.unsafeMapper(
+			PostEntity,
+			{
+				...mongoPost,
+				article: EntityHandler.unsafeMapper(
+					ArticleEntity,
+					mongoPost.article,
+				),
+				author: EntityHandler.unsafeMapper(
+					UserEntity,
+					mongoPost.author,
+				),
+			},
 		);
-
-		return PostEntity.create({
-			postId: postIdObjecter.unsafeCreate(mongoPost.postId),
-			topic: postTopicObjecter.unsafeCreate(mongoPost.topic),
-			content: postContentObjecter.unsafeCreate(mongoPost.content),
-			articleId: articleIdObjecter.unsafeCreate(mongoPost.articleId),
-			creator: creatorObjecterEntity,
-		});
 	},
 	async save(post) {
-		const postCreatorValue = post.creator.value;
+		const mongoPost = post.toSimpleObject();
 
-		await mongo.postCollection.insertOne({
-			postId: post.postId.value,
-			topic: post.topic.value,
-			content: post.content.value,
-			articleId: post.articleId.value,
-			creator: {
-				userId: postCreatorValue.userId.value,
-				username: postCreatorValue.username.value,
+		await mongo.postCollection.updateOne(
+			{
+				id: mongoPost.id,
 			},
-		});
+			{ $set: mongoPost },
+			{ upsert: true },
+		);
 
 		return post;
 	},

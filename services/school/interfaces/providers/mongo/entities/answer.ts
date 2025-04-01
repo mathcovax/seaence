@@ -1,8 +1,8 @@
-export const answerSchema = zod.object({
-	answerId: zod.string(),
-	postId: zod.string(),
-	content: zod.string(),
-	responderId: zod.string(),
-});
+import { type MongoUser } from "./user";
+export interface MongoAnswer {
+	id: string;
+	postId: string;
+	content: string;
+	author: MongoUser;
+}
 
-export type Answer = Zod.infer<typeof answerSchema>;

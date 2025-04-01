@@ -1,17 +1,26 @@
+import { type PostEntity } from "@business/domains/entities/post";
 import { UsecaseHandler } from "@vendors/clean";
 import { answerRepository } from "../repositories/answer";
-import { type PostId } from "@business/domains/entities/post";
+import { intObjecter, type Int } from "@business/domains/common/Int";
 
 interface Input {
-	postId: PostId;
+	post: PostEntity;
+	page: Int;
 }
 
-export class GetAnswersFromPostUsecase extends UsecaseHandler.create(
-	{
-		answerRepository,
-	},
-) {
-	public execute({ postId: post }: Input) {
-		return this.answerRepository.findByPostId(post);
+const rawQuantityPerPage = 10;
+const quantityPerPage = intObjecter.unsafeCreate(rawQuantityPerPage);
+
+export class GetAnswersFromPostUsecase extends UsecaseHandler.create({
+	answerRepository,
+}) {
+	public execute({ post, page }: Input) {
+		return this.answerRepository.findByPostId(
+			post.id,
+			{
+				quantityPerPage,
+				page,
+			},
+		);
 	}
 }

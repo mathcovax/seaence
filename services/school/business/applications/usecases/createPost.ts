@@ -1,26 +1,26 @@
 import { UsecaseHandler } from "@vendors/clean";
 import { postRepository } from "../repositories/post";
-import { type PostCreator, PostEntity, type PostContent, type PostTopic } from "@business/domains/entities/post";
-import { type ArticleId } from "@business/domains/entities/article";
+import { PostEntity, type PostContent, type PostTopic } from "@business/domains/entities/post";
+import { type Article } from "@business/domains/common/article";
+import { type User } from "@business/domains/common/user";
+
 interface Input {
 	topic: PostTopic;
 	content: PostContent;
-	articleId: ArticleId;
-	creator: PostCreator;
+	article: Article;
+	author: User;
 }
 
-export class CreatePostUsecase extends UsecaseHandler.create(
-	{
-		postRepository,
-	},
-) {
-	public execute({ topic, content, articleId, creator }: Input) {
+export class CreatePostUsecase extends UsecaseHandler.create({
+	postRepository,
+}) {
+	public execute({ topic, content, article, author }: Input) {
 		const post = PostEntity.create({
-			postId: this.postRepository.generatePostId(),
+			id: this.postRepository.generatePostId(),
 			topic,
 			content,
-			articleId,
-			creator,
+			article,
+			author,
 		});
 
 		return this.postRepository.save(post);

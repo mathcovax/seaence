@@ -1,12 +1,10 @@
-export const postSchema = zod.object({
-	postId: zod.string(),
-	topic: zod.string(),
-	content: zod.string(),
-	articleId: zod.string(),
-	creator: zod.object({
-		userId: zod.string(),
-		username: zod.string(),
-	}),
-});
+import { type MongoArticle } from "./article";
+import { type MongoUser } from "./user";
 
-export type Post = Zod.infer<typeof postSchema>;
+export interface MongoPost {
+	id: string;
+	topic: string;
+	content: string;
+	article: MongoArticle;
+	author: MongoUser;
+}
