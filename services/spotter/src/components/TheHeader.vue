@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { HOME_PAGE, SEARCH_PAGE, CONNECTION_PAGE } = routerPageName;
+const { HOME_PAGE, CONNECTION_PAGE } = routerPageName;
 
 const isScrolled = ref(false);
 
@@ -31,28 +31,17 @@ onUnmounted(() => {
 				<img
 					src="/images/logos/logo-text.svg"
 					alt="Spotter"
-					class="hidden md:block"
+					class="block md:hidden lg:block"
 				>
 
 				<img
 					src="/images/logos/logo.svg"
 					alt="Spotter"
-					class="md:hidden"
+					class="hidden md:block lg:hidden"
 				>
 			</RouterLink>
 
-			<nav class="hidden md:block">
-				<ul>
-					<li>
-						<RouterLink
-							:to="{ name: SEARCH_PAGE }"
-							class="hover:text-primary"
-						>
-							{{ $t("layout.base.header.nav.search") }}
-						</RouterLink>
-					</li>
-				</ul>
-			</nav>
+			<SearchOverlay />
 
 			<div class="hidden md:block space-x-2">
 				<DSButtonPrimary as-child>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { mdiMenu } from "@mdi/js";
 
-const { SEARCH_PAGE, CONNECTION_PAGE } = routerPageName;
+const { CONNECTION_PAGE } = routerPageName;
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const { SEARCH_PAGE, CONNECTION_PAGE } = routerPageName;
 			</DSButtonIcon>
 		</DSSheetTrigger>
 
-		<DSSheetContent>
+		<DSSheetContent class="flex flex-col">
 			<DSSheetHeader class="mb-4">
 				<img
 					src="/images/logos/logo-text.svg"
@@ -24,18 +24,12 @@ const { SEARCH_PAGE, CONNECTION_PAGE } = routerPageName;
 				>
 			</DSSheetHeader>
 
-			<div class="grid gap-8 py-4">
-				<nav>
-					<ul>
-						<li>
-							<DSSheetClose as-child>
-								<RouterLink :to="{ name: SEARCH_PAGE }">
-									{{ $t("layout.base.header.nav.search") }}
-								</RouterLink>
-							</DSSheetClose>
-						</li>
-					</ul>
-				</nav>
+			<div class="flex-1 py-4 flex flex-col justify-between">
+				<DSInputSearch
+					:placeholder="$t('cta.search')"
+					:button-text="$t('cta.search')"
+					no-shadow
+				/>
 
 				<div class="flex flex-col gap-2">
 					<DSSheetClose as-child>
