@@ -1,5 +1,5 @@
 import { providerObjecter } from "@business/domains/common/provider";
-import { EntityHandler, zod, type GetValueObject } from "@vendors/clean";
+import { createEnum, EntityHandler, zod, type GetValueObject } from "@vendors/clean";
 
 export const missionIdObjecter = zod
 	.string()
@@ -7,23 +7,33 @@ export const missionIdObjecter = zod
 
 export type MissionId = GetValueObject<typeof missionIdObjecter>;
 
-export const missionStatusValue = [
+export const missionStatusEnum = createEnum([
 	"created",
 	"inProgress",
 	"failed",
 	"success",
-] as const;
+]);
 
 export const missionStatusObjecter = zod
-	.enum(missionStatusValue)
+	.enum(missionStatusEnum.toTuple())
 	.createValueObjecter("missionStatus");
 
 export type MissionStatusId = GetValueObject<typeof missionStatusObjecter>;
+
+export const missionNameEnum = createEnum([
+	"searchResult",
+	"sendSearchResult",
+]);
+
+export const missionNameObjecter = zod
+	.enum(missionNameEnum.toTuple())
+	.createValueObjecter("searchResultMissionName");
 
 export class MissionEntity extends EntityHandler.create({
 	id: missionIdObjecter,
 	provider: providerObjecter,
 	status: missionStatusObjecter,
+	name: missionNameObjecter,
 }) {
 	public start() {
 		return this.update({

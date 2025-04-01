@@ -1,6 +1,6 @@
-import { ZodEnum, type ZodError, type ZodLiteral, type ZodSchema, ZodType, type ZodTypeDef, any, type infer as zodInfer } from "zod";
+import { ZodEnum, type ZodError, type ZodLiteral, ZodType, type ZodTypeDef, type infer as zodInfer, z as zod } from "zod";
 import { toJSON, toSimpleObject } from "./utils";
-import { zod } from ".";
+import { type EntityClass } from "./entity";
 
 declare module "zod" {
 	interface ZodType<
@@ -59,6 +59,20 @@ export class ValueObjectError<
 
 export type ValueObjecterAttribute = "nullable" | "array";
 
+function specifyObjecter(this: ValueObjecter, value: unknown) {
+	if (this.zodSchema instanceof ZodEnum) {
+		return new ValueObjecter(
+			this.name,
+			value instanceof Array
+				? zod.enum(value as never)
+				: zod.literal(value as never),
+			this.attributes,
+		);
+	} else {
+		throw new Error("Unsupport specify.");
+	}
+}
+
 export class ValueObjecter<
 	GenericName extends string = string,
 	GenericZodSchema extends ZodType = ZodType,
@@ -114,15 +128,17 @@ export class ValueObjecter<
 		return this.unknownUnsafeCreate(rawData);
 	}
 
-	public toZodSchema() {
+	public toZodSchema(): ZodType<
+		ValueObject<
+			GenericName,
+			zodInfer<GenericZodSchema>
+		>
+	> {
 		return this.zodSchema
 			.transform(
-				(value) => new ValueObject<
-					GenericName,
-					zodInfer<GenericZodSchema>
-				>(
+				(value) => new ValueObject(
 					this.name,
-					value as never,
+					value,
 				),
 			);
 	}
@@ -156,21 +172,81 @@ export class ValueObjecter<
 			GenericAttribute
 		>
 		: never
-		= function(this: ValueObjecter, value: unknown) {
-			if (this.zodSchema instanceof ZodEnum) {
-				return new ValueObjecter(
-					this.name,
-					value instanceof Array
-						? zod.enum(value as never)
-						: zod.literal(value as never),
-					this.attributes,
-				);
-			} else {
-				throw new Error("Unsupport specify.");
-			}
-		} as never;
+		= specifyObjecter as never;
 }
 
 export type GetValueObject<
 	GenericValueObjecter extends ValueObjecter,
 > = ReturnType<GenericValueObjecter["unsafeCreate"]>;
+
+export class EntityObjecter<
+	GenericName extends string = string,
+	GenericEntityClass extends EntityClass<any, any> = EntityClass<any, any>,
+	GenericAttribute extends ValueObjecterAttribute[] = ValueObjecterAttribute[],
+> extends ValueObjecter<
+		GenericName,
+		ZodType<InstanceType<GenericEntityClass>>,
+		GenericAttribute
+	> {
+	public constructor(
+		name: GenericName,
+		public readonly entityClasses: GenericEntityClass[],
+		attributes: GenericAttribute,
+	) {
+		super(
+			name,
+			zod.union(
+				entityClasses.map(
+					(entityClass) => zod.instanceof(entityClass),
+				) as never,
+			),
+			attributes,
+		);
+	}
+
+	public override toZodSchema(): ZodType<
+		ValueObject<
+			GenericName,
+			InstanceType<GenericEntityClass>
+		>
+	> {
+		return zod.union(
+			this.entityClasses.map(
+				(entityClass: EntityClass) => zod
+					.object(
+						Object
+							.entries(entityClass.propertiesDefinition)
+							.reduce<Record<string, ZodType>>(
+								(pv, [key, value]) => ({
+									...pv,
+									[key]: value.toZodSchema(),
+								}),
+								{},
+							),
+					)
+					.transform(
+						(entityProperties) => new ValueObject(
+							this.name,
+							new entityClass(entityProperties),
+						),
+					),
+			) as never,
+		);
+	}
+
+	public override nullable() {
+		return new EntityObjecter(
+			this.name,
+			this.entityClasses,
+			["nullable", ...this.attributes] as const,
+		);
+	}
+
+	public override array() {
+		return new EntityObjecter(
+			this.name,
+			this.entityClasses,
+			["array", ...this.attributes] as const,
+		);
+	}
+}

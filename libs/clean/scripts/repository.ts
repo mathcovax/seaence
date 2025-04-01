@@ -1,4 +1,5 @@
 import { type EntityInstance } from "./entity";
+import { CleanError } from "./error";
 
 const repositoryBrand = Symbol("brand");
 
@@ -45,11 +46,6 @@ export function isRepositoryHandler(repository: any): repository is RepositoryHa
 
 export class RepositoryError<
 	GenericInformation extends string = string,
-> extends Error {
-	public constructor(
-		public information: GenericInformation,
-		message?: string,
-	) {
-		super(message ?? information);
-	}
+> extends CleanError<GenericInformation> {
+
 }

@@ -1,4 +1,4 @@
-import { type UnionToIntersection, type AnyFunction } from "@duplojs/utils";
+import { type AnyFunction, type SimplifyObjectTopLevel } from "@duplojs/utils";
 
 export type ToJSON<
 	GenericValue extends unknown,
@@ -143,4 +143,43 @@ export function toSimpleObject<
 	} else {
 		return value as never;
 	}
+}
+
+declare const BrandCleanEnumSymbol: unique symbol;
+
+export type BrandCleanEnumValue<
+	GenericValues extends unknown,
+> = GenericValues & { [BrandCleanEnumSymbol]: boolean };
+
+export type BrandCleanEnumTuple<
+	GenericValues extends unknown[],
+> = GenericValues extends [infer InferedValue, ...infer InferedRest]
+	? [
+		BrandCleanEnumValue<InferedValue>,
+		...BrandCleanEnumTuple<InferedRest>,
+	]
+	: GenericValues extends []
+		? GenericValues
+		: never;
+
+export type CleanEnum<
+	GenericValues extends [string, ...string[]],
+> = SimplifyObjectTopLevel<
+	{
+		[Prop in GenericValues[number]]: Prop
+	} & {
+		toTuple(): GenericValues;
+	}
+>;
+
+export function createEnum<
+	GenericValue extends string,
+	GenericValues extends [GenericValue, ...GenericValue[]],
+>(values: GenericValues): CleanEnum<GenericValues> {
+	return Object.fromEntries(
+		[
+			...values.map((value) => [value, value]),
+			["toTuple", () => values],
+		],
+	);
 }

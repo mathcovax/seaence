@@ -1,12 +1,10 @@
-import { CreateSearchResultPubMedMissionUsecase } from "@business/applications/usecases/missions/searchResult/pubMed/createSearchResultPubMedMission";
-import { StartSearchResultMissionUsecase } from "@business/applications/usecases/missions/searchResult/startSearchResultMission";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { dateIntervalObjecter } from "@business/domains/common/dateInterval";
 import { providerObjecter } from "@business/domains/common/provider";
 import { pubMedProviderObjecter } from "@business/domains/entities/mission/searchResult/pubMed";
 import { program } from "commander";
 import { match } from "ts-pattern";
-import "../repositories";
+import { createSearchResultPubMedMissionUsecase, startSearchResultMissionUsecase } from "@interfaces/usecase";
 
 program
 	.requiredOption("-p, --provider <char>")
@@ -37,14 +35,12 @@ await match(provider)
 				to: new Date(ramDateTo),
 			});
 
-			const createSearchResultPubMedMissionUsecase = new CreateSearchResultPubMedMissionUsecase();
 			const mission = await createSearchResultPubMedMissionUsecase.execute({
 				provider: pubMedProvider,
 				articleType,
 				interval,
 			});
 
-			const startSearchResultMissionUsecase = new StartSearchResultMissionUsecase();
 			const result = await startSearchResultMissionUsecase.execute({ mission });
 			console.log(result);
 		},

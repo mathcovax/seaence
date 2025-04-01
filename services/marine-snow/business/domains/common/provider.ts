@@ -1,11 +1,11 @@
-import { zod, type GetValueObject } from "@vendors/clean";
+import { createEnum, zod, type GetValueObject } from "@vendors/clean";
 
-export const providerValues = [
+export const providerEnum = createEnum([
 	"pubmed",
 	"pedro",
 	"sciencedirect",
-] as const;
+]);
 
-export const providerObjecter = zod.enum(providerValues).createValueObjecter("provider");
+export const providerObjecter = zod.enum(providerEnum.toTuple()).createValueObjecter("provider");
 
 export type Provider = GetValueObject<typeof providerObjecter>;

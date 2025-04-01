@@ -59,7 +59,7 @@ sienceDatabaseRepository.default = {
 			}
 
 			if (result instanceof Error) {
-				yield new RepositoryError("worker-reject-error", result.toString());
+				yield new RepositoryError("worker-reject-error", { error: result });
 				break;
 			}
 

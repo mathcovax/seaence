@@ -1,5 +1,6 @@
+import { z as zod, type ZodType } from "zod";
 import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject } from "./utils";
-import { type ValueObject, type ValueObjectError, type ValueObjecter, type ValueObjecterAttribute } from "./valueObject";
+import { EntityObjecter, type ValueObject, type ValueObjectError, type ValueObjecter, type ValueObjecterAttribute } from "./valueObject";
 import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
 
 export type ApplyValueObjecterAttribute<
@@ -270,11 +271,11 @@ export class EntityHandler {
 	}
 
 	public static mapper<
-		GenericEntity extends EntityClass<any, any>,
+		GenericEntityClass extends EntityClass<any, any>,
 	>(
-		Entity: GenericEntity,
-		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
-	): InstanceType<GenericEntity> | ValueObjectError | AttributeError {
+		Entity: GenericEntityClass,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]>,
+	): InstanceType<GenericEntityClass> | ValueObjectError | AttributeError {
 		const properties = Object.entries(Entity.propertiesDefinition as EntityPropertiesDefinition)
 			.reduce(
 				(pv, [key, propertyDefinition]) => {
@@ -300,7 +301,7 @@ export class EntityHandler {
 						[key]: result,
 					};
 				},
-				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]> | ValueObjectError | AttributeError,
+				{} as EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]> | ValueObjectError | AttributeError,
 			);
 
 		if (properties instanceof Error) {
@@ -311,11 +312,11 @@ export class EntityHandler {
 	}
 
 	public static throwMapper<
-		GenericEntity extends EntityClass<any, any>,
+		GenericEntityClass extends EntityClass<any, any>,
 	>(
-		Entity: GenericEntity,
-		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
-	): InstanceType<GenericEntity> {
+		Entity: GenericEntityClass,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]>,
+	): InstanceType<GenericEntityClass> {
 		const result = this.mapper(Entity, rawProperties);
 
 		if (result instanceof Error) {
@@ -326,11 +327,11 @@ export class EntityHandler {
 	}
 
 	public static unsafeMapper<
-		GenericEntity extends EntityClass<any, any>,
+		GenericEntityClass extends EntityClass<any, any>,
 	>(
-		Entity: GenericEntity,
-		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]>,
-	): InstanceType<GenericEntity> {
+		Entity: GenericEntityClass,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]>,
+	): InstanceType<GenericEntityClass> {
 		const properties = Object.entries(Entity.propertiesDefinition as EntityPropertiesDefinition)
 			.reduce(
 				(pv, [key, propertyDefinition]) => {
@@ -356,19 +357,55 @@ export class EntityHandler {
 						[key]: result,
 					};
 				},
-				{} as EntityPropertiesDefinitionToRawProperties<GenericEntity["propertiesDefinition"]> | ValueObjectError | AttributeError,
+				{} as EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]> | ValueObjectError | AttributeError,
 			);
 
 		return new Entity(properties);
 	}
 
 	public static instanceof<
-		GenericEntity extends EntityClass<any, any>,
+		GenericEntityClass extends EntityClass<any, any>,
 	>(
-		Entity: GenericEntity,
+		Entity: GenericEntityClass,
 		entity: EntityInstance<any, any>,
-	): entity is InstanceType<GenericEntity> {
+	): entity is InstanceType<GenericEntityClass> {
 		return entity instanceof Entity;
+	}
+
+	public static createEntityObjecter<
+		GenericName extends string,
+		GenericEntityClass extends EntityClass<any, any>,
+	>(
+		name: GenericName,
+		entityClasses: GenericEntityClass | GenericEntityClass[],
+	) {
+		return new EntityObjecter(
+			name,
+			entityClasses instanceof Array
+				? entityClasses
+				: [entityClasses],
+			[],
+		);
+	}
+
+	public static makeZodSchema<
+		GenericEntityClass extends EntityClass<any, any>,
+	>(Entity: GenericEntityClass): ZodType<InstanceType<GenericEntityClass>> {
+		return zod
+			.object(
+				Object
+					.entries(Entity.propertiesDefinition as EntityPropertiesDefinition)
+					.reduce<Record<string, ZodType>>(
+						(pv, [key, value]) => ({
+							...pv,
+							[key]: value.toZodSchema(),
+						}),
+						{},
+					),
+			)
+			.transform(
+				(entityProperties) => new Entity(entityProperties),
+			) as never;
 	}
 }
 

@@ -1,5 +1,6 @@
 import { z as zod } from "zod";
-import { ValueObject, ValueObjecter, ValueObjectError } from "./valueObject";
+import { ValueObject, ValueObjecter, ValueObjectError, EntityObjecter } from "./valueObject";
+import { EntityHandler } from "./entity";
 
 describe("valueObject", () => {
 	const firstName = zod
@@ -49,5 +50,49 @@ describe("valueObject", () => {
 		expect(
 			firstName.array().nullable(),
 		).toMatchObject(new ValueObjecter("firstName", firstName.zodSchema, ["nullable", "array"]));
+	});
+
+	it("EntityObjecter", () => {
+		const firstNameType = zod
+			.string()
+			.min(1)
+			.createValueObjecter("firstName");
+
+		const lastNameType = zod
+			.string()
+			.createValueObjecter("lastName");
+
+		const firstName = firstNameType.throwCreate("firstName");
+		const lastName = lastNameType.throwCreate("lastName");
+
+		class User extends EntityHandler.create({
+			firstName: firstNameType,
+			lastName: lastNameType,
+		}) {}
+
+		const entityObjecter = new EntityObjecter(
+			"creator",
+			[User],
+			[],
+		);
+
+		const zodSchema = entityObjecter.toZodSchema();
+
+		expect(
+			zodSchema.parse(
+				{
+					firstName: "firstName",
+					lastName: "lastName",
+				},
+			),
+		).toEqual(
+			new ValueObject(
+				"creator",
+				new User({
+					firstName,
+					lastName,
+				}),
+			),
+		);
 	});
 });
