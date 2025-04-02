@@ -77,6 +77,10 @@ type CodegenRoutes = ({
         postId: string;
     };
     response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
         code: 201;
         information: "answer.created";
         body: {
@@ -99,6 +103,10 @@ type CodegenRoutes = ({
         page: number;
     };
     response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "answers.found";
         body: {

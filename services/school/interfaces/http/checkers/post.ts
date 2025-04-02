@@ -21,4 +21,5 @@ export const iWantPostExistById = createPresetChecker(
 		catch: () => new NotFoundHttpResponse("post.notfound"),
 		indexing: "post",
 	},
+	makeResponseContract(NotFoundHttpResponse, "post.notfound"),
 );
