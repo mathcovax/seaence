@@ -1,5 +1,5 @@
 import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
-import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/step/pubMed";
+import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
 import { WorkerMissionError } from "@interfaces/utils/WorkerMissionError";
@@ -68,6 +68,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 								(id) => ({
 									provider: "pubmed",
 									reference: id,
+									status: "find",
 								}),
 							),
 						});
