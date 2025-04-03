@@ -28,7 +28,9 @@
     "test:lint": "./scripts/lint.sh",
     "test:types": "./scripts/types.sh",
     "test:unit": "./scripts/unit.sh",
-    "prepare": "husky"
+    "generate-types": "./scripts/generate-types.sh",
+    "prepare": "husky",
+    "dev:school": "docker-compose up school"
   },
   "workspaces": [
     "libs/**",
@@ -39,6 +41,7 @@
     "@commitlint/cli": "19.7.1",
     "@commitlint/config-conventional": "19.2.2",
     "concurrently": "^9.1.2",
-    "husky": "9.1.7"
+    "husky": "9.1.7",
+    "tsx": "^4.19.3"
   }
 }

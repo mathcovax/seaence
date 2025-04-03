@@ -15,11 +15,17 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"paths": {
+			"@vendors/*": [
+				"./vendors/*"
+			],
 			"@business/*": [
 				"./business/*"
 			],
 			"@interfaces/*": [
 				"./interfaces/*"
+			],
+			"@providers/*": [
+				"./interfaces/providers/*"
 			],
 		}
 	},

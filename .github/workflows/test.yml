@@ -3,7 +3,7 @@ name: test
 on: [pull_request]
 
 jobs:
-  types:
+  generate-types:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -11,16 +11,38 @@ jobs:
         with:
           node-version: '22.x'
       - run: npm ci
-      - run: npm -w services/marine-snow run prisma:generate
+      - run: npm run generate-types
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clients-type
+          path: ./libs/clients-type/types
+
+  types:
+    runs-on: ubuntu-latest
+    needs: generate-types
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+      - uses: actions/download-artifact@v4
+        with:
+          name: clients-type
+          path: ./libs/clients-type/types
+      - run: npm ci
       - run: npm run test:types
 
   lint:
     runs-on: ubuntu-latest
+    needs: generate-types
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+      - uses: actions/download-artifact@v4
+        with:
+          name: clients-type
+          path: ./libs/clients-type/types
       - run: npm ci
-      - run: npm -w services/marine-snow run prisma:generate
       - run: npm run test:lint

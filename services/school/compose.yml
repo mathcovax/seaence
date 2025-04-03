@@ -4,6 +4,8 @@ services:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
     command: npm -w services/school run dev
+    ports:
+      - "1506:1506"
     depends_on:
       - school-mongo
   school-mongo:
@@ -11,6 +13,8 @@ services:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}
       service: template-mongo
     env_file: ${INCLUDE_PATH}/school/.env
+    ports:
+      - "27005:27017"
     volumes:
       - "school-mongo-data:/data/db"
 volumes:

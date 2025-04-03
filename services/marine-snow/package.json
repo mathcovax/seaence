@@ -10,7 +10,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "mission:launch": "tsx interfaces/commands/launchMission.ts",
-    "generate-types": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/routes/index.ts --output ../../libs/clients-type/types/marine-snow/duplojsTypesCodegen.d.ts"
+    "generate-types": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/routes/index.ts --output ../../libs/clients-type/types/marine-snow/duplojsTypesCodegen.d.ts",
+    "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
     "@duplojs/core": "1.0.3",
