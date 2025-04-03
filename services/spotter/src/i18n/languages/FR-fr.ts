@@ -47,6 +47,9 @@ export const FRfr = {
 			title: "Inscription / Connexion",
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 		},
+		[routerPageName.SEARCH_RESULTS_PAGE]: {
+			noResults: "Aucun résultat trouvé",
+		},
 	},
 	layout: {
 		base: {
