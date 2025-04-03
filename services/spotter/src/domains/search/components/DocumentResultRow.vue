@@ -14,11 +14,11 @@ defineProps<{
 
 <template>
 	<div class="flex items-start gap-4 p-4 border-b border-muted">
-		<img
+		<DSImage
 			:src="document.imageUrl"
 			alt="document"
 			class="w-24 h-24 object-cover rounded"
-		>
+		/>
 
 		<div class="flex-1">
 			<h3 class="text-lg font-semibold text-primary">

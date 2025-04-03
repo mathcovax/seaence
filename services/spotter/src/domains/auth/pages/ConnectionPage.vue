@@ -24,11 +24,11 @@ const { $pt } = connectionPage.use();
 		</div>
 
 		<div class="hidden lg:flex items-center justify-center">
-			<img
+			<DSImage
 				src="/images/auth/connection.png"
 				alt="connection"
-				class="w-full"
-			>
+				class="w-md h-72"
+			/>
 		</div>
 	</section>
 </template>

@@ -23,17 +23,17 @@ onUnmounted(() => {
 	>
 		<div class="container h-24 flex items-center justify-between">
 			<RouterLink :to="homePage.createTo()">
-				<img
+				<DSImage
 					src="/images/logos/logo-text.svg"
-					alt="Spotter"
-					class="block md:hidden lg:block"
-				>
+					alt="Seaence"
+					class="block md:hidden lg:block w-48 h-14"
+				/>
 
-				<img
+				<DSImage
 					src="/images/logos/logo.svg"
-					alt="Spotter"
-					class="hidden md:block lg:hidden"
-				>
+					alt="Seaence"
+					class="hidden md:block lg:hidden size-14"
+				/>
 			</RouterLink>
 
 			<SearchOverlay />

@@ -6,11 +6,11 @@ const { $pt } = notFoundPage.use();
 	<section
 		class="flex flex-col items-center justify-center h-[calc(100vh-6rem-2rem)] gap-4"
 	>
-		<img
+		<DSImage
 			src="/images/edito/404.png"
 			alt="404"
-			class="w-full max-w-2xs"
-		>
+			class="w-2xs h-80"
+		/>
 
 		<h1 class="text-4xl font-bold text-center">
 			{{ $pt("title") }}

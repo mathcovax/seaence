@@ -42,11 +42,11 @@ import SimpleSearch from "@/domains/search/components/SimpleSearch.vue";
 						</DSTabsTrigger>
 					</DSTabsList>
 
-					<img
+					<DSImage
 						src="/images/search/magnifier.png"
 						:alt="$t('layout.base.header.search.tabs.simpleSearch')"
-						class="w-64 mx-auto z-10"
-					>
+						class="w-64 h-72 mx-auto z-10"
+					/>
 
 					<DSTabsContent value="simple">
 						<SimpleSearch

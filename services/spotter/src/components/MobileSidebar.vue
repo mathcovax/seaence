@@ -15,11 +15,11 @@ import { mdiMenu } from "@mdi/js";
 
 		<DSSheetContent class="flex flex-col">
 			<DSSheetHeader class="mb-4">
-				<img
+				<DSImage
 					src="/images/logos/logo-text.svg"
 					alt="Spotter"
 					class="h-14"
-				>
+				/>
 			</DSSheetHeader>
 
 			<div class="flex-1 py-4 flex flex-col justify-between">
