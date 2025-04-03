@@ -1,43 +1,45 @@
 {
-	"editor.tabSize": 4,
-	"editor.insertSpaces": false,
-	"editor.detectIndentation": false,
-	"files.autoSave": "off",
-	"[yaml]": {
-		"editor.tabSize": 2,
-		"editor.insertSpaces": true,
-	},
-	"[json]": {
-		"editor.tabSize": 2,
-		"editor.insertSpaces": true,
-	},
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": "explicit"
-	},
-	"editor.formatOnSave": true,
-	"[prisma]": {
-		"editor.defaultFormatter": "Prisma.prisma"
-	},
-	"typescript.format.enable": false,
-	"html.format.enable": false,
-	"json.format.enable": false,
-	"eslint.workingDirectories": [
-		"libs/clean",
-		"libs/clients-type",
-		"libs/design-system",
-		"libs/eslint",
-		"services/abys",
-		"services/bottle",
-		"services/colossal",
-		"services/harbor",
-		"services/horizon",
-		"services/marine-snow",
-		"services/pilot",
-		"services/rosetta",
-		"services/school",
-		"services/sea",
-		"services/spotter",
-		"services/tide",
-	],
-	"typescript.tsdk": "node_modules/typescript/lib",
+  "editor.tabSize": 4,
+  "editor.insertSpaces": false,
+  "editor.detectIndentation": false,
+  "files.autoSave": "off",
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "prettier.enable": false,
+  "javascript.format.enable": false,
+  "typescript.format.enable": false,
+  "html.format.enable": false,
+  "json.format.enable": false,
+  "eslint.workingDirectories": [
+    "libs/clean",
+    "libs/clients-type",
+    "libs/design-system",
+    "libs/eslint",
+    "services/abys",
+    "services/bottle",
+    "services/colossal",
+    "services/harbor",
+    "services/horizon",
+    "services/marine-snow",
+    "services/pilot",
+    "services/rosetta",
+    "services/school",
+    "services/sea",
+    "services/spotter",
+    "services/tide"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

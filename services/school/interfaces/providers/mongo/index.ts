@@ -5,7 +5,9 @@ import { type MongoAnswer } from "./entities/answer";
 
 const mongoClient = new MongoClient(envs.MONGO_DATABASE_URL);
 
-await mongoClient.connect();
+if (envs.DB_CONNECTION) {
+	await mongoClient.connect();
+}
 
 const mongodb = mongoClient.db(envs.MONGO_DB_NAME);
 const postCollection = mongodb.collection<MongoPost>("posts");

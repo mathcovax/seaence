@@ -6,7 +6,7 @@
     "dev": "tsx --watch interfaces/http/main.ts",
     "test:lint": "eslint",
     "test:types": "tsc",
-    "generate-types": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/school/duplojsTypesCodegen.d.ts"
+    "generate-types": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/school/duplojsTypesCodegen.d.ts"
   },
   "dependencies": {
     "@duplojs/core": "1.0.3",

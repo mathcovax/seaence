@@ -1,10 +1,15 @@
-
 import { articleObjecter } from "@business/domains/common/article";
 import { intObjecter } from "@business/domains/common/Int";
 import { userObjecter } from "@business/domains/common/user";
 import { articleIdObjecter } from "@business/domains/entities/article";
-import { postContentObjecter, postTopicObjecter } from "@business/domains/entities/post";
-import { createPostUsecase, getPostsFromArticleIdUsecase } from "@interfaces/usecase";
+import {
+	postContentObjecter,
+	postTopicObjecter,
+} from "@business/domains/entities/post";
+import {
+	createPostUsecase,
+	getPostsFromArticleIdUsecase,
+} from "@interfaces/usecase";
 import { toSimpleObject } from "@vendors/clean";
 import { endpointPostSchema } from "../schemas/post";
 
@@ -15,7 +20,7 @@ useBuilder()
 			articleId: articleIdObjecter.toZodSchema(),
 		},
 		query: {
-			page: intObjecter.toZodSchema(),
+			page: zoderce.number().pipe(intObjecter.toZodSchema()),
 		},
 	})
 	.handler(
@@ -31,7 +36,7 @@ useBuilder()
 
 			return new OkHttpResponse(
 				"posts.found",
-				posts.map(toSimpleObject),
+				posts,
 			);
 		},
 		makeResponseContract(OkHttpResponse, "posts.found", endpointPostSchema.array()),
@@ -40,14 +45,12 @@ useBuilder()
 useBuilder()
 	.createRoute("POST", "/posts")
 	.extract({
-		body: zod.object(
-			{
-				topic: postTopicObjecter.toZodSchema(),
-				content: postContentObjecter.toZodSchema(),
-				article: articleObjecter.toZodSchema(),
-				author: userObjecter.toZodSchema(),
-			},
-		),
+		body: zod.object({
+			topic: postTopicObjecter.toZodSchema(),
+			content: postContentObjecter.toZodSchema(),
+			article: articleObjecter.toZodSchema(),
+			author: userObjecter.toZodSchema(),
+		}),
 	})
 	.handler(
 		async(pickup) => {

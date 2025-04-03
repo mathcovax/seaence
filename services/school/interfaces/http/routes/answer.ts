@@ -49,7 +49,7 @@ useBuilder()
 			postId: postIdObjecter.toZodSchema(),
 		},
 		query: {
-			page: intObjecter.toZodSchema(),
+			page: zoderce.number().pipe(intObjecter.toZodSchema()),
 		},
 	})
 	.presetCheck(

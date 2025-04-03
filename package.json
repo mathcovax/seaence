@@ -28,6 +28,7 @@
     "test:lint": "./scripts/lint.sh",
     "test:types": "./scripts/types.sh",
     "test:unit": "./scripts/unit.sh",
+    "generate-types": "./scripts/generate-types.sh",
     "prepare": "husky",
     "dev:school": "docker-compose up school"
   },

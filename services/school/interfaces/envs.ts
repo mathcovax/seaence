@@ -15,5 +15,6 @@ export const envs = zod
 		ENVIROMENT: zod.enum(["DEV", "PROD"]),
 		MONGO_DATABASE_URL: zod.string(),
 		MONGO_DB_NAME: zod.string(),
+		DB_CONNECTION: zod.booleanInString(),
 	})
 	.parse(process.env);
