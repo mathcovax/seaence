@@ -37,31 +37,31 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="waves-container">
+	<div class="absolute bottom-0 left-0 -z-10 w-full h-7/20">
 		<svg
-			class="waves"
+			class="absolute bottom-0 w-2/1 h-full"
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 1440 320"
 			preserveAspectRatio="none"
 		>
 			<path
-				class="wave1 fill-blue-seaence"
+				class="wave1 opacity-30 fill-blue-seaence"
 				d="M0,0L48,16C96,32,192,64,288,80C384,96,480,96,576,85.3C672,75,768,53,864,53.3C960,53,1056,75,1152,74.7C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
 			/>
 
 			<path
-				class="wave2 fill-blue-seaence"
+				class="wave2 opacity-50 fill-blue-seaence"
 				d="M0,0L48,16C96,32,192,64,288,58.7C384,53,480,11,576,0C672,0,768,21,864,32C960,43,1056,75,1152,69.7C1248,64,1344,32,1392,21.3L1440,11L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
 			/>
 
 			<path
-				class="wave3 fill-blue-seaence"
+				class="wave3 opacity-20 fill-blue-seaence"
 				d="M0,0L48,10.7C96,21,192,43,288,37.3C384,32,480,0,576,0C672,0,768,32,864,37.3C960,43,1056,21,1152,16C1248,11,1344,21,1392,26.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
 			/>
 		</svg>
 
 		<div
-			class="boat"
+			class="absolute top-[-45px] z-10 transform-origin-bottom-center transition-all duration-500 ease-linear"
 			:style="{
 				left: `${boatPosition}%`,
 				transform: `rotateY(${boatRotation}deg)`
@@ -99,44 +99,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.waves-container {
-  z-index: -50;
-  width: 100%;
-  height: 35%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.waves {
-  width: 200%;
-  height: 100%;
-  position: absolute;
-  bottom: 0;
-}
-
 .wave1 {
-  opacity: 0.3;
   animation: wave 45s linear infinite;
 }
 
 .wave2 {
-  opacity: 0.5;
   animation: wave 35s linear reverse infinite;
 }
 
 .wave3 {
-  opacity: 0.2;
   animation: wave 25s linear infinite;
-}
-
-.boat {
-  position: absolute;
-  top: -35px;
-  transform-origin: bottom center;
-  z-index: 10;
-  transition: left 0.5s linear, transform 0.5s ease;
 }
 
 @keyframes wave {

@@ -5,6 +5,8 @@ import DocumentResultRow from "../components/DocumentResultRow.vue";
 import SearchResutPagination from "../components/SearchResutPagination.vue";
 import { computed, ref } from "vue";
 
+const $pt = usePageTranslate();
+
 // Mock data
 const START_INDEX = 1;
 const documents = Array.from({ length: 180 }, (unused, index) => ({
@@ -40,12 +42,6 @@ function handlePageChange(page: number) {
 
 <template>
 	<section class="min-h-[calc(100vh-6rem-2rem)] space-y-12 flex flex-col">
-		<DSInputSearch
-			:placeholder="$t('cta.search')"
-			:button-text="$t('cta.search')"
-			class="sticky top-28 z-10 w-full max-w-xl mx-auto"
-		/>
-
 		<DSTabs
 			v-if="documents && documents.length > 0"
 			default-value="cards"
@@ -108,7 +104,7 @@ function handlePageChange(page: number) {
 			class="grow flex items-center justify-center"
 		>
 			<p class="text-2xl text-gray-500">
-				No documents found
+				{{ $pt("noResults") }}
 			</p>
 		</div>
 	</section>
