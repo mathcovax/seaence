@@ -70,6 +70,9 @@ export const FRfr = {
 				},
 			},
 		},
+		loader: {
+			title: "Chargement...",
+		},
 	},
 	cta: {
 		backHome: "Retour à l'accueil",
