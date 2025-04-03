@@ -15,11 +15,11 @@ defineProps<{
 <template>
 	<DSCard class="w-full max-w-xs shadow-xl">
 		<DSCardHeader class="h-56 p-2">
-			<img
+			<DSImage
 				:src="document.imageUrl"
 				alt="document"
 				class="w-full h-full object-cover rounded"
-			>
+			/>
 		</DSCardHeader>
 
 		<DSCardContent class="grid gap-4 p-4">

@@ -37,7 +37,7 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="absolute bottom-0 left-0 -z-10 w-full h-7/20">
+	<div class="absolute bottom-0 left-0 -z-10 w-full h-35/100">
 		<svg
 			class="absolute bottom-0 w-2/1 h-full"
 			xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@ onMounted(() => {
 		</svg>
 
 		<div
-			class="absolute top-[-45px] z-10 transform-origin-bottom-center transition-all duration-500 ease-linear"
+			class="absolute top-[-55px] z-10 transform-origin-bottom-center transition-all duration-500 ease-linear"
 			:style="{
 				left: `${boatPosition}%`,
 				transform: `rotateY(${boatRotation}deg)`
