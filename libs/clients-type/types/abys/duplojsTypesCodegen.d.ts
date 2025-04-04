@@ -8,230 +8,47 @@
 type CodegenRoutes = ({
     method: "POST";
     path: "/raw-document";
-    body: ({
-        id: string;
+    body: {
+        provider: "pubmed";
+        resourceUrl: string;
         title: string;
         authors: {
             name: string;
             affiliation: string[] | null;
-        }[] | null;
-        publicationDate: Date;
-        sourceUrl: string;
+        }[];
         grants: {
             acronym: string | null;
             agency: string;
-        }[] | null;
-        digitalObjectIdentifier: string | null;
-        bookshelfIdentifier: string | null;
-        source: "Pubmed";
-        pubmedId: string;
-        keywords: string[];
-        figures: {
-            name: string;
-            url: string;
-        }[] | null;
-        comments: {
-            text: string;
-            source: string | null;
-        }[] | null;
-        similarArticles: {
-            title: string;
-            authors: {
-                name: string;
-                affiliation: string[] | null;
-            }[];
-            journal: {
-                title: string;
-                issn: string;
-                volume: number;
-                issue: number;
-            };
-        }[] | null;
-        citedBys: {
-            title: string;
-            authors: {
-                name: string;
-                affiliation: string[] | null;
-            }[];
-            journal: {
-                title: string;
-                issn: string;
-                volume: number;
-                issue: number;
-            };
-        }[] | null;
-        references: {
-            citation: string;
-            authors: {
-                name: string;
-                affiliation: string[] | null;
-            }[];
-            sourceUrl: string;
-        }[] | null;
-        meshTerms: {
-            term: string;
-            urls: string[];
-        }[] | null;
-        substances: {
-            name: string;
-            urls: string[];
-        }[] | null;
-        associatedDatas: {
-            name: string;
-            urls: string[];
-        }[] | null;
-        relatedInformations: {
-            type: "book" | "article";
-            name: string;
-            url: string;
-        }[] | null;
-        linkOuts: {
-            name: string;
-            url: string;
-        }[] | null;
-        chemicals: {
-            name: string;
-            registryNumber: string;
-        }[] | null;
+            country: string | null;
+        }[];
+        keywords: {
+            majorTopic: boolean;
+            value: string;
+        }[];
         articleTypes: ("adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast")[];
-        type: "abstract";
-        abstract: {
-            full: string;
-            structure: {
-                label: string;
-                text: string;
-            }[] | null;
-        } | null;
-    } | {
-        id: string;
-        title: string;
-        authors: {
-            name: string;
-            affiliation: string[] | null;
-        }[] | null;
-        publicationDate: Date;
-        sourceUrl: string;
-        grants: {
-            acronym: string | null;
-            agency: string;
-        }[] | null;
-        digitalObjectIdentifier: string | null;
-        bookshelfIdentifier: string | null;
-        source: "Pubmed";
-        pubmedId: string;
-        keywords: string[];
-        figures: {
-            name: string;
-            url: string;
-        }[] | null;
-        comments: {
-            text: string;
-            source: string | null;
-        }[] | null;
-        similarArticles: {
-            title: string;
-            authors: {
-                name: string;
-                affiliation: string[] | null;
-            }[];
-            journal: {
-                title: string;
-                issn: string;
-                volume: number;
-                issue: number;
-            };
-        }[] | null;
-        citedBys: {
-            title: string;
-            authors: {
-                name: string;
-                affiliation: string[] | null;
-            }[];
-            journal: {
-                title: string;
-                issn: string;
-                volume: number;
-                issue: number;
-            };
-        }[] | null;
-        references: {
-            citation: string;
-            authors: {
-                name: string;
-                affiliation: string[] | null;
-            }[];
-            sourceUrl: string;
-        }[] | null;
-        meshTerms: {
-            term: string;
-            urls: string[];
-        }[] | null;
-        substances: {
-            name: string;
-            urls: string[];
-        }[] | null;
-        associatedDatas: {
-            name: string;
-            urls: string[];
-        }[] | null;
-        relatedInformations: {
-            type: "book" | "article";
-            name: string;
-            url: string;
-        }[] | null;
-        linkOuts: {
-            name: string;
-            url: string;
-        }[] | null;
-        chemicals: {
-            name: string;
-            registryNumber: string;
-        }[] | null;
-        articleTypes: ("adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast")[];
-        type: "expect";
-        expect: string | null;
-    }) | {
-        id: string;
-        title: string;
-        authors: {
-            name: string;
-            affiliation: string[] | null;
-        }[] | null;
-        publicationDate: Date;
-        sourceUrl: string;
-        grants: {
-            acronym: string | null;
-            agency: string;
-        }[] | null;
-        digitalObjectIdentifier: string | null;
-        bookshelfIdentifier: string | null;
-        source: "Pedro";
-        method: "clinicalTrial" | "systematicReview" | "practiceGuideline";
-        content: string | null;
-        structureContent: {
+        articleIds: {
+            type: string;
+            value: string;
+        }[];
+        electronicPublicationDate: Date;
+        abstract: string | null;
+        detailedAbstract: {
             label: string;
-            text: string;
+            content: string;
+            nlmCategory: string;
         }[] | null;
-        links: string[];
-    } | {
-        id: string;
-        title: string;
-        authors: {
-            name: string;
-            affiliation: string[] | null;
-        }[] | null;
-        publicationDate: Date;
-        sourceUrl: string;
-        grants: {
-            acronym: string | null;
-            agency: string;
-        }[] | null;
-        digitalObjectIdentifier: string | null;
-        bookshelfIdentifier: string | null;
-        source: "ScienceDirect";
+        meshTerms: {
+            ui: string;
+            majorTopic: boolean;
+            value: string;
+        }[];
     };
     response: {
-        code: 200;
+        code: 409;
+        information: "rawDocument.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 201;
         information: "rawDocument.created";
         body?: undefined;
     };

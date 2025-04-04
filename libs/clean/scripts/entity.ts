@@ -1,22 +1,7 @@
 import { z as zod, type ZodType } from "zod";
-import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject } from "./utils";
-import { EntityObjecter, type ValueObject, type ValueObjectError, type ValueObjecter, type ValueObjecterAttribute } from "./valueObject";
+import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject, type AnyRecord, setProperty, type AttributeError, applyAttributes, type ApplyValueObjecterAttribute } from "./utils";
+import { EntityObjecter, type ValueObjectError, type ValueObjecter } from "./valueObject";
 import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
-
-export type ApplyValueObjecterAttribute<
-	GenericValue extends unknown,
-	GenericValueObjecterAttribute extends unknown[],
-> = GenericValueObjecterAttribute extends [...unknown[], infer InferedLast]
-	? InferedLast extends "array"
-		? GenericValueObjecterAttribute extends [...infer InferedRest, unknown]
-			? ApplyValueObjecterAttribute<GenericValue[], InferedRest>
-			: never
-		: InferedLast extends "nullable"
-			? GenericValueObjecterAttribute extends [...infer InferedRest, unknown]
-				? ApplyValueObjecterAttribute<null | GenericValue, InferedRest>
-				: never
-			: never
-	: GenericValue;
 
 export type EntityPropertiesDefinition = Record<string, ValueObjecter>;
 
@@ -101,77 +86,6 @@ export interface EntityClass<
 	>;
 
 	readonly propertiesDefinition: GenericPropertiesDefinition;
-}
-
-export class AttributeError<
-	GenericName extends string = string,
-> extends Error {
-	public constructor(
-		public readonly valueObjectName: GenericName,
-		public readonly attribute: ValueObjecterAttribute,
-	) {
-		super(`${attribute} attribute Error on ${valueObjectName} value object.`);
-	}
-}
-
-type AnyRecord = Record<any, any>;
-
-function setProperty(object: any, prop: string, value: any) {
-	(object as AnyRecord)[prop] = value;
-}
-
-type MybeArray<
-	GenericValue extends unknown,
-> = GenericValue | GenericValue[];
-
-export function applyAttributes(
-	getValue: (rawValue: any) => ValueObject | ValueObjectError,
-	valueObjecterName: string,
-	rawValue: any,
-	attributes: ValueObjecterAttribute[],
-): MybeArray<
-	| ValueObject
-	| AttributeError
-	| ValueObjectError
-	| null
-	> {
-	const [currentAttribute, ...restAttributes] = attributes;
-
-	if (currentAttribute === undefined) {
-		return getValue(rawValue);
-	} else if (currentAttribute === "nullable") {
-		return rawValue === null
-			? null
-			: applyAttributes(
-				getValue,
-				valueObjecterName,
-				rawValue,
-				restAttributes,
-			);
-	} else if (currentAttribute === "array") {
-		if (!Array.isArray(rawValue)) {
-			return new AttributeError(
-				valueObjecterName,
-				currentAttribute,
-			);
-		}
-
-		const results = rawValue.map(
-			(mappedRawValue) => applyAttributes(
-				getValue,
-				valueObjecterName,
-				mappedRawValue,
-				restAttributes,
-			),
-		);
-
-		return results.find((result) => result instanceof Error) ?? results as never;
-	} else {
-		return new AttributeError(
-			valueObjecterName,
-			currentAttribute,
-		);
-	}
 }
 
 export class EntityHandler {

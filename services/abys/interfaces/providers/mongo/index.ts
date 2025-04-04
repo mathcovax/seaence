@@ -1,28 +1,18 @@
-import { type EntityToSimpleObject } from "@vendors/clean";
 import { MongoClient } from "mongodb";
-// entities
-import { type PedroRawDocumentEntity } from "@business/domains/entities/document/raw/pedro";
-import { type PubmedRawDocumentEntity } from "@business/domains/entities/document/raw/pubmed";
-import { type ScienceDirectRawDocumentEntity } from "@business/domains/entities/document/raw/scienceDirect";
-// others
 import { envs } from "@interfaces/envs";
-
-type RawDocumentMongoEntity = (
-	| (EntityToSimpleObject<typeof PedroRawDocumentEntity> & { source: "Pedro" })
-	| (EntityToSimpleObject<typeof PubmedRawDocumentEntity> & { source: "Pubmed" })
-	| (EntityToSimpleObject<typeof ScienceDirectRawDocumentEntity> & { source: "ScienceDirect" })
-);
+import { type MongoRawDocument } from "./entities/rawDocument";
 
 const client = new MongoClient(envs.MONGO_DATABASE_URL);
-await client.connect();
-const db = client.db(envs.MONGO_DB);
 
-const mongo = {
-	db,
-	rawDocumentEntity: db.collection<RawDocumentMongoEntity>("rawDocument"),
+if (envs.DB_CONNECTION) {
+	await client.connect();
+}
+
+const mongodb = client.db(envs.MONGO_DB);
+const rawDocumentCollection = mongodb.collection<MongoRawDocument>("rawDocument");
+
+export const mongo = {
+	mongodb,
+	rawDocumentCollection,
 };
 
-export {
-	mongo,
-	RawDocumentMongoEntity,
-};

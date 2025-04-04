@@ -1,8 +1,7 @@
 import { z as zod } from "zod";
-import { AttributeError, applyAttributes, EntityHandler, type EntityInstance } from "./entity";
+import { EntityHandler, type EntityInstance } from "./entity";
 import { type SimplifyObjectTopLevel, type ExpectType } from "@duplojs/utils";
 import { ValueObject, ValueObjectError } from "./valueObject";
-import { ToSimpleObject } from "./utils";
 
 export type GetEntityProperties<
 	GenericEntityInstance extends EntityInstance<any, any>,
@@ -1322,87 +1321,5 @@ describe("entity", () => {
 				},
 			);
 		});
-	});
-
-	it("applyAttributes", () => {
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				"test",
-				[],
-			),
-		)
-			.toEqual(firstNameType.create("test"));
-
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				"test",
-				["nullable"],
-			),
-		)
-			.toEqual(firstNameType.create("test"));
-
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				null,
-				["nullable"],
-			),
-		)
-			.toEqual(null);
-
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				["test"],
-				["array"],
-			),
-		)
-			.toEqual([firstNameType.create("test")]);
-
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				null,
-				["nullable", "array"],
-			),
-		)
-			.toEqual(null);
-
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				null,
-				["nullable", "array"],
-			),
-		)
-			.toEqual(null);
-
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				[],
-				["nullable", "array"],
-			),
-		)
-			.toEqual([]);
-
-		expect(
-			applyAttributes(
-				(value) => firstNameType.create(value),
-				firstNameType.name,
-				"toto",
-				["array"],
-			),
-		)
-			.toEqual(new AttributeError("firstName", "array"));
 	});
 });

@@ -18,8 +18,10 @@
 		"scope": "typescript",
 		"body": [
 			"useBuilder()",
-			"   .createRoute($1, $2)",
-			"   .handler((pickup) => {$3});"
+			"\t.createRoute($1, $2)",
+			"\t.handler((pickup) => {",
+			"\t\t$3",
+			"\t});"
 		]
 	},
 	"clean-usecase": {
@@ -46,7 +48,7 @@
 		"prefix": "ce",
 		"scope": "typescript",
 		"body": [
-			"import { EntityHandler, type GetValueObject, type GetEntityProperties } from \"@vendors/clean\"",
+			"import { EntityHandler, type GetValueObject, type GetEntityProperties, zod } from \"@vendors/clean\"",
 			"",
 			"export const $1IdObjecter = zod",
 			"\t.string()",
@@ -55,9 +57,9 @@
 			"export type $2Id = GetValueObject<typeof $1IdObjecter>;",
 			"",
 			"export class $2Entity extends EntityHandler.create({",
-			"\t$1Id: $1IdObjecter,",
+			"\tid: $1IdObjecter,",
 			"}) {",
-			"\tpublic static create(params: GetEntityProperties<$2Entity>) {",
+			"\tpublic static create(params: GetEntityProperties<typeof $2Entity>) {",
 			"\t\treturn new $2Entity(params);",
 			"\t}",
 			"}",

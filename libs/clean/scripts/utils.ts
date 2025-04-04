@@ -1,4 +1,12 @@
 import { type AnyFunction, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type ValueObject, type ValueObjecterAttribute, type ValueObjectError } from "./valueObject";
+import { type ZodType } from "zod";
+
+export type AnyRecord = Record<any, any>;
+
+export function setProperty(object: any, prop: string, value: any) {
+	(object as AnyRecord)[prop] = value;
+}
 
 export type ToJSON<
 	GenericValue extends unknown,
@@ -182,4 +190,102 @@ export function createEnum<
 			["toTuple", () => values],
 		],
 	);
+}
+
+export type MybeArray<
+	GenericValue extends unknown,
+> = GenericValue | GenericValue[];
+
+export class AttributeError<
+	GenericName extends string = string,
+> extends Error {
+	public constructor(
+		public readonly valueObjectName: GenericName,
+		public readonly attribute: ValueObjecterAttribute,
+	) {
+		super(`${attribute} attribute Error on ${valueObjectName} value object.`);
+	}
+}
+
+export type ApplyValueObjecterAttribute<
+	GenericValue extends unknown,
+	GenericValueObjecterAttribute extends unknown[],
+> = GenericValueObjecterAttribute extends [...unknown[], infer InferedLast]
+	? InferedLast extends "array"
+		? GenericValueObjecterAttribute extends [...infer InferedRest, unknown]
+			? ApplyValueObjecterAttribute<GenericValue[], InferedRest>
+			: never
+		: InferedLast extends "nullable"
+			? GenericValueObjecterAttribute extends [...infer InferedRest, unknown]
+				? ApplyValueObjecterAttribute<null | GenericValue, InferedRest>
+				: never
+			: never
+	: GenericValue;
+
+export function applyAttributes(
+	getValue: (rawValue: any) => ValueObject | ValueObjectError,
+	valueObjecterName: string,
+	rawValue: any,
+	attributes: ValueObjecterAttribute[],
+): MybeArray<
+	| ValueObject
+	| AttributeError
+	| ValueObjectError
+	| null
+	> {
+	const [currentAttribute, ...restAttributes] = attributes;
+
+	if (currentAttribute === undefined) {
+		return getValue(rawValue);
+	} else if (currentAttribute === "nullable") {
+		return rawValue === null
+			? null
+			: applyAttributes(
+				getValue,
+				valueObjecterName,
+				rawValue,
+				restAttributes,
+			);
+	} else if (currentAttribute === "array") {
+		if (!Array.isArray(rawValue)) {
+			return new AttributeError(
+				valueObjecterName,
+				currentAttribute,
+			);
+		}
+
+		const results = rawValue.map(
+			(mappedRawValue) => applyAttributes(
+				getValue,
+				valueObjecterName,
+				mappedRawValue,
+				restAttributes,
+			),
+		);
+
+		return results.find((result) => result instanceof Error) ?? results as never;
+	} else {
+		return new AttributeError(
+			valueObjecterName,
+			currentAttribute,
+		);
+	}
+}
+
+export function applyAttributesToZodSchema(
+	attributes: ValueObjecterAttribute[],
+	zodSchema: ZodType,
+): ZodType {
+	return attributes
+		.reduceRight<ZodType>(
+			(pv, cv) => {
+				if (cv === "array") {
+					return pv.array();
+				} else if (cv === "nullable") {
+					return pv.nullable();
+				}
+				return pv;
+			},
+			zodSchema,
+		);
 }
