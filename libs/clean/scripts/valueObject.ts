@@ -1,5 +1,5 @@
 import { ZodEnum, type ZodError, type ZodLiteral, ZodType, type ZodTypeDef, type infer as zodInfer, z as zod } from "zod";
-import { toJSON, toSimpleObject } from "./utils";
+import { applyAttributesToZodSchema, type ApplyValueObjecterAttribute, toJSON, toSimpleObject } from "./utils";
 import { type EntityClass } from "./entity";
 
 declare module "zod" {
@@ -84,6 +84,16 @@ export class ValueObjecter<
 		public readonly attributes: GenericAttribute,
 	) {}
 
+	public declination<
+		GenericDeclinationName extends string,
+	>(declinationName: GenericDeclinationName) {
+		return new ValueObjecter(
+			declinationName,
+			this.zodSchema,
+			this.attributes,
+		);
+	}
+
 	public unknownCreate(rawData: unknown):
 		| ValueObject<GenericName, zodInfer<GenericZodSchema>>
 		| ValueObjectError<GenericName> {
@@ -128,19 +138,37 @@ export class ValueObjecter<
 		return this.unknownUnsafeCreate(rawData);
 	}
 
-	public toZodSchema(): ZodType<
-		ValueObject<
-			GenericName,
-			zodInfer<GenericZodSchema>
+	public getZodSchemaWithApplyedAttribute(): ZodType<
+		ApplyValueObjecterAttribute<
+			zodInfer<GenericZodSchema>,
+			GenericAttribute
 		>
 	> {
-		return this.zodSchema
-			.transform(
-				(value) => new ValueObject(
-					this.name,
-					value,
+		return applyAttributesToZodSchema(
+			this.attributes,
+			this.zodSchema,
+		);
+	}
+
+	public toZodSchema(): ZodType<
+		ApplyValueObjecterAttribute<
+			ValueObject<
+				GenericName,
+				zodInfer<GenericZodSchema>
+			>,
+			GenericAttribute
+		>
+	> {
+		return applyAttributesToZodSchema(
+			this.attributes,
+			this.zodSchema
+				.transform(
+					(value) => new ValueObject(
+						this.name,
+						value,
+					),
 				),
-			);
+		);
 	}
 
 	public nullable() {
@@ -205,32 +233,48 @@ export class EntityObjecter<
 	}
 
 	public override toZodSchema(): ZodType<
-		ValueObject<
-			GenericName,
-			InstanceType<GenericEntityClass>
+		ApplyValueObjecterAttribute<
+			ValueObject<
+				GenericName,
+				InstanceType<GenericEntityClass>
+			>,
+			GenericAttribute
 		>
 	> {
-		return zod.union(
-			this.entityClasses.map(
-				(entityClass: EntityClass) => zod
-					.object(
-						Object
-							.entries(entityClass.propertiesDefinition)
-							.reduce<Record<string, ZodType>>(
-								(pv, [key, value]) => ({
-									...pv,
-									[key]: value.toZodSchema(),
-								}),
-								{},
+		return applyAttributesToZodSchema(
+			this.attributes,
+			zod.union(
+				this.entityClasses.map(
+					(entityClass: EntityClass) => zod
+						.object(
+							Object
+								.entries(entityClass.propertiesDefinition)
+								.reduce<Record<string, ZodType>>(
+									(pv, [key, value]) => ({
+										...pv,
+										[key]: value.toZodSchema(),
+									}),
+									{},
+								),
+						)
+						.transform(
+							(entityProperties) => new ValueObject(
+								this.name,
+								new entityClass(entityProperties),
 							),
-					)
-					.transform(
-						(entityProperties) => new ValueObject(
-							this.name,
-							new entityClass(entityProperties),
 						),
-					),
-			) as never,
+				) as never,
+			),
+		);
+	}
+
+	public override declination<
+		GenericDeclinationName extends string,
+	>(declinationName: GenericDeclinationName) {
+		return new EntityObjecter(
+			declinationName,
+			this.entityClasses,
+			this.attributes,
 		);
 	}
 

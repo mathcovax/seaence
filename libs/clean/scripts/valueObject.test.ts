@@ -95,4 +95,13 @@ describe("valueObject", () => {
 			),
 		);
 	});
+
+	it("toZodSchema with attribute", () => {
+		const firstName = new ValueObjecter("firstName", zod.string(), ["nullable", "array"] as const);
+		const zodSchema = firstName.toZodSchema();
+
+		expect(zodSchema.parse([])).toEqual([]);
+		expect(zodSchema.parse(null)).toEqual(null);
+		expect(zodSchema.parse(["toto"])).toEqual([new ValueObject("firstName", "toto")]);
+	});
 });
