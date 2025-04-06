@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import SvgIcon from "@jamescoyle/vue-icon";
 
-interface Icon {
+interface Props {
 	icon: string;
 	size?: string;
 }
 
-defineProps<Icon>();
+defineProps<Props>();
 </script>
 
 <template>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-const { HOME_PAGE, CONNECTION_PAGE } = routerPageName;
 </script>
 
 <template>
 	<header class="sticky top-0 left-0 z-50 bg-white">
 		<div class="container h-24 flex items-center justify-between">
-			<RouterLink :to="{ name: HOME_PAGE }">
+			<RouterLink :to="homePage.createTo()">
 				<img
 					src="/images/logos/logo-text.svg"
 					alt="Spotter"
@@ -21,7 +20,7 @@ const { HOME_PAGE, CONNECTION_PAGE } = routerPageName;
 
 			<div class="hidden md:block space-x-2">
 				<DSButtonPrimary as-child>
-					<RouterLink :to="{ name: CONNECTION_PAGE }">
+					<RouterLink :to="connectionPage.createTo()">
 						{{ $t("cta.connection") }}
 					</RouterLink>
 				</DSButtonPrimary>

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { mdiMenu } from "@mdi/js";
-
-const { CONNECTION_PAGE } = routerPageName;
 </script>
 
 <template>
@@ -28,7 +26,7 @@ const { CONNECTION_PAGE } = routerPageName;
 				<div class="flex flex-col gap-2">
 					<DSSheetClose as-child>
 						<DSButtonPrimary as-child>
-							<RouterLink :to="{ name: CONNECTION_PAGE }">
+							<RouterLink :to="connectionPage.createTo()">
 								{{ $t("cta.connection") }}
 							</RouterLink>
 						</DSButtonPrimary>

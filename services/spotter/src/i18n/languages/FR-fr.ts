@@ -1,6 +1,6 @@
 export const FRfr = {
 	page: {
-		[routerPageName.HOME_PAGE]: {
+		[homePage.name]: {
 			hero: {
 				title: {
 					begin: "L’exploration de",
@@ -39,11 +39,11 @@ export const FRfr = {
 				},
 			},
 		},
-		[routerPageName.NOT_FOUND_PAGE]: {
+		[notFoundPage.name]: {
 			title: "404 - Page non trouvée",
 			subtitle: "Désolé, la page que vous recherchez n'existe pas.",
 		},
-		[routerPageName.CONNECTION_PAGE]: {
+		[connectionPage.name]: {
 			title: "Inscription / Connexion",
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 		},

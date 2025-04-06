@@ -13,8 +13,9 @@ export default defineConfig({
 			dirs: [
 				"src/composables",
 				"src/i18n",
-				"src/router/routerPageName/*.ts",
-				"vendors/design-system/composables",
+				"src/domains/**/router.ts",
+				"vendors/design-system/composable",
+				"vendors/design-system/utils",
 			],
 			imports: [
 				"vue",
@@ -22,6 +23,7 @@ export default defineConfig({
 				"vue-router",
 			],
 			ignore: ["_**"],
+			vueTemplate: true,
 		}),
 		autoImportComponents({
 			dirs: [
