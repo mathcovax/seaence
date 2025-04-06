@@ -21,7 +21,7 @@ export function useRouteParams<
 
 	const params = computed(() => {
 		const zodSchema = zod.object(objectSchemas);
-		const { success, data } = zodSchema.safeParse(route.query);
+		const { success, data } = zodSchema.safeParse(route.params);
 
 		if (currentRouteName !== route.name) {
 			throw new Error("Route change.");
