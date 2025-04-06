@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const $pt = usePageTranslate();
+const { pt } = usePageTranslate();
 </script>
 
 <template>
@@ -8,11 +8,11 @@ const $pt = usePageTranslate();
 			<div class="w-full max-w-xs flex flex-col gap-6">
 				<div class="flex flex-col items-center gap-2 text-center">
 					<h1 class="text-2xl font-bold">
-						{{ $pt("title") }}
+						{{ pt("title") }}
 					</h1>
 
 					<p class="text-balance text-sm text-muted-foreground">
-						{{ $pt("subtitle") }}
+						{{ pt("subtitle") }}
 					</p>
 				</div>
 

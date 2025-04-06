@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { CONNECTION_PAGE } = routerPageName;
-const $pt = usePageTranslate();
+const { pt } = usePageTranslate();
 </script>
 
 <template>
@@ -9,15 +9,15 @@ const $pt = usePageTranslate();
 	>
 		<div class="space-y-6">
 			<h1 class="text-4xl font-bold">
-				{{ $pt("hero.title.begin") }}
-				<span class="text-blue-seaence">{{ $pt("hero.title.spanBlue") }}</span>
-				{{ $pt("hero.title.middle") }}
-				<span class="text-secondary">{{ $pt("hero.title.spanRed") }}</span>
-				{{ $pt("hero.title.end") }}
+				{{ pt("hero.title.begin") }}
+				<span class="text-blue-seaence">{{ pt("hero.title.spanBlue") }}</span>
+				{{ pt("hero.title.middle") }}
+				<span class="text-secondary">{{ pt("hero.title.spanRed") }}</span>
+				{{ pt("hero.title.end") }}
 			</h1>
 
 			<p>
-				{{ $pt("hero.subtitle") }}
+				{{ pt("hero.subtitle") }}
 			</p>
 
 			<DSButtonPrimary as-child>
@@ -36,15 +36,15 @@ const $pt = usePageTranslate();
 
 	<section class="text-center md:text-start mb-12 space-y-6">
 		<h2 class="text-center text-4xl font-bold">
-			{{ $pt("about.title") }}
+			{{ pt("about.title") }}
 		</h2>
 
-		<p>{{ $pt("about.content") }}</p>
+		<p>{{ pt("about.content") }}</p>
 	</section>
 
 	<section class="text-center md:text-start mb-12 space-y-6">
 		<h2 class="text-center text-4xl font-bold">
-			{{ $pt("faq.title") }}
+			{{ pt("faq.title") }}
 		</h2>
 
 		<DSAccordion
@@ -53,15 +53,15 @@ const $pt = usePageTranslate();
 			class="w-full max-w-3xl mx-auto"
 		>
 			<DSAccordionItem value="item-1">
-				<DSAccordionTrigger>{{ $pt("faq.accordion.item1.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>{{ pt("faq.accordion.item1.question") }}</DSAccordionTrigger>
 
-				<DSAccordionContent>{{ $pt("faq.accordion.item1.answer") }}</DSAccordionContent>
+				<DSAccordionContent>{{ pt("faq.accordion.item1.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-2">
-				<DSAccordionTrigger>{{ $pt("faq.accordion.item2.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>{{ pt("faq.accordion.item2.question") }}</DSAccordionTrigger>
 
-				<DSAccordionContent>{{ $pt("faq.accordion.item2.answer") }}</DSAccordionContent>
+				<DSAccordionContent>{{ pt("faq.accordion.item2.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 		</DSAccordion>
 	</section>

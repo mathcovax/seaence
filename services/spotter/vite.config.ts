@@ -13,17 +13,21 @@ export default defineConfig({
 			dirs: [
 				"src/composables",
 				"src/i18n",
-				"./src/router/routerPageName/*.ts",
+				"src/router/routerPageName/*.ts",
+				"vendors/design-system/composables",
 			],
 			imports: [
 				"vue",
-				"vue-router",
 				"vue-i18n",
+				"vue-router",
 			],
 			ignore: ["_**"],
 		}),
 		autoImportComponents({
-			dirs: ["src/components", "vendors/design-system"],
+			dirs: [
+				"src/components",
+				"vendors/design-system",
+			],
 			resolvers: [],
 		}),
 		tsconfigPaths(),

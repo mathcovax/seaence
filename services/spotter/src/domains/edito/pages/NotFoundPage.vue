@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { HOME_PAGE } = routerPageName;
-const $pt = usePageTranslate();
+const { pt } = usePageTranslate();
 </script>
 
 <template>
@@ -14,11 +14,11 @@ const $pt = usePageTranslate();
 		>
 
 		<h1 class="text-4xl font-bold text-center">
-			{{ $pt("title") }}
+			{{ pt("title") }}
 		</h1>
 
 		<p class="text-center text-muted-foreground">
-			{{ $pt("subtitle") }}
+			{{ pt("subtitle") }}
 		</p>
 
 		<DSButtonPrimary as-child>
