@@ -18,6 +18,7 @@ declare module 'vue' {
     DSButtonOutline: typeof import('./vendors/design-system/components/DSButtonOutline.vue')['default']
     DSButtonPrimary: typeof import('./vendors/design-system/components/DSButtonPrimary.vue')['default']
     DSCheckbox: typeof import('./vendors/design-system/components/ui/checkbox/DSCheckbox.vue')['default']
+    DSGoogleLogo: typeof import('./vendors/design-system/components/DSGoogleLogo.vue')['default']
     DSInput: typeof import('./vendors/design-system/components/ui/input/DSInput.vue')['default']
     DSLabel: typeof import('./vendors/design-system/components/ui/label/DSLabel.vue')['default']
     DSLoadingLogo: typeof import('./vendors/design-system/components/DSLoadingLogo.vue')['default']

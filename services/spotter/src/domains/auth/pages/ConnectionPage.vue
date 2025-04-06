@@ -16,9 +16,10 @@ const $pt = usePageTranslate();
 					</p>
 				</div>
 
-				<DSButtonGoogle class="w-full">
+				<DSButtonOutline class="w-full">
+					<DSGoogleLogo />
 					Google
-				</DSButtonGoogle>
+				</DSButtonOutline>
 			</div>
 		</div>
 
