@@ -13,17 +13,23 @@ export default defineConfig({
 			dirs: [
 				"src/composables",
 				"src/i18n",
-				"./src/router/routerPageName/*.ts",
+				"src/domains/**/router.ts",
+				"vendors/design-system/composable",
+				"vendors/design-system/utils",
 			],
 			imports: [
 				"vue",
-				"vue-router",
 				"vue-i18n",
+				"vue-router",
 			],
 			ignore: ["_**"],
+			vueTemplate: true,
 		}),
 		autoImportComponents({
-			dirs: ["src/components", "vendors/design-system"],
+			dirs: [
+				"src/components",
+				"vendors/design-system",
+			],
 			resolvers: [],
 		}),
 		tsconfigPaths(),
@@ -31,5 +37,8 @@ export default defineConfig({
 	server: {
 		host: "0.0.0.0",
 		port: 3000,
+	},
+	optimizeDeps: {
+		force: true,
 	},
 });

@@ -8,12 +8,33 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/DSAccordion.vue')['default']
+    DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
+    DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
+    DSAccordionTrigger: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionTrigger.vue')['default']
     DSButton: typeof import('./vendors/design-system/components/ui/button/DSButton.vue')['default']
+    DSButtonIcon: typeof import('./vendors/design-system/components/DSButtonIcon.vue')['default']
+    DSButtonOutline: typeof import('./vendors/design-system/components/DSButtonOutline.vue')['default']
+    DSButtonPrimary: typeof import('./vendors/design-system/components/DSButtonPrimary.vue')['default']
+    DSCheckbox: typeof import('./vendors/design-system/components/ui/checkbox/DSCheckbox.vue')['default']
+    DSGoogleLogo: typeof import('./vendors/design-system/components/DSGoogleLogo.vue')['default']
     DSInput: typeof import('./vendors/design-system/components/ui/input/DSInput.vue')['default']
+    DSLabel: typeof import('./vendors/design-system/components/ui/label/DSLabel.vue')['default']
+    DSLoadingLogo: typeof import('./vendors/design-system/components/DSLoadingLogo.vue')['default']
+    DSSheet: typeof import('./vendors/design-system/components/ui/sheet/DSSheet.vue')['default']
+    DSSheetClose: typeof import('./vendors/design-system/components/ui/sheet/DSSheetClose.vue')['default']
+    DSSheetContent: typeof import('./vendors/design-system/components/ui/sheet/DSSheetContent.vue')['default']
+    DSSheetDescription: typeof import('./vendors/design-system/components/ui/sheet/DSSheetDescription.vue')['default']
+    DSSheetFooter: typeof import('./vendors/design-system/components/ui/sheet/DSSheetFooter.vue')['default']
+    DSSheetHeader: typeof import('./vendors/design-system/components/ui/sheet/DSSheetHeader.vue')['default']
+    DSSheetTitle: typeof import('./vendors/design-system/components/ui/sheet/DSSheetTitle.vue')['default']
+    DSSheetTrigger: typeof import('./vendors/design-system/components/ui/sheet/DSSheetTrigger.vue')['default']
+    MobileSidebar: typeof import('./src/components/MobileSidebar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
+    TheIcon: typeof import('./vendors/design-system/components/icon/TheIcon.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
   }
 }

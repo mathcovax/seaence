@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-import main, { notFound } from "@/domains/edito/router";
+import { connectionPage } from "@/domains/auth/router";
+import { homePage, notFoundPage } from "@/domains/edito/router";
 
 export const router = createRouter({
 	history: createWebHistory(),
@@ -8,8 +9,9 @@ export const router = createRouter({
 			path: "/",
 			component: () => import("../layouts/BaseLayout.vue"),
 			children: [
-				...main(),
-				notFound(),
+				homePage.recordRaw,
+				connectionPage.recordRaw,
+				notFoundPage.recordRaw,
 			],
 		},
 	],
