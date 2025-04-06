@@ -34,7 +34,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
-    TheIcon: typeof import('./src/components/TheIcon.vue')['default']
+    TheIcon: typeof import('./vendors/design-system/components/TheIcon.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
   }
 }
