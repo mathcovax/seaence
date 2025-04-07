@@ -7,6 +7,17 @@ import { computed, ref } from "vue";
 
 const { $pt } = searchResultsPage.use();
 
+type DisplayMode = "cards" | "rows";
+
+const initialDisplayMode: DisplayMode = "cards";
+const storedDisplayMode = useLocalStorageItem<DisplayMode>("displayMode");
+const displayMode = computed({
+	get: () => storedDisplayMode.value ?? initialDisplayMode,
+	set: (value) => {
+		storedDisplayMode.value = value;
+	},
+});
+
 // Mock data
 const START_INDEX = 1;
 const documents = Array.from({ length: 180 }, (unused, index) => ({
@@ -22,17 +33,22 @@ const documents = Array.from({ length: 180 }, (unused, index) => ({
 	author: "Albert Einstein",
 	imageUrl: "https://picsum.photos/300",
 }));
+// End mock data
+
 const START_PAGE = 1;
+const PAGE_OFFSET = 1;
 const currentPage = ref(START_PAGE);
 const productPerPage = 12;
 
-const PAGE_OFFSET = 1;
 const paginatedDocuments = computed(() => {
 	const start = (currentPage.value - PAGE_OFFSET) * productPerPage;
 	const end = start + productPerPage;
 	return documents.slice(start, end);
 });
-// End mock data
+
+function updateDisplayMode(mode: string | number) {
+	displayMode.value = mode as DisplayMode;
+}
 
 function handlePageChange(page: number) {
 	currentPage.value = page;
@@ -44,7 +60,8 @@ function handlePageChange(page: number) {
 	<section class="min-h-[calc(100vh-6rem-2rem)] space-y-12 flex flex-col">
 		<DSTabs
 			v-if="documents && documents.length > 0"
-			default-value="cards"
+			:default-value="displayMode"
+			@update:model-value="updateDisplayMode"
 		>
 			<DSTabsList class="w-36 grid grid-cols-2">
 				<DSTabsTrigger

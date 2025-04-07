@@ -20,7 +20,7 @@ export default defineConfig({
 				"src/composables",
 				"src/i18n",
 				"src/domains/**/router.ts",
-				"vendors/design-system/composable",
+				"vendors/design-system/composables",
 				"vendors/design-system/utils",
 			],
 			imports: [
