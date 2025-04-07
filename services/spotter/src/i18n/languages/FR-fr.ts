@@ -1,3 +1,5 @@
+import { searchResultsPage } from "@/domains/search/router";
+
 export const FRfr = {
 	page: {
 		[homePage.name]: {
@@ -47,7 +49,7 @@ export const FRfr = {
 			title: "Inscription / Connexion",
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 		},
-		[routerPageName.SEARCH_RESULTS_PAGE]: {
+		[searchResultsPage.name]: {
 			noResults: "Aucun résultat trouvé",
 		},
 	},

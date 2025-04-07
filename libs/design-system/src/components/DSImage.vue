@@ -23,7 +23,7 @@ const isLoading = ref(true);
 			v-show="!isLoading"
 			:src="src"
 			:alt="alt"
-			class="w-full h-full object-contain"
+			class="w-full h-full object-cover"
 			@load="isLoading = false"
 		>
 	</div>

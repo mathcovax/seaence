@@ -5,7 +5,7 @@ import DocumentResultRow from "../components/DocumentResultRow.vue";
 import SearchResutPagination from "../components/SearchResutPagination.vue";
 import { computed, ref } from "vue";
 
-const $pt = usePageTranslate();
+const { $pt } = searchResultsPage.use();
 
 // Mock data
 const START_INDEX = 1;
