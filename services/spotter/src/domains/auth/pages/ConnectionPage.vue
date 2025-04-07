@@ -27,7 +27,7 @@ const { $pt } = connectionPage.use();
 			<DSImage
 				src="/images/auth/connection.png"
 				alt="connection"
-				class="w-md h-72"
+				class="h-72"
 			/>
 		</div>
 	</section>

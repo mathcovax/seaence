@@ -26,7 +26,7 @@ onUnmounted(() => {
 				<DSImage
 					src="/images/logos/logo-text.svg"
 					alt="Seaence"
-					class="block md:hidden lg:block w-48 h-14"
+					class="block md:hidden lg:block h-14"
 				/>
 
 				<DSImage

@@ -29,7 +29,7 @@ const { $pt } = homePage.use();
 		<DSImage
 			src="/images/edito/hero.png"
 			alt="hero"
-			class="md:flex-1/3 w-74 aspect-square"
+			class="md:flex-1/3 w-74"
 		/>
 	</section>
 

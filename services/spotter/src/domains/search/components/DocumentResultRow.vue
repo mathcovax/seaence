@@ -17,7 +17,7 @@ defineProps<{
 		<DSImage
 			:src="document.imageUrl"
 			alt="document"
-			class="w-24 h-24 object-cover rounded"
+			class="size-24 object-cover rounded"
 		/>
 
 		<div class="flex-1">

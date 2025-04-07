@@ -15,11 +15,13 @@ import { mdiMenu } from "@mdi/js";
 
 		<DSSheetContent class="flex flex-col">
 			<DSSheetHeader class="mb-4">
-				<DSImage
-					src="/images/logos/logo-text.svg"
-					alt="Spotter"
-					class="h-14"
-				/>
+				<RouterLink :to="homePage.createTo()">
+					<DSImage
+						src="/images/logos/logo-text.svg"
+						alt="Seaence"
+						class="h-14 w-48"
+					/>
+				</RouterLink>
 			</DSSheetHeader>
 
 			<div class="flex-1 py-4 flex flex-col justify-between">
