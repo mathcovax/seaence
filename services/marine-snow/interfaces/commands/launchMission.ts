@@ -1,10 +1,9 @@
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { dateIntervalObjecter } from "@business/domains/common/dateInterval";
 import { providerObjecter } from "@business/domains/common/provider";
-import { pubMedProviderObjecter } from "@business/domains/entities/mission/searchResult/pubMed";
 import { program } from "commander";
 import { match } from "ts-pattern";
 import { createSearchResultPubMedMissionUsecase, startSearchResultMissionUsecase } from "@interfaces/usecase";
+import { dateYYYYMMDDIntervalObjecter } from "@vendors/clean";
 
 program
 	.requiredOption("-p, --provider <char>")
@@ -21,22 +20,20 @@ const provider = providerObjecter.unknownThrowCreate(rawProvider);
 await match(provider)
 	.with(
 		{ value: "pubmed" },
-		async(provider) => {
+		async() => {
 			const {
 				articleType: rawArticleType,
 				dateTo: ramDateTo,
 				dateFrom: ramDateFrom,
 			} = program.opts<Record<string, string>>();
 
-			const pubMedProvider = pubMedProviderObjecter.throwCreate(provider.value);
 			const articleType = articleTypeObjecter.unknownThrowCreate(rawArticleType);
-			const interval = dateIntervalObjecter.throwCreate({
+			const interval = dateYYYYMMDDIntervalObjecter.throwCreate({
 				from: new Date(ramDateFrom),
 				to: new Date(ramDateTo),
 			});
 
 			const mission = await createSearchResultPubMedMissionUsecase.execute({
-				provider: pubMedProvider,
 				articleType,
 				interval,
 			});

@@ -1,12 +1,14 @@
-import { sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
+import { type SearchResultMission, sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
 import { reactive, watch } from "@vue/reactivity";
 import { type SearchResultMissionOutput } from "@interfaces/workers/missions/searchResult";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
 import { resolve } from "path";
-import { match } from "ts-pattern";
+import { match, P } from "ts-pattern";
 import { Worker } from "worker_threads";
 import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
+import { type SupportedWorkerMission } from "@interfaces/workers/main";
+import { SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 
 sienceDatabaseRepository.default = {
 	save() {
@@ -14,11 +16,21 @@ sienceDatabaseRepository.default = {
 	},
 
 	async *startSearchResultMission(mission) {
+		const workerData: SupportedWorkerMission
+			= match({ mission: mission as SearchResultMission })
+				.with(
+					{ mission: P.instanceOf(SearchResultPubMedMissionEntity) },
+					({ mission }) => ({
+						provider: "pubmed",
+						name: "searchResult",
+						...mission.toSimpleObject(),
+					}) as const,
+				)
+				.exhaustive();
+
 		const worker = new Worker(
 			resolve(import.meta.dirname, "../workers/main.js"),
-			{
-				workerData: mission.toSimpleObject(),
-			},
+			{ workerData },
 		);
 
 		const messageQueue = reactive<(SearchResultMissionOutput | Error)[]>([]);

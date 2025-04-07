@@ -1,23 +1,27 @@
 
-import { missionStepRepository } from "@business/applications/repositories/missionStep";
+import { type MissionStep, missionStepRepository } from "@business/applications/repositories/missionStep";
 import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { prismaClient } from "@interfaces/providers/prisma";
+import { match, P } from "ts-pattern";
 
 missionStepRepository.default = {
 	async save(entity) {
-		if (entity instanceof SearchResultPubMedMissionStepEntity) {
-			const simpleEntity = entity.toSimpleObject();
+		await match({ entity: entity as MissionStep })
+			.with(
+				{ entity: P.instanceOf(SearchResultPubMedMissionStepEntity) },
+				({ entity }) => {
+					const simpleEntity = entity.toSimpleObject();
 
-			await prismaClient.searchResultPubMedMissionStep.upsert({
-				where: {
-					missionId: simpleEntity.missionId,
+					return prismaClient.searchResultPubMedMissionStep.upsert({
+						where: {
+							missionId: simpleEntity.missionId,
+						},
+						create: simpleEntity,
+						update: simpleEntity,
+					});
 				},
-				create: simpleEntity,
-				update: simpleEntity,
-			});
-		} else {
-			throw new Error(`Unsupport search result mission step: ${entity.constructor.name}`);
-		}
+			)
+			.exhaustive();
 
 		return entity;
 	},

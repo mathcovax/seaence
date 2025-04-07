@@ -1,14 +1,20 @@
 import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
+import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
 import { WorkerMissionError } from "@interfaces/utils/WorkerMissionError";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { parentPort } from "worker_threads";
 
-export type SupportedSearchResultMission =
-	| EntityToSimpleObject<typeof SearchResultPubMedMissionEntity>;
+export type SupportedSearchResultMission = SimplifyObjectTopLevel<
+	(
+		| (EntityToSimpleObject<typeof SearchResultPubMedMissionEntity> & { provider: "pubmed" })
+	) & {
+		name: "searchResult";
+	}
+>;
 
 interface OutputSearchResultPudMedMission {
 	type: "pubmed";

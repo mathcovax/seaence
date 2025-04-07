@@ -25,10 +25,17 @@ enum articleType {
     randomizedControlledTrial
 }
 
+enum searchResultStatus {
+    find
+    selectedToBeSent
+    failedToSend
+}
+
 model searchResult {
     reference String
     provider  provider
-    createdAt DateTime @default(now())
+    status    searchResultStatus @default(find)
+    createdAt DateTime           @default(now())
 
     @@id([reference, provider], name: "id")
 }
@@ -45,7 +52,6 @@ model SearchResultPubMedMission {
     articleType                   articleType
     searchDateFrom                DateTime
     searchDateTo                  DateTime
-    provider                      provider
     status                        missionStatus
     SearchResultPubMedMissionStep SearchResultPubMedMissionStep[]
 }
