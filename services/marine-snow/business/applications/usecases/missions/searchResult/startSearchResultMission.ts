@@ -2,12 +2,12 @@ import { missionRepository } from "@business/applications/repositories/mission";
 import { searchResultRepository } from "@business/applications/repositories/searchResult";
 import { missionStepRepository } from "@business/applications/repositories/missionStep";
 import { sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
-import { type SearchResultMissionEntity } from "@business/domains/entities/mission/searchResult";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { StartMissionUsecase } from "../startMission";
+import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 
 interface Input {
-	mission: SearchResultMissionEntity;
+	mission: SearchResultPubMedMissionEntity;
 }
 
 export class StartSearchResultMissionUsecase extends UsecaseHandler.create({

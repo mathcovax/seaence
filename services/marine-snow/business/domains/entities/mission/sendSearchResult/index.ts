@@ -1,8 +1,5 @@
-import { EntityHandler, type GetValueObject, zod, type GetEntityProperties } from "@vendors/clean";
-import { MissionEntity, missionNameObjecter, missionStatusObjecter } from "..";
-import { intObjecter } from "@business/domains/common/int";
-
-export const sendSearchResultMissionNameObjecter = missionNameObjecter.specify("sendSearchResult");
+import { EntityHandler, type GetValueObject, zod, type GetEntityProperties, intObjecter } from "@vendors/clean";
+import { MissionEntity, missionStatusObjecter } from "..";
 
 export const sendSearchResultMissionResultDetailsObjecter = zod
 	.object({
@@ -15,7 +12,6 @@ export type SendSearchResultMissionResultDetails = GetValueObject<typeof sendSea
 
 export class SendSearchResultMissionEntity extends EntityHandler.create(
 	{
-		name: sendSearchResultMissionNameObjecter,
 		quantity: intObjecter,
 		resultDetails: sendSearchResultMissionResultDetailsObjecter.nullable(),
 	},
@@ -29,7 +25,6 @@ export class SendSearchResultMissionEntity extends EntityHandler.create(
 	) {
 		return new SendSearchResultMissionEntity({
 			...params,
-			name: sendSearchResultMissionNameObjecter.unsafeCreate("sendSearchResult"),
 			status: missionStatusObjecter.unsafeCreate("created"),
 			resultDetails: null,
 		});
