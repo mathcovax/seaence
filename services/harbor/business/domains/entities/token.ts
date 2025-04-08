@@ -1,13 +1,5 @@
-import { EntityHandler, type GetValueObject, zod, type GetEntityProperties } from "@vendors/clean";
+import { type GetValueObject, zod } from "@vendors/clean";
 
-export const tokenContentObjecter = zod.string().createValueObjecter("tokenContent");
+export const tokenObjecter = zod.string().createValueObjecter("token");
 
-export type TokenContent = GetValueObject<typeof tokenContentObjecter>;
-
-export class TokenEntity extends EntityHandler.create({
-	content: tokenContentObjecter,
-}) {
-	public static create(params: GetEntityProperties<typeof TokenEntity>) {
-		return new TokenEntity(params);
-	}
-}
+export type Token = GetValueObject<typeof tokenObjecter>;

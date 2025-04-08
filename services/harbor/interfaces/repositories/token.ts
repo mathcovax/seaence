@@ -1,12 +1,12 @@
 import { tokenRepository } from "@business/applications/repositories/token";
-import { TokenEntity, tokenContentObjecter } from "@business/domains/entities/token";
+import { tokenObjecter } from "@business/domains/entities/token";
 import { envs } from "@interfaces/envs";
 import jwt from "jsonwebtoken";
 
 const { JWT_KEY, JWT_TIME } = envs;
 
 tokenRepository.default = {
-	generateToken: (user) => {
+	generateToken(user) {
 		const { id, email } = user;
 		const payload = { content: `${id.value}${email.value}` };
 
@@ -16,21 +16,17 @@ tokenRepository.default = {
 			{ expiresIn: JWT_TIME },
 		);
 
-		return TokenEntity.create({
-			content: tokenContentObjecter.unsafeCreate(accessToken),
-		});
+		return tokenObjecter.unsafeCreate(accessToken);
 	},
-	checkToken: (token) => {
-		const flatToken = token.toSimpleObject();
-
+	checkToken(token) {
 		try {
-			const { value } = jwt.verify(
-				flatToken.content,
+			const { value: content } = jwt.verify(
+				token.value,
 				JWT_KEY,
 			) as jwt.JwtPayload;
 
-			if (!value) {
-				throw new Error("Missing value of access token.");
+			if (!content) {
+				throw new Error("Missing content of access token.");
 			}
 
 			return token;
@@ -39,7 +35,7 @@ tokenRepository.default = {
 		}
 	},
 
-	save: () => {
+	save() {
 		throw new Error("Cannot save token.");
 	},
 };
