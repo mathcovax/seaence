@@ -21,9 +21,11 @@ defineProps<{
 		/>
 
 		<div class="flex-1">
-			<h3 class="text-lg font-semibold text-primary">
-				{{ document.title }}
-			</h3>
+			<RouterLink :to="documentPage.createTo({ params: { id: String(document.id) } })">
+				<h3 class="text-lg font-semibold text-primary hover:underline">
+					{{ document.title }}
+				</h3>
+			</RouterLink>
 
 			<p class="text-sm text-muted-foreground line-clamp-3">
 				{{ document.description }}

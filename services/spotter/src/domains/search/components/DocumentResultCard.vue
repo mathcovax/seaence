@@ -39,8 +39,13 @@ defineProps<{
 		</DSCardContent>
 
 		<DSCardFooter>
-			<DSButtonPrimary class="w-full">
-				Voir
+			<DSButtonPrimary
+				as-child
+				class="w-full"
+			>
+				<RouterLink :to="documentPage.createTo({ params: { id: String(document.id) } })">
+					Voir
+				</RouterLink>
 			</DSButtonPrimary>
 		</DSCardFooter>
 	</DSCard>
