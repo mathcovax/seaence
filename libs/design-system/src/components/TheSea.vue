@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/// <reference lib="dom" />
 import { ref, onMounted, computed, onUnmounted } from "vue";
 
 const BOAT_CONFIG = {

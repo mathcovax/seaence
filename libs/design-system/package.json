@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@types/node": "22.13.10",
+    "@types/web": "^0.0.216",
     "vite": "^6.2.4",
     "vue-tsc": "2.2.4"
   }
