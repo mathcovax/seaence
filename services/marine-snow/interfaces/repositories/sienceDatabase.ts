@@ -1,14 +1,11 @@
 import { type SearchResultMission, sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
-import { reactive, watch } from "@vue/reactivity";
-import { type SearchResultMissionOutput } from "@interfaces/workers/missions/searchResult";
+import { type SupportedSearchResultMission } from "@interfaces/workers/missions/searchResult";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
-import { resolve } from "path";
 import { match, P } from "ts-pattern";
-import { Worker } from "worker_threads";
 import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
-import { type SupportedWorkerMission } from "@interfaces/workers/main";
 import { SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { startWorkerMission } from "@interfaces/workers";
 
 sienceDatabaseRepository.default = {
 	save() {
@@ -16,66 +13,40 @@ sienceDatabaseRepository.default = {
 	},
 
 	async *startSearchResultMission(mission) {
-		const workerData: SupportedWorkerMission
+		const missionDate: SupportedSearchResultMission
 			= match({ mission: mission as SearchResultMission })
 				.with(
 					{ mission: P.instanceOf(SearchResultPubMedMissionEntity) },
 					({ mission }) => ({
 						provider: "pubmed",
-						name: "searchResult",
+						missionName: "searchResult",
 						...mission.toSimpleObject(),
 					}) as const,
 				)
 				.exhaustive();
 
-		const worker = new Worker(
-			resolve(import.meta.dirname, "../workers/main.js"),
-			{ workerData },
-		);
-
-		const messageQueue = reactive<(SearchResultMissionOutput | Error)[]>([]);
-
-		worker
-			.on(
-				"message",
-				(data) => messageQueue.push(data as never),
-			)
-			.on(
-				"error",
-				(data) => messageQueue.push(data),
-			);
-
-		while (true) {
-			if (!messageQueue.length) {
-				await new Promise<void>(
-					(resolve) => {
-						const watchHandle = watch(
-							messageQueue,
-							() => {
-								watchHandle.stop();
-								resolve();
-							},
-						);
+		for await (const outputWorker of startWorkerMission(missionDate)) {
+			if (outputWorker instanceof Error) {
+				return new RepositoryError(
+					"worker-reject-error",
+					{ error: outputWorker },
+				);
+			} else if (
+				outputWorker.missionName !== "searchResult"
+				|| outputWorker.type !== "pubmed"
+			) {
+				return new RepositoryError(
+					"worker-return-wrong-result",
+					{
+						custom: {
+							input: missionDate,
+							output: outputWorker,
+						},
 					},
 				);
 			}
 
-			const result = messageQueue.shift()!;
-
-			if (!result) {
-				continue;
-			}
-
-			if (result === "finish") {
-				break;
-			}
-
-			if (result instanceof Error) {
-				yield new RepositoryError("worker-reject-error", { error: result });
-				break;
-			}
-
-			yield match(result)
+			yield match(outputWorker)
 				.with(
 					{ type: "pubmed" },
 					({ step, searchResults }) => ({

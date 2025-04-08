@@ -1,8 +1,8 @@
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
-import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
+import { createRepositoryHandler, type RepositoryError, type RepositoryBase } from "@vendors/clean";
 
 export interface AbysRepository extends RepositoryBase<never> {
-	sendSearchResults(searchResult: SearchResultEntity[]): Promise<SearchResultEntity[]>;
+	sendSearchResults(searchResult: SearchResultEntity[]): Promise<SearchResultEntity[] | RepositoryError>;
 }
 
 export const abysRepository = createRepositoryHandler<
