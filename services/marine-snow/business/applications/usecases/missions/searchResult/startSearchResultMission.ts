@@ -29,7 +29,9 @@ export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
 				.startSearchResultMission(startedMission)
 		) {
 			if (result instanceof Error) {
-				void await this.missionRepository.save(startedMission.failed());
+				void await this.missionRepository.save(
+					startedMission.failed(),
+				);
 
 				return new UsecaseError("error-when-fetching-search-result", { error: result });
 			}

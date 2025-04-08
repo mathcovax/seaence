@@ -12,7 +12,7 @@ export type SupportedSearchResultMission = SimplifyObjectTopLevel<
 	(
 		| (EntityToSimpleObject<typeof SearchResultPubMedMissionEntity> & { provider: "pubmed" })
 	) & {
-		name: "searchResult";
+		missionName: "searchResult";
 	}
 >;
 
@@ -23,7 +23,13 @@ interface OutputSearchResultPudMedMission {
 }
 
 export type SearchResultMissionOutput =
-	| OutputSearchResultPudMedMission
+	| SimplifyObjectTopLevel<
+		(
+			| OutputSearchResultPudMedMission
+		) & {
+			missionName: "searchResult";
+		}
+	>
 	| "finish";
 
 function sendSearchResultMissionOutput(data: SearchResultMissionOutput) {
@@ -64,6 +70,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 						}
 
 						sendSearchResultMissionOutput({
+							missionName: "searchResult",
 							type: "pubmed",
 							step: {
 								missionId: mission.id,

@@ -4,11 +4,10 @@ import { type SendSearchResultMissionEntity } from "@business/domains/entities/m
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
 export type Mission =
-	| MissionEntity
 	| SearchResultPubMedMissionEntity
 	| SendSearchResultMissionEntity;
 
-export interface MissionRepository extends RepositoryBase<Mission> {
+export interface MissionRepository extends RepositoryBase<Mission | MissionEntity> {
 	generateMissionId(): MissionId;
 }
 

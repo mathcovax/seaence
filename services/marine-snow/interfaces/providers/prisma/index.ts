@@ -1,5 +1,5 @@
 import { envs } from "@interfaces/envs";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/output";
 
 export const prismaClient = new PrismaClient();
 

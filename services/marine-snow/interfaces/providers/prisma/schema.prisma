@@ -6,7 +6,7 @@
 
 generator client {
     provider = "prisma-client-js"
-    output   = "../../../node_modules/@prisma/client"
+    output   = "../../../node_modules/@prisma/output"
 }
 
 datasource db {
@@ -47,6 +47,13 @@ enum missionStatus {
     success
 }
 
+model SearchResultPubMedMissionStep {
+    mission   SearchResultPubMedMission @relation(fields: [missionId], references: [id])
+    missionId String                    @id
+    date      DateTime
+    page      Int
+}
+
 model SearchResultPubMedMission {
     id                            String                          @id
     articleType                   articleType
@@ -56,9 +63,16 @@ model SearchResultPubMedMission {
     SearchResultPubMedMissionStep SearchResultPubMedMissionStep[]
 }
 
-model SearchResultPubMedMissionStep {
-    mission   SearchResultPubMedMission @relation(fields: [missionId], references: [id])
-    missionId String                    @id
-    date      DateTime
-    page      Int
+model ResultDetailsSendSearchResultMission {
+    mission   SendSearchResultMission @relation(fields: [missionId], references: [id])
+    missionId String                  @id
+    success   Int
+    failed    Int
+}
+
+model SendSearchResultMission {
+    id            String                                @id
+    quantity      Int
+    status        missionStatus
+    resultDetails ResultDetailsSendSearchResultMission?
 }

@@ -1,4 +1,4 @@
-import { intObjecter, UsecaseHandler } from "@vendors/clean";
+import { intObjecter, UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { StartMissionUsecase } from "../startMission";
 import { sendSearchResultMissionResultDetailsObjecter, type SendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult";
 import { searchResultRepository } from "@business/applications/repositories/searchResult";
@@ -35,6 +35,14 @@ export class StartSendSearchResultMissionUsecase extends UsecaseHandler.create({
 				.selectSearchResultToSendThem(startedMission.quantity, quantityPerPage)
 		) {
 			const result = await this.abysRepository.sendSearchResults(selectedSearchResults);
+
+			if (result instanceof Error) {
+				void await this.missionRepository.save(
+					startedMission.failed(),
+				);
+
+				return new UsecaseError("error-when-send-search-result", { error: result });
+			}
 
 			await Promise.all(
 				result.map(
