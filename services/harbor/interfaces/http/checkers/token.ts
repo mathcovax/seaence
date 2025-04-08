@@ -9,13 +9,9 @@ export const firebaseTokenChecker = createChecker("firebaseToken")
 
 				const { email } = firebaseToken;
 
-				if (!email) {
-					throw new Error("Firebase token does not contain email.");
-				}
-
 				return output("firebase.token.valid", {
 					...firebaseToken,
-					email: userEmailObjecter.throwCreate(email),
+					email: userEmailObjecter.unknownThrowCreate(email),
 				});
 			} catch {
 				return output("firebase.token.invalid", null);

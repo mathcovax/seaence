@@ -51,11 +51,3 @@ Le nom des methodes, fonction et variable doivent être en `camelCase`.
 - Les noms des fichiers `typescript` doivent être en `camelCase`.
 
 - Quand une fonction est bind a un event de component, la fonction doit être une `function`.
-
-## Obtenir les Credentials Firebase
-
-- Aller sur [cette page](https://console.firebase.google.com/project/seaence-65707).
-
-- Une fois connecté, aller dans `⚙️` > `Paramètres du projet` > `Comptes de service`.
-
-- Cliquer sur `Générer une nouvelle clé privée`, (cela vous téléchargera un fichier json).
