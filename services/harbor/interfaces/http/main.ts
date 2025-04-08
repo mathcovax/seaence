@@ -1,7 +1,8 @@
 import "@duplojs/node";
 import "@duplojs/node/globals";
 import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";
-import { envs } from "./envs";
+import "@interfaces/providers";
+import { envs } from "@interfaces/envs";
 import "./routes";
 
 const duplo = new Duplo({
