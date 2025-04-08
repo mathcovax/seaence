@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const searchResultsPage = createPage(
-	"search-results",
+	"searchResults",
 	{
 		path: "/search-results",
 		component: () => import("./pages/SearchResultsPage.vue"),

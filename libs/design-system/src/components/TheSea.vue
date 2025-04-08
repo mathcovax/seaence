@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+/// <reference lib="dom" />
+import { ref, onMounted, computed, onUnmounted } from "vue";
 
 const BOAT_CONFIG = {
 	RANDOM_THRESHOLD: 0.5,
@@ -17,6 +18,7 @@ const BOAT_CONFIG = {
 const goingRight = ref(Math.random() > BOAT_CONFIG.RANDOM_THRESHOLD);
 const boatPosition = ref(BOAT_CONFIG.INITIAL_POSITION);
 const boatRotation = computed(() => goingRight.value ? BOAT_CONFIG.ROTATION.RIGHT : BOAT_CONFIG.ROTATION.LEFT);
+let animation: number | null = null;
 
 function moveBoat() {
 	if (boatPosition.value > BOAT_CONFIG.MAX_POSITION) {
@@ -28,11 +30,18 @@ function moveBoat() {
 	}
 
 	boatPosition.value += goingRight.value ? BOAT_CONFIG.SPEED : -BOAT_CONFIG.SPEED;
-	requestAnimationFrame(moveBoat);
+	animation = requestAnimationFrame(moveBoat);
 }
 
 onMounted(() => {
 	moveBoat();
+});
+
+onUnmounted(() => {
+	if (animation !== null) {
+		cancelAnimationFrame(animation);
+		animation = null;
+	}
 });
 </script>
 

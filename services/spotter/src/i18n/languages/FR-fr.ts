@@ -1,5 +1,3 @@
-import { searchResultsPage } from "@/domains/search/router";
-
 export const FRfr = {
 	page: {
 		[homePage.name]: {
