@@ -34,28 +34,15 @@ missionRepository.default = {
 			.with(
 				{ entity: P.instanceOf(SendSearchResultMissionEntity) },
 				async({ entity }) => {
-					const { resultDetails, ...restSimpleEntity } = entity.toSimpleObject();
+					const simpleEntity = entity.toSimpleObject();
 
 					await prismaClient.sendSearchResultMission.upsert({
 						where: {
-							id: restSimpleEntity.id,
+							id: simpleEntity.id,
 						},
-						create: restSimpleEntity,
-						update: restSimpleEntity,
+						create: simpleEntity,
+						update: simpleEntity,
 					});
-
-					if (resultDetails) {
-						await prismaClient.resultDetailsSendSearchResultMission.upsert({
-							where: {
-								missionId: restSimpleEntity.id,
-							},
-							create: {
-								missionId: restSimpleEntity.id,
-								...resultDetails,
-							},
-							update: resultDetails,
-						});
-					}
 				},
 			)
 			.exhaustive();

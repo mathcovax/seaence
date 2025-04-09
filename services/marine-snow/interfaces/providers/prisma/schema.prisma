@@ -10,8 +10,8 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = "file:./dev.db"
+    provider = "postgresql"
+    url      = env("POSTGRES_DATABASE_URL")
 }
 
 enum provider {
@@ -25,17 +25,12 @@ enum articleType {
     randomizedControlledTrial
 }
 
-enum searchResultStatus {
-    find
-    selectedToBeSent
-    failedToSend
-}
-
 model searchResult {
-    reference String
-    provider  provider
-    status    searchResultStatus @default(find)
-    createdAt DateTime           @default(now())
+    reference    String
+    provider     provider
+    failedToSend Boolean  @default(false)
+    selected     Boolean  @default(false)
+    createdAt    DateTime @default(now())
 
     @@id([reference, provider], name: "id")
 }
@@ -55,12 +50,12 @@ model SearchResultPubMedMissionStep {
 }
 
 model SearchResultPubMedMission {
-    id                            String                          @id
+    id                            String                         @id
     articleType                   articleType
     searchDateFrom                DateTime
     searchDateTo                  DateTime
     status                        missionStatus
-    SearchResultPubMedMissionStep SearchResultPubMedMissionStep[]
+    SearchResultPubMedMissionStep SearchResultPubMedMissionStep?
 }
 
 model ResultDetailsSendSearchResultMission {
@@ -70,9 +65,18 @@ model ResultDetailsSendSearchResultMission {
     failed    Int
 }
 
+model SendSearchResultMissionStep {
+    mission              SendSearchResultMission @relation(fields: [missionId], references: [id])
+    missionId            String                  @id
+    quantityProcessed    Int
+    /// [FaildedSearchResults]
+    faildedSearchResults Json[]
+}
+
 model SendSearchResultMission {
-    id            String                                @id
-    quantity      Int
-    status        missionStatus
-    resultDetails ResultDetailsSendSearchResultMission?
+    id                          String                                @id
+    quantity                    Int
+    status                      missionStatus
+    resultDetails               ResultDetailsSendSearchResultMission?
+    sendSearchResultMissionStep SendSearchResultMissionStep?
 }

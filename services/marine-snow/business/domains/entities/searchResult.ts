@@ -5,31 +5,19 @@ export const searchResultReferenceObjecter = zod
 	.string()
 	.createValueObjecter("searchResultReference");
 
-export const searchResultStatusEnum = createEnum([
-	"find",
-	"selectedToBeSent",
-	"failedToSend",
-]);
-
-export const searchResultStatusObjecter = zod
-	.enum(searchResultStatusEnum.toTuple())
-	.createValueObjecter("searchResultStatus");
+export const searchResultFailedToSendObjecter = zod
+	.boolean()
+	.createValueObjecter("searchResultFailedToSend");
 
 export class SearchResultEntity extends EntityHandler.create({
 	provider: providerObjecter,
 	reference: searchResultReferenceObjecter,
-	status: searchResultStatusObjecter,
+	failedToSend: searchResultFailedToSendObjecter,
 }) {
 	public static create(params: Omit<GetEntityProperties<typeof SearchResultEntity>, "status">) {
 		return new SearchResultEntity({
 			...params,
-			status: searchResultStatusObjecter.unsafeCreate("find"),
-		});
-	}
-
-	public failed() {
-		return this.update({
-			status: searchResultStatusObjecter.unsafeCreate("failedToSend"),
+			failedToSend: searchResultFailedToSendObjecter.unsafeCreate(false),
 		});
 	}
 }

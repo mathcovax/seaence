@@ -1,7 +1,7 @@
 interface CleanErrorMoreData {
 	message?: string;
 	error?: Error;
-	custom?: Record<string, unknown>;
+	custom?: unknown;
 }
 
 export class CleanError<

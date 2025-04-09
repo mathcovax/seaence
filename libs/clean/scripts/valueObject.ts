@@ -204,7 +204,7 @@ export class ValueObjecter<
 }
 
 export type GetValueObject<
-	GenericValueObjecter extends ValueObjecter,
+	GenericValueObjecter extends ValueObjecter | EntityObjecter,
 > = ReturnType<GenericValueObjecter["unsafeCreate"]>;
 
 export class EntityObjecter<

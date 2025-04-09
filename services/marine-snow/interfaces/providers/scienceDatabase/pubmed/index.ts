@@ -3,8 +3,10 @@ import { type ArticleType } from "@business/domains/common/articleType";
 import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { retry } from "@interfaces/utils/retrying";
-import { type PubMedRoute } from "./pubmedType";
+import { type PubMedRoute } from "./types/Route";
 import { XMLParser } from "fast-xml-parser";
+import { searchResultPayloadBuildedSchema } from "./types/searchResult";
+import { articlePayloadBuildedSchema } from "./types/article";
 
 export class PubMedAPI {
 	private static config = {
@@ -12,6 +14,7 @@ export class PubMedAPI {
 		quantityParPage: 50,
 		maxRetry: 30,
 		httpCodeWichMakeRetry: 429,
+		httpCodeWithPayload: 200,
 		timeToSleepBetweenRetry: 100,
 	};
 
@@ -52,20 +55,57 @@ export class PubMedAPI {
 				maxRetry: this.config.maxRetry,
 				timeToSleep: this.config.timeToSleepBetweenRetry,
 			},
-		);
+		)
+			.then((response) => {
+				if (response.code === this.config.httpCodeWithPayload) {
+					response.body = searchResultPayloadBuildedSchema.parse(response.body);
+				}
+				return response;
+			});
+	}
+
+	public static getArticle(pubmedId: string) {
+		return retry(
+			() => this.httpClient.get(
+				"/entrez/eutils/efetch.fcgi",
+				{
+					query: {
+						db: "pubmed",
+						id: pubmedId,
+						retmode: "xml",
+					},
+				},
+			),
+			(response) => response.code === this.config.httpCodeWichMakeRetry,
+			{
+				maxRetry: this.config.maxRetry,
+				timeToSleep: this.config.timeToSleepBetweenRetry,
+			},
+		)
+			.then((response) => {
+				if (response.code === this.config.httpCodeWithPayload) {
+					response.body = articlePayloadBuildedSchema.parse(response.body);
+				}
+				return response;
+			});
 	}
 
 	static {
 		this.httpClient = new HttpClient({
 			baseUrl: envs.PUBMED_BASE_URL,
 		});
+
 		this.httpClient.setDefaultRequestParams({
 			query: {
 				api_key: envs.PUBMED_API_KEY,
 			},
 		});
 
-		const parser = new XMLParser();
+		const parser = new XMLParser({
+			alwaysCreateTextNode: true,
+			parseAttributeValue: true,
+			ignoreAttributes: false,
+		});
 
 		this.httpClient.interceptor.response = (response) => {
 			if (
