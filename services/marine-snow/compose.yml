@@ -4,3 +4,16 @@ services:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
     command: npm -w services/marine-snow run dev
+    ports:
+      - 55551:5555
+    depends_on:
+      - marine-snow-postgres
+  marine-snow-postgres:
+    image: postgres:17.4-alpine3.21
+    env_file: ${INCLUDE_PATH}/marine-snow/.env
+    volumes:
+      - marine-snow-postgres-data:/var/lib/postgresql/data
+    attach: false
+
+volumes:
+  marine-snow-postgres-data:

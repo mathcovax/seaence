@@ -3,7 +3,7 @@ import { type SearchResultPubMedMissionStepEntity } from "@business/domains/enti
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { WorkerMissionError } from "@interfaces/utils/WorkerMissionError";
+import { WorkerMissionError } from "@interfaces/workers/WorkerMissionError";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { parentPort } from "worker_threads";
@@ -32,7 +32,7 @@ export type SearchResultMissionOutput =
 	>
 	| "finish";
 
-function sendSearchResultMissionOutput(data: SearchResultMissionOutput) {
+function output(data: SearchResultMissionOutput) {
 	parentPort!.postMessage(data);
 }
 
@@ -69,7 +69,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 							break;
 						}
 
-						sendSearchResultMissionOutput({
+						output({
 							missionName: "searchResult",
 							type: "pubmed",
 							step: {
@@ -81,7 +81,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 								(id) => ({
 									provider: "pubmed",
 									reference: id,
-									status: "find",
+									failedToSend: false,
 								}),
 							),
 						});
@@ -91,5 +91,5 @@ export async function mission(mission: SupportedSearchResultMission) {
 		)
 		.exhaustive();
 
-	sendSearchResultMissionOutput("finish");
+	output("finish");
 }

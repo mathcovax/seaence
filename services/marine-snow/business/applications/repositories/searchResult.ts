@@ -1,9 +1,7 @@
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
-import { createRepositoryHandler, type Int, type RepositoryBase } from "@vendors/clean";
+import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
 export interface SearchResultRepository extends RepositoryBase<SearchResultEntity> {
-	selectSearchResultToSendThem(quantity: Int, quantityPerPage: Int): AsyncGenerator<SearchResultEntity[]>;
-
 	delete(searchResult: SearchResultEntity): Promise<void>;
 }
 

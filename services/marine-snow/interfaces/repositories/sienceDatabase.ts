@@ -13,7 +13,7 @@ sienceDatabaseRepository.default = {
 	},
 
 	async *startSearchResultMission(mission) {
-		const missionDate: SupportedSearchResultMission
+		const missionData: SupportedSearchResultMission
 			= match({ mission: mission as SearchResultMission })
 				.with(
 					{ mission: P.instanceOf(SearchResultPubMedMissionEntity) },
@@ -25,28 +25,27 @@ sienceDatabaseRepository.default = {
 				)
 				.exhaustive();
 
-		for await (const outputWorker of startWorkerMission(missionDate)) {
-			if (outputWorker instanceof Error) {
+		for await (const output of startWorkerMission(missionData)) {
+			if (output instanceof Error) {
 				return new RepositoryError(
 					"worker-reject-error",
-					{ error: outputWorker },
+					{ error: output },
 				);
 			} else if (
-				outputWorker.missionName !== "searchResult"
-				|| outputWorker.type !== "pubmed"
+				output.missionName !== "searchResult"
 			) {
 				return new RepositoryError(
 					"worker-return-wrong-result",
 					{
 						custom: {
-							input: missionDate,
-							output: outputWorker,
+							input: missionData,
+							output: output,
 						},
 					},
 				);
 			}
 
-			yield match(outputWorker)
+			yield match(output)
 				.with(
 					{ type: "pubmed" },
 					({ step, searchResults }) => ({

@@ -15,6 +15,7 @@ export const envs = zod
 		ENVIROMENT: zod.enum(["DEV", "PROD"]),
 		PUBMED_API_KEY: zod.string(),
 		PUBMED_BASE_URL: zod.string().url(),
+		ABYS_BASE_URL: zod.string().url(),
 		DB_CONNECTION: zod.booleanInString(),
 	})
 	.parse(process.env);
