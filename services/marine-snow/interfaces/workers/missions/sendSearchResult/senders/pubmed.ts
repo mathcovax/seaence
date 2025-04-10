@@ -1,3 +1,4 @@
+import { envs } from "@interfaces/envs";
 import { AbysApi, type RawDocument } from "@interfaces/providers/abys";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
 
@@ -16,7 +17,7 @@ export async function pubmedSender(reference: string) {
 
 	const rawDocument: RawDocument = {
 		provider: "pubmed",
-		resourceUrl: ,
+		resourceUrl: `${envs.PUBMED_RESOURCE_BASE_URL}/${reference}`,
 		articleTypes: ,
 		articleIds: ,
 		electronicPublicationDate: ,

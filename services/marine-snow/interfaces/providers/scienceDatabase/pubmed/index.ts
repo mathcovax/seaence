@@ -84,7 +84,7 @@ export class PubMedAPI {
 		)
 			.then((response) => {
 				if (response.code === this.config.httpCodeWithPayload) {
-					response.body = articlePayloadBuildedSchema.parse(response.body);
+					// response.body = articlePayloadBuildedSchema.parse(response.body);
 				}
 				return response;
 			});

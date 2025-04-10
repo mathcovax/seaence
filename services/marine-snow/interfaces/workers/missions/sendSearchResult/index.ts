@@ -4,8 +4,8 @@ import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { prismaClient } from "@interfaces/providers/prisma";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
-import { parentPort } from "worker_threads";
 import { pubmedSender } from "./senders/pubmed";
+import { postMessage } from "@interfaces/workers/postMessage";
 
 export type SupportedSendSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -15,17 +15,15 @@ export type SupportedSendSearchResultMission = SimplifyObjectTopLevel<
 	}
 >;
 
-export type SendSearchResultMissionOutput =
-	| SimplifyObjectTopLevel<
-		{
-			missionName: "sendSearchResult";
-			searchResults: EntityToSimpleObject<typeof SearchResultEntity>[];
-		}
-	>
-	| "finish";
+export type SendSearchResultMissionOutput = SimplifyObjectTopLevel<
+	{
+		missionName: "sendSearchResult";
+		searchResults: EntityToSimpleObject<typeof SearchResultEntity>[];
+	}
+>;
 
 function output(data: SendSearchResultMissionOutput) {
-	parentPort!.postMessage(data);
+	return postMessage(data);
 }
 
 const minimalDecrement = 0;
@@ -84,11 +82,9 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 			),
 		);
 
-		output({
+		await output({
 			missionName: "sendSearchResult",
 			searchResults,
 		});
 	}
-
-	output("finish");
 }

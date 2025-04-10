@@ -25,8 +25,10 @@ sienceDatabaseRepository.default = {
 				)
 				.exhaustive();
 
-		for await (const output of startWorkerMission(missionData)) {
+		for await (const { next, stop, output } of startWorkerMission(missionData)) {
 			if (output instanceof Error) {
+				await stop();
+
 				return new RepositoryError(
 					"worker-reject-error",
 					{ error: output },
@@ -34,6 +36,8 @@ sienceDatabaseRepository.default = {
 			} else if (
 				output.missionName !== "searchResult"
 			) {
+				await stop();
+
 				return new RepositoryError(
 					"worker-return-wrong-result",
 					{
@@ -44,6 +48,8 @@ sienceDatabaseRepository.default = {
 					},
 				);
 			}
+
+			next();
 
 			yield match(output)
 				.with(

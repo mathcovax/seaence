@@ -21,6 +21,21 @@ export async function *startWorkerMission(missionData: SupportedWorkerMission) {
 			(data) => messageQueue.push(data),
 		);
 
+	function stop() {
+		return worker.terminate();
+	}
+
+	function makeNext() {
+		let nextIsCall = false;
+		return function() {
+			if (nextIsCall) {
+				return;
+			}
+			nextIsCall = true;
+			worker.postMessage("next");
+		};
+	}
+
 	while (true) {
 		if (!messageQueue.length) {
 			await new Promise<void>(
@@ -43,14 +58,19 @@ export async function *startWorkerMission(missionData: SupportedWorkerMission) {
 		}
 
 		if (result === "finish") {
+			await stop();
 			return;
 		}
 
-		if (result instanceof Error) {
-			yield result;
-			return;
-		}
+		const next = makeNext();
 
-		yield result;
+		yield {
+			stop,
+			next,
+			output: result,
+		};
+
+		next();
 	}
 }
+

@@ -6,7 +6,7 @@ import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
 import { WorkerMissionError } from "@interfaces/workers/WorkerMissionError";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
-import { parentPort } from "worker_threads";
+import { postMessage } from "../postMessage";
 
 export type SupportedSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -22,18 +22,16 @@ interface OutputSearchResultPudMedMission {
 	searchResults: EntityToSimpleObject<typeof SearchResultEntity>[];
 }
 
-export type SearchResultMissionOutput =
-	| SimplifyObjectTopLevel<
-		(
-			| OutputSearchResultPudMedMission
-		) & {
-			missionName: "searchResult";
-		}
-	>
-	| "finish";
+export type SearchResultMissionOutput = SimplifyObjectTopLevel<
+	(
+		| OutputSearchResultPudMedMission
+	) & {
+		missionName: "searchResult";
+	}
+>;
 
 function output(data: SearchResultMissionOutput) {
-	parentPort!.postMessage(data);
+	return postMessage(data);
 }
 
 const dateAdvancement = 1;
@@ -69,7 +67,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 							break;
 						}
 
-						output({
+						await output({
 							missionName: "searchResult",
 							type: "pubmed",
 							step: {
@@ -90,6 +88,4 @@ export async function mission(mission: SupportedSearchResultMission) {
 			},
 		)
 		.exhaustive();
-
-	output("finish");
 }
