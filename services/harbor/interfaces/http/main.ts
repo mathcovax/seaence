@@ -1,7 +1,6 @@
 import "@duplojs/node";
 import "@duplojs/node/globals";
 import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";
-import "@interfaces/providers/firebase";
 import { envs } from "@interfaces/envs";
 import "./routes";
 

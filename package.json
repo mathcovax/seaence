@@ -30,8 +30,8 @@
     "test:unit": "./scripts/unit.sh",
     "generate-types": "./scripts/generate-types.sh",
     "prepare": "husky",
-    "dev:school": "docker-compose up school",
-    "dev:harbor": "docker-compose up harbor"
+    "docker:school": "docker compose up school",
+    "docker:harbor": "docker compose up harbor"
   },
   "workspaces": [
     "libs/**",

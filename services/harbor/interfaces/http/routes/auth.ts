@@ -1,8 +1,7 @@
-import { tokenRepository } from "@business/applications/repositories/token";
-import { userRepository } from "@business/applications/repositories/user";
 import { IWantFirebaseTokenValid } from "@interfaces/http/checkers/token";
 import { endpointAuthSchema } from "@interfaces/http/schemas/auth";
-import { createUserUsecase } from "@interfaces/usecases";
+import { AccessToken } from "@interfaces/providers/token";
+import { findOrCreateUser } from "@interfaces/usecases";
 
 useBuilder()
 	.createRoute("POST", "/auth")
@@ -13,31 +12,19 @@ useBuilder()
 		IWantFirebaseTokenValid,
 		(pickup) => pickup("body"),
 	)
-	.cut(
-		async({ pickup, dropper }) => {
+	.handler(
+		async(pickup) => {
 			const { email } = pickup("firebaseToken");
 
-			let user = await userRepository.use.findOneByEmail(email);
+			const user = await findOrCreateUser.execute({
+				email,
+			});
 
-			if (!user) {
-				user = await createUserUsecase.execute({
-					email,
-				});
-			}
-
-			return dropper({ user });
-		},
-		["user"],
-	)
-	.handler(
-		(pickup) => {
-			const user = pickup("user");
-
-			const token = tokenRepository.use.generateToken(user);
+			const token = AccessToken.generateToken(user);
 
 			return new CreatedHttpResponse(
 				"user.logged",
-				{ accessToken: token.value },
+				{ accessToken: token },
 			);
 		},
 		makeResponseContract(CreatedHttpResponse, "user.logged", endpointAuthSchema),

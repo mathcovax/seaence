@@ -24,12 +24,8 @@ export class UserEntity extends EntityHandler.create({
 	}
 
 	private static extractUsername(email: UserEmail) {
-		const username = email.value.split("@").shift();
-
-		if (!username) {
-			throw new Error("Invalid email format");
-		}
-
-		return userUsernameObjecter.unsafeCreate(username);
+		return userUsernameObjecter.unknownThrowCreate(
+			email.value.split("@").shift(),
+		);
 	}
 }
