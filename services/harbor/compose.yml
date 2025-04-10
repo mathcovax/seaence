@@ -4,6 +4,8 @@ services:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
     command: npm -w services/harbor run duplo:dev
+    ports:
+      - 55552:5555
     depends_on:
       - harbor-postgres
   harbor-postgres:

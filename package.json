@@ -25,13 +25,17 @@
   "type": "module",
   "scripts": {
     "dev": "docker compose up",
+
     "test:lint": "./scripts/lint.sh",
     "test:types": "./scripts/types.sh",
-    "test:unit": "./scripts/unit.sh",
-    "generate-types": "./scripts/generate-types.sh",
-    "prepare": "husky",
+    
     "docker:school": "docker compose up school",
-    "docker:harbor": "docker compose up harbor"
+    
+    "docker:harbor": "docker compose up harbor",
+    "docker:harbor:prisma:migrate": "docker compose exec harbor npm -w services/harbor run prisma:migrate",
+    "docker:harbor:prisma:studio": "docker compose exec harbor npm -w services/harbor run prisma:studio",
+
+    "prepare": "husky"
   },
   "workspaces": [
     "libs/**",

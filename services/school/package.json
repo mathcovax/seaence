@@ -3,10 +3,13 @@
   "description": "Microservice de gestion du contenu éditorial. Nommé d'après les bancs de poissons ('school' en anglais), il orchestre les articles et leurs sujets, reflétant ainsi leur organisation collective et structurée.",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch interfaces/http/main.ts",
+    "duplo:dev": "tsx --watch interfaces/http/main.ts",
+    "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/school/duplojsTypesCodegen.d.ts",
+
     "test:lint": "eslint",
     "test:types": "tsc",
-    "generate-types": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/school/duplojsTypesCodegen.d.ts"
+
+    "postinstall": "npm run duplo:generate"
   },
   "dependencies": {
     "@duplojs/core": "1.0.3",
