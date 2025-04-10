@@ -13,5 +13,9 @@ export const envs = zod
 		PORT: zod.coerce.number(),
 		HOST: zod.enum(["0.0.0.0"]),
 		ENVIROMENT: zod.enum(["DEV", "PROD"]),
+		FIREBASE_CREDENTIAL_PATH: zod.string(),
+		JWT_KEY: zod.string(),
+		JWT_TIME: zod.coerce.number(),
+		DB_CONNECTION: zod.booleanInString(),
 	})
 	.parse(process.env);
