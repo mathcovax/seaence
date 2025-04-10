@@ -1,8 +1,0 @@
-services:
-  spotter:
-    build:
-      context: .
-      dockerfile: ${TEMPLATES_DOCKER_NODE_PATH}
-    ports:
-      - 3003:3000 # machine:container
-    command: start:spotter:prod

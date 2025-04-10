@@ -4,3 +4,5 @@ services:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
     command: npm -w services/spotter run dev
+    ports:
+      - 3000:3000
