@@ -14,7 +14,7 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const { email } = pickup("firebaseToken");
+			const { email } = pickup("firebaseTokenContent");
 
 			const user = await findOrCreateUser.execute({
 				email,
@@ -22,10 +22,10 @@ useBuilder()
 
 			const token = AccessToken.generateToken(user);
 
-			return new CreatedHttpResponse(
+			return new OkHttpResponse(
 				"user.logged",
-				{ accessToken: token },
+				token,
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "user.logged", endpointAuthSchema),
+		makeResponseContract(OkHttpResponse, "user.logged", endpointAuthSchema),
 	);

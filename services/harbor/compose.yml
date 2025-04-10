@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm -w services/harbor run dev
+    command: npm -w services/harbor run duplo:dev
     depends_on:
       - harbor-postgres
   harbor-postgres:

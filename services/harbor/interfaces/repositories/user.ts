@@ -21,20 +21,20 @@ userRepository.default = {
 
 		return EntityHandler.unsafeMapper(
 			UserEntity,
-			{
-				...user,
-			},
+			user,
 		);
 	},
-	async save(user) {
-		await prismaClient.user.create({
-			data: {
-				id: user.id.value,
-				email: user.email.value,
-				username: user.username.value,
+	async save(entity) {
+		const simpleEntity = entity.toSimpleObject();
+
+		await prismaClient.user.upsert({
+			where: {
+				email: simpleEntity.email,
 			},
+			create: simpleEntity,
+			update: simpleEntity,
 		});
 
-		return user;
+		return entity;
 	},
 };

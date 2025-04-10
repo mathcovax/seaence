@@ -16,5 +16,6 @@ export const envs = zod
 		FIREBASE_CREDENTIAL_PATH: zod.string(),
 		JWT_KEY: zod.string(),
 		JWT_TIME: zod.coerce.number(),
+		DB_CONNECTION: zod.booleanInString(),
 	})
 	.parse(process.env);

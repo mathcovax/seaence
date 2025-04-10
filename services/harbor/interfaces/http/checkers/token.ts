@@ -24,7 +24,7 @@ export const IWantFirebaseTokenValid = createPresetChecker(
 	{
 		result: "firebase.token.valid",
 		catch: () => new UnauthorizedHttpResponse("firebase.token.invalid"),
-		indexing: "firebaseToken",
+		indexing: "firebaseTokenContent",
 	},
 	makeResponseContract(UnauthorizedHttpResponse, "firebase.token.invalid"),
 );
