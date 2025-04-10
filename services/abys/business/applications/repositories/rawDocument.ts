@@ -20,8 +20,10 @@ type _AssertResultOfFindByNodeSameRawDocument = ExpectType<
 
 export interface RawDocumentRepository extends RepositoryBase<RawDocumentEntity> {
 	findByResourceUrl(resourceUrl: RawResourceUrl): Promise<RawDocumentEntity | null>;
-	findUniqueField(field: RawDocumentEntity): UniqueField;
-	findByNodeSameRawDocument(NodeSameRawDocumentEntity: NodeSameRawDocumentEntity): ResultOfFindByNodeSameRawDocument;
+	findUniqueField(rawDocument: RawDocumentEntity): UniqueField;
+	findByNodeSameRawDocument(
+		NodeSameRawDocumentEntity: NodeSameRawDocumentEntity
+	): Promise<ResultOfFindByNodeSameRawDocument>;
 }
 
 export const rawDocumentRepository = createRepositoryHandler<RawDocumentRepository>();

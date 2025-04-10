@@ -27,9 +27,9 @@ export class CreateBakedDocumentUsecase extends UsecaseHandler.create({
 	bakedDocumentRepository,
 	rawDocumentRepository,
 }) {
-	public execute(input: Input) {
+	public async execute(input: Input) {
 		const { nodeSameRawDocument, language } = input;
-		const rawDocuments = this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
+		const rawDocuments = await this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
 
 		const rawDocumentKey = priority.find((key) => !!rawDocuments[key]);
 
