@@ -10,7 +10,7 @@ const { isLoading } = useLoader();
 		<DSLoadingLogo />
 
 		<p class="mt-4 text-carbon">
-			Chargement...
+			{{ $t('layout.loader.title') }}
 		</p>
 	</div>
 </template>

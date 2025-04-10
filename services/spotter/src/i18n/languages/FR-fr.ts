@@ -47,10 +47,21 @@ export const FRfr = {
 			title: "Inscription / Connexion",
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 		},
+		[searchResultsPage.name]: {
+			noResults: "Aucun résultat trouvé",
+		},
 	},
 	layout: {
 		base: {
-			header: {},
+			header: {
+				search: {
+					tabs: {
+						simpleSearch: "Recherche simple",
+						advancedSearch: "Recherche avancée",
+					},
+					placeholder: "Recherche : Titre, Auteur, Contenu...",
+				},
+			},
 			footer: {
 				nav: {
 					conditions: "Conditions d'utilisation",
@@ -59,10 +70,14 @@ export const FRfr = {
 				},
 			},
 		},
+		loader: {
+			title: "Chargement...",
+		},
 	},
 	cta: {
 		backHome: "Retour à l'accueil",
 		connection: "Inscription / Connexion",
 		resetPassword: "Réinitialiser le mot de passe",
+		search: "Rechercher",
 	},
 };

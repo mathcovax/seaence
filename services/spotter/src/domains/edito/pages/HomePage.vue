@@ -6,7 +6,7 @@ const { $pt } = homePage.use();
 	<section
 		class="text-center md:text-start mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center"
 	>
-		<div class="space-y-6">
+		<div class="md:flex-2/3 space-y-6">
 			<h1 class="text-4xl font-bold">
 				{{ $pt("hero.title.begin") }}
 				<span class="text-blue-seaence">{{ $pt("hero.title.spanBlue") }}</span>
@@ -26,11 +26,11 @@ const { $pt } = homePage.use();
 			</DSButtonPrimary>
 		</div>
 
-		<img
+		<DSImage
 			src="/images/edito/hero.png"
 			alt="hero"
-			class="w-full max-w-96 aspect-square"
-		>
+			class="md:flex-1/3 w-74"
+		/>
 	</section>
 
 	<section class="text-center md:text-start mb-12 space-y-6">

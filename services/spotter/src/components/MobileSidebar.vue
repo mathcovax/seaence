@@ -13,16 +13,24 @@ import { mdiMenu } from "@mdi/js";
 			</DSButtonIcon>
 		</DSSheetTrigger>
 
-		<DSSheetContent>
-			<DSSheetHeader>
-				<img
-					src="/images/logos/logo-text.svg"
-					alt="Spotter"
-					class="h-14"
-				>
+		<DSSheetContent class="flex flex-col">
+			<DSSheetHeader class="mb-4">
+				<RouterLink :to="homePage.createTo()">
+					<DSImage
+						src="/images/logos/logo-text.svg"
+						alt="Seaence"
+						class="h-14 w-48"
+					/>
+				</RouterLink>
 			</DSSheetHeader>
 
-			<div class="grid gap-4 py-4">
+			<div class="flex-1 py-4 flex flex-col justify-between">
+				<DSInputSearch
+					:placeholder="$t('cta.search')"
+					:button-text="$t('cta.search')"
+					no-shadow
+				/>
+
 				<div class="flex flex-col gap-2">
 					<DSSheetClose as-child>
 						<DSButtonPrimary as-child>
