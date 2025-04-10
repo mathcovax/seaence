@@ -4,7 +4,10 @@ export default defineConfig({
 	test: {
 		watch: false,
 		globals: true,
-		include: ["scripts/**/*.test.ts"],
+		include: [
+			"business/**/*.test.ts",
+			"interfaces/**/*.test.ts",
+		],
 		coverage: {
 			provider: "v8",
 			reporter: ["text", "json", "html", "json-summary"],

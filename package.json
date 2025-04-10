@@ -28,9 +28,11 @@
 
     "test:lint": "./scripts/lint.sh",
     "test:types": "./scripts/types.sh",
-    
+    "test:tu": "vitest --watch false",
+    "test:coverage": "vitest --watch false --coverage",
+
     "docker:school": "docker compose up school",
-    
+
     "docker:harbor": "docker compose up harbor",
     "docker:harbor:prisma:migrate": "docker compose exec harbor npm -w services/harbor run prisma:migrate",
     "docker:harbor:prisma:studio": "docker compose exec harbor npm -w services/harbor run prisma:studio",
@@ -45,8 +47,10 @@
   "devDependencies": {
     "@commitlint/cli": "19.7.1",
     "@commitlint/config-conventional": "19.2.2",
+    "@vitest/coverage-v8": "^3.1.1",
     "concurrently": "^9.1.2",
     "husky": "9.1.7",
-    "tsx": "^4.19.3"
+    "tsx": "^4.19.3",
+    "vitest": "^3.1.1"
   }
 }
