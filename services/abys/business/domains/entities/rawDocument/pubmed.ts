@@ -1,11 +1,6 @@
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { rawAbstractObjecter, rawAbstractPartObjecter, rawAuthorObjecter, rawGrantObjecter, rawTitleObjecter } from "@business/domains/common/rawDocument";
-import { EntityHandler, type GetValueObject, type GetEntityProperties, urlObjecter, zod, dateYYYYMMDDObjecter } from "@vendors/clean";
-
-export const pubmedRawDocumentResourceUrlObjecter = urlObjecter
-	.declination("pubmedRawDocumentResourceUrl");
-
-export type PubmedRawDocumentResourceUrl = GetValueObject<typeof pubmedRawDocumentResourceUrlObjecter>;
+import { rawAbstractObjecter, rawAbstractPartObjecter, rawAuthorObjecter, rawGrantObjecter, rawResourceUrlObjecter, rawTitleObjecter } from "@business/domains/common/rawDocument";
+import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, dateYYYYMMDDObjecter } from "@vendors/clean";
 
 export const pubmedRawDocumentArticleIdObjecter = zod
 	.object({
@@ -42,7 +37,7 @@ export const pubmedRawDocumentKeywordObjecter = zod
 export type PubmedRawDocumentKeyword = GetValueObject<typeof pubmedRawDocumentKeywordObjecter>;
 
 export class PubmedRawDocumentEntity extends EntityHandler.create({
-	resourceUrl: pubmedRawDocumentResourceUrlObjecter,
+	resourceUrl: rawResourceUrlObjecter,
 	title: rawTitleObjecter,
 	authors: rawAuthorObjecter.array(),
 	grants: rawGrantObjecter.array(),

@@ -1,4 +1,9 @@
-import { type GetValueObject, zod } from "@vendors/clean";
+import { type GetValueObject, urlObjecter, zod } from "@vendors/clean";
+
+export const rawResourceUrlObjecter = urlObjecter
+	.declination("rawResourceUrl");
+
+export type RawResourceUrl = GetValueObject<typeof rawResourceUrlObjecter>;
 
 export const rawTitleObjecter = zod
 	.string()
@@ -21,7 +26,7 @@ export const rawGrantObjecter = zod
 		agency: zod.string(),
 		country: zod.string().nullable(),
 	})
-	.createValueObjecter("rawGrants");
+	.createValueObjecter("rawGrant");
 
 export type RawGrant = GetValueObject<typeof rawGrantObjecter>;
 
@@ -40,4 +45,3 @@ export const rawAbstractPartObjecter = zod
 	.createValueObjecter("rawAbstractPart");
 
 export type RawAbstractPart = GetValueObject<typeof rawAbstractPartObjecter>;
-
