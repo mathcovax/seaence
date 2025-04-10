@@ -1,5 +1,5 @@
 import { ZodAccelerator, zod } from "@duplojs/core";
-import { attributeXMLSchema, tagXMLSchema, valueXML, type zodInfer } from "./XML";
+import { attributeXMLSchema, tagXMLSchema, valueXML, type zodInfer, repeatTagXMLSchema } from "./XML";
 
 const stringValue = valueXML(zod.string());
 const numberValue = valueXML(zod.number());
@@ -13,26 +13,13 @@ const datePayload = [
 export const articlePayloadSchema = tagXMLSchema("PubmedArticleSet", [
 	tagXMLSchema("PubmedArticle", [
 		tagXMLSchema("MedlineCitation", [
-			tagXMLSchema("PMID", [
-				numberValue,
-				attributeXMLSchema("Version", zod.number()),
-			]),
-			tagXMLSchema("DateCompleted", datePayload),
-			tagXMLSchema("DateRevised", datePayload),
 			tagXMLSchema("Article", [
-				tagXMLSchema("Journal", [
-					tagXMLSchema("ISSN", [
+				tagXMLSchema("PublicationTypeList", [
+					repeatTagXMLSchema("PublicationType", [
 						stringValue,
-						attributeXMLSchema("IssnType", zod.string()),
+						attributeXMLSchema("UI", zod.string()),
 					]),
-					tagXMLSchema("JournalIssue", [
-						tagXMLSchema("Volume", [numberValue]),
-						tagXMLSchema("Issue", [numberValue]),
-						tagXMLSchema("PubDate", [
-							tagXMLSchema("Year", [numberValue]),
-							tagXMLSchema("Month", [stringValue]),
-						]),
-					]),
+					repeatTagXMLSchema("ArticleDate", datePayload),
 				]),
 			]),
 		]),

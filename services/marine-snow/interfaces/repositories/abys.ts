@@ -1,12 +1,9 @@
 import { abysRepository } from "@business/applications/repositories/abys";
 import { SendSearchResultMissionStepEntity } from "@business/domains/entities/mission/sendSearchResult/step";
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
-import { prismaClient } from "@interfaces/providers/prisma";
 import { startWorkerMission } from "@interfaces/workers";
 import { type SupportedSendSearchResultMission } from "@interfaces/workers/missions/sendSearchResult";
-import { EntityHandler, RepositoryError, toSimpleObject } from "@vendors/clean";
-
-const minimalDecrement = 0;
+import { EntityHandler, RepositoryError } from "@vendors/clean";
 
 abysRepository.default = {
 	save() {
@@ -20,8 +17,10 @@ abysRepository.default = {
 
 		let quantityProcessed = 0;
 
-		for await (const output of startWorkerMission(missionData)) {
+		for await (const { next, stop, output } of startWorkerMission(missionData)) {
 			if (output instanceof Error) {
+				await stop();
+
 				return new RepositoryError(
 					"worker-reject-error",
 					{ error: output },
@@ -29,6 +28,8 @@ abysRepository.default = {
 			} else if (
 				output.missionName !== "sendSearchResult"
 			) {
+				await stop();
+
 				return new RepositoryError(
 					"worker-return-wrong-result",
 					{
@@ -39,6 +40,8 @@ abysRepository.default = {
 					},
 				);
 			}
+
+			next();
 
 			quantityProcessed += output.searchResults.length;
 

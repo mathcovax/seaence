@@ -1,5 +1,5 @@
 import { type SimplifyObjectTopLevel, type UnionToIntersection } from "@duplojs/utils";
-import { type ZodObject, z as zod, type ZodType, type infer as zInfer } from "zod";
+import { type ZodObject, z as zod, type ZodType, type infer as zInfer, type ZodArray } from "zod";
 
 export type XMLValue<
 	GenericValue extends unknown = unknown,
@@ -80,6 +80,39 @@ export function tagXMLSchema<
 			(pv, cv) => pv.extend(cv.shape),
 			zod.object({}),
 		),
+	}) as never;
+}
+
+export function repeatTagXMLSchema<
+	GenericName extends string,
+	GenericZodObject extends ZodObject<{}>,
+	GenericZodRawShape extends(
+		UnionToIntersection<
+			GenericZodObject extends ZodObject<infer InferedZodRawShape extends {}>
+				? InferedZodRawShape
+				: never
+		> extends infer InferedZodRawShape extends {}
+			? InferedZodRawShape
+			: never
+	),
+>(
+	name: GenericName,
+	content: GenericZodObject[],
+): ZodObject<
+		XMLTag<
+			GenericName,
+			ZodArray<
+				ZodObject<
+					SimplifyObjectTopLevel<GenericZodRawShape>
+				>
+			>
+		>
+	> {
+	return zod.object({
+		[name]: content.reduce(
+			(pv, cv) => pv.extend(cv.shape),
+			zod.object({}),
+		).array(),
 	}) as never;
 }
 
