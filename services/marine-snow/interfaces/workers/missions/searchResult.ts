@@ -1,14 +1,20 @@
 import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
-import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/step/pubMed";
+import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
+import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { WorkerMissionError } from "@interfaces/utils/WorkerMissionError";
+import { WorkerMissionError } from "@interfaces/workers/WorkerMissionError";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
-import { parentPort } from "worker_threads";
+import { postMessage } from "../postMessage";
 
-export type SupportedSearchResultMission =
-	| EntityToSimpleObject<typeof SearchResultPubMedMissionEntity>;
+export type SupportedSearchResultMission = SimplifyObjectTopLevel<
+	(
+		| (EntityToSimpleObject<typeof SearchResultPubMedMissionEntity> & { provider: "pubmed" })
+	) & {
+		missionName: "searchResult";
+	}
+>;
 
 interface OutputSearchResultPudMedMission {
 	type: "pubmed";
@@ -16,12 +22,16 @@ interface OutputSearchResultPudMedMission {
 	searchResults: EntityToSimpleObject<typeof SearchResultEntity>[];
 }
 
-export type SearchResultMissionOutput =
-	| OutputSearchResultPudMedMission
-	| "finish";
+export type SearchResultMissionOutput = SimplifyObjectTopLevel<
+	(
+		| OutputSearchResultPudMedMission
+	) & {
+		missionName: "searchResult";
+	}
+>;
 
-function sendSearchResultMissionOutput(data: SearchResultMissionOutput) {
-	parentPort!.postMessage(data);
+function output(data: SearchResultMissionOutput) {
+	return postMessage(data);
 }
 
 const dateAdvancement = 1;
@@ -57,7 +67,8 @@ export async function mission(mission: SupportedSearchResultMission) {
 							break;
 						}
 
-						sendSearchResultMissionOutput({
+						await output({
+							missionName: "searchResult",
 							type: "pubmed",
 							step: {
 								missionId: mission.id,
@@ -68,6 +79,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 								(id) => ({
 									provider: "pubmed",
 									reference: id,
+									failedToSend: false,
 								}),
 							),
 						});
@@ -76,6 +88,4 @@ export async function mission(mission: SupportedSearchResultMission) {
 			},
 		)
 		.exhaustive();
-
-	sendSearchResultMissionOutput("finish");
 }

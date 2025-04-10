@@ -3,7 +3,7 @@ import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject, type AnyRecor
 import { EntityObjecter, type ValueObjectError, type ValueObjecter } from "./valueObject";
 import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
 
-export type EntityPropertiesDefinition = Record<string, ValueObjecter>;
+export type EntityPropertiesDefinition = Record<string, ValueObjecter | EntityObjecter>;
 
 export type EntityPropertiesDefinitionToEntityProperties<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
@@ -36,7 +36,7 @@ export type EntityPropertiesToRawProperties<
 const updatedValuesKey = Symbol("updatedValues");
 
 export interface EntityInstanceBase<
-	GenericPropertiesDefinition extends EntityPropertiesDefinition,
+	GenericPropertiesDefinition extends EntityPropertiesDefinition = EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties = EntityProperties,
 > {
 	update(
@@ -65,7 +65,8 @@ export type EntityInstance<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
 	GenericProperties extends EntityProperties = EntityProperties,
 	GenericInheritProperties extends Record<string, unknown> = Record<string, unknown>,
-> = GenericProperties
+> =
+	& GenericProperties
 	& EntityInstanceBase<
 		GenericPropertiesDefinition,
 		GenericProperties
@@ -298,7 +299,7 @@ export class EntityHandler {
 			entityClasses instanceof Array
 				? entityClasses
 				: [entityClasses],
-			[],
+			[] as const,
 		);
 	}
 

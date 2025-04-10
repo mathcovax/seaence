@@ -7,7 +7,7 @@ export interface RepositoryBase<
 	GenericEntity extends EntityInstance<any, any, any> = EntityInstance<any, any, any>,
 > {
 	save<
-		GenericSavedEntity extends GenericEntity,
+		GenericSavedEntity extends GenericEntity = GenericEntity,
 	>(entity: GenericSavedEntity): Promise<GenericSavedEntity>;
 }
 

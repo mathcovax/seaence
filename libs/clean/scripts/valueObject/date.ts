@@ -34,3 +34,6 @@ export const dateYYYYMMDDIntervalObjecter = zod
 		to: dateYYYYMMDDObjecter.zodSchema,
 	})
 	.createValueObjecter("dateInterval");
+
+export type DateYYYYMMDDInterval = GetValueObject<typeof dateYYYYMMDDIntervalObjecter>;
+

@@ -18,4 +18,15 @@ searchResultRepository.default = {
 
 		return entity;
 	},
+	async delete(entity) {
+		await prismaClient.searchResult.delete({
+			where: {
+				id: {
+					provider: entity.provider.value,
+					reference: entity.provider.value,
+				},
+			},
+		});
+	},
+
 };
