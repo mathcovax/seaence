@@ -1,11 +1,13 @@
+import { nodeSameRawDocumentRepository } from "@business/applications/repositories/nodeSameRawDocument";
 import { rawDocumentRepository } from "@business/applications/repositories/rawDocument";
 import { type ArticleType } from "@business/domains/common/articleType";
-import { type RawAbstract, type RawAbstractPart, type RawAuthor, type RawGrant, type RawTitle } from "@business/domains/common/rawDocument";
-import { type PubmedRawDocumentArticleId, type PubmedRawDocumentElectronicPublicationDate, PubmedRawDocumentEntity, type PubmedRawDocumentKeyword, type PubmedRawDocumentMeshTerm, type PubmedRawDocumentResourceUrl } from "@business/domains/entities/rawDocument/pubmed";
+import { type RawResourceUrl, type RawAbstract, type RawAbstractPart, type RawAuthor, type RawGrant, type RawTitle } from "@business/domains/common/rawDocument";
+import { type PubmedRawDocumentArticleId, type PubmedRawDocumentElectronicPublicationDate, PubmedRawDocumentEntity, type PubmedRawDocumentKeyword, type PubmedRawDocumentMeshTerm } from "@business/domains/entities/rawDocument/pubmed";
 import { UsecaseHandler } from "@vendors/clean";
+import { UpsertNodeSameRawDocumentUsecase } from "../../nodeSameRawDocument/upsertNodeSameRawDocument";
 
 interface Input {
-	resourceUrl: PubmedRawDocumentResourceUrl;
+	resourceUrl: RawResourceUrl;
 	title: RawTitle;
 	authors: RawAuthor[];
 	grants: RawGrant[];
@@ -20,10 +22,16 @@ interface Input {
 
 export class CreatePubmedRawDocumentUsecase extends UsecaseHandler.create({
 	rawDocumentRepository,
+	nodeSameRawDocumentRepository,
+	upsertNodeSameRawDocument: UpsertNodeSameRawDocumentUsecase,
 }) {
-	public execute(input: Input) {
-		const rawDocument = new PubmedRawDocumentEntity(input);
+	public async execute(input: Input) {
+		const rawDocument = PubmedRawDocumentEntity.create(input);
 
-		return this.rawDocumentRepository.save(rawDocument);
+		await this.rawDocumentRepository.save(rawDocument);
+
+		await this.upsertNodeSameRawDocument({ rawDocument });
+
+		return rawDocument;
 	}
 }

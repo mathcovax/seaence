@@ -16,5 +16,8 @@ export const envs = zod
 		MONGO_DATABASE_URL: zod.string(),
 		MONGO_DB: zod.string(),
 		DB_CONNECTION: zod.booleanInString(),
+		ROSETTA_HOST: zod.enum(["rosetta", "localhost"]),
+		ROSETTA_PROTOCOL: zod.enum(["http", "https"]),
+		ROSETTA_PORT: zod.number(),
 	})
 	.parse(process.env);

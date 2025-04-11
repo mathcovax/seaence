@@ -3,6 +3,7 @@ import { type EntityToSimpleObject } from "@vendors/clean";
 
 export interface MongoPubmedRawDocument extends EntityToSimpleObject<typeof PubmedRawDocumentEntity> {
 	provider: "pubmed";
+	updatedAt: Date;
 }
 
 export type MongoRawDocument =

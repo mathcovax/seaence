@@ -1,4 +1,10 @@
-import { type GetValueObject, zod } from "@vendors/clean";
+import { type GetValueObject, urlObjecter, zod } from "@vendors/clean";
+import { abstractSectionNameEnum } from "./abtrasctSection";
+
+export const rawResourceUrlObjecter = urlObjecter
+	.declination("rawResourceUrl");
+
+export type RawResourceUrl = GetValueObject<typeof rawResourceUrlObjecter>;
 
 export const rawTitleObjecter = zod
 	.string()
@@ -21,7 +27,7 @@ export const rawGrantObjecter = zod
 		agency: zod.string(),
 		country: zod.string().nullable(),
 	})
-	.createValueObjecter("rawGrants");
+	.createValueObjecter("rawGrant");
 
 export type RawGrant = GetValueObject<typeof rawGrantObjecter>;
 
@@ -33,11 +39,10 @@ export type RawAbstract = GetValueObject<typeof rawAbstractObjecter>;
 
 export const rawAbstractPartObjecter = zod
 	.object({
-		label: zod.string(),
+		label: zod.enum(abstractSectionNameEnum.toTuple()),
 		content: zod.string(),
 		nlmCategory: zod.string(),
 	})
 	.createValueObjecter("rawAbstractPart");
 
 export type RawAbstractPart = GetValueObject<typeof rawAbstractPartObjecter>;
-

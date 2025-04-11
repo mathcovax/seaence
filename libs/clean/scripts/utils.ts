@@ -177,6 +177,7 @@ export type CleanEnum<
 		[Prop in GenericValues[number]]: Prop
 	} & {
 		toTuple(): GenericValues;
+		has(value: string): value is GenericValues[number];
 	}
 >;
 
@@ -188,6 +189,7 @@ export function createEnum<
 		[
 			...values.map((value) => [value, value]),
 			["toTuple", () => values],
+			["has", (value: GenericValue) => values.includes(value)],
 		],
 	);
 }
