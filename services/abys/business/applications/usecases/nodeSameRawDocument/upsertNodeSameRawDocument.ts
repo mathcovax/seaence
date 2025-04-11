@@ -1,12 +1,12 @@
 import { nodeSameRawDocumentRepository } from "@business/applications/repositories/nodeSameRawDocument";
 import { rawDocumentRepository, type RawDocumentEntity } from "@business/applications/repositories/rawDocument";
-import { type Provider } from "@business/domains/common/provider";
+import { providerObjecter, type Provider } from "@business/domains/common/provider";
 import { NodeSameRawDocumentEntity, rawDocumentWrapperObjecter } from "@business/domains/entities/nodeSameRawDocument";
+import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { UsecaseHandler } from "@vendors/clean";
 import { match, P } from "ts-pattern";
 
 interface Input {
-	provider: Provider;
 	rawDocument: RawDocumentEntity;
 }
 
@@ -15,7 +15,14 @@ export class UpsertNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 	rawDocumentRepository,
 }) {
 	public async execute(input: Input) {
-		const { provider, rawDocument } = input;
+		const { rawDocument } = input;
+
+		const provider = match(input)
+			.with(
+				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
+				() => providerObjecter.unsafeCreate("pubmed"),
+			)
+			.exhaustive();
 
 		const nodeSameRawDocument = await this
 			.nodeSameRawDocumentRepository

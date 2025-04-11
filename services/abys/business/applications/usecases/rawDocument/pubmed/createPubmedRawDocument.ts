@@ -31,10 +31,7 @@ export class CreatePubmedRawDocumentUsecase extends UsecaseHandler.create({
 
 		await this.rawDocumentRepository.save(rawDocument);
 
-		await this.upsertNodeSameRawDocument({
-			provider: providerObjecter.unsafeCreate("pubmed"),
-			rawDocument,
-		});
+		await this.upsertNodeSameRawDocument({ rawDocument });
 
 		return rawDocument;
 	}

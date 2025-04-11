@@ -23,7 +23,7 @@ type _AssertPriority = ExpectType<
 
 const ressourcesKey = providerEnum.toTuple();
 
-export class CreateBakedDocumentUsecase extends UsecaseHandler.create({
+export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 	bakedDocumentRepository,
 	rawDocumentRepository,
 }) {
@@ -80,19 +80,24 @@ export class CreateBakedDocumentUsecase extends UsecaseHandler.create({
 
 	private computedRessources(rawDocuments: ResultOfFindByNodeSameRawDocument) {
 		return bakedDocumentRessourcesObjecter.unsafeCreate(
-			ressourcesKey.reduce((
-				acc: BakedDocumentRessources["value"],
-				provider,
-			) => {
-				const rawDocument = rawDocuments[provider];
-				if (rawDocument?.resourceUrl.value) {
-					acc[provider] = {
-						name: provider,
-						url: rawDocument.resourceUrl.value,
+			ressourcesKey.reduce<BakedDocumentRessources["value"]>(
+				(acc, provider) => {
+					const rawDocument = rawDocuments[provider];
+
+					if (!rawDocument) {
+						return acc;
+					}
+
+					return {
+						...acc,
+						[provider]: {
+							name: provider,
+							url: rawDocument.resourceUrl.value,
+						},
 					};
-				}
-				return acc;
-			}, {}),
+				},
+				{},
+			),
 		);
 	}
 }
