@@ -1,7 +1,6 @@
 import { nodeSameRawDocumentRepository } from "@business/applications/repositories/nodeSameRawDocument";
 import { rawDocumentRepository } from "@business/applications/repositories/rawDocument";
 import { type ArticleType } from "@business/domains/common/articleType";
-import { providerObjecter } from "@business/domains/common/provider";
 import { type RawResourceUrl, type RawAbstract, type RawAbstractPart, type RawAuthor, type RawGrant, type RawTitle } from "@business/domains/common/rawDocument";
 import { type PubmedRawDocumentArticleId, type PubmedRawDocumentElectronicPublicationDate, PubmedRawDocumentEntity, type PubmedRawDocumentKeyword, type PubmedRawDocumentMeshTerm } from "@business/domains/entities/rawDocument/pubmed";
 import { UsecaseHandler } from "@vendors/clean";

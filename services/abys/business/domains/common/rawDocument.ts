@@ -1,4 +1,5 @@
 import { type GetValueObject, urlObjecter, zod } from "@vendors/clean";
+import { abstractSectionNameEnum } from "./abtrasctSection";
 
 export const rawResourceUrlObjecter = urlObjecter
 	.declination("rawResourceUrl");
@@ -38,7 +39,7 @@ export type RawAbstract = GetValueObject<typeof rawAbstractObjecter>;
 
 export const rawAbstractPartObjecter = zod
 	.object({
-		label: zod.string(),
+		label: zod.enum(abstractSectionNameEnum.toTuple()),
 		content: zod.string(),
 		nlmCategory: zod.string(),
 	})

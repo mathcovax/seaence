@@ -39,7 +39,10 @@ nodeSameRawDocumentRepository.default = {
 				id: simpleNodeSameRawDocument.id,
 			},
 			{
-				$set: simpleNodeSameRawDocument,
+				$set: {
+					...simpleNodeSameRawDocument,
+					updatedAt: new Date(),
+				},
 			},
 			{ upsert: true },
 		);

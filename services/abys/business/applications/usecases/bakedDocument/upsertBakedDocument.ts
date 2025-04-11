@@ -30,35 +30,36 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 	public async execute(input: Input) {
 		const { nodeSameRawDocument, language } = input;
 		const rawDocuments = await this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
+		const currentBakedDocument = await this.bakedDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
 
 		const rawDocumentKey = priority.find((key) => !!rawDocuments[key]);
 
-		const bakedDocument = match({
+		const bakedDocument = await match({
 			rawDocument: rawDocumentKey ? rawDocuments[rawDocumentKey] : undefined,
 		})
 			.with(
 				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
-				({ rawDocument }) => BakedDocumentEntity.create({
-					id: this.bakedDocumentRepository.generateBakedDocumentId(),
+				async({ rawDocument }) => BakedDocumentEntity.create({
+					id: currentBakedDocument?.id ?? this.bakedDocumentRepository.generateBakedDocumentId(),
 					nodeSameRawDocumentId: nodeSameRawDocument.id,
 					language: language,
-					title: this.bakedDocumentRepository.makeBakedTitleWithRawTitle(
+					title: await this.bakedDocumentRepository.makeBakedTitleWithRawTitle(
 						rawDocument.title,
 						language,
 					),
 					abstract: rawDocument.abstract
-						? this.bakedDocumentRepository.makeBakedAbstractWithRawAbstract(
+						? await this.bakedDocumentRepository.makeBakedAbstractWithRawAbstract(
 							rawDocument.abstract,
 							language,
 						)
 						: null,
 					resources: this.computedRessources(rawDocuments),
-					keywords: this.bakedDocumentRepository.makeBakedKeywordsWithKeywordPubmed(
+					keywords: await this.bakedDocumentRepository.makeBakedKeywordsWithKeywordPubmed(
 						rawDocument.keywords,
 						language,
 					),
 					abstractDetails: rawDocument.detailedAbstract
-						? this.bakedDocumentRepository.makeBakedAbstractDetailsWithRawAbstractDetails(
+						? await this.bakedDocumentRepository.makeBakedAbstractDetailsWithRawAbstractDetails(
 							rawDocument.detailedAbstract,
 							language,
 						)

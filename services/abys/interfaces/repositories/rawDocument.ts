@@ -33,6 +33,7 @@ rawDocumentRepository.default = {
 					$set: {
 						provider: "pubmed",
 						...simpleRawDocument,
+						updatedAt: new Date(),
 					},
 				},
 				{ upsert: true },

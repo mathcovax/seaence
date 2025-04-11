@@ -1,6 +1,6 @@
 import { nodeSameRawDocumentRepository } from "@business/applications/repositories/nodeSameRawDocument";
 import { rawDocumentRepository, type RawDocumentEntity } from "@business/applications/repositories/rawDocument";
-import { providerObjecter, type Provider } from "@business/domains/common/provider";
+import { providerObjecter } from "@business/domains/common/provider";
 import { NodeSameRawDocumentEntity, rawDocumentWrapperObjecter } from "@business/domains/entities/nodeSameRawDocument";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { UsecaseHandler } from "@vendors/clean";
