@@ -8,7 +8,7 @@ export type RosettaClientRoute = TransformCodegenRouteToHttpClientRoute<
 >;
 
 export const rosettaHttpClient = new HttpClient<RosettaClientRoute>({
-	baseUrl: `${envs.ROSETTA_PROTOCOL}://${envs.ROSETTA_HOST}:${envs.ROSETTA_PORT}`,
+	baseUrl: envs.ROSETTA_BASE_URL,
 });
 
 export type SupportedLanguage = FindHttpClientRoute<
