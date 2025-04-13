@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-    provider = "prisma-client-js"
-    output   = "../../../node_modules/@prisma/output"
+    provider        = "prisma-client-js"
+    output          = "../../../node_modules/@prisma/output"
+    previewFeatures = ["prismaSchemaFolder"]
 }
 
 datasource db {
@@ -18,11 +19,6 @@ enum provider {
     pubmed
     pedro
     sciencedirect
-}
-
-enum articleType {
-    metaAnalysis
-    randomizedControlledTrial
 }
 
 model searchResult {

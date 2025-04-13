@@ -12,7 +12,7 @@ export type RawDocument = FindHttpClientRoute<
 	"/raw-document"
 >["body"];
 
-export class AbysApi {
+export class AbysAPI {
 	private static httpClient: HttpClient<AbysHttpRoute>;
 
 	public static sendRawDocument(rawDocument: RawDocument) {

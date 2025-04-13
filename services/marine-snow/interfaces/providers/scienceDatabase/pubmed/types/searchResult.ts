@@ -1,5 +1,4 @@
-import { ZodAccelerator, zod } from "@duplojs/core";
-import { type zodInfer } from "./XML";
+import { ZodAccelerator, type ZodSpace, zod } from "@duplojs/core";
 
 export const searchResultPayloadSchema = zod.object({
 	esearchresult: zod.object({
@@ -9,4 +8,4 @@ export const searchResultPayloadSchema = zod.object({
 
 export const searchResultPayloadBuildedSchema = ZodAccelerator.build(searchResultPayloadSchema);
 
-export type SearchResultPayload = zodInfer<typeof searchResultPayloadSchema>;
+export type SearchResultPayload = ZodSpace.infer<typeof searchResultPayloadSchema>;

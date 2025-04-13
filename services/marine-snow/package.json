@@ -35,6 +35,6 @@
     "typescript": "5.8.2"
   },
   "prisma": {
-    "schema": "interfaces/providers/prisma/schema.prisma"
+    "schema": "interfaces/providers/prisma/schema"
   }
 }

@@ -7,6 +7,7 @@ import { WorkerMissionError } from "@interfaces/workers/WorkerMissionError";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { postMessage } from "../postMessage";
+import { articleTypeToFilterArticleType } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
 
 export type SupportedSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -56,11 +57,20 @@ export async function mission(mission: SupportedSearchResultMission) {
 						const response = await PubMedAPI.getSearchResult(
 							page,
 							currentDate,
-							articleType,
+							articleTypeToFilterArticleType[articleType],
 						);
 
-						if (response.code !== expectHttpCode) {
-							throw new WorkerMissionError("Unexpected response", mission, { response });
+						if (response instanceof Error || response.code !== expectHttpCode) {
+							throw new WorkerMissionError(
+								"Unexpected response",
+								mission,
+								{
+									page,
+									currentDate,
+									articleType,
+									response,
+								},
+							);
 						}
 
 						if (!response.body.esearchresult.idlist.length) {

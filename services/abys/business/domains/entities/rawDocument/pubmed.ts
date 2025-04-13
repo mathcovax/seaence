@@ -5,7 +5,7 @@ import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, date
 
 export const pubmedRawDocumentArticleIdObjecter = zod
 	.object({
-		type: zod.string(),
+		name: zod.string(),
 		value: zod.string(),
 	})
 	.createValueObjecter("articleId");

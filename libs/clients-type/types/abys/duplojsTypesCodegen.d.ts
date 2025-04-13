@@ -5,6 +5,18 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
+type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
+
+export { ArticleType };
+
+type AbstractSectionName = "introduction" | "background" | "objective" | "method" | "result" | "conclusion" | "reference" | "acknowledgment" | "objective" | "option" | "outcome" | "evidence" | "value" | "benefit" | "recommendation" | "validation" | "sponsor" | "purpose" | "introductions" | "backgrounds" | "objectives" | "methods" | "results" | "conclusions" | "references" | "acknowledgments" | "objectives" | "options" | "outcomes" | "evidences" | "values" | "benefits" | "recommendations" | "validations" | "sponsors" | "purposes";
+
+export { AbstractSectionName };
+
+type UniqueFieldName = "digitalObjectIdentifier";
+
+export { UniqueFieldName };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/raw-document";
@@ -14,7 +26,7 @@ type CodegenRoutes = ({
         title: string;
         authors: {
             name: string;
-            affiliation: string[] | null;
+            affiliations: string[] | null;
         }[];
         grants: {
             acronym: string | null;
@@ -22,26 +34,28 @@ type CodegenRoutes = ({
             country: string | null;
         }[];
         keywords: {
-            majorTopic: boolean;
             value: string;
         }[];
-        articleTypes: ("adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast")[];
+        articleTypes: ArticleType[];
         articleIds: {
-            type: string;
+            name: string;
             value: string;
         }[];
-        electronicPublicationDate: Date;
         abstract: string | null;
         detailedAbstract: {
-            label: string;
+            name: AbstractSectionName;
             content: string;
-            nlmCategory: string;
         }[] | null;
-        meshTerms: {
-            ui: string;
-            majorTopic: boolean;
+        webPublishDate: Date | null;
+        journalPublishDate: {
+            day: number | null;
+            mounth: number | null;
+            year: number;
+        } | null;
+        uniqueArticleField: {
+            name: UniqueFieldName;
             value: string;
-        }[];
+        };
     };
     response: {
         code: 409;

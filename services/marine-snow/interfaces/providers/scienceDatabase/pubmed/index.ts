@@ -1,12 +1,17 @@
 /* eslint-disable camelcase */
-import { type ArticleType } from "@business/domains/common/articleType";
 import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { retry } from "@interfaces/utils/retrying";
 import { type PubMedRoute } from "./types/Route";
 import { XMLParser } from "fast-xml-parser";
 import { searchResultPayloadBuildedSchema } from "./types/searchResult";
+import { type PubmedFilterArticleType } from "./types/utils";
 import { articlePayloadBuildedSchema } from "./types/article";
+
+/**
+ * @link https://pubmed.ncbi.nlm.nih.gov/help/#dp
+ */
+export type PubmedDateFilter = "dp" | "epdat" | "ppdat" | "edat" | "mhda" | "crdt";
 
 export class PubMedAPI {
 	private static config = {
@@ -18,20 +23,14 @@ export class PubMedAPI {
 		timeToSleepBetweenRetry: 100,
 	};
 
-	private static httpClient: HttpClient<PubMedRoute>;
-
-	private static articleTypeMapper: Record<ArticleType["value"], string> = {
-		metaAnalysis: "meta-analysis",
-		randomizedControlledTrial: "randomizedcontrolledtrial",
-	};
+	public static httpClient: HttpClient<PubMedRoute>;
 
 	public static getSearchResult(
 		page: number,
 		date: Date,
-		articleType: ArticleType["value"],
+		filterArticleType: PubmedFilterArticleType,
+		dateFilter: PubmedDateFilter = "crdt",
 	) {
-		const filterArticleType = this.articleTypeMapper[articleType];
-
 		const fullYear = date.getFullYear();
 		const month = date.getMonth() + this.config.offsetMonth;
 		const monthDay = date.getDate();
@@ -43,7 +42,7 @@ export class PubMedAPI {
 				{
 					query: {
 						db: "pubmed",
-						term: `(${publicationDate}[Date - Publication]) AND (${filterArticleType}[Filter])`,
+						term: `(${publicationDate}[${dateFilter}]) AND (${filterArticleType}[Filter])`,
 						retmax: this.config.quantityParPage.toString(),
 						retstart: (this.config.quantityParPage * page).toString(),
 						retmode: "json",
@@ -58,7 +57,11 @@ export class PubMedAPI {
 		)
 			.then((response) => {
 				if (response.code === this.config.httpCodeWithPayload) {
-					response.body = searchResultPayloadBuildedSchema.parse(response.body);
+					const result = searchResultPayloadBuildedSchema.safeParse(response.body);
+					if (!result.success) {
+						return result.error;
+					}
+					response.body = result.data;
 				}
 				return response;
 			});
@@ -84,7 +87,11 @@ export class PubMedAPI {
 		)
 			.then((response) => {
 				if (response.code === this.config.httpCodeWithPayload) {
-					// response.body = articlePayloadBuildedSchema.parse(response.body);
+					const result = articlePayloadBuildedSchema.safeParse(response.body);
+					if (!result.success) {
+						return result.error;
+					}
+					response.body = result.data;
 				}
 				return response;
 			});

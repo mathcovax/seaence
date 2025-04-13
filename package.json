@@ -35,6 +35,8 @@
 
     "docker:spotter": "docker compose up spotter",
 
+    "docker:abys": "docker compose up abys",
+
     "docker:harbor": "docker compose up harbor",
     "docker:harbor:prisma:migrate": "docker compose exec harbor npm -w services/harbor run prisma:migrate",
     "docker:harbor:prisma:studio": "docker compose exec harbor npm -w services/harbor run prisma:studio",
