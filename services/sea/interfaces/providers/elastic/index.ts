@@ -2,6 +2,7 @@
 import { Client, type estypes } from "@elastic/elasticsearch";
 import { envs } from "@interfaces/envs";
 import { type ElasticDocument, elasticDocumentMappingSchema, elasticDocumentSettingsSchema } from "./entities/document";
+import { match } from "ts-pattern";
 
 type Language = "fr-Fr" | "en-US";
 
@@ -9,19 +10,21 @@ const db = new Client({
 	node: envs.ES_BASE_URL,
 });
 
-const collectionNames = ["document_fr-Fr", "document_en-US"];
+const collectionNames = ["document_fr-Fr", "document_en-US"] as const;
 
-await Promise.all(
-	collectionNames.map(async(collectionName) => {
-		const exist = await db.indices.exists({ index: collectionName });
-		if (!exist) {
+async function configureCollection(collectionName: string) {
+	const exists = await db.indices.exists({ index: collectionName });
+
+	return match({ exists })
+		.with({ exists: false }, async() => {
 			await db.indices.create({
 				index: collectionName,
 				mappings: elasticDocumentMappingSchema,
 				settings: elasticDocumentSettingsSchema,
 			});
-			console.log(`La collection ${collectionName} a été créé.`);
-		} else {
+			console.log(`La collection ${collectionName} a été créée.`);
+		})
+		.with({ exists: true }, async() => {
 			await db.indices.close({ index: collectionName });
 			await db.indices.putMapping({
 				index: collectionName,
@@ -34,9 +37,12 @@ await Promise.all(
 				},
 			});
 			await db.indices.open({ index: collectionName });
-		}
-	}),
-);
+			console.log(`La collection ${collectionName} a été mise à jour.`);
+		})
+		.exhaustive();
+}
+
+await Promise.all(collectionNames.map(configureCollection));
 
 export const elastic = {
 	db,
