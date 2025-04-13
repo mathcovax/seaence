@@ -24,6 +24,7 @@ bakedDocumentRepository.default = {
 			{
 				$set: {
 					...simpleBakedDocument,
+					createdAt: new Date(),
 					updatedAt: new Date(),
 				},
 			},

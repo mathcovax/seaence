@@ -49,4 +49,20 @@ nodeSameRawDocumentRepository.default = {
 
 		return nodeSameRawDocument;
 	},
+	async findNodeSameRawDocumentPerPage({ quantityPerPage, page }) {
+		return mongo.nodeNameRawDocumentCollection
+			.find(
+				{},
+				{ projection: { _id: 0 } },
+			)
+			.skip(page.value * quantityPerPage.value)
+			.limit(quantityPerPage.value)
+			.map(
+				(mongoNodeSameRawDocument) => EntityHandler.unsafeMapper(
+					NodeSameRawDocumentEntity,
+					mongoNodeSameRawDocument,
+				),
+			)
+			.toArray();
+	},
 };

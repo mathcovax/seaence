@@ -42,7 +42,7 @@ export class UpsertNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 				{ nodeSameRawDocument: null },
 				() => NodeSameRawDocumentEntity.create({
 					id: this.nodeSameRawDocumentRepository.generateNodeSameRawDocumentId(),
-					uniqueField: this.rawDocumentRepository.findUniqueField(rawDocument),
+					uniqueField: rawDocument.uniqueArticleField,
 					rawDocumentWrapper: rawDocumentWrapperObjecter.unsafeCreate({
 						[provider.value]: rawDocument.resourceUrl.value,
 					}),

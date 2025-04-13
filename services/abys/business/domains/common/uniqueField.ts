@@ -1,9 +1,6 @@
 import { createEnum, type GetValueObject, zod } from "@vendors/clean";
 
-export const uniqueFieldNameEnum = createEnum([
-	"DOI",
-	"BOOKID",
-]);
+export const uniqueFieldNameEnum = createEnum(["digitalObjectIdentifier"]);
 
 export const uniqueFieldObjecter = zod
 	.object({

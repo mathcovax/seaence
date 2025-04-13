@@ -7,10 +7,11 @@ const {
 	keywords,
 	articleTypes,
 	articleIds,
-	electronicPublicationDate,
 	abstract,
 	detailedAbstract,
-	meshTerms,
+	webPublishDate,
+	journalPublishDate,
+	uniqueArticleField,
 } = PubmedRawDocumentEntity.propertiesDefinition;
 
 export const entryPointCreatePubmedRawDocument = zod.object({
@@ -22,8 +23,9 @@ export const entryPointCreatePubmedRawDocument = zod.object({
 	keywords: keywords.toZodSchema(),
 	articleTypes: articleTypes.toZodSchema(),
 	articleIds: articleIds.toZodSchema(),
-	electronicPublicationDate: electronicPublicationDate.toZodSchema(),
 	abstract: abstract.toZodSchema(),
 	detailedAbstract: detailedAbstract.toZodSchema(),
-	meshTerms: meshTerms.toZodSchema(),
+	webPublishDate: webPublishDate.toZodSchema(),
+	journalPublishDate: journalPublishDate.toZodSchema(),
+	uniqueArticleField: uniqueArticleField.toZodSchema(),
 });

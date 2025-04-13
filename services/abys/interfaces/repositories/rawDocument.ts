@@ -4,7 +4,6 @@ import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/
 import { mongo } from "@interfaces/providers/mongo";
 import { type MongoRawDocument } from "@interfaces/providers/mongo/entities/rawDocument";
 import { match } from "ts-pattern";
-import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
 import { providerEnum } from "@business/domains/common/provider";
 import { rawResourceUrlObjecter } from "@business/domains/common/rawDocument";
 
@@ -51,23 +50,6 @@ rawDocumentRepository.default = {
 		);
 
 		return rawDocumentMongo ? mapMongoDocumentToEntity(rawDocumentMongo) : null;
-	},
-	findUniqueField(rawDocument) {
-		for (const articleId of rawDocument.articleIds) {
-			if (articleId.value.type === "doi") {
-				return uniqueFieldObjecter.unsafeCreate({
-					name: "DOI",
-					value: articleId.value.value,
-				});
-			} else if (articleId.value.type === "bookid") {
-				return uniqueFieldObjecter.unsafeCreate({
-					name: "BOOKID",
-					value: articleId.value.value,
-				});
-			}
-		}
-
-		throw new RepositoryError("no-valid-unique-id");
 	},
 	async findByNodeSameRawDocument(nodeSameRawDocument) {
 		const resourcesKey = providerEnum.toTuple();

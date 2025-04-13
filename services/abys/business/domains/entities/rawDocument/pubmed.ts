@@ -1,5 +1,6 @@
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { rawAbstractObjecter, rawAbstractPartObjecter, rawAuthorObjecter, rawGrantObjecter, rawResourceUrlObjecter, rawTitleObjecter } from "@business/domains/common/rawDocument";
+import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
+import { rawAbstractObjecter, rawAbstractPartObjecter, rawAuthorObjecter, rawGrantObjecter, rawResourceUrlObjecter, rawTitleObjecter, rawKeywordObjecter } from "@business/domains/common/rawDocument";
 import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, dateYYYYMMDDObjecter } from "@vendors/clean";
 
 export const pubmedRawDocumentArticleIdObjecter = zod
@@ -11,43 +12,29 @@ export const pubmedRawDocumentArticleIdObjecter = zod
 
 export type PubmedRawDocumentArticleId = GetValueObject<typeof pubmedRawDocumentArticleIdObjecter>;
 
-export const pubmedRawDocumentElectronicPublicationDateObjecter = dateYYYYMMDDObjecter
-	.declination("pubmedRawDocumentElectronicPublicationDate");
-
-export type PubmedRawDocumentElectronicPublicationDate =
-	GetValueObject<typeof pubmedRawDocumentElectronicPublicationDateObjecter>;
-
-export const pubmedRawDocumentMeshTermObjecter = zod
+export const pubmedRawDocumentJournalPublishDateObjecter = zod
 	.object({
-		ui: zod.string(),
-		majorTopic: zod.boolean(),
-		value: zod.string(),
+		day: zod.number().nullable(),
+		mounth: zod.number().nullable(),
+		year: zod.number(),
 	})
-	.createValueObjecter("pubmedRawDocumentMeshTerm");
+	.createValueObjecter("pubmedRawDocumentJournalPublishDate");
 
-export type PubmedRawDocumentMeshTerm = GetValueObject<typeof pubmedRawDocumentMeshTermObjecter>;
-
-export const pubmedRawDocumentKeywordObjecter = zod
-	.object({
-		majorTopic: zod.boolean(),
-		value: zod.string(),
-	})
-	.createValueObjecter("pubmedRawDocumentKeyword");
-
-export type PubmedRawDocumentKeyword = GetValueObject<typeof pubmedRawDocumentKeywordObjecter>;
+export type PubmedRawDocumentJournalPublishDate = GetValueObject<typeof pubmedRawDocumentJournalPublishDateObjecter>;
 
 export class PubmedRawDocumentEntity extends EntityHandler.create({
+	uniqueArticleField: uniqueFieldObjecter,
 	resourceUrl: rawResourceUrlObjecter,
 	title: rawTitleObjecter,
 	authors: rawAuthorObjecter.array(),
 	grants: rawGrantObjecter.array(),
-	keywords: pubmedRawDocumentKeywordObjecter.array(),
+	keywords: rawKeywordObjecter.array(),
 	articleTypes: articleTypeObjecter.array(),
 	articleIds: pubmedRawDocumentArticleIdObjecter.array(),
-	electronicPublicationDate: pubmedRawDocumentElectronicPublicationDateObjecter,
 	abstract: rawAbstractObjecter.nullable(),
 	detailedAbstract: rawAbstractPartObjecter.array().nullable(),
-	meshTerms: pubmedRawDocumentMeshTermObjecter.array(),
+	webPublishDate: dateYYYYMMDDObjecter.nullable(),
+	journalPublishDate: pubmedRawDocumentJournalPublishDateObjecter.nullable(),
 }) {
 	public static create(params: GetEntityProperties<typeof PubmedRawDocumentEntity>) {
 		return new PubmedRawDocumentEntity(params);

@@ -15,7 +15,7 @@ export type RawTitle = GetValueObject<typeof rawTitleObjecter>;
 export const rawAuthorObjecter = zod
 	.object({
 		name: zod.string(),
-		affiliation: zod.string().array().nullable(),
+		affiliations: zod.string().array().nullable(),
 	})
 	.createValueObjecter("rawAuthor");
 
@@ -41,8 +41,15 @@ export const rawAbstractPartObjecter = zod
 	.object({
 		label: zod.enum(abstractSectionNameEnum.toTuple()),
 		content: zod.string(),
-		nlmCategory: zod.string(),
 	})
 	.createValueObjecter("rawAbstractPart");
 
 export type RawAbstractPart = GetValueObject<typeof rawAbstractPartObjecter>;
+
+export const rawKeywordObjecter = zod
+	.object({
+		value: zod.string(),
+	})
+	.createValueObjecter("rawKeyword");
+
+export type RawKeyword = GetValueObject<typeof rawKeywordObjecter>;

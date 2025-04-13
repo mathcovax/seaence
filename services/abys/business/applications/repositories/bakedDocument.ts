@@ -1,7 +1,6 @@
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 import { type BakedDocumentId, type BakedDocumentEntity, type BakedDocumentTitle, type BakedDocumentLanguage, type BakedDocumentAbstract, type BakedDocumentKeyword, type BakedDocumentAbstractDetails } from "@business/domains/entities/bakedDocument";
-import { type RawAbstractPart, type RawAbstract, type RawTitle } from "@business/domains/common/rawDocument";
-import { type PubmedRawDocumentKeyword } from "@business/domains/entities/rawDocument/pubmed";
+import { type RawAbstractPart, type RawAbstract, type RawTitle, type RawKeyword } from "@business/domains/common/rawDocument";
 import { type NodeSameRawDocumentEntity } from "@business/domains/entities/nodeSameRawDocument";
 
 export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEntity> {
@@ -12,7 +11,7 @@ export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEnt
 		language: BakedDocumentLanguage
 	): Promise<BakedDocumentAbstract>;
 	makeBakedKeywordsWithKeywordPubmed(
-		rawKeywordPubmed: PubmedRawDocumentKeyword[],
+		rawKeywordPubmed: RawKeyword[],
 		language: BakedDocumentLanguage
 	): Promise<BakedDocumentKeyword[]>;
 	makeBakedAbstractDetailsWithRawAbstractDetails(

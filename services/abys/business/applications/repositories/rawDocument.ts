@@ -1,6 +1,5 @@
 import { type Provider } from "@business/domains/common/provider";
 import { type RawResourceUrl } from "@business/domains/common/rawDocument";
-import { type UniqueField } from "@business/domains/common/uniqueField";
 import { type NodeSameRawDocumentEntity } from "@business/domains/entities/nodeSameRawDocument";
 import { type PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { type ExpectType } from "@duplojs/utils";
@@ -20,7 +19,6 @@ type _AssertResultOfFindByNodeSameRawDocument = ExpectType<
 
 export interface RawDocumentRepository extends RepositoryBase<RawDocumentEntity> {
 	findByResourceUrl(resourceUrl: RawResourceUrl): Promise<RawDocumentEntity | null>;
-	findUniqueField(rawDocument: RawDocumentEntity): UniqueField;
 	findByNodeSameRawDocument(
 		NodeSameRawDocumentEntity: NodeSameRawDocumentEntity
 	): Promise<ResultOfFindByNodeSameRawDocument>;
