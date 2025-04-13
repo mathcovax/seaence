@@ -1,6 +1,6 @@
 import { rawDocumentShouldNotExistByResourceUrl } from "@interfaces/http/checkers/rawDocument";
 import { entryPointCreatePubmedRawDocument } from "@interfaces/http/schemas/rawDocument/pubmed";
-import { createPubmedRawDocumentUsecase } from "@interfaces/usecase";
+import { upsertPubmedRawDocumentUsecase } from "@interfaces/usecase";
 import { match } from "ts-pattern";
 
 useBuilder()
@@ -19,7 +19,7 @@ useBuilder()
 			await match(body)
 				.with(
 					{ provider: "pubmed" },
-					(input) => createPubmedRawDocumentUsecase.execute(input),
+					(input) => upsertPubmedRawDocumentUsecase.execute(input),
 				)
 				.exhaustive();
 

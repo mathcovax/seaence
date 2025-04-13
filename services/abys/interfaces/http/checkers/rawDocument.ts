@@ -1,10 +1,10 @@
 import { rawDocumentRepository } from "@business/applications/repositories/rawDocument";
-import { type PubmedRawDocumentResourceUrl } from "@business/domains/entities/rawDocument/pubmed";
+import { type RawResourceUrl } from "@business/domains/common/rawDocument";
 import { type GetTypeInput } from "@duplojs/core";
 import { match } from "ts-pattern";
 
 export const inpurRawDocumentExist = createTypeInput<{
-	resourceUrl: PubmedRawDocumentResourceUrl;
+	resourceUrl: RawResourceUrl;
 }>();
 
 export const rawDocumentExistCheck = createChecker("rawDocumentExist")

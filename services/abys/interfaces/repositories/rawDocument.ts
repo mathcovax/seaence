@@ -1,9 +1,11 @@
 import { EntityHandler, RepositoryError } from "@vendors/clean";
-import { rawDocumentRepository } from "@business/applications/repositories/rawDocument";
+import { rawDocumentRepository, type ResultOfFindByNodeSameRawDocument } from "@business/applications/repositories/rawDocument";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { mongo } from "@interfaces/providers/mongo";
 import { type MongoRawDocument } from "@interfaces/providers/mongo/entities/rawDocument";
 import { match } from "ts-pattern";
+import { providerEnum } from "@business/domains/common/provider";
+import { rawResourceUrlObjecter } from "@business/domains/common/rawDocument";
 
 function mapMongoDocumentToEntity(mongoRawDocument: MongoRawDocument) {
 	return match(mongoRawDocument)
@@ -30,6 +32,7 @@ rawDocumentRepository.default = {
 					$set: {
 						provider: "pubmed",
 						...simpleRawDocument,
+						updatedAt: new Date(),
 					},
 				},
 				{ upsert: true },
@@ -47,5 +50,21 @@ rawDocumentRepository.default = {
 		);
 
 		return rawDocumentMongo ? mapMongoDocumentToEntity(rawDocumentMongo) : null;
+	},
+	async findByNodeSameRawDocument(nodeSameRawDocument) {
+		const resourcesKey = providerEnum.toTuple();
+		const result: ResultOfFindByNodeSameRawDocument = {};
+
+		for (const resource of resourcesKey) {
+			if (nodeSameRawDocument.rawDocumentWrapper.value[resource]) {
+				const resourceUrl = nodeSameRawDocument.rawDocumentWrapper.value[resource];
+				const rawDocument = await this.findByResourceUrl(
+					rawResourceUrlObjecter.unsafeCreate(resourceUrl),
+				);
+				result[resource] = rawDocument ? rawDocument : undefined;
+			}
+		}
+
+		return result;
 	},
 };
