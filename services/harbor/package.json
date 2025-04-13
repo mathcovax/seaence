@@ -5,14 +5,11 @@
   "scripts": {
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
     "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/harbor/duplojsTypesCodegen.d.ts",
-    
     "test:lint": "eslint",
     "test:types": "tsc",
-    
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    
     "postinstall": "npm run prisma:generate && npm run duplo:generate"
   },
   "dependencies": {
