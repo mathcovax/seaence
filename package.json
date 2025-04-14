@@ -47,6 +47,8 @@
     "docker:marine-snow:mission:searchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:searchResult --",
     "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
 
+    "docker:abys:document:cookRawDocument": "docker compose exec abys npm -w services/abys run document:cookRawDocument",
+
     "prepare": "husky"
   },
   "workspaces": [
