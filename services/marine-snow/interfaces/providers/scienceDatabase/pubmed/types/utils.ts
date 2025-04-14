@@ -46,6 +46,7 @@ export const articleTypeToFilterArticleType = {
 	interactiveTutorial: "interactivetutorial",
 	interview: "interview",
 	introductoryJournalArticle: "introductoryjournalarticle",
+	journalArticle: "journalarticle",
 	lecture: "lecture",
 	legalCase: "legalcase",
 	legislation: "legislation",
@@ -77,6 +78,7 @@ export const articleTypeToFilterArticleType = {
 	retractedPublication: "retractedpublication",
 	retractionOfPublication: "retractionofpublication",
 	review: "review",
+	scopingReview: "scopingreview",
 	scientificIntegrityReview: "scientificintegrityreview",
 	systematicReview: "systematicreview",
 	technicalReport: "technicalreport",
@@ -89,7 +91,7 @@ export const articleTypeToFilterArticleType = {
 export type PubmedFilterArticleType =
 	typeof articleTypeToFilterArticleType[keyof typeof articleTypeToFilterArticleType];
 
-export const articleTypeBackedToUI: Record<ArticleType["value"], string | undefined> = {
+export const articleTypeBackedToUI: Record<ArticleType["value"], string | string[] | undefined> = {
 	adaptiveClinicalTrial: "D000076362",
 	address: "D019484",
 	autobiography: "D020493",
@@ -132,11 +134,15 @@ export const articleTypeBackedToUI: Record<ArticleType["value"], string | undefi
 	interactiveTutorial: "D054710",
 	interview: "D017203",
 	introductoryJournalArticle: "D054711",
+	journalArticle: "D016428",
 	lecture: "D019531",
 	legalCase: "D016418",
 	legislation: "D020485",
 	letter: "D016422",
-	metaAnalysis: "D017418",
+	metaAnalysis: [
+		"D017418",
+		"D000099094",
+	],
 	multicenterStudy: "D016448",
 	news: "D016433",
 	newspaperArticle: "D018431",
@@ -163,6 +169,7 @@ export const articleTypeBackedToUI: Record<ArticleType["value"], string | undefi
 	retractedPublication: "D016441",
 	retractionOfPublication: "D016440",
 	review: "D016454",
+	scopingReview: "D000098583",
 	scientificIntegrityReview: "D016426",
 	systematicReview: "D000078182",
 	technicalReport: "D016427",
@@ -175,8 +182,19 @@ export const articleTypeBackedToUI: Record<ArticleType["value"], string | undefi
 export const reverseArticleTypeBackedToUI: Record<string, ArticleType["value"] | undefined> = Object.fromEntries(
 	Object
 		.entries(articleTypeBackedToUI)
-		.filter(([_key, value]) => value)
-		.map(([key, value]) => [value, key]),
+		.filter(([_key, value]) => !!value)
+		.flatMap(
+			([key, value]) => value instanceof Array
+				? value.map((subValue) => ({
+					value: subValue,
+					key,
+				}))
+				: {
+					value,
+					key,
+				},
+		)
+		.map(({ value, key }) => [value, key]),
 );
 
 export const acronymMounthToNumber: Record<string, undefined | number> = {
@@ -213,6 +231,11 @@ export const abstractSectionNameEnum = createEnum([
 	"validation",
 	"sponsor",
 	"purpose",
+	"patient",
+	"setting",
+	"studyObjective",
+	"measurementAndMainResult",
+
 	"introductions",
 	"backgrounds",
 	"objectives",
@@ -231,6 +254,10 @@ export const abstractSectionNameEnum = createEnum([
 	"validations",
 	"sponsors",
 	"purposes",
+	"patients",
+	"settings",
+	"studyObjectives",
+	"measurementsAndMainResults",
 ]);
 
 type _AbstractSectionNameExpect = ExpectType<
@@ -239,10 +266,12 @@ type _AbstractSectionNameExpect = ExpectType<
 	"strict"
 >;
 
-export const uniqueFieldNameEnum = createEnum(["digitalObjectIdentifier"]);
+export const uniqueFieldNameMapper = {
+	doi: "digitalObjectIdentifier",
+} as const;
 
 type _UniqueFieldNameExpect = ExpectType<
-	ReturnType<typeof uniqueFieldNameEnum["toTuple"]>[number],
-	UniqueFieldName,
+	typeof uniqueFieldNameMapper[keyof typeof uniqueFieldNameMapper],
+	Exclude<UniqueFieldName, "specific">,
 	"strict"
 >;

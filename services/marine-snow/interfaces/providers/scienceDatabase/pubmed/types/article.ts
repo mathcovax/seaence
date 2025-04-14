@@ -1,4 +1,4 @@
-import { ZodAccelerator, type ZodSpace, zod } from "@duplojs/core";
+import { type ZodSpace, zod } from "@duplojs/core";
 import { type ZodType } from "zod";
 
 const zo = zod.object;
@@ -40,6 +40,28 @@ const datePayload = {
 	}),
 };
 
+const medlineDate = zo({
+	MedlineDate: zo(stringValue),
+}).transform(
+	({ MedlineDate }) => {
+		const [stringYear, stringMonth, stringDay] = MedlineDate["#text"].split(" ");
+
+		const year = Number(stringYear);
+		if (isNaN(year)) {
+			return zod.NEVER;
+		}
+
+		const mounth = stringMonth.includes("-") ? undefined : stringMonth;
+		const day = Number(stringDay);
+
+		return {
+			Year: { "#text": year },
+			Month: mounth ? { "#text": mounth } : undefined,
+			Day: isNaN(day) || !mounth ? undefined : { "#text": day },
+		};
+	},
+);
+
 export const articlePayloadSchema = zo({
 	PubmedArticleSet: zod.union([
 		zo({
@@ -48,11 +70,14 @@ export const articlePayloadSchema = zo({
 					Article: zo({
 						Journal: zo({
 							JournalIssue: zo({
-								PubDate: zo({
-									Year: zo(numberValue),
-									Month: zo(stringValue).optional(),
-									Day: zo(numberValue).optional(),
-								}),
+								PubDate: zod.union([
+									zo({
+										Year: zo(numberValue),
+										Month: zo(stringValue).optional(),
+										Day: zo(numberValue).optional(),
+									}),
+									medlineDate,
+								]),
 							}),
 						}).optional(),
 						Abstract: zo({
@@ -63,7 +88,7 @@ export const articlePayloadSchema = zo({
 								}).array(),
 								zo(stringValue),
 							]),
-						}),
+						}).optional(),
 						PublicationTypeList: zo({
 							PublicationType: zo({
 								...attributeXML("UI", zod.string()),
@@ -72,21 +97,26 @@ export const articlePayloadSchema = zo({
 							ArticleDate: zo(datePayload).optional(),
 						}),
 						AuthorList: zo({
-							Author: zo({
-								LastName: zo(stringValue),
-								ForeName: zo(stringValue),
-								AffiliationInfo: zo({
-									Affiliation: zo(stringValue).toArray(),
+							Author: zod.union([
+								zo({
+									LastName: zo(stringValue).optional(),
+									ForeName: zo(stringValue).optional(),
+									AffiliationInfo: zo({
+										Affiliation: zo(stringValue),
+									}).toArray().optional(),
 								}),
-							}).toArray(),
-						}),
+								zo({
+									CollectiveName: zo(stringValue),
+								}),
+							]).toArray(),
+						}).optional(),
 						GrantList: zo({
 							Grant: zo({
 								Agency: zo(stringValue),
 								Country: zo(stringValue).optional(),
 								Acronym: zo(stringValue).optional(),
 							}).toArray(),
-						}),
+						}).optional(),
 						ArticleTitle: zo(stringValue),
 					}),
 					KeywordList: zo({

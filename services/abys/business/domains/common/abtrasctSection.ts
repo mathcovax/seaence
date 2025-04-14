@@ -19,6 +19,11 @@ export const abstractSectionNameEnum = createEnum([
 	"validation",
 	"sponsor",
 	"purpose",
+	"patient",
+	"setting",
+	"studyObjective",
+	"measurementAndMainResult",
+
 	"introductions",
 	"backgrounds",
 	"objectives",
@@ -37,6 +42,10 @@ export const abstractSectionNameEnum = createEnum([
 	"validations",
 	"sponsors",
 	"purposes",
+	"patients",
+	"settings",
+	"studyObjectives",
+	"measurementsAndMainResults",
 ]);
 
 export const abstractSectionNameObjecter = zod

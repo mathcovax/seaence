@@ -3,14 +3,19 @@
   "description": "Microservice de scrapping de données. Nommé d'après la neige marine, il récupère des données provenant de sources externes et les agrège pour les rendre accessibles aux autres services.",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch interfaces/http/main.ts",
+    "duplo:dev": "tsx --watch interfaces/http/main.ts",
+    "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/marine-snow/duplojsTypesCodegen.d.ts",
+
     "test:lint": "eslint",
     "test:types": "tsc",
+
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "mission:launch": "tsx interfaces/commands/launchMission.ts",
-    "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/marine-snow/duplojsTypesCodegen.d.ts",
+
+    "mission:searchResult": "tsx interfaces/commands/missionSearchResult.ts",
+    "mission:sendSearchResult": "tsx interfaces/commands/missionSendSearchResult.ts",
+
     "postinstall": "npm run prisma:generate && npm run duplo:generate"
   },
   "dependencies": {

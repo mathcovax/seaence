@@ -8,7 +8,7 @@ type AbysHttpRoute = TransformCodegenRouteToHttpClientRoute<
 
 export type RawDocument = FindHttpClientRoute<
 	AbysHttpRoute,
-	"POST",
+	"PUT",
 	"/raw-document"
 >["body"];
 
@@ -16,7 +16,7 @@ export class AbysAPI {
 	private static httpClient: HttpClient<AbysHttpRoute>;
 
 	public static sendRawDocument(rawDocument: RawDocument) {
-		return this.httpClient.post(
+		return this.httpClient.put(
 			"/raw-document",
 			{
 				body: rawDocument,

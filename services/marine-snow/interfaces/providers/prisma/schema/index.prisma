@@ -54,13 +54,6 @@ model SearchResultPubMedMission {
     SearchResultPubMedMissionStep SearchResultPubMedMissionStep?
 }
 
-model ResultDetailsSendSearchResultMission {
-    mission   SendSearchResultMission @relation(fields: [missionId], references: [id])
-    missionId String                  @id
-    success   Int
-    failed    Int
-}
-
 model SendSearchResultMissionStep {
     mission              SendSearchResultMission @relation(fields: [missionId], references: [id])
     missionId            String                  @id
@@ -70,9 +63,8 @@ model SendSearchResultMissionStep {
 }
 
 model SendSearchResultMission {
-    id                          String                                @id
+    id                          String                       @id
     quantity                    Int
     status                      missionStatus
-    resultDetails               ResultDetailsSendSearchResultMission?
     sendSearchResultMissionStep SendSearchResultMissionStep?
 }

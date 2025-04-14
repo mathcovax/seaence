@@ -1,7 +1,8 @@
+import { hasKey } from "@duplojs/utils";
 import { envs } from "@interfaces/envs";
 import { AbysAPI, type RawDocument } from "@interfaces/providers/abys";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { abstractSectionNameEnum, acronymMounthToNumber, reverseArticleTypeBackedToUI, uniqueFieldNameEnum } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
+import { abstractSectionNameEnum, acronymMounthToNumber, reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
 import { CleanError } from "@vendors/clean/error";
 import { match, P } from "ts-pattern";
 
@@ -48,7 +49,15 @@ export async function pubmedSender(reference: string) {
 				if (!articleTypes?.length) {
 					return new CleanError(
 						"Wrong articleType",
-						{ custom: { articleTypes } },
+						{
+							custom: {
+								articleTypes: PubmedArticle
+									.MedlineCitation
+									.Article
+									.PublicationTypeList
+									.PublicationType,
+							},
+						},
 					);
 				}
 
@@ -61,16 +70,29 @@ export async function pubmedSender(reference: string) {
 						value: articleId["#text"],
 					}));
 
-				const uniqueArticleField = articleIds
+				let uniqueArticleField = articleIds
 					.reduce<RawDocument["uniqueArticleField"] | null>(
-						(pv, { name, value }) => !pv && uniqueFieldNameEnum.has(name)
+						(pv, { name, value }) => !pv && hasKey(uniqueFieldNameMapper, name)
 							? {
-								name,
+								name: uniqueFieldNameMapper[name],
 								value,
 							}
 							: pv,
 						null,
 					);
+
+				if (!uniqueArticleField) {
+					uniqueArticleField = articleIds
+						.reduce<RawDocument["uniqueArticleField"] | null>(
+							(pv, { name, value }) => !pv && name === "pubmed"
+								? {
+									name: "specific",
+									value: `pubmed/${value}`,
+								}
+								: pv,
+							null,
+						);
+				}
 
 				if (!uniqueArticleField) {
 					return new CleanError(
@@ -102,30 +124,37 @@ export async function pubmedSender(reference: string) {
 					.MedlineCitation
 					.Article
 					.AuthorList
-					.Author
-					.map(({ LastName, ForeName, AffiliationInfo }) => ({
-						name: `${LastName["#text"]} ${ForeName["#text"]}`,
-						affiliations: AffiliationInfo.Affiliation.length
-							? AffiliationInfo.Affiliation
-								.map((value) => value["#text"])
-							: null,
-					}));
+					?.Author
+					.map(
+						(author) => "CollectiveName" in author
+							? {
+								name: author.CollectiveName["#text"],
+								affiliations: null,
+							}
+							: {
+								name: `${author.LastName?.["#text"] ?? ""} ${author.ForeName?.["#text"] ?? ""}`.trim(),
+								affiliations: author.AffiliationInfo?.length
+									? author.AffiliationInfo
+										.map(({ Affiliation }) => Affiliation["#text"])
+									: null,
+							},
+					) ?? null;
 
 				const grants = PubmedArticle
 					.MedlineCitation
 					.Article
 					.GrantList
-					.Grant
+					?.Grant
 					.map(({ Acronym, Agency, Country }) => ({
 						acronym: Acronym?.["#text"] ?? null,
 						agency: Agency["#text"],
 						country: Country?.["#text"] ?? null,
-					}));
+					})) ?? null;
 
 				const { AbstractText: abstractText } = PubmedArticle
 					.MedlineCitation
 					.Article
-					.Abstract;
+					.Abstract ?? {};
 
 				const detailedAbstract = abstractText instanceof Array
 					? abstractText.reduce<RawDocument["detailedAbstract"]>(
@@ -134,7 +163,12 @@ export async function pubmedSender(reference: string) {
 								return null;
 							}
 
-							const sectionName = abstractPart["@_Label"].toLocaleLowerCase();
+							const sectionName = abstractPart["@_Label"]
+								.toLowerCase()
+								.replace(
+									/ [a-z]/g,
+									(match) => match.toUpperCase(),
+								);
 
 							if (!abstractSectionNameEnum.has(sectionName)) {
 								return null;
@@ -194,7 +228,7 @@ export async function pubmedSender(reference: string) {
 						? `${pubmedWebPublishDate.Year["#text"]}/${pubmedWebPublishDate.Month["#text"]}/${pubmedWebPublishDate.Day["#text"]}`
 						: null,
 					journalPublishDate,
-					abstract: abstractText instanceof Array
+					abstract: !abstractText || abstractText instanceof Array
 						? null
 						: abstractText["#text"],
 					detailedAbstract,
@@ -214,7 +248,7 @@ export async function pubmedSender(reference: string) {
 
 	const abysResponse = await AbysAPI.sendRawDocument(rawDocument);
 
-	if (abysResponse.information !== "rawDocument.created") {
+	if (abysResponse.information !== "rawDocument.upsert") {
 		return new CleanError(
 			"Wrong response when send doccument to abys.",
 			{ custom: { abysResponse } },

@@ -3,6 +3,9 @@ import { workerData } from "worker_threads";
 import { type SearchResultMissionOutput, type SupportedSearchResultMission } from "./missions/searchResult";
 import { type SendSearchResultMissionOutput, type SupportedSendSearchResultMission } from "./missions/sendSearchResult";
 import { postMessage } from "./postMessage";
+import { deepLog } from "@interfaces/utils/deepLog";
+
+process.on("uncaughtException", deepLog);
 
 export type SupportedWorkerMission =
 	| SupportedSearchResultMission
@@ -29,3 +32,4 @@ await match(currentData)
 	.exhaustive();
 
 await postMessage("finish");
+

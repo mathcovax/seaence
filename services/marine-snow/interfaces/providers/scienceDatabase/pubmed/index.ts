@@ -20,7 +20,7 @@ export class PubMedAPI {
 		maxRetry: 30,
 		httpCodeWichMakeRetry: 429,
 		httpCodeWithPayload: 200,
-		timeToSleepBetweenRetry: 100,
+		timeToSleepBetweenRetry: 1000,
 	};
 
 	public static httpClient: HttpClient<PubMedRoute>;
@@ -64,7 +64,8 @@ export class PubMedAPI {
 					response.body = result.data;
 				}
 				return response;
-			});
+			})
+			.catch((error: unknown) => error as Error);
 	}
 
 	public static getArticle(pubmedId: string) {
@@ -94,7 +95,8 @@ export class PubMedAPI {
 					response.body = result.data;
 				}
 				return response;
-			});
+			})
+			.catch((error: unknown) => error as Error);
 	}
 
 	static {

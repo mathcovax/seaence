@@ -13,7 +13,10 @@ searchResultRepository.default = {
 				},
 			},
 			create: simpleEntity,
-			update: simpleEntity,
+			update: {
+				...simpleEntity,
+				selected: false,
+			},
 		});
 
 		return entity;
@@ -23,7 +26,7 @@ searchResultRepository.default = {
 			where: {
 				id: {
 					provider: entity.provider.value,
-					reference: entity.provider.value,
+					reference: entity.reference.value,
 				},
 			},
 		});

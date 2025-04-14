@@ -6,6 +6,7 @@ import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { pubmedSender } from "./senders/pubmed";
 import { postMessage } from "@interfaces/workers/postMessage";
+import { deepLog } from "@interfaces/utils/deepLog";
 
 export type SupportedSendSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -26,25 +27,25 @@ function output(data: SendSearchResultMissionOutput) {
 	return postMessage(data);
 }
 
-const minimalDecrement = 0;
-const quantityPerPage = 50;
+const quantityPerPage = 10;
 
 export async function mission(mission: SupportedSendSearchResultMission) {
 	for (
-		let decrementQuantity = mission.quantity;
-		decrementQuantity > minimalDecrement;
-		decrementQuantity -= quantityPerPage
+		let incrementQuantity = 0;
+		incrementQuantity <= mission.quantity;
+		incrementQuantity += quantityPerPage
 	) {
 		const prismaSearchResults = await prismaClient.searchResult.updateManyAndReturn({
 			where: {
 				selected: false,
+				failedToSend: false,
 			},
 			data: {
 				selected: true,
 			},
-			limit: decrementQuantity > quantityPerPage
-				? quantityPerPage
-				: decrementQuantity,
+			limit: incrementQuantity + quantityPerPage > mission.quantity
+				? mission.quantity - incrementQuantity
+				: quantityPerPage,
 			select: {
 				provider: true,
 				reference: true,
@@ -52,17 +53,28 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 			},
 		});
 
+		if (!prismaSearchResults.length) {
+			break;
+		}
+
 		const searchResults = await Promise.all(
 			prismaSearchResults.map(
 				(searchResult) => match(searchResult)
 					.with(
 						{ provider: "pubmed" },
-						(searchResult) => {
-							const success = pubmedSender(searchResult.reference);
+						async(searchResult) => {
+							const success = await pubmedSender(searchResult.reference);
+
+							if (success instanceof Error) {
+								deepLog({
+									searchResult,
+									success,
+								});
+							}
 
 							return {
 								...searchResult,
-								failedToSend: !success,
+								failedToSend: success instanceof Error,
 							};
 						},
 					)
@@ -86,5 +98,9 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 			missionName: "sendSearchResult",
 			searchResults,
 		});
+
+		if (searchResults.find((searchResult) => searchResult.failedToSend)) {
+			break;
+		}
 	}
 }

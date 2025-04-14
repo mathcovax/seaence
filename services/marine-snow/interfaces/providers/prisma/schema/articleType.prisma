@@ -41,6 +41,7 @@ enum articleType {
     interactiveTutorial
     interview
     introductoryJournalArticle
+    journalArticle
     lecture
     legalCase
     legislation
@@ -72,6 +73,7 @@ enum articleType {
     retractedPublication
     retractionOfPublication
     review
+    scopingReview
     scientificIntegrityReview
     systematicReview
     technicalReport

@@ -36,41 +36,47 @@ export async function *startWorkerMission(missionData: SupportedWorkerMission) {
 		};
 	}
 
-	while (true) {
-		if (!messageQueue.length) {
-			await new Promise<void>(
-				(resolve) => {
-					const watchHandle = watch(
-						messageQueue,
-						() => {
-							watchHandle.stop();
-							resolve();
-						},
-					);
-				},
-			);
+	try {
+		while (true) {
+			if (!messageQueue.length) {
+				await new Promise<void>(
+					(resolve) => {
+						const watchHandle = watch(
+							messageQueue,
+							() => {
+								watchHandle.stop();
+								resolve();
+							},
+						);
+					},
+				);
+			}
+
+			const result = messageQueue.shift();
+
+			if (!result) {
+				continue;
+			}
+
+			if (result === "finish") {
+				await stop();
+				break;
+			}
+
+			const next = makeNext();
+
+			yield {
+				stop,
+				next,
+				output: result,
+			};
+
+			next();
 		}
-
-		const result = messageQueue.shift();
-
-		if (!result) {
-			continue;
-		}
-
-		if (result === "finish") {
+	} finally {
+		if (messageQueue.includes("finish")) {
 			await stop();
-			return;
 		}
-
-		const next = makeNext();
-
-		yield {
-			stop,
-			next,
-			output: result,
-		};
-
-		next();
 	}
 }
 

@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm -w services/marine-snow run dev
+    command: npm -w services/marine-snow run duplo:dev
     ports:
       - 55551:5555
     depends_on:

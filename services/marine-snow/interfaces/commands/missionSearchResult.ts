@@ -15,7 +15,7 @@ program.parse();
 
 const { provider: rawProvider } = program.opts<Record<string, string>>();
 
-const provider = providerObjecter.unknownThrowCreate(rawProvider);
+const provider = providerObjecter.unknownUnsafeCreate(rawProvider);
 
 await match(provider)
 	.with(

@@ -48,7 +48,7 @@ export class StartSendSearchResultMissionUsecase extends UsecaseHandler.create({
 
 			await Promise.all(
 				searchResults.map(
-					(searchResult) => searchResult.failedToSend
+					(searchResult) => searchResult.failedToSend.value
 						? this.searchResultRepository.save(searchResult)
 						: this.searchResultRepository.delete(searchResult),
 				),

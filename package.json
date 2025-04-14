@@ -44,7 +44,8 @@
     "docker:marine-snow": "docker compose up marine-snow",
     "docker:marine-snow:prisma:migrate": "docker compose exec marine-snow npm -w services/marine-snow run prisma:migrate",
     "docker:marine-snow:prisma:studio": "docker compose exec marine-snow npm -w services/marine-snow run prisma:studio",
-    "docker:marine-snow:mission:launch": "docker compose exec marine-snow npm -w services/marine-snow run mission:launch --",
+    "docker:marine-snow:mission:searchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:searchResult --",
+    "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
 
     "prepare": "husky"
   },

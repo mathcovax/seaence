@@ -11,8 +11,8 @@ import { type UniqueField } from "@business/domains/common/uniqueField";
 interface Input {
 	resourceUrl: RawResourceUrl;
 	title: RawTitle;
-	authors: RawAuthor[];
-	grants: RawGrant[];
+	authors: RawAuthor[] | null;
+	grants: RawGrant[] | null;
 	keywords: RawKeyword[];
 	articleTypes: ArticleType[];
 	articleIds: PubmedRawDocumentArticleId[];

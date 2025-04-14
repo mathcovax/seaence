@@ -60,7 +60,7 @@ abysRepository.default = {
 						missionId: missionData.id,
 						quantityProcessed,
 						faildedSearchResults: searchResults.filter(
-							(searchResult) => searchResult.failedToSend,
+							(searchResult) => searchResult.failedToSend.value,
 						),
 					},
 				),

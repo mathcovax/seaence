@@ -1,4 +1,4 @@
-import { createEnum, EntityHandler, zod, type GetEntityProperties } from "@vendors/clean";
+import { EntityHandler, zod, type GetEntityProperties } from "@vendors/clean";
 import { providerObjecter } from "../common/provider";
 
 export const searchResultReferenceObjecter = zod
