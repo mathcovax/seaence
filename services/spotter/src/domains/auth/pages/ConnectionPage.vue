@@ -1,5 +1,22 @@
 <script setup lang="ts">
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { app as firebaseApp } from "@/lib/firebase";
+
 const { $pt } = connectionPage.use();
+
+const provider = new GoogleAuthProvider();
+const auth = getAuth(firebaseApp);
+
+async function googleSign() {
+	try {
+		const result = await signInWithPopup(auth, provider);
+		const fireBaseIdToken = await result.user.getIdToken();
+
+		console.log("Firebase ID Token: ", fireBaseIdToken);
+	} catch {
+		// Handle error
+	}
+}
 </script>
 
 <template>
@@ -16,7 +33,10 @@ const { $pt } = connectionPage.use();
 					</p>
 				</div>
 
-				<DSButtonOutline class="w-full">
+				<DSButtonOutline
+					@click="googleSign"
+					class="w-full"
+				>
 					<DSGoogleLogo />
 					Google
 				</DSButtonOutline>
@@ -27,7 +47,7 @@ const { $pt } = connectionPage.use();
 			<DSImage
 				src="/images/auth/connection.png"
 				alt="connection"
-				class="h-72"
+				class="w-[430px] h-[280px]"
 			/>
 		</div>
 	</section>

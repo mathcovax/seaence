@@ -12,6 +12,7 @@
   "dependencies": {
     "@mdi/js": "^7.4.47",
     "@tailwindcss/vite": "^4.0.14",
+    "firebase": "^11.6.0",
     "tailwindcss": "^4.0.14",
     "tw-animate-css": "^1.2.4",
     "unplugin-vue-components": "^28.4.1",
