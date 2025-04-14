@@ -26,13 +26,13 @@ onUnmounted(() => {
 				<DSImage
 					src="/images/logos/logo-text.svg"
 					alt="Seaence"
-					class="block md:hidden lg:block h-14"
+					class="block md:hidden lg:block w-[196px] h-[56px]"
 				/>
 
 				<DSImage
 					src="/images/logos/logo.svg"
 					alt="Seaence"
-					class="hidden md:block lg:hidden size-14"
+					class="hidden md:block lg:hidden size-[56px]"
 				/>
 			</RouterLink>
 

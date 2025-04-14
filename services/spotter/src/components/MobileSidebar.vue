@@ -19,7 +19,7 @@ import { mdiMenu } from "@mdi/js";
 					<DSImage
 						src="/images/logos/logo-text.svg"
 						alt="Seaence"
-						class="h-14 w-48"
+						class="w-[196px] h-[56px]"
 					/>
 				</RouterLink>
 			</DSSheetHeader>
