@@ -78,18 +78,6 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 							};
 						},
 					)
-					.with(
-						{ provider: "pedro" },
-						(searchResult) => {
-							throw new Error("unsupport provider");
-						},
-					)
-					.with(
-						{ provider: "sciencedirect" },
-						(searchResult) => {
-							throw new Error("unsupport provider");
-						},
-					)
 					.exhaustive(),
 			),
 		);

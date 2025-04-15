@@ -1,7 +1,7 @@
 import { missionRepository } from "@business/applications/repositories/mission";
 import { searchResultRepository } from "@business/applications/repositories/searchResult";
 import { missionStepRepository } from "@business/applications/repositories/missionStep";
-import { sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
+import { scienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { StartMissionUsecase } from "../startMission";
 import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
@@ -11,7 +11,7 @@ interface Input {
 }
 
 export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
-	sienceDatabaseRepository,
+	scienceDatabaseRepository,
 	missionStepRepository,
 	searchResultRepository,
 	missionRepository,
@@ -25,7 +25,7 @@ export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
 		}
 
 		for await (
-			const result of this.sienceDatabaseRepository
+			const result of this.scienceDatabaseRepository
 				.startSearchResultMission(startedMission)
 		) {
 			if (result instanceof Error) {

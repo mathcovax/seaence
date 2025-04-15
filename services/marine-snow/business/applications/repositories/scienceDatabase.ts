@@ -18,7 +18,7 @@ type GetStartSearchResultItem<
 	[GenericSearchResultMission, unknown]
 >[1];
 
-export interface SienceDatabaseRepository extends RepositoryBase<never> {
+export interface ScienceDatabaseRepository extends RepositoryBase<never> {
 	startSearchResultMission<
 		GenericSearchResultMission extends SearchResultMission,
 	>(mission: GenericSearchResultMission): AsyncGenerator<
@@ -27,6 +27,6 @@ export interface SienceDatabaseRepository extends RepositoryBase<never> {
 	>;
 }
 
-export const sienceDatabaseRepository = createRepositoryHandler<
-	SienceDatabaseRepository
+export const scienceDatabaseRepository = createRepositoryHandler<
+	ScienceDatabaseRepository
 >();

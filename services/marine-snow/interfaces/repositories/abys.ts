@@ -7,7 +7,7 @@ import { EntityHandler, RepositoryError } from "@vendors/clean";
 
 abysRepository.default = {
 	save() {
-		throw new Error("Unsupport methods");
+		throw new RepositoryError("Unsupport methods");
 	},
 	async *startSendSearchResultMission(mission) {
 		const missionData: SupportedSendSearchResultMission = {

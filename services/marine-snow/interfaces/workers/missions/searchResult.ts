@@ -3,7 +3,7 @@ import { type SearchResultPubMedMissionStepEntity } from "@business/domains/enti
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { WorkerMissionError } from "@interfaces/workers/WorkerMissionError";
+import { WorkerMissionError } from "@interfaces/workers/workerMissionError";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { postMessage } from "../postMessage";

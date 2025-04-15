@@ -43,16 +43,4 @@ await match(provider)
 			console.log(result);
 		},
 	)
-	.with(
-		{ value: "pedro" },
-		(provider) => {
-			throw new Error("Unsupported provider.");
-		},
-	)
-	.with(
-		{ value: "sciencedirect" },
-		(provider) => {
-			throw new Error("Unsupported provider.");
-		},
-	)
 	.exhaustive();

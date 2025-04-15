@@ -1,4 +1,4 @@
-import { type SearchResultMission, sienceDatabaseRepository } from "@business/applications/repositories/sienceDatabase";
+import { type SearchResultMission, scienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
 import { type SupportedSearchResultMission } from "@interfaces/workers/missions/searchResult";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
@@ -7,9 +7,9 @@ import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/
 import { SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { startWorkerMission } from "@interfaces/workers";
 
-sienceDatabaseRepository.default = {
+scienceDatabaseRepository.default = {
 	save() {
-		throw new Error("Unsupport save method");
+		throw new RepositoryError("Unsupport save method");
 	},
 
 	async *startSearchResultMission(mission) {
