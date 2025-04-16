@@ -5,7 +5,7 @@ import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, date
 
 export const pubmedRawDocumentArticleIdObjecter = zod
 	.object({
-		type: zod.string(),
+		name: zod.string(),
 		value: zod.string(),
 	})
 	.createValueObjecter("articleId");
@@ -26,8 +26,8 @@ export class PubmedRawDocumentEntity extends EntityHandler.create({
 	uniqueArticleField: uniqueFieldObjecter,
 	resourceUrl: rawResourceUrlObjecter,
 	title: rawTitleObjecter,
-	authors: rawAuthorObjecter.array(),
-	grants: rawGrantObjecter.array(),
+	authors: rawAuthorObjecter.array().nullable(),
+	grants: rawGrantObjecter.array().nullable(),
 	keywords: rawKeywordObjecter.array(),
 	articleTypes: articleTypeObjecter.array(),
 	articleIds: pubmedRawDocumentArticleIdObjecter.array(),

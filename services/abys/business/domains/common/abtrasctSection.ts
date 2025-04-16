@@ -1,4 +1,4 @@
-import { createEnum } from "@vendors/clean";
+import { createEnum, zod } from "@vendors/clean";
 
 export const abstractSectionNameEnum = createEnum([
 	"introduction",
@@ -19,4 +19,35 @@ export const abstractSectionNameEnum = createEnum([
 	"validation",
 	"sponsor",
 	"purpose",
+	"patient",
+	"setting",
+	"studyObjective",
+	"measurementAndMainResult",
+
+	"introductions",
+	"backgrounds",
+	"objectives",
+	"methods",
+	"results",
+	"conclusions",
+	"references",
+	"acknowledgments",
+	"objectives",
+	"options",
+	"outcomes",
+	"evidences",
+	"values",
+	"benefits",
+	"recommendations",
+	"validations",
+	"sponsors",
+	"purposes",
+	"patients",
+	"settings",
+	"studyObjectives",
+	"measurementsAndMainResults",
 ]);
+
+export const abstractSectionNameObjecter = zod
+	.enum(abstractSectionNameEnum.toTuple())
+	.createValueObjecter("abstractSectionName");

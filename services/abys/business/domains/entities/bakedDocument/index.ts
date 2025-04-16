@@ -1,7 +1,7 @@
 import { providerObjecter } from "@business/domains/common/provider";
 import { createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { nodeSameRawDocumentIdObjecter } from "../nodeSameRawDocument";
-import { abstractSectionNameEnum } from "@business/domains/common/abtrasctSection";
+import { abstractSectionNameEnum, abstractSectionNameObjecter } from "@business/domains/common/abtrasctSection";
 
 export const bakedDocumentIdObjecter = zod
 	.string()
@@ -17,7 +17,7 @@ export type BakedDocumentAbstract = GetValueObject<typeof bakedDocumentAbstractO
 
 export const bakedDocumentAbstractDetailsObjecter = zod
 	.record(
-		zod.enum(abstractSectionNameEnum.toTuple()),
+		abstractSectionNameObjecter.zodSchema,
 		zod.object({
 			value: zod.string(),
 		}).passthrough().optional(),

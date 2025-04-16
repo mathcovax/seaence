@@ -3,10 +3,13 @@
   "description": "Microservice fondamental situé à la couche la plus basse de l'infrastructure. Nommé 'Abys' en référence aux abysses, il constitue la source de vérité pour les données du système.",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch interfaces/main.ts",
+    "duplo:dev": "tsx --watch interfaces/http/main.ts",
+    "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --require ./interfaces/http/plugins/generate.ts --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/abys/duplojsTypesCodegen.d.ts",
+    
     "test:lint": "eslint",
     "test:types": "tsc",
-    "generate-types": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/abys/duplojsTypesCodegen.d.ts"
+    
+    "postinstall": "npm run duplo:generate"
   },
   "dependencies": {
     "@duplojs/core": "1.0.3",

@@ -1,12 +1,13 @@
-import { type MissionId, type MissionEntity } from "@business/domains/entities/mission";
-import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { type MissionEntity, type MissionId } from "@business/domains/entities/mission";
+import { type PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { type SendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult";
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
 export type Mission =
-	| MissionEntity
-	| SearchResultPubMedMissionEntity;
+	| PubMedSearchResultMissionEntity
+	| SendSearchResultMissionEntity;
 
-export interface MissionRepository extends RepositoryBase<Mission> {
+export interface MissionRepository extends RepositoryBase<Mission | MissionEntity> {
 	generateMissionId(): MissionId;
 }
 

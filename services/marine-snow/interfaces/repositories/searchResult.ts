@@ -13,9 +13,23 @@ searchResultRepository.default = {
 				},
 			},
 			create: simpleEntity,
-			update: simpleEntity,
+			update: {
+				...simpleEntity,
+				selected: false,
+			},
 		});
 
 		return entity;
 	},
+	async delete(entity) {
+		await prismaClient.searchResult.delete({
+			where: {
+				id: {
+					provider: entity.provider.value,
+					reference: entity.reference.value,
+				},
+			},
+		});
+	},
+
 };

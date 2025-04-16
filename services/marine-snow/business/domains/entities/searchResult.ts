@@ -4,11 +4,20 @@ import { providerObjecter } from "../common/provider";
 export const searchResultReferenceObjecter = zod
 	.string()
 	.createValueObjecter("searchResultReference");
+
+export const searchResultFailedToSendObjecter = zod
+	.boolean()
+	.createValueObjecter("searchResultFailedToSend");
+
 export class SearchResultEntity extends EntityHandler.create({
 	provider: providerObjecter,
 	reference: searchResultReferenceObjecter,
+	failedToSend: searchResultFailedToSendObjecter,
 }) {
-	public static create(params: GetEntityProperties<typeof SearchResultEntity>) {
-		return new SearchResultEntity(params);
+	public static create(params: Omit<GetEntityProperties<typeof SearchResultEntity>, "status">) {
+		return new SearchResultEntity({
+			...params,
+			failedToSend: searchResultFailedToSendObjecter.unsafeCreate(false),
+		});
 	}
 }

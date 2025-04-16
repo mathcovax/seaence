@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider        = "prisma-client-js"
+    output          = "../../../node_modules/@prisma/output"
+    previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("POSTGRES_DATABASE_URL")
+}
+
+enum provider {
+    pubmed
+}
+
+model searchResult {
+    reference    String
+    provider     provider
+    failedToSend Boolean  @default(false)
+    selected     Boolean  @default(false)
+    createdAt    DateTime @default(now())
+
+    @@id([reference, provider], name: "id")
+}
+
+enum missionStatus {
+    created
+    inProgress
+    failed
+    success
+}
+
+model SearchResultPubMedMissionStep {
+    mission   SearchResultPubMedMission @relation(fields: [missionId], references: [id])
+    missionId String                    @id
+    date      DateTime
+    page      Int
+}
+
+model SearchResultPubMedMission {
+    id                            String                         @id
+    articleType                   articleType
+    searchDateFrom                DateTime
+    searchDateTo                  DateTime
+    status                        missionStatus
+    SearchResultPubMedMissionStep SearchResultPubMedMissionStep?
+}
+
+model SendSearchResultMissionStep {
+    mission              SendSearchResultMission @relation(fields: [missionId], references: [id])
+    missionId            String                  @id
+    quantityProcessed    Int
+    /// [FaildedSearchResults]
+    faildedSearchResults Json[]
+}
+
+model SendSearchResultMission {
+    id                          String                       @id
+    quantity                    Int
+    status                      missionStatus
+    sendSearchResultMissionStep SendSearchResultMissionStep?
+}

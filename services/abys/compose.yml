@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm -w services/abys run dev
+    command: npm -w services/abys run duplo:dev
     depends_on:
       - abys-mongo
   abys-mongo:

@@ -1,28 +1,19 @@
-import { EntityHandler, type GetValueObject, type GetEntityProperties } from "@vendors/clean";
-import { SearchResultMissionEntity, searchResultMissionNameObjecter } from ".";
+import { EntityHandler, type GetEntityProperties, dateYYYYMMDDIntervalObjecter } from "@vendors/clean";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { dateIntervalObjecter } from "@business/domains/common/dateInterval";
-import { missionStatusObjecter } from "..";
-import { providerObjecter } from "@business/domains/common/provider";
+import { MissionEntity, missionStatusObjecter } from "..";
 
-export const pubMedProviderObjecter = providerObjecter.specify("pubmed");
-
-export type PubMedProvider = GetValueObject<typeof pubMedProviderObjecter>;
-
-export class SearchResultPubMedMissionEntity extends EntityHandler.create(
+export class PubMedSearchResultMissionEntity extends EntityHandler.create(
 	{
-		provider: pubMedProviderObjecter,
 		articleType: articleTypeObjecter,
-		interval: dateIntervalObjecter,
+		interval: dateYYYYMMDDIntervalObjecter,
 	},
-	SearchResultMissionEntity,
+	MissionEntity,
 ) {
 	public static create(
-		params: Omit<GetEntityProperties<typeof SearchResultPubMedMissionEntity>, "name" | "status">,
+		params: Omit<GetEntityProperties<typeof PubMedSearchResultMissionEntity>, "name" | "status">,
 	) {
-		return new SearchResultPubMedMissionEntity({
+		return new PubMedSearchResultMissionEntity({
 			...params,
-			name: searchResultMissionNameObjecter.unsafeCreate("searchResult"),
 			status: missionStatusObjecter.unsafeCreate("created"),
 		});
 	}

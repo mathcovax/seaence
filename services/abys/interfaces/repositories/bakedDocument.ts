@@ -93,7 +93,7 @@ bakedDocumentRepository.default = {
 		>(
 			async(promiseAcc, { value }) => {
 				const acc = await promiseAcc;
-				const { label, content } = value;
+				const { name, content } = value;
 
 				const contentProcess = RosettaAPI.translateText(
 					content,
@@ -102,7 +102,7 @@ bakedDocumentRepository.default = {
 
 				return {
 					...acc,
-					[label]: contentProcess,
+					[name]: contentProcess,
 				};
 			},
 			Promise.resolve({}),

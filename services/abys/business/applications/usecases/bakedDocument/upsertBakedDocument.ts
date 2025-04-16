@@ -68,7 +68,10 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 			)
 			.with(
 				{ rawDocument: undefined },
-				() => new UsecaseError("unmatching-priority-raw-document"),
+				(value) => new UsecaseError(
+					"unmatching-priority-raw-document",
+					{ custom: value },
+				),
 			)
 			.exhaustive();
 
