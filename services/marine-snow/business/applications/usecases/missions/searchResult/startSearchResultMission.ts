@@ -4,10 +4,10 @@ import { missionStepRepository } from "@business/applications/repositories/missi
 import { scienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { StartMissionUsecase } from "../startMission";
-import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { type PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 
 interface Input {
-	mission: SearchResultPubMedMissionEntity;
+	mission: PubMedSearchResultMissionEntity;
 }
 
 export class StartSearchResultMissionUsecase extends UsecaseHandler.create({

@@ -1,6 +1,6 @@
 import { missionRepository, type Mission } from "@business/applications/repositories/mission";
 import { missionIdObjecter } from "@business/domains/entities/mission";
-import { SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { SendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult";
 import { prismaClient } from "@interfaces/providers/prisma";
 import { match, P } from "ts-pattern";
@@ -10,7 +10,7 @@ missionRepository.default = {
 	async save(entity) {
 		await match({ entity: entity as Mission })
 			.with(
-				{ entity: P.instanceOf(SearchResultPubMedMissionEntity) },
+				{ entity: P.instanceOf(PubMedSearchResultMissionEntity) },
 				({ entity }) => {
 					const { interval, ...restSimpleEntity } = entity.toSimpleObject();
 

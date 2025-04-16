@@ -1,4 +1,4 @@
-import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { type PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { type SimplifyObjectTopLevel } from "@duplojs/utils";
@@ -11,7 +11,7 @@ import { articleTypeToFilterArticleType } from "@interfaces/providers/scienceDat
 
 export type SupportedSearchResultMission = SimplifyObjectTopLevel<
 	(
-		| (EntityToSimpleObject<typeof SearchResultPubMedMissionEntity> & { provider: "pubmed" })
+		| (EntityToSimpleObject<typeof PubMedSearchResultMissionEntity> & { provider: "pubmed" })
 	) & {
 		missionName: "searchResult";
 	}

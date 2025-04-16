@@ -1,10 +1,10 @@
-import { type SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { type PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { createRepositoryHandler, type RepositoryError, type RepositoryBase } from "@vendors/clean";
 
 export type SearchResultMission =
-	| SearchResultPubMedMissionEntity;
+	| PubMedSearchResultMissionEntity;
 
 interface StartSearchResultPubMedMissionItem {
 	currentStep: SearchResultPubMedMissionStepEntity;
@@ -14,7 +14,7 @@ interface StartSearchResultPubMedMissionItem {
 type GetStartSearchResultItem<
 	GenericSearchResultMission extends SearchResultMission,
 > = Extract<
-	| [SearchResultPubMedMissionEntity, StartSearchResultPubMedMissionItem],
+	| [PubMedSearchResultMissionEntity, StartSearchResultPubMedMissionItem],
 	[GenericSearchResultMission, unknown]
 >[1];
 

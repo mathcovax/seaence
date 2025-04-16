@@ -2,7 +2,7 @@ import { EntityHandler, type GetEntityProperties, dateYYYYMMDDIntervalObjecter }
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { MissionEntity, missionStatusObjecter } from "..";
 
-export class SearchResultPubMedMissionEntity extends EntityHandler.create(
+export class PubMedSearchResultMissionEntity extends EntityHandler.create(
 	{
 		articleType: articleTypeObjecter,
 		interval: dateYYYYMMDDIntervalObjecter,
@@ -10,9 +10,9 @@ export class SearchResultPubMedMissionEntity extends EntityHandler.create(
 	MissionEntity,
 ) {
 	public static create(
-		params: Omit<GetEntityProperties<typeof SearchResultPubMedMissionEntity>, "name" | "status">,
+		params: Omit<GetEntityProperties<typeof PubMedSearchResultMissionEntity>, "name" | "status">,
 	) {
-		return new SearchResultPubMedMissionEntity({
+		return new PubMedSearchResultMissionEntity({
 			...params,
 			status: missionStatusObjecter.unsafeCreate("created"),
 		});

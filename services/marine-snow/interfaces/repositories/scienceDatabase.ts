@@ -4,7 +4,7 @@ import { type SupportedSearchResultMission } from "@interfaces/workers/missions/
 import { EntityHandler, RepositoryError } from "@vendors/clean";
 import { match, P } from "ts-pattern";
 import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
-import { SearchResultPubMedMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
+import { PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { startWorkerMission } from "@interfaces/workers";
 
 scienceDatabaseRepository.default = {
@@ -16,7 +16,7 @@ scienceDatabaseRepository.default = {
 		const missionData: SupportedSearchResultMission
 			= match({ mission: mission as SearchResultMission })
 				.with(
-					{ mission: P.instanceOf(SearchResultPubMedMissionEntity) },
+					{ mission: P.instanceOf(PubMedSearchResultMissionEntity) },
 					({ mission }) => ({
 						provider: "pubmed",
 						missionName: "searchResult",
