@@ -1,0 +1,7 @@
+{
+  "name": "@lib/duplo-plugins",
+  "type": "module",
+  "dependencies": {
+    "@duplojs/core": "1.0.3"
+  }
+}

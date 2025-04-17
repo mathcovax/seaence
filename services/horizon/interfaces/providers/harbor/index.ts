@@ -15,7 +15,7 @@ export class HarborAPI {
 			{
 				body: firebaseTokenId,
 			},
-		);
+		).iWantInformation(["firebase.token.invalid", "user.logged"]);
 	}
 
 	static {

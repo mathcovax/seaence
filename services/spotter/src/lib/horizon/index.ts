@@ -5,6 +5,10 @@ import type { CodegenRoutes } from "@vendors/clients-type/horizon/duplojsTypesCo
 export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes>;
 
-export const horizonClient = new HttpClient<HorizonClientRoute>({
-	baseUrl: envs.VITE_HORIZON_BASE_URL,
-});
+export const horizonClient
+	= new HttpClient<HorizonClientRoute>({
+		baseUrl: envs.VITE_HORIZON_BASE_URL,
+	})
+		.setDefaultRequestParams({
+			mode: "cors",
+		});
