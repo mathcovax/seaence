@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { app as firebaseApp } from "@/lib/firebase";
+import { firebaseApp } from "@/lib/firebase";
+import { horizonClient } from "@/lib/horizon";
 
 const { $pt } = connectionPage.use();
 
@@ -9,10 +10,25 @@ const auth = getAuth(firebaseApp);
 
 async function googleSign() {
 	try {
-		const result = await signInWithPopup(auth, provider);
-		const fireBaseIdToken = await result.user.getIdToken();
+		const userCredential = await signInWithPopup(auth, provider);
+		const fireBaseIdToken = await userCredential.user.getIdToken();
 
-		console.log("Firebase ID Token: ", fireBaseIdToken);
+		await horizonClient.post(
+			"/authentication",
+			{
+				body: fireBaseIdToken,
+			},
+		).whenInformation(
+			"user.logged",
+			() => {
+				// Handle user logged in
+			},
+		).whenInformation(
+			"credential.invalid",
+			() => {
+				// Handle invalid credential
+			},
+		);
 	} catch {
 		// Handle error
 	}
