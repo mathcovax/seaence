@@ -6,17 +6,21 @@ export type HarborClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-export const harborHttpClient = new HttpClient<HarborClientRoute>({
-	baseUrl: envs.HARBOR_BASE_URL,
-});
-
 export class HarborAPI {
+	private static httpClient: HttpClient<HarborClientRoute>;
+
 	public static async auth(firebaseTokenId: string) {
-		return harborHttpClient.post(
+		return this.httpClient.post(
 			"/authentication",
 			{
 				body: firebaseTokenId,
 			},
 		);
+	}
+
+	static {
+		this.httpClient = new HttpClient({
+			baseUrl: envs.HARBOR_BASE_URL,
+		});
 	}
 }
