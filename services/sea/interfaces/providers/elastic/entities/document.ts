@@ -23,16 +23,23 @@ export const elasticDocumentMappingSchema: estypes.MappingTypeMapping = {
 			analyzer: "standard",
 		},
 		abstractDetails: {
-			properties: {
-				value: {
-					type: "text",
-					analyzer: "standard",
+			dynamic: true,
+			// @ts-expect-error Elasticsearch dynamic_templates n'est pas correctement typé
+			dynamic_templates: [
+				{
+					section_objects: {
+						match_mapping_type: "object",
+						mapping: {
+							properties: {
+								value: {
+									type: "text",
+									analyzer: "standard",
+								},
+							},
+						},
+					},
 				},
-				introduction: {
-					type: "text",
-					analyzer: "standard",
-				},
-			},
+			],
 		},
 		ressources: {
 			properties: {
