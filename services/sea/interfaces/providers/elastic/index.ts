@@ -10,39 +10,39 @@ const db = new Client({
 	node: envs.ES_BASE_URL,
 });
 
-const collectionNames = ["document_fr-Fr", "document_en-US"] as const;
+const IndexNames = ["document_fr-Fr", "document_en-US"] as const;
 
-async function configureCollection(collectionName: string) {
-	const exists = await db.indices.exists({ index: collectionName });
+async function configureIndex(IndexName: string) {
+	const exists = await db.indices.exists({ index: IndexName });
 
 	return match({ exists })
 		.with({ exists: false }, async() => {
 			await db.indices.create({
-				index: collectionName,
+				index: IndexName,
 				mappings: elasticDocumentMappingSchema,
 				settings: elasticDocumentSettingsSchema,
 			});
-			console.log(`La collection ${collectionName} a été créée.`);
+			console.log(`L'index ${IndexName} a été créée.`);
 		})
 		.with({ exists: true }, async() => {
-			await db.indices.close({ index: collectionName });
+			await db.indices.close({ index: IndexName });
 			await db.indices.putMapping({
-				index: collectionName,
+				index: IndexName,
 				properties: elasticDocumentMappingSchema.properties,
 			});
 			await db.indices.putSettings({
-				index: collectionName,
+				index: IndexName,
 				settings: {
 					analysis: elasticDocumentSettingsSchema.analysis,
 				},
 			});
-			await db.indices.open({ index: collectionName });
-			console.log(`La collection ${collectionName} a été mise à jour.`);
+			await db.indices.open({ index: IndexName });
+			console.log(`L'index ${IndexName} a été mise à jour.`);
 		})
 		.exhaustive();
 }
 
-await Promise.all(collectionNames.map(configureCollection));
+await Promise.all(IndexNames.map(configureIndex));
 
 export const elastic = {
 	db,
