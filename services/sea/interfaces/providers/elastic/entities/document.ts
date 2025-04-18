@@ -3,10 +3,7 @@ import { type estypes } from "@elastic/elasticsearch";
 
 export const elasticDocumentMappingSchema: estypes.MappingTypeMapping = {
 	properties: {
-		id: {
-			type: "keyword",
-		},
-		nodeSameRawDocumentId: {
+		AbysBakedDocumentId: {
 			type: "keyword",
 		},
 		title: {
