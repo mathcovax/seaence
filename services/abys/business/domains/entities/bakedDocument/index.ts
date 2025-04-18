@@ -1,5 +1,5 @@
 import { providerObjecter } from "@business/domains/common/provider";
-import { createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { createEnum, EntityHandler, flexibleDateObjecter, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { nodeSameRawDocumentIdObjecter } from "../nodeSameRawDocument";
 import { abstractSectionNameObjecter } from "@business/domains/common/abtrasctSection";
 
@@ -73,6 +73,8 @@ export class BakedDocumentEntity extends EntityHandler.create({
 	abstractDetails: bakedDocumentAbstractDetailsObjecter.nullable(),
 	resources: bakedDocumentRessourcesObjecter,
 	keywords: bakedDocumentKeywordObjecter.array(),
+	webPublishDate: flexibleDateObjecter.nullable(),
+	journalPublishDate: flexibleDateObjecter.nullable(),
 }) {
 	public static create(params: GetEntityProperties<typeof BakedDocumentEntity>) {
 		return new BakedDocumentEntity(params);
