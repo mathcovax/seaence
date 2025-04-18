@@ -91,6 +91,8 @@ declare global {
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
+  const useSmoothEnabled: typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']
+  const useSonner: typeof import('./vendors/design-system/composables/useSonner')['useSonner']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
   const valueUpdater: typeof import('./vendors/design-system/lib/utils')['valueUpdater']
   const watch: typeof import('vue')['watch']
@@ -179,6 +181,8 @@ declare module 'vue' {
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
+    readonly useSmoothEnabled: UnwrapRef<typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']>
+    readonly useSonner: UnwrapRef<typeof import('./vendors/design-system/composables/useSonner')['useSonner']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>

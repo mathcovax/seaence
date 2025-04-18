@@ -46,6 +46,7 @@ export const FRfr = {
 		[connectionPage.name]: {
 			title: "Inscription / Connexion",
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
+			googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
 		},
 		[searchResultsPage.name]: {
 			noResults: "Aucun résultat trouvé",
@@ -79,5 +80,14 @@ export const FRfr = {
 		connection: "Inscription / Connexion",
 		resetPassword: "Réinitialiser le mot de passe",
 		search: "Rechercher",
+	},
+	responses: {
+		user: {
+			logged: "Connexion réalisé avec succés.",
+		},
+		credential: {
+			invalid: "Identifiant google invalide.",
+		},
+		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur c'est produite.",
 	},
 };

@@ -14,7 +14,7 @@ type CodegenRoutes = ({
         information: "credential.invalid";
         body?: undefined;
     } | {
-        code: 201;
+        code: 200;
         information: "user.logged";
         body: string;
     };

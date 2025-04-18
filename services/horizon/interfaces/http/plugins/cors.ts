@@ -9,6 +9,10 @@ export function cors(allowOrigin: string) {
 					"Access-Control-Allow-Origin",
 					allowOrigin,
 				);
+				response.setHeader(
+					"Access-Control-Expose-Headers",
+					instance.config.keyToInformationInHeaders,
+				);
 			},
 		);
 	};

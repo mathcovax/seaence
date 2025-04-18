@@ -31,7 +31,7 @@ useBuilder()
 		(pickup) => {
 			const accessToken = pickup("accessToken");
 
-			return new CreatedHttpResponse("user.logged", accessToken);
+			return new OkHttpResponse("user.logged", accessToken);
 		},
-		makeResponseContract(CreatedHttpResponse, "user.logged", endpointAuthSchema),
+		makeResponseContract(OkHttpResponse, "user.logged", endpointAuthSchema),
 	);

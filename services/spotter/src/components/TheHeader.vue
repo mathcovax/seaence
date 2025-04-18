@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
+
+const { isConnected } = useUserInformation();
+
 const isScrolled = ref(false);
 
 const SCROLL_THRESHOLD = 0;
@@ -38,13 +42,15 @@ onUnmounted(() => {
 
 			<SearchOverlay />
 
-			<div class="hidden md:block space-x-2">
-				<DSButtonPrimary as-child>
-					<RouterLink :to="connectionPage.createTo()">
-						{{ $t("cta.connection") }}
-					</RouterLink>
-				</DSButtonPrimary>
-			</div>
+			<DSButtonPrimary
+				v-if="!isConnected"
+				as-child
+				class="hidden md:block space-x-2"
+			>
+				<RouterLink :to="connectionPage.createTo()">
+					{{ $t("cta.connection") }}
+				</RouterLink>
+			</DSButtonPrimary>
 
 			<MobileSidebar />
 		</div>

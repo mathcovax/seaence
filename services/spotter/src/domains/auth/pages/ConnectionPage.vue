@@ -2,36 +2,47 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { firebaseApp } from "@/lib/firebase";
 import { horizonClient } from "@/lib/horizon";
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { $pt } = connectionPage.use();
+const { goTo: goToHomePage } = homePage.use();
+const { setAccessToken, isConnected } = useUserInformation();
 
-const provider = new GoogleAuthProvider();
-const auth = getAuth(firebaseApp);
+if (isConnected.value) {
+	void goToHomePage();
+}
+
+const { sonnerError } = useSonner();
+const { enableLoader, disableLoader } = useLoader();
 
 async function googleSign() {
+	const provider = new GoogleAuthProvider();
+	const auth = getAuth(firebaseApp);
+	const loaderId = enableLoader();
+
 	try {
 		const userCredential = await signInWithPopup(auth, provider);
 		const fireBaseIdToken = await userCredential.user.getIdToken();
 
-		await horizonClient.post(
-			"/authentication",
-			{
-				body: fireBaseIdToken,
-			},
-		).whenInformation(
-			"user.logged",
-			() => {
-				// Handle user logged in
-			},
-		).whenInformation(
-			"credential.invalid",
-			() => {
-				// Handle invalid credential
-			},
-		);
+		await horizonClient
+			.post(
+				"/authentication",
+				{
+					body: fireBaseIdToken,
+				},
+			)
+			.whenInformation(
+				"user.logged",
+				({ body: accessToken }) => {
+					setAccessToken(accessToken);
+					void goToHomePage();
+				},
+			);
 	} catch {
-		// Handle error
+		sonnerError($pt("googleSignError"));
 	}
+
+	disableLoader(loaderId);
 }
 </script>
 
