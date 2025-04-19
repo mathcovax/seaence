@@ -7,7 +7,7 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/auth";
+    path: "/authentication";
     body: string;
     response: {
         code: 401;

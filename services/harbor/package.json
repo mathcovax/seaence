@@ -5,14 +5,11 @@
   "scripts": {
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
     "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/harbor/duplojsTypesCodegen.d.ts",
-    
     "test:lint": "eslint",
     "test:types": "tsc",
-    
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    
     "postinstall": "npm run prisma:generate && npm run duplo:generate"
   },
   "dependencies": {
@@ -20,15 +17,15 @@
     "@duplojs/node": "1.0.1",
     "dotenv": "16.4.5",
     "dotenv-expand": "12.0.1",
-    "firebase-admin": "^13.2.0",
-    "jsonwebtoken": "^9.0.2",
-    "uuidv7": "^1.0.2"
+    "firebase-admin": "13.2.0",
+    "jsonwebtoken": "9.0.2",
+    "uuidv7": "1.0.2"
   },
   "devDependencies": {
     "@duplojs/types-codegen": "1.0.1",
-    "@types/jsonwebtoken": "^9.0.9",
+    "@types/jsonwebtoken": "9.0.9",
     "@types/node": "22.13.10",
-    "prisma": "^6.5.0",
+    "prisma": "6.5.0",
     "tsx": "4.19.3",
     "typescript": "5.8.2"
   },

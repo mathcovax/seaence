@@ -60,11 +60,13 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchOverlay: typeof import('./src/components/SearchOverlay.vue')['default']
+    Sonner: typeof import('./vendors/design-system/components/ui/sonner/Sonner.vue')['default']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheIcon: typeof import('./src/components/TheIcon.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
     TheSea: typeof import('./vendors/design-system/components/TheSea.vue')['default']
+    TheSonner: typeof import('./vendors/design-system/components/ui/sonner/TheSonner.vue')['default']
     TheWaves: typeof import('../../libs/design-system/src/components/TheSea.vue')['default']
   }
 }

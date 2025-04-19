@@ -1,5 +1,49 @@
 <script setup lang="ts">
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { firebaseApp } from "@/lib/firebase";
+import { horizonClient } from "@/lib/horizon";
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
+
 const { $pt } = connectionPage.use();
+const { goTo: goToHomePage } = homePage.use();
+const { setAccessToken, isConnected } = useUserInformation();
+
+if (isConnected.value) {
+	void goToHomePage();
+}
+
+const { sonnerError } = useSonner();
+const { enableLoader, disableLoader } = useLoader();
+
+async function googleSign() {
+	const provider = new GoogleAuthProvider();
+	const auth = getAuth(firebaseApp);
+	const loaderId = enableLoader();
+
+	try {
+		const userCredential = await signInWithPopup(auth, provider);
+		const fireBaseIdToken = await userCredential.user.getIdToken();
+
+		await horizonClient
+			.post(
+				"/authentication",
+				{
+					body: fireBaseIdToken,
+				},
+			)
+			.whenInformation(
+				"user.logged",
+				({ body: accessToken }) => {
+					setAccessToken(accessToken);
+					void goToHomePage();
+				},
+			);
+	} catch {
+		sonnerError($pt("googleSignError"));
+	}
+
+	disableLoader(loaderId);
+}
 </script>
 
 <template>
@@ -16,7 +60,10 @@ const { $pt } = connectionPage.use();
 					</p>
 				</div>
 
-				<DSButtonOutline class="w-full">
+				<DSButtonOutline
+					@click="googleSign"
+					class="w-full"
+				>
 					<DSGoogleLogo />
 					Google
 				</DSButtonOutline>
@@ -27,7 +74,7 @@ const { $pt } = connectionPage.use();
 			<DSImage
 				src="/images/auth/connection.png"
 				alt="connection"
-				class="h-72"
+				class="w-[430px] h-[280px]"
 			/>
 		</div>
 	</section>

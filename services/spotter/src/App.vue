@@ -3,6 +3,8 @@
 </script>
 
 <template>
+	<TheSonner />
+
 	<TheLoader />
 
 	<RouterView />

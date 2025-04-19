@@ -1,15 +1,11 @@
-import { ref } from "vue";
+const smoothTime = 200;
 
-const isLoading = ref(false);
+const { isEnabled, enable, disable } = useSmoothEnabled(smoothTime);
 
 export function useLoader() {
-	function setLoading(value: boolean) {
-		isLoading.value = value;
-		document.body.classList.toggle("overflow-hidden", value);
-	}
-
 	return {
-		isLoading,
-		setLoading,
+		loaderIsEnabled: isEnabled,
+		enableLoader: enable,
+		disableLoader: disable,
 	};
 }

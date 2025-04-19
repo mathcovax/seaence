@@ -9,7 +9,7 @@ const { $pt } = notFoundPage.use();
 		<DSImage
 			src="/images/edito/404.png"
 			alt="404"
-			class="h-80"
+			class="w-[286px] h-[320px]"
 		/>
 
 		<h1 class="text-4xl font-bold text-center">
