@@ -197,7 +197,7 @@ export const reverseArticleTypeBackedToUI: Record<string, ArticleType["value"] |
 		.map(({ value, key }) => [value, key]),
 );
 
-export const acronymMounthToNumber: Record<string, undefined | number> = {
+export const acronymMonthToNumber: Record<string, undefined | number> = {
 	Jan: 1,
 	Feb: 2,
 	Mar: 3,

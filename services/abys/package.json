@@ -8,7 +8,7 @@
     
     "test:lint": "eslint",
     "test:types": "tsc",
-    
+    "document:cookRawDocument": "tsx interfaces/commands/cookRawDocument.ts",
     "postinstall": "npm run duplo:generate"
   },
   "dependencies": {

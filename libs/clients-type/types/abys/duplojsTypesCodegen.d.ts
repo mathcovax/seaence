@@ -49,7 +49,7 @@ type CodegenRoutes = ({
         webPublishDate: Date | null;
         journalPublishDate: {
             day: number | null;
-            mounth: number | null;
+            month: number | null;
             year: number;
         } | null;
         uniqueArticleField: {

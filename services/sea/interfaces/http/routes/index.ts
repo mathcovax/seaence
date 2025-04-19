@@ -1,0 +1,2 @@
+// document
+import "./document/upsert";
