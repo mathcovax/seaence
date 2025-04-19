@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Client, type estypes } from "@elastic/elasticsearch";
 import { envs } from "@interfaces/envs";
 import { type ElasticDocument, elasticDocumentMappingSchema, elasticDocumentSettingsSchema } from "./entities/document";
@@ -42,7 +41,9 @@ async function configureIndex(IndexName: string) {
 		.exhaustive();
 }
 
-await Promise.all(IndexNames.map(configureIndex));
+if (envs.DB_CONNECTION) {
+	await Promise.all(IndexNames.map(configureIndex));
+}
 
 export const elastic = {
 	db,
