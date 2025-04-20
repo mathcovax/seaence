@@ -1,14 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
-export { default as DSSheet } from "./DSSheet.vue";
-export { default as DSSheetClose } from "./DSSheetClose.vue";
-export { default as DSSheetContent } from "./DSSheetContent.vue";
-export { default as DSSheetDescription } from "./DSSheetDescription.vue";
-export { default as DSSheetFooter } from "./DSSheetFooter.vue";
-export { default as DSSheetHeader } from "./DSSheetHeader.vue";
-export { default as DSSheetTitle } from "./DSSheetTitle.vue";
-export { default as DSSheetTrigger } from "./DSSheetTrigger.vue";
-
 export const sheetVariants = cva(
 	"fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out "
 	+ "data-[state=open]:animate-in data-[state=closed]:animate-out "

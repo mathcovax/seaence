@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { cn } from "../../../lib/utils";
-import {
-	DSButton,
-} from "../button";
 import { ChevronLeft } from "lucide-vue-next";
 import { PaginationPrev, type PaginationPrevProps } from "reka-ui";
 import { computed, type HTMLAttributes } from "vue";
+import DSButton from "../button/DSButton.vue";
 
 const props = withDefaults(defineProps<PaginationPrevProps & { class?: HTMLAttributes["class"] }>(), {
 	asChild: true,

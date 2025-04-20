@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { cn } from "../lib/utils";
 import DSButtonPrimary from "./DSButtonPrimary.vue";
-import {
-	DSCombobox,
-	DSComboboxAnchor,
-	DSComboboxEmpty,
-	DSComboboxGroup,
-	DSComboboxInput,
-	DSComboboxItem,
-	DSComboboxList,
-} from "./ui/combobox";
 import { Search } from "lucide-vue-next";
+import DSCombobox from "./ui/combobox/DSCombobox.vue";
+import DSComboboxAnchor from "./ui/combobox/DSComboboxAnchor.vue";
+import DSComboboxInput from "./ui/combobox/DSComboboxInput.vue";
+import DSComboboxList from "./ui/combobox/DSComboboxList.vue";
+import DSComboboxEmpty from "./ui/combobox/DSComboboxEmpty.vue";
+import DSComboboxGroup from "./ui/combobox/DSComboboxGroup.vue";
+import DSComboboxItem from "./ui/combobox/DSComboboxItem.vue";
 
 interface Props {
 	buttonText: string;

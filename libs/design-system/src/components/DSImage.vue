@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { DSSkeleton } from "./ui/skeleton";
+import DSSkeleton from "./ui/skeleton/DSSkeleton.vue";
 
 interface Props {
 	alt: string;

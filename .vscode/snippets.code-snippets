@@ -4,6 +4,11 @@
 		"scope": "vue",
 		"body": [
 			"<script setup lang=\"ts\">",
+			"interface Props {",
+			"",
+			"}",
+			"",
+			"defineProps<Props>();",
 			"$1",
 			"</script>",
 			"",

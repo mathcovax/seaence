@@ -64,7 +64,7 @@ import SimpleSearch from "@/domains/search/components/SimpleSearch.vue";
 				</DSTabs>
 			</div>
 
-			<TheSea />
+			<DSSea />
 		</DSSheetContent>
 	</DSSheet>
 </template>

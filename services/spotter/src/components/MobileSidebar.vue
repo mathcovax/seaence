@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { mdiMenu } from "@mdi/js";
 </script>
 
 <template>
@@ -9,7 +8,7 @@ import { mdiMenu } from "@mdi/js";
 			class="md:hidden"
 		>
 			<DSButtonIcon variant="outline">
-				<TheIcon :icon="mdiMenu" />
+				<DSIcon name="menu" />
 			</DSButtonIcon>
 		</DSSheetTrigger>
 

@@ -1,7 +1,5 @@
 import { type VariantProps, cva } from "class-variance-authority";
 
-export { default as DSButton } from "./DSButton.vue";
-
 export const buttonVariants = cva(
 	`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium
 	 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 

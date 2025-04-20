@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { mdiViewGrid, mdiFormatListBulletedSquare } from "@mdi/js";
 import DocumentResultCard from "../components/DocumentResultCard.vue";
 import DocumentResultRow from "../components/DocumentResultRow.vue";
 import SearchResutPagination from "../components/SearchResutPagination.vue";
@@ -68,14 +67,14 @@ function handlePageChange(page: number) {
 					value="cards"
 					title="Cards"
 				>
-					<TheIcon :icon="mdiViewGrid" />
+					<DSIcon name="viewGrid" />
 				</DSTabsTrigger>
 
 				<DSTabsTrigger
 					value="rows"
 					title="Rows"
 				>
-					<TheIcon :icon="mdiFormatListBulletedSquare" />
+					<DSIcon name="formatListBulletedSquare" />
 				</DSTabsTrigger>
 			</DSTabsList>
 
