@@ -27,13 +27,13 @@ export const router = createRouter({
 	},
 });
 
-const { setLoading } = useLoader();
+const { enableLoader, disableLoader } = useLoader();
 
 router.beforeEach((_to, _from, next) => {
-	setLoading(true);
+	enableLoader("routerLoadPage");
 	next();
 });
 
 router.afterEach(() => {
-	setLoading(false);
+	disableLoader("routerLoadPage");
 });

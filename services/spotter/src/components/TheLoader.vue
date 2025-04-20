@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const { isLoading } = useLoader();
+const { loaderIsEnabled } = useLoader();
 </script>
 
 <template>
 	<div
-		v-if="isLoading"
+		v-if="loaderIsEnabled"
 		class="fixed z-50 inset-0 flex flex-col items-center justify-center bg-white opacity-75"
 	>
 		<DSLoadingLogo />

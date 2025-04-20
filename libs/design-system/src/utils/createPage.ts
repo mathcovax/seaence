@@ -8,6 +8,7 @@ import {
 	type RouteRecordRaw,
 	type Router,
 	type RouteLocationRaw,
+	type RouteLocationAsRelativeGeneric,
 } from "vue-router";
 import { type ZodObject, type ZodTypeAny, type infer as zodInfer, z as zod } from "zod";
 
@@ -51,7 +52,16 @@ export type PageUse<
 			? object
 			: { query: Ref<zodInfer<ZodObject<GenericQuerySchemas>>> }
 	)
-	& { $pt: Composer["t"] }
+	& {
+		$pt: Composer["t"];
+		goTo(
+			...args: (
+				true extends IsEqual<never, GenericParamsSchemas | GenericQuerySchemas>
+					? []
+					: [params: PageGoParams<GenericParamsSchemas, GenericQuerySchemas>]
+			)
+		): ReturnType<Router["push"]>;
+	}
 >;
 
 export interface Page<
@@ -61,14 +71,10 @@ export interface Page<
 > {
 	name: GenericName;
 	recordRaw: RouteRecordRaw;
-	go(
-		...args: (
-			true extends IsEqual<never, GenericParamsSchemas | GenericQuerySchemas>
-				? []
-				: [params: PageGoParams<GenericParamsSchemas, GenericQuerySchemas>]
-		)
-	): ReturnType<Router["push"]>;
-	use(): PageUse<GenericParamsSchemas, GenericQuerySchemas>;
+	use(): PageUse<
+		GenericParamsSchemas,
+		GenericQuerySchemas
+	>;
 	createTo(
 		...args: (
 			true extends IsEqual<never, GenericParamsSchemas | GenericQuerySchemas>
@@ -102,18 +108,18 @@ export function createPage<
 			name: pageName,
 			...restParams,
 		},
-		go(...[goParam]) {
-			const router = useRouter();
 
-			return router.push({
-				name: pageName,
-				...goParam,
-			});
-		},
 		use() {
 			const route = useRoute();
 			const router = useRouter();
 			const { t: $t } = useI18n();
+
+			function goTo(...[goParam]: [RouteLocationAsRelativeGeneric]) {
+				return router.push({
+					name: pageName,
+					...goParam,
+				});
+			}
 
 			function $pt(path: string, rest?: Record<string, unknown>) {
 				return $t(`page.${pageName}.${path}`, rest || {});
@@ -166,6 +172,7 @@ export function createPage<
 				params,
 				query,
 				$pt,
+				goTo,
 			} as never;
 		},
 		createTo(...[goParam]) {

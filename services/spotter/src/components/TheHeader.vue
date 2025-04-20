@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
+
+const { isConnected } = useUserInformation();
+
 const isScrolled = ref(false);
 
 const SCROLL_THRESHOLD = 0;
@@ -26,25 +30,27 @@ onUnmounted(() => {
 				<DSImage
 					src="/images/logos/logo-text.svg"
 					alt="Seaence"
-					class="block md:hidden lg:block h-14"
+					class="block md:hidden lg:block w-[196px] h-[56px]"
 				/>
 
 				<DSImage
 					src="/images/logos/logo.svg"
 					alt="Seaence"
-					class="hidden md:block lg:hidden size-14"
+					class="hidden md:block lg:hidden size-[56px]"
 				/>
 			</RouterLink>
 
 			<SearchOverlay />
 
-			<div class="hidden md:block space-x-2">
-				<DSButtonPrimary as-child>
-					<RouterLink :to="connectionPage.createTo()">
-						{{ $t("cta.connection") }}
-					</RouterLink>
-				</DSButtonPrimary>
-			</div>
+			<DSButtonPrimary
+				v-if="!isConnected"
+				as-child
+				class="hidden md:block space-x-2"
+			>
+				<RouterLink :to="connectionPage.createTo()">
+					{{ $t("cta.connection") }}
+				</RouterLink>
+			</DSButtonPrimary>
 
 			<MobileSidebar />
 		</div>

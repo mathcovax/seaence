@@ -4,7 +4,7 @@ import { AccessToken } from "@interfaces/providers/token";
 import { findOrCreateUser } from "@interfaces/usecases";
 
 useBuilder()
-	.createRoute("POST", "/auth")
+	.createRoute("POST", "/authentication")
 	.extract({
 		body: zod.string(),
 	})

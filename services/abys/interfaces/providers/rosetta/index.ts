@@ -7,10 +7,6 @@ export type RosettaClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-export const rosettaHttpClient = new HttpClient<RosettaClientRoute>({
-	baseUrl: envs.ROSETTA_BASE_URL,
-});
-
 export type SupportedLanguage = FindHttpClientRoute<
 	RosettaClientRoute,
 	"POST",
@@ -18,8 +14,10 @@ export type SupportedLanguage = FindHttpClientRoute<
 >["body"]["data"]["target"];
 
 export class RosettaAPI {
+	private static httpClient: HttpClient<RosettaClientRoute>;
+
 	public static async translateText(text: string, language: SupportedLanguage) {
-		const result = await rosettaHttpClient.post(
+		const result = await this.httpClient.post(
 			"/translate",
 			{
 				body: new StrictFormData({
@@ -33,5 +31,11 @@ export class RosettaAPI {
 			.iWantCode("200");
 
 		return result.body.translatedText;
+	}
+
+	static {
+		this.httpClient = new HttpClient({
+			baseUrl: envs.ROSETTA_BASE_URL,
+		});
 	}
 }
