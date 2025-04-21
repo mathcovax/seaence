@@ -1,5 +1,8 @@
 import { postCreatePage } from "@/domains/forum/router";
 import { createWebHistory, createRouter } from "vue-router";
+import { connectionPage } from "@/domains/auth/router";
+import { homePage, notFoundPage } from "@/domains/edito/router";
+import { simpleSearchPage } from "@/domains/search/router";
 
 export const router = createRouter({
 	history: createWebHistory(),
