@@ -12,12 +12,52 @@ interface Props extends SelectRootProps {
 	placeholder: string;
 	valueKey?: keyof GenericItem;
 	labelKey?: keyof GenericItem;
-	class: HTMLAttributes["class"];
+	class?: HTMLAttributes["class"];
 }
 const props = defineProps<Props>();
 const emits = defineEmits<SelectRootEmits>();
 
 const forwarded = useForwardPropsEmits(props, emits);
+
+function getKey(item: GenericItem) {
+	if (typeof item === "string" || typeof item === "number") {
+		return item;
+	} else if (props.valueKey) {
+		const value = item[props.valueKey];
+
+		if (typeof value === "string" || typeof value === "number") {
+			return value;
+		}
+	}
+
+	return null;
+}
+
+function getValue(item: GenericItem) {
+	if (typeof item === "string" || typeof item === "number") {
+		return item;
+	} else if (props.valueKey) {
+		const value = item[props.valueKey];
+
+		if (typeof value === "string" || typeof value === "number" || typeof value === "object") {
+			return value;
+		}
+	}
+
+	return item;
+}
+
+function getLabel(item: GenericItem) {
+	if (props.labelKey && typeof item === "object") {
+		const value = item[props.labelKey];
+
+		if (typeof value === "string" || typeof value === "number") {
+			return value;
+		}
+	}
+
+	return item;
+}
 
 </script>
 
@@ -33,11 +73,11 @@ const forwarded = useForwardPropsEmits(props, emits);
 		<DSSelectContent>
 			<DSSelectGroup>
 				<DSSelectItem
-					v-for="item of items"
-					:key="item[valueKey]"
-					:value="item[valueKey]"
+					v-for="(item, index) of items"
+					:key="getKey(item) ?? index"
+					:value="getValue(item)"
 				>
-					{{ item[labelKey] }}
+					{{ getLabel(item) }}
 				</DSSelectItem>
 			</DSSelectGroup>
 		</DSSelectContent>
