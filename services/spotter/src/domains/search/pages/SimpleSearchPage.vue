@@ -7,7 +7,7 @@ import SimpleSearch from "../components/SimpleSearch.vue";
 
 const { $pt } = simpleSearchPage.use();
 
-const isExpanded = ref(true);
+const isResultExpanded = ref(false);
 
 type DisplayMode = "cards" | "rows";
 
@@ -62,18 +62,21 @@ function handlePageChange(page: number) {
 	<section class="min-h-[calc(100vh-6rem-2rem)] flex flex-col justify-between">
 		<div
 			class="min-h-32 flex items-center transition-all duration-1500 ease-in-out overflow-hidden"
-			:class="isExpanded ? 'flex-1' : ''"
+			:class="{
+				'flex-1': !isResultExpanded,
+				'sticky top-28 z-10': isResultExpanded
+			}"
 		>
 			<SimpleSearch
-				@click="isExpanded = !isExpanded"
+				@click="isResultExpanded = !isResultExpanded"
 				:large="true"
 				class="w-full max-w-xl mx-auto"
 			/>
 		</div>
 
 		<div
-			class="h-full transition-all duration-1500 ease-in-out overflow-hidden"
-			:class="isExpanded ? 'max-h-0' : 'max-h-[5000px]'"
+			class="h-full -mb-4 bg-background rounded-lg transition-all duration-1500 ease-in-out overflow-hidden"
+			:class="isResultExpanded ? 'max-h-[2132px]' : 'max-h-0'"
 		>
 			<DSTabs
 				v-if="documents && documents.length > 0"
@@ -141,6 +144,8 @@ function handlePageChange(page: number) {
 					{{ $pt("noResults") }}
 				</p>
 			</div>
+
+			<DSSea />
 		</div>
 	</section>
 </template>
