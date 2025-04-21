@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-export const searchResultsPage = createPage(
-	"searchResults",
+export const simpleSearchPage = createPage(
+	"simpleSearch",
 	{
-		path: "/search-results",
-		component: () => import("./pages/SearchResultsPage.vue"),
+		path: "/simple-search",
+		component: () => import("./pages/SimpleSearchPage.vue"),
 	},
 );
 

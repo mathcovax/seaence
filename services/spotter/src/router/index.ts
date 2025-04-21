@@ -9,7 +9,7 @@ export const router = createRouter({
 			children: [
 				homePage.recordRaw,
 				connectionPage.recordRaw,
-				searchResultsPage.recordRaw,
+				simpleSearchPage.recordRaw,
 				documentPage.recordRaw,
 				postListPage.recordRaw,
 				postPage.recordRaw,

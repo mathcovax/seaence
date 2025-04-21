@@ -50,11 +50,11 @@ const frameworks = [
 		<div class="relative">
 			<DSComboboxAnchor>
 				<div
-					:class="{ 'drop-shadow-2xl': !noShadow }"
+					:class="{ 'drop-shadow-xl': !noShadow }"
 					class="relative"
 				>
 					<DSComboboxInput
-						:class="cn(large ? 'h-16' : 'h-11', noShadow ? 'shadow-none' : 'shadow-sm')"
+						:class="cn(large ? 'h-16' : 'h-11')"
 						class="pl-10 pr-30 bg-white"
 						:display-value="(val) => val?.label ?? ''"
 						:placeholder="placeholder ?? 'Search...'"

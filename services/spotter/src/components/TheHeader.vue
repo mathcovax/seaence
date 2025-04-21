@@ -40,7 +40,7 @@ onUnmounted(() => {
 				/>
 			</RouterLink>
 
-			<SearchOverlay />
+			<!-- <SearchOverlay /> -->
 
 			<DSButtonPrimary
 				v-if="!isConnected"

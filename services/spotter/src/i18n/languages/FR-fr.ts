@@ -50,7 +50,7 @@ export const FRfr = {
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 			googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
 		},
-		[searchResultsPage.name]: {
+		[simpleSearchPage.name]: {
 			noResults: "Aucun résultat trouvé",
 		},
 		[postPage.name]: {
