@@ -75,6 +75,33 @@ export const FRfr = {
 			title: "Chargement...",
 		},
 	},
+	scratch: {
+		tabs: {
+			comparator: "Comparateur",
+			operator: "Opérateur",
+		},
+		comparator: {
+			text: {
+				selectPlaceholder: "Selectioner un champ",
+				label: "Comparaison textuel",
+			},
+			year: {
+				selectPlaceholder: "Selectioner un champ",
+				label: "Comparaison d'annés",
+			},
+		},
+		operator: {
+			and: {
+				label: "ET",
+			},
+			or: {
+				label: "OU",
+			},
+			not: {
+				label: "NON",
+			},
+		},
+	},
 	cta: {
 		backHome: "Retour à l'accueil",
 		connection: "Inscription / Connexion",

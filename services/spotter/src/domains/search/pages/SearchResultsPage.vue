@@ -19,7 +19,7 @@ const displayMode = computed({
 
 // Mock data
 const START_INDEX = 1;
-const documents = Array.from({ length: 180 }, (unused, index) => ({
+const documents = Array.from({ length: 180 }, (_unused, index) => ({
 	id: index + START_INDEX,
 	title: `Document ${index + START_INDEX}`,
 	description: `

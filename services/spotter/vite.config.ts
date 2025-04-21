@@ -11,6 +11,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
+			"@vendors": fileURLToPath(new URL("./vendors", import.meta.url)),
 		},
 	},
 	plugins: [

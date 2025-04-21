@@ -10,20 +10,19 @@ import { type HTMLAttributes } from "vue";
 interface Props extends SelectRootProps {
 	items: GenericItem[];
 	placeholder: string;
-	valueKey?: keyof GenericItem;
-	labelKey?: keyof GenericItem;
+	labelKey?(item: GenericItem): string;
 	class?: HTMLAttributes["class"];
 }
 const props = defineProps<Props>();
 const emits = defineEmits<SelectRootEmits>();
 
+const model = defineModel<GenericItem>({ required: true });
+
 const forwarded = useForwardPropsEmits(props, emits);
 
 function getKey(item: GenericItem) {
-	if (typeof item === "string" || typeof item === "number") {
-		return item;
-	} else if (props.valueKey) {
-		const value = item[props.valueKey];
+	if (props.labelKey) {
+		const value = props.labelKey(item);
 
 		if (typeof value === "string" || typeof value === "number") {
 			return value;
@@ -32,24 +31,9 @@ function getKey(item: GenericItem) {
 
 	return null;
 }
-
-function getValue(item: GenericItem) {
-	if (typeof item === "string" || typeof item === "number") {
-		return item;
-	} else if (props.valueKey) {
-		const value = item[props.valueKey];
-
-		if (typeof value === "string" || typeof value === "number" || typeof value === "object") {
-			return value;
-		}
-	}
-
-	return item;
-}
-
 function getLabel(item: GenericItem) {
-	if (props.labelKey && typeof item === "object") {
-		const value = item[props.labelKey];
+	if (props.labelKey) {
+		const value = props.labelKey(item);
 
 		if (typeof value === "string" || typeof value === "number") {
 			return value;
@@ -65,6 +49,7 @@ function getLabel(item: GenericItem) {
 	<SelectRoot
 		data-slot="select"
 		v-bind="forwarded"
+		v-mode="model"
 	>
 		<DSSelectTrigger :class="props.class">
 			<DSSelectValue :placeholder="placeholder" />
@@ -75,7 +60,7 @@ function getLabel(item: GenericItem) {
 				<DSSelectItem
 					v-for="(item, index) of items"
 					:key="getKey(item) ?? index"
-					:value="getValue(item)"
+					:value="item"
 				>
 					{{ getLabel(item) }}
 				</DSSelectItem>

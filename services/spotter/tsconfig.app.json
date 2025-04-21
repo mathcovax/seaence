@@ -9,6 +9,8 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
+
+		"noEmit": true,
 		
 		"baseUrl": "./",
 		"paths": {
@@ -25,4 +27,7 @@
 		"vendors/**/*.vue",
 		"*.d.ts",
 	],
+	"exclude": [
+		"vendors/**/*.test.ts",
+	]
 }

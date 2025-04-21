@@ -18,3 +18,11 @@ export const documentPage = createPage(
 		},
 	},
 );
+
+export const testPage = createPage(
+	"test",
+	{
+		path: "/test",
+		component: () => import("./pages/TestPage.vue"),
+	},
+);
