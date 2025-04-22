@@ -1,7 +1,6 @@
 services:
   spotter:
     image: 'ghcr.io/mathcovax/seaence_spotter:${TAG}'
-    command: npm -w services/spotter run dev
     deploy:
       replicas: 1
       restart_policy:
