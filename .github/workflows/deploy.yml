@@ -52,16 +52,13 @@ jobs:
         with:
           path: .
           key: seaence
-      - run: ls
-      - run: cat ./compose.prod.yml
       - run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
       - run: |
           rsync -av \
-            -o StrictHostKeyChecking=no \
-            -i ~/.ssh/runner-key \
+            -e "ssh -p 2626 -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
             --include='*.prod.yml' \
             --exclude='*' \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
