@@ -15,6 +15,7 @@ jobs:
         with:
           path: .
           key: seaence-${{ github.head_ref }}
+      - run: echo "seaence-${{ github.head_ref }}"
 
   build-spotter:
     runs-on: ubuntu-latest
@@ -45,6 +46,7 @@ jobs:
     needs:
       - build-spotter
     steps:
+      - run: echo "seaence-${{ github.head_ref }}"
       - uses: actions/cache/restore@v4
         with:
           path: .
