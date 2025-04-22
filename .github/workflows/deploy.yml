@@ -56,10 +56,12 @@ jobs:
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
       - run: |
-          scp -o StrictHostKeyChecking=no \
+          rsync -av \
+            -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
-            -r ./compose.prod.yml \
-            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence/compose.prod.yml
+            --include='*.prod.yml' \
+            --exclude='*' \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
       - run: |
           ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
