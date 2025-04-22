@@ -61,6 +61,7 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
             --include='*.prod.yml' \
             --exclude='*' \
+            . \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
       - run: |
           ssh -o StrictHostKeyChecking=no \
