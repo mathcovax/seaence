@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 echo "Recherche des dossiers node_modules dans le répertoire actuel et ses sous-dossiers..."
 
@@ -16,19 +16,13 @@ COUNT=$(echo "$FOUND_DIRS" | wc -l)
 echo "Trouvé $COUNT dossier(s) node_modules:"
 echo "$FOUND_DIRS"
 
-# Demander confirmation avant suppression
-read -p "Voulez-vous supprimer ces dossiers? (y/n): " CONFIRMATION
 
-if [[ "$CONFIRMATION" == "y" || "$CONFIRMATION" == "Y" ]]; then
-    echo "Suppression des dossiers node_modules..."
-    
-    # Pour chaque dossier trouvé
-    echo "$FOUND_DIRS" | while read DIR; do
-        echo "Suppression de $DIR"
-        rm -rf "$DIR"
-    done
-    
-    echo "Suppression terminée."
-else
-    echo "Opération annulée."
-fi
+echo "Suppression des dossiers node_modules..."
+
+# Pour chaque dossier trouvé
+echo "$FOUND_DIRS" | while read DIR; do
+	echo "Suppression de $DIR"
+	rm -rf "$DIR"
+done
+
+echo "Suppression terminée."

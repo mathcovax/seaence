@@ -40,20 +40,13 @@
     "docker:marine-snow:prisma:studio": "docker compose exec marine-snow npm -w services/marine-snow run prisma:studio",
     "docker:marine-snow:mission:searchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:searchResult --",
     "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
+    "clear": "./scripts/rm-node-modules.sh",
     "prepare": "husky"
   },
   "workspaces": [
+    ".npm-packages",
     "libs/**",
     "services/**"
   ],
-  "license": "./LICENSE",
-  "devDependencies": {
-    "@commitlint/cli": "19.7.1",
-    "@commitlint/config-conventional": "19.2.2",
-    "@vitest/coverage-v8": "3.1.1",
-    "concurrently": "9.1.2",
-    "husky": "9.1.7",
-    "tsx": "4.19.3",
-    "vitest": "3.1.1"
-  }
+  "license": "./LICENSE"
 }
