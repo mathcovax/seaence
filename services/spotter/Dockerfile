@@ -1,4 +1,4 @@
-FROM nginx:2.17.5-alpine
+FROM nginx:2.27.5-alpine
 
 COPY ./dist /spotter
 
