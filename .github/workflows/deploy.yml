@@ -6,27 +6,27 @@ on:
 
 jobs:
   prepar:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/cache@v4
         with:
           path: .
-          name: seaence
+          key: seaence
 
   build-spotter:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: prepar
     permissions:
       contents: read
       packages: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/cache/restore@v4
         with:
           path: .
-          name: seaence
+          key: seaence
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -45,10 +45,10 @@ jobs:
     needs:
       - build-spotter
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/cache/restore@v4
         with:
           path: .
-          name: seaence
+          key: seaence
       - run: ls
       - run: cat ./compose.prod.yml
       - run: |
