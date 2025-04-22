@@ -6,6 +6,7 @@ on:
 
 jobs:
   prepar:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: npm ci
@@ -16,6 +17,7 @@ jobs:
           key: seaence-${{ github.ref }}
 
   build-spotter:
+    runs-on: ubuntu-latest
     needs: prepar
     permissions:
       contents: read
@@ -39,9 +41,9 @@ jobs:
             - ghcr.io/${{ github.repository_owner }}/seaence_spotter:${{ github.event.release.tag_name }}
             
   deploy:
+    runs-on: self-hosted
     needs:
       - build-spotter
-    runs-on: self-hosted
     steps:
       - uses: actions/cache/restore@v4
         with:
