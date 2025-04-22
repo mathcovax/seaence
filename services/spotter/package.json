@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "test:lint": "eslint",
-    "test:types": "vue-tsc -p tsconfig.app.json",
+    "test:types": "vue-tsc -p tsconfig.app.json && tsc -p tsconfig.node.json",
     "build": "vite build",
     "preview": "vite preview"
   },

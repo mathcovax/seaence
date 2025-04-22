@@ -5,8 +5,6 @@ include:
   # spotter service (client front)
   - path:
       - ${INCLUDE_PATH}/spotter/compose.yml
-    ports:
-      - 3000:3000
   # rosetta service (libre translate)
   - path:
       - ${INCLUDE_PATH}/rosetta/compose.yml
@@ -19,16 +17,12 @@ include:
   # pilot service (BO school)
   - path:
       - ${INCLUDE_PATH}/pilot/compose.yml
-    ports:
-      - 3001:3000
   # marine-snow service
   - path:
       - ${INCLUDE_PATH}/marine-snow/compose.yml
   # tide service (BO marine-snow)
   - path:
       - ${INCLUDE_PATH}/tide/compose.yml
-    ports:
-      - 3002:3000
   # horizon service (gateway)
   - path:
       - ${INCLUDE_PATH}/horizon/compose.yml
@@ -41,8 +35,6 @@ include:
   # colossal service (BO abys)
   - path:
       - ${INCLUDE_PATH}/colossal/compose.yml
-    ports:
-      - 3003:3000
   # bottle service (notification)
   - path:
       - ${INCLUDE_PATH}/bottle/compose.yml

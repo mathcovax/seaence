@@ -29,6 +29,7 @@
     "test:types": "./scripts/types.sh",
     "test:tu": "vitest --watch false",
     "test:coverage": "vitest --watch false --coverage",
+    "build": "./scripts/build.sh",
     "docker:school": "docker compose up school",
     "docker:spotter": "docker compose up spotter",
     "docker:abys": "docker compose up abys",
@@ -40,7 +41,7 @@
     "docker:marine-snow:prisma:studio": "docker compose exec marine-snow npm -w services/marine-snow run prisma:studio",
     "docker:marine-snow:mission:searchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:searchResult --",
     "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
-    "clear": "./scripts/rm-node-modules.sh",
+    "clear": "./scripts/clear.sh",
     "prepare": "husky"
   },
   "workspaces": [

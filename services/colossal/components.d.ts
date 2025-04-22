@@ -8,16 +8,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Dialog: typeof import('./vendors/design-system/components/ui/dialog/Dialog.vue')['default']
-    DialogClose: typeof import('./vendors/design-system/components/ui/dialog/DialogClose.vue')['default']
-    DialogContent: typeof import('./vendors/design-system/components/ui/dialog/DialogContent.vue')['default']
-    DialogDescription: typeof import('./vendors/design-system/components/ui/dialog/DialogDescription.vue')['default']
-    DialogFooter: typeof import('./vendors/design-system/components/ui/dialog/DialogFooter.vue')['default']
-    DialogHeader: typeof import('./vendors/design-system/components/ui/dialog/DialogHeader.vue')['default']
-    DialogOverlay: typeof import('./vendors/design-system/components/ui/dialog/DialogOverlay.vue')['default']
-    DialogScrollContent: typeof import('./vendors/design-system/components/ui/dialog/DialogScrollContent.vue')['default']
-    DialogTitle: typeof import('./vendors/design-system/components/ui/dialog/DialogTitle.vue')['default']
-    DialogTrigger: typeof import('./vendors/design-system/components/ui/dialog/DialogTrigger.vue')['default']
     DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/DSAccordion.vue')['default']
     DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
     DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
@@ -92,9 +82,5 @@ declare module 'vue' {
     DSTabsTrigger: typeof import('./vendors/design-system/components/ui/tabs/DSTabsTrigger.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Sonner: typeof import('./vendors/design-system/components/ui/sonner/Sonner.vue')['default']
-    TheIcon: typeof import('./vendors/design-system/components/icon/TheIcon.vue')['default']
-    TheSea: typeof import('./vendors/design-system/components/TheSea.vue')['default']
-    TheSonner: typeof import('./vendors/design-system/components/ui/sonner/TheSonner.vue')['default']
   }
 }

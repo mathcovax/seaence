@@ -1,0 +1,65 @@
+name: Deploy
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  prepar:
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/cache@v4
+        with:
+          path: .
+          key: seaence-${{ github.ref }}
+
+  build-spotter:
+    needs: prepar
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: .
+          key: seaence-${{ github.ref }}
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./services/spotter/
+          push: true
+          tags: 
+            - ghcr.io/${{ github.repository_owner }}/seaence_spotter:latest
+            - ghcr.io/${{ github.repository_owner }}/seaence_spotter:${{ github.event.release.tag_name }}
+            
+  deploy:
+    needs:
+      - build-spotter
+    runs-on: self-hosted
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: .
+          key: seaence-${{ github.ref }}
+      - run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/runner-key
+          chmod 600 ~/.ssh/runner-key
+          scp -o StrictHostKeyChecking=no \
+            -i ~/.ssh/runner-key \
+            -r ./compose.prod.yml \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence/compose.prod.yml
+          ssh -o StrictHostKeyChecking=no \
+            -i ~/.ssh/runner-key \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }} \
+            "docker stack deploy -c /home/${{ secrets.MASTER_SSH_USER }}/seaence/compose.prod.yml seaence -e TAG=${{ github.event.release.tag_name }}"
+      
+
+
+      

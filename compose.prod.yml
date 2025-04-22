@@ -1,0 +1,3 @@
+include:
+  - path:
+    - ${INCLUDE_PATH}/spotter/compose.prod.yml

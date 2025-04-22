@@ -1,2 +1,15 @@
 #!/usr/bin/env sh
-npx concurrently --kill-others-on-fail "npm -w libs/design-system run test:types" "npm -w libs/clean run test:types" "npm -w services/abys run test:types" "npm -w services/bottle run test:types" "npm -w services/colossal run test:types" "npm -w services/harbor run test:types" "npm -w services/horizon run test:types" "npm -w services/marine-snow run test:types" "npm -w services/pilot run test:types" "npm -w services/school run test:types" "npm -w services/sea run test:types" "npm -w services/spotter run test:types" "npm -w services/tide run test:types"
+npx concurrently --kill-others-on-fail \
+	"npm -w libs/design-system run test:types" \
+	"npm -w libs/clean run test:types" \
+	"npm -w services/abys run test:types" \
+	"npm -w services/bottle run test:types" \
+	"npm -w services/colossal run test:types" \
+	"npm -w services/harbor run test:types" \
+	"npm -w services/horizon run test:types" \
+	"npm -w services/marine-snow run test:types" \
+	"npm -w services/pilot run test:types" \
+	"npm -w services/school run test:types" \
+	"npm -w services/sea run test:types" \
+	"npm -w services/spotter run test:types" \
+	"npm -w services/tide run test:types"
