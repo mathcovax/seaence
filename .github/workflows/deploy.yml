@@ -51,7 +51,7 @@ jobs:
           key: seaence-${{ github.head_ref }}
       - run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/runner-key
+          echo "${{ secrets.MASTER_SSH_HOST }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
           scp -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
