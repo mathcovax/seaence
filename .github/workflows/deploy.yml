@@ -26,7 +26,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: .
-          key: seaence
+          name: seaence
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: .
-          key: seaence
+          name: seaence
       - run: ls
       - run: cat ./compose.prod.yml
       - run: |
