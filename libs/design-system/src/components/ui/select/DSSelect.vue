@@ -10,7 +10,7 @@ import { type HTMLAttributes } from "vue";
 interface Props extends SelectRootProps {
 	items: GenericItem[];
 	placeholder: string;
-	labelKey?(item: GenericItem): string;
+	label?(item: GenericItem): string;
 	class?: HTMLAttributes["class"];
 }
 const props = defineProps<Props>();
@@ -21,8 +21,8 @@ const model = defineModel<GenericItem>({ required: true });
 const forwarded = useForwardPropsEmits(props, emits);
 
 function getKey(item: GenericItem) {
-	if (props.labelKey) {
-		const value = props.labelKey(item);
+	if (props.label) {
+		const value = props.label(item);
 
 		if (typeof value === "string" || typeof value === "number") {
 			return value;
@@ -32,8 +32,8 @@ function getKey(item: GenericItem) {
 	return null;
 }
 function getLabel(item: GenericItem) {
-	if (props.labelKey) {
-		const value = props.labelKey(item);
+	if (props.label) {
+		const value = props.label(item);
 
 		if (typeof value === "string" || typeof value === "number") {
 			return value;
@@ -49,7 +49,7 @@ function getLabel(item: GenericItem) {
 	<SelectRoot
 		data-slot="select"
 		v-bind="forwarded"
-		v-mode="model"
+		v-model="model"
 	>
 		<DSSelectTrigger :class="props.class">
 			<DSSelectValue :placeholder="placeholder" />

@@ -1,3 +1,5 @@
+import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/scratch-type";
+
 export const FRfr = {
 	page: {
 		[homePage.name]: {
@@ -84,10 +86,20 @@ export const FRfr = {
 			text: {
 				selectPlaceholder: "Selectioner un champ",
 				label: "Comparaison textuel",
+				fields: {
+					allField: "Touts les champs",
+					abstract: "Abstract",
+					title: "Titre",
+				} satisfies Record<TextFieldEnumValue, string>,
 			},
 			year: {
 				selectPlaceholder: "Selectioner un champ",
 				label: "Comparaison d'annés",
+				fields: {
+					allDate: "Toute Date",
+					journalDate: "publication journal",
+					webDate: "publication web",
+				} satisfies Record<YearFieldEnumValue, string>,
 			},
 		},
 		operator: {
@@ -101,6 +113,22 @@ export const FRfr = {
 				label: "NON",
 			},
 		},
+	},
+	formMessage: {
+		required: "Champ obligatoire.",
+		positive: "Doit être un nombre positif.",
+		max: "Ne doit pas dépasser {value}.",
+		min: "Doit faire au moins {value}.",
+		maxLength: "Doit faire au plus {value} caractères.",
+		minLength: "Doit faire au moins {value} caractères.",
+		invalidEmail: "Cet email est invalide.",
+		minAge: "Vous devez avoir au moins {value} ans.",
+		maxItems: "Vous pouvez au maximum avoir {value} éléments.",
+		blobToLarge: "L'image est supérieure à {value} Mo.",
+		minItems: "Vous devez minimum avoir {value} éléments.",
+		url: "Doit être sous la forme /path/to/page",
+		minDate: "Doit être après le {value}.",
+		int: "Le nombre doit étre un entier.",
 	},
 	cta: {
 		backHome: "Retour à l'accueil",

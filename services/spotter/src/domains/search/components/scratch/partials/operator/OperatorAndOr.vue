@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import type { OperatorAnd, OperatorContent, OperatorOr } from "@vendors/scratch-type";
+import { type OperatorAnd, type OperatorContent, type OperatorOr } from "@vendors/scratch-type";
 import { operatorContentWrapper } from "../operatorContentWrapper";
 import AddOperatorContent from "./AddOperatorContent.vue";
 import SelectOperator from "./SelectOperator.vue";
+import ScratchHint from "../ScratchHint.vue";
+import { useHintMessage } from "../../composables/useHintMessage";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<OperatorAnd | OperatorOr>({ required: true });
+const { t } = useI18n();
 
 const deleteCount = 1;
 function getComponent(item: OperatorContent, index: number) {
@@ -25,6 +28,23 @@ function getComponent(item: OperatorContent, index: number) {
 function newOperatorContent(operatorContent: OperatorContent) {
 	model.value.content.push(operatorContent);
 }
+
+const minLength = 1;
+const operatorSchema = zod
+	.any()
+	.array()
+	.min(minLength, { message: t("formMessage.minItems", { value: minLength }) });
+
+const { hintMessage } = useHintMessage(
+	operatorSchema,
+	computed({
+		get() {
+			return model.value.content;
+		},
+		set() {},
+	}),
+);
+
 </script>
 
 <template>
@@ -53,5 +73,10 @@ function newOperatorContent(operatorContent: OperatorContent) {
 				@new-operator-content="newOperatorContent"
 			/>
 		</div>
+
+		<ScratchHint
+			v-if="hintMessage"
+			:message="hintMessage"
+		/>
 	</div>
 </template>

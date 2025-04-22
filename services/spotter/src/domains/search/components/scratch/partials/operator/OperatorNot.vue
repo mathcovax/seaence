@@ -2,10 +2,12 @@
 import type { OperatorContent, OperatorNot } from "@vendors/scratch-type";
 import { operatorContentWrapper } from "../operatorContentWrapper";
 import AddOperatorContent from "./AddOperatorContent.vue";
+import { useHintMessage } from "../../composables/useHintMessage";
+import ScratchHint from "../ScratchHint.vue";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<OperatorNot>({ required: true });
-
+const { t } = useI18n();
 function getComponent(item: OperatorContent) {
 	return operatorContentWrapper(
 		item,
@@ -23,6 +25,23 @@ function getComponent(item: OperatorContent) {
 function newOperatorContent(operatorContent: OperatorContent) {
 	model.value.content = operatorContent;
 }
+
+const minLength = 1;
+const operatorSchema = zod
+	.object(
+		{},
+		{ message: t("formMessage.minItems", { value: minLength }) },
+	);
+
+const { hintMessage } = useHintMessage(
+	operatorSchema,
+	computed({
+		get() {
+			return model.value.content;
+		},
+		set() {},
+	}),
+);
 </script>
 
 <template>
@@ -47,5 +66,10 @@ function newOperatorContent(operatorContent: OperatorContent) {
 				@new-operator-content="newOperatorContent"
 			/>
 		</div>
+
+		<ScratchHint
+			v-if="hintMessage"
+			:message="hintMessage"
+		/>
 	</div>
 </template>

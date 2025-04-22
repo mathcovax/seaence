@@ -1,9 +1,29 @@
 <script setup lang="ts">
 import { yearFieldEnum, type ComparatorYear } from "@vendors/scratch-type";
 import DraggableComparator from "./DraggableComparator.vue";
+import ScratchHint from "../ScratchHint.vue";
+import { useHintMessage } from "../../composables/useHintMessage";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorYear>({ required: true });
+const { t } = useI18n();
+
+const yearFieldSchema = zod
+	.number({ message: t("formMessage.required") })
+	.int({ message: t("formMessage.int") })
+	.positive({ message: t("formMessage.positive") });
+
+const { hintMessage } = useHintMessage(
+	yearFieldSchema,
+	computed({
+		get() {
+			return model.value.value;
+		},
+		set(value) {
+			model.value.value = value;
+		},
+	}),
+);
 </script>
 
 <template>
@@ -25,6 +45,7 @@ const model = defineModel<ComparatorYear>({ required: true });
 			<DSSelect
 				class="w-1/2"
 				:items="yearFieldEnum.toTuple()"
+				:label="(item) => $t(`scratch.comparator.year.fields.${item}`)"
 				:placeholder="$t('scratch.comparator.year.selectPlaceholder')"
 				v-model="model.field"
 			/>
@@ -35,5 +56,10 @@ const model = defineModel<ComparatorYear>({ required: true });
 				v-model="model.value"
 			/>
 		</div>
+
+		<ScratchHint
+			v-if="hintMessage"
+			:message="hintMessage"
+		/>
 	</DraggableComparator>
 </template>

@@ -6,11 +6,15 @@ export const textFieldEnum = createEnum([
 	"abstract",
 ]);
 
+export type TextFieldEnumValue = GetEnumValue<typeof textFieldEnum>
+
 export const yearFieldEnum = createEnum([
 	"allDate",
 	"webDate",
 	"journalDate",
 ]);
+
+export type YearFieldEnumValue = GetEnumValue<typeof yearFieldEnum>
 
 export interface BaseComparator<
 	GenericName extends string,
@@ -20,12 +24,12 @@ export interface BaseComparator<
 }
 
 export interface ComparatorText extends BaseComparator<"text"> {
-	field: GetEnumValue<typeof textFieldEnum>;
+	field: TextFieldEnumValue;
 	value: string;
 }
 
 export interface ComparatorYear extends BaseComparator<"year"> {
-	field: GetEnumValue<typeof yearFieldEnum>;
+	field: YearFieldEnumValue;
 	value: number;
 }
 

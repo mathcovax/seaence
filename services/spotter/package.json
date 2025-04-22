@@ -21,7 +21,8 @@
     "vite-tsconfig-paths": "5.1.4",
     "vue": "3.5.13",
     "vue-i18n": "10.0.6",
-    "vue-router": "4.5.0"
+    "vue-router": "4.5.0",
+    "zod": "3.24.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.2.1",

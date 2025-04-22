@@ -22,6 +22,7 @@ export default defineConfig({
 				"src/composables",
 				"src/i18n",
 				"src/domains/**/router.ts",
+				"src/lib/zod/index.ts",
 				"vendors/design-system/composables",
 				"vendors/design-system/utils",
 			],

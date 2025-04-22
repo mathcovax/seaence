@@ -3,6 +3,7 @@ import type { OperatorContent } from "@vendors/scratch-type";
 import AddOperatorContent from "./partials/operator/AddOperatorContent.vue";
 import { operatorContentWrapper } from "./partials/operatorContentWrapper";
 import { initDragComparatorProvide } from "./provides/dragComparator";
+import { initCheckFieldsProvide } from "./provides/checkFields";
 
 const model = defineModel<OperatorContent | null>({ required: true });
 
@@ -29,6 +30,18 @@ function newOperatorContent(operatorContent: OperatorContent) {
 initDragComparatorProvide(
 	ref(null),
 );
+
+const checkFields = initCheckFieldsProvide(
+	ref([]),
+);
+
+defineExpose({
+	checkFields() {
+		return !checkFields.value.filter(
+			(checkField) => !checkField(),
+		).length;
+	},
+});
 
 </script>
 

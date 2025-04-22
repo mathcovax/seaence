@@ -8,6 +8,8 @@ export function useProvide<
 	return {
 		initProvide(value: GenericValue) {
 			provide(currentSymbole, value);
+
+			return value;
 		},
 		getProvidedValue() {
 			return inject<GenericValue>(currentSymbole);

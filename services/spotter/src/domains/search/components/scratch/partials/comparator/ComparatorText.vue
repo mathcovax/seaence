@@ -1,9 +1,31 @@
 <script setup lang="ts">
 import { type ComparatorText, textFieldEnum } from "@vendors/scratch-type";
 import DraggableComparator from "./DraggableComparator.vue";
+import ScratchHint from "../ScratchHint.vue";
+import { useHintMessage } from "../../composables/useHintMessage";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorText>({ required: true });
+const { t } = useI18n();
+
+const minLength = 1;
+const textFieldSchema = zod
+	.string({ message: t("formMessage.required") })
+	.trim()
+	.min(minLength, { message: t("formMessage.minLength", { value: minLength }) });
+
+const { hintMessage } = useHintMessage(
+	textFieldSchema,
+	computed({
+		get() {
+			return model.value.value;
+		},
+		set(value) {
+			model.value.value = value;
+		},
+	}),
+);
+
 </script>
 
 <template>
@@ -25,6 +47,7 @@ const model = defineModel<ComparatorText>({ required: true });
 			<DSSelect
 				class="w-1/2"
 				:items="textFieldEnum.toTuple()"
+				:label="(item) => $t(`scratch.comparator.text.fields.${item}`)"
 				:placeholder="$t('scratch.comparator.text.selectPlaceholder')"
 				v-model="model.field"
 			/>
@@ -34,5 +57,10 @@ const model = defineModel<ComparatorText>({ required: true });
 				v-model="model.value"
 			/>
 		</div>
+
+		<ScratchHint
+			v-if="hintMessage"
+			:message="hintMessage"
+		/>
 	</DraggableComparator>
 </template>

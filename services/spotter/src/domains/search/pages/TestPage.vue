@@ -20,8 +20,17 @@ watch(
 	(value) => void console.log(value),
 	{ deep: true },
 );
+
+const scratchRef = ref<InstanceType<typeof TheScratch> | null>();
 </script>
 
 <template>
-	<TheScratch v-model="content" />
+	<TheScratch
+		ref="scratchRef"
+		v-model="content"
+	/>
+
+	<DSButtonPrimary @click="scratchRef!.checkFields()">
+		check
+	</DSButtonPrimary>
 </template>
