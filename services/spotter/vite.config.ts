@@ -11,6 +11,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
+			"@vendors": fileURLToPath(new URL("./vendors", import.meta.url)),
 		},
 	},
 	plugins: [
@@ -21,6 +22,7 @@ export default defineConfig({
 				"src/composables",
 				"src/i18n",
 				"src/domains/**/router.ts",
+				"src/lib/zod/index.ts",
 				"vendors/design-system/composables",
 				"vendors/design-system/utils",
 			],

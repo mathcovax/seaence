@@ -89,6 +89,7 @@ declare global {
   const useLoader: typeof import('./src/composables/useLoader')['useLoader']
   const useLocalStorageItem: typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']
   const useModel: typeof import('vue')['useModel']
+  const useProvide: typeof import('./vendors/design-system/composables/useProvide')['useProvide']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
@@ -100,6 +101,7 @@ declare global {
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
   const watchSyncEffect: typeof import('vue')['watchSyncEffect']
+  const zod: typeof import('./src/lib/zod/index')['zod']
 }
 // for type re-export
 declare global {
@@ -180,6 +182,7 @@ declare module 'vue' {
     readonly useLoader: UnwrapRef<typeof import('./src/composables/useLoader')['useLoader']>
     readonly useLocalStorageItem: UnwrapRef<typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
+    readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
@@ -190,5 +193,6 @@ declare module 'vue' {
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>
     readonly watchSyncEffect: UnwrapRef<typeof import('vue')['watchSyncEffect']>
+    readonly zod: UnwrapRef<typeof import('./src/lib/zod/index')['zod']>
   }
 }

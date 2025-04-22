@@ -29,6 +29,7 @@
     "libs/clients-type",
     "libs/design-system",
     "libs/eslint",
+    "libs/scratch-type",
     "services/abys",
     "services/bottle",
     "services/colossal",

@@ -55,6 +55,14 @@ export const eslintConfigVue = [
 			"@typescript-eslint/no-unsafe-function-type": "off",
 			"@typescript-eslint/no-unsafe-member-access": "off",
 			"@typescript-eslint/no-unsafe-unary-minus": "off",
+			"@typescript-eslint/no-redundant-type-constituents": "off",
+			"id-length": [
+				"error",
+				{
+					min: 2,
+					exceptions: ["t"],
+				},
+			],
 		},
 		files: ["**/*.vue", "**/*.ts"],
 		ignores: ["**/*.test.ts", "vendors/**"],

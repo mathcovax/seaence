@@ -171,7 +171,7 @@ export type BrandCleanEnumTuple<
 		: never;
 
 export type CleanEnum<
-	GenericValues extends [string, ...string[]],
+	GenericValues extends [string, ...string[]] = [string, ...string[]],
 > = SimplifyObjectTopLevel<
 	{
 		[Prop in GenericValues[number]]: Prop
@@ -193,6 +193,10 @@ export function createEnum<
 		],
 	);
 }
+
+export type GetEnumValue<
+	GenericEnum extends CleanEnum<any>,
+> = ReturnType<GenericEnum["toTuple"]>[number];
 
 export type MybeArray<
 	GenericValue extends unknown,

@@ -25,28 +25,21 @@
   "type": "module",
   "scripts": {
     "dev": "docker compose up",
-
     "test:lint": "./scripts/lint.sh",
     "test:types": "./scripts/types.sh",
     "test:tu": "vitest --watch false",
     "test:coverage": "vitest --watch false --coverage",
-
     "docker:school": "docker compose up school",
-
     "docker:spotter": "docker compose up spotter",
-
     "docker:abys": "docker compose up abys",
-
     "docker:harbor": "docker compose up harbor",
     "docker:harbor:prisma:migrate": "docker compose exec harbor npm -w services/harbor run prisma:migrate",
     "docker:harbor:prisma:studio": "docker compose exec harbor npm -w services/harbor run prisma:studio",
-
     "docker:marine-snow": "docker compose up marine-snow",
     "docker:marine-snow:prisma:migrate": "docker compose exec marine-snow npm -w services/marine-snow run prisma:migrate",
     "docker:marine-snow:prisma:studio": "docker compose exec marine-snow npm -w services/marine-snow run prisma:studio",
     "docker:marine-snow:mission:searchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:searchResult --",
     "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
-
     "prepare": "husky"
   },
   "workspaces": [
@@ -57,10 +50,10 @@
   "devDependencies": {
     "@commitlint/cli": "19.7.1",
     "@commitlint/config-conventional": "19.2.2",
-    "@vitest/coverage-v8": "^3.1.1",
-    "concurrently": "^9.1.2",
+    "@vitest/coverage-v8": "3.1.1",
+    "concurrently": "9.1.2",
     "husky": "9.1.7",
-    "tsx": "^4.19.3",
-    "vitest": "^3.1.1"
+    "tsx": "4.19.3",
+    "vitest": "3.1.1"
   }
 }
