@@ -26,7 +26,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: docker/setup-docker-action@v4
       - uses: actions/cache/restore@v4
         with:
           path: .
