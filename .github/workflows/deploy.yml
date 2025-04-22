@@ -27,6 +27,7 @@ jobs:
         with:
           path: .
           key: seaence-${{ github.head_ref }}
+      - run: ls
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -50,13 +51,16 @@ jobs:
           path: .
           key: seaence-${{ github.head_ref }}
       - run: |
+          ls
           mkdir -p ~/.ssh
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
+      - run: |
           scp -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
             -r ./compose.prod.yml \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence/compose.prod.yml
+      - run: |
           ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }} \
