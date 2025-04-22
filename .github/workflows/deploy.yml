@@ -59,7 +59,7 @@ jobs:
       - run: |
           rsync -av \
             -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
-            --include='*.prod.yml' \
+            --include='**/*.prod.yml' \
             --exclude='*' \
             . \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
@@ -67,7 +67,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }} \
-            "docker stack deploy -c /home/${{ secrets.MASTER_SSH_USER }}/seaence/compose.prod.yml seaence -e TAG=${{ github.event.release.tag_name }}"
+            "TAG=${{ github.event.release.tag_name }} docker stack deploy -c /home/${{ secrets.MASTER_SSH_USER }}/seaence/compose.prod.yml seaence"
       
 
 
