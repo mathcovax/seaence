@@ -1,3 +1,11 @@
-include:
-  - path:
-    - ${INCLUDE_PATH}/spotter/compose.prod.yml
+services:
+  spotter:
+    image: 'ghcr.io/${{ github.repository_owner }}/seaence_spotter:${TAG}'
+    command: npm -w services/spotter run dev
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - published: 7000
+        target: 80
