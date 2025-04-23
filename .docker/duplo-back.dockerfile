@@ -5,3 +5,5 @@ WORKDIR /home/node/project
 COPY ../ .
 
 EXPOSE 80
+
+RUN npm install
