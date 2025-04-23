@@ -56,10 +56,7 @@ jobs:
       - build-vue-front
       - build-duplo-back
     steps:
-      - uses: actions/cache/restore@v4
-        with:
-          path: .
-          key: seaence
+      - uses: actions/checkout@v4
       - run: |
           echo "${{ secrets.FIREBASE_CREDENTIALS }}" > ./firebase.credential.json
           echo "${{ secrets.HORIZON_ENV_LOCAL }}" > ./horizon.env.local
