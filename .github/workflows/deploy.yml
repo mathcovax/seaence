@@ -96,7 +96,9 @@ jobs:
             --include="compose.prod.yml" \
             --include="firebase.credential.json" \
             --include="*.env.local" \
+            --include="*.nginx.conf" \
             --exclude='*' \
+            ./ \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
       - run: |
           ssh -o StrictHostKeyChecking=no \

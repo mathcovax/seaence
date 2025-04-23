@@ -33,3 +33,4 @@ services:
         condition: on-failure
     volumes:
       - ./harbor.env.local:/home/node/project/services/harbor/.env.local
+      - ./firebase.credential.json:/home/node/project/services/harbor/firebase.credential.json
