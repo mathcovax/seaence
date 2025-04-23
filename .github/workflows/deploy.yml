@@ -39,7 +39,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/build-push-action@v5
         with:
-          context: ./.docker/vue-front.dockerfile
+          file: ./.docker/vue-front.dockerfile
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/seaence_vue-front:latest,
@@ -63,7 +63,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/build-push-action@v5
         with:
-          context: ./.docker/duplo-back.dockerfile
+          file: ./.docker/duplo-back.dockerfile
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/seaence_duplo-back:latest,
