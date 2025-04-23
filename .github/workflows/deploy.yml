@@ -77,6 +77,56 @@ jobs:
             ./ \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
       - run: |
+          rsync -av \
+            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
+            --include="compose.prod.yml" \
+            --include="firebase.credential.json" \
+            --include="*.env.local" \
+            --include="*.nginx.conf" \
+            --exclude='*' \
+            ./ \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_1_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
+      - run: |
+          rsync -av \
+            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
+            --include="compose.prod.yml" \
+            --include="firebase.credential.json" \
+            --include="*.env.local" \
+            --include="*.nginx.conf" \
+            --exclude='*' \
+            ./ \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_2_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
+      - run: |
+          rsync -av \
+            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
+            --include="compose.prod.yml" \
+            --include="firebase.credential.json" \
+            --include="*.env.local" \
+            --include="*.nginx.conf" \
+            --exclude='*' \
+            ./ \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_3_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
+      - run: |
+          rsync -av \
+            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
+            --include="compose.prod.yml" \
+            --include="firebase.credential.json" \
+            --include="*.env.local" \
+            --include="*.nginx.conf" \
+            --exclude='*' \
+            ./ \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_4_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
+      - run: |
+          rsync -av \
+            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
+            --include="compose.prod.yml" \
+            --include="firebase.credential.json" \
+            --include="*.env.local" \
+            --include="*.nginx.conf" \
+            --exclude='*' \
+            ./ \
+            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_5_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
+      - run: |
           ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
             ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }} \
