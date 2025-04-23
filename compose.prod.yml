@@ -1,10 +1,35 @@
 services:
   spotter:
-    image: 'ghcr.io/mathcovax/seaence_spotter:${TAG}'
+    image: ghcr.io/mathcovax/seaence_vue-front:${TAG}
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
+    volumes:
+      - ./spotter.nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - published: 7000
         target: 80
+  
+  horizon:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/horizon run duplo:start 
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - ./horizon.env.local:/home/node/project/services/horizon/.env.local
+    ports:
+      - published: 7001
+        target: 80
+
+  harbor:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/harbor run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - ./harbor.env.local:/home/node/project/services/harbor/.env.local

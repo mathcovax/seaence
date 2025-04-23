@@ -3,6 +3,7 @@
   "description": "Gateway de l'application. Le nom 'Horizon' fait référence à l'horizon, symbolisant la vue d'ensemble et la gestion des services de l'application.",
   "type": "module",
   "scripts": {
+    "duplo:start": "tsx interfaces/http/main.ts",
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
     "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/horizon/duplojsTypesCodegen.d.ts",
     "test:lint": "eslint",

@@ -8,7 +8,7 @@ export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
 const { sonnerError, sonnerMessage, sonnerWarning } = useSonner();
 
 export const horizonClient = new HttpClient<HorizonClientRoute>({
-	baseUrl: envs.VITE_HORIZON_BASE_URL,
+	baseUrl: envs.VITE_HORIZON_ENTRYPOINT_BASE_URL,
 })
 	.setDefaultRequestParams({
 		mode: "cors",

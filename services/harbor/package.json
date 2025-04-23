@@ -3,6 +3,7 @@
   "description": "Microservice de gestion des utilisateurs et des rôles. Le nom 'Harbor' fait référence à un port, symbolisant l'accueil et la gestion des utilisateurs dans le système.",
   "type": "module",
   "scripts": {
+    "duplo:start": "tsx interfaces/http/main.ts",
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
     "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/harbor/duplojsTypesCodegen.d.ts",
     "test:lint": "eslint",
