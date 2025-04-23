@@ -17,6 +17,7 @@ jobs:
           node-version: 22.x
       - run: npm ci
       - run: npm run build
+      - run: ls services/spotter
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
