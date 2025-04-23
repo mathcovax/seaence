@@ -89,6 +89,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
+      - run: ls
       - run: |
           rsync -av \
             -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
