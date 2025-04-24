@@ -81,7 +81,7 @@ jobs:
           
           INDEX=0
           for SSH_HOST in "${SSH_HOSTS[@]}"; do
-            echo "$INDEX"
+            echo "ssh host: $INDEX"
 
             rsync -av \
               -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
@@ -96,7 +96,7 @@ jobs:
             ssh -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true"
+              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true && echo 'Clear all image.'"
 
             ((INDEX++))
           done
