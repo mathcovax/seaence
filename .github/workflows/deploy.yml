@@ -93,15 +93,17 @@ jobs:
               ./ \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST:/home/${{ secrets.MASTER_SSH_USER }}/seaence"
 
-            ssh -o StrictHostKeyChecking=no \
+            ssh -v -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
               "docker rm \$(docker ps -a -q) || true"
 
-            ssh -o StrictHostKeyChecking=no \
+            ssh -v -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
               "docker rmi \$(docker images -q) || true"
+
+            echo "test pasage"
 
             ((INDEX++))
           done
