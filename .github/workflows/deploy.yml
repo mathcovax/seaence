@@ -64,9 +64,9 @@ jobs:
           docker builder prune -af || true
       - run: |
           echo '${{ secrets.FIREBASE_CREDENTIALS }}' > ./firebase.credential.json
-          echo "${{ secrets.HORIZON_ENV_LOCAL }}" > ./horizon.env.local
-          echo "${{ secrets.HARBOR_ENV_LOCAL }}" > ./harbor.env.local
-          echo "${{ secrets.SPOTTER_NGINX_CONF }}" > ./spotter.nginx.conf
+          echo '${{ secrets.HORIZON_ENV_LOCAL }}' > ./horizon.env.local
+          echo '${{ secrets.HARBOR_ENV_LOCAL }}' > ./harbor.env.local
+          echo '${{ secrets.SPOTTER_NGINX_CONF }}' > ./spotter.nginx.conf
       - run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
