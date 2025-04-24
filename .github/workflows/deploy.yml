@@ -81,11 +81,7 @@ jobs:
             "${{ secrets.WORKER_5_SSH_HOST }}" \
           )
           
-          INDEX=0
           for SSH_HOST in "${SSH_HOSTS[@]}"; do
-            echo "ssh host: $INDEX"
-            ((INDEX++))
-
             rsync -av \
               -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
               --include="compose.prod.yml" \
