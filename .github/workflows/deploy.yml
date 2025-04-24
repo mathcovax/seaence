@@ -96,7 +96,7 @@ jobs:
             ssh -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true && echo 'Clear all image.'"
+              "docker rm \$(docker ps -a -q) 2>/dev/null || true && docker rmi \$(docker images -q) 2>/dev/null || true"
 
             ((INDEX++))
           done
