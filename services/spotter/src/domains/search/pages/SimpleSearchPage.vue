@@ -22,7 +22,7 @@ const displayMode = computed({
 
 // Mock data
 const START_INDEX = 1;
-const documents = Array.from({ length: 180 }, (unused, index) => ({
+const documents = Array.from({ length: 180 }, (_unused, index) => ({
 	id: index + START_INDEX,
 	title: `Document ${index + START_INDEX}`,
 	description: `
@@ -75,13 +75,14 @@ function handlePageChange(page: number) {
 		</div>
 
 		<div
-			class="h-full -mb-4 bg-background rounded-lg transition-all duration-1500 ease-in-out overflow-hidden"
-			:class="isResultExpanded ? 'max-h-[2132px]' : 'max-h-0'"
+			class="h-full -mb-4 bg-background rounded-t-lg transition-all duration-1500 ease-in-out overflow-hidden"
+			:class="isResultExpanded ? 'max-h-[2216px]' : 'max-h-0'"
 		>
 			<DSTabs
 				v-if="documents && documents.length > 0"
 				:default-value="displayMode"
 				@update:model-value="updateDisplayMode"
+				class="p-4"
 			>
 				<DSTabsList class="w-36 grid grid-cols-2">
 					<DSTabsTrigger
