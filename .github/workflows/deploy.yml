@@ -59,7 +59,9 @@ jobs:
       - build-duplo-back
     steps:
       - uses: actions/checkout@v4
-      - run: docker rmi $(docker images -q) -f || true
+      - run: |
+          docker rmi $(docker images -q) -f || true
+          docker builder prune -af || true
       - run: |
           echo '${{ secrets.FIREBASE_CREDENTIALS }}' > ./firebase.credential.json
           echo "${{ secrets.HORIZON_ENV_LOCAL }}" > ./horizon.env.local
@@ -94,17 +96,6 @@ jobs:
               --exclude='*' \
               ./ \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST:/home/${{ secrets.MASTER_SSH_USER }}/seaence";
-
-            ssh -o StrictHostKeyChecking=no \
-              -i ~/.ssh/runner-key \
-              "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true";
-
-            echo "passage ici"
-
-            ((INDEX++))
-
-            echo "test $INDEX"
           done
       - run: |
           ssh -o StrictHostKeyChecking=no \
