@@ -17,6 +17,8 @@ jobs:
           node-version: 22.x
       - run: npm ci
       - run: npm run build
+        env: 
+          VITE_HORIZON_ENTRYPOINT_BASE_URL: ${{ secrets.VITE_HORIZON_ENTRYPOINT_BASE_URL }}
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
