@@ -100,7 +100,11 @@ jobs:
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
               "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true";
 
+            echo "passage ici"
+
             ((INDEX++))
+
+            echo "test $INDEX"
           done
       - run: |
           ssh -o StrictHostKeyChecking=no \
