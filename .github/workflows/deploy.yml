@@ -79,7 +79,7 @@ jobs:
             "${{ secrets.WORKER_5_SSH_HOST }}" \
           )
           
-          INDEX=0
+          declare -i INDEX=0
           for SSH_HOST in "${SSH_HOSTS[@]}"; do
             echo "ssh host: $INDEX"
 
@@ -97,12 +97,8 @@ jobs:
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
               "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true";
-
-            echo "test pasage"
-
+              
             ((INDEX++))
-
-             echo "test $INDEX"
           done
       - run: |
           ssh -o StrictHostKeyChecking=no \
