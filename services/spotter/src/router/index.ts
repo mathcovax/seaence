@@ -1,7 +1,4 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { connectionPage } from "@/domains/auth/router";
-import { homePage, notFoundPage } from "@/domains/edito/router";
-import { simpleSearchPage } from "@/domains/search/router";
 
 export const router = createRouter({
 	history: createWebHistory(),
@@ -14,6 +11,7 @@ export const router = createRouter({
 				connectionPage.recordRaw,
 				simpleSearchPage.recordRaw,
 				documentPage.recordRaw,
+				profilePage.recordRaw,
 				testPage.recordRaw,
 				notFoundPage.recordRaw,
 			],

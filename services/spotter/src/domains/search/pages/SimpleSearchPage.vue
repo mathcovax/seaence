@@ -59,8 +59,8 @@ function handlePageChange(page: number) {
 </script>
 
 <template>
-	<section class="min-h-[calc(100vh-6rem-2rem)] flex flex-col justify-between">
-		<div
+	<div class="min-h-[calc(100vh-6rem-2rem)] flex flex-col justify-between">
+		<section
 			class="min-h-32 flex items-center transition-all duration-1500 ease-in-out overflow-hidden"
 			:class="{
 				'flex-1': !isResultExpanded,
@@ -72,9 +72,9 @@ function handlePageChange(page: number) {
 				:large="true"
 				class="w-full max-w-xl mx-auto"
 			/>
-		</div>
+		</section>
 
-		<div
+		<section
 			class="h-full -mb-4 bg-background rounded-t-lg transition-all duration-1500 ease-in-out overflow-hidden"
 			:class="isResultExpanded ? 'max-h-[2216px]' : 'max-h-0'"
 		>
@@ -147,6 +147,6 @@ function handlePageChange(page: number) {
 			</div>
 
 			<DSSea />
-		</div>
-	</section>
+		</section>
+	</div>
 </template>
