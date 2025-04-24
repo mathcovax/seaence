@@ -72,8 +72,6 @@ jobs:
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
       - run: |
-          set -x
-
           SSH_HOSTS=(
             "${{ secrets.MASTER_SSH_HOST }}" \
             "${{ secrets.WORKER_1_SSH_HOST }}" \
@@ -100,7 +98,7 @@ jobs:
             ssh -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true && docker builder prune -af || true" || true;
+              "echo 'test'";
 
             ((INDEX++))
           done
