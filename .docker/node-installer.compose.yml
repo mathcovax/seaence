@@ -1,6 +1,8 @@
 services:
   node-installer:
-    image: node:22.14
+    build: 
+      context: .
+      dockerfile: ./node.dockerfile
     volumes:
       - ${PWD}:/home/node/project
     environment:

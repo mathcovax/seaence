@@ -1,4 +1,6 @@
-FROM node:22.14
+# syntax = devthefuture/dockerfile-x
+
+FROM ./node.dockerfile
 
 WORKDIR /home/node/project
 
