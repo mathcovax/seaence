@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: docker rmi $(docker images -q) -f
       - run: |
-          echo "${{ secrets.FIREBASE_CREDENTIALS }}" > ./firebase.credential.json
+          echo '${{ secrets.FIREBASE_CREDENTIALS }}' > ./firebase.credential.json
           echo "${{ secrets.HORIZON_ENV_LOCAL }}" > ./horizon.env.local
           echo "${{ secrets.HARBOR_ENV_LOCAL }}" > ./harbor.env.local
           echo "${{ secrets.SPOTTER_NGINX_CONF }}" > ./spotter.nginx.conf
@@ -96,7 +96,7 @@ jobs:
             ssh -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true && exit 0"
+              "$(docker rm $(docker ps -a -q) || true) && $(docker rmi $(docker images -q) || true)"
 
             ((INDEX++))
           done
