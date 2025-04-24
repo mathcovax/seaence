@@ -84,6 +84,7 @@ jobs:
           INDEX=0
           for SSH_HOST in "${SSH_HOSTS[@]}"; do
             echo "ssh host: $INDEX"
+            ((INDEX++))
 
             rsync -av \
               -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
@@ -98,9 +99,7 @@ jobs:
             ssh -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "echo 'test'";
-
-            ((INDEX++))
+              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true && docker builder prune -af || true";
           done
       - run: |
           ssh -o StrictHostKeyChecking=no \
