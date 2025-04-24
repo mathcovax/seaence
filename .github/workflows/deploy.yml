@@ -17,6 +17,8 @@ jobs:
           node-version: 22.x
       - run: npm ci
       - run: npm run build
+        env: 
+          VITE_HORIZON_ENTRYPOINT_BASE_URL: ${{ secrets.HORIZON_ENTRYPOINT_BASE_URL }}
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -67,65 +69,36 @@ jobs:
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
       - run: |
-          rsync -av \
-            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
-            --include="compose.prod.yml" \
-            --include="firebase.credential.json" \
-            --include="*.env.local" \
-            --include="*.nginx.conf" \
-            --exclude='*' \
-            ./ \
-            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.MASTER_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
-      - run: |
-          rsync -av \
-            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
-            --include="compose.prod.yml" \
-            --include="firebase.credential.json" \
-            --include="*.env.local" \
-            --include="*.nginx.conf" \
-            --exclude='*' \
-            ./ \
-            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_1_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
-      - run: |
-          rsync -av \
-            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
-            --include="compose.prod.yml" \
-            --include="firebase.credential.json" \
-            --include="*.env.local" \
-            --include="*.nginx.conf" \
-            --exclude='*' \
-            ./ \
-            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_2_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
-      - run: |
-          rsync -av \
-            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
-            --include="compose.prod.yml" \
-            --include="firebase.credential.json" \
-            --include="*.env.local" \
-            --include="*.nginx.conf" \
-            --exclude='*' \
-            ./ \
-            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_3_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
-      - run: |
-          rsync -av \
-            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
-            --include="compose.prod.yml" \
-            --include="firebase.credential.json" \
-            --include="*.env.local" \
-            --include="*.nginx.conf" \
-            --exclude='*' \
-            ./ \
-            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_4_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
-      - run: |
-          rsync -av \
-            -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
-            --include="compose.prod.yml" \
-            --include="firebase.credential.json" \
-            --include="*.env.local" \
-            --include="*.nginx.conf" \
-            --exclude='*' \
-            ./ \
-            ${{ secrets.MASTER_SSH_USER }}@${{ secrets.WORKER_5_SSH_HOST }}:/home/${{ secrets.MASTER_SSH_USER }}/seaence
+          SSH_HOSTS=(
+            "${{ secrets.MASTER_SSH_HOST }}" \
+            "${{ secrets.WORKER_1_SSH_HOST }}" \
+            "${{ secrets.WORKER_2_SSH_HOST }}" \
+            "${{ secrets.WORKER_3_SSH_HOST }}" \
+            "${{ secrets.WORKER_4_SSH_HOST }}" \
+            "${{ secrets.WORKER_5_SSH_HOST }}" \
+          )
+          
+          INDEX=0
+          for SSH_HOST in "${SSH_HOSTS[@]}"; do
+            echo "$INDEX"
+
+            rsync -av \
+              -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/runner-key" \
+              --include="compose.prod.yml" \
+              --include="firebase.credential.json" \
+              --include="*.env.local" \
+              --include="*.nginx.conf" \
+              --exclude='*' \
+              ./ \
+              "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST:/home/${{ secrets.MASTER_SSH_USER }}/seaence"
+
+            ssh -o StrictHostKeyChecking=no \
+              -i ~/.ssh/runner-key \
+              "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
+              "docker rm \$(docker ps -a -q) && docker rmi \$(docker images -q)"
+
+            ((INDEX++))
+          done
       - run: |
           ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/runner-key \
