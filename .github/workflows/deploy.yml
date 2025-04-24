@@ -91,21 +91,18 @@ jobs:
               --include="*.nginx.conf" \
               --exclude='*' \
               ./ \
-              "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST:/home/${{ secrets.MASTER_SSH_USER }}/seaence"
+              "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST:/home/${{ secrets.MASTER_SSH_USER }}/seaence";
 
-            ssh -v -o StrictHostKeyChecking=no \
+            ssh -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rm \$(docker ps -a -q) || true"
-
-            ssh -v -o StrictHostKeyChecking=no \
-              -i ~/.ssh/runner-key \
-              "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rmi \$(docker images -q) || true"
+              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true";
 
             echo "test pasage"
 
             ((INDEX++))
+
+             echo "test $INDEX"
           done
       - run: |
           ssh -o StrictHostKeyChecking=no \
