@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AccountDropdown from "@/domains/user/components/AccountDropdown.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { isConnected } = useUserInformation();
@@ -45,12 +46,14 @@ onUnmounted(() => {
 			<DSButtonPrimary
 				v-if="!isConnected"
 				as-child
-				class="hidden md:block space-x-2"
+				class="hidden md:inline-flex"
 			>
 				<RouterLink :to="connectionPage.createTo()">
 					{{ $t("cta.connection") }}
 				</RouterLink>
 			</DSButtonPrimary>
+
+			<AccountDropdown v-else />
 
 			<MobileSidebar />
 		</div>

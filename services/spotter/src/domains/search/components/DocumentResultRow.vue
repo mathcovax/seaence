@@ -54,7 +54,7 @@ defineProps<{
 			<div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
 				<div class="flex items-center gap-1">
 					<DSIcon
-						name="user"
+						name="account"
 						size="16"
 					/>
 

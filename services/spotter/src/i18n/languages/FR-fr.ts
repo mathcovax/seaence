@@ -41,10 +41,6 @@ export const FRfr = {
 				},
 			},
 		},
-		[notFoundPage.name]: {
-			title: "404 - Page non trouvée",
-			subtitle: "Désolé, la page que vous recherchez n'existe pas.",
-		},
 		[connectionPage.name]: {
 			title: "Inscription / Connexion",
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
@@ -63,11 +59,31 @@ export const FRfr = {
 			noResponse: "Aucune réponse(s) pour ce post.",
 			writeAnAnswer: "Écrivez un commentaire",
 		},
-		[postListPage.name]: {
-			titleLinkPost: "Post(s) lié au document : {title}",
-			authorIs: "Posté par {author}",
-			responseCount: "{count} réponse(s)",
-			noPost: "Aucun post(s) trouvé pour ce document.",
+		[profilePage.name]: {
+			personalInfo: {
+				title: "Informations personnelles",
+				label: {
+					lastName: "Nom",
+					firstName: "Prénom",
+					email: "Email",
+				},
+			},
+			tab: {
+				favorite: {
+					title: "Mes favoris",
+					empty: "Aucun favoris trouvé.",
+					emptyDesc: "Ajoutez des documents à vos favoris pour les retrouver facilement.",
+				},
+				post: {
+					title: "Mes posts",
+					empty: "Vous n'avez encore rien posté",
+					emptyDesc: "Partagez vos avis avec la communauté.",
+				},
+			},
+		},
+		[notFoundPage.name]: {
+			title: "404 - Page non trouvée",
+			subtitle: "Désolé, la page que vous recherchez n'existe pas.",
 		},
 		[postCreatePage.name]: {
 			title: "Posez une question",
@@ -114,6 +130,11 @@ export const FRfr = {
 						advancedSearch: "Recherche avancée",
 					},
 					placeholder: "Recherche : Titre, Auteur, Contenu...",
+				},
+				accountDropdown: {
+					title: "Mon compte",
+					profile: "Mon profil",
+					disconnect: "Se déconnecter",
 				},
 			},
 			footer: {
