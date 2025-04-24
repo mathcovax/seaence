@@ -70,6 +70,8 @@ jobs:
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
           chmod 600 ~/.ssh/runner-key
       - run: |
+          set -x
+
           SSH_HOSTS=(
             "${{ secrets.MASTER_SSH_HOST }}" \
             "${{ secrets.WORKER_1_SSH_HOST }}" \
@@ -79,7 +81,7 @@ jobs:
             "${{ secrets.WORKER_5_SSH_HOST }}" \
           )
           
-          declare -i INDEX=0
+          INDEX=0
           for SSH_HOST in "${SSH_HOSTS[@]}"; do
             echo "ssh host: $INDEX"
 
@@ -97,7 +99,7 @@ jobs:
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
               "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true";
-              
+
             ((INDEX++))
           done
       - run: |
