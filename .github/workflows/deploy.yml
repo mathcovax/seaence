@@ -100,7 +100,7 @@ jobs:
             ssh -o StrictHostKeyChecking=no \
               -i ~/.ssh/runner-key \
               "${{ secrets.MASTER_SSH_USER }}@$SSH_HOST" \
-              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true && docker builder prune -af || true";
+              "docker rm \$(docker ps -a -q) || true && docker rmi \$(docker images -q) || true && docker builder prune -af || true" || true;
 
             ((INDEX++))
           done
