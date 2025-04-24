@@ -59,7 +59,7 @@ jobs:
       - build-duplo-back
     steps:
       - uses: actions/checkout@v4
-      - run: docker rmi $(docker images -q)
+      - run: docker rmi $(docker images -q) -f
       - run: |
           echo "${{ secrets.FIREBASE_CREDENTIALS }}" > ./firebase.credential.json
           echo "${{ secrets.HORIZON_ENV_LOCAL }}" > ./horizon.env.local
