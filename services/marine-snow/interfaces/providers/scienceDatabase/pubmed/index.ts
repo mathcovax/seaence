@@ -116,7 +116,7 @@ export class PubMedAPI {
 			ignoreAttributes: false,
 		});
 
-		this.httpClient.interceptor.response = (response) => {
+		this.httpClient.interceptors.response = (response) => {
 			if (
 				typeof response.body === "string"
 				&& response.headers.get("content-type")?.includes("text/xml")

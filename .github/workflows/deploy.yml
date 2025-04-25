@@ -74,6 +74,8 @@ jobs:
       - run: |
           echo '${{ secrets.HARBOR_ENV_LOCAL }}' > ./services/harbor/.env
           npm -w services/harbor run prisma:apply-migration
+          echo '${{ secrets.MARINE_SNOW_ENV_LOCAL }}' > ./services/marine-snow/.env
+          npm -w services/marine-snow run prisma:apply-migration
 
   deploy:
     runs-on: self-hosted
@@ -86,6 +88,7 @@ jobs:
           echo '${{ secrets.HARBOR_ENV_LOCAL }}' > ./harbor.env.local
           echo '${{ secrets.SPOTTER_NGINX_CONF }}' > ./spotter.nginx.conf
           echo '${{ secrets.SCHOOL_ENV_LOCAL }}' > ./school.env.local
+          echo '${{ secrets.MARINE_SNOW_ENV_LOCAL }}' > ./marine-snow.env.local
       - run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key
