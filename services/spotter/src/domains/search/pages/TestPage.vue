@@ -25,12 +25,14 @@ const scratchRef = ref<InstanceType<typeof TheScratch> | null>();
 </script>
 
 <template>
-	<TheScratch
-		ref="scratchRef"
-		v-model="content"
-	/>
+	<section class="min-h-[calc(100vh-6rem-2rem)]">
+		<TheScratch
+			ref="scratchRef"
+			v-model="content"
+		/>
 
-	<DSButtonPrimary @click="scratchRef!.checkFields()">
-		check
-	</DSButtonPrimary>
+		<DSButtonPrimary @click="scratchRef!.checkFields()">
+			{{ $t("scratch.checkFields") }}
+		</DSButtonPrimary>
+	</section>
 </template>

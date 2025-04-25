@@ -42,16 +42,41 @@ defineExpose({
 		).length;
 	},
 });
-
 </script>
 
 <template>
-	<template v-if="model">
-		<component :is="getComponent()" />
-	</template>
+	<div class="mb-6 p-4 bg-white border rounded-lg shadow-sm">
+		<div class="pb-2 mb-4 flex items-center justify-between border-b border-slate-200">
+			<h3 class="text-lg font-medium text-primary">
+				{{ $t('scratch.title') }}
+			</h3>
+		</div>
 
-	<AddOperatorContent
-		v-else
-		@new-operator-content="newOperatorContent"
-	/>
+		<div class="p-2 bg-slate-50 border rounded-md border-dashed border-slate-300">
+			<template v-if="model">
+				<component :is="getComponent()" />
+			</template>
+
+			<div
+				v-else
+				class="h-full flex items-center justify-center"
+			>
+				<AddOperatorContent @new-operator-content="newOperatorContent" />
+			</div>
+		</div>
+
+		<div
+			v-if="model"
+			class="mt-4 flex justify-end"
+		>
+			<div class="flex gap-2">
+				<DSButtonOutline
+					size="sm"
+					@click="model = null"
+				>
+					{{ $t('scratch.reset') }}
+				</DSButtonOutline>
+			</div>
+		</div>
+	</div>
 </template>

@@ -30,37 +30,43 @@ const { hintMessage } = useHintMessage(
 
 <template>
 	<DraggableComparator
-		class="flex flex-col gap-1 bg-secondary p-1 rounded-l-sm"
+		class="@container p-1.5 bg-white border-l-4 border-l-green-seaence rounded-md drop-shadow-sm"
 		:comparator="model"
 		@deplace="emit('remove')"
 	>
-		<div class="flex justify-between">
-			<p>{{ $t('scratch.comparator.text.label') }}</p>
+		<div class="mb-2 flex justify-between items-center">
+			<span class="font-medium text-sm">{{ $t('scratch.comparator.text.label') }}</span>
 
-			<DSIcon
-				name="close"
+			<DSButtonIcon
+				variant="ghost"
+				size="sm"
 				@click="emit('remove')"
-			/>
+				class="text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+			>
+				<DSIcon name="close" />
+			</DSButtonIcon>
 		</div>
 
-		<div class="flex gap-1">
+		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
 			<DSSelect
-				class="w-1/2"
 				:items="textFieldEnum.toTuple()"
-				:label="(item) => $t(`scratch.comparator.text.fields.${item}`)"
+				:label="(item) => $t(`scratch.comparator.text.fields.${item}`) || item"
 				:placeholder="$t('scratch.comparator.text.selectPlaceholder')"
 				v-model="model.field"
+				class="text-sm"
 			/>
 
 			<DSInput
-				class="w-1/2"
 				v-model="model.value"
+				:placeholder="$t('scratch.comparator.text.inputPlaceholder')"
+				class="text-sm"
 			/>
 		</div>
 
 		<ScratchHint
 			v-if="hintMessage"
 			:message="hintMessage"
+			class="mt-1 text-xs text-red-500"
 		/>
 	</DraggableComparator>
 </template>

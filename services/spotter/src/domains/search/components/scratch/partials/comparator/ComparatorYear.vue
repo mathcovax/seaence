@@ -28,38 +28,46 @@ const { hintMessage } = useHintMessage(
 
 <template>
 	<DraggableComparator
-		class="flex flex-col gap-1 bg-secondary p-1 rounded-l-sm"
+		class="@container p-1.5 bg-white border-l-4 border-l-purple-seaence rounded-md drop-shadow-sm"
 		:comparator="model"
 		@deplace="emit('remove')"
 	>
-		<div class="flex justify-between">
-			<p>{{ $t('scratch.comparator.year.label') }}</p>
+		<div class="mb-2 flex justify-between items-center">
+			<div class="flex gap-2 items-center">
+				<span class="font-medium text-sm">{{ $t('scratch.comparator.year.label') }}</span>
+			</div>
 
-			<DSIcon
-				name="close"
+			<DSButtonIcon
+				variant="ghost"
+				size="sm"
 				@click="emit('remove')"
-			/>
+				class="text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+			>
+				<DSIcon name="close" />
+			</DSButtonIcon>
 		</div>
 
-		<div class="flex gap-1">
+		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
 			<DSSelect
-				class="w-1/2"
 				:items="yearFieldEnum.toTuple()"
-				:label="(item) => $t(`scratch.comparator.year.fields.${item}`)"
+				:label="(item) => $t(`scratch.comparator.year.fields.${item}`) || item"
 				:placeholder="$t('scratch.comparator.year.selectPlaceholder')"
 				v-model="model.field"
+				class="text-sm"
 			/>
 
 			<DSInput
-				class="w-1/2"
 				type="number"
 				v-model="model.value"
+				placeholder="1999"
+				class="text-sm"
 			/>
 		</div>
 
 		<ScratchHint
 			v-if="hintMessage"
 			:message="hintMessage"
+			class="mt-1 text-red-500 text-xs"
 		/>
 	</DraggableComparator>
 </template>

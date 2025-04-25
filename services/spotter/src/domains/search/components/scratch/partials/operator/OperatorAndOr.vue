@@ -45,38 +45,56 @@ const { hintMessage } = useHintMessage(
 	}),
 );
 
+const operatorBg = computed(() => model.value.name === "and" ? "bg-primary" : "bg-blue-seaence");
+const operatorBorder = computed(() => model.value.name === "and" ? "border-primary" : "border-blue-seaence");
+
+function isOperator(item: OperatorContent): boolean {
+	return item.type === "operator" && (item.name === "and" || item.name === "or");
+}
 </script>
 
 <template>
-	<div class="py-1 pl-1 rounded-l-sm bg-primary flex flex-col gap-1 select-none">
-		<div class="flex justify-between pr-1">
+	<div :class="['border-4 rounded-md shadow-sm', operatorBorder]">
+		<div :class="['px-2 py-1 flex justify-between items-center text-white', operatorBg]">
 			<SelectOperator
-				class="w-[80px]"
+				class="w-20 text-white font-medium bg-white bg-opacity-20 border-0 rounded"
 				v-model="model.name"
 			/>
 
-			<DSIcon
-				name="close"
+			<DSButtonIcon
+				variant="ghost"
+				size="xs"
 				@click="emit('remove')"
-			/>
+				class="text-white hover:bg-white hover:bg-opacity-20"
+			>
+				<DSIcon name="close" />
+			</DSButtonIcon>
 		</div>
 
-		<div class="bg-white py-1 pl-1 rounded-l-sm flex flex-col gap-1">
-			<component
-				v-for="(item, index) of model.content"
-				:key="index"
-				:is="getComponent(item, index)"
-			/>
+		<div class="@container p-2 space-y-2 bg-white">
+			<div class="grid grid-cols-1 @sm:grid-cols-2 @lg:grid-cols-3 @2xl:grid-cols-4 gap-2">
+				<div
+					v-for="(item, index) of model.content"
+					:key="index"
+					:class="{
+						'col-span-full': isOperator(item),
+						'relative': true
+					}"
+				>
+					<component :is="getComponent(item, index)" />
+				</div>
+			</div>
 
 			<AddOperatorContent
 				v-if="model.content.length < 10"
 				@new-operator-content="newOperatorContent"
 			/>
-		</div>
 
-		<ScratchHint
-			v-if="hintMessage"
-			:message="hintMessage"
-		/>
+			<ScratchHint
+				v-if="hintMessage"
+				:message="hintMessage"
+				class="mt-1 text-red-500 text-xs"
+			/>
+		</div>
 	</div>
 </template>
