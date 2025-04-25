@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
+    "duplo:start": "tsx interfaces/http/main.ts",
     "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/school/duplojsTypesCodegen.d.ts",
 
     "test:lint": "eslint",

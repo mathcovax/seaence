@@ -43,3 +43,16 @@ services:
     volumes:
       - ./harbor.env.local:/home/node/project/services/harbor/.env.local
       - ./firebase.credential.json:/home/node/project/services/harbor/firebase.credential.json
+
+  school:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/school run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./school.env.local:/home/node/project/services/school/.env.local
