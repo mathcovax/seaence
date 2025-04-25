@@ -64,9 +64,8 @@ jobs:
           node-version: 22.x
       - run: npm ci
       - run: |
-          echo "${{ secrets.HARBOR_ENV_LOCAL }}" > ./services/harbor/harbor.env.local
+          echo "${{ secrets.HARBOR_ENV_LOCAL }}" > ./services/harbor/.env.local
           npm -w services/harbor run prisma:deploy
-
 
   deploy:
     runs-on: self-hosted

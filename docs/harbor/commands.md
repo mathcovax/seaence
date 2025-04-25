@@ -3,9 +3,14 @@
 npm run docker:harbor
 ```
 
-### run migration
+### apply migration
 ```bash
-npm run docker:harbor:prisma:migrate
+npm run docker:harbor:prisma:apply-migration
+```
+
+### make migration
+```bash
+npm run docker:harbor:prisma:make-migration
 ```
 
 ### run studio

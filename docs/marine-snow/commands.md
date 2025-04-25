@@ -3,9 +3,14 @@
 npm run docker:marine-snow
 ```
 
-### run migration
+### apply migration
 ```bash
-npm run docker:marine-snow:prisma:migrate
+npm run docker:marine-snow:prisma:apply-migration
+```
+
+### make migration
+```bash
+npm run docker:marine-snow:prisma:make-migration
 ```
 
 ### run studio

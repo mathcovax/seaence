@@ -10,8 +10,8 @@
     "test:types": "tsc",
 
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:deploy": "prisma migrate deploy",
+    "prisma:make-migration": "prisma migrate dev",
+    "prisma:apply-migration": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
 
     "mission:searchResult": "tsx interfaces/commands/missionSearchResult.ts",
