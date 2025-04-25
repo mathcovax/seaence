@@ -52,11 +52,19 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/seaence_duplo-back:latest,
             ghcr.io/${{ github.repository_owner }}/seaence_duplo-back:${{ github.event.release.tag_name }}
 
-  migrate:
+  clear-cache:
     runs-on: self-hosted
     needs:
       - build-vue-front
       - build-duplo-back
+    steps:
+      - run: |
+          docker rmi $(docker images -q) -f || true
+          docker builder prune -af || true
+
+  migrate:
+    runs-on: self-hosted
+    needs: clear-cache
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -72,9 +80,6 @@ jobs:
     needs: migrate
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          docker rmi $(docker images -q) -f || true
-          docker builder prune -af || true
       - run: |
           echo '${{ secrets.FIREBASE_CREDENTIALS }}' > ./firebase.credential.json
           echo '${{ secrets.HORIZON_ENV_LOCAL }}' > ./horizon.env.local
