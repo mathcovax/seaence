@@ -10,12 +10,14 @@ export class HarborAPI {
 	private static httpClient: HttpClient<HarborClientRoute>;
 
 	public static async auth(firebaseTokenId: string) {
-		return this.httpClient.post(
-			"/authentication",
-			{
-				body: firebaseTokenId,
-			},
-		).iWantExpectedResponse();
+		return this.httpClient
+			.post(
+				"/authentication",
+				{
+					body: firebaseTokenId,
+				},
+			)
+			.iWantExpectedResponse();
 	}
 
 	static {
