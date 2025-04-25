@@ -1,8 +1,5 @@
 # env local
 .env.local
 
-# Prisma
-migrations/
-
 # Firebase
 firebase.credential.json

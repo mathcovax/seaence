@@ -10,6 +10,7 @@
     "test:types": "tsc",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "postinstall": "npm run prisma:generate && npm run duplo:generate"
   },

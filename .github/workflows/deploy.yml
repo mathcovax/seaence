@@ -51,12 +51,26 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/seaence_duplo-back:latest,
             ghcr.io/${{ github.repository_owner }}/seaence_duplo-back:${{ github.event.release.tag_name }}
-    
-  deploy:
+
+  migrate:
     runs-on: self-hosted
     needs:
       - build-vue-front
       - build-duplo-back
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - run: npm ci
+      - run: |
+          echo "${{ secrets.HARBOR_ENV_LOCAL }}" > ./services/harbor/harbor.env.local
+          npm -w services/harbor run prisma:deploy
+
+
+  deploy:
+    runs-on: self-hosted
+    needs: migrate
     steps:
       - uses: actions/checkout@v4
       - run: |

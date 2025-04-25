@@ -1,5 +1,2 @@
 # env local
 .env.local
-*.db
-*db-journal
-migrations
