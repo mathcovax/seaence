@@ -28,7 +28,7 @@ const { hintMessage } = useHintMessage(
 
 <template>
 	<DraggableComparator
-		class="@container p-1.5 bg-white border-l-4 border-l-purple-seaence rounded-md drop-shadow-sm"
+		class="@container p-1.5 bg-white border-l-4 rounded-md drop-shadow-sm"
 		:comparator="model"
 		@deplace="emit('remove')"
 	>
@@ -67,7 +67,7 @@ const { hintMessage } = useHintMessage(
 		<ScratchHint
 			v-if="hintMessage"
 			:message="hintMessage"
-			class="mt-1 text-red-500 text-xs"
+			class="mt-1"
 		/>
 	</DraggableComparator>
 </template>

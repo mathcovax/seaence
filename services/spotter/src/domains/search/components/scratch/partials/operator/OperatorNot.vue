@@ -72,7 +72,7 @@ const { hintMessage } = useHintMessage(
 			<ScratchHint
 				v-if="hintMessage"
 				:message="hintMessage"
-				class="mt-1 text-red-500 text-xs"
+				class="mt-1"
 			/>
 		</div>
 	</div>

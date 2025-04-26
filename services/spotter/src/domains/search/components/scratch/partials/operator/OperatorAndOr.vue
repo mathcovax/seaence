@@ -45,17 +45,47 @@ const { hintMessage } = useHintMessage(
 	}),
 );
 
-const operatorBg = computed(() => model.value.name === "and" ? "bg-primary" : "bg-blue-seaence");
-const operatorBorder = computed(() => model.value.name === "and" ? "border-primary" : "border-blue-seaence");
+const sortedContents = computed(() => {
+	const contentsWithContentIndex = model.value.content.map(
+		(item, index) => ({
+			contentIndex: index,
+			item,
+		}),
+	);
 
-function isOperator(item: OperatorContent): boolean {
-	return item.type === "operator" && (item.name === "and" || item.name === "or");
+	return {
+		comparators: contentsWithContentIndex.filter(
+			({ item }) => item.type === "comparator",
+		),
+		operators: contentsWithContentIndex.filter(
+			({ item }) => item.type === "operator",
+		),
+	};
+});
+
+function comparatorTakefullWidth(index: number) {
+	const offset = 1;
+	const pos = index + offset;
+
+	return !isEven(pos) && pos === sortedContents.value.comparators.length;
 }
 </script>
 
 <template>
-	<div :class="['border-4 rounded-md shadow-sm', operatorBorder]">
-		<div :class="['px-2 py-1 flex justify-between items-center text-white', operatorBg]">
+	<div
+		class="border-4 rounded-md shadow-sm"
+		:class="{
+			'border-primary': model.name === 'and',
+			'border-green-seaence': model.name === 'or',
+		}"
+	>
+		<div
+			class="px-2 py-1 flex justify-between items-center text-white"
+			:class="{
+				'bg-primary': model.name === 'and',
+				'bg-green-seaence': model.name === 'or',
+			}"
+		>
 			<SelectOperator
 				class="w-20 text-white font-medium bg-white bg-opacity-20 border-0 rounded"
 				v-model="model.name"
@@ -71,29 +101,35 @@ function isOperator(item: OperatorContent): boolean {
 			</DSButtonIcon>
 		</div>
 
-		<div class="@container p-2 space-y-2 bg-white">
-			<div class="grid grid-cols-1 @sm:grid-cols-2 @lg:grid-cols-3 @2xl:grid-cols-4 gap-2">
-				<div
-					v-for="(item, index) of model.content"
-					:key="index"
-					:class="{
-						'col-span-full': isOperator(item),
-						'relative': true
-					}"
-				>
-					<component :is="getComponent(item, index)" />
-				</div>
-			</div>
-
+		<div class="@container p-2 space-y-2">
 			<AddOperatorContent
 				v-if="model.content.length < 10"
 				@new-operator-content="newOperatorContent"
 			/>
 
+			<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
+				<component
+					v-for="({item, contentIndex}, index) of sortedContents.comparators"
+					:key="contentIndex"
+					:is="getComponent(item, contentIndex)"
+					class="col-span-1"
+					:class="{
+						'!col-span-full': comparatorTakefullWidth(index),
+					}"
+				/>
+
+				<component
+					v-for="{item, contentIndex} of sortedContents.operators"
+					:key="contentIndex"
+					:is="getComponent(item, contentIndex)"
+					class="col-span-full"
+				/>
+			</div>
+
 			<ScratchHint
 				v-if="hintMessage"
 				:message="hintMessage"
-				class="mt-1 text-red-500 text-xs"
+				class="mt-1"
 			/>
 		</div>
 	</div>

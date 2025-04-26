@@ -26,6 +26,7 @@ export default defineConfig({
 				"src/lib/horizon/index.ts",
 				"vendors/design-system/composables",
 				"vendors/design-system/utils",
+				"src/utils",
 			],
 			imports: [
 				"vue",

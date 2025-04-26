@@ -8,7 +8,7 @@ defineProps<Props>();
 </script>
 
 <template>
-	<span>
+	<span class="text-red-500 text-xs">
 		{{ message }}
 	</span>
 </template>

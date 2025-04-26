@@ -41,6 +41,7 @@ declare global {
   const horizonClient: typeof import('./src/lib/horizon/index')['horizonClient']
   const i18n: typeof import('./src/i18n/index')['i18n']
   const inject: typeof import('vue')['inject']
+  const isEven: typeof import('./src/utils/isEven')['isEven']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
@@ -144,6 +145,7 @@ declare module 'vue' {
     readonly horizonClient: UnwrapRef<typeof import('./src/lib/horizon/index')['horizonClient']>
     readonly i18n: UnwrapRef<typeof import('./src/i18n/index')['i18n']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
+    readonly isEven: UnwrapRef<typeof import('./src/utils/isEven')['isEven']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
