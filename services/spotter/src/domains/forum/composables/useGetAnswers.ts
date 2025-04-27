@@ -23,9 +23,9 @@ export function useGetAnswers(postId: string) {
 			(response) => {
 				answers.value = response.body;
 			},
+		).finally(
+			() => void disableLoader(loaderId),
 		);
-
-		disableLoader(loaderId);
 	}
 
 	return {

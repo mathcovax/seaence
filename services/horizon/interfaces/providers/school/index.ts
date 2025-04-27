@@ -106,7 +106,7 @@ export class SchoolAPI {
 
 	static {
 		this.httpClient = new HttpClient({
-			baseUrl: envs.HARBOR_BASE_URL,
+			baseUrl: envs.SCHOOL_BASE_URL,
 		});
 	}
 }

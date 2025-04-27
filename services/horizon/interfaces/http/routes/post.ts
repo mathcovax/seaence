@@ -2,6 +2,7 @@ import { SchoolAPI } from "@interfaces/providers/school";
 import { endpointPostListSchema, endpointPostSchema } from "../schemas/post";
 import { iWantArticleExistById } from "../checkers/article";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
+import { iWantPostExistById } from "../checkers/post";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/posts")
@@ -83,15 +84,17 @@ useBuilder()
 			postId: zod.string(),
 		},
 	})
+	.presetCheck(
+		iWantPostExistById,
+		(pickup) => pickup("postId"),
+	)
 	.handler(
-		async(pickup) => {
-			const postId = pickup("postId");
-
-			const schoolResponse = await SchoolAPI.getPost(postId);
+		(pickup) => {
+			const post = pickup("post");
 
 			return new OkHttpResponse(
 				"post.found",
-				schoolResponse.body,
+				post,
 			);
 		},
 		makeResponseContract(OkHttpResponse, "post.found", endpointPostSchema),

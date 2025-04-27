@@ -20,9 +20,9 @@ export function useGetPost(postId: string) {
 			(response) => {
 				post.value = response.body;
 			},
+		).finally(
+			() => void disableLoader(loaderId),
 		);
-
-		disableLoader(loaderId);
 	}
 
 	return {

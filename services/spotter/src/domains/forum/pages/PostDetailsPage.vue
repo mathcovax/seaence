@@ -3,6 +3,7 @@ import { useGetAnswers } from "../composables/useGetAnswers";
 import { useGetPost } from "../composables/useGetPost";
 
 const { params } = postDetailsPage.use();
+const router = useRouter();
 
 const {
 	post,
@@ -20,7 +21,11 @@ const currentPage = ref(startPage);
 onMounted(
 	async() => {
 		await getPost();
-		await getAnswers(currentPage.value);
+		if (post.value !== null) {
+			await getAnswers(currentPage.value);
+		} else {
+			router.back();
+		}
 	},
 );
 

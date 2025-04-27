@@ -23,9 +23,9 @@ export function useGetPosts(articleId: string) {
 			(response) => {
 				postsList.value = response.body;
 			},
+		).finally(
+			() => void disableLoader(loaderId),
 		);
-
-		disableLoader(loaderId);
 	}
 
 	return {
