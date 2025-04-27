@@ -8,8 +8,8 @@ interface Input {
 	page: Int;
 }
 
-const rawQuantityPerPage = 10;
-const quantityPerPage = intObjecter.unsafeCreate(rawQuantityPerPage);
+const rawQuantityPerPage = 20;
+export const quantityPerPage = intObjecter.unsafeCreate(rawQuantityPerPage);
 
 export class GetPostsFromArticleIdUsecase extends UsecaseHandler.create({
 	postRepository,

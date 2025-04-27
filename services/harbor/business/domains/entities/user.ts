@@ -10,7 +10,7 @@ export const userEmailObjecter = zod
 	.email()
 	.createValueObjecter("userEmail");
 
-const usernameRule = {
+export const usernameRule = {
 	min: 3,
 	max: 30,
 };

@@ -1,10 +1,10 @@
-import { postRepository } from "@business/applications/repositories/post";
 import { type PostId } from "@business/domains/entities/post";
+import { getPostByIdUsecase } from "@interfaces/usecase";
 
 export const postExistCheck = createChecker("postExist")
 	.handler(
 		async(input: PostId, output) => {
-			const post = await postRepository.use.findOneById(input);
+			const post = await getPostByIdUsecase.execute({ id: input });
 
 			if (post) {
 				return output("post.exist", post);

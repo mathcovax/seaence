@@ -8,7 +8,7 @@ interface Input {
 	page: Int;
 }
 
-const rawQuantityPerPage = 10;
+const rawQuantityPerPage = 20;
 const quantityPerPage = intObjecter.unsafeCreate(rawQuantityPerPage);
 
 export class GetAnswersFromPostUsecase extends UsecaseHandler.create({

@@ -1,4 +1,6 @@
 import "../repositories";
-import { FindOrCreateUser } from "@business/applications/usecases/findOrCreateUser";
+import { GetUserByIdUsecase } from "@business/applications/usecases/getUserById";
+import { FindOrCreateUserUsecase } from "@business/applications/usecases/findOrCreateUser";
 
-export const findOrCreateUser = new FindOrCreateUser();
+export const findOrCreateUser = new FindOrCreateUserUsecase();
+export const getUserById = new GetUserByIdUsecase();

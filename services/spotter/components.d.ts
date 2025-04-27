@@ -49,6 +49,7 @@ declare module 'vue' {
     DSInputSearch: typeof import('./vendors/design-system/components/DSInputSearch.vue')['default']
     DSLabel: typeof import('./vendors/design-system/components/ui/label/DSLabel.vue')['default']
     DSLoadingLogo: typeof import('./vendors/design-system/components/DSLoadingLogo.vue')['default']
+    DSPagination: typeof import('./vendors/design-system/components/ui/pagination/DSPagination.vue')['default']
     DSPaginationEllipsis: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationEllipsis.vue')['default']
     DSPaginationFirst: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationFirst.vue')['default']
     DSPaginationLast: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationLast.vue')['default']

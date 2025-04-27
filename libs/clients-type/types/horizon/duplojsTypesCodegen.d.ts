@@ -18,6 +18,153 @@ type CodegenRoutes = ({
         information: "user.logged";
         body: string;
     };
+}) | ({
+    method: "POST";
+    path: "/posts/{postId}/answers";
+    body: {
+        content: string;
+    };
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "answer.created";
+        body: {
+            id: string;
+            postId: string;
+            content: string;
+            author: {
+                id: string;
+                username: string;
+            };
+        };
+    };
+}) | ({
+    method: "GET";
+    path: "/posts/{postId}/answers";
+    params: {
+        postId: string;
+    };
+    query: {
+        page: number;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "answers.found";
+        body: {
+            id: string;
+            postId: string;
+            content: string;
+            author: {
+                id: string;
+                username: string;
+            };
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/posts";
+    body: {
+        topic: string;
+        content: string;
+        article: {
+            id: string;
+            title: string;
+        };
+    };
+    response: {
+        code: 404;
+        information: "article.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "post.created";
+        body: {
+            id: string;
+            topic: string;
+            content: string | null;
+            article: {
+                id: string;
+                title: string;
+            };
+            author: {
+                id: string;
+                username: string;
+            };
+            answerCount?: number | undefined;
+            createdAt?: string | undefined;
+        };
+    };
+}) | ({
+    method: "GET";
+    path: "/articles/{articleId}/posts";
+    params: {
+        articleId: string;
+    };
+    query: {
+        page: number;
+    };
+    response: {
+        code: 404;
+        information: "article.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "posts.found";
+        body: {
+            posts: {
+                id: string;
+                topic: string;
+                content: string | null;
+                article: {
+                    id: string;
+                    title: string;
+                };
+                author: {
+                    id: string;
+                    username: string;
+                };
+                answerCount?: number | undefined;
+                createdAt?: string | undefined;
+            }[];
+            totalCount: number;
+            quantityPerPage: number;
+        };
+    };
+}) | ({
+    method: "GET";
+    path: "/posts/{postId}";
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 200;
+        information: "post.found";
+        body: {
+            id: string;
+            topic: string;
+            content: string | null;
+            article: {
+                id: string;
+                title: string;
+            };
+            author: {
+                id: string;
+                username: string;
+            };
+            answerCount?: number | undefined;
+            createdAt?: string | undefined;
+        };
+    };
 });
 
 export { CodegenRoutes };

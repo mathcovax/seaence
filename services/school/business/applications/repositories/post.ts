@@ -11,6 +11,7 @@ export interface PostRepository extends RepositoryBase<PostEntity> {
 	generatePostId(): PostId;
 	findByArticleId(articleId: ArticleId, params: FindByArticleIdParams): Promise<PostEntity[]>;
 	findOneById(postId: PostId): Promise<PostEntity | null>;
+	getTotalCountByArticleId(articleId: ArticleId): Promise<Int>;
 }
 
 export const postRepository = createRepositoryHandler<PostRepository>();

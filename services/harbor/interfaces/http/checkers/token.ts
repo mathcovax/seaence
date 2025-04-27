@@ -1,5 +1,6 @@
 import { userEmailObjecter } from "@business/domains/entities/user";
 import { firebaseAuth } from "@interfaces/providers/firebase";
+import { AccessToken } from "@interfaces/providers/token";
 
 export const firebaseTokenChecker = createChecker("firebaseToken")
 	.handler(
@@ -19,7 +20,7 @@ export const firebaseTokenChecker = createChecker("firebaseToken")
 		},
 	);
 
-export const IWantFirebaseTokenValid = createPresetChecker(
+export const IWantFirebaseTokenIsValid = createPresetChecker(
 	firebaseTokenChecker,
 	{
 		result: "firebase.token.valid",
@@ -27,4 +28,27 @@ export const IWantFirebaseTokenValid = createPresetChecker(
 		indexing: "firebaseTokenContent",
 	},
 	makeResponseContract(UnauthorizedHttpResponse, "firebase.token.invalid"),
+);
+
+export const accessTokenChecker = createChecker("accessToken")
+	.handler(
+		(input: string, output) => {
+			const accessToken = AccessToken.checkToken(input);
+
+			if (accessToken) {
+				return output("access.token.valid", accessToken);
+			} else {
+				return output("access.token.invalid", null);
+			}
+		},
+	);
+
+export const IWantAccessTokenIsValid = createPresetChecker(
+	accessTokenChecker,
+	{
+		result: "access.token.valid",
+		catch: () => new UnauthorizedHttpResponse("access.token.invalid"),
+		indexing: "accessTokenContent",
+	},
+	makeResponseContract(UnauthorizedHttpResponse, "access.token.invalid"),
 );

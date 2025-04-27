@@ -1,3 +1,4 @@
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { envs } from "@/envs";
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import type { CodegenRoutes } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
@@ -6,12 +7,18 @@ export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes>;
 
 const { sonnerError, sonnerMessage, sonnerWarning } = useSonner();
+const { accessToken } = useUserInformation();
 
 export const horizonClient = new HttpClient<HorizonClientRoute>({
 	baseUrl: envs.VITE_HORIZON_ENTRYPOINT_BASE_URL,
 })
 	.setDefaultRequestParams({
 		mode: "cors",
+		headers: {
+			get authorization() {
+				return accessToken.value ?? undefined;
+			},
+		},
 	})
 	.setInterceptor(
 		"response",

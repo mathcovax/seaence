@@ -6,7 +6,7 @@ interface Input {
 	email: UserEmail;
 }
 
-export class FindOrCreateUser extends UsecaseHandler.create({
+export class FindOrCreateUserUsecase extends UsecaseHandler.create({
 	userRepository,
 }) {
 	public async execute({ email }: Input) {

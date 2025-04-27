@@ -18,25 +18,31 @@ type CodegenRoutes = ({
         code: 200;
         information: "posts.found";
         body: {
-            id: string;
-            topic: string;
-            content: string;
-            article: {
+            posts: {
                 id: string;
-                title: string;
-            };
-            author: {
-                id: string;
-                username: string;
-            };
-        }[];
+                topic: string;
+                content: string | null;
+                article: {
+                    id: string;
+                    title: string;
+                };
+                author: {
+                    id: string;
+                    username: string;
+                };
+                answerCount?: number | undefined;
+                createdAt?: Date | undefined;
+            }[];
+            totalCount: number;
+            quantityPerPage: number;
+        };
     };
 }) | ({
     method: "POST";
     path: "/posts";
     body: {
         topic: string;
-        content: string;
+        content: string | null;
         article: {
             id: string;
             title: string;
@@ -52,7 +58,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             topic: string;
-            content: string;
+            content: string | null;
             article: {
                 id: string;
                 title: string;
@@ -61,6 +67,37 @@ type CodegenRoutes = ({
                 id: string;
                 username: string;
             };
+            answerCount?: number | undefined;
+            createdAt?: Date | undefined;
+        };
+    };
+}) | ({
+    method: "GET";
+    path: "/posts/{postId}";
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "post.found";
+        body: {
+            id: string;
+            topic: string;
+            content: string | null;
+            article: {
+                id: string;
+                title: string;
+            };
+            author: {
+                id: string;
+                username: string;
+            };
+            answerCount?: number | undefined;
+            createdAt?: Date | undefined;
         };
     };
 }) | ({

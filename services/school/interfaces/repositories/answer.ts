@@ -1,5 +1,6 @@
 import { answerRepository } from "@business/applications/repositories/answer";
 import { AnswerEntity, answerIdObjecter } from "@business/domains/entities/answer";
+import { postAnswerCountObjecter } from "@business/domains/entities/post";
 import { UserEntity } from "@business/domains/entities/user";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
@@ -15,6 +16,11 @@ answerRepository.default = {
 		);
 
 		return mongoAnswers
+			.sort(
+				{
+					createdAt: -1,
+				},
+			)
 			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.map(
@@ -30,6 +36,12 @@ answerRepository.default = {
 				),
 			)
 			.toArray();
+	},
+	async getCountByPostId(postId) {
+		const mongoAnswerCount = await mongo.answerCollection.countDocuments({
+			postId: postId.value,
+		});
+		return postAnswerCountObjecter.unsafeCreate(mongoAnswerCount);
 	},
 	async save(answer) {
 		const mongoAnswer = answer.toSimpleObject();

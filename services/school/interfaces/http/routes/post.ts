@@ -4,14 +4,18 @@ import { userObjecter } from "@business/domains/common/user";
 import { articleIdObjecter } from "@business/domains/entities/article";
 import {
 	postContentObjecter,
+	postIdObjecter,
 	postTopicObjecter,
 } from "@business/domains/entities/post";
 import {
 	createPostUsecase,
 	getPostsFromArticleIdUsecase,
+	getPostTotalCountFromArticleIdUsecase,
 } from "@interfaces/usecase";
 import { toSimpleObject } from "@vendors/clean";
-import { endpointPostSchema } from "../schemas/post";
+import { endpointPostListSchema, endpointPostSchema } from "../schemas/post";
+import { iWantPostExistById } from "../checkers/post";
+import { quantityPerPage } from "@business/applications/usecases/getPostsFromArticleId";
 
 useBuilder()
 	.createRoute("GET", "/articles/{articleId}/posts")
@@ -27,19 +31,31 @@ useBuilder()
 		async(pickup) => {
 			const { articleId, page } = pickup(["articleId", "page"]);
 
-			const posts = await getPostsFromArticleIdUsecase
-				.execute({
-					articleId,
-					page,
-				})
-				.then((posts) => posts.map(toSimpleObject));
+			const [
+				totalCount,
+				posts,
+			] = await Promise.all(
+				[
+					getPostTotalCountFromArticleIdUsecase.execute({
+						articleId,
+					}),
+					getPostsFromArticleIdUsecase.execute({
+						articleId,
+						page,
+					}).then((posts) => posts.map(toSimpleObject)),
+				],
+			);
 
 			return new OkHttpResponse(
 				"posts.found",
-				posts,
+				{
+					posts,
+					totalCount: totalCount.value,
+					quantityPerPage: quantityPerPage.value,
+				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "posts.found", endpointPostSchema.array()),
+		makeResponseContract(OkHttpResponse, "posts.found", endpointPostListSchema),
 	);
 
 useBuilder()
@@ -69,4 +85,27 @@ useBuilder()
 			);
 		},
 		makeResponseContract(CreatedHttpResponse, "post.created", endpointPostSchema),
+	);
+
+useBuilder()
+	.createRoute("GET", "/posts/{postId}")
+	.extract({
+		params: {
+			postId: postIdObjecter.toZodSchema(),
+		},
+	})
+	.presetCheck(
+		iWantPostExistById,
+		(pickup) => pickup("postId"),
+	)
+	.handler(
+		(pickup) => {
+			const post = pickup("post");
+
+			return new OkHttpResponse(
+				"post.found",
+				post.toSimpleObject(),
+			);
+		},
+		makeResponseContract(OkHttpResponse, "post.found", endpointPostSchema),
 	);

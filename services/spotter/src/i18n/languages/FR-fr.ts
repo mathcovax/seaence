@@ -143,6 +143,12 @@ export const FRfr = {
 		credential: {
 			invalid: "Identifiant google invalide.",
 		},
+		article: {
+			notfound: "Article introuvable.",
+		},
+		post: {
+			notfound: "Post introuvable.",
+		},
 		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur c'est produite.",
 	},
 };
