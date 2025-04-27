@@ -1,12 +1,11 @@
 services:
   rosetta:
-    extends:
-      file: ${INCLUDE_PATH}/rosetta/compose.template.yml
-      service: rosetta-template
-    build:
-      context: ${INCLUDE_PATH}/rosetta
-      dockerfile: ${INCLUDE_PATH}/rosetta/docker/Dockerfile
+    container_name: rosetta
+    image: libretranslate/libretranslate
+    env_file:
+      - ${INCLUDE_PATH}/rosetta/.env
     ports:
-      - 5001:5000 # delete this line if you want to use only in api mode
-volumes:
-  rosetta-data-models:
+      - 5001:5000 # delete this line if you want to use only in docker network
+    # config volume: to avoid re-downloading languages ​​every time
+    volumes:
+      - ${INCLUDE_PATH}/rosetta/languages:/home/libretranslate/.local/share/argos-translate/packages/
