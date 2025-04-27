@@ -42,16 +42,8 @@ type CodegenRoutes = ({
         };
     };
     response: {
-        code: 201;
-        information: "document.created";
-        body?: undefined;
-    } | {
         code: 200;
-        information: "document.updated";
-        body?: undefined;
-    } | {
-        code: 500;
-        information: "document.error.operation_failed";
+        information: "document.upsert";
         body?: undefined;
     };
 });
