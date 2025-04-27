@@ -2,7 +2,7 @@ import { hasKey } from "@duplojs/utils";
 import { envs } from "@interfaces/envs";
 import { AbysAPI, type RawDocument } from "@interfaces/providers/abys";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { abstractSectionNameEnum, acronymMounthToNumber, reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
+import { abstractSectionNameEnum, acronymMonthToNumber, reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
 import { TechnicalError } from "@vendors/clean/error";
 import { match, P } from "ts-pattern";
 
@@ -204,9 +204,9 @@ export async function pubmedSender(reference: string) {
 				const journalPublishDate = pubmedJournalPublishDate
 					? {
 						day: pubmedJournalPublishDate.Day?.["#text"] ?? null,
-						mounth: (
-							(mounth?: string) => mounth && acronymMounthToNumber[mounth]
-								? acronymMounthToNumber[mounth]
+						month: (
+							(month?: string) => month && acronymMonthToNumber[month]
+								? acronymMonthToNumber[month]
 								: null
 						)(pubmedJournalPublishDate.Month?.["#text"]),
 						year: pubmedJournalPublishDate.Year?.["#text"] ?? null,

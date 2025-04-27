@@ -21,7 +21,7 @@ services:
     extends:
       file: ${INCLUDE_PATH}/sea/compose.template.yml
       service: sea-duplo-template
-    command: npm -w services/sea run dev
+    command: npm -w services/sea run dev:duplo
 
 networks:
   elastic:

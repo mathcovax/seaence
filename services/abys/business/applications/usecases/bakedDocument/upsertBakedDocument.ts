@@ -1,4 +1,4 @@
-import { UsecaseError, UsecaseHandler } from "@vendors/clean";
+import { flexibleDateObjecter, UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { type ExpectType } from "@duplojs/utils";
 import { match, P } from "ts-pattern";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
@@ -65,6 +65,14 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 							rawDocument.detailedAbstract,
 							language,
 						)
+						: null,
+					journalPublishDate: rawDocument.journalPublishDate,
+					webPublishDate: rawDocument.webPublishDate
+						? flexibleDateObjecter.unsafeCreate({
+							day: rawDocument.webPublishDate.value.getDay(),
+							month: rawDocument.webPublishDate.value.getMonth(),
+							year: rawDocument.webPublishDate.value.getFullYear(),
+						})
 						: null,
 				}),
 			)

@@ -25,3 +25,5 @@ services:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
     command: npm -w services/sea run dev
+    depends_on:
+      - sea-es

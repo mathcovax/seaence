@@ -51,13 +51,13 @@ const medlineDate = zo({
 			return zod.NEVER;
 		}
 
-		const mounth = stringMonth.includes("-") ? undefined : stringMonth;
+		const month = stringMonth.includes("-") ? undefined : stringMonth;
 		const day = Number(stringDay);
 
 		return {
 			Year: { "#text": year },
-			Month: mounth ? { "#text": mounth } : undefined,
-			Day: isNaN(day) || !mounth ? undefined : { "#text": day },
+			Month: month ? { "#text": month } : undefined,
+			Day: isNaN(day) || !month ? undefined : { "#text": day },
 		};
 	},
 );

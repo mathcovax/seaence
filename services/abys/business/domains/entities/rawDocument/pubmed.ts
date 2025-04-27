@@ -1,7 +1,7 @@
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
 import { rawAbstractObjecter, rawAbstractPartObjecter, rawAuthorObjecter, rawGrantObjecter, rawResourceUrlObjecter, rawTitleObjecter, rawKeywordObjecter } from "@business/domains/common/rawDocument";
-import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, dateYYYYMMDDObjecter } from "@vendors/clean";
+import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, dateYYYYMMDDObjecter, flexibleDateObjecter } from "@vendors/clean";
 
 export const pubmedRawDocumentArticleIdObjecter = zod
 	.object({
@@ -11,16 +11,6 @@ export const pubmedRawDocumentArticleIdObjecter = zod
 	.createValueObjecter("articleId");
 
 export type PubmedRawDocumentArticleId = GetValueObject<typeof pubmedRawDocumentArticleIdObjecter>;
-
-export const pubmedRawDocumentJournalPublishDateObjecter = zod
-	.object({
-		day: zod.number().nullable(),
-		mounth: zod.number().nullable(),
-		year: zod.number(),
-	})
-	.createValueObjecter("pubmedRawDocumentJournalPublishDate");
-
-export type PubmedRawDocumentJournalPublishDate = GetValueObject<typeof pubmedRawDocumentJournalPublishDateObjecter>;
 
 export class PubmedRawDocumentEntity extends EntityHandler.create({
 	uniqueArticleField: uniqueFieldObjecter,
@@ -34,7 +24,7 @@ export class PubmedRawDocumentEntity extends EntityHandler.create({
 	abstract: rawAbstractObjecter.nullable(),
 	detailedAbstract: rawAbstractPartObjecter.array().nullable(),
 	webPublishDate: dateYYYYMMDDObjecter.nullable(),
-	journalPublishDate: pubmedRawDocumentJournalPublishDateObjecter.nullable(),
+	journalPublishDate: flexibleDateObjecter.nullable(),
 }) {
 	public static create(params: GetEntityProperties<typeof PubmedRawDocumentEntity>) {
 		return new PubmedRawDocumentEntity(params);
