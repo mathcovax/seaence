@@ -17,6 +17,12 @@ bakedDocumentRepository.default = {
 	async save(bakedDocument) {
 		const simpleBakedDocument = bakedDocument.toSimpleObject();
 
+		const beforeBakedDocument = await mongo.bakedDocumentCollection.findOne({
+			id: simpleBakedDocument.id,
+		});
+
+		const createdAt = beforeBakedDocument?.createdAt ?? new Date();
+
 		await mongo.bakedDocumentCollection.updateOne(
 			{
 				id: simpleBakedDocument.id,
@@ -24,7 +30,7 @@ bakedDocumentRepository.default = {
 			{
 				$set: {
 					...simpleBakedDocument,
-					createdAt: new Date(),
+					createdAt,
 					updatedAt: new Date(),
 				},
 			},
