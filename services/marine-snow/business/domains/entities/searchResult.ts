@@ -1,9 +1,11 @@
-import { EntityHandler, zod, type GetEntityProperties } from "@vendors/clean";
+import { EntityHandler, type GetValueObject, zod, type GetEntityProperties } from "@vendors/clean";
 import { providerObjecter } from "../common/provider";
 
 export const searchResultReferenceObjecter = zod
 	.string()
 	.createValueObjecter("searchResultReference");
+
+export type SearchResultReference = GetValueObject<typeof searchResultReferenceObjecter>;
 
 export const searchResultFailedToSendObjecter = zod
 	.boolean()

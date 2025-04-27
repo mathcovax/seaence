@@ -20,17 +20,19 @@ enum provider {
 }
 
 model searchResult {
-    reference    String
-    provider     provider
-    failedToSend Boolean  @default(false)
-    selected     Boolean  @default(false)
-    createdAt    DateTime @default(now())
+    reference                     String
+    provider                      provider
+    failedToSend                  Boolean                         @default(false)
+    selected                      Boolean                         @default(false)
+    createdAt                     DateTime                        @default(now())
+    SingleSendSearchResultMission SingleSendSearchResultMission[]
 
     @@id([reference, provider], name: "id")
 }
 
 enum missionStatus {
     created
+    resume
     inProgress
     failed
     success
@@ -65,4 +67,12 @@ model SendSearchResultMission {
     quantity                    Int
     status                      missionStatus
     sendSearchResultMissionStep SendSearchResultMissionStep?
+}
+
+model SingleSendSearchResultMission {
+    id                    String        @id
+    status                missionStatus
+    searchResult          searchResult  @relation(fields: [searchResultReference, searchResultProvider], references: [reference, provider])
+    searchResultReference String
+    searchResultProvider  provider
 }

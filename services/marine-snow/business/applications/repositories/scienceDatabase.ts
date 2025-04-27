@@ -6,10 +6,18 @@ import { createRepositoryHandler, type RepositoryError, type RepositoryBase } fr
 export type SearchResultMission =
 	| PubMedSearchResultMissionEntity;
 
-interface StartSearchResultPubMedMissionItem {
+type StartSearchResultPubMedMissionItem = {
 	currentStep: SearchResultPubMedMissionStepEntity;
-	searchResults: SearchResultEntity[];
-}
+} & (
+	| {
+		searchResults: undefined;
+		error: RepositoryError;
+	}
+	| {
+		searchResults: SearchResultEntity[];
+		error: undefined;
+	}
+);
 
 type GetStartSearchResultItem<
 	GenericSearchResultMission extends SearchResultMission,

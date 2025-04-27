@@ -3,7 +3,7 @@ import { envs } from "@interfaces/envs";
 import { AbysAPI, type RawDocument } from "@interfaces/providers/abys";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
 import { abstractSectionNameEnum, acronymMounthToNumber, reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
-import { CleanError } from "@vendors/clean/error";
+import { TechnicalError } from "@vendors/clean/error";
 import { match, P } from "ts-pattern";
 
 const expectHttpCode = 200;
@@ -12,16 +12,16 @@ export async function pubmedSender(reference: string) {
 	const pubmedResponse = await PubMedAPI.getArticle(reference);
 
 	if (pubmedResponse instanceof Error) {
-		return new CleanError(
+		return new TechnicalError(
 			"Parsing error when fetching article",
 			{ error: pubmedResponse },
 		);
 	}
 
 	if (pubmedResponse.code !== expectHttpCode) {
-		return new CleanError(
+		return new TechnicalError(
 			"Wrong http code when fetching article",
-			{ custom: { pubmedResponse } },
+			{ pubmedResponse },
 		);
 	}
 
@@ -47,16 +47,14 @@ export async function pubmedSender(reference: string) {
 					);
 
 				if (!articleTypes?.length) {
-					return new CleanError(
+					return new TechnicalError(
 						"Wrong articleType",
 						{
-							custom: {
-								articleTypes: PubmedArticle
-									.MedlineCitation
-									.Article
-									.PublicationTypeList
-									.PublicationType,
-							},
+							articleTypes: PubmedArticle
+								.MedlineCitation
+								.Article
+								.PublicationTypeList
+								.PublicationType,
 						},
 					);
 				}
@@ -95,9 +93,9 @@ export async function pubmedSender(reference: string) {
 				}
 
 				if (!uniqueArticleField) {
-					return new CleanError(
+					return new TechnicalError(
 						"Missing unique article field.",
-						{ custom: { articleIds } },
+						{ articleIds },
 					);
 				}
 
@@ -115,7 +113,7 @@ export async function pubmedSender(reference: string) {
 					.PubDate;
 
 				if (!pubmedWebPublishDate && !pubmedJournalPublishDate) {
-					return new CleanError(
+					return new TechnicalError(
 						"Missing web publish date and journal publish date",
 					);
 				}
@@ -238,7 +236,7 @@ export async function pubmedSender(reference: string) {
 		)
 		.with(
 			{ PubmedArticleSet: { PubmedBookArticle: P.any } },
-			() => new CleanError("Unsupport book"),
+			() => new TechnicalError("Unsupport book"),
 		)
 		.exhaustive();
 
@@ -249,9 +247,9 @@ export async function pubmedSender(reference: string) {
 	const abysResponse = await AbysAPI.sendRawDocument(rawDocument);
 
 	if (abysResponse.information !== "rawDocument.upsert") {
-		return new CleanError(
+		return new TechnicalError(
 			"Wrong response when send doccument to abys.",
-			{ custom: { abysResponse } },
+			{ abysResponse },
 		);
 	}
 

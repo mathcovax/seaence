@@ -8,7 +8,7 @@ interface Input {
 	articleType: ArticleType;
 }
 
-export class CreateSearchResultPubMedMissionUsecase extends UsecaseHandler.create(
+export class CreatePubMedSearchResultMissionUsecase extends UsecaseHandler.create(
 	{
 		missionRepository,
 	},

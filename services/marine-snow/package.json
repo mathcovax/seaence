@@ -16,6 +16,7 @@
     "prisma:studio": "prisma studio",
 
     "mission:searchResult": "tsx interfaces/commands/missionSearchResult.ts",
+    "mission:resumeSearchResult": "tsx interfaces/commands/resumeMissionSearchResult.ts",
     "mission:sendSearchResult": "tsx interfaces/commands/missionSendSearchResult.ts",
 
     "postinstall": "npm run prisma:generate && npm run duplo:generate"

@@ -1,7 +1,7 @@
 interface CleanErrorMoreData {
+	[key: string]: unknown;
 	message?: string;
 	error?: Error;
-	custom?: unknown;
 }
 
 export class CleanError<
@@ -13,4 +13,10 @@ export class CleanError<
 	) {
 		super(moreData?.message ?? information);
 	}
+}
+
+export class TechnicalError<
+	GenericInformation extends string = string,
+> extends CleanError<GenericInformation> {
+
 }

@@ -61,7 +61,7 @@ export class StartSendSearchResultMissionUsecase extends UsecaseHandler.create({
 
 				return new UsecaseError(
 					"sending-search-result-failded",
-					{ custom: step.faildedSearchResults },
+					{ faildedSearchResults: step.faildedSearchResults },
 				);
 			}
 		}
