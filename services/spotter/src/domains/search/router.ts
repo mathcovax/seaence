@@ -8,6 +8,14 @@ export const simpleSearchPage = createPage(
 	},
 );
 
+export const advancedSearchPage = createPage(
+	"advancedSearch",
+	{
+		path: "/advanced-search",
+		component: () => import("./pages/AdvancedSearchPage.vue"),
+	},
+);
+
 export const documentPage = createPage(
 	"document",
 	{

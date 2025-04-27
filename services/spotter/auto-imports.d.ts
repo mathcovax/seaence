@@ -23,6 +23,7 @@ declare global {
   const DSSheetTrigger: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetTrigger']
   const EffectScope: typeof import('vue')['EffectScope']
   const Input: typeof import('./vendors/design-system/components/ui/input/index')['Input']
+  const advancedSearchPage: typeof import('./src/domains/search/router')['advancedSearchPage']
   const buttonVariants: typeof import('./vendors/design-system/components/ui/button/index')['buttonVariants']
   const cn: typeof import('./vendors/design-system/lib/utils')['cn']
   const computed: typeof import('vue')['computed']
@@ -129,6 +130,7 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly advancedSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['advancedSearchPage']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly connectionPage: UnwrapRef<typeof import('./src/domains/auth/router')['connectionPage']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>

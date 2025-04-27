@@ -10,6 +10,7 @@ export const router = createRouter({
 				homePage.recordRaw,
 				connectionPage.recordRaw,
 				simpleSearchPage.recordRaw,
+				advancedSearchPage.recordRaw,
 				documentPage.recordRaw,
 				postListPage.recordRaw,
 				postPage.recordRaw,

@@ -1,13 +1,29 @@
 <script setup lang="ts">
+import type { OperatorContent } from "@vendors/scratch-type";
+import TheScratch from "../components/scratch/TheScratch.vue";
 import DocumentResultCard from "../components/DocumentResultCard.vue";
 import DocumentResultRow from "../components/DocumentResultRow.vue";
 import SearchResutPagination from "../components/SearchResutPagination.vue";
 import { computed, ref } from "vue";
-import SimpleSearch from "../components/SimpleSearch.vue";
 
-const { $pt } = simpleSearchPage.use();
+const { $pt } = advancedSearchPage.use();
 
 const isResultExpanded = ref(false);
+
+const content = ref<OperatorContent | null>({
+	type: "operator",
+	name: "and",
+	content: [
+		{
+			type: "comparator",
+			name: "text",
+			field: "allField",
+			value: "",
+		},
+	],
+});
+
+const scratchRef = ref<InstanceType<typeof TheScratch> | null>();
 
 type DisplayMode = "cards" | "rows";
 
@@ -48,6 +64,14 @@ const paginatedDocuments = computed(() => {
 	return documents.slice(start, end);
 });
 
+function handleSubmit() {
+	scratchRef.value!.checkFields();
+
+	if (scratchRef.value!.checkFields()) {
+		isResultExpanded.value = true;
+	}
+}
+
 function updateDisplayMode(mode: string | number) {
 	displayMode.value = mode as DisplayMode;
 }
@@ -56,22 +80,40 @@ function handlePageChange(page: number) {
 	currentPage.value = page;
 	window.scrollTo({ top: 0 });
 }
+
+watch(
+	content,
+	(value) => void console.log(value),
+	{ deep: true },
+);
 </script>
 
 <template>
 	<section class="min-h-[calc(100vh-6rem-2rem)] flex flex-col justify-between">
 		<div
-			class="min-h-32 flex items-center transition-all duration-1500 ease-in-out overflow-hidden"
+			class="min-h-32 transition-all duration-1500 ease-in-out overflow-hidden"
 			:class="{
 				'flex-1': !isResultExpanded,
 				'sticky top-28 z-10': isResultExpanded
 			}"
 		>
-			<SimpleSearch
+			<template v-if="!isResultExpanded">
+				<TheScratch
+					ref="scratchRef"
+					v-model="content"
+				/>
+
+				<DSButtonPrimary @click="handleSubmit">
+					{{ $pt("scratch.checkFields") }}
+				</DSButtonPrimary>
+			</template>
+
+			<DSButtonPrimary
+				v-else
 				@click="isResultExpanded = !isResultExpanded"
-				:large="true"
-				class="w-full max-w-xl mx-auto"
-			/>
+			>
+				{{ $pt("scratch.hideResults") }}
+			</DSButtonPrimary>
 		</div>
 
 		<div
