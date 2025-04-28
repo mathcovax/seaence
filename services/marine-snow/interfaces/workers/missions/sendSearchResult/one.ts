@@ -1,4 +1,4 @@
-import { type SingleSendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult/single";
+import { type SendOneSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult/one";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { prismaClient } from "@interfaces/providers/prisma";
@@ -8,26 +8,26 @@ import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { pubmedSender } from "./senders/pubmed";
 
-export type SupportedSingleSendSearchResultMission = SimplifyObjectTopLevel<
+export type SupportedSendOneSearchResultMission = SimplifyObjectTopLevel<
 	(
-		| (EntityToSimpleObject<typeof SingleSendSearchResultMissionEntity>)
+		| (EntityToSimpleObject<typeof SendOneSearchResultMissionEntity>)
 	) & {
-		missionName: "singleSendSearchResult";
+		missionName: "SendOneSearchResult";
 	}
 >;
 
-export type SingleSendSearchResultMissionOutput = SimplifyObjectTopLevel<
+export type SendOneSearchResultMissionOutput = SimplifyObjectTopLevel<
 	{
-		missionName: "singleSendSearchResult";
+		missionName: "SendOneSearchResult";
 		searchResult: EntityToSimpleObject<typeof SearchResultEntity>;
 	}
 >;
 
-function output(data: SingleSendSearchResultMissionOutput) {
+function output(data: SendOneSearchResultMissionOutput) {
 	return postMessage(data);
 }
 
-export async function mission(mission: SupportedSingleSendSearchResultMission) {
+export async function mission(mission: SupportedSendOneSearchResultMission) {
 	const prismaSearchResult = await prismaClient.searchResult.update({
 		where: {
 			id: {
@@ -44,25 +44,25 @@ export async function mission(mission: SupportedSingleSendSearchResultMission) {
 		.with(
 			{ provider: "pubmed" },
 			async(searchResult) => {
-				const success = await pubmedSender(searchResult.reference);
+				const result = await pubmedSender(searchResult.reference);
 
-				if (success instanceof Error) {
+				if (result instanceof Error) {
 					deepLog({
 						searchResult,
-						success,
+						result,
 					});
 				}
 
 				return {
 					...searchResult,
-					failedToSend: success instanceof Error,
+					failedToSend: result instanceof Error,
 				};
 			},
 		)
 		.exhaustive();
 
 	await output({
-		missionName: "singleSendSearchResult",
+		missionName: "SendOneSearchResult",
 		searchResult: resultSearchResult,
 	});
 }

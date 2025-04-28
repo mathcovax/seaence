@@ -3,7 +3,7 @@ import { SendSearchResultMissionStepEntity } from "@business/domains/entities/mi
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
 import { startWorkerMission } from "@interfaces/workers";
 import { type SupportedSendSearchResultMission } from "@interfaces/workers/missions/sendSearchResult";
-import { type SingleSendSearchResultMissionOutput, type SupportedSingleSendSearchResultMission } from "@interfaces/workers/missions/sendSearchResult/single";
+import { type SendOneSearchResultMissionOutput, type SupportedSendOneSearchResultMission } from "@interfaces/workers/missions/sendSearchResult/one";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
 
 abysRepository.default = {
@@ -54,7 +54,7 @@ abysRepository.default = {
 			);
 
 			yield {
-				searchResults: searchResults,
+				searchResults,
 				step: EntityHandler.unsafeMapper(
 					SendSearchResultMissionStepEntity,
 					{
@@ -68,13 +68,13 @@ abysRepository.default = {
 			};
 		}
 	},
-	async startSingleSendSearchResultMission(mission) {
-		const missionData: SupportedSingleSendSearchResultMission = {
+	async startSendOneSearchResultMission(mission) {
+		const missionData: SupportedSendOneSearchResultMission = {
 			...mission.toSimpleObject(),
-			missionName: "singleSendSearchResult",
+			missionName: "SendOneSearchResult",
 		};
 
-		let result: null | SingleSendSearchResultMissionOutput = null;
+		let result: null | SendOneSearchResultMissionOutput = null;
 
 		for await (const { next, stop, output } of startWorkerMission(missionData)) {
 			if (output instanceof Error) {
@@ -85,7 +85,7 @@ abysRepository.default = {
 					{ error: output },
 				);
 			} else if (
-				output.missionName !== "singleSendSearchResult"
+				output.missionName !== "SendOneSearchResult"
 			) {
 				await stop();
 

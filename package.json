@@ -53,6 +53,7 @@
     "docker:marine-snow:mission:searchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:searchResult --",
     "docker:marine-snow:mission:resumeSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:resumeSearchResult --",
     "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
+    "docker:marine-snow:mission:sendOneSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendOneSearchResult --",
 
     "docker:rosetta": "docker compose up rosetta"
   },

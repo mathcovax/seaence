@@ -6,7 +6,7 @@
 
 generator client {
     provider        = "prisma-client-js"
-    output          = "../../../node_modules/@prisma/output"
+    output          = "../../../../node_modules/@prisma/output"
     previewFeatures = ["prismaSchemaFolder"]
 }
 
@@ -22,10 +22,10 @@ enum provider {
 model searchResult {
     reference                     String
     provider                      provider
-    failedToSend                  Boolean                         @default(false)
-    selected                      Boolean                         @default(false)
-    createdAt                     DateTime                        @default(now())
-    SingleSendSearchResultMission SingleSendSearchResultMission[]
+    failedToSend                  Boolean                      @default(false)
+    selected                      Boolean                      @default(false)
+    createdAt                     DateTime                     @default(now())
+    SingleSendSearchResultMission SendOneSearchResultMission[]
 
     @@id([reference, provider], name: "id")
 }
@@ -69,7 +69,7 @@ model SendSearchResultMission {
     sendSearchResultMissionStep SendSearchResultMissionStep?
 }
 
-model SingleSendSearchResultMission {
+model SendOneSearchResultMission {
     id                    String        @id
     status                missionStatus
     searchResult          searchResult  @relation(fields: [searchResultReference, searchResultProvider], references: [reference, provider])

@@ -2,7 +2,7 @@ import { missionRepository, type Mission } from "@business/applications/reposito
 import { missionIdObjecter } from "@business/domains/entities/mission";
 import { PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { SendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult";
-import { SingleSendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult/single";
+import { SendOneSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult/one";
 import { prismaClient } from "@interfaces/providers/prisma";
 import { EntityHandler } from "@vendors/clean";
 import { match, P } from "ts-pattern";
@@ -48,11 +48,11 @@ missionRepository.default = {
 				},
 			)
 			.with(
-				{ entity: P.instanceOf(SingleSendSearchResultMissionEntity) },
+				{ entity: P.instanceOf(SendOneSearchResultMissionEntity) },
 				async({ entity }) => {
 					const { searchResult, ...restSimpleEntity } = entity.toSimpleObject();
 
-					await prismaClient.singleSendSearchResultMission.upsert({
+					await prismaClient.sendOneSearchResultMission.upsert({
 						where: {
 							id: restSimpleEntity.id,
 						},

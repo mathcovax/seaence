@@ -1,15 +1,15 @@
 import { abysRepository } from "@business/applications/repositories/abys";
-import { type SingleSendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult/single";
+import { type SendOneSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult/one";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { StartMissionUsecase } from "../startMission";
 import { missionRepository } from "@business/applications/repositories/mission";
 import { searchResultRepository } from "@business/applications/repositories/searchResult";
 
 interface Input {
-	mission: SingleSendSearchResultMissionEntity;
+	mission: SendOneSearchResultMissionEntity;
 }
 
-export class StartSingleSendSearchResultMissionUsecase extends UsecaseHandler.create({
+export class StartSendOneSearchResultMissionUsecase extends UsecaseHandler.create({
 	abysRepository,
 	missionRepository,
 	searchResultRepository,
@@ -22,20 +22,35 @@ export class StartSingleSendSearchResultMissionUsecase extends UsecaseHandler.cr
 			return startedMission;
 		}
 
-		const result = await this.abysRepository.startSingleSendSearchResultMission(mission);
+		const result = await this.abysRepository.startSendOneSearchResultMission(mission);
 
 		if (result instanceof Error) {
+			const failedMission = await this.missionRepository.save(
+				startedMission.failed(),
+			);
+
 			return new UsecaseError(
 				"error-when-send-search-result",
-				{ error: result },
+				{
+					error: result,
+					failedMission,
+				},
 			);
 		}
 
 		if (result.failedToSend) {
 			await this.searchResultRepository.save(result);
 
-			return this.missionRepository.save(
+			const failedMission = await this.missionRepository.save(
 				startedMission.failed(),
+			);
+
+			return new UsecaseError(
+				"failed-to-send-search-result",
+				{
+					result,
+					failedMission,
+				},
 			);
 		}
 

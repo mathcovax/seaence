@@ -29,13 +29,16 @@ export class StartSendSearchResultMissionUsecase extends UsecaseHandler.create({
 				.startSendSearchResultMission(startedMission)
 		) {
 			if (result instanceof Error) {
-				await this.missionRepository.save(
+				const failedMission = await this.missionRepository.save(
 					startedMission.failed(),
 				);
 
 				return new UsecaseError(
 					"error-when-send-search-result",
-					{ error: result },
+					{
+						error: result,
+						failedMission,
+					},
 				);
 			}
 
@@ -55,13 +58,16 @@ export class StartSendSearchResultMissionUsecase extends UsecaseHandler.create({
 			);
 
 			if (step.faildedSearchResults.length) {
-				await this.missionRepository.save(
+				const failedMission = await this.missionRepository.save(
 					startedMission.failed(),
 				);
 
 				return new UsecaseError(
 					"sending-search-result-failded",
-					{ faildedSearchResults: step.faildedSearchResults },
+					{
+						faildedSearchResults: step.faildedSearchResults,
+						failedMission,
+					},
 				);
 			}
 		}

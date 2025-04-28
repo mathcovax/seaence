@@ -2,7 +2,7 @@ import { EntityHandler, type GetEntityProperties } from "@vendors/clean";
 import { MissionEntity, missionStatusObjecter } from "..";
 import { searchResultObjecter } from "@business/domains/common/searchResult";
 
-export class SingleSendSearchResultMissionEntity extends EntityHandler.create(
+export class SendOneSearchResultMissionEntity extends EntityHandler.create(
 	{
 		searchResult: searchResultObjecter,
 	},
@@ -10,11 +10,11 @@ export class SingleSendSearchResultMissionEntity extends EntityHandler.create(
 ) {
 	public static create(
 		params: Omit<
-			GetEntityProperties<typeof SingleSendSearchResultMissionEntity>,
+			GetEntityProperties<typeof SendOneSearchResultMissionEntity>,
 			"status"
 		>,
 	) {
-		return new SingleSendSearchResultMissionEntity({
+		return new SendOneSearchResultMissionEntity({
 			...params,
 			status: missionStatusObjecter.unsafeCreate("created"),
 		});
