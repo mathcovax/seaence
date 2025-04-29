@@ -3,6 +3,7 @@ import { SendSearchResultMissionStepEntity } from "@business/domains/entities/mi
 import { SearchResultEntity } from "@business/domains/entities/searchResult";
 import { startWorkerMission } from "@interfaces/workers";
 import { type SupportedSendSearchResultMission } from "@interfaces/workers/missions/sendSearchResult";
+import { type SendOneSearchResultMissionOutput, type SupportedSendOneSearchResultMission } from "@interfaces/workers/missions/sendSearchResult/one";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
 
 abysRepository.default = {
@@ -21,24 +22,24 @@ abysRepository.default = {
 			if (output instanceof Error) {
 				await stop();
 
-				return new RepositoryError(
+				yield new RepositoryError(
 					"worker-reject-error",
 					{ error: output },
 				);
+				break;
 			} else if (
 				output.missionName !== "sendSearchResult"
 			) {
 				await stop();
 
-				return new RepositoryError(
+				yield new RepositoryError(
 					"worker-return-wrong-result",
 					{
-						custom: {
-							input: missionData,
-							output: output,
-						},
+						input: missionData,
+						output: output,
 					},
 				);
+				break;
 			}
 
 			next();
@@ -53,7 +54,7 @@ abysRepository.default = {
 			);
 
 			yield {
-				searchResults: searchResults,
+				searchResults,
 				step: EntityHandler.unsafeMapper(
 					SendSearchResultMissionStepEntity,
 					{
@@ -66,5 +67,51 @@ abysRepository.default = {
 				),
 			};
 		}
+	},
+	async startSendOneSearchResultMission(mission) {
+		const missionData: SupportedSendOneSearchResultMission = {
+			...mission.toSimpleObject(),
+			missionName: "SendOneSearchResult",
+		};
+
+		let result: null | SendOneSearchResultMissionOutput = null;
+
+		for await (const { next, stop, output } of startWorkerMission(missionData)) {
+			if (output instanceof Error) {
+				await stop();
+
+				return new RepositoryError(
+					"worker-reject-error",
+					{ error: output },
+				);
+			} else if (
+				output.missionName !== "SendOneSearchResult"
+			) {
+				await stop();
+
+				return new RepositoryError(
+					"worker-return-wrong-result",
+					{
+						input: missionData,
+						output: output,
+					},
+				);
+			}
+
+			next();
+
+			result = output;
+		}
+
+		if (!result) {
+			return new RepositoryError(
+				"missing-result",
+			);
+		}
+
+		return EntityHandler.unsafeMapper(
+			SearchResultEntity,
+			result.searchResult,
+		);
 	},
 };

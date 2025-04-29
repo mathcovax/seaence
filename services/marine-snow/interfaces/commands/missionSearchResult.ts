@@ -2,7 +2,7 @@ import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { providerObjecter } from "@business/domains/common/provider";
 import { program } from "commander";
 import { match } from "ts-pattern";
-import { createSearchResultPubMedMissionUsecase, startSearchResultMissionUsecase } from "@interfaces/usecase";
+import { createPubMedSearchResultMissionUsecase, startSearchResultMissionUsecase } from "@interfaces/usecase";
 import { dateYYYYMMDDIntervalObjecter } from "@vendors/clean";
 
 program
@@ -33,7 +33,7 @@ await match(provider)
 				to: new Date(ramDateTo),
 			});
 
-			const mission = await createSearchResultPubMedMissionUsecase.execute({
+			const mission = await createPubMedSearchResultMissionUsecase.execute({
 				articleType,
 				interval,
 			});

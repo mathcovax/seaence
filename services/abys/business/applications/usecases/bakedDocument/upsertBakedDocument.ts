@@ -29,8 +29,10 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 }) {
 	public async execute(input: Input) {
 		const { nodeSameRawDocument, language } = input;
-		const rawDocuments = await this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
-		const currentBakedDocument = await this.bakedDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
+		const [rawDocuments, currentBakedDocument] = await Promise.all([
+			this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument),
+			this.bakedDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument),
+		]);
 
 		const rawDocumentKey = priority.find((key) => !!rawDocuments[key]);
 
@@ -68,9 +70,8 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 			)
 			.with(
 				{ rawDocument: undefined },
-				(value) => new UsecaseError(
+				() => new UsecaseError(
 					"unmatching-priority-raw-document",
-					{ custom: value },
 				),
 			)
 			.exhaustive();

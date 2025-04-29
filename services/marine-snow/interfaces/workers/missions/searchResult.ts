@@ -3,11 +3,11 @@ import { type SearchResultPubMedMissionStepEntity } from "@business/domains/enti
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { WorkerMissionError } from "@interfaces/workers/workerMissionError";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { postMessage } from "../postMessage";
 import { articleTypeToFilterArticleType } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
+import { TechnicalError } from "@vendors/clean/error";
 
 export type SupportedSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -17,11 +17,18 @@ export type SupportedSearchResultMission = SimplifyObjectTopLevel<
 	}
 >;
 
-interface OutputSearchResultPudMedMission {
+type OutputSearchResultPudMedMission = {
 	type: "pubmed";
 	step: EntityToSimpleObject<typeof SearchResultPubMedMissionStepEntity>;
-	searchResults: EntityToSimpleObject<typeof SearchResultEntity>[];
-}
+} & (
+	{
+		searchResults: EntityToSimpleObject<typeof SearchResultEntity>[];
+		error: undefined;
+	} | {
+		searchResults: undefined;
+		error: Error;
+	}
+);
 
 export type SearchResultMissionOutput = SimplifyObjectTopLevel<
 	(
@@ -50,8 +57,21 @@ export async function mission(mission: SupportedSearchResultMission) {
 					currentDate.setDate(currentDate.getDate() + dateAdvancement)
 				) {
 					for (let page = 0; page <= maxPageIteration; page++) {
+						const step: OutputSearchResultPudMedMission["step"] = {
+							missionId: mission.id,
+							date: new Date(currentDate),
+							page,
+						};
+
 						if (page === maxPageIteration) {
-							throw new WorkerMissionError("Misson exceed page limit", mission);
+							await output({
+								type: "pubmed",
+								missionName: "searchResult",
+								step,
+								error: new TechnicalError("Misson exceed page limit", { mission }),
+								searchResults: undefined,
+							});
+							return;
 						}
 
 						const response = await PubMedAPI.getSearchResult(
@@ -61,16 +81,23 @@ export async function mission(mission: SupportedSearchResultMission) {
 						);
 
 						if (response instanceof Error || response.code !== expectHttpCode) {
-							throw new WorkerMissionError(
-								"Unexpected response",
-								mission,
-								{
-									page,
-									currentDate,
-									articleType,
-									response,
-								},
-							);
+							await output({
+								type: "pubmed",
+								missionName: "searchResult",
+								step,
+								error: new TechnicalError(
+									"unexpected-response",
+									{
+										mission,
+										page,
+										currentDate,
+										articleType,
+										response,
+									},
+								),
+								searchResults: undefined,
+							});
+							return;
 						}
 
 						if (!response.body.esearchresult.idlist.length) {
@@ -80,11 +107,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 						await output({
 							missionName: "searchResult",
 							type: "pubmed",
-							step: {
-								missionId: mission.id,
-								date: new Date(currentDate),
-								page,
-							},
+							step,
 							searchResults: response.body.esearchresult.idlist.map(
 								(id) => ({
 									provider: "pubmed",
@@ -92,6 +115,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 									failedToSend: false,
 								}),
 							),
+							error: undefined,
 						});
 					}
 				}

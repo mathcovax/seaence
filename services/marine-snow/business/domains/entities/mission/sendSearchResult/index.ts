@@ -10,7 +10,7 @@ export class SendSearchResultMissionEntity extends EntityHandler.create(
 	public static create(
 		params: Omit<
 			GetEntityProperties<typeof SendSearchResultMissionEntity>,
-			"name" | "status" | "resultDetails"
+			"status"
 		>,
 	) {
 		return new SendSearchResultMissionEntity({

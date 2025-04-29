@@ -2,7 +2,9 @@ import { missionRepository, type Mission } from "@business/applications/reposito
 import { missionIdObjecter } from "@business/domains/entities/mission";
 import { PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { SendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult";
+import { SendOneSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult/one";
 import { prismaClient } from "@interfaces/providers/prisma";
+import { EntityHandler } from "@vendors/clean";
 import { match, P } from "ts-pattern";
 import { uuidv7 } from "uuidv7";
 
@@ -45,6 +47,28 @@ missionRepository.default = {
 					});
 				},
 			)
+			.with(
+				{ entity: P.instanceOf(SendOneSearchResultMissionEntity) },
+				async({ entity }) => {
+					const { searchResult, ...restSimpleEntity } = entity.toSimpleObject();
+
+					await prismaClient.sendOneSearchResultMission.upsert({
+						where: {
+							id: restSimpleEntity.id,
+						},
+						create: {
+							...restSimpleEntity,
+							searchResultReference: searchResult.reference,
+							searchResultProvider: searchResult.provider,
+						},
+						update: {
+							...restSimpleEntity,
+							searchResultReference: searchResult.reference,
+							searchResultProvider: searchResult.provider,
+						},
+					});
+				},
+			)
 			.exhaustive();
 
 		return entity;
@@ -52,5 +76,28 @@ missionRepository.default = {
 
 	generateMissionId() {
 		return missionIdObjecter.unsafeCreate(uuidv7());
+	},
+
+	async findPubMedSearchResultMission(id) {
+		return prismaClient.searchResultPubMedMission
+			.findFirst({
+				where: {
+					id: id.value,
+				},
+			})
+			.then(
+				(prismaMission) => prismaMission && EntityHandler.unsafeMapper(
+					PubMedSearchResultMissionEntity,
+					{
+						id: prismaMission.id,
+						articleType: prismaMission.articleType,
+						interval: {
+							from: prismaMission.searchDateFrom,
+							to: prismaMission.searchDateTo,
+						},
+						status: prismaMission.status,
+					},
+				),
+			);
 	},
 };

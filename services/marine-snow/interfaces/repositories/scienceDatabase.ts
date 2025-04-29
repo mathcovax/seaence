@@ -6,22 +6,38 @@ import { match, P } from "ts-pattern";
 import { SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
 import { PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { startWorkerMission } from "@interfaces/workers";
+import { TechnicalError } from "@vendors/clean/error";
+import { prismaClient } from "@interfaces/providers/prisma";
 
 scienceDatabaseRepository.default = {
 	save() {
-		throw new RepositoryError("Unsupport save method");
+		throw new TechnicalError("Unsupport save method");
 	},
 
 	async *startSearchResultMission(mission) {
 		const missionData: SupportedSearchResultMission
-			= match({ mission: mission as SearchResultMission })
+			= await match({ mission: mission as SearchResultMission })
 				.with(
 					{ mission: P.instanceOf(PubMedSearchResultMissionEntity) },
-					({ mission }) => ({
-						provider: "pubmed",
-						missionName: "searchResult",
-						...mission.toSimpleObject(),
-					}) as const,
+					async({ mission }) => {
+						const step = await prismaClient.searchResultPubMedMissionStep.findFirst({
+							where: { missionId: mission.id.value },
+						});
+
+						const simpleEntity = mission.toSimpleObject();
+
+						return {
+							provider: "pubmed",
+							missionName: "searchResult",
+							...simpleEntity,
+							interval: step
+								? {
+									from: step.date,
+									to: simpleEntity.interval.to,
+								}
+								: simpleEntity.interval,
+						} as const;
+					},
 				)
 				.exhaustive();
 
@@ -29,7 +45,7 @@ scienceDatabaseRepository.default = {
 			if (output instanceof Error) {
 				await stop();
 
-				return new RepositoryError(
+				throw new RepositoryError(
 					"worker-reject-error",
 					{ error: output },
 				);
@@ -38,13 +54,11 @@ scienceDatabaseRepository.default = {
 			) {
 				await stop();
 
-				return new RepositoryError(
+				throw new RepositoryError(
 					"worker-return-wrong-result",
 					{
-						custom: {
-							input: missionData,
-							output: output,
-						},
+						input: missionData,
+						output: output,
 					},
 				);
 			}
@@ -54,18 +68,29 @@ scienceDatabaseRepository.default = {
 			yield match(output)
 				.with(
 					{ type: "pubmed" },
-					({ step, searchResults }) => ({
-						currentStep: EntityHandler.unsafeMapper(
+					({ step, searchResults, error }) => {
+						const currentStep = EntityHandler.unsafeMapper(
 							SearchResultPubMedMissionStepEntity,
 							step,
-						),
-						searchResults: searchResults.map(
-							(searchResult) => EntityHandler.unsafeMapper(
-								SearchResultEntity,
-								searchResult,
-							),
-						),
-					}),
+						);
+
+						return error
+							? {
+								currentStep,
+								error: new RepositoryError("something-wrong-during-search-result-mission.", { error }),
+								searchResults: undefined,
+							}
+							: {
+								currentStep,
+								searchResults: searchResults?.map(
+									(searchResult) => EntityHandler.unsafeMapper(
+										SearchResultEntity,
+										searchResult,
+									),
+								),
+								error: undefined,
+							};
+					},
 				)
 				.exhaustive();
 		}

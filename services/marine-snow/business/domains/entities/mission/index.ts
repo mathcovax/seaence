@@ -8,6 +8,7 @@ export type MissionId = GetValueObject<typeof missionIdObjecter>;
 
 export const missionStatusEnum = createEnum([
 	"created",
+	"resume",
 	"inProgress",
 	"failed",
 	"success",
@@ -38,6 +39,12 @@ export class MissionEntity extends EntityHandler.create({
 	public success() {
 		return this.update({
 			status: missionStatusObjecter.unsafeCreate("success"),
+		});
+	}
+
+	public resume() {
+		return this.update({
+			status: missionStatusObjecter.unsafeCreate("resume"),
 		});
 	}
 }

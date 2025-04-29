@@ -4,16 +4,23 @@ import { type SearchResultMissionOutput, type SupportedSearchResultMission } fro
 import { type SendSearchResultMissionOutput, type SupportedSendSearchResultMission } from "./missions/sendSearchResult";
 import { postMessage } from "./postMessage";
 import { deepLog } from "@interfaces/utils/deepLog";
+import { type SupportedSendOneSearchResultMission, type SendOneSearchResultMissionOutput } from "./missions/sendSearchResult/one";
 
-process.on("uncaughtException", deepLog);
+process.on("uncaughtException", async(error) => {
+	deepLog(error);
+
+	await postMessage("finish");
+});
 
 export type SupportedWorkerMission =
 	| SupportedSearchResultMission
-	| SupportedSendSearchResultMission;
+	| SupportedSendSearchResultMission
+	| SupportedSendOneSearchResultMission;
 
 export type OutputWorkerMission =
 	| SearchResultMissionOutput
 	| SendSearchResultMissionOutput
+	| SendOneSearchResultMissionOutput
 	| "finish";
 
 const currentData: SupportedWorkerMission = workerData;
@@ -27,6 +34,11 @@ await match(currentData)
 	.with(
 		{ missionName: "sendSearchResult" },
 		(data) => import("./missions/sendSearchResult")
+			.then(({ mission }) => mission(data)),
+	)
+	.with(
+		{ missionName: "SendOneSearchResult" },
+		(data) => import("./missions/sendSearchResult/one")
 			.then(({ mission }) => mission(data)),
 	)
 	.exhaustive();

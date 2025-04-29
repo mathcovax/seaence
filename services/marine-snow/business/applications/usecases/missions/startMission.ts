@@ -14,8 +14,11 @@ export class StartMissionUsecase extends UsecaseHandler.create({
 	public execute<
 		GenericMission extends MissionEntity,
 	>({ mission }: Input<GenericMission>) {
-		if (mission.status.value !== "created") {
-			return new UsecaseError("wrong-mission-status");
+		if (mission.status.value !== "created" && mission.status.value !== "resume") {
+			return new UsecaseError("wrong-mission-status", {
+				mission,
+				expect: ["created", "resume"],
+			});
 		}
 
 		const startedMission = mission.start();

@@ -1,13 +1,14 @@
 import { missionRepository } from "@business/applications/repositories/mission";
 import { searchResultRepository } from "@business/applications/repositories/searchResult";
 import { missionStepRepository } from "@business/applications/repositories/missionStep";
-import { scienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
+import { scienceDatabaseRepository, type SearchResultMission } from "@business/applications/repositories/scienceDatabase";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { StartMissionUsecase } from "../startMission";
-import { type PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 
-interface Input {
-	mission: PubMedSearchResultMissionEntity;
+interface Input<
+	GenericMission extends SearchResultMission,
+> {
+	mission: GenericMission;
 }
 
 export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
@@ -17,7 +18,9 @@ export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
 	missionRepository,
 	startMission: StartMissionUsecase,
 }) {
-	public async execute({ mission }: Input) {
+	public async execute<
+		GenericMission extends SearchResultMission,
+	>({ mission }: Input<GenericMission>) {
 		const startedMission = await this.startMission({ mission });
 
 		if (startedMission instanceof Error) {
@@ -28,20 +31,25 @@ export class StartSearchResultMissionUsecase extends UsecaseHandler.create({
 			const result of this.scienceDatabaseRepository
 				.startSearchResultMission(startedMission)
 		) {
-			if (result instanceof Error) {
-				void await this.missionRepository.save(
+			if ("currentStep" in result) {
+				await this.missionStepRepository.save(result.currentStep);
+			}
+
+			if (result instanceof Error || result.error) {
+				const failedMission = await this.missionRepository.save(
 					startedMission.failed(),
 				);
 
-				return new UsecaseError("error-when-fetching-search-result", { error: result });
+				return new UsecaseError(
+					"error-when-fetching-search-result",
+					{
+						error: result instanceof Error ? result : result.error,
+						failedMission,
+					},
+				);
 			}
 
-			const {
-				currentStep,
-				searchResults,
-			} = result;
-
-			await this.missionStepRepository.save(currentStep);
+			const { searchResults } = result;
 
 			await Promise.all(
 				searchResults.map(
