@@ -1,16 +1,30 @@
-import { documentSchema } from "@interfaces/http/schemas/document";
-import { elastic } from "@interfaces/providers/elastic";
+import { entrypointDocumentSchema } from "@interfaces/http/schemas/document";
+import { languageEnum } from "@interfaces/providers/elastic/common/language";
+import { enUsBackedDocument, frFrBackedDocument } from "@interfaces/providers/elastic/indexes/document";
+import { match } from "ts-pattern";
 
 useBuilder()
-	.createRoute("PUT", "/document")
+	.createRoute("PUT", "/document/{language}")
 	.extract({
-		body: documentSchema,
+		params: {
+			language: zod.enum(languageEnum.toTuple()),
+		},
+		body: entrypointDocumentSchema,
 	})
 	.handler(
 		async(pickup) => {
-			const { language, ...newDocument } = pickup("body");
+			const { body: document, language } = pickup(["body", "language"]);
 
-			await elastic.upsertOne(newDocument, language);
+			await match(language)
+				.with(
+					"fr-Fr",
+					() => frFrBackedDocument.upsertOne(document),
+				)
+				.with(
+					"en-US",
+					() => enUsBackedDocument.upsertOne(document),
+				)
+				.exhaustive();
 
 			return new OkHttpResponse("document.upsert");
 		},

@@ -1,71 +1,53 @@
-import { Client, type estypes } from "@elastic/elasticsearch";
+import { Client } from "@elastic/elasticsearch";
 import { envs } from "@interfaces/envs";
-import { type ElasticDocument, elasticDocumentMappingSchema, elasticDocumentSettingsSchema } from "./entities/document";
-import { match } from "ts-pattern";
+import { type ElasticDocument } from "./indexes";
+import { enUsBackedDocument, frFrBackedDocument } from "./indexes/document";
 
-type Language = "fr-Fr" | "en-US";
+export class Elastic {
+	public static elasticClient: Client;
 
-const db = new Client({
-	node: envs.ES_BASE_URL,
-});
+	public static elasticDocuments: ElasticDocument[];
 
-const IndexNames = ["document_fr-Fr", "document_en-US"] as const;
+	public static async register(elasticDocument: ElasticDocument) {
+		if (this.elasticDocuments.includes(elasticDocument)) {
+			return;
+		}
 
-async function configureIndex(IndexName: string) {
-	const exists = await db.indices.exists({ index: IndexName });
+		this.elasticDocuments.push(elasticDocument);
+		elasticDocument.elasticClient = this.elasticClient;
 
-	return match({ exists })
-		.with({ exists: false }, async() => {
-			await db.indices.create({
-				index: IndexName,
-				mappings: elasticDocumentMappingSchema,
-				settings: elasticDocumentSettingsSchema,
+		const exists = await this.elasticClient.indices.exists({ index: elasticDocument.name });
+
+		if (exists) {
+			await this.elasticClient.indices.putMapping({
+				index: elasticDocument.name,
+				properties: elasticDocument.schema,
 			});
-			console.log(`L'index ${IndexName} a été créée.`);
-		})
-		.with({ exists: true }, async() => {
-			await db.indices.close({ index: IndexName });
-			await db.indices.putMapping({
-				index: IndexName,
-				properties: elasticDocumentMappingSchema.properties,
+			await this.elasticClient.indices.putSettings({
+				index: elasticDocument.name,
+				settings: elasticDocument.settings,
 			});
-			await db.indices.putSettings({
-				index: IndexName,
-				settings: {
-					analysis: elasticDocumentSettingsSchema.analysis,
-				},
+		} else {
+			await this.elasticClient.indices.create({
+				index: elasticDocument.name,
+				mappings: elasticDocument.schema,
+				settings: elasticDocument.settings,
 			});
-			await db.indices.open({ index: IndexName });
-			console.log(`L'index ${IndexName} a été mise à jour.`);
-		})
-		.exhaustive();
+		}
+
+		await this.elasticClient.indices.open({ index: elasticDocument.name });
+	}
+
+	static {
+		this.elasticClient = new Client({
+			node: envs.ES_BASE_URL,
+		});
+	}
 }
 
 if (envs.DB_CONNECTION) {
-	await Promise.all(IndexNames.map(configureIndex));
+	await Promise.all([
+		Elastic.register(enUsBackedDocument),
+		Elastic.register(frFrBackedDocument),
+	]);
 }
-
-export const elastic = {
-	db,
-	async upsertOne(document: ElasticDocument, language: Language) {
-		return db.index({
-			refresh: true,
-			index: `document_${language}`,
-			document,
-		});
-	},
-	async findOne(query: estypes.QueryDslQueryContainer, language: Language) {
-		return db.search<ElasticDocument>({
-			index: `document_${language}`,
-			query,
-		});
-	},
-	async findByInterval(query: estypes.QueryDslQueryContainer, language: Language, from: number, size: number) {
-		return db.search<ElasticDocument>({
-			index: `document_${language}`,
-			query,
-			size,
-			from,
-		});
-	},
-};

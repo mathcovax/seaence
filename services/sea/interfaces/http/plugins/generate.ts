@@ -1,4 +1,4 @@
-import { abstractSectionNameEnumSchema } from "@interfaces/http/schemas/document";
 import "@duplojs/types-codegen";
+import { abstractSectionNameEnumSchema } from "../schemas/document";
 
 abstractSectionNameEnumSchema._identifier = "AbstractSectionName";

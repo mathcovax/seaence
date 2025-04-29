@@ -11,35 +11,39 @@ export { AbstractSectionName };
 
 type CodegenRoutes = ({
     method: "PUT";
-    path: "/document";
+    path: "/document/{language}";
     body: {
+        abysBakedDocumentId: string;
         language: "fr-Fr" | "en-US";
-        AbysBakedDocumentId: string;
         title: string;
-        abstract?: string | undefined;
+        abstract: string | null;
         abstractDetails: Record<AbstractSectionName, {
             value: string;
-        } | undefined>;
+        } | undefined> | null;
         ressources: {
             pubmed?: {
-                name?: string | undefined;
-                url?: string | undefined;
+                name: string;
+                url: string;
             } | undefined;
         };
-        keywords?: {
-            pound: number;
+        keywords: {
             value: string;
-        }[] | undefined;
-        webPublishDate: {
+        }[];
+        webPublishDate: Date | null;
+        webPublishSplitDate: {
             day: number | null;
             month: number | null;
             year: number;
-        };
-        journalPublishDate: {
+        } | null;
+        journalPublishDate: Date | null;
+        journalPublishSplitDate: {
             day: number | null;
             month: number | null;
             year: number;
-        };
+        } | null;
+    };
+    params: {
+        language: "fr-Fr" | "en-US";
     };
     response: {
         code: 200;

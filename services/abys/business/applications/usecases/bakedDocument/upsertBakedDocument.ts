@@ -67,13 +67,7 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 						)
 						: null,
 					journalPublishDate: rawDocument.journalPublishDate,
-					webPublishDate: rawDocument.webPublishDate
-						? flexibleDateObjecter.unsafeCreate({
-							day: rawDocument.webPublishDate.value.getDay(),
-							month: rawDocument.webPublishDate.value.getMonth(),
-							year: rawDocument.webPublishDate.value.getFullYear(),
-						})
-						: null,
+					webPublishDate: rawDocument.webPublishDate,
 				}),
 			)
 			.with(
