@@ -14,7 +14,6 @@ type CodegenRoutes = ({
     path: "/document/{language}";
     body: {
         abysBakedDocumentId: string;
-        language: "fr-Fr" | "en-US";
         title: string;
         abstract: string | null;
         abstractDetails: Record<AbstractSectionName, {

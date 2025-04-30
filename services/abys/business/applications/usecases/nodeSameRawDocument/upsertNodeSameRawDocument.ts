@@ -24,22 +24,22 @@ export class UpsertNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 			)
 			.exhaustive();
 
-		const nodeSameRawDocument = await this
+		const findedNodeSameRawDocument = await this
 			.nodeSameRawDocumentRepository
 			.findNodeSameRawDocumentbyRawDocument(
 				rawDocument,
 			);
 
-		const result = match({ nodeSameRawDocument })
+		const nodeSameRawDocument = match({ findedNodeSameRawDocument })
 			.with(
-				{ nodeSameRawDocument: P.nonNullable },
-				({ nodeSameRawDocument }) => nodeSameRawDocument.setValueRawDocumentWrapper(
+				{ findedNodeSameRawDocument: P.nonNullable },
+				({ findedNodeSameRawDocument }) => findedNodeSameRawDocument.setValueRawDocumentWrapper(
 					provider,
 					rawDocument.resourceUrl,
 				),
 			)
 			.with(
-				{ nodeSameRawDocument: null },
+				{ findedNodeSameRawDocument: null },
 				() => NodeSameRawDocumentEntity.create({
 					id: this.nodeSameRawDocumentRepository.generateNodeSameRawDocumentId(),
 					uniqueField: rawDocument.uniqueArticleField,
@@ -50,6 +50,6 @@ export class UpsertNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 			)
 			.exhaustive();
 
-		await this.nodeSameRawDocumentRepository.save(result);
+		await this.nodeSameRawDocumentRepository.save(nodeSameRawDocument);
 	}
 }

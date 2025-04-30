@@ -10,13 +10,14 @@ if (envs.DB_CONNECTION) {
 	await client.connect();
 }
 
-const mongodb = client.db(envs.MONGO_DB);
-const rawDocumentCollection = mongodb.collection<MongoRawDocument>("rawDocument");
-const nodeNameRawDocumentCollection = mongodb.collection<MongoNodeSameRawDocument>("nodeSameRawDocument");
-const bakedDocumentCollection = mongodb.collection<MongoBakedDocument>("bakedDocument");
+const database = client.db(envs.MONGO_DB);
+const rawDocumentCollection = database.collection<MongoRawDocument>("rawDocument");
+const nodeNameRawDocumentCollection = database.collection<MongoNodeSameRawDocument>("nodeSameRawDocument");
+const bakedDocumentCollection = database.collection<MongoBakedDocument>("bakedDocument");
 
 export const mongo = {
-	mongodb,
+	client,
+	database,
 	rawDocumentCollection,
 	nodeNameRawDocumentCollection,
 	bakedDocumentCollection,
