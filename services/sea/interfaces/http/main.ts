@@ -2,12 +2,14 @@ import "@duplojs/node";
 import "@duplojs/node/globals";
 import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";
 import { envs } from "../envs";
+import { debug } from "console";
 import "./routes";
 
 const duplo = new Duplo({
 	environment: envs.ENVIROMENT,
 	host: envs.HOST,
 	port: envs.PORT,
+	plugins: [debug],
 });
 
 duplo.register(
@@ -16,5 +18,5 @@ duplo.register(
 );
 
 await duplo.launch(
-	() => void console.log("Marine Snow service is running !"),
+	() => void console.log("Sea service is running !"),
 );

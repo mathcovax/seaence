@@ -1,7 +1,7 @@
 import { createEnum, type GetEnumValue } from "@vendors/clean";
 
 export const languageEnum = createEnum([
-	"fr-Fr",
+	"fr-FR",
 	"en-US",
 ]);
 

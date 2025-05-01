@@ -10,6 +10,7 @@
     "test:types": "tsc",
 
     "cookNodeSameRawDocument": "tsx interfaces/commands/cookNodeSameRawDocument.ts",
+    "exportBakedDocument": "tsx interfaces/commands/exportBakedDocument.ts",
 
     "postinstall": "npm run duplo:generate"
   },
@@ -26,7 +27,7 @@
     "uuidv7": "1.0.2"
   },
   "devDependencies": {
-    "@duplojs/types-codegen": "1.0.1",
+    "@duplojs/types-codegen": "1.1.2",
     "@types/node": "22.13.10",
     "tsx": "4.19.3",
     "typescript": "5.8.2"

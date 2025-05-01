@@ -1,5 +1,5 @@
 import { providerObjecter } from "@business/domains/common/provider";
-import { createEnum, dateYYYYMMDDObjecter, EntityHandler, flexibleDateObjecter, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, createEnum, dateYYYYMMDDObjecter, EntityHandler, flexibleDateObjecter, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { nodeSameRawDocumentIdObjecter } from "../nodeSameRawDocument";
 import { abstractSectionNameObjecter } from "@business/domains/common/abtrasctSection";
 
@@ -20,7 +20,7 @@ export const bakedDocumentAbstractDetailsObjecter = zod
 		abstractSectionNameObjecter.zodSchema,
 		zod.object({
 			value: zod.string(),
-		}).passthrough().optional(),
+		}).optional(),
 	)
 	.createValueObjecter("BakedDocumentAbstractDetails");
 
@@ -40,7 +40,6 @@ export type BakedDocumentRessources = GetValueObject<typeof bakedDocumentRessour
 
 export const bakedDocumentKeywordObjecter = zod
 	.object({
-		pound: zod.number().positive(),
 		value: zod.string(),
 	})
 	.createValueObjecter("bakedDocumentKeyword");
@@ -75,8 +74,22 @@ export class BakedDocumentEntity extends EntityHandler.create({
 	keywords: bakedDocumentKeywordObjecter.array(),
 	webPublishDate: dateYYYYMMDDObjecter.nullable(),
 	journalPublishDate: flexibleDateObjecter.nullable(),
+	lastUpdate: commonDateObjecter,
+	lastExportOnSea: commonDateObjecter.nullable(),
 }) {
-	public static create(params: GetEntityProperties<typeof BakedDocumentEntity>) {
-		return new BakedDocumentEntity(params);
+	public static create(
+		params: Omit<GetEntityProperties<typeof BakedDocumentEntity>, "lastUpdate" | "lastExportOnSea">,
+	) {
+		return new BakedDocumentEntity({
+			...params,
+			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
+			lastExportOnSea: null,
+		});
+	}
+
+	public exportToSea() {
+		return this.update({
+			lastExportOnSea: commonDateObjecter.unsafeCreate(new Date()),
+		});
 	}
 }

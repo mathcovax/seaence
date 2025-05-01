@@ -182,6 +182,7 @@ declare module 'vue' {
     readonly useLoader: UnwrapRef<typeof import('./src/composables/useLoader')['useLoader']>
     readonly useLocalStorageItem: UnwrapRef<typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
+    readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
@@ -192,5 +193,6 @@ declare module 'vue' {
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>
     readonly watchSyncEffect: UnwrapRef<typeof import('vue')['watchSyncEffect']>
+    readonly zod: UnwrapRef<typeof import('./src/lib/zod/index')['zod']>
   }
 }

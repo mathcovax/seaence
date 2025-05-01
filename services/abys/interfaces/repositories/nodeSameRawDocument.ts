@@ -5,9 +5,7 @@ import { nodeSameRawDocumentRepository } from "@business/applications/repositori
 import { NodeSameRawDocumentEntity, nodeSameRawDocumentIdObjecter } from "@business/domains/entities/nodeSameRawDocument";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { EntityHandler } from "@vendors/clean";
-import { DateTimeClient } from "@interfaces/providers/datetime";
-
-const lastCooksDate = new DateTimeClient("lastCooks");
+import { KeyDate } from "@interfaces/providers/keyDate";
 
 nodeSameRawDocumentRepository.default = {
 	generateNodeSameRawDocumentId() {
@@ -70,8 +68,9 @@ nodeSameRawDocumentRepository.default = {
 	async *findUpdatedNode() {
 		const startPage = 0;
 		const quantityPerPage = 10;
-		const lastCooks = lastCooksDate.getLastTime();
-		lastCooksDate.updateLastTime();
+
+		const lastCook = await KeyDate.get("lastCookNodeSameRawDocument");
+		await KeyDate.set("lastCookNodeSameRawDocument");
 
 		for (let page = startPage; true; page++) {
 			const nodeNameRawDocuments = await mongo
@@ -82,7 +81,7 @@ nodeSameRawDocumentRepository.default = {
 							{ lastCooked: null },
 							{
 								lastUpdate: {
-									$gt: lastCooks,
+									$gt: lastCook,
 								},
 							},
 						],

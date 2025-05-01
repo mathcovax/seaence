@@ -6,6 +6,7 @@ services:
     command: npm -w services/abys run duplo:dev
     depends_on:
       - abys-mongo
+      - abys-mongo-viewer
   abys-mongo:
     extends:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}
@@ -13,5 +14,17 @@ services:
     env_file: ${INCLUDE_PATH}/abys/.env
     volumes:
       - "abys-mongo-data:/data/db"
+    attach: false
+  abys-mongo-viewer:
+    image: mongo-express
+    ports:
+      - 55553:1506
+    env_file: ${INCLUDE_PATH}/abys/.env
+    environment:
+      ME_CONFIG_MONGODB_URL: ${MONGO_DATABASE_URL}
+    depends_on:
+      - abys-mongo
+    attach: false
+
 volumes:
   abys-mongo-data:

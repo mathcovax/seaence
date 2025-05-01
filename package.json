@@ -41,6 +41,7 @@
 
     "docker:abys": "docker compose up abys",
     "docker:abys:cookNodeSameRawDocument": "docker compose exec abys npm -w services/abys run cookNodeSameRawDocument --",
+    "docker:abys:exportBakedDocument": "docker compose exec abys npm -w services/abys run exportBakedDocument --",
 
     "docker:harbor": "docker compose up harbor",
     "docker:harbor:prisma:make-migration": "docker compose exec harbor npm -w services/harbor run prisma:make-migration",

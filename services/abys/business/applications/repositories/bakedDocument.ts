@@ -19,6 +19,7 @@ export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEnt
 		language: BakedDocumentLanguage,
 	): Promise<BakedDocumentAbstractDetails>;
 	findByNodeSameRawDocument(nodeSameRawDocument: NodeSameRawDocumentEntity): Promise<BakedDocumentEntity | null>;
+	findUpdatedDocuments(): AsyncGenerator<BakedDocumentEntity>;
 }
 
 export const bakedDocumentRepository = createRepositoryHandler<BakedDocumentRepository>();

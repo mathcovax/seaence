@@ -18,9 +18,9 @@ export const entrypointDocumentSchema = zod
 			abstractSectionNameEnumSchema,
 			zod.object({
 				value: zod.string(),
-			}).passthrough().optional(),
+			}).optional(),
 		).nullable(),
-		ressources: zod.object({
+		resources: zod.object({
 			pubmed: zod.object({
 				name: zod.string(),
 				url: zod.string(),

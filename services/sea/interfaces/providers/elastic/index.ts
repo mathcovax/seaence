@@ -1,12 +1,12 @@
 import { Client } from "@elastic/elasticsearch";
 import { envs } from "@interfaces/envs";
 import { type ElasticDocument } from "./indexes";
-import { enUsBackedDocument, frFrBackedDocument } from "./indexes/document";
+import { enUsDocument, frFrDocument } from "./indexes/document";
 
 export class Elastic {
 	public static elasticClient: Client;
 
-	public static elasticDocuments: ElasticDocument[];
+	public static elasticDocuments: ElasticDocument[] = [];
 
 	public static async register(elasticDocument: ElasticDocument) {
 		if (this.elasticDocuments.includes(elasticDocument)) {
@@ -47,7 +47,12 @@ export class Elastic {
 
 if (envs.DB_CONNECTION) {
 	await Promise.all([
-		Elastic.register(enUsBackedDocument),
-		Elastic.register(frFrBackedDocument),
+		Elastic.register(enUsDocument),
+		Elastic.register(frFrDocument),
 	]);
 }
+
+export const elastic = {
+	enUsDocument,
+	frFrDocument,
+};

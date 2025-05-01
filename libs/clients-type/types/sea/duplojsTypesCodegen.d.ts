@@ -16,10 +16,10 @@ type CodegenRoutes = ({
         abysBakedDocumentId: string;
         title: string;
         abstract: string | null;
-        abstractDetails: Record<AbstractSectionName, {
+        abstractDetails: Partial<Record<AbstractSectionName, {
             value: string;
-        } | undefined> | null;
-        ressources: {
+        } | undefined>> | null;
+        resources: {
             pubmed?: {
                 name: string;
                 url: string;
@@ -42,7 +42,7 @@ type CodegenRoutes = ({
         } | null;
     };
     params: {
-        language: "fr-Fr" | "en-US";
+        language: "fr-FR" | "en-US";
     };
     response: {
         code: 200;

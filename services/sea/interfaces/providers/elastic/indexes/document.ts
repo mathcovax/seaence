@@ -36,7 +36,7 @@ export const elasticDocumentMappingSchema = {
 				{} as Record<AbstractSectionName, estypes.MappingProperty>,
 			),
 	},
-	ressources: {
+	resources: {
 		properties: providerEnum
 			.toTuple()
 			.reduce(
@@ -127,7 +127,7 @@ export interface Document {
 			{ value: string } | undefined
 		>
 	> | null;
-	ressources: Partial<
+	resources: Partial<
 		Record<
 			Provider, {
 				name: string;
@@ -163,19 +163,19 @@ type _Check2 = ExpectType<
 >;
 
 type _Check3 = ExpectType<
-	keyof Document["ressources"],
-	keyof typeof elasticDocumentMappingSchema["ressources"]["properties"],
+	keyof Document["resources"],
+	keyof typeof elasticDocumentMappingSchema["resources"]["properties"],
 	"strict"
 >;
 
-export const enUsBackedDocument = new ElasticDocument<Document>(
+export const enUsDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["en-US"]}`,
 	elasticDocumentSettingsSchema,
 	elasticDocumentMappingSchema,
 );
 
-export const frFrBackedDocument = new ElasticDocument<Document>(
-	`document_${languageEnum["fr-Fr"]}`,
+export const frFrDocument = new ElasticDocument<Document>(
+	`document_${languageEnum["fr-FR"]}`,
 	elasticDocumentSettingsSchema,
 	elasticDocumentMappingSchema,
 );

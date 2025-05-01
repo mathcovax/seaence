@@ -4,6 +4,7 @@ import { type BakedDocumentAbstractDetails, bakedDocumentAbstractObjecter, Baked
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
 import { RosettaAPI, type SupportedLanguage } from "@interfaces/providers/rosetta";
+import { KeyDate } from "@interfaces/providers/keyDate";
 
 const languageMapper: Record<BakedDocumentLanguage["value"], SupportedLanguage> = {
 	"fr-FR": "fr",
@@ -65,7 +66,7 @@ bakedDocumentRepository.default = {
 	async makeBakedKeywordsWithKeywordPubmed(rawKeywordPubmeds, language) {
 		const rawKeywordList = rawKeywordPubmeds
 			.map((rawKeywordPubmed) => rawKeywordPubmed.value.value)
-			.join(",");
+			.join("\n");
 
 		const listKeywordProcesses = await RosettaAPI
 			.translateText(
@@ -73,8 +74,7 @@ bakedDocumentRepository.default = {
 				languageMapper[language.value],
 			)
 			.then(
-				(result) => result
-					.split(",").map((value) => value.trim()),
+				(result) => result.split("\n").map((value) => value.trim()),
 			)
 			.then(
 				(result) => new Set(result).values().toArray(),
@@ -82,7 +82,6 @@ bakedDocumentRepository.default = {
 
 		return listKeywordProcesses.map((keyword) => bakedDocumentKeywordObjecter.unsafeCreate({
 			value: keyword,
-			pound: 1,
 		}));
 	},
 	async makeBakedAbstractWithRawAbstract(rawAbstract, language) {
@@ -101,7 +100,7 @@ bakedDocumentRepository.default = {
 				const acc = await promiseAcc;
 				const { name, content } = value;
 
-				const contentProcess = RosettaAPI.translateText(
+				const contentProcess = await RosettaAPI.translateText(
 					content,
 					languageMapper[language.value],
 				);
@@ -115,5 +114,43 @@ bakedDocumentRepository.default = {
 		);
 
 		return bakedDocumentAbstractDetailsObjecter.unsafeCreate(rawAbstractDetailsProcesses);
+	},
+	async *findUpdatedDocuments() {
+		const startPage = 0;
+		const quantityPerPage = 10;
+
+		const lastSend = await KeyDate.get("lastSendBakedDocument");
+		await KeyDate.set("lastSendBakedDocument");
+
+		for (let page = startPage; true; page++) {
+			const bakedDocuments = await mongo
+				.bakedDocumentCollection
+				.find(
+					{
+						$or: [
+							{
+								lastUpdate: {
+									$gt: lastSend,
+								},
+							},
+						],
+					},
+					{ projection: { _id: 0 } },
+				)
+				.skip(page * quantityPerPage)
+				.limit(quantityPerPage)
+				.toArray();
+
+			if (!bakedDocuments.length) {
+				break;
+			}
+
+			for (const nodeNameRawDocument of bakedDocuments) {
+				yield EntityHandler.unsafeMapper(
+					BakedDocumentEntity,
+					nodeNameRawDocument,
+				);
+			}
+		}
 	},
 };

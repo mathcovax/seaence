@@ -1,6 +1,6 @@
 import { entrypointDocumentSchema } from "@interfaces/http/schemas/document";
+import { elastic } from "@interfaces/providers/elastic";
 import { languageEnum } from "@interfaces/providers/elastic/common/language";
-import { enUsBackedDocument, frFrBackedDocument } from "@interfaces/providers/elastic/indexes/document";
 import { match } from "ts-pattern";
 
 useBuilder()
@@ -17,12 +17,12 @@ useBuilder()
 
 			await match(language)
 				.with(
-					"fr-Fr",
-					() => frFrBackedDocument.upsertOne(document),
+					"fr-FR",
+					() => elastic.frFrDocument.upsertOne(document),
 				)
 				.with(
 					"en-US",
-					() => enUsBackedDocument.upsertOne(document),
+					() => elastic.enUsDocument.upsertOne(document),
 				)
 				.exhaustive();
 
