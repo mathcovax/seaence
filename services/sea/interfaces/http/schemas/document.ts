@@ -1,4 +1,5 @@
-import { abstractSectionNameEnum } from "@interfaces/providers/elastic/common/abstractSection";
+import { articleTypeEnum } from "@interfaces/providers/elastic/common/articleType";
+import { providerEnum } from "@interfaces/providers/elastic/common/provider";
 
 export const splitDateSchema = zod
 	.object({
@@ -7,25 +8,28 @@ export const splitDateSchema = zod
 		year: zod.number(),
 	});
 
-export const abstractSectionNameEnumSchema = zod.enum(abstractSectionNameEnum.toTuple());
+export const articleTypeSchema = zod.enum(articleTypeEnum.toTuple());
 
 export const entrypointDocumentSchema = zod
 	.object({
 		abysBakedDocumentId: zod.string(),
 		title: zod.string(),
+		articleTypes: articleTypeSchema.array(),
+		authors: zod.object({
+			name: zod.string(),
+			affiliations: zod.string().array().nullable(),
+		}).array(),
 		abstract: zod.string().nullable(),
-		abstractDetails: zod.record(
-			abstractSectionNameEnumSchema,
-			zod.object({
-				value: zod.string(),
-			}).optional(),
-		).nullable(),
-		resources: zod.object({
-			pubmed: zod.object({
+		abstractDetails: zod
+			.object({
 				name: zod.string(),
-				url: zod.string(),
-			}).optional(),
-		}),
+				content: zod.string(),
+			})
+			.array()
+			.nullable(),
+		providers: zod.object({
+			value: zod.enum(providerEnum.toTuple()),
+		}).array(),
 		keywords: zod.object({
 			value: zod.string(),
 		}).array(),

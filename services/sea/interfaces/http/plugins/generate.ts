@@ -1,4 +1,4 @@
 import "@duplojs/types-codegen";
-import { abstractSectionNameEnumSchema } from "../schemas/document";
+import { articleTypeSchema } from "../schemas/document";
 
-abstractSectionNameEnumSchema._zttIdentifier = "AbstractSectionName";
+articleTypeSchema._zttIdentifier = "articleType";

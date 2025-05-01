@@ -1,19 +1,22 @@
-import { uuidv7 } from "uuidv7";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
-import { type BakedDocumentAbstractDetails, bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentIdObjecter, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, type BakedDocumentLanguage, bakedDocumentAbstractDetailsObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentIdObjecter, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, type BakedDocumentLanguage, bakedDocumentAbstractPartObjecter, bakedDocumentRessourceObjecter } from "@business/domains/entities/bakedDocument";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
 import { RosettaAPI, type SupportedLanguage } from "@interfaces/providers/rosetta";
 import { KeyDate } from "@interfaces/providers/keyDate";
+import { match, P } from "ts-pattern";
+import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 
 const languageMapper: Record<BakedDocumentLanguage["value"], SupportedLanguage> = {
 	"fr-FR": "fr",
 	"en-US": "en",
 };
 
+const DOIFoundationBaseUrl = "https://www.doi.org";
+
 bakedDocumentRepository.default = {
-	generateBakedDocumentId() {
-		return bakedDocumentIdObjecter.unsafeCreate(uuidv7());
+	makeBakedDocumentId(language, nodeSameRawDocumentId) {
+		return bakedDocumentIdObjecter.unsafeCreate(`${nodeSameRawDocumentId.value}_${language.value}`);
 	},
 	async save(bakedDocument) {
 		const simpleBakedDocument = bakedDocument.toSimpleObject();
@@ -39,21 +42,6 @@ bakedDocumentRepository.default = {
 		);
 
 		return bakedDocument;
-	},
-	async findByNodeSameRawDocument(nodeSameRawDocument) {
-		const bakedDocumentMongo = await mongo.bakedDocumentCollection.findOne(
-			{
-				nodeSameRawDocumentId: nodeSameRawDocument.id.value,
-			},
-			{ projection: { _id: 0 } },
-		);
-
-		return bakedDocumentMongo
-			? EntityHandler.unsafeMapper(
-				BakedDocumentEntity,
-				bakedDocumentMongo,
-			)
-			: null;
 	},
 	async makeBakedTitleWithRawTitle(rawTitle, language) {
 		const title = await RosettaAPI.translateText(
@@ -92,28 +80,19 @@ bakedDocumentRepository.default = {
 
 		return bakedDocumentAbstractObjecter.unsafeCreate(abstract);
 	},
-	async makeBakedAbstractDetailsWithRawAbstractDetails(rawAbstractDetails, language) {
-		const rawAbstractDetailsProcesses = await rawAbstractDetails.reduce<
-			Promise<BakedDocumentAbstractDetails["value"]>
-		>(
-			async(promiseAcc, { value }) => {
-				const acc = await promiseAcc;
-				const { name, content } = value;
-
-				const contentProcess = await RosettaAPI.translateText(
-					content,
-					languageMapper[language.value],
-				);
-
-				return {
-					...acc,
-					[name]: contentProcess,
-				};
-			},
-			Promise.resolve({}),
+	makeBakedAbstractDetailsWithRawAbstractDetails(rawAbstractDetails, language) {
+		return Promise.all(
+			rawAbstractDetails.map(
+				({ value: { name, content } }) => RosettaAPI
+					.translateText(content, languageMapper[language.value])
+					.then(
+						(content) => bakedDocumentAbstractPartObjecter.unsafeCreate({
+							name,
+							content,
+						}),
+					),
+			),
 		);
-
-		return bakedDocumentAbstractDetailsObjecter.unsafeCreate(rawAbstractDetailsProcesses);
 	},
 	async *findUpdatedDocuments() {
 		const startPage = 0;
@@ -127,13 +106,9 @@ bakedDocumentRepository.default = {
 				.bakedDocumentCollection
 				.find(
 					{
-						$or: [
-							{
-								lastUpdate: {
-									$gt: lastSend,
-								},
-							},
-						],
+						lastUpdate: {
+							$gt: lastSend,
+						},
 					},
 					{ projection: { _id: 0 } },
 				)
@@ -152,5 +127,26 @@ bakedDocumentRepository.default = {
 				);
 			}
 		}
+	},
+	findDOIFoundationResourcesInRawDocument(rawDocument) {
+		return match({ rawDocument })
+			.with(
+				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
+				({ rawDocument }) => {
+					const articleId = rawDocument.articleIds.find(
+						({ value: { name } }) => name === "doi",
+					);
+
+					if (!articleId) {
+						return null;
+					}
+
+					return bakedDocumentRessourceObjecter.unsafeCreate({
+						resourcesProvider: "DOIFoundation",
+						url: `${DOIFoundationBaseUrl}/${articleId.value.value}`,
+					});
+				},
+			)
+			.exhaustive();
 	},
 };

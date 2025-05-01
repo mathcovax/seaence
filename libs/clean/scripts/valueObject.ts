@@ -126,15 +126,15 @@ export class ValueObjecter<
 		return new ValueObject(this.name, rawData);
 	}
 
-	public create(rawData: zodInfer<GenericZodSchema>) {
+	public create(rawData: GenericZodSchema["_input"]) {
 		return this.unknownCreate(rawData);
 	}
 
-	public throwCreate(rawData: zodInfer<GenericZodSchema>) {
+	public throwCreate(rawData: GenericZodSchema["_input"]) {
 		return this.unknownThrowCreate(rawData);
 	}
 
-	public unsafeCreate(rawData: zodInfer<GenericZodSchema>) {
+	public unsafeCreate(rawData: GenericZodSchema["_input"]) {
 		return this.unknownUnsafeCreate(rawData);
 	}
 

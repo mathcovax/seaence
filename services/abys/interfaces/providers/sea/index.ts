@@ -35,7 +35,7 @@ export class SeaAPI {
 					body: rawDocument,
 				},
 			)
-			.iWantExpectedResponse();
+			.iWantInformation("document.upsert");
 	}
 
 	static {

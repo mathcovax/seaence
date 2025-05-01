@@ -1,7 +1,7 @@
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
 import { rawAbstractObjecter, rawAbstractPartObjecter, rawAuthorObjecter, rawGrantObjecter, rawResourceUrlObjecter, rawTitleObjecter, rawKeywordObjecter } from "@business/domains/common/rawDocument";
-import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, dateYYYYMMDDObjecter, flexibleDateObjecter } from "@vendors/clean";
+import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, flexibleDateObjecter } from "@vendors/clean";
 
 export const pubmedRawDocumentArticleIdObjecter = zod
 	.object({
@@ -22,8 +22,8 @@ export class PubmedRawDocumentEntity extends EntityHandler.create({
 	articleTypes: articleTypeObjecter.array(),
 	articleIds: pubmedRawDocumentArticleIdObjecter.array(),
 	abstract: rawAbstractObjecter.nullable(),
-	detailedAbstract: rawAbstractPartObjecter.array().nullable(),
-	webPublishDate: dateYYYYMMDDObjecter.nullable(),
+	abstractDetails: rawAbstractPartObjecter.array().nullable(),
+	webPublishDate: flexibleDateObjecter.nullable(),
 	journalPublishDate: flexibleDateObjecter.nullable(),
 }) {
 	public static create(params: GetEntityProperties<typeof PubmedRawDocumentEntity>) {

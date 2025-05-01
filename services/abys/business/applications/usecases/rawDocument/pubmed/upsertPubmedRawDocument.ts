@@ -3,7 +3,7 @@ import { rawDocumentRepository } from "@business/applications/repositories/rawDo
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type RawResourceUrl, type RawAbstract, type RawAbstractPart, type RawAuthor, type RawGrant, type RawTitle, type RawKeyword } from "@business/domains/common/rawDocument";
 import { type PubmedRawDocumentArticleId, PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
-import { type DateYYYYMMDD, type FlexibleDate, UsecaseError, UsecaseHandler } from "@vendors/clean";
+import { type FlexibleDate, UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { UpsertNodeSameRawDocumentUsecase } from "../../nodeSameRawDocument/upsertNodeSameRawDocument";
 import { match, P } from "ts-pattern";
 import { type UniqueField } from "@business/domains/common/uniqueField";
@@ -17,9 +17,9 @@ interface Input {
 	articleTypes: ArticleType[];
 	articleIds: PubmedRawDocumentArticleId[];
 	abstract: RawAbstract | null;
-	detailedAbstract: RawAbstractPart[] | null;
+	abstractDetails: RawAbstractPart[] | null;
 	uniqueArticleField: UniqueField;
-	webPublishDate: DateYYYYMMDD | null;
+	webPublishDate: FlexibleDate | null;
 	journalPublishDate: FlexibleDate | null;
 }
 

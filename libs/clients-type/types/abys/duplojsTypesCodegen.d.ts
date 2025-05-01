@@ -9,10 +9,6 @@ type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibl
 
 export { ArticleType };
 
-type AbstractSectionName = "introduction" | "background" | "objective" | "method" | "result" | "conclusion" | "reference" | "acknowledgment" | "objective" | "option" | "outcome" | "evidence" | "value" | "benefit" | "recommendation" | "validation" | "sponsor" | "purpose" | "patient" | "setting" | "studyObjective" | "measurementAndMainResult" | "introductions" | "backgrounds" | "objectives" | "methods" | "results" | "conclusions" | "references" | "acknowledgments" | "objectives" | "options" | "outcomes" | "evidences" | "values" | "benefits" | "recommendations" | "validations" | "sponsors" | "purposes" | "patients" | "settings" | "studyObjectives" | "measurementsAndMainResults";
-
-export { AbstractSectionName };
-
 type UniqueFieldName = "digitalObjectIdentifier" | "specific";
 
 export { UniqueFieldName };
@@ -42,11 +38,15 @@ type CodegenRoutes = ({
             value: string;
         }[];
         abstract: string | null;
-        detailedAbstract: {
-            name: AbstractSectionName;
+        abstractDetails: {
+            name: string;
             content: string;
         }[] | null;
-        webPublishDate: Date | null;
+        webPublishDate: {
+            day: number | null;
+            month: number | null;
+            year: number;
+        } | null;
         journalPublishDate: {
             day: number | null;
             month: number | null;

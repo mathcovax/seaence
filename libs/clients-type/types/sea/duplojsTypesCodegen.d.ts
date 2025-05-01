@@ -5,9 +5,9 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type AbstractSectionName = "introduction" | "background" | "objective" | "method" | "result" | "conclusion" | "reference" | "acknowledgment" | "objective" | "option" | "outcome" | "evidence" | "value" | "benefit" | "recommendation" | "validation" | "sponsor" | "purpose" | "patient" | "setting" | "studyObjective" | "measurementAndMainResult" | "introductions" | "backgrounds" | "objectives" | "methods" | "results" | "conclusions" | "references" | "acknowledgments" | "objectives" | "options" | "outcomes" | "evidences" | "values" | "benefits" | "recommendations" | "validations" | "sponsors" | "purposes" | "patients" | "settings" | "studyObjectives" | "measurementsAndMainResults";
+type articleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
 
-export { AbstractSectionName };
+export { articleType };
 
 type CodegenRoutes = ({
     method: "PUT";
@@ -15,16 +15,19 @@ type CodegenRoutes = ({
     body: {
         abysBakedDocumentId: string;
         title: string;
+        articleTypes: articleType[];
+        authors: {
+            name: string;
+            affiliations: string[] | null;
+        }[];
         abstract: string | null;
-        abstractDetails: Partial<Record<AbstractSectionName, {
-            value: string;
-        } | undefined>> | null;
-        resources: {
-            pubmed?: {
-                name: string;
-                url: string;
-            } | undefined;
-        };
+        abstractDetails: {
+            name: string;
+            content: string;
+        }[] | null;
+        providers: {
+            value: "pubmed";
+        }[];
         keywords: {
             value: string;
         }[];

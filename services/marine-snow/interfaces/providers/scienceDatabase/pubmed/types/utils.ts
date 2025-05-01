@@ -1,7 +1,7 @@
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type ExpectType } from "@duplojs/utils";
 import { createEnum } from "@vendors/clean";
-import { type UniqueFieldName, type AbstractSectionName } from "@vendors/clients-type/abys/duplojsTypesCodegen";
+import { type UniqueFieldName } from "@vendors/clients-type/abys/duplojsTypesCodegen";
 
 export const articleTypeToFilterArticleType = {
 	adaptiveClinicalTrial: "adaptiveclinicaltrial",
@@ -199,72 +199,30 @@ export const reverseArticleTypeBackedToUI: Record<string, ArticleType["value"] |
 
 export const acronymMonthToNumber: Record<string, undefined | number> = {
 	Jan: 1,
+	1: 1,
 	Feb: 2,
+	2: 2,
 	Mar: 3,
+	3: 3,
 	Apr: 4,
+	4: 4,
 	May: 5,
+	5: 5,
 	Jun: 6,
+	6: 6,
 	Jul: 7,
+	7: 7,
 	Aug: 8,
+	8: 8,
 	Sep: 9,
+	9: 9,
 	Oct: 10,
+	10: 10,
 	Nov: 11,
+	11: 11,
 	Dec: 12,
+	12: 12,
 };
-
-export const abstractSectionNameEnum = createEnum([
-	"introduction",
-	"background",
-	"objective",
-	"method",
-	"result",
-	"conclusion",
-	"reference",
-	"acknowledgment",
-	"objective",
-	"option",
-	"outcome",
-	"evidence",
-	"value",
-	"benefit",
-	"recommendation",
-	"validation",
-	"sponsor",
-	"purpose",
-	"patient",
-	"setting",
-	"studyObjective",
-	"measurementAndMainResult",
-
-	"introductions",
-	"backgrounds",
-	"objectives",
-	"methods",
-	"results",
-	"conclusions",
-	"references",
-	"acknowledgments",
-	"objectives",
-	"options",
-	"outcomes",
-	"evidences",
-	"values",
-	"benefits",
-	"recommendations",
-	"validations",
-	"sponsors",
-	"purposes",
-	"patients",
-	"settings",
-	"studyObjectives",
-	"measurementsAndMainResults",
-]);
-
-type _AbstractSectionNameExpect = ExpectType<
-	ReturnType<typeof abstractSectionNameEnum["toTuple"]>[number],
-	AbstractSectionName,
-	"strict"
->;
 
 export const uniqueFieldNameMapper = {
 	doi: "digitalObjectIdentifier",

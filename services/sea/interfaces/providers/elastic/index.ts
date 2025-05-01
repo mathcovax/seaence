@@ -2,6 +2,7 @@ import { Client } from "@elastic/elasticsearch";
 import { envs } from "@interfaces/envs";
 import { type ElasticDocument } from "./indexes";
 import { enUsDocument, frFrDocument } from "./indexes/document";
+import { sleep } from "@duplojs/utils";
 
 export class Elastic {
 	public static elasticClient: Client;
@@ -19,18 +20,23 @@ export class Elastic {
 		const exists = await this.elasticClient.indices.exists({ index: elasticDocument.name });
 
 		if (exists) {
+			const { index: __, ...settings } = elasticDocument.settings;
+
 			await this.elasticClient.indices.putMapping({
 				index: elasticDocument.name,
 				properties: elasticDocument.schema,
 			});
 			await this.elasticClient.indices.putSettings({
 				index: elasticDocument.name,
-				settings: elasticDocument.settings,
+				settings,
+				reopen: true,
 			});
 		} else {
 			await this.elasticClient.indices.create({
 				index: elasticDocument.name,
-				mappings: elasticDocument.schema,
+				mappings: {
+					properties: elasticDocument.schema,
+				},
 				settings: elasticDocument.settings,
 			});
 		}
@@ -46,6 +52,9 @@ export class Elastic {
 }
 
 if (envs.DB_CONNECTION) {
+	const timeToWaitElasticUp = 5000;
+	await sleep(timeToWaitElasticUp);
+
 	await Promise.all([
 		Elastic.register(enUsDocument),
 		Elastic.register(frFrDocument),

@@ -2,7 +2,7 @@ import "@duplojs/node";
 import "@duplojs/node/globals";
 import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";
 import { envs } from "../envs";
-import { debug } from "console";
+import { debug } from "@vendors/duplo-plugins/debug";
 import "./routes";
 
 const duplo = new Duplo({

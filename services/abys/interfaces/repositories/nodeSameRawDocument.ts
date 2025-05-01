@@ -77,14 +77,9 @@ nodeSameRawDocumentRepository.default = {
 				.nodeNameRawDocumentCollection
 				.find(
 					{
-						$or: [
-							{ lastCooked: null },
-							{
-								lastUpdate: {
-									$gt: lastCook,
-								},
-							},
-						],
+						lastUpdate: {
+							$gt: lastCook,
+						},
 					},
 					{ projection: { _id: 0 } },
 				)

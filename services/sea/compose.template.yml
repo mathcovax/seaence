@@ -1,23 +1,17 @@
 services:
   sea-es-template:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.3 # 8.17.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.0 # 8.17.0
     #platform: linux/arm64/v8
     env_file:
       - ${INCLUDE_PATH}/sea/.env
-    networks:
-      - elastic
-    deploy:
-      resources:
-        limits:
-          memory: 1GB
     volumes:
       - sea-es-data:/usr/share/elasticsearch/data
   kibana-template:
-    image: docker.elastic.co/kibana/kibana:8.17.3 # 8.17.0
-    networks:
-      - elastic
+    image: docker.elastic.co/kibana/kibana:8.18.0 # 8.17.0
+    env_file:
+      - ${INCLUDE_PATH}/sea/.env
     environment:
-      - ELASTICSEARCH_HOSTS=http://sea-es:9200
+      ELASTICSEARCH_HOSTS: ${ES_BASE_URL}
     depends_on:
       - sea-es
   sea-duplo-template:

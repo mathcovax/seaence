@@ -1,5 +1,4 @@
 import { type GetValueObject, urlObjecter, zod } from "@vendors/clean";
-import { abstractSectionNameObjecter } from "./abtrasctSection";
 
 export const rawResourceUrlObjecter = urlObjecter
 	.declination("rawResourceUrl");
@@ -39,7 +38,7 @@ export type RawAbstract = GetValueObject<typeof rawAbstractObjecter>;
 
 export const rawAbstractPartObjecter = zod
 	.object({
-		name: abstractSectionNameObjecter.zodSchema,
+		name: zod.string(),
 		content: zod.string(),
 	})
 	.createValueObjecter("rawAbstractPart");

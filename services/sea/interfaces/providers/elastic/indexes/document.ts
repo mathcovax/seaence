@@ -1,71 +1,70 @@
 /* eslint-disable camelcase */
 import { type estypes } from "@elastic/elasticsearch";
-import { type AbstractSectionName, abstractSectionNameEnum } from "../common/abstractSection";
-import { type Provider, providerEnum } from "../common/provider";
+import { type ArticleType } from "../common/articleType";
+import { type Provider } from "../common/provider";
 import { type ExpectType } from "@duplojs/utils";
 import { ElasticDocument } from ".";
 import { languageEnum } from "../common/language";
 
 export const elasticDocumentMappingSchema = {
+
 	abysBakedDocumentId: {
 		type: "keyword",
 	},
 	title: {
 		type: "text",
-		analyzer: "standard",
+		fields: {
+			keyword: {
+				type: "keyword",
+			},
+		},
 	},
-	abstract: {
-		type: "text",
-		analyzer: "standard",
+	articleTypes: {
+		type: "keyword",
 	},
-	abstractDetails: {
-		properties: abstractSectionNameEnum
-			.toTuple()
-			.reduce(
-				(pv, cv) => ({
-					...pv,
-					[cv]: {
-						properties: {
-							value: {
-								type: "text",
-								analyzer: "standard",
-							},
-						},
-					} satisfies estypes.MappingProperty,
-				}),
-				{} as Record<AbstractSectionName, estypes.MappingProperty>,
-			),
-	},
-	resources: {
-		properties: providerEnum
-			.toTuple()
-			.reduce(
-				(pv, cv) => ({
-					...pv,
-					[cv]: {
-						properties: {
-							name: {
-								type: "keyword",
-							},
-							url: {
-								type: "keyword",
-							},
-						},
-					} satisfies estypes.MappingProperty,
-				}),
-				{} as Record<Provider, estypes.MappingProperty>,
-			),
-	},
-	keywords: {
+	authors: {
+		type: "nested",
 		properties: {
-			keywords: {
+			name: {
 				type: "text",
-				analyzer: "standard",
 				fields: {
-					raw: {
+					keyword: {
 						type: "keyword",
 					},
 				},
+			},
+			affiliations: {
+				type: "keyword",
+			},
+		},
+	},
+	abstract: {
+		type: "text",
+	},
+	abstractDetails: {
+		type: "nested",
+		properties: {
+			name: {
+				type: "keyword",
+			},
+			content: {
+				type: "text",
+			},
+		},
+	},
+	providers: {
+		type: "nested",
+		properties: {
+			value: {
+				type: "keyword",
+			},
+		},
+	},
+	keywords: {
+		type: "nested",
+		properties: {
+			value: {
+				type: "keyword",
 			},
 		},
 	},
@@ -74,13 +73,13 @@ export const elasticDocumentMappingSchema = {
 	},
 	webPublishSplitDate: {
 		properties: {
-			day: {
+			year: {
 				type: "integer",
 			},
 			month: {
 				type: "integer",
 			},
-			year: {
+			day: {
 				type: "integer",
 			},
 		},
@@ -90,13 +89,13 @@ export const elasticDocumentMappingSchema = {
 	},
 	journalPublishSplitDate: {
 		properties: {
-			day: {
+			year: {
 				type: "integer",
 			},
 			month: {
 				type: "integer",
 			},
-			year: {
+			day: {
 				type: "integer",
 			},
 		},
@@ -120,21 +119,19 @@ export const elasticDocumentSettingsSchema = {
 export interface Document {
 	abysBakedDocumentId: string;
 	title: string;
+	articleTypes: ArticleType[];
+	authors: {
+		name: string;
+		affiliations: string[] | null;
+	}[];
 	abstract: string | null;
-	abstractDetails: Partial<
-		Record<
-			AbstractSectionName,
-			{ value: string } | undefined
-		>
-	> | null;
-	resources: Partial<
-		Record<
-			Provider, {
-				name: string;
-				url: string;
-			}
-		>
-	>;
+	abstractDetails: {
+		name: string;
+		content: string;
+	}[] | null;
+	providers: {
+		value: Provider;
+	}[];
 	keywords: { value: string }[];
 	webPublishDate: Date | null;
 	webPublishSplitDate: {
@@ -156,26 +153,16 @@ type _Check1 = ExpectType<
 	"strict"
 >;
 
-type _Check2 = ExpectType<
-	keyof Exclude<Document["abstractDetails"], null>,
-	keyof typeof elasticDocumentMappingSchema["abstractDetails"]["properties"],
-	"strict"
->;
-
-type _Check3 = ExpectType<
-	keyof Document["resources"],
-	keyof typeof elasticDocumentMappingSchema["resources"]["properties"],
-	"strict"
->;
-
 export const enUsDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["en-US"]}`,
+	"abysBakedDocumentId",
 	elasticDocumentSettingsSchema,
 	elasticDocumentMappingSchema,
 );
 
 export const frFrDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["fr-FR"]}`,
+	"abysBakedDocumentId",
 	elasticDocumentSettingsSchema,
 	elasticDocumentMappingSchema,
 );

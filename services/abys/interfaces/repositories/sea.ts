@@ -1,4 +1,5 @@
 import { seaRepository } from "@business/applications/repositories/sea";
+import { type Provider, providerEnum } from "@business/domains/common/provider";
 import { SeaAPI } from "@interfaces/providers/sea";
 import { TechnicalError } from "@vendors/clean/error";
 
@@ -9,7 +10,7 @@ seaRepository.default = {
 	async sendBakedDocument(bakedDocument) {
 		const { language, ...restSimplifyObject } = bakedDocument.toSimpleObject();
 
-		const defaultDay = 5;
+		const defaultDay = 15;
 		const defaultMonth = 5;
 		const offsetMonth = 1;
 
@@ -23,23 +24,35 @@ seaRepository.default = {
 			).toISOString()
 			: null;
 
+		const webPublishDate = restSimplifyObject.webPublishDate
+			? new Date(
+				restSimplifyObject.webPublishDate.year,
+				restSimplifyObject.webPublishDate.month
+					? restSimplifyObject.webPublishDate.month - offsetMonth
+					: defaultMonth,
+				restSimplifyObject.webPublishDate.day ?? defaultDay,
+			).toISOString()
+			: null;
+
+		const providers = restSimplifyObject
+			.resources
+			.map(({ resourcesProvider }) => resourcesProvider)
+			.filter((resourcesProvider): resourcesProvider is Provider["value"] => providerEnum.has(resourcesProvider))
+			.map((value) => ({ value }));
+
 		await SeaAPI.sendDocument(
 			language,
 			{
 				abysBakedDocumentId: restSimplifyObject.id,
+				articleTypes: restSimplifyObject.articleTypes,
+				authors: restSimplifyObject.authors,
 				title: restSimplifyObject.title,
 				abstract: restSimplifyObject.abstract,
 				abstractDetails: restSimplifyObject.abstractDetails,
 				keywords: restSimplifyObject.keywords,
-				resources: restSimplifyObject.resources,
-				webPublishDate: restSimplifyObject.webPublishDate?.toISOString() ?? null,
-				webPublishSplitDate: restSimplifyObject.webPublishDate
-					? {
-						year: restSimplifyObject.webPublishDate.getFullYear(),
-						month: restSimplifyObject.webPublishDate.getMonth() + offsetMonth,
-						day: restSimplifyObject.webPublishDate.getDate(),
-					}
-					: null,
+				providers,
+				webPublishDate,
+				webPublishSplitDate: restSimplifyObject.webPublishDate,
 				journalPublishDate,
 				journalPublishSplitDate: restSimplifyObject.journalPublishDate,
 			},
