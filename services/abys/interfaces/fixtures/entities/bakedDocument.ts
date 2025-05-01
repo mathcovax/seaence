@@ -1,0 +1,67 @@
+import { uuidv7 } from "uuidv7";
+import { faker } from "@faker-js/faker";
+import { EntityHandler, type ToSimpleObject } from "@vendors/clean";
+import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
+import { makePartialSplitDate } from "../utils/splitDate";
+
+export async function makeBakedDocument(
+	bakedDocument?: Partial<Omit<
+		ToSimpleObject<BakedDocumentEntity>,
+		"nodeSameRawDocumentId" | "id"
+	>>,
+) {
+	return bakedDocumentRepository.use.save(
+		BakedDocumentEntity.create(
+			EntityHandler.unsafeMapper(
+				BakedDocumentEntity,
+				{
+					id: uuidv7(),
+					nodeSameRawDocumentId: "FAKE",
+					title: bakedDocument?.title || faker.lorem.sentences({
+						min: 3,
+						max: 6,
+					}),
+					language: bakedDocument?.language || "fr-FR",
+					abstract: bakedDocument?.abstract || faker.lorem.paragraphs({
+						min: 2,
+						max: 4,
+					}),
+					abstractDetails: bakedDocument?.abstractDetails || null,
+					resources: bakedDocument?.resources || {},
+					keywords: bakedDocument?.keywords || [],
+					webPublishDate: bakedDocument?.webPublishDate || faker.date.between({
+						from: "2040-01-01",
+						to: "2050-01-01",
+					}),
+					journalPublishDate: bakedDocument?.journalPublishDate || makePartialSplitDate({
+						date: faker.date.between({
+							from: "2040-01-01",
+							to: "2050-01-01",
+						}),
+						includeMonth: faker.datatype.boolean(),
+						includeDay: faker.datatype.boolean(),
+					}),
+				},
+			),
+		),
+	);
+}
+
+/**
+ * after fix keyword in feat(26)
+ * faker.helpers.arrayElements(
+	[
+		faker.science.chemicalElement().name,
+		faker.science.chemicalElement().symbol,
+		faker.science.unit().name,
+		faker.science.unit().symbol,
+		faker.word.adjective(),
+		faker.word.noun(),
+	],
+	{
+		min: 3,
+		max: 6,
+	},
+)
+ */
