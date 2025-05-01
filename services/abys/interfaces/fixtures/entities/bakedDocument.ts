@@ -29,7 +29,20 @@ export async function makeBakedDocument(
 					}),
 					abstractDetails: bakedDocument?.abstractDetails || null,
 					resources: bakedDocument?.resources || {},
-					keywords: bakedDocument?.keywords || [],
+					keywords: bakedDocument?.keywords || faker.helpers.arrayElements(
+						[
+							faker.science.chemicalElement().name,
+							faker.science.chemicalElement().symbol,
+							faker.science.unit().name,
+							faker.science.unit().symbol,
+							faker.word.adjective(),
+							faker.word.noun(),
+						],
+						{
+							min: 3,
+							max: 6,
+						},
+					).map((keyword) => ({ value: keyword })),
 					webPublishDate: bakedDocument?.webPublishDate || faker.date.between({
 						from: "2040-01-01",
 						to: "2050-01-01",
@@ -42,26 +55,10 @@ export async function makeBakedDocument(
 						includeMonth: faker.datatype.boolean(),
 						includeDay: faker.datatype.boolean(),
 					}),
+					lastUpdate: bakedDocument?.lastUpdate || new Date(),
+					lastExportOnSea: null,
 				},
 			),
 		),
 	);
 }
-
-/**
- * after fix keyword in feat(26)
- * faker.helpers.arrayElements(
-	[
-		faker.science.chemicalElement().name,
-		faker.science.chemicalElement().symbol,
-		faker.science.unit().name,
-		faker.science.unit().symbol,
-		faker.word.adjective(),
-		faker.word.noun(),
-	],
-	{
-		min: 3,
-		max: 6,
-	},
-)
- */
