@@ -6,12 +6,15 @@ const BOAT_CONFIG = {
 	INITIAL_POSITION: 50,
 	MAX_POSITION: 85,
 	MIN_POSITION: 15,
-	DIRECTION_CHANGE_PROBABILITY: 0.0025,
+	DIRECTION_CHANGE_PROBABILITY: 0.0001,
 	SPEED: 0.025,
+	DIRECTION_STEP: 1,
 	ROTATION: {
 		RIGHT: 0,
 		LEFT: 180,
 	},
+	TIME_CONVERSION_FACTOR: 1000,
+	FRAMES_PER_SECOND: 60,
 };
 
 const goingRight = ref(Math.random() > BOAT_CONFIG.RANDOM_THRESHOLD);
@@ -19,7 +22,12 @@ const boatPosition = ref(BOAT_CONFIG.INITIAL_POSITION);
 const boatRotation = computed(() => goingRight.value ? BOAT_CONFIG.ROTATION.RIGHT : BOAT_CONFIG.ROTATION.LEFT);
 let animation: number | null = null;
 
-function moveBoat() {
+let lastTime = performance.now();
+
+function moveBoat(currentTime: number) {
+	const deltaTime = (currentTime - lastTime) / BOAT_CONFIG.TIME_CONVERSION_FACTOR;
+	lastTime = currentTime;
+
 	if (boatPosition.value > BOAT_CONFIG.MAX_POSITION) {
 		goingRight.value = false;
 	} else if (boatPosition.value < BOAT_CONFIG.MIN_POSITION) {
@@ -28,12 +36,20 @@ function moveBoat() {
 		goingRight.value = !goingRight.value;
 	}
 
-	boatPosition.value += goingRight.value ? BOAT_CONFIG.SPEED : -BOAT_CONFIG.SPEED;
+	const directionStep = goingRight.value
+		? BOAT_CONFIG.DIRECTION_STEP
+		: -BOAT_CONFIG.DIRECTION_STEP;
+
+	boatPosition.value += directionStep
+		* BOAT_CONFIG.SPEED
+		* deltaTime
+		* BOAT_CONFIG.FRAMES_PER_SECOND;
 	animation = requestAnimationFrame(moveBoat);
 }
 
 onMounted(() => {
-	moveBoat();
+	lastTime = performance.now();
+	animation = requestAnimationFrame(moveBoat);
 });
 
 onUnmounted(() => {
@@ -45,7 +61,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div class="absolute bottom-0 left-0 -z-10 w-full h-35/100">
+	<div class="fixed bottom-0 left-0 -z-10 w-full h-35/100">
 		<svg
 			class="absolute bottom-0 w-2/1 h-full"
 			xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +85,7 @@ onUnmounted(() => {
 		</svg>
 
 		<div
-			class="absolute top-[-55px] z-10 transform-origin-bottom-center transition-all duration-500 ease-linear"
+			class="absolute top-[0px] z-10 transform-origin-bottom-center transition-all duration-500 ease-linear"
 			:style="{
 				left: `${boatPosition}%`,
 				transform: `rotateY(${boatRotation}deg)`
