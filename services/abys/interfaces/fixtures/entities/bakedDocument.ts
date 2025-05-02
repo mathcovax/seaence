@@ -4,6 +4,7 @@ import { EntityHandler, type ToSimpleObject } from "@vendors/clean";
 import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { makePartialSplitDate } from "../utils/splitDate";
+import { articleTypeEnum } from "@business/domains/common/articleType";
 
 export async function makeBakedDocument(
 	bakedDocument?: Partial<Omit<
@@ -28,7 +29,7 @@ export async function makeBakedDocument(
 						max: 4,
 					}),
 					abstractDetails: bakedDocument?.abstractDetails || null,
-					resources: bakedDocument?.resources || {},
+					resources: bakedDocument?.resources || [],
 					keywords: bakedDocument?.keywords || faker.helpers.arrayElements(
 						[
 							faker.science.chemicalElement().name,
@@ -43,9 +44,13 @@ export async function makeBakedDocument(
 							max: 6,
 						},
 					).map((keyword) => ({ value: keyword })),
-					webPublishDate: bakedDocument?.webPublishDate || faker.date.between({
-						from: "2040-01-01",
-						to: "2050-01-01",
+					webPublishDate: bakedDocument?.webPublishDate || makePartialSplitDate({
+						date: faker.date.between({
+							from: "2040-01-01",
+							to: "2050-01-01",
+						}),
+						includeMonth: faker.datatype.boolean(),
+						includeDay: faker.datatype.boolean(),
 					}),
 					journalPublishDate: bakedDocument?.journalPublishDate || makePartialSplitDate({
 						date: faker.date.between({
@@ -57,6 +62,35 @@ export async function makeBakedDocument(
 					}),
 					lastUpdate: bakedDocument?.lastUpdate || new Date(),
 					lastExportOnSea: null,
+					articleTypes: bakedDocument?.articleTypes || Array.from(
+						{
+							length: faker.number.int({
+								min: 1,
+								max: 3,
+							}),
+						},
+						() => faker.helpers.arrayElement(articleTypeEnum.toTuple()),
+					),
+					authors: bakedDocument?.authors || Array.from(
+						{
+							length: faker.number.int({
+								min: 1,
+								max: 5,
+							}),
+						},
+						() => ({
+							name: faker.person.fullName(),
+							affiliations: Array.from(
+								{
+									length: faker.number.int({
+										min: 1,
+										max: 3,
+									}),
+								},
+								() => faker.company.name(),
+							),
+						}),
+					),
 				},
 			),
 		),
