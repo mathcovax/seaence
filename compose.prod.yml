@@ -69,3 +69,29 @@ services:
             - node.role == worker
     volumes:
       - ./marine-snow.env.local:/home/node/project/services/marine-snow/.env.local
+
+  abys:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/abys run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./abys.env.local:/home/node/project/services/abys/.env.local
+
+  sea:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/sea run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./sea.env.local:/home/node/project/services/sea/.env.local
