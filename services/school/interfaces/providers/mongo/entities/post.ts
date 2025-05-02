@@ -1,11 +1,11 @@
-import { type MongoArticle } from "./article";
+import { type MongoDocument } from "./document";
 import { type MongoUser } from "./user";
 
 export interface MongoPost {
 	id: string;
 	topic: string;
 	content: string | null;
-	article: MongoArticle;
+	document: MongoDocument;
 	author: MongoUser;
 	answerCount: number;
 	createdAt: Date;

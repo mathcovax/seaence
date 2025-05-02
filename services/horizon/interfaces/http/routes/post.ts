@@ -1,6 +1,6 @@
 import { SchoolAPI } from "@interfaces/providers/school";
 import { endpointPostListSchema, endpointPostSchema } from "../schemas/post";
-import { iWantArticleExistById } from "../checkers/article";
+import { iWantDocumentExistById } from "../checkers/document";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { iWantPostExistById } from "../checkers/post";
 
@@ -10,27 +10,27 @@ useMustBeConnectedBuilder()
 		body: zod.object({
 			topic: zod.string(),
 			content: zod.string(),
-			article: zod.object({
+			document: zod.object({
 				id: zod.string(),
 				title: zod.string(),
 			}),
 		}),
 	})
 	.presetCheck(
-		iWantArticleExistById,
-		(pickup) => pickup("body").article.id,
+		iWantDocumentExistById,
+		(pickup) => pickup("body").document.id,
 	)
 	.handler(
 		async(pickup) => {
 			const { user, body } = pickup(["user", "body"]);
-			const { article, topic, content } = body;
+			const { document, topic, content } = body;
 
 			const schoolReponse = await SchoolAPI.createPost({
 				topic,
 				content,
-				article: {
-					id: article.id,
-					title: article.title,
+				document: {
+					id: document.id,
+					title: document.title,
 				},
 				author: {
 					id: user.id,
@@ -47,25 +47,25 @@ useMustBeConnectedBuilder()
 	);
 
 useBuilder()
-	.createRoute("GET", "/articles/{articleId}/posts")
+	.createRoute("GET", "/document/{documentId}/posts")
 	.extract({
 		params: {
-			articleId: zod.string(),
+			documentId: zod.string(),
 		},
 		query: {
 			page: zod.coerce.number(),
 		},
 	})
 	.presetCheck(
-		iWantArticleExistById,
-		(pickup) => pickup("articleId"),
+		iWantDocumentExistById,
+		(pickup) => pickup("documentId"),
 	)
 	.handler(
 		async(pickup) => {
-			const { articleId, page } = pickup(["articleId", "page"]);
+			const { documentId, page } = pickup(["documentId", "page"]);
 
 			const schoolResponse = await SchoolAPI.getPosts(
-				articleId,
+				documentId,
 				page,
 			);
 

@@ -4,8 +4,7 @@ import { postIdObjecter } from "@business/domains/entities/post";
 import { getAnswersFromPostUsecase, replyToPostUsecase } from "@interfaces/usecase";
 import { iWantPostExistById } from "../checkers/post";
 import { endpointAnswerSchema } from "../schemas/answer";
-import { intObjecter } from "@business/domains/common/Int";
-import { toSimpleObject } from "@vendors/clean";
+import { intObjecter, toSimpleObject } from "@vendors/clean";
 
 useBuilder()
 	.createRoute("POST", "/posts/{postId}/answers")

@@ -7,9 +7,9 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "GET";
-    path: "/articles/{articleId}/posts";
+    path: "/documents/{documentId}/posts";
     params: {
-        articleId: string;
+        documentId: string;
     };
     query: {
         page: number;
@@ -22,7 +22,7 @@ type CodegenRoutes = ({
                 id: string;
                 topic: string;
                 content: string | null;
-                article: {
+                document: {
                     id: string;
                     title: string;
                 };
@@ -43,7 +43,7 @@ type CodegenRoutes = ({
     body: {
         topic: string;
         content: string | null;
-        article: {
+        document: {
             id: string;
             title: string;
         };
@@ -59,7 +59,7 @@ type CodegenRoutes = ({
             id: string;
             topic: string;
             content: string | null;
-            article: {
+            document: {
                 id: string;
                 title: string;
             };
@@ -88,7 +88,7 @@ type CodegenRoutes = ({
             id: string;
             topic: string;
             content: string | null;
-            article: {
+            document: {
                 id: string;
                 title: string;
             };

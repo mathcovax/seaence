@@ -1,7 +1,6 @@
-import { articleObjecter } from "@business/domains/common/article";
-import { intObjecter } from "@business/domains/common/Int";
+import { documentObjecter } from "@business/domains/common/document";
 import { userObjecter } from "@business/domains/common/user";
-import { articleIdObjecter } from "@business/domains/entities/article";
+import { documentIdObjecter } from "@business/domains/entities/document";
 import {
 	postContentObjecter,
 	postIdObjecter,
@@ -9,19 +8,19 @@ import {
 } from "@business/domains/entities/post";
 import {
 	createPostUsecase,
-	getPostsFromArticleIdUsecase,
-	getPostTotalCountFromArticleIdUsecase,
+	getPostsFromdocumentIdUsecase,
+	getPostTotalCountFromdocumentIdUsecase,
 } from "@interfaces/usecase";
-import { toSimpleObject } from "@vendors/clean";
+import { intObjecter, toSimpleObject } from "@vendors/clean";
 import { endpointPostListSchema, endpointPostSchema } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
-import { quantityPerPage } from "@business/applications/usecases/getPostsFromArticleId";
+import { quantityPerPage } from "@business/applications/usecases/getPostsFromDocumentId";
 
 useBuilder()
-	.createRoute("GET", "/articles/{articleId}/posts")
+	.createRoute("GET", "/documents/{documentId}/posts")
 	.extract({
 		params: {
-			articleId: articleIdObjecter.toZodSchema(),
+			documentId: documentIdObjecter.toZodSchema(),
 		},
 		query: {
 			page: zoderce.number().pipe(intObjecter.toZodSchema()),
@@ -29,18 +28,18 @@ useBuilder()
 	})
 	.handler(
 		async(pickup) => {
-			const { articleId, page } = pickup(["articleId", "page"]);
+			const { documentId, page } = pickup(["documentId", "page"]);
 
 			const [
 				totalCount,
 				posts,
 			] = await Promise.all(
 				[
-					getPostTotalCountFromArticleIdUsecase.execute({
-						articleId,
+					getPostTotalCountFromdocumentIdUsecase.execute({
+						documentId,
 					}),
-					getPostsFromArticleIdUsecase.execute({
-						articleId,
+					getPostsFromdocumentIdUsecase.execute({
+						documentId,
 						page,
 					}).then((posts) => posts.map(toSimpleObject)),
 				],
@@ -64,18 +63,18 @@ useBuilder()
 		body: zod.object({
 			topic: postTopicObjecter.toZodSchema(),
 			content: postContentObjecter.toZodSchema(),
-			article: articleObjecter.toZodSchema(),
+			document: documentObjecter.toZodSchema(),
 			author: userObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { topic, content, article, author } = pickup("body");
+			const { topic, content, document, author } = pickup("body");
 
 			const createdPost = await createPostUsecase.execute({
 				topic,
 				content,
-				article,
+				document,
 				author,
 			});
 

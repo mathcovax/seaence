@@ -2,7 +2,7 @@
 import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { retry } from "@interfaces/utils/retrying";
-import { type PubMedRoute } from "./types/Route";
+import { type PubMedRoute } from "./types/pubmedRoute";
 import { XMLParser } from "fast-xml-parser";
 import { searchResultPayloadBuildedSchema } from "./types/searchResult";
 import { type PubmedFilterArticleType } from "./types/utils";

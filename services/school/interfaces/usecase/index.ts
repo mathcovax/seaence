@@ -1,14 +1,14 @@
 import "../repositories";
 import { CreatePostUsecase } from "@business/applications/usecases/createPost";
-import { GetPostsFromArticleIdUsecase } from "@business/applications/usecases/getPostsFromArticleId";
+import { GetPostsFromDocumentIdUsecase } from "@business/applications/usecases/getPostsFromDocumentId";
 import { GetAnswersFromPostUsecase } from "@business/applications/usecases/getAnswersFromPost";
 import { ReplyToPostUsecase } from "@business/applications/usecases/replyToPost";
-import { GetPostTotalCountFromArticleIdUsecase } from "@business/applications/usecases/getPostTotalCountFromArticleId";
+import { GetPostTotalCountFromDocumentIdUsecase } from "@business/applications/usecases/getPostTotalCountFromDocumentId";
 import { GetPostByIdUsecase } from "@business/applications/usecases/getPostById";
 
 export const createPostUsecase = new CreatePostUsecase();
-export const getPostsFromArticleIdUsecase = new GetPostsFromArticleIdUsecase();
+export const getPostsFromdocumentIdUsecase = new GetPostsFromDocumentIdUsecase();
 export const getPostByIdUsecase = new GetPostByIdUsecase();
 export const getAnswersFromPostUsecase = new GetAnswersFromPostUsecase();
-export const getPostTotalCountFromArticleIdUsecase = new GetPostTotalCountFromArticleIdUsecase();
+export const getPostTotalCountFromdocumentIdUsecase = new GetPostTotalCountFromDocumentIdUsecase();
 export const replyToPostUsecase = new ReplyToPostUsecase();

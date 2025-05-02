@@ -1,6 +1,6 @@
 import { zod } from "@vendors/clean";
 
-export const endpointArticleSchema = zod.object({
+export const endpointDocumentSchema = zod.object({
 	id: zod.string(),
 	title: zod.string(),
 });

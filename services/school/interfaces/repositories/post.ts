@@ -1,7 +1,7 @@
 import { postRepository } from "@business/applications/repositories/post";
 import { PostEntity, postIdObjecter } from "@business/domains/entities/post";
 import { UserEntity } from "@business/domains/entities/user";
-import { ArticleEntity } from "@business/domains/entities/article";
+import { DocumentEntity } from "@business/domains/entities/document";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
@@ -10,9 +10,9 @@ postRepository.default = {
 	generatePostId() {
 		return postIdObjecter.unsafeCreate(uuidv7());
 	},
-	async findByArticleId(articleId, { quantityPerPage, page }) {
+	async findByDocumentId(documentId, { quantityPerPage, page }) {
 		const mongoPosts = mongo.postCollection.find({
-			"article.id": articleId.value,
+			"document.id": documentId.value,
 		});
 
 		return mongoPosts
@@ -28,9 +28,9 @@ postRepository.default = {
 					PostEntity,
 					{
 						...mongoPost,
-						article: EntityHandler.unsafeMapper(
-							ArticleEntity,
-							mongoPost.article,
+						document: EntityHandler.unsafeMapper(
+							DocumentEntity,
+							mongoPost.document,
 						),
 						author: EntityHandler.unsafeMapper(
 							UserEntity,
@@ -41,9 +41,9 @@ postRepository.default = {
 			)
 			.toArray();
 	},
-	async getTotalCountByArticleId(articleId) {
+	async getTotalCountByDocumentId(documentId) {
 		const mongoPostCount = await mongo.postCollection.countDocuments({
-			"article.id": articleId.value,
+			"document.id": documentId.value,
 		});
 
 		return intObjecter.unsafeCreate(mongoPostCount);
@@ -61,9 +61,9 @@ postRepository.default = {
 			PostEntity,
 			{
 				...mongoPost,
-				article: EntityHandler.unsafeMapper(
-					ArticleEntity,
-					mongoPost.article,
+				document: EntityHandler.unsafeMapper(
+					DocumentEntity,
+					mongoPost.document,
 				),
 				author: EntityHandler.unsafeMapper(
 					UserEntity,

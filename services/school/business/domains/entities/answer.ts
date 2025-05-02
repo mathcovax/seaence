@@ -1,7 +1,6 @@
-import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { dateYYYYMMDDObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { postIdObjecter } from "./post";
 import { userObjecter } from "../common/user";
-import { dateObjecter } from "../common/date";
 
 export const answerContentObjecter = zod.string().createValueObjecter("answerContent");
 export const answerIdObjecter = zod.string().createValueObjecter("answerId");
@@ -16,12 +15,12 @@ export class AnswerEntity extends EntityHandler.create({
 	postId: postIdObjecter,
 	content: answerContentObjecter,
 	author: userObjecter,
-	createdAt: dateObjecter,
+	createdAt: dateYYYYMMDDObjecter,
 }) {
 	public static create(params: InputCreateAnswerEntity) {
 		return new AnswerEntity({
 			...params,
-			createdAt: dateObjecter.unknownThrowCreate(new Date()),
+			createdAt: dateYYYYMMDDObjecter.unknownThrowCreate(new Date()),
 		});
 	}
 }

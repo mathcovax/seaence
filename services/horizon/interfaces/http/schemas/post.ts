@@ -1,11 +1,11 @@
-import { endpointArticleSchema } from "./article";
+import { endpointDocumentSchema } from "./document";
 import { endpointUserSchema } from "./user";
 
 export const endpointPostSchema = zod.object({
 	id: zod.string(),
 	topic: zod.string(),
 	content: zod.string().nullable(),
-	article: endpointArticleSchema,
+	document: endpointDocumentSchema,
 	author: endpointUserSchema,
 	answerCount: zod.number().optional(),
 	createdAt: zod.string().optional(),

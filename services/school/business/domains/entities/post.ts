@@ -1,7 +1,6 @@
-import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { dateYYYYMMDDObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { userObjecter } from "../common/user";
-import { articleObjecter } from "../common/article";
-import { dateObjecter } from "../common/date";
+import { documentObjecter } from "../common/document";
 
 export const postTopicObjecter = zod.string().createValueObjecter("postTopic");
 export const postContentObjecter = zod.string().nullable().createValueObjecter("postContent");
@@ -21,16 +20,16 @@ export class PostEntity extends EntityHandler.create({
 	id: postIdObjecter,
 	topic: postTopicObjecter,
 	content: postContentObjecter,
-	article: articleObjecter,
+	document: documentObjecter,
 	answerCount: postAnswerCountObjecter,
 	author: userObjecter,
-	createdAt: dateObjecter,
+	createdAt: dateYYYYMMDDObjecter,
 }) {
 	public static create(params: InputCreatePostEntity) {
 		return new PostEntity({
 			...params,
 			answerCount: postAnswerCountObjecter.unknownThrowCreate(defaultAnswerCount),
-			createdAt: dateObjecter.unknownThrowCreate(new Date()),
+			createdAt: dateYYYYMMDDObjecter.unknownThrowCreate(new Date()),
 		});
 	}
 

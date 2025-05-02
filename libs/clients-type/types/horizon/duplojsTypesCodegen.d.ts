@@ -76,14 +76,14 @@ type CodegenRoutes = ({
     body: {
         topic: string;
         content: string;
-        article: {
+        document: {
             id: string;
             title: string;
         };
     };
     response: {
         code: 404;
-        information: "article.notfound";
+        information: "document.notfound";
         body?: undefined;
     } | {
         code: 201;
@@ -92,7 +92,7 @@ type CodegenRoutes = ({
             id: string;
             topic: string;
             content: string | null;
-            article: {
+            document: {
                 id: string;
                 title: string;
             };
@@ -106,16 +106,16 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "GET";
-    path: "/articles/{articleId}/posts";
+    path: "/document/{documentId}/posts";
     params: {
-        articleId: string;
+        documentId: string;
     };
     query: {
         page: number;
     };
     response: {
         code: 404;
-        information: "article.notfound";
+        information: "document.notfound";
         body?: undefined;
     } | {
         code: 200;
@@ -125,7 +125,7 @@ type CodegenRoutes = ({
                 id: string;
                 topic: string;
                 content: string | null;
-                article: {
+                document: {
                     id: string;
                     title: string;
                 };
@@ -147,13 +147,17 @@ type CodegenRoutes = ({
         postId: string;
     };
     response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "post.found";
         body: {
             id: string;
             topic: string;
             content: string | null;
-            article: {
+            document: {
                 id: string;
                 title: string;
             };
