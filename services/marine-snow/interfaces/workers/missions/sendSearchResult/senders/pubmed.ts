@@ -1,12 +1,48 @@
 import { hasKey } from "@duplojs/utils";
 import { AbysAPI, type RawDocument } from "@interfaces/providers/abys";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { acronymMonthToNumber, reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
+import { type splitDateSchema } from "@interfaces/providers/scienceDatabase/pubmed/types/article";
+import { reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
 import { TechnicalError } from "@vendors/clean/error";
 import { match, P } from "ts-pattern";
 
 const expectHttpCode = 200;
 const pubmedBaseUrl = "https://pubmed.ncbi.nlm.nih.gov";
+
+function formatDate(splitDate: typeof splitDateSchema["_output"]) {
+	return match({
+		year: splitDate.Year["#text"],
+		month: splitDate.Month?.["#text"] ?? null,
+		day: splitDate.Day?.["#text"] ?? null,
+	})
+		.with(
+			{
+				year: P.number,
+				month: P.number,
+				day: null,
+			},
+			(splitDate) => splitDate,
+		)
+		.with(
+			{
+				year: P.number,
+				month: null,
+				day: null,
+			},
+			(splitDate) => splitDate,
+		)
+		.with(
+			{
+				year: P.number,
+				month: P.number,
+				day: P.number,
+			},
+			(splitDate) => splitDate,
+		)
+		.otherwise(
+			(splitDate) => new TechnicalError("Wrong split date format", splitDate),
+		);
+}
 
 export async function pubmedSender(reference: string) {
 	const pubmedResponse = await PubMedAPI.getArticle(reference);
@@ -180,20 +216,20 @@ export async function pubmedSender(reference: string) {
 				];
 
 				const journalPublishDate = pubmedJournalPublishDate
-					? {
-						day: pubmedJournalPublishDate.Day?.["#text"] ?? null,
-						month: pubmedJournalPublishDate.Month?.["#text"] ?? null,
-						year: pubmedJournalPublishDate.Year["#text"],
-					}
+					? formatDate(pubmedJournalPublishDate)
 					: null;
 
+				if (journalPublishDate instanceof Error) {
+					return journalPublishDate;
+				}
+
 				const webPublishDate = pubmedWebPublishDate
-					? {
-						day: pubmedWebPublishDate.Day?.["#text"] ?? null,
-						month: pubmedWebPublishDate.Month?.["#text"] ?? null,
-						year: pubmedWebPublishDate.Year["#text"],
-					}
+					? formatDate(pubmedWebPublishDate)
 					: null;
+
+				if (webPublishDate instanceof Error) {
+					return webPublishDate;
+				}
 
 				return {
 					provider: "pubmed",

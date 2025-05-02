@@ -1,7 +1,7 @@
 import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
 import { rawAbstractObjecter, rawAbstractPartObjecter, rawAuthorObjecter, rawGrantObjecter, rawResourceUrlObjecter, rawTitleObjecter, rawKeywordObjecter } from "@business/domains/common/rawDocument";
-import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, flexibleDateObjecter } from "@vendors/clean";
+import { EntityHandler, type GetValueObject, type GetEntityProperties, zod, flexibleDateObjecter, EntityError } from "@vendors/clean";
 
 export const pubmedRawDocumentArticleIdObjecter = zod
 	.object({
@@ -27,6 +27,10 @@ export class PubmedRawDocumentEntity extends EntityHandler.create({
 	journalPublishDate: flexibleDateObjecter.nullable(),
 }) {
 	public static create(params: GetEntityProperties<typeof PubmedRawDocumentEntity>) {
+		if (!params.webPublishDate && !params.journalPublishDate) {
+			return new EntityError("missing-dates");
+		}
+
 		return new PubmedRawDocumentEntity(params);
 	}
 }

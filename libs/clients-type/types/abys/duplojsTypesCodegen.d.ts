@@ -42,22 +42,42 @@ type CodegenRoutes = ({
             name: string;
             content: string;
         }[] | null;
-        webPublishDate: {
-            day: number | null;
-            month: number | null;
+        webPublishDate: ({
+            day: null;
+            month: null;
             year: number;
-        } | null;
-        journalPublishDate: {
-            day: number | null;
-            month: number | null;
+        } | {
+            day: null;
+            month: number;
             year: number;
-        } | null;
+        } | {
+            day: number;
+            month: number;
+            year: number;
+        }) | null;
+        journalPublishDate: ({
+            day: null;
+            month: null;
+            year: number;
+        } | {
+            day: null;
+            month: number;
+            year: number;
+        } | {
+            day: number;
+            month: number;
+            year: number;
+        }) | null;
         uniqueArticleField: {
             name: UniqueFieldName;
             value: string;
         };
     };
     response: {
+        code: 400;
+        information: "rawDocument.upsert.error";
+        body: string;
+    } | {
         code: 201;
         information: "rawDocument.upsert";
         body?: undefined;

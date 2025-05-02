@@ -53,7 +53,7 @@ const medlineDate = zo({
 	},
 );
 
-const splitDate = zo({
+export const splitDateSchema = zo({
 	Year: zo(numberValue),
 	Month: zo(stringValue)
 		.transform((Month) => {
@@ -75,7 +75,7 @@ export const articlePayloadSchema = zo({
 						Journal: zo({
 							JournalIssue: zo({
 								PubDate: zod.union([
-									splitDate,
+									splitDateSchema,
 									medlineDate,
 								]).optional(),
 							}),
@@ -95,7 +95,7 @@ export const articlePayloadSchema = zo({
 								...stringValue,
 							}).toArray(),
 						}),
-						ArticleDate: splitDate.optional(),
+						ArticleDate: splitDateSchema.optional(),
 						AuthorList: zo({
 							Author: zod.union([
 								zo({

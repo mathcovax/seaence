@@ -2,6 +2,7 @@ import { z as zod, type ZodType } from "zod";
 import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject, type AnyRecord, setProperty, type AttributeError, applyAttributes, type ApplyValueObjecterAttribute } from "./utils";
 import { EntityObjecter, type ValueObjectError, type ValueObjecter } from "./valueObject";
 import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
+import { CleanError } from "./error";
 
 export type EntityPropertiesDefinition = Record<string, ValueObjecter | EntityObjecter>;
 
@@ -341,3 +342,9 @@ export type EntityToSimpleObject<
 		GenericEntityInstance
 	>
 >;
+
+export class EntityError<
+	GenericInformation extends string = string,
+> extends CleanError<GenericInformation> {
+
+}
