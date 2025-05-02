@@ -5,6 +5,7 @@ import { nodeSameRawDocumentRepository } from "@business/applications/repositori
 import { NodeSameRawDocumentEntity, nodeSameRawDocumentIdObjecter } from "@business/domains/entities/nodeSameRawDocument";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { EntityHandler } from "@vendors/clean";
+import { KeyDate } from "@interfaces/providers/keyDate";
 
 nodeSameRawDocumentRepository.default = {
 	generateNodeSameRawDocumentId() {
@@ -41,7 +42,6 @@ nodeSameRawDocumentRepository.default = {
 			{
 				$set: {
 					...simpleNodeSameRawDocument,
-					updatedAt: new Date(),
 				},
 			},
 			{ upsert: true },
@@ -64,5 +64,39 @@ nodeSameRawDocumentRepository.default = {
 				),
 			)
 			.toArray();
+	},
+	async *findUpdatedNode() {
+		const startPage = 0;
+		const quantityPerPage = 10;
+
+		const lastCook = await KeyDate.get("lastCookNodeSameRawDocument");
+		await KeyDate.set("lastCookNodeSameRawDocument");
+
+		for (let page = startPage; true; page++) {
+			const nodeNameRawDocuments = await mongo
+				.nodeNameRawDocumentCollection
+				.find(
+					{
+						lastUpdate: {
+							$gt: lastCook,
+						},
+					},
+					{ projection: { _id: 0 } },
+				)
+				.skip(page * quantityPerPage)
+				.limit(quantityPerPage)
+				.toArray();
+
+			if (!nodeNameRawDocuments.length) {
+				break;
+			}
+
+			for (const nodeNameRawDocument of nodeNameRawDocuments) {
+				yield EntityHandler.unsafeMapper(
+					NodeSameRawDocumentEntity,
+					nodeNameRawDocument,
+				);
+			}
+		}
 	},
 };

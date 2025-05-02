@@ -1,7 +1,16 @@
-import { providerObjecter } from "@business/domains/common/provider";
-import { createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { providerEnum } from "@business/domains/common/provider";
+import { commonDateObjecter, createEnum, EntityHandler, flexibleDateObjecter, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { nodeSameRawDocumentIdObjecter } from "../nodeSameRawDocument";
-import { abstractSectionNameEnum, abstractSectionNameObjecter } from "@business/domains/common/abtrasctSection";
+import { articleTypeObjecter } from "@business/domains/common/articleType";
+
+export const bakedDocumentLanguageEnum = createEnum([
+	"fr-FR",
+	"en-US",
+]);
+
+export const bakedDocumentLanguageObjecter = zod
+	.enum(bakedDocumentLanguageEnum.toTuple())
+	.createValueObjecter("bakedDocumentLanguage");
 
 export const bakedDocumentIdObjecter = zod
 	.string()
@@ -15,46 +24,36 @@ export const bakedDocumentAbstractObjecter = zod
 
 export type BakedDocumentAbstract = GetValueObject<typeof bakedDocumentAbstractObjecter>;
 
-export const bakedDocumentAbstractDetailsObjecter = zod
-	.record(
-		abstractSectionNameObjecter.zodSchema,
-		zod.object({
-			value: zod.string(),
-		}).passthrough().optional(),
-	)
-	.createValueObjecter("BakedDocumentAbstractDetails");
+export const bakedDocumentAbstractPartObjecter = zod
+	.object({
+		name: zod.string(),
+		content: zod.string(),
+	})
+	.createValueObjecter("bakedDocumentAbstractPart");
 
-export type BakedDocumentAbstractDetails = GetValueObject<typeof bakedDocumentAbstractDetailsObjecter>;
+export type BakedDocumentAbstractPart = GetValueObject<typeof bakedDocumentAbstractPartObjecter>;
 
-export const bakedDocumentRessourcesObjecter = zod
-	.record(
-		providerObjecter.zodSchema,
-		zod.object({
-			name: zod.string(),
-			url: zod.string(),
-		}),
-	)
-	.createValueObjecter("bakedDocumentRessources");
+export const resourcesProviderEnum = createEnum([
+	"DOIFoundation",
+	...providerEnum.toTuple(),
+]);
 
-export type BakedDocumentRessources = GetValueObject<typeof bakedDocumentRessourcesObjecter>;
+export const bakedDocumentRessourceObjecter = zod
+	.object({
+		resourcesProvider: zod.enum(resourcesProviderEnum.toTuple()),
+		url: zod.string(),
+	})
+	.createValueObjecter("bakedDocumentRessource");
+
+export type BakedDocumentRessource = GetValueObject<typeof bakedDocumentRessourceObjecter>;
 
 export const bakedDocumentKeywordObjecter = zod
 	.object({
-		pound: zod.number().positive(),
 		value: zod.string(),
 	})
 	.createValueObjecter("bakedDocumentKeyword");
 
 export type BakedDocumentKeyword = GetValueObject<typeof bakedDocumentKeywordObjecter>;
-
-export const bakedDocumentLanguageEnum = createEnum([
-	"fr-FR",
-	"en-US",
-]);
-
-export const bakedDocumentLanguageObjecter = zod
-	.enum(bakedDocumentLanguageEnum.toTuple())
-	.createValueObjecter("bakedDocumentLanguage");
 
 export type BakedDocumentLanguage = GetValueObject<typeof bakedDocumentLanguageObjecter>;
 
@@ -62,19 +61,44 @@ export const bakedDocumentTitleObjecter = zod
 	.string()
 	.createValueObjecter("bakedDocumentTitle");
 
+export const bakedDocumentAuthorObjecter = zod
+	.object({
+		name: zod.string(),
+		affiliations: zod.string().array().nullable(),
+	})
+	.createValueObjecter("bakedDocumentAuthor");
+
 export type BakedDocumentTitle = GetValueObject<typeof bakedDocumentTitleObjecter>;
 
 export class BakedDocumentEntity extends EntityHandler.create({
 	id: bakedDocumentIdObjecter,
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
+	articleTypes: articleTypeObjecter.array(),
 	title: bakedDocumentTitleObjecter,
 	language: bakedDocumentLanguageObjecter,
 	abstract: bakedDocumentAbstractObjecter.nullable(),
-	abstractDetails: bakedDocumentAbstractDetailsObjecter.nullable(),
-	resources: bakedDocumentRessourcesObjecter,
+	authors: bakedDocumentAuthorObjecter.array(),
+	abstractDetails: bakedDocumentAbstractPartObjecter.array().nullable(),
+	resources: bakedDocumentRessourceObjecter.array(),
 	keywords: bakedDocumentKeywordObjecter.array(),
+	webPublishDate: flexibleDateObjecter.nullable(),
+	journalPublishDate: flexibleDateObjecter.nullable(),
+	lastUpdate: commonDateObjecter,
+	lastExportOnSea: commonDateObjecter.nullable(),
 }) {
-	public static create(params: GetEntityProperties<typeof BakedDocumentEntity>) {
-		return new BakedDocumentEntity(params);
+	public static create(
+		params: Omit<GetEntityProperties<typeof BakedDocumentEntity>, "lastUpdate" | "lastExportOnSea">,
+	) {
+		return new BakedDocumentEntity({
+			...params,
+			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
+			lastExportOnSea: null,
+		});
+	}
+
+	public exportToSea() {
+		return this.update({
+			lastExportOnSea: commonDateObjecter.unsafeCreate(new Date()),
+		});
 	}
 }

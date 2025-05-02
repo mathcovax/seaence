@@ -1,7 +1,7 @@
 import { type Provider, providerObjecter } from "@business/domains/common/provider";
 import { type RawResourceUrl } from "@business/domains/common/rawDocument";
 import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
-import { EntityHandler, type GetEntityProperties, type GetValueObject, urlObjecter, zod } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, urlObjecter, zod } from "@vendors/clean";
 
 export const nodeSameRawDocumentIdObjecter = zod
 	.string()
@@ -22,9 +22,17 @@ export class NodeSameRawDocumentEntity extends EntityHandler.create({
 	id: nodeSameRawDocumentIdObjecter,
 	rawDocumentWrapper: rawDocumentWrapperObjecter,
 	uniqueField: uniqueFieldObjecter,
+	lastCooked: commonDateObjecter.nullable(),
+	lastUpdate: commonDateObjecter,
 }) {
-	public static create(params: GetEntityProperties<typeof NodeSameRawDocumentEntity>) {
-		return new NodeSameRawDocumentEntity(params);
+	public static create(
+		params: Omit<GetEntityProperties<typeof NodeSameRawDocumentEntity>, "lastCooked" | "lastUpdate">,
+	) {
+		return new NodeSameRawDocumentEntity({
+			...params,
+			lastCooked: null,
+			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
+		});
 	}
 
 	public setValueRawDocumentWrapper(provider: Provider, url: RawResourceUrl) {
@@ -35,6 +43,13 @@ export class NodeSameRawDocumentEntity extends EntityHandler.create({
 
 		return this.update({
 			rawDocumentWrapper: newRawDocumentWrapper,
+			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
+		});
+	}
+
+	public cook() {
+		return this.update({
+			lastCooked: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
 }

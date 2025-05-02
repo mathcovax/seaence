@@ -37,3 +37,24 @@ export const dateYYYYMMDDIntervalObjecter = zod
 
 export type DateYYYYMMDDInterval = GetValueObject<typeof dateYYYYMMDDIntervalObjecter>;
 
+export const flexibleDateObjecter = zod
+	.union([
+		zod.object({
+			day: zod.null(),
+			month: zod.null(),
+			year: zod.number(),
+		}),
+		zod.object({
+			day: zod.null(),
+			month: zod.number(),
+			year: zod.number(),
+		}),
+		zod.object({
+			day: zod.number(),
+			month: zod.number(),
+			year: zod.number(),
+		}),
+	])
+	.createValueObjecter("flexibleDate");
+
+export type FlexibleDate = GetValueObject<typeof flexibleDateObjecter>;

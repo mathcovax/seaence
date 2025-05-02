@@ -16,6 +16,7 @@ export const envs = zod
 		MONGO_DATABASE_URL: zod.string(),
 		MONGO_DB: zod.string(),
 		DB_CONNECTION: zod.booleanInString(),
+		SEA_BASE_URL: zod.string().url(),
 		ROSETTA_BASE_URL: zod.string().url(),
 	})
 	.parse(process.env);

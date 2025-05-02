@@ -1,12 +1,48 @@
 import { hasKey } from "@duplojs/utils";
-import { envs } from "@interfaces/envs";
 import { AbysAPI, type RawDocument } from "@interfaces/providers/abys";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
-import { abstractSectionNameEnum, acronymMounthToNumber, reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
+import { type splitDateSchema } from "@interfaces/providers/scienceDatabase/pubmed/types/article";
+import { reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
 import { TechnicalError } from "@vendors/clean/error";
 import { match, P } from "ts-pattern";
 
 const expectHttpCode = 200;
+const pubmedBaseUrl = "https://pubmed.ncbi.nlm.nih.gov";
+
+function formatDate(splitDate: typeof splitDateSchema["_output"]) {
+	return match({
+		year: splitDate.Year["#text"],
+		month: splitDate.Month?.["#text"] ?? null,
+		day: splitDate.Day?.["#text"] ?? null,
+	})
+		.with(
+			{
+				year: P.number,
+				month: P.number,
+				day: null,
+			},
+			(splitDate) => splitDate,
+		)
+		.with(
+			{
+				year: P.number,
+				month: null,
+				day: null,
+			},
+			(splitDate) => splitDate,
+		)
+		.with(
+			{
+				year: P.number,
+				month: P.number,
+				day: P.number,
+			},
+			(splitDate) => splitDate,
+		)
+		.otherwise(
+			(splitDate) => new TechnicalError("Wrong split date format", splitDate),
+		);
+}
 
 export async function pubmedSender(reference: string) {
 	const pubmedResponse = await PubMedAPI.getArticle(reference);
@@ -102,7 +138,6 @@ export async function pubmedSender(reference: string) {
 				const pubmedWebPublishDate = PubmedArticle
 					.MedlineCitation
 					.Article
-					.PublicationTypeList
 					.ArticleDate;
 
 				const pubmedJournalPublishDate = PubmedArticle
@@ -154,33 +189,12 @@ export async function pubmedSender(reference: string) {
 					.Article
 					.Abstract ?? {};
 
-				const detailedAbstract = abstractText instanceof Array
-					? abstractText.reduce<RawDocument["detailedAbstract"]>(
-						(pv, abstractPart) => {
-							if (!pv) {
-								return null;
-							}
-
-							const sectionName = abstractPart["@_Label"]
-								.toLowerCase()
-								.replace(
-									/ [a-z]/g,
-									(match) => match.toUpperCase(),
-								);
-
-							if (!abstractSectionNameEnum.has(sectionName)) {
-								return null;
-							}
-
-							return [
-								...pv,
-								{
-									name: sectionName,
-									content: abstractPart["#text"],
-								},
-							];
-						},
-						[],
+				const abstractDetails = abstractText instanceof Array
+					? abstractText.map(
+						(part) => ({
+							name: part["@_Label"].toLowerCase(),
+							content: part["#text"],
+						}),
 					)
 					: null;
 
@@ -202,34 +216,36 @@ export async function pubmedSender(reference: string) {
 				];
 
 				const journalPublishDate = pubmedJournalPublishDate
-					? {
-						day: pubmedJournalPublishDate.Day?.["#text"] ?? null,
-						mounth: (
-							(mounth?: string) => mounth && acronymMounthToNumber[mounth]
-								? acronymMounthToNumber[mounth]
-								: null
-						)(pubmedJournalPublishDate.Month?.["#text"]),
-						year: pubmedJournalPublishDate.Year?.["#text"] ?? null,
-					}
+					? formatDate(pubmedJournalPublishDate)
 					: null;
+
+				if (journalPublishDate instanceof Error) {
+					return journalPublishDate;
+				}
+
+				const webPublishDate = pubmedWebPublishDate
+					? formatDate(pubmedWebPublishDate)
+					: null;
+
+				if (webPublishDate instanceof Error) {
+					return webPublishDate;
+				}
 
 				return {
 					provider: "pubmed",
 					uniqueArticleField,
-					resourceUrl: `${envs.PUBMED_RESOURCE_BASE_URL}/${reference}`,
+					resourceUrl: `${pubmedBaseUrl}/${reference}`,
 					articleTypes,
 					articleIds,
 					authors,
 					grants,
 					title: PubmedArticle.MedlineCitation.Article.ArticleTitle["#text"],
-					webPublishDate: pubmedWebPublishDate
-						? `${pubmedWebPublishDate.Year["#text"]}/${pubmedWebPublishDate.Month["#text"]}/${pubmedWebPublishDate.Day["#text"]}`
-						: null,
+					webPublishDate,
 					journalPublishDate,
 					abstract: !abstractText || abstractText instanceof Array
 						? null
 						: abstractText["#text"],
-					detailedAbstract,
+					abstractDetails,
 					keywords,
 				};
 			},

@@ -9,10 +9,6 @@ type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibl
 
 export { ArticleType };
 
-type AbstractSectionName = "introduction" | "background" | "objective" | "method" | "result" | "conclusion" | "reference" | "acknowledgment" | "objective" | "option" | "outcome" | "evidence" | "value" | "benefit" | "recommendation" | "validation" | "sponsor" | "purpose" | "patient" | "setting" | "studyObjective" | "measurementAndMainResult" | "introductions" | "backgrounds" | "objectives" | "methods" | "results" | "conclusions" | "references" | "acknowledgments" | "objectives" | "options" | "outcomes" | "evidences" | "values" | "benefits" | "recommendations" | "validations" | "sponsors" | "purposes" | "patients" | "settings" | "studyObjectives" | "measurementsAndMainResults";
-
-export { AbstractSectionName };
-
 type UniqueFieldName = "digitalObjectIdentifier" | "specific";
 
 export { UniqueFieldName };
@@ -42,22 +38,46 @@ type CodegenRoutes = ({
             value: string;
         }[];
         abstract: string | null;
-        detailedAbstract: {
-            name: AbstractSectionName;
+        abstractDetails: {
+            name: string;
             content: string;
         }[] | null;
-        webPublishDate: Date | null;
-        journalPublishDate: {
-            day: number | null;
-            mounth: number | null;
+        webPublishDate: ({
+            day: null;
+            month: null;
             year: number;
-        } | null;
+        } | {
+            day: null;
+            month: number;
+            year: number;
+        } | {
+            day: number;
+            month: number;
+            year: number;
+        }) | null;
+        journalPublishDate: ({
+            day: null;
+            month: null;
+            year: number;
+        } | {
+            day: null;
+            month: number;
+            year: number;
+        } | {
+            day: number;
+            month: number;
+            year: number;
+        }) | null;
         uniqueArticleField: {
             name: UniqueFieldName;
             value: string;
         };
     };
     response: {
+        code: 400;
+        information: "rawDocument.upsert.error";
+        body: string;
+    } | {
         code: 201;
         information: "rawDocument.upsert";
         body?: undefined;

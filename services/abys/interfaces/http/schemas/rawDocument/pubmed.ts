@@ -1,4 +1,5 @@
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
+
 const {
 	resourceUrl,
 	title,
@@ -8,7 +9,7 @@ const {
 	articleTypes,
 	articleIds,
 	abstract,
-	detailedAbstract,
+	abstractDetails,
 	webPublishDate,
 	journalPublishDate,
 	uniqueArticleField,
@@ -24,7 +25,7 @@ export const entryPointCreatePubmedRawDocument = zod.object({
 	articleTypes: articleTypes.toZodSchema(),
 	articleIds: articleIds.toZodSchema(),
 	abstract: abstract.toZodSchema(),
-	detailedAbstract: detailedAbstract.toZodSchema(),
+	abstractDetails: abstractDetails.toZodSchema(),
 	webPublishDate: webPublishDate.toZodSchema(),
 	journalPublishDate: journalPublishDate.toZodSchema(),
 	uniqueArticleField: uniqueArticleField.toZodSchema(),

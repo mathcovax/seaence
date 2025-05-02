@@ -1,5 +1,6 @@
 import { type ZodSpace, zod } from "@duplojs/core";
 import { type ZodType } from "zod";
+import { acronymMonthToNumber } from "./utils";
 
 const zo = zod.object;
 
@@ -28,18 +29,6 @@ function valueXML<
 const stringValue = valueXML(zod.coerce.string());
 const numberValue = valueXML(zod.coerce.number());
 
-const datePayload = {
-	Year: zo({
-		...numberValue,
-	}),
-	Month: zo({
-		...numberValue,
-	}),
-	Day: zo({
-		...numberValue,
-	}),
-};
-
 const medlineDate = zo({
 	MedlineDate: zo(stringValue),
 }).transform(
@@ -51,16 +40,31 @@ const medlineDate = zo({
 			return zod.NEVER;
 		}
 
-		const mounth = stringMonth.includes("-") ? undefined : stringMonth;
+		const rawMonth = stringMonth.split("-").shift();
+		const month = rawMonth ? acronymMonthToNumber[rawMonth] : undefined;
+
 		const day = Number(stringDay);
 
 		return {
 			Year: { "#text": year },
-			Month: mounth ? { "#text": mounth } : undefined,
-			Day: isNaN(day) || !mounth ? undefined : { "#text": day },
+			Month: month ? { "#text": month } : undefined,
+			Day: isNaN(day) || !month ? undefined : { "#text": day },
 		};
 	},
 );
+
+export const splitDateSchema = zo({
+	Year: zo(numberValue),
+	Month: zo(stringValue)
+		.transform((Month) => {
+			const rawMonth = Month["#text"].split("-").shift();
+			const month = rawMonth ? acronymMonthToNumber[rawMonth] : undefined;
+
+			return month ? { "#text": month } : undefined;
+		})
+		.optional(),
+	Day: zo(numberValue).optional(),
+});
 
 export const articlePayloadSchema = zo({
 	PubmedArticleSet: zod.union([
@@ -71,13 +75,9 @@ export const articlePayloadSchema = zo({
 						Journal: zo({
 							JournalIssue: zo({
 								PubDate: zod.union([
-									zo({
-										Year: zo(numberValue),
-										Month: zo(stringValue).optional(),
-										Day: zo(numberValue).optional(),
-									}),
+									splitDateSchema,
 									medlineDate,
-								]),
+								]).optional(),
 							}),
 						}).optional(),
 						Abstract: zo({
@@ -94,8 +94,8 @@ export const articlePayloadSchema = zo({
 								...attributeXML("UI", zod.string()),
 								...stringValue,
 							}).toArray(),
-							ArticleDate: zo(datePayload).optional(),
 						}),
+						ArticleDate: splitDateSchema.optional(),
 						AuthorList: zo({
 							Author: zod.union([
 								zo({

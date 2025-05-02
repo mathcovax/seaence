@@ -16,12 +16,14 @@ export class AbysAPI {
 	private static httpClient: HttpClient<AbysHttpRoute>;
 
 	public static sendRawDocument(rawDocument: RawDocument) {
-		return this.httpClient.put(
-			"/raw-document",
-			{
-				body: rawDocument,
-			},
-		);
+		return this.httpClient
+			.put(
+				"/raw-document",
+				{
+					body: rawDocument,
+				},
+			)
+			.iWantInformation("rawDocument.upsert");
 	}
 
 	static {

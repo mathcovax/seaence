@@ -5,20 +5,23 @@ services:
       service: sea-es-template
     ports:
       - 9200:9200
+    attach: false
   kibana:
     extends:
       file: ${INCLUDE_PATH}/sea/compose.template.yml
       service: kibana-template
     ports:
       - 5601:5601
-  sea-duplo:
+    depends_on:
+      - sea-es
+    attach: false
+  sea:
     extends:
       file: ${INCLUDE_PATH}/sea/compose.template.yml
       service: sea-duplo-template
-    command: npm -w services/sea run dev
+    command: npm -w services/sea run duplo:dev
+    depends_on:
+      - sea-es
 
-networks:
-  elastic:
-    driver: bridge
 volumes:
   sea-es-data:

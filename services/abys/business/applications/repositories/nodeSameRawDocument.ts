@@ -15,6 +15,7 @@ export interface NodeSameRawDocumentRepository extends RepositoryBase<NodeSameRa
 	findNodeSameRawDocumentPerPage(
 		options: FindNodeSameRawDocumentPerPageOptions
 	): Promise<NodeSameRawDocumentEntity[]>;
+	findUpdatedNode(): AsyncGenerator<NodeSameRawDocumentEntity>;
 }
 
 export const nodeSameRawDocumentRepository = createRepositoryHandler<NodeSameRawDocumentRepository>();

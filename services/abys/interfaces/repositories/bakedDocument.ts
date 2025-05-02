@@ -1,21 +1,31 @@
-import { uuidv7 } from "uuidv7";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
-import { type BakedDocumentAbstractDetails, bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentIdObjecter, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, type BakedDocumentLanguage, bakedDocumentAbstractDetailsObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentIdObjecter, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, type BakedDocumentLanguage, bakedDocumentAbstractPartObjecter, bakedDocumentRessourceObjecter } from "@business/domains/entities/bakedDocument";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
 import { RosettaAPI, type SupportedLanguage } from "@interfaces/providers/rosetta";
+import { KeyDate } from "@interfaces/providers/keyDate";
+import { match, P } from "ts-pattern";
+import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 
 const languageMapper: Record<BakedDocumentLanguage["value"], SupportedLanguage> = {
 	"fr-FR": "fr",
 	"en-US": "en",
 };
 
+const DOIFoundationBaseUrl = "https://www.doi.org";
+
 bakedDocumentRepository.default = {
-	generateBakedDocumentId() {
-		return bakedDocumentIdObjecter.unsafeCreate(uuidv7());
+	makeBakedDocumentId(language, nodeSameRawDocumentId) {
+		return bakedDocumentIdObjecter.unsafeCreate(`${nodeSameRawDocumentId.value}_${language.value}`);
 	},
 	async save(bakedDocument) {
 		const simpleBakedDocument = bakedDocument.toSimpleObject();
+
+		const beforeBakedDocument = await mongo.bakedDocumentCollection.findOne({
+			id: simpleBakedDocument.id,
+		});
+
+		const createdAt = beforeBakedDocument?.createdAt ?? new Date();
 
 		await mongo.bakedDocumentCollection.updateOne(
 			{
@@ -24,7 +34,7 @@ bakedDocumentRepository.default = {
 			{
 				$set: {
 					...simpleBakedDocument,
-					createdAt: new Date(),
+					createdAt,
 					updatedAt: new Date(),
 				},
 			},
@@ -32,21 +42,6 @@ bakedDocumentRepository.default = {
 		);
 
 		return bakedDocument;
-	},
-	async findByNodeSameRawDocument(nodeSameRawDocument) {
-		const bakedDocumentMongo = await mongo.bakedDocumentCollection.findOne(
-			{
-				nodeSameRawDocumentId: nodeSameRawDocument.id.value,
-			},
-			{ projection: { _id: 0 } },
-		);
-
-		return bakedDocumentMongo
-			? EntityHandler.unsafeMapper(
-				BakedDocumentEntity,
-				bakedDocumentMongo,
-			)
-			: null;
 	},
 	async makeBakedTitleWithRawTitle(rawTitle, language) {
 		const title = await RosettaAPI.translateText(
@@ -59,7 +54,7 @@ bakedDocumentRepository.default = {
 	async makeBakedKeywordsWithKeywordPubmed(rawKeywordPubmeds, language) {
 		const rawKeywordList = rawKeywordPubmeds
 			.map((rawKeywordPubmed) => rawKeywordPubmed.value.value)
-			.join(",");
+			.join("\n");
 
 		const listKeywordProcesses = await RosettaAPI
 			.translateText(
@@ -67,8 +62,7 @@ bakedDocumentRepository.default = {
 				languageMapper[language.value],
 			)
 			.then(
-				(result) => result
-					.split(",").map((value) => value.trim()),
+				(result) => result.split("\n").map((value) => value.trim()),
 			)
 			.then(
 				(result) => new Set(result).values().toArray(),
@@ -76,7 +70,6 @@ bakedDocumentRepository.default = {
 
 		return listKeywordProcesses.map((keyword) => bakedDocumentKeywordObjecter.unsafeCreate({
 			value: keyword,
-			pound: 1,
 		}));
 	},
 	async makeBakedAbstractWithRawAbstract(rawAbstract, language) {
@@ -87,27 +80,73 @@ bakedDocumentRepository.default = {
 
 		return bakedDocumentAbstractObjecter.unsafeCreate(abstract);
 	},
-	async makeBakedAbstractDetailsWithRawAbstractDetails(rawAbstractDetails, language) {
-		const rawAbstractDetailsProcesses = await rawAbstractDetails.reduce<
-			Promise<BakedDocumentAbstractDetails["value"]>
-		>(
-			async(promiseAcc, { value }) => {
-				const acc = await promiseAcc;
-				const { name, content } = value;
-
-				const contentProcess = RosettaAPI.translateText(
-					content,
-					languageMapper[language.value],
-				);
-
-				return {
-					...acc,
-					[name]: contentProcess,
-				};
-			},
-			Promise.resolve({}),
+	makeBakedAbstractDetailsWithRawAbstractDetails(rawAbstractDetails, language) {
+		return Promise.all(
+			rawAbstractDetails.map(
+				({ value: { name, content } }) => RosettaAPI
+					.translateText(content, languageMapper[language.value])
+					.then(
+						(content) => bakedDocumentAbstractPartObjecter.unsafeCreate({
+							name,
+							content,
+						}),
+					),
+			),
 		);
+	},
+	async *findUpdatedDocuments() {
+		const startPage = 0;
+		const quantityPerPage = 10;
 
-		return bakedDocumentAbstractDetailsObjecter.unsafeCreate(rawAbstractDetailsProcesses);
+		const lastSend = await KeyDate.get("lastSendBakedDocument");
+		await KeyDate.set("lastSendBakedDocument");
+
+		for (let page = startPage; true; page++) {
+			const bakedDocuments = await mongo
+				.bakedDocumentCollection
+				.find(
+					{
+						lastUpdate: {
+							$gt: lastSend,
+						},
+					},
+					{ projection: { _id: 0 } },
+				)
+				.skip(page * quantityPerPage)
+				.limit(quantityPerPage)
+				.toArray();
+
+			if (!bakedDocuments.length) {
+				break;
+			}
+
+			for (const nodeNameRawDocument of bakedDocuments) {
+				yield EntityHandler.unsafeMapper(
+					BakedDocumentEntity,
+					nodeNameRawDocument,
+				);
+			}
+		}
+	},
+	findDOIFoundationResourcesInRawDocument(rawDocument) {
+		return match({ rawDocument })
+			.with(
+				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
+				({ rawDocument }) => {
+					const articleId = rawDocument.articleIds.find(
+						({ value: { name } }) => name === "doi",
+					);
+
+					if (!articleId) {
+						return null;
+					}
+
+					return bakedDocumentRessourceObjecter.unsafeCreate({
+						resourcesProvider: "DOIFoundation",
+						url: `${DOIFoundationBaseUrl}/${articleId.value.value}`,
+					});
+				},
+			)
+			.exhaustive();
 	},
 };

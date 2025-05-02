@@ -7,5 +7,5 @@ services:
     ports:
       - 5001:5000 # delete this line if you want to use only in docker network
     # config volume: to avoid re-downloading languages ​​every time
-    volumes:
-      - ${INCLUDE_PATH}/rosetta/languages:/home/libretranslate/.local/share/argos-translate/packages/
+    # volumes:
+    #   - ${INCLUDE_PATH}/rosetta/languages:/home/libretranslate/.local/share/argos-translate/packages/

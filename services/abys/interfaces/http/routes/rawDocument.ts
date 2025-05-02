@@ -7,18 +7,27 @@ useBuilder()
 	.extract({
 		body: entryPointCreatePubmedRawDocument,
 	})
-	.handler(
-		async(pickup) => {
+	.cut(
+		async({ pickup, dropper }) => {
 			const { body } = pickup(["body"]);
 
-			await match(body)
+			const result = await match(body)
 				.with(
 					{ provider: "pubmed" },
 					(input) => upsertPubmedRawDocumentUsecase.execute(input),
 				)
 				.exhaustive();
 
-			return new CreatedHttpResponse("rawDocument.upsert");
+			if (result instanceof Error) {
+				return new BadRequestHttpResponse("rawDocument.upsert.error", result.information);
+			}
+
+			return dropper(null);
 		},
+		undefined,
+		makeResponseContract(BadRequestHttpResponse, "rawDocument.upsert.error", zod.string()),
+	)
+	.handler(
+		() => new CreatedHttpResponse("rawDocument.upsert"),
 		makeResponseContract(CreatedHttpResponse, "rawDocument.upsert"),
 	);

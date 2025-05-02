@@ -1,12 +1,12 @@
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
-import { type ExpectType } from "@duplojs/utils";
+import { getTypedEntries, type ExpectType } from "@duplojs/utils";
 import { match, P } from "ts-pattern";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { type NodeSameRawDocumentEntity } from "@business/domains/entities/nodeSameRawDocument";
 import { rawDocumentRepository, type ResultOfFindByNodeSameRawDocument } from "@business/applications/repositories/rawDocument";
-import { providerEnum, type Provider } from "@business/domains/common/provider";
+import { type Provider } from "@business/domains/common/provider";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
-import { BakedDocumentEntity, type BakedDocumentLanguage, type BakedDocumentRessources, bakedDocumentRessourcesObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentAuthorObjecter, BakedDocumentEntity, type BakedDocumentLanguage, type BakedDocumentRessource, bakedDocumentRessourceObjecter } from "@business/domains/entities/bakedDocument";
 
 interface Input {
 	nodeSameRawDocument: NodeSameRawDocumentEntity;
@@ -21,18 +21,13 @@ type _AssertPriority = ExpectType<
 	"strict"
 >;
 
-const ressourcesKey = providerEnum.toTuple();
-
 export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 	bakedDocumentRepository,
 	rawDocumentRepository,
 }) {
 	public async execute(input: Input) {
 		const { nodeSameRawDocument, language } = input;
-		const [rawDocuments, currentBakedDocument] = await Promise.all([
-			this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument),
-			this.bakedDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument),
-		]);
+		const rawDocuments = await this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
 
 		const rawDocumentKey = priority.find((key) => !!rawDocuments[key]);
 
@@ -42,8 +37,15 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 			.with(
 				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
 				async({ rawDocument }) => BakedDocumentEntity.create({
-					id: currentBakedDocument?.id ?? this.bakedDocumentRepository.generateBakedDocumentId(),
+					id: this.bakedDocumentRepository.makeBakedDocumentId(
+						language,
+						nodeSameRawDocument.id,
+					),
 					nodeSameRawDocumentId: nodeSameRawDocument.id,
+					articleTypes: rawDocument.articleTypes,
+					authors: rawDocument.authors?.map(
+						(author) => bakedDocumentAuthorObjecter.unsafeCreate(author.value),
+					) ?? [],
 					language: language,
 					title: await this.bakedDocumentRepository.makeBakedTitleWithRawTitle(
 						rawDocument.title,
@@ -60,12 +62,14 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 						rawDocument.keywords,
 						language,
 					),
-					abstractDetails: rawDocument.detailedAbstract
+					abstractDetails: rawDocument.abstractDetails
 						? await this.bakedDocumentRepository.makeBakedAbstractDetailsWithRawAbstractDetails(
-							rawDocument.detailedAbstract,
+							rawDocument.abstractDetails,
 							language,
 						)
 						: null,
+					journalPublishDate: rawDocument.journalPublishDate,
+					webPublishDate: rawDocument.webPublishDate,
 				}),
 			)
 			.with(
@@ -84,25 +88,25 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 	}
 
 	private computedRessources(rawDocuments: ResultOfFindByNodeSameRawDocument) {
-		return bakedDocumentRessourcesObjecter.unsafeCreate(
-			ressourcesKey.reduce<BakedDocumentRessources["value"]>(
-				(acc, provider) => {
-					const rawDocument = rawDocuments[provider];
-
-					if (!rawDocument) {
-						return acc;
-					}
-
-					return {
-						...acc,
-						[provider]: {
-							name: provider,
-							url: rawDocument.resourceUrl.value,
-						},
-					};
-				},
-				{},
-			),
-		);
+		return getTypedEntries(rawDocuments)
+			.flatMap(
+				([provider, rawDocument]) => match({
+					provider,
+					rawDocument,
+				})
+					.with(
+						{ provider: "pubmed" },
+						({ provider, rawDocument }) => [
+							bakedDocumentRessourceObjecter.unsafeCreate({
+								resourcesProvider: provider,
+								url: rawDocument.resourceUrl.value,
+							}),
+							this.bakedDocumentRepository
+								.findDOIFoundationResourcesInRawDocument(rawDocument),
+						],
+					)
+					.exhaustive(),
+			)
+			.filter((resources): resources is BakedDocumentRessource => !!resources);
 	}
 }

@@ -5,7 +5,8 @@ import { type PubmedRawDocumentEntity } from "@business/domains/entities/rawDocu
 import { type ExpectType } from "@duplojs/utils";
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
-export type RawDocumentEntity = PubmedRawDocumentEntity;
+export type RawDocument =
+	| PubmedRawDocumentEntity;
 
 export interface ResultOfFindByNodeSameRawDocument {
 	pubmed?: PubmedRawDocumentEntity;
@@ -17,8 +18,8 @@ type _AssertResultOfFindByNodeSameRawDocument = ExpectType<
 	"strict"
 >;
 
-export interface RawDocumentRepository extends RepositoryBase<RawDocumentEntity> {
-	findByResourceUrl(resourceUrl: RawResourceUrl): Promise<RawDocumentEntity | null>;
+export interface RawDocumentRepository extends RepositoryBase<RawDocument> {
+	findByResourceUrl(resourceUrl: RawResourceUrl): Promise<RawDocument | null>;
 	findByNodeSameRawDocument(
 		NodeSameRawDocumentEntity: NodeSameRawDocumentEntity
 	): Promise<ResultOfFindByNodeSameRawDocument>;

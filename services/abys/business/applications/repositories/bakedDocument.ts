@@ -1,10 +1,14 @@
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
-import { type BakedDocumentId, type BakedDocumentEntity, type BakedDocumentTitle, type BakedDocumentLanguage, type BakedDocumentAbstract, type BakedDocumentKeyword, type BakedDocumentAbstractDetails } from "@business/domains/entities/bakedDocument";
+import { type BakedDocumentId, type BakedDocumentEntity, type BakedDocumentTitle, type BakedDocumentLanguage, type BakedDocumentAbstract, type BakedDocumentKeyword, type BakedDocumentAbstractPart, type BakedDocumentRessource } from "@business/domains/entities/bakedDocument";
 import { type RawAbstractPart, type RawAbstract, type RawTitle, type RawKeyword } from "@business/domains/common/rawDocument";
-import { type NodeSameRawDocumentEntity } from "@business/domains/entities/nodeSameRawDocument";
+import { type NodeSameRawDocumentId } from "@business/domains/entities/nodeSameRawDocument";
+import { type RawDocument } from "./rawDocument";
 
 export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEntity> {
-	generateBakedDocumentId(): BakedDocumentId;
+	makeBakedDocumentId(
+		language: BakedDocumentLanguage,
+		nodeSameRawDocumentId: NodeSameRawDocumentId
+	): BakedDocumentId;
 	makeBakedTitleWithRawTitle(rawTitle: RawTitle, language: BakedDocumentLanguage): Promise<BakedDocumentTitle>;
 	makeBakedAbstractWithRawAbstract(
 		rawAbstract: RawAbstract,
@@ -17,8 +21,9 @@ export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEnt
 	makeBakedAbstractDetailsWithRawAbstractDetails(
 		rawAbstractDetails: RawAbstractPart[],
 		language: BakedDocumentLanguage,
-	): Promise<BakedDocumentAbstractDetails>;
-	findByNodeSameRawDocument(nodeSameRawDocument: NodeSameRawDocumentEntity): Promise<BakedDocumentEntity | null>;
+	): Promise<BakedDocumentAbstractPart[]>;
+	findUpdatedDocuments(): AsyncGenerator<BakedDocumentEntity>;
+	findDOIFoundationResourcesInRawDocument(rawDocument: RawDocument): BakedDocumentRessource | null;
 }
 
 export const bakedDocumentRepository = createRepositoryHandler<BakedDocumentRepository>();
