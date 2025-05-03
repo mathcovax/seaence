@@ -33,14 +33,14 @@ export const bakedDocumentAbstractPartObjecter = zod
 
 export type BakedDocumentAbstractPart = GetValueObject<typeof bakedDocumentAbstractPartObjecter>;
 
-export const resourcesProviderEnum = createEnum([
+export const resourceProviderEnum = createEnum([
 	"DOIFoundation",
 	...providerEnum.toTuple(),
 ]);
 
 export const bakedDocumentRessourceObjecter = zod
 	.object({
-		resourcesProvider: zod.enum(resourcesProviderEnum.toTuple()),
+		resourceProvider: zod.enum(resourceProviderEnum.toTuple()),
 		url: zod.string(),
 	})
 	.createValueObjecter("bakedDocumentRessource");

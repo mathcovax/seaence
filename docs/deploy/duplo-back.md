@@ -15,6 +15,7 @@
 format name: [SERVICE_NAME]_ENV_LOCAL
 
 The secret value is .env file content of your service. D'ONT FORGET EDIT VALUE !
+D'ont forget to remove `?authSource=admin` from mongo base url.
 
 ## 3. Write .env.local file in deploy job
 ```yml

@@ -64,7 +64,7 @@ model SendSearchResultMissionStep {
 
 model SendSearchResultMission {
     id                          String                       @id
-    quantity                    Int
+    concurrency                 Int
     status                      missionStatus
     sendSearchResultMissionStep SendSearchResultMissionStep?
 }

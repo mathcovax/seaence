@@ -128,25 +128,33 @@ bakedDocumentRepository.default = {
 			}
 		}
 	},
-	findDOIFoundationResourcesInRawDocument(rawDocument) {
-		return match({ rawDocument })
-			.with(
-				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
-				({ rawDocument }) => {
-					const articleId = rawDocument.articleIds.find(
-						({ value: { name } }) => name === "doi",
-					);
+	findDOIFoundationResourcesInRawDocument(rawDocuments) {
+		for (const rawDocument of rawDocuments) {
+			const resource = match({ rawDocument })
+				.with(
+					{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
+					({ rawDocument }) => {
+						const articleId = rawDocument.articleIds.find(
+							({ value: { name } }) => name === "doi",
+						);
 
-					if (!articleId) {
-						return null;
-					}
+						if (!articleId) {
+							return null;
+						}
 
-					return bakedDocumentRessourceObjecter.unsafeCreate({
-						resourcesProvider: "DOIFoundation",
-						url: `${DOIFoundationBaseUrl}/${articleId.value.value}`,
-					});
-				},
-			)
-			.exhaustive();
+						return bakedDocumentRessourceObjecter.unsafeCreate({
+							resourceProvider: "DOIFoundation",
+							url: `${DOIFoundationBaseUrl}/${articleId.value.value}`,
+						});
+					},
+				)
+				.exhaustive();
+
+			if (resource) {
+				return resource;
+			}
+		}
+
+		return null;
 	},
 };

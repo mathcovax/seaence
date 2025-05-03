@@ -3,7 +3,7 @@ import { MissionEntity, missionStatusObjecter } from "..";
 
 export class SendSearchResultMissionEntity extends EntityHandler.create(
 	{
-		quantity: intObjecter,
+		concurrency: intObjecter,
 	},
 	MissionEntity,
 ) {

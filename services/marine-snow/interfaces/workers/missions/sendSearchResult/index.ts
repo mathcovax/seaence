@@ -27,14 +27,8 @@ function output(data: SendSearchResultMissionOutput) {
 	return postMessage(data);
 }
 
-const quantityPerPage = 10;
-
 export async function mission(mission: SupportedSendSearchResultMission) {
-	for (
-		let incrementQuantity = 0;
-		incrementQuantity <= mission.quantity;
-		incrementQuantity += quantityPerPage
-	) {
+	while (true) {
 		const prismaSearchResults = await prismaClient.searchResult.updateManyAndReturn({
 			where: {
 				selected: false,
@@ -43,9 +37,7 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 			data: {
 				selected: true,
 			},
-			limit: incrementQuantity + quantityPerPage > mission.quantity
-				? mission.quantity - incrementQuantity
-				: quantityPerPage,
+			limit: mission.concurrency,
 			select: {
 				provider: true,
 				reference: true,

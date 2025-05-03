@@ -23,7 +23,7 @@ export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEnt
 		language: BakedDocumentLanguage,
 	): Promise<BakedDocumentAbstractPart[]>;
 	findUpdatedDocuments(): AsyncGenerator<BakedDocumentEntity>;
-	findDOIFoundationResourcesInRawDocument(rawDocument: RawDocument): BakedDocumentRessource | null;
+	findDOIFoundationResourcesInRawDocument(rawDocuments: RawDocument[]): BakedDocumentRessource | null;
 }
 
 export const bakedDocumentRepository = createRepositoryHandler<BakedDocumentRepository>();

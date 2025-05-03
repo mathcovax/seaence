@@ -3,7 +3,7 @@ import { AbysAPI, type RawDocument } from "@interfaces/providers/abys";
 import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
 import { type splitDateSchema } from "@interfaces/providers/scienceDatabase/pubmed/types/article";
 import { reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
-import { TechnicalError } from "@vendors/clean/error";
+import { TechnicalError, zod } from "@vendors/clean";
 import { match, P } from "ts-pattern";
 
 const expectHttpCode = 200;
@@ -49,7 +49,9 @@ export async function pubmedSender(reference: string) {
 
 	if (pubmedResponse instanceof Error) {
 		return new TechnicalError(
-			"Parsing error when fetching article",
+			pubmedResponse instanceof zod.ZodError
+				? "Parsing error when fetching article"
+				: "Error when fetching article",
 			{ error: pubmedResponse },
 		);
 	}

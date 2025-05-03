@@ -36,8 +36,8 @@ seaRepository.default = {
 
 		const providers = restSimplifyObject
 			.resources
-			.map(({ resourcesProvider }) => resourcesProvider)
-			.filter((resourcesProvider): resourcesProvider is Provider["value"] => providerEnum.has(resourcesProvider))
+			.map(({ resourceProvider }) => resourceProvider)
+			.filter((resourceProvider): resourceProvider is Provider["value"] => providerEnum.has(resourceProvider))
 			.map((value) => ({ value }));
 
 		await SeaAPI.sendDocument(

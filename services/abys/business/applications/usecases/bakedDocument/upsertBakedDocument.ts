@@ -88,25 +88,29 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 	}
 
 	private computedRessources(rawDocuments: ResultOfFindByNodeSameRawDocument) {
-		return getTypedEntries(rawDocuments)
-			.flatMap(
+		const resources = getTypedEntries(rawDocuments)
+			.map(
 				([provider, rawDocument]) => match({
 					provider,
 					rawDocument,
 				})
 					.with(
 						{ provider: "pubmed" },
-						({ provider, rawDocument }) => [
-							bakedDocumentRessourceObjecter.unsafeCreate({
-								resourcesProvider: provider,
-								url: rawDocument.resourceUrl.value,
-							}),
-							this.bakedDocumentRepository
-								.findDOIFoundationResourcesInRawDocument(rawDocument),
-						],
+						({ provider, rawDocument }) => bakedDocumentRessourceObjecter.unsafeCreate({
+							resourceProvider: provider,
+							url: rawDocument.resourceUrl.value,
+						}),
 					)
 					.exhaustive(),
-			)
-			.filter((resources): resources is BakedDocumentRessource => !!resources);
+			);
+
+		const findedDOIFoundationResources = this.bakedDocumentRepository
+			.findDOIFoundationResourcesInRawDocument(Object.values({ ...rawDocuments }));
+
+		if (findedDOIFoundationResources) {
+			resources.push(findedDOIFoundationResources);
+		}
+
+		return resources;
 	}
 }

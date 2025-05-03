@@ -3,16 +3,16 @@ import { SendSearchResultMissionEntity } from "@business/domains/entities/missio
 import { type Int, UsecaseHandler } from "@vendors/clean";
 
 interface Input {
-	quantity: Int;
+	concurrency: Int;
 }
 
 export class CreateSendSearchResultMissionUsecase extends UsecaseHandler.create({
 	missionRepository,
 }) {
-	public execute({ quantity }: Input) {
+	public execute({ concurrency }: Input) {
 		const mission = SendSearchResultMissionEntity.create({
 			id: this.missionRepository.generateMissionId(),
-			quantity,
+			concurrency,
 		});
 
 		return this.missionRepository.save(mission);

@@ -4,18 +4,16 @@ import { intObjecter } from "@vendors/clean";
 import { program } from "commander";
 
 program
-	.option("-q, --quantity <int>");
+	.requiredOption("-c, --concurrency <int>");
 
 program.parse();
 
-const { quantity: rawQuantity } = program.opts<Record<string, string | undefined>>();
+const { concurrency: rawConcurrency } = program.opts<Record<string, string>>();
 
-const defaultQuantity = 2147483647;
-
-const quantity = intObjecter.throwCreate(rawQuantity ? Number(rawQuantity) : defaultQuantity);
+const concurrency = intObjecter.throwCreate(Number(rawConcurrency));
 
 const mission = await createSendSearchResultMissionUsecase.execute({
-	quantity,
+	concurrency,
 });
 
 const finishMission = await startSendSearchResultMissionUsecase.execute({

@@ -38,7 +38,7 @@ export class StartSendOneSearchResultMissionUsecase extends UsecaseHandler.creat
 			);
 		}
 
-		if (result.failedToSend) {
+		if (result.failedToSend.value) {
 			await this.searchResultRepository.save(result);
 
 			const failedMission = await this.missionRepository.save(
