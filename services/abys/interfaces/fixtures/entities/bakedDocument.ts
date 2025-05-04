@@ -1,10 +1,11 @@
-import { uuidv7 } from "uuidv7";
 import { faker } from "@vendors/fixture";
 import { EntityHandler, type ToSimpleObject } from "@vendors/clean";
-import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
+import { BakedDocumentEntity, bakedDocumentLanguageEnum } from "@business/domains/entities/bakedDocument";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { makePartialSplitDate } from "../utils/splitDate";
 import { articleTypeEnum } from "@business/domains/common/articleType";
+
+const nodeSameRawDocumentId = "FAKE";
 
 export async function makeBakedDocument(
 	bakedDocument?: Partial<Omit<
@@ -16,13 +17,13 @@ export async function makeBakedDocument(
 		EntityHandler.unsafeMapper(
 			BakedDocumentEntity,
 			{
-				id: uuidv7(),
-				nodeSameRawDocumentId: "FAKE",
+				id: `${nodeSameRawDocumentId}_${bakedDocumentLanguageEnum["en-US"]}`,
+				nodeSameRawDocumentId,
 				title: bakedDocument?.title || faker.lorem.sentences({
 					min: 3,
 					max: 6,
 				}),
-				language: bakedDocument?.language || "fr-FR",
+				language: bakedDocument?.language || bakedDocumentLanguageEnum["en-US"],
 				abstract: bakedDocument?.abstract || faker.lorem.paragraphs({
 					min: 2,
 					max: 4,
