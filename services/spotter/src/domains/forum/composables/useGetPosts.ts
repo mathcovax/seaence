@@ -9,7 +9,7 @@ export function useGetPosts(documentId: string) {
 		const loaderId = enableLoader();
 
 		await horizonClient.get(
-			"/document/{documentId}/posts",
+			"/documents/{documentId}/posts",
 			{
 				params: {
 					documentId,

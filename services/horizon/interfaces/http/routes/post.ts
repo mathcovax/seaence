@@ -47,7 +47,7 @@ useMustBeConnectedBuilder()
 	);
 
 useBuilder()
-	.createRoute("GET", "/document/{documentId}/posts")
+	.createRoute("GET", "/documents/{documentId}/posts")
 	.extract({
 		params: {
 			documentId: zod.string(),

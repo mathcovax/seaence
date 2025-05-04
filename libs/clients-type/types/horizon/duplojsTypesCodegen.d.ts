@@ -106,7 +106,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "GET";
-    path: "/document/{documentId}/posts";
+    path: "/documents/{documentId}/posts";
     params: {
         documentId: string;
     };

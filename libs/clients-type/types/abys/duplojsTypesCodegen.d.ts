@@ -101,17 +101,18 @@ type CodegenRoutes = ({
             title: string;
             language: "fr-FR" | "en-US";
             abstract: string | null;
-            abstractDetails: Record<"introduction" | "background" | "objective" | "method" | "result" | "conclusion" | "reference" | "acknowledgment" | "objective" | "option" | "outcome" | "evidence" | "value" | "benefit" | "recommendation" | "validation" | "sponsor" | "purpose" | "patient" | "setting" | "studyObjective" | "measurementAndMainResult" | "introductions" | "backgrounds" | "objectives" | "methods" | "results" | "conclusions" | "references" | "acknowledgments" | "objectives" | "options" | "outcomes" | "evidences" | "values" | "benefits" | "recommendations" | "validations" | "sponsors" | "purposes" | "patients" | "settings" | "studyObjectives" | "measurementsAndMainResults", {
-                value: string;
-            } | undefined> | null;
-            resources: Record<"pubmed", {
+            abstractDetails: {
                 name: string;
+                content: string;
+            }[] | null;
+            resources: {
+                resourceProvider: "DOIFoundation" | "pubmed";
                 url: string;
-            }>;
+            }[];
             keywords: {
-                pound: number;
                 value: string;
             }[];
+            articleTypes: ArticleType[];
         };
     };
 });

@@ -2,7 +2,7 @@ import type { FindHttpClientRoute, FindHttpClientRouteResponse } from "@duplojs/
 import type { HorizonClientRoute } from "..";
 
 export type PostList = FindHttpClientRouteResponse<
-	FindHttpClientRoute<HorizonClientRoute, "GET", "/document/{documentId}/posts">,
+	FindHttpClientRoute<HorizonClientRoute, "GET", "/documents/{documentId}/posts">,
 	"information",
 	"posts.found"
 >["body"];

@@ -3,10 +3,10 @@ import { AbysAPI } from "@interfaces/providers/abys";
 export const documentExistCheck = createChecker("documentExist")
 	.handler(
 		async(input: string, output) => {
-			const documentResponse = await AbysAPI.getBakedDocumentById(input);
+			const abysResponse = await AbysAPI.getBakedDocumentById(input);
 
-			if (documentResponse.information === "bakedDocument.get") {
-				return output("document.exist", documentResponse.body);
+			if (abysResponse.information === "bakedDocument.get") {
+				return output("document.exist", abysResponse.body);
 			} else {
 				return output("document.notfound", null);
 			}
