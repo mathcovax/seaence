@@ -83,10 +83,10 @@ function handlePageChange(page: number) {
 					<DSButtonOutline
 						@click="isFiltersVisible = !isFiltersVisible"
 					>
-						<span>{{ isFiltersVisible ? 'Masquer les filtres' : 'Afficher les filtres' }}</span>
+						<span>{{ isFiltersVisible ? $pt("hideFilters") : $pt("showFilters") }}</span>
 					</DSButtonOutline>
 
-					<span class="text-sm text-gray-500 flex items-center">{{ documents.length }} résultat(s) trouvé(s)</span>
+					<span class="text-sm text-gray-500 flex items-center">{{ $pt("foundResults", { count: documents.length }) }}</span>
 				</div>
 
 				<TheFilters :is-filters-visible="isFiltersVisible" />

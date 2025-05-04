@@ -78,7 +78,7 @@ watch(
 						for="articleType"
 						class="text-sm font-medium"
 					>
-						Type d'article
+						{{ $t("filters.label.articleType") }}
 					</DSLabel>
 
 					<DSSelect
@@ -92,7 +92,7 @@ watch(
 
 				<div class="filter-group">
 					<DSLabel class="text-sm font-medium">
-						Année de publication
+						{{ $t("filters.label.publicationYear") }}
 					</DSLabel>
 
 					<DSFilterRange
@@ -105,7 +105,7 @@ watch(
 
 				<div class="filter-group">
 					<DSLabel class="text-sm font-medium">
-						Sexe
+						{{ $t("filters.label.gender") }}
 					</DSLabel>
 
 					<div
@@ -142,7 +142,7 @@ watch(
 							&& filters.publicationYear[0] === filtersYear.min
 							&& filters.publicationYear[1] === filtersYear.max"
 				>
-					Réinitialiser les filtres
+					{{ $t("filters.reset") }}
 				</DSButtonPrimary>
 			</div>
 		</div>

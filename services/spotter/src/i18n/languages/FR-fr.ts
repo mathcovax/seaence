@@ -51,6 +51,9 @@ export const FRfr = {
 			googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
 		},
 		[simpleSearchPage.name]: {
+			showFilters: "Afficher les filtres",
+			hideFilters: "Masquer les filtres",
+			foundResults: "{count} résultat(s) trouvé(s)",
 			noResults: "Aucun résultat trouvé",
 		},
 		[postPage.name]: {
@@ -89,6 +92,14 @@ export const FRfr = {
 		loader: {
 			title: "Chargement...",
 		},
+	},
+	filters: {
+		label: {
+			articleType: "Type d'article",
+			publicationYear: "Année de publication",
+			gender: "Sexe",
+		},
+		reset: "Réinitialiser les filtres",
 	},
 	scratch: {
 		tabs: {
