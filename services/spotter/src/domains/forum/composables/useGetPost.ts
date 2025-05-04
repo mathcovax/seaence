@@ -1,7 +1,7 @@
 import { horizonClient } from "@/lib/horizon";
-import type { Post } from "@/lib/horizon/types/post";
+import type { Language, Post } from "@/lib/horizon/types/post";
 
-export function useGetPost(postId: string) {
+export function useGetPost(postId: string, language: Language) {
 	const post = ref<Post | null>(null);
 	const { enableLoader, disableLoader } = useLoader();
 
@@ -13,6 +13,9 @@ export function useGetPost(postId: string) {
 			{
 				params: {
 					postId,
+				},
+				query: {
+					language,
 				},
 			},
 		).whenInformation(

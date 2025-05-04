@@ -1,7 +1,6 @@
-import { documentObjecter } from "@business/domains/common/document";
 import { userObjecter } from "@business/domains/common/user";
-import { documentIdObjecter } from "@business/domains/entities/document";
 import {
+	nodeDocumentIdObjecter,
 	postContentObjecter,
 	postIdObjecter,
 	postTopicObjecter,
@@ -17,10 +16,10 @@ import { iWantPostExistById } from "../checkers/post";
 import { quantityPerPage } from "@business/applications/usecases/getPostsFromDocumentId";
 
 useBuilder()
-	.createRoute("GET", "/documents/{documentId}/posts")
+	.createRoute("GET", "/documents/{nodeDocumentId}/posts")
 	.extract({
 		params: {
-			documentId: documentIdObjecter.toZodSchema(),
+			nodeDocumentId: nodeDocumentIdObjecter.toZodSchema(),
 		},
 		query: {
 			page: zoderce.number().pipe(intObjecter.toZodSchema()),
@@ -28,7 +27,7 @@ useBuilder()
 	})
 	.handler(
 		async(pickup) => {
-			const { documentId, page } = pickup(["documentId", "page"]);
+			const { nodeDocumentId, page } = pickup(["nodeDocumentId", "page"]);
 
 			const [
 				totalCount,
@@ -36,15 +35,15 @@ useBuilder()
 			] = await Promise.all(
 				[
 					getPostTotalCountFromdocumentIdUsecase.execute({
-						documentId,
+						nodeDocumentId,
 					}),
 					getPostsFromdocumentIdUsecase.execute({
-						documentId,
+						nodeDocumentId,
 						page,
 					}).then((posts) => posts.map(
 						(post) => ({
 							...post.toSimpleObject(),
-							document: undefined,
+							nodeDocumentId: undefined,
 						}),
 					)),
 				],
@@ -68,18 +67,18 @@ useBuilder()
 		body: zod.object({
 			topic: postTopicObjecter.toZodSchema(),
 			content: postContentObjecter.toZodSchema(),
-			document: documentObjecter.toZodSchema(),
+			nodeDocumentId: nodeDocumentIdObjecter.toZodSchema(),
 			author: userObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { topic, content, document, author } = pickup("body");
+			const { topic, content, nodeDocumentId, author } = pickup("body");
 
 			await createPostUsecase.execute({
 				topic,
 				content,
-				document,
+				nodeDocumentId,
 				author,
 			});
 

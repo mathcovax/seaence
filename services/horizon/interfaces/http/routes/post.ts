@@ -3,6 +3,7 @@ import { endpointPostListSchema, endpointPostSchema } from "../schemas/post";
 import { iWantDocumentExistById } from "../checkers/document";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { iWantPostExistById } from "../checkers/post";
+import { documentLanguageSchema } from "../schemas/document";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/posts")
@@ -10,28 +11,22 @@ useMustBeConnectedBuilder()
 		body: zod.object({
 			topic: zod.string(),
 			content: zod.string(),
-			document: zod.object({
-				id: zod.string(),
-				title: zod.string(),
-			}),
+			documentId: zod.string(),
 		}),
 	})
 	.presetCheck(
 		iWantDocumentExistById,
-		(pickup) => pickup("body").document.id,
+		(pickup) => pickup("body").documentId,
 	)
 	.handler(
 		async(pickup) => {
-			const { user, body } = pickup(["user", "body"]);
-			const { document, topic, content } = body;
+			const { user, body, document } = pickup(["user", "body", "document"]);
+			const { topic, content } = body;
 
 			await SchoolAPI.createPost({
 				topic,
 				content,
-				document: {
-					id: document.id,
-					title: document.title,
-				},
+				nodeDocumentId: document.nodeSameRawDocumentId,
 				author: {
 					id: user.id,
 					username: user.username,
@@ -61,21 +56,18 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const { documentId, page, document } = pickup(["documentId", "page", "document"]);
+			const { page, document } = pickup(["page", "document"]);
 
-			const schoolResponse = await SchoolAPI.getPosts(
-				documentId,
+			const { body: postList } = await SchoolAPI.getPosts(
+				document.nodeSameRawDocumentId,
 				page,
 			);
 
 			return new OkHttpResponse(
 				"posts.found",
 				{
-					postList: schoolResponse.body,
-					document: {
-						id: document.id,
-						title: document.title,
-					},
+					postList,
+					document,
 				},
 			);
 		},
@@ -88,18 +80,37 @@ useBuilder()
 		params: {
 			postId: zod.string(),
 		},
+		query: {
+			language: documentLanguageSchema,
+		},
 	})
 	.presetCheck(
 		iWantPostExistById,
 		(pickup) => pickup("postId"),
 	)
+	.cut(
+		({ pickup, dropper }) => {
+			const { language, post: { nodeDocumentId } } = pickup(["language", "post"]);
+			return dropper({
+				documentId: `${nodeDocumentId}_${language}`,
+			});
+		},
+		["documentId"],
+	)
+	.presetCheck(
+		iWantDocumentExistById,
+		(pickup) => pickup("documentId"),
+	)
 	.handler(
 		(pickup) => {
-			const post = pickup("post");
+			const { post, document } = pickup(["post", "document"]);
 
 			return new OkHttpResponse(
 				"post.found",
-				post,
+				{
+					...post,
+					document,
+				},
 			);
 		},
 		makeResponseContract(OkHttpResponse, "post.found", endpointPostSchema),

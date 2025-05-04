@@ -1,11 +1,11 @@
-import { endpointDocumentSchema } from "./document";
+import { documentSchema } from "./document";
 import { endpointUserSchema } from "./user";
 
 export const endpointPostSchema = zod.object({
 	id: zod.string(),
 	topic: zod.string(),
 	content: zod.string().nullable(),
-	document: endpointDocumentSchema.pick({
+	document: documentSchema.pick({
 		id: true,
 		title: true,
 	}),
@@ -25,7 +25,7 @@ export const endpointPostListSchema = zod.object({
 		totalCount: zod.number(),
 		quantityPerPage: zod.number(),
 	}),
-	document: endpointDocumentSchema.pick({
+	document: documentSchema.pick({
 		id: true,
 		title: true,
 	}),

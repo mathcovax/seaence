@@ -1,9 +1,9 @@
 import { type Int, intObjecter, UsecaseHandler } from "@vendors/clean";
 import { postRepository } from "../repositories/post";
-import { type DocumentId } from "@business/domains/entities/document";
+import { type NodeDocumentId } from "@business/domains/entities/post";
 
 interface Input {
-	documentId: DocumentId;
+	nodeDocumentId: NodeDocumentId;
 	page: Int;
 }
 
@@ -13,9 +13,9 @@ export const quantityPerPage = intObjecter.unknownUnsafeCreate(rawQuantityPerPag
 export class GetPostsFromDocumentIdUsecase extends UsecaseHandler.create({
 	postRepository,
 }) {
-	public execute({ documentId, page }: Input) {
-		return this.postRepository.findByDocumentId(
-			documentId,
+	public execute({ nodeDocumentId, page }: Input) {
+		return this.postRepository.findByNodeDocumentId(
+			nodeDocumentId,
 			{
 				quantityPerPage,
 				page,

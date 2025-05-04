@@ -3,14 +3,17 @@ import { horizonClient } from "@/lib/horizon";
 import { useGetAnswers } from "../composables/useGetAnswers";
 import { useGetPost } from "../composables/useGetPost";
 
-const { params } = postDetailsPage.use();
+const { params, query } = postDetailsPage.use();
 const router = useRouter();
 const { sonnerMessage } = useSonner();
 
 const {
 	post,
 	getPost,
-} = useGetPost(params.value.postId);
+} = useGetPost(
+	params.value.postId,
+	query.value.language,
+);
 
 const {
 	answers,
@@ -85,7 +88,7 @@ watch(
 				:to="postsPage.createTo({
 					params: {
 						documentId: post.document.id,
-					}
+					},
 				})"
 			>
 				Retour à la liste des posts

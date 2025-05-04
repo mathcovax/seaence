@@ -68,10 +68,7 @@ type CodegenRoutes = ({
     body: {
         topic: string;
         content: string;
-        document: {
-            id: string;
-            title: string;
-        };
+        documentId: string;
     };
     response: {
         code: 404;
@@ -126,9 +123,16 @@ type CodegenRoutes = ({
     params: {
         postId: string;
     };
+    query: {
+        language: "fr-FR" | "en-US";
+    };
     response: {
         code: 404;
         information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "document.notfound";
         body?: undefined;
     } | {
         code: 200;

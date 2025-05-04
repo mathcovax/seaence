@@ -12,8 +12,7 @@ const numberOf = Object.freeze({
 });
 
 const optionsSchema = zod.object({
-	documentId: zod.string(),
-	documentTitle: zod.string(),
+	nodeDocumentId: zod.string(),
 	numberOfPost: zod.coerce
 		.number()
 		.int()
@@ -28,10 +27,7 @@ const optionsSchema = zod.object({
 
 program
 	.requiredOption(
-		"-d , --documentId <string>",
-	)
-	.requiredOption(
-		"-t, --documentTitle <string>",
+		"-d , --nodeDocumentId <string>",
 	)
 	.option(
 		"-p, --numberOfPost <number>",
@@ -47,16 +43,13 @@ program
 program.parse();
 
 const rawOptions = program.opts();
-const { documentId, documentTitle, numberOfPost, numberOfAnswersPerPost } = optionsSchema.parse(rawOptions);
+const { nodeDocumentId, numberOfPost, numberOfAnswersPerPost } = optionsSchema.parse(rawOptions);
 
 const posts = await repeater(
 	numberOfPost,
 	() => makePost({
 		answerCount: numberOfAnswersPerPost,
-		document: {
-			id: documentId,
-			title: documentTitle,
-		},
+		nodeDocumentId,
 	}),
 );
 

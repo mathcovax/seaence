@@ -6,11 +6,6 @@ export type SchoolClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-interface Document {
-	id: string;
-	title: string;
-}
-
 interface User {
 	id: string;
 	username: string;
@@ -19,7 +14,7 @@ interface User {
 interface InputCreatePost {
 	topic: string;
 	content: string;
-	document: Document;
+	nodeDocumentId: string;
 	author: User;
 }
 
@@ -32,12 +27,12 @@ interface InputReplyToPost {
 export class SchoolAPI {
 	private static httpClient: HttpClient<SchoolClientRoute>;
 
-	public static async getPosts(documentId: string, page: number) {
+	public static async getPosts(nodeDocumentId: string, page: number) {
 		return this.httpClient.get(
-			"/documents/{documentId}/posts",
+			"/documents/{nodeDocumentId}/posts",
 			{
 				params: {
-					documentId,
+					nodeDocumentId,
 				},
 				query: {
 					page: page.toString(),
@@ -47,7 +42,7 @@ export class SchoolAPI {
 	}
 
 	public static async createPost(params: InputCreatePost) {
-		const { topic, content, document, author } = params;
+		const { topic, content, nodeDocumentId, author } = params;
 
 		return this.httpClient.post(
 			"/posts",
@@ -55,7 +50,7 @@ export class SchoolAPI {
 				body: {
 					topic,
 					content,
-					document,
+					nodeDocumentId,
 					author,
 				},
 			},

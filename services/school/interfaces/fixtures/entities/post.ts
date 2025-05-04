@@ -3,7 +3,6 @@ import { faker } from "@vendors/fixture";
 import { EntityHandler, type ToSimpleObject } from "@vendors/clean";
 import { PostEntity } from "@business/domains/entities/post";
 import { postRepository } from "@business/applications/repositories/post";
-import { DocumentEntity } from "@business/domains/entities/document";
 import { UserEntity } from "@business/domains/entities/user";
 
 const answerDefaultCount = 0;
@@ -16,16 +15,7 @@ export async function makePost(
 			PostEntity,
 			{
 				id: uuidv7(),
-				document: EntityHandler.unsafeMapper(
-					DocumentEntity,
-					{
-						id: post?.document?.id || uuidv7(),
-						title: post?.document?.title || faker.lorem.sentence({
-							min: 6,
-							max: 12,
-						}),
-					},
-				),
+				nodeDocumentId: post?.nodeDocumentId || uuidv7(),
 				topic: post?.topic || faker.lorem.sentence({
 					min: 3,
 					max: 6,
