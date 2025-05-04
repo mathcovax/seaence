@@ -11,7 +11,7 @@ export function useUserInformation() {
 		accessTokenItem.value = null;
 	}
 
-	const isConnected = computed(() => accessTokenItem.value!);
+	const isConnected = computed(() => !!accessTokenItem.value);
 
 	return {
 		setAccessToken,

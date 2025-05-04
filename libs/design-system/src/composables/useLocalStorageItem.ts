@@ -10,7 +10,7 @@ export function useLocalStorageItem<
 	key: string,
 ): Ref<GenericType | null> {
 	const itemRef = storageItems[key] ?? ref<GenericType | null>(
-		localStorage.getItem(key) as never,
+		JSON.parse(localStorage.getItem(key) as never),
 	);
 
 	if (!storageItems[key]) {
@@ -23,7 +23,11 @@ export function useLocalStorageItem<
 			watch(
 				itemRef,
 				(value) => {
-					localStorage.setItem(key, value);
+					if (!value) {
+						localStorage.removeItem(key);
+					} else {
+						localStorage.setItem(key, JSON.stringify(value));
+					}
 				},
 			),
 		);
