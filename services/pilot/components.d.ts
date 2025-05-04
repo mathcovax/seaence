@@ -42,6 +42,7 @@ declare module 'vue' {
     DSDialogScrollContent: typeof import('./vendors/design-system/components/ui/dialog/DSDialogScrollContent.vue')['default']
     DSDialogTitle: typeof import('./vendors/design-system/components/ui/dialog/DSDialogTitle.vue')['default']
     DSDialogTrigger: typeof import('./vendors/design-system/components/ui/dialog/DSDialogTrigger.vue')['default']
+    DSFilterRange: typeof import('./vendors/design-system/components/DSFilterRange.vue')['default']
     DSGoogleLogo: typeof import('./vendors/design-system/components/DSGoogleLogo.vue')['default']
     DSIcon: typeof import('./vendors/design-system/components/ui/icon/DSIcon.vue')['default']
     DSImage: typeof import('./vendors/design-system/components/DSImage.vue')['default']
