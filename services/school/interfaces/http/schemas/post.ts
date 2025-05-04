@@ -1,19 +1,22 @@
 import { zod } from "@vendors/clean";
-import { endpointDocumentSchema } from "./document";
-import { endpointUserSchema } from "./user";
+import { userSchema } from "./user";
+import { documentSchema } from "./document";
 
-export const endpointPostSchema = zod.object({
+export const postSchema = zod.object({
 	id: zod.string(),
 	topic: zod.string(),
 	content: zod.string().nullable(),
-	document: endpointDocumentSchema,
-	author: endpointUserSchema,
-	answerCount: zod.number().optional(),
-	createdAt: zod.date().optional(),
+	author: userSchema,
+	answerCount: zod.number(),
+	createdAt: zod.date(),
 });
 
-export const endpointPostListSchema = zod.object({
-	posts: endpointPostSchema.array(),
+export const endpointGetPostSchema = postSchema.extend({
+	document: documentSchema,
+});
+
+export const endpointGetPostsSchema = zod.object({
+	posts: postSchema.array(),
 	totalCount: zod.number(),
 	quantityPerPage: zod.number(),
 });

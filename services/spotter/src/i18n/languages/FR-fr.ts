@@ -146,6 +146,9 @@ export const FRfr = {
 		article: {
 			notfound: "Article introuvable.",
 		},
+		document: {
+			notfound: "Document introuvable.",
+		},
 		post: {
 			notfound: "Post introuvable.",
 		},

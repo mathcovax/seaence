@@ -21,7 +21,7 @@ export function useGetAnswers(postId: string) {
 		).whenInformation(
 			"answers.found",
 			(response) => {
-				answers.value = response.body;
+				answers.value.unshift(...response.body.reverse());
 			},
 		).finally(
 			() => void disableLoader(loaderId),

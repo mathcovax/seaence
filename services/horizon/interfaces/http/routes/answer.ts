@@ -33,26 +33,21 @@ useMustBeConnectedBuilder()
 				)
 				.with(
 					{ information: "answer.created" },
-					(response) => dropper({ answer: response.body }),
+					(_response) => dropper(null),
 				)
 				.exhaustive();
 		},
-		["answer"],
+		[],
 		makeResponseContract(NotFoundHttpResponse, "post.notfound"),
 	)
 	.handler(
-		(pickup) => {
-			const answer = pickup("answer");
-
-			return new CreatedHttpResponse(
-				"answer.created",
-				answer,
-			);
-		},
-		makeResponseContract(CreatedHttpResponse, "answer.created", endpointAnswerSchema),
+		(_pickup) => new CreatedHttpResponse(
+			"answer.created",
+		),
+		makeResponseContract(CreatedHttpResponse, "answer.created"),
 	);
 
-useMustBeConnectedBuilder()
+useBuilder()
 	.createRoute("GET", "/posts/{postId}/answers")
 	.extract({
 		params: {

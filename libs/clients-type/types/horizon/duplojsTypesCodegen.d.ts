@@ -34,15 +34,7 @@ type CodegenRoutes = ({
     } | {
         code: 201;
         information: "answer.created";
-        body: {
-            id: string;
-            postId: string;
-            content: string;
-            author: {
-                id: string;
-                username: string;
-            };
-        };
+        body?: undefined;
     };
 }) | ({
     method: "GET";
@@ -88,21 +80,7 @@ type CodegenRoutes = ({
     } | {
         code: 201;
         information: "post.created";
-        body: {
-            id: string;
-            topic: string;
-            content: string | null;
-            document: {
-                id: string;
-                title: string;
-            };
-            author: {
-                id: string;
-                username: string;
-            };
-            answerCount?: number | undefined;
-            createdAt?: string | undefined;
-        };
+        body?: undefined;
     };
 }) | ({
     method: "GET";
@@ -121,23 +99,25 @@ type CodegenRoutes = ({
         code: 200;
         information: "posts.found";
         body: {
-            posts: {
+            postList: {
+                posts: {
+                    id: string;
+                    topic: string;
+                    content: string | null;
+                    author: {
+                        id: string;
+                        username: string;
+                    };
+                    answerCount: number;
+                    createdAt: string;
+                }[];
+                totalCount: number;
+                quantityPerPage: number;
+            };
+            document: {
                 id: string;
-                topic: string;
-                content: string | null;
-                document: {
-                    id: string;
-                    title: string;
-                };
-                author: {
-                    id: string;
-                    username: string;
-                };
-                answerCount?: number | undefined;
-                createdAt?: string | undefined;
-            }[];
-            totalCount: number;
-            quantityPerPage: number;
+                title: string;
+            };
         };
     };
 }) | ({
@@ -165,8 +145,8 @@ type CodegenRoutes = ({
                 id: string;
                 username: string;
             };
-            answerCount?: number | undefined;
-            createdAt?: string | undefined;
+            answerCount: number;
+            createdAt: string;
         };
     };
 });

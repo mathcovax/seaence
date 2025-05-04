@@ -11,8 +11,8 @@ import {
 	getPostsFromdocumentIdUsecase,
 	getPostTotalCountFromdocumentIdUsecase,
 } from "@interfaces/usecase";
-import { intObjecter, toSimpleObject } from "@vendors/clean";
-import { endpointPostListSchema, endpointPostSchema } from "../schemas/post";
+import { intObjecter } from "@vendors/clean";
+import { endpointGetPostSchema, endpointGetPostsSchema } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
 import { quantityPerPage } from "@business/applications/usecases/getPostsFromDocumentId";
 
@@ -41,7 +41,12 @@ useBuilder()
 					getPostsFromdocumentIdUsecase.execute({
 						documentId,
 						page,
-					}).then((posts) => posts.map(toSimpleObject)),
+					}).then((posts) => posts.map(
+						(post) => ({
+							...post.toSimpleObject(),
+							document: undefined,
+						}),
+					)),
 				],
 			);
 
@@ -54,7 +59,7 @@ useBuilder()
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "posts.found", endpointPostListSchema),
+		makeResponseContract(OkHttpResponse, "posts.found", endpointGetPostsSchema),
 	);
 
 useBuilder()
@@ -71,7 +76,7 @@ useBuilder()
 		async(pickup) => {
 			const { topic, content, document, author } = pickup("body");
 
-			const createdPost = await createPostUsecase.execute({
+			await createPostUsecase.execute({
 				topic,
 				content,
 				document,
@@ -80,10 +85,9 @@ useBuilder()
 
 			return new CreatedHttpResponse(
 				"post.created",
-				createdPost.toSimpleObject(),
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "post.created", endpointPostSchema),
+		makeResponseContract(CreatedHttpResponse, "post.created"),
 	);
 
 useBuilder()
@@ -106,5 +110,5 @@ useBuilder()
 				post.toSimpleObject(),
 			);
 		},
-		makeResponseContract(OkHttpResponse, "post.found", endpointPostSchema),
+		makeResponseContract(OkHttpResponse, "post.found", endpointGetPostSchema),
 	);

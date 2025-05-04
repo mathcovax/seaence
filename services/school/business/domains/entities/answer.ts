@@ -1,4 +1,4 @@
-import { dateYYYYMMDDObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { postIdObjecter } from "./post";
 import { userObjecter } from "../common/user";
 
@@ -15,12 +15,12 @@ export class AnswerEntity extends EntityHandler.create({
 	postId: postIdObjecter,
 	content: answerContentObjecter,
 	author: userObjecter,
-	createdAt: dateYYYYMMDDObjecter,
+	createdAt: commonDateObjecter,
 }) {
 	public static create(params: InputCreateAnswerEntity) {
 		return new AnswerEntity({
 			...params,
-			createdAt: dateYYYYMMDDObjecter.unknownThrowCreate(new Date()),
+			createdAt: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
 }

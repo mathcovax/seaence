@@ -25,20 +25,18 @@ useBuilder()
 		async(pickup) => {
 			const { post, content, author } = pickup(["post", "content", "author"]);
 
-			const repliedAnswer = await replyToPostUsecase
+			await replyToPostUsecase
 				.execute({
 					post,
 					content,
 					author,
-				})
-				.then((answer) => answer.toSimpleObject());
+				});
 
 			return new CreatedHttpResponse(
 				"answer.created",
-				repliedAnswer,
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "answer.created", endpointAnswerSchema),
+		makeResponseContract(CreatedHttpResponse, "answer.created"),
 	);
 
 useBuilder()

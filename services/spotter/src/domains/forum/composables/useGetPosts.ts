@@ -1,9 +1,10 @@
 import { horizonClient } from "@/lib/horizon";
-import type { PostList } from "@/lib/horizon/types/post";
+import type { PostsPayload } from "@/lib/horizon/types/post";
 
 export function useGetPosts(documentId: string) {
-	const postsList = ref<PostList>();
+	const postsPayload = ref<PostsPayload>();
 	const { enableLoader, disableLoader } = useLoader();
+	const router = useRouter();
 
 	async function getPosts(page: number) {
 		const loaderId = enableLoader();
@@ -21,15 +22,20 @@ export function useGetPosts(documentId: string) {
 		).whenInformation(
 			"posts.found",
 			(response) => {
-				postsList.value = response.body;
+				postsPayload.value = response.body;
 			},
-		).finally(
-			() => void disableLoader(loaderId),
-		);
+		)
+			.whenInformation(
+				"document.notfound",
+				() => void router.back(),
+			)
+			.finally(
+				() => void disableLoader(loaderId),
+			);
 	}
 
 	return {
-		postsList,
+		postsPayload,
 		getPosts,
 	};
 }

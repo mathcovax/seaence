@@ -25,7 +25,7 @@ useMustBeConnectedBuilder()
 			const { user, body } = pickup(["user", "body"]);
 			const { document, topic, content } = body;
 
-			const schoolReponse = await SchoolAPI.createPost({
+			await SchoolAPI.createPost({
 				topic,
 				content,
 				document: {
@@ -40,10 +40,9 @@ useMustBeConnectedBuilder()
 
 			return new CreatedHttpResponse(
 				"post.created",
-				schoolReponse.body,
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "post.created", endpointPostSchema),
+		makeResponseContract(CreatedHttpResponse, "post.created"),
 	);
 
 useBuilder()
@@ -62,7 +61,7 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const { documentId, page } = pickup(["documentId", "page"]);
+			const { documentId, page, document } = pickup(["documentId", "page", "document"]);
 
 			const schoolResponse = await SchoolAPI.getPosts(
 				documentId,
@@ -71,7 +70,13 @@ useBuilder()
 
 			return new OkHttpResponse(
 				"posts.found",
-				schoolResponse.body,
+				{
+					postList: schoolResponse.body,
+					document: {
+						id: document.id,
+						title: document.title,
+					},
+				},
 			);
 		},
 		makeResponseContract(OkHttpResponse, "posts.found", endpointPostListSchema),

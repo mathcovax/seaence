@@ -18,8 +18,8 @@ export function cors(allowOrigin: string) {
 		instance.hook(
 			"beforeRouteExecution",
 			(request) => {
-				if (request.method === "OPTIONS") {
-					return new OkHttpResponse("cors").setHeader("Access-Control-Allow-Headers", "Authorization");
+				if (request.method === "OPTIONS" && request.matchedPath === null) {
+					return new OkHttpResponse("cors").setHeader("Access-Control-Allow-Headers", "*");
 				}
 			},
 		);

@@ -39,7 +39,7 @@ program
 		"100",
 	)
 	.option(
-		"-a, numberOfAnswersPerPost <number>",
+		"-a, --numberOfAnswersPerPost <number>",
 		"Nombre de réponses par post",
 		"10",
 	);
