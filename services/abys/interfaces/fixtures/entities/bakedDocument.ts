@@ -1,5 +1,5 @@
 import { uuidv7 } from "uuidv7";
-import { faker } from "@faker-js/faker";
+import { faker } from "@vendors/fixture";
 import { EntityHandler, type ToSimpleObject } from "@vendors/clean";
 import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";

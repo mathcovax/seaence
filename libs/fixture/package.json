@@ -1,0 +1,13 @@
+{
+  "name": "@lib/fixture",
+  "type": "module",
+  "scripts": {
+    "test:tu": "vitest --coverage",
+    "test:tu:watch": "vitest --coverage --watch",
+    "test:lint": "eslint",
+    "test:types": "tsc"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "9.7.0"
+  }
+}

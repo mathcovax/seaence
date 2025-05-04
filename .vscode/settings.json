@@ -26,6 +26,7 @@
   "json.format.enable": false,
   "eslint.workingDirectories": [
     "libs/clean",
+	"libs/fixture",
     "libs/clients-type",
     "libs/design-system",
     "libs/eslint",

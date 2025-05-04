@@ -6,15 +6,17 @@ const { params } = postsPage.use();
 const {
 	postsList,
 	getPosts,
-} = useGetPosts(params.value.id);
+} = useGetPosts(params.value.documentId);
 
 const startPage = 1;
 const currentPage = ref(startPage);
 
-onMounted(
+watch(
+	() => params.value.documentId,
 	async() => {
 		await getPosts(currentPage.value);
 	},
+	{ immediate: true },
 );
 function handlePageChange(page: number) {
 	currentPage.value = page;
@@ -25,7 +27,7 @@ function handlePageChange(page: number) {
 <template>
 	<section>
 		<h1>
-			Liste des posts de l'article {{ params.id }}
+			Liste des posts de l'article {{ params.documentId }}
 		</h1>
 
 		<div
@@ -68,7 +70,7 @@ function handlePageChange(page: number) {
 			class="text-center"
 		>
 			<p class="text-gray-500">
-				Aucun post trouvé(s) pour cet article.
+				Aucun post trouvé(s) pour ce document.
 			</p>
 		</div>
 	</section>

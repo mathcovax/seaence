@@ -12,10 +12,10 @@ export const postDetailsPage = createPage(
 export const postsPage = createPage(
 	"posts",
 	{
-		path: "/articles/:id/posts",
+		path: "/documents/:documentId/posts",
 		component: () => import("./pages/PostsPage.vue"),
 		params: {
-			id: zod.string(),
+			documentId: zod.string(),
 		},
 	},
 );

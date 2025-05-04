@@ -2,7 +2,7 @@ import { program } from "commander";
 import { zod } from "@duplojs/core";
 import { mongo } from "@interfaces/providers/mongo";
 import "@interfaces/repositories/index";
-import { repeater } from "./utils/repeater";
+import { repeater } from "@vendors/fixture";
 import { makeBakedDocument } from "./entities/bakedDocument";
 
 const NUMBER_OF = Object.freeze({

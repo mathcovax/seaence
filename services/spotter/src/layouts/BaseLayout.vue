@@ -4,7 +4,7 @@
 <template>
 	<TheHeader />
 
-	<main class="container py-4">
+	<main class="container py-4 min-h-screen">
 		<RouterView />
 	</main>
 
