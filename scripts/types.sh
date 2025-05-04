@@ -2,6 +2,7 @@
 npx concurrently --kill-others-on-fail \
 	"npm -w libs/design-system run test:types" \
 	"npm -w libs/clean run test:types" \
+	"npm -w libs/fixture run test:types" \
 	"npm -w services/abys run test:types" \
 	"npm -w services/bottle run test:types" \
 	"npm -w services/colossal run test:types" \
