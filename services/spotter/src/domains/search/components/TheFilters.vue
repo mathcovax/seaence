@@ -31,14 +31,14 @@ const filters = ref<Filters>({
 	publicationYear: [filtersYear.min, filtersYear.max],
 });
 
-const NOT_FOUND_INDEX = -1;
-const REMOVE_ONE_ITEM = 1;
+const notFound = -1;
+const removeOne = 1;
 function toggleGender(id: string) {
 	const index = filters.value.gender.indexOf(id);
-	if (index === NOT_FOUND_INDEX) {
+	if (index === notFound) {
 		filters.value.gender.push(id);
 	} else {
-		filters.value.gender.splice(index, REMOVE_ONE_ITEM);
+		filters.value.gender.splice(index, removeOne);
 	}
 }
 

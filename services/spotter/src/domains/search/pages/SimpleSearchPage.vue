@@ -23,10 +23,10 @@ const displayMode = computed({
 });
 
 // Mock data
-const START_INDEX = 1;
+const startIndex = 1;
 const documents = Array.from({ length: 180 }, (_unused, index) => ({
-	id: index + START_INDEX,
-	title: `Document ${index + START_INDEX}`,
+	id: index + startIndex,
+	title: `Document ${index + startIndex}`,
 	description: `
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore etdolore magna aliqua.
@@ -39,13 +39,13 @@ const documents = Array.from({ length: 180 }, (_unused, index) => ({
 }));
 // End mock data
 
-const START_PAGE = 1;
-const PAGE_OFFSET = 1;
-const currentPage = ref(START_PAGE);
+const startPage = 1;
+const pageOffset = 1;
+const currentPage = ref(startPage);
 const productPerPage = 12;
 
 const paginatedDocuments = computed(() => {
-	const start = (currentPage.value - PAGE_OFFSET) * productPerPage;
+	const start = (currentPage.value - pageOffset) * productPerPage;
 	const end = start + productPerPage;
 	return documents.slice(start, end);
 });
