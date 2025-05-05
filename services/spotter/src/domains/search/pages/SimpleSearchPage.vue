@@ -66,7 +66,7 @@ function handlePageChange(page: number) {
 			class="min-h-32 p-4 flex flex-col justify-center gap-8 items-center transition-all duration-1500 ease-in-out overflow-hidden"
 			:class="{
 				'flex-1': !isResultExpanded,
-				'sticky top-24 z-10 bg-white': isResultExpanded
+				'sticky top-24 z-10 bg-gradient-to-b from-white via-white to-transparent via-[90%]': isResultExpanded
 			}"
 		>
 			<SimpleSearch
