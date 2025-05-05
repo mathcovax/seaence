@@ -4,8 +4,7 @@ import { BakedDocumentEntity, bakedDocumentLanguageEnum } from "@business/domain
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { makePartialSplitDate } from "../utils/splitDate";
 import { articleTypeEnum } from "@business/domains/common/articleType";
-
-const nodeSameRawDocumentId = "FAKE";
+import { uuidv7 } from "uuidv7";
 
 export async function makeBakedDocument(
 	bakedDocument?: Partial<Omit<
@@ -13,6 +12,8 @@ export async function makeBakedDocument(
 		"nodeSameRawDocumentId" | "id"
 	>>,
 ) {
+	const nodeSameRawDocumentId = `FAKE_${uuidv7()}`;
+
 	return bakedDocumentRepository.use.save(
 		EntityHandler.unsafeMapper(
 			BakedDocumentEntity,
