@@ -84,12 +84,17 @@ bakedDocumentRepository.default = {
 		return Promise.all(
 			rawAbstractDetails.map(
 				({ value: { name, content } }) => RosettaAPI
-					.translateText(content, languageMapper[language.value])
+					.translateText(`${name}\n${content}`, languageMapper[language.value])
 					.then(
-						(content) => bakedDocumentAbstractPartObjecter.unsafeCreate({
-							name,
-							content,
-						}),
+						(content) => {
+							const [label, ...contents] = content.split("\n");
+
+							return bakedDocumentAbstractPartObjecter.unsafeCreate({
+								name,
+								label,
+								content: contents.join("\n"),
+							});
+						},
 					),
 			),
 		);

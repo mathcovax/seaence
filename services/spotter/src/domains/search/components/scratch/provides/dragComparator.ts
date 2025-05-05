@@ -1,4 +1,4 @@
-import type { Comparator } from "@vendors/scratch-type";
+import type { Comparator } from "@vendors/types-advanced-query";
 
 export const {
 	initProvide: initDragComparatorProvide,

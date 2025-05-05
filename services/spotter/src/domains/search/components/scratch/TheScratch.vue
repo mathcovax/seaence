@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OperatorContent } from "@vendors/scratch-type";
+import type { OperatorContent } from "@vendors/types-advanced-query";
 import AddOperatorContent from "./partials/operator/AddOperatorContent.vue";
 import { operatorContentWrapper } from "./partials/operatorContentWrapper";
 import { initDragComparatorProvide } from "./provides/dragComparator";

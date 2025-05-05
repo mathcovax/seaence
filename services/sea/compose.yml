@@ -19,6 +19,8 @@ services:
     extends:
       file: ${INCLUDE_PATH}/sea/compose.template.yml
       service: sea-duplo-template
+    ports:
+      - 9300:1506
     command: npm -w services/sea run duplo:dev
     depends_on:
       - sea-es

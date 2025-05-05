@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComparatorText, textFieldEnum } from "@vendors/scratch-type";
+import { type ComparatorText, textFieldEnum } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
