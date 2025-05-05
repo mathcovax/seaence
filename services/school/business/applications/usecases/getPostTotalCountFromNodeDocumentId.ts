@@ -6,7 +6,7 @@ interface Input {
 	nodeDocumentId: NodeDocumentId;
 }
 
-export class GetPostTotalCountFromDocumentIdUsecase extends UsecaseHandler.create({
+export class GetPostTotalCountFromNodeDocumentIdUsecase extends UsecaseHandler.create({
 	postRepository,
 }) {
 	public execute({ nodeDocumentId }: Input) {

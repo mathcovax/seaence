@@ -7,13 +7,13 @@ import {
 } from "@business/domains/entities/post";
 import {
 	createPostUsecase,
-	getPostsFromdocumentIdUsecase,
-	getPostTotalCountFromdocumentIdUsecase,
+	getPostsFromNodeDocumentIdUsecase,
+	getPostTotalCountFromNodeDocumentIdUsecase,
 } from "@interfaces/usecase";
 import { intObjecter } from "@vendors/clean";
 import { endpointGetPostSchema, endpointGetPostsSchema } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
-import { quantityPerPage } from "@business/applications/usecases/getPostsFromDocumentId";
+import { quantityPerPage } from "@business/applications/usecases/getPostsFromNodeDocumentId";
 
 useBuilder()
 	.createRoute("GET", "/documents/{nodeDocumentId}/posts")
@@ -34,10 +34,10 @@ useBuilder()
 				posts,
 			] = await Promise.all(
 				[
-					getPostTotalCountFromdocumentIdUsecase.execute({
+					getPostTotalCountFromNodeDocumentIdUsecase.execute({
 						nodeDocumentId,
 					}),
-					getPostsFromdocumentIdUsecase.execute({
+					getPostsFromNodeDocumentIdUsecase.execute({
 						nodeDocumentId,
 						page,
 					}).then((posts) => posts.map(

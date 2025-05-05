@@ -13,7 +13,7 @@ export type PostId = GetValueObject<typeof postIdObjecter>;
 export const postAnswerCountObjecter = zod.number().createValueObjecter("postAnswerCount");
 export type PostAnswerCount = GetValueObject<typeof postAnswerCountObjecter>;
 
-export const nodeDocumentIdObjecter = zod.string().createValueObjecter("documentId");
+export const nodeDocumentIdObjecter = zod.string().createValueObjecter("nodeDocumentId");
 export type NodeDocumentId = GetValueObject<typeof nodeDocumentIdObjecter>;
 
 const defaultAnswerCount = 0;

@@ -10,7 +10,7 @@ interface Input {
 const rawQuantityPerPage = 20;
 export const quantityPerPage = intObjecter.unknownUnsafeCreate(rawQuantityPerPage);
 
-export class GetPostsFromDocumentIdUsecase extends UsecaseHandler.create({
+export class GetPostsFromNodeDocumentIdUsecase extends UsecaseHandler.create({
 	postRepository,
 }) {
 	public execute({ nodeDocumentId, page }: Input) {

@@ -11,7 +11,7 @@ postRepository.default = {
 	},
 	async findByNodeDocumentId(nodeDocumentId, { quantityPerPage, page }) {
 		const mongoPosts = mongo.postCollection.find({
-			nodeDocumentId,
+			nodeDocumentId: nodeDocumentId.value,
 		});
 
 		return mongoPosts
@@ -38,7 +38,7 @@ postRepository.default = {
 	},
 	async getTotalCountByNodeDocumentId(nodeDocumentId) {
 		const mongoPostCount = await mongo.postCollection.countDocuments({
-			nodeDocumentId,
+			nodeDocumentId: nodeDocumentId.value,
 		});
 
 		return intObjecter.unsafeCreate(mongoPostCount);
