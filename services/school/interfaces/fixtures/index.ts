@@ -7,8 +7,8 @@ import { makeAnswer } from "./entities/answer";
 import { makePost } from "./entities/post";
 
 const numberOf = Object.freeze({
-	posts: 100,
-	answers: 10,
+	posts: 10,
+	answers: 100,
 });
 
 const optionsSchema = zod.object({
@@ -32,12 +32,12 @@ program
 	.option(
 		"-p, --numberOfPost <number>",
 		"Nombre de posts à générer",
-		"100",
+		"10",
 	)
 	.option(
 		"-a, --numberOfAnswersPerPost <number>",
 		"Nombre de réponses par post",
-		"10",
+		"100",
 	);
 
 program.parse();

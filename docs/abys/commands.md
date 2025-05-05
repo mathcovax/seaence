@@ -12,3 +12,10 @@ npm run docker:abys:cookNodeSameRawDocument
 ```bash
 npm run docker:abys:exportBakedDocument
 ```
+
+### run fixtures
+```bash
+npm run docker:abys:fixtures
+```
+**Options:**
+- `-b`, `--numberOfBakedDocuments` 100 # number
