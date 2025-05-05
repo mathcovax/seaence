@@ -139,6 +139,11 @@
 	padding-inline: 2rem;
 }
 
+/* screen - header - padding y */
+@utility min-h-screen-nh {
+	min-height: calc(100vh - 6rem - 2 * 1rem);
+}
+
 img {
     user-select: none;
     -webkit-user-drag: none;

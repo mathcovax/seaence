@@ -22,7 +22,7 @@ onUnmounted(() => {
 
 <template>
 	<header
-		class="sticky top-0 left-0 z-50 bg-white  transition-shadow duration-300"
+		class="sticky top-0 left-0 z-50 bg-white transition-shadow duration-300"
 		:class="{ 'shadow-md': isScrolled }"
 	>
 		<div class="container h-24 flex items-center justify-between">

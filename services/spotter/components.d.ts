@@ -12,6 +12,7 @@ declare module 'vue' {
     DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
     DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
     DSAccordionTrigger: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionTrigger.vue')['default']
+    DSBadge: typeof import('./vendors/design-system/components/ui/badge/DSBadge.vue')['default']
     DSButton: typeof import('./vendors/design-system/components/ui/button/DSButton.vue')['default']
     DSButtonIcon: typeof import('./vendors/design-system/components/DSButtonIcon.vue')['default']
     DSButtonOutline: typeof import('./vendors/design-system/components/DSButtonOutline.vue')['default']
