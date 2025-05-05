@@ -2,6 +2,7 @@ import { seaRepository } from "@business/applications/repositories/sea";
 import { type Provider, providerEnum } from "@business/domains/common/provider";
 import { SeaAPI } from "@interfaces/providers/sea";
 import { TechnicalError } from "@vendors/clean/error";
+import { match, P } from "ts-pattern";
 
 seaRepository.default = {
 	save() {
@@ -40,6 +41,37 @@ seaRepository.default = {
 			.filter((resourceProvider): resourceProvider is Provider["value"] => providerEnum.has(resourceProvider))
 			.map((value) => ({ value }));
 
+		const { abstract, abstractDetails } = restSimplifyObject;
+
+		const summaryTronc = {
+			from: 0,
+			to: 300,
+		};
+
+		const summary = match({
+			abstract,
+			abstractDetails,
+		})
+			.with(
+				{ abstract: P.nonNullable },
+				({ abstract }) => abstract.substring(summaryTronc.from, summaryTronc.to),
+			)
+			.with(
+				{ abstractDetails: P.nonNullable },
+				({ abstractDetails }) => abstractDetails
+					.map(({ content }) => content)
+					.join(" ")
+					.substring(summaryTronc.from, summaryTronc.to),
+			)
+			.with(
+				{
+					abstract: null,
+					abstractDetails: null,
+				},
+				() => null,
+			)
+			.exhaustive();
+
 		await SeaAPI.sendDocument(
 			language,
 			{
@@ -47,7 +79,8 @@ seaRepository.default = {
 				articleTypes: restSimplifyObject.articleTypes,
 				authors: restSimplifyObject.authors,
 				title: restSimplifyObject.title,
-				abstract: restSimplifyObject.abstract ?? "",
+				summary,
+				abstract: restSimplifyObject.abstract,
 				abstractDetails: restSimplifyObject.abstractDetails,
 				keywords: restSimplifyObject.keywords,
 				providers,

@@ -1,5 +1,5 @@
-import { articleTypeEnum } from "@interfaces/providers/elastic/common/articleType";
 import { providerEnum } from "@interfaces/providers/elastic/common/provider";
+import { articleTypeSchema } from "./common";
 
 export const splitDateSchema = zod
 	.object({
@@ -7,8 +7,6 @@ export const splitDateSchema = zod
 		month: zod.number().nullable(),
 		year: zod.number(),
 	});
-
-export const articleTypeSchema = zod.enum(articleTypeEnum.toTuple());
 
 export const entrypointDocumentSchema = zod
 	.object({
@@ -19,7 +17,8 @@ export const entrypointDocumentSchema = zod
 			name: zod.string(),
 			affiliations: zod.string().array().nullable(),
 		}).array(),
-		abstract: zod.string(),
+		summary: zod.string().nullable(),
+		abstract: zod.string().nullable(),
 		abstractDetails: zod
 			.object({
 				name: zod.string(),

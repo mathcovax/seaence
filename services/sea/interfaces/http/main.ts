@@ -9,7 +9,7 @@ const duplo = new Duplo({
 	environment: envs.ENVIROMENT,
 	host: envs.HOST,
 	port: envs.PORT,
-	plugins: [debug],
+	plugins: [debug()],
 });
 
 duplo.register(

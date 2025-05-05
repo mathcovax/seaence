@@ -1,13 +1,13 @@
 import { entrypointDocumentSchema } from "@interfaces/http/schemas/document";
 import { elastic } from "@interfaces/providers/elastic";
-import { languageEnum } from "@interfaces/providers/elastic/common/language";
 import { match } from "ts-pattern";
+import { languageSchema } from "../schemas/common";
 
 useBuilder()
 	.createRoute("PUT", "/document/{language}")
 	.extract({
 		params: {
-			language: zod.enum(languageEnum.toTuple()),
+			language: languageSchema,
 		},
 		body: entrypointDocumentSchema,
 	})

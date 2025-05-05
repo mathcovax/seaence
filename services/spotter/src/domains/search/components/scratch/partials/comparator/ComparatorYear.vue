@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yearFieldEnum, type ComparatorYear } from "@vendors/scratch-type";
+import { yearFieldEnum, type ComparatorYear } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";

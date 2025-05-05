@@ -1,4 +1,4 @@
-import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/scratch-type";
+import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/types-advanced-query";
 
 export const FRfr = {
 	page: {

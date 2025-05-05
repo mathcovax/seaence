@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OperatorContent, OperatorNot } from "@vendors/scratch-type";
+import type { OperatorContent, OperatorNot } from "@vendors/types-advanced-query";
 import { operatorContentWrapper } from "../operatorContentWrapper";
 import AddOperatorContent from "./AddOperatorContent.vue";
 import { useHintMessage } from "../../composables/useHintMessage";

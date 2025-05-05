@@ -114,6 +114,7 @@ export class PubMedAPI {
 			alwaysCreateTextNode: true,
 			parseAttributeValue: true,
 			ignoreAttributes: false,
+			htmlEntities: true,
 		});
 
 		this.httpClient.interceptors.response = (response) => {

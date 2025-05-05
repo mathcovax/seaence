@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable camelcase */
 import { type Client, type estypes } from "@elastic/elasticsearch";
 import { TechnicalError } from "@vendors/clean/error";
 
@@ -38,10 +37,12 @@ export class ElasticDocument<
 		});
 	}
 
-	public find(query: estypes.QueryDslQueryContainer) {
+	public find<
+		GenericResult extends unknown,
+	>(query: Omit<estypes.SearchRequest, "index">) {
 		return this.elasticClient!.search<GenericeDocument>({
+			...query,
 			index: this.name,
-			query,
-		});
+		}) as Promise<GenericResult>;
 	}
 }

@@ -7,7 +7,7 @@ import type {
 	OperatorContent,
 	OperatorNot,
 	OperatorOr,
-} from "@vendors/scratch-type";
+} from "@vendors/types-advanced-query";
 
 type Resolve = (value: OperatorContent | null) => void;
 

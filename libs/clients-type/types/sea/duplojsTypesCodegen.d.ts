@@ -5,9 +5,13 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type articleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
+type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
 
-export { articleType };
+export { ArticleType };
+
+type Language = "fr-FR" | "en-US";
+
+export { Language };
 
 type CodegenRoutes = ({
     method: "PUT";
@@ -15,12 +19,13 @@ type CodegenRoutes = ({
     body: {
         abysBakedDocumentId: string;
         title: string;
-        articleTypes: articleType[];
+        articleTypes: ArticleType[];
         authors: {
             name: string;
             affiliations: string[] | null;
         }[];
-        abstract: string;
+        summary: string | null;
+        abstract: string | null;
         abstractDetails: {
             name: string;
             content: string;
@@ -45,12 +50,49 @@ type CodegenRoutes = ({
         } | null;
     };
     params: {
-        language: "fr-FR" | "en-US";
+        language: Language;
     };
     response: {
         code: 200;
         information: "document.upsert";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/simple-search";
+    body: {
+        language: Language;
+        page: number;
+        quantityPerPage: number;
+        term: string;
+    };
+    response: {
+        code: 200;
+        information: "simpleSearch.results";
+        body: {
+            total: number;
+            results: {
+                score: number;
+                abysBakedDocumentId: string;
+                title: string;
+                articleType: ArticleType[];
+                authorsNames: string[];
+                webPublishDate: string | null;
+                journalPublishDate: string | null;
+                summary: string | null;
+                keywords: string[];
+            }[];
+            facetWrapper: {
+                articleType: {
+                    value: ArticleType;
+                    quantity: number;
+                }[];
+                year: {
+                    value: number;
+                    quantity: number;
+                }[];
+            };
+        };
     };
 });
 

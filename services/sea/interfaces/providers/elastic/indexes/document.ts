@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+
 import { type estypes } from "@elastic/elasticsearch";
 import { type ArticleType } from "../common/articleType";
 import { type Provider } from "../common/provider";
@@ -7,7 +7,6 @@ import { ElasticDocument } from ".";
 import { languageEnum } from "../common/language";
 
 export const elasticDocumentMappingSchema = {
-
 	abysBakedDocumentId: {
 		type: "keyword",
 	},
@@ -38,6 +37,9 @@ export const elasticDocumentMappingSchema = {
 			},
 		},
 	},
+	summary: {
+		type: "text",
+	},
 	abstract: {
 		type: "text",
 	},
@@ -64,7 +66,12 @@ export const elasticDocumentMappingSchema = {
 		type: "nested",
 		properties: {
 			value: {
-				type: "keyword",
+				type: "text",
+				fields: {
+					keyword: {
+						type: "keyword",
+					},
+				},
 			},
 		},
 	},
@@ -124,6 +131,7 @@ export interface Document {
 		name: string;
 		affiliations: string[] | null;
 	}[];
+	summary: string | null;
 	abstract: string | null;
 	abstractDetails: {
 		name: string;
@@ -147,7 +155,7 @@ export interface Document {
 	} | null;
 }
 
-type _Check1 = ExpectType<
+type _ExpectSameKeyof = ExpectType<
 	keyof Document,
 	keyof typeof elasticDocumentMappingSchema,
 	"strict"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OperatorContent } from "@vendors/scratch-type";
+import type { OperatorContent } from "@vendors/types-advanced-query";
 import TheScratch from "../components/scratch/TheScratch.vue";
 
 const content = ref<OperatorContent | null>({
