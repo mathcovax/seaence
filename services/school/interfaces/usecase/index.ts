@@ -1,14 +1,15 @@
 import "../repositories";
 import { CreatePostUsecase } from "@business/applications/usecases/createPost";
-import { GetPostsFromNodeDocumentIdUsecase } from "@business/applications/usecases/getPostsFromNodeDocumentId";
-import { GetAnswersFromPostUsecase } from "@business/applications/usecases/getAnswersFromPost";
+import { FindPostsFromNodeSameRawDocumentIdUsecase } from "@business/applications/usecases/findPostsFromNodeSameRawDocumentId";
+import { FindAnswersFromPostUsecase } from "@business/applications/usecases/findAnswersFromPost";
 import { ReplyToPostUsecase } from "@business/applications/usecases/replyToPost";
-import { GetPostTotalCountFromNodeDocumentIdUsecase } from "@business/applications/usecases/getPostTotalCountFromNodeDocumentId";
-import { GetPostByIdUsecase } from "@business/applications/usecases/getPostById";
+import { GetPostTotalCountFromNodeSameRawDocumentIdUsecase } from "@business/applications/usecases/getPostTotalCountFromNodeSameRawDocumentId";
+import { FindPostByIdUsecase } from "@business/applications/usecases/findPostById";
 
 export const createPostUsecase = new CreatePostUsecase();
-export const getPostsFromNodeDocumentIdUsecase = new GetPostsFromNodeDocumentIdUsecase();
-export const getPostByIdUsecase = new GetPostByIdUsecase();
-export const getAnswersFromPostUsecase = new GetAnswersFromPostUsecase();
-export const getPostTotalCountFromNodeDocumentIdUsecase = new GetPostTotalCountFromNodeDocumentIdUsecase();
+export const findPostsFromNodeSameRawDocumentIdUsecase = new FindPostsFromNodeSameRawDocumentIdUsecase();
+export const findPostByIdUsecase = new FindPostByIdUsecase();
+export const findAnswersFromPostUsecase = new FindAnswersFromPostUsecase();
+export const getPostTotalCountFromNodeSameRawDocumentIdUsecase
+	= new GetPostTotalCountFromNodeSameRawDocumentIdUsecase();
 export const replyToPostUsecase = new ReplyToPostUsecase();

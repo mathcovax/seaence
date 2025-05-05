@@ -4,7 +4,7 @@ export interface MongoPost {
 	id: string;
 	topic: string;
 	content: string | null;
-	nodeDocumentId: string;
+	nodeSameRawDocumentId: string;
 	author: MongoUser;
 	answerCount: number;
 	createdAt: Date;

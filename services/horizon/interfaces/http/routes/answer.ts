@@ -2,14 +2,13 @@ import { SchoolAPI } from "@interfaces/providers/school";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { match } from "ts-pattern";
 import { endpointAnswerSchema } from "../schemas/answer";
+import { answerConfig } from "@interfaces/configs/answer";
 
 useMustBeConnectedBuilder()
-	.createRoute("POST", "/posts/{postId}/answers")
+	.createRoute("POST", "/create-answer")
 	.extract({
-		params: {
-			postId: zod.string(),
-		},
 		body: {
+			postId: zod.string(),
 			content: zod.string(),
 		},
 	})
@@ -41,19 +40,17 @@ useMustBeConnectedBuilder()
 		makeResponseContract(NotFoundHttpResponse, "post.notfound"),
 	)
 	.handler(
-		(_pickup) => new CreatedHttpResponse(
+		() => new CreatedHttpResponse(
 			"answer.created",
 		),
 		makeResponseContract(CreatedHttpResponse, "answer.created"),
 	);
 
 useBuilder()
-	.createRoute("GET", "/posts/{postId}/answers")
+	.createRoute("POST", "/answer-list")
 	.extract({
-		params: {
+		body: {
 			postId: zod.string(),
-		},
-		query: {
 			page: zod.coerce.number(),
 		},
 	})
@@ -61,8 +58,9 @@ useBuilder()
 		async({ pickup, dropper }) => {
 			const { postId, page } = pickup(["postId", "page"]);
 
-			const schoolResponse = await SchoolAPI.getAnswers(
+			const schoolResponse = await SchoolAPI.findAnswers(
 				postId,
+				answerConfig.findAnswers.quantityPerPage,
 				page,
 			);
 
@@ -85,9 +83,9 @@ useBuilder()
 			const answers = pickup("answers");
 
 			return new OkHttpResponse(
-				"answers.found",
+				"answerList.found",
 				answers,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "answers.found", endpointAnswerSchema.array()),
+		makeResponseContract(OkHttpResponse, "answerList.found", endpointAnswerSchema.array()),
 	);

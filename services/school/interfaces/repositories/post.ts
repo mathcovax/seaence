@@ -9,9 +9,9 @@ postRepository.default = {
 	generatePostId() {
 		return postIdObjecter.unsafeCreate(uuidv7());
 	},
-	async findByNodeDocumentId(nodeDocumentId, { quantityPerPage, page }) {
+	async findByNodeSameRawDocumentId(nodeSameRawDocumentId, { quantityPerPage, page }) {
 		const mongoPosts = mongo.postCollection.find({
-			nodeDocumentId: nodeDocumentId.value,
+			nodeSameRawDocumentId: nodeSameRawDocumentId.value,
 		});
 
 		return mongoPosts
@@ -36,9 +36,9 @@ postRepository.default = {
 			)
 			.toArray();
 	},
-	async getTotalCountByNodeDocumentId(nodeDocumentId) {
+	async getTotalCountByNodeSameRawDocumentId(nodeSameRawDocumentId) {
 		const mongoPostCount = await mongo.postCollection.countDocuments({
-			nodeDocumentId: nodeDocumentId.value,
+			nodeSameRawDocumentId: nodeSameRawDocumentId.value,
 		});
 
 		return intObjecter.unsafeCreate(mongoPostCount);

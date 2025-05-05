@@ -6,7 +6,7 @@ interface Input {
 	id: UserId;
 }
 
-export class GetUserByIdUsecase extends UsecaseHandler.create({
+export class FindUserByIdUsecase extends UsecaseHandler.create({
 	userRepository,
 }) {
 	public async execute({ id }: Input) {

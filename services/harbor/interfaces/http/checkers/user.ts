@@ -1,6 +1,6 @@
 import { type UserId } from "@business/domains/entities/user";
 import { type GetTypeInput } from "@duplojs/core";
-import { getUserById } from "@interfaces/usecases";
+import { findUserById } from "@interfaces/usecases";
 import { match } from "ts-pattern";
 
 export const inputUserExist = createTypeInput<{
@@ -13,7 +13,7 @@ export const userExistCheck = createChecker("userExist")
 			const user = await match(input)
 				.with(
 					{ inputName: "id" },
-					({ value }) => getUserById.execute({ id: value }),
+					({ value }) => findUserById.execute({ id: value }),
 				)
 				.exhaustive();
 

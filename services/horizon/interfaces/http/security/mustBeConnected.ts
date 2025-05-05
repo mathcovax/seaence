@@ -5,7 +5,6 @@ import { IgnoreByTypeCodegenDescription } from "@duplojs/types-codegen";
 export const mustBeConnectedProcess = createProcess(
 	"mustBeConnected",
 	undefined,
-	new IgnoreByTypeCodegenDescription(),
 )
 	.extract(
 		{
@@ -14,6 +13,7 @@ export const mustBeConnectedProcess = createProcess(
 			},
 		},
 		() => new ForbiddenHttpResponse("authorization.missing"),
+		new IgnoreByTypeCodegenDescription(),
 	)
 	.cut(
 		async({ pickup, dropper }) => {

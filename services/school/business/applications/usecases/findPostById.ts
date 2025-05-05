@@ -6,7 +6,7 @@ interface Input {
 	id: PostId;
 }
 
-export class GetPostByIdUsecase extends UsecaseHandler.create({
+export class FindPostByIdUsecase extends UsecaseHandler.create({
 	postRepository,
 }) {
 	public execute({ id }: Input) {

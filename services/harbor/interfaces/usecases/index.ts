@@ -1,6 +1,6 @@
 import "../repositories";
-import { GetUserByIdUsecase } from "@business/applications/usecases/getUserById";
+import { FindUserByIdUsecase } from "@business/applications/usecases/findUserById";
 import { FindOrCreateUserUsecase } from "@business/applications/usecases/findOrCreateUser";
 
 export const findOrCreateUser = new FindOrCreateUserUsecase();
-export const getUserById = new GetUserByIdUsecase();
+export const findUserById = new FindUserByIdUsecase();

@@ -14,7 +14,7 @@ interface User {
 interface InputCreatePost {
 	topic: string;
 	content: string;
-	nodeDocumentId: string;
+	nodeSameRawDocumentId: string;
 	author: User;
 }
 
@@ -27,76 +27,109 @@ interface InputReplyToPost {
 export class SchoolAPI {
 	private static httpClient: HttpClient<SchoolClientRoute>;
 
-	public static async getPosts(nodeDocumentId: string, page: number) {
-		return this.httpClient.get(
-			"/documents/{nodeDocumentId}/posts",
-			{
-				params: {
-					nodeDocumentId,
+	public static findPosts(
+		nodeSameRawDocumentId: string,
+		quantityPerPage: number,
+		page: number,
+	) {
+		return this.httpClient
+			.get(
+				"/documents/{nodeSameRawDocumentId}/posts",
+				{
+					params: {
+						nodeSameRawDocumentId,
+					},
+					query: {
+						page: page.toString(),
+						quantityPerPage: quantityPerPage.toString(),
+					},
 				},
-				query: {
-					page: page.toString(),
-				},
-			},
-		).iWantExpectedResponse();
+			)
+			.iWantInformation("posts.found");
 	}
 
-	public static async createPost(params: InputCreatePost) {
-		const { topic, content, nodeDocumentId, author } = params;
+	public static createPost(params: InputCreatePost) {
+		const { topic, content, nodeSameRawDocumentId, author } = params;
 
-		return this.httpClient.post(
-			"/posts",
-			{
-				body: {
-					topic,
-					content,
-					nodeDocumentId,
-					author,
+		return this.httpClient
+			.post(
+				"/posts",
+				{
+					body: {
+						topic,
+						content,
+						nodeSameRawDocumentId,
+						author,
+					},
 				},
-			},
-		).iWantExpectedResponse();
+			)
+			.iWantInformation("post.created");
 	}
 
-	public static async getAnswers(postId: string, page: number) {
-		return this.httpClient.get(
-			"/posts/{postId}/answers",
-			{
-				params: {
-					postId,
+	public static findAnswers(
+		postId: string,
+		quantityPerPage: number,
+		page: number,
+	) {
+		return this.httpClient
+			.get(
+				"/posts/{postId}/answers",
+				{
+					params: {
+						postId,
+					},
+					query: {
+						page: page.toString(),
+						quantityPerPage: quantityPerPage.toString(),
+					},
 				},
-				query: {
-					page: page.toString(),
-				},
-			},
-		).iWantExpectedResponse();
+			)
+			.iWantExpectedResponse();
 	}
 
-	public static async replyToPost(params: InputReplyToPost) {
+	public static replyToPost(params: InputReplyToPost) {
 		const { postId, content, author } = params;
 
-		return this.httpClient.post(
-			"/posts/{postId}/answers",
-			{
-				params: {
-					postId,
+		return this.httpClient
+			.post(
+				"/posts/{postId}/answers",
+				{
+					params: {
+						postId,
+					},
+					body: {
+						content,
+						author,
+					},
 				},
-				body: {
-					content,
-					author,
-				},
-			},
-		).iWantExpectedResponse();
+			)
+			.iWantExpectedResponse();
 	}
 
-	public static async getPost(postId: string) {
-		return this.httpClient.get(
-			"/posts/{postId}",
-			{
-				params: {
-					postId,
+	public static findPost(postId: string) {
+		return this.httpClient
+			.get(
+				"/posts/{postId}",
+				{
+					params: {
+						postId,
+					},
 				},
-			},
-		).iWantExpectedResponse();
+			)
+			.iWantExpectedResponse();
+	}
+
+	public static findDucomentPostsDetails(nodeSameRawDocumentId: string) {
+		return this.httpClient
+			.get(
+				"/documents/{nodeSameRawDocumentId}/postsDetails",
+				{
+					params: {
+						nodeSameRawDocumentId,
+					},
+				},
+			)
+			.iWantExpectedResponse();
 	}
 
 	static {

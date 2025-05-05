@@ -4,5 +4,8 @@ export const endpointAnswerSchema = zod.object({
 	id: zod.string(),
 	postId: zod.string(),
 	content: zod.string(),
-	author: endpointUserSchema,
+	author: endpointUserSchema.pick({
+		id: true,
+		username: true,
+	}),
 });

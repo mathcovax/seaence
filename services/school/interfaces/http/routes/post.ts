@@ -1,64 +1,71 @@
 import { userObjecter } from "@business/domains/common/user";
 import {
-	nodeDocumentIdObjecter,
+	nodeSameRawDocumentIdObjecter,
 	postContentObjecter,
 	postIdObjecter,
 	postTopicObjecter,
 } from "@business/domains/entities/post";
 import {
 	createPostUsecase,
-	getPostsFromNodeDocumentIdUsecase,
-	getPostTotalCountFromNodeDocumentIdUsecase,
+	findPostsFromNodeSameRawDocumentIdUsecase,
+	getPostTotalCountFromNodeSameRawDocumentIdUsecase,
 } from "@interfaces/usecase";
 import { intObjecter } from "@vendors/clean";
-import { endpointGetPostSchema, endpointGetPostsSchema } from "../schemas/post";
+import { endpointPostSchema, endpointPostsDetails } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
-import { quantityPerPage } from "@business/applications/usecases/getPostsFromNodeDocumentId";
 
 useBuilder()
-	.createRoute("GET", "/documents/{nodeDocumentId}/posts")
+	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/posts")
 	.extract({
 		params: {
-			nodeDocumentId: nodeDocumentIdObjecter.toZodSchema(),
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
 		},
 		query: {
 			page: zoderce.number().pipe(intObjecter.toZodSchema()),
+			quantityPerPage: zoderce.number().pipe(intObjecter.toZodSchema()),
 		},
 	})
 	.handler(
 		async(pickup) => {
-			const { nodeDocumentId, page } = pickup(["nodeDocumentId", "page"]);
+			const { nodeSameRawDocumentId, page, quantityPerPage } = pickup(["nodeSameRawDocumentId", "page", "quantityPerPage"]);
 
-			const [
-				totalCount,
-				posts,
-			] = await Promise.all(
-				[
-					getPostTotalCountFromNodeDocumentIdUsecase.execute({
-						nodeDocumentId,
-					}),
-					getPostsFromNodeDocumentIdUsecase.execute({
-						nodeDocumentId,
-						page,
-					}).then((posts) => posts.map(
-						(post) => ({
-							...post.toSimpleObject(),
-							nodeDocumentId: undefined,
-						}),
-					)),
-				],
-			);
+			const posts = await findPostsFromNodeSameRawDocumentIdUsecase.execute({
+				quantityPerPage,
+				nodeSameRawDocumentId,
+				page,
+			}).then((posts) => posts.map(
+				(post) => post.toSimpleObject(),
+			));
 
 			return new OkHttpResponse(
 				"posts.found",
-				{
-					posts,
-					totalCount: totalCount.value,
-					quantityPerPage: quantityPerPage.value,
-				},
+				posts,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "posts.found", endpointGetPostsSchema),
+		makeResponseContract(OkHttpResponse, "posts.found", endpointPostSchema.array()),
+	);
+
+useBuilder()
+	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/postsDetails")
+	.extract({
+		params: {
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
+		},
+	})
+	.handler(
+		async(pickup) => {
+			const { nodeSameRawDocumentId } = pickup(["nodeSameRawDocumentId"]);
+
+			const totalCount = await getPostTotalCountFromNodeSameRawDocumentIdUsecase.execute({
+				nodeSameRawDocumentId,
+			});
+
+			return new OkHttpResponse(
+				"document.posts.details",
+				{ totalCount: totalCount.value },
+			);
+		},
+		makeResponseContract(OkHttpResponse, "document.posts.details", endpointPostsDetails),
 	);
 
 useBuilder()
@@ -67,18 +74,18 @@ useBuilder()
 		body: zod.object({
 			topic: postTopicObjecter.toZodSchema(),
 			content: postContentObjecter.toZodSchema(),
-			nodeDocumentId: nodeDocumentIdObjecter.toZodSchema(),
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
 			author: userObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { topic, content, nodeDocumentId, author } = pickup("body");
+			const { topic, content, nodeSameRawDocumentId, author } = pickup("body");
 
 			await createPostUsecase.execute({
 				topic,
 				content,
-				nodeDocumentId,
+				nodeSameRawDocumentId,
 				author,
 			});
 
@@ -109,5 +116,5 @@ useBuilder()
 				post.toSimpleObject(),
 			);
 		},
-		makeResponseContract(OkHttpResponse, "post.found", endpointGetPostSchema),
+		makeResponseContract(OkHttpResponse, "post.found", endpointPostSchema),
 	);

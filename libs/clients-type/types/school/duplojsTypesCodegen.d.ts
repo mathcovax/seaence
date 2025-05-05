@@ -7,30 +7,41 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "GET";
-    path: "/documents/{nodeDocumentId}/posts";
+    path: "/documents/{nodeSameRawDocumentId}/posts";
     params: {
-        nodeDocumentId: string;
+        nodeSameRawDocumentId: string;
     };
     query: {
         page: number;
+        quantityPerPage: number;
     };
     response: {
         code: 200;
         information: "posts.found";
         body: {
-            posts: {
+            id: string;
+            nodeSameRawDocumentId: string;
+            topic: string;
+            content: string | null;
+            author: {
                 id: string;
-                topic: string;
-                content: string | null;
-                author: {
-                    id: string;
-                    username: string;
-                };
-                answerCount: number;
-                createdAt: Date;
-            }[];
+                username: string;
+            };
+            answerCount: number;
+            createdAt: Date;
+        }[];
+    };
+}) | ({
+    method: "GET";
+    path: "/documents/{nodeSameRawDocumentId}/postsDetails";
+    params: {
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 200;
+        information: "document.posts.details";
+        body: {
             totalCount: number;
-            quantityPerPage: number;
         };
     };
 }) | ({
@@ -39,7 +50,7 @@ type CodegenRoutes = ({
     body: {
         topic: string;
         content: string | null;
-        nodeDocumentId: string;
+        nodeSameRawDocumentId: string;
         author: {
             id: string;
             username: string;
@@ -65,6 +76,7 @@ type CodegenRoutes = ({
         information: "post.found";
         body: {
             id: string;
+            nodeSameRawDocumentId: string;
             topic: string;
             content: string | null;
             author: {
@@ -73,7 +85,6 @@ type CodegenRoutes = ({
             };
             answerCount: number;
             createdAt: Date;
-            nodeDocumentId: string;
         };
     };
 }) | ({
@@ -106,6 +117,7 @@ type CodegenRoutes = ({
     };
     query: {
         page: number;
+        quantityPerPage: number;
     };
     response: {
         code: 404;

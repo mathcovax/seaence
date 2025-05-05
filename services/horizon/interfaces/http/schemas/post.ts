@@ -5,28 +5,30 @@ export const endpointPostSchema = zod.object({
 	id: zod.string(),
 	topic: zod.string(),
 	content: zod.string().nullable(),
-	document: documentSchema.pick({
+	author: endpointUserSchema.pick({
 		id: true,
-		title: true,
+		username: true,
 	}),
-	author: endpointUserSchema,
-	answerCount: zod.number(),
 	createdAt: zod.string(),
-
+	answerCount: zod.number(),
 });
 
-export const endpointPostListSchema = zod.object({
-	postList: zod.object({
-		posts: endpointPostSchema
-			.omit({
-				document: true,
-			})
-			.array(),
-		totalCount: zod.number(),
-		quantityPerPage: zod.number(),
-	}),
+export const endpointPostPageSchema = zod.object({
+	post: endpointPostSchema,
 	document: documentSchema.pick({
 		id: true,
 		title: true,
+		language: true,
 	}),
+	quantityAnswerPerPage: zod.number(),
+});
+
+export const endpointPostListPageSchema = zod.object({
+	document: documentSchema.pick({
+		id: true,
+		title: true,
+		language: true,
+	}),
+	totalPostCount: zod.number(),
+	quantityPostPerPage: zod.number(),
 });

@@ -38,6 +38,7 @@ declare global {
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const h: typeof import('vue')['h']
   const homePage: typeof import('./src/domains/edito/router')['homePage']
+  const horizonClient: typeof import('./src/lib/horizon/index')['horizonClient']
   const i18n: typeof import('./src/i18n/index')['i18n']
   const inject: typeof import('vue')['inject']
   const isProxy: typeof import('vue')['isProxy']
@@ -64,6 +65,8 @@ declare global {
   const onUpdated: typeof import('vue')['onUpdated']
   const onWatcherCleanup: typeof import('vue')['onWatcherCleanup']
   const postDetailsPage: typeof import('./src/domains/forum/router')['postDetailsPage']
+  const postListPage: typeof import('./src/domains/forum/router')['postListPage']
+  const postPage: typeof import('./src/domains/forum/router')['postPage']
   const postsPage: typeof import('./src/domains/forum/router')['postsPage']
   const provide: typeof import('vue')['provide']
   const reactive: typeof import('vue')['reactive']
@@ -94,6 +97,7 @@ declare global {
   const useProvide: typeof import('./vendors/design-system/composables/useProvide')['useProvide']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
+  const useScroll: typeof import('./vendors/design-system/composables/useScroll')['useScroll']
   const useSlots: typeof import('vue')['useSlots']
   const useSmoothEnabled: typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']
   const useSonner: typeof import('./vendors/design-system/composables/useSonner')['useSonner']
@@ -110,6 +114,9 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { HorizonClientRoute } from './src/lib/horizon/index'
+  import('./src/lib/horizon/index')
   // @ts-ignore
   export type { PageParams, PageGoParams, PageUse, Page } from './vendors/design-system/utils/createPage'
   import('./vendors/design-system/utils/createPage')
@@ -134,6 +141,7 @@ declare module 'vue' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly homePage: UnwrapRef<typeof import('./src/domains/edito/router')['homePage']>
+    readonly horizonClient: UnwrapRef<typeof import('./src/lib/horizon/index')['horizonClient']>
     readonly i18n: UnwrapRef<typeof import('./src/i18n/index')['i18n']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
@@ -159,8 +167,8 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
-    readonly postDetailsPage: UnwrapRef<typeof import('./src/domains/forum/router')['postDetailsPage']>
-    readonly postsPage: UnwrapRef<typeof import('./src/domains/forum/router')['postsPage']>
+    readonly postListPage: UnwrapRef<typeof import('./src/domains/forum/router')['postListPage']>
+    readonly postPage: UnwrapRef<typeof import('./src/domains/forum/router')['postPage']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
@@ -189,6 +197,7 @@ declare module 'vue' {
     readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
+    readonly useScroll: UnwrapRef<typeof import('./vendors/design-system/composables/useScroll')['useScroll']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useSmoothEnabled: UnwrapRef<typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']>
     readonly useSonner: UnwrapRef<typeof import('./vendors/design-system/composables/useSonner')['useSonner']>

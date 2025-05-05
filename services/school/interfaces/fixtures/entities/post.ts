@@ -15,7 +15,7 @@ export async function makePost(
 			PostEntity,
 			{
 				id: uuidv7(),
-				nodeDocumentId: post?.nodeDocumentId || uuidv7(),
+				nodeSameRawDocumentId: post?.nodeSameRawDocumentId || uuidv7(),
 				topic: post?.topic || faker.lorem.sentence({
 					min: 3,
 					max: 6,

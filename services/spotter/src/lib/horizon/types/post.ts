@@ -1,14 +1,19 @@
 import type { FindHttpClientRoute, FindHttpClientRouteResponse } from "@duplojs/http-client";
-import type { HorizonClientRoute } from "..";
 
-export type PostsPayload = FindHttpClientRouteResponse<
-	FindHttpClientRoute<HorizonClientRoute, "GET", "/documents/{documentId}/posts">,
+export type PostList = FindHttpClientRouteResponse<
+	FindHttpClientRoute<HorizonClientRoute, "POST", "/post-list">,
 	"information",
-	"posts.found"
+	"postList.found"
 >["body"];
 
-export type Post = FindHttpClientRouteResponse<
-	FindHttpClientRoute<HorizonClientRoute, "GET", "/posts/{postId}">,
+export type PostListPage = FindHttpClientRouteResponse<
+	FindHttpClientRoute<HorizonClientRoute, "POST", "/post-list-page">,
 	"information",
-	"post.found"
+	"postListPage.found"
+>["body"];
+
+export type PostPage = FindHttpClientRouteResponse<
+	FindHttpClientRoute<HorizonClientRoute, "POST", "/post-page">,
+	"information",
+	"postPage.found"
 >["body"];

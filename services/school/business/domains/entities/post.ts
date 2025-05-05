@@ -13,8 +13,8 @@ export type PostId = GetValueObject<typeof postIdObjecter>;
 export const postAnswerCountObjecter = zod.number().createValueObjecter("postAnswerCount");
 export type PostAnswerCount = GetValueObject<typeof postAnswerCountObjecter>;
 
-export const nodeDocumentIdObjecter = zod.string().createValueObjecter("nodeDocumentId");
-export type NodeDocumentId = GetValueObject<typeof nodeDocumentIdObjecter>;
+export const nodeSameRawDocumentIdObjecter = zod.string().createValueObjecter("nodeSameRawDocumentId");
+export type NodeSameRawDocumentId = GetValueObject<typeof nodeSameRawDocumentIdObjecter>;
 
 const defaultAnswerCount = 0;
 
@@ -24,7 +24,7 @@ export class PostEntity extends EntityHandler.create({
 	id: postIdObjecter,
 	topic: postTopicObjecter,
 	content: postContentObjecter,
-	nodeDocumentId: nodeDocumentIdObjecter,
+	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
 	answerCount: postAnswerCountObjecter,
 	author: userObjecter,
 	createdAt: commonDateObjecter,

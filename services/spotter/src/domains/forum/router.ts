@@ -1,20 +1,24 @@
-export const postDetailsPage = createPage(
-	"postDetails",
+import { documentLanguageSchema } from "@/lib/horizon/types/document";
+
+export const postPage = createPage(
+	"post",
 	{
-		path: "/documents/:documentId/posts/:postId",
-		component: () => import("./pages/PostDetailsPage.vue"),
+		path: "/posts/:postId",
+		component: () => import("./pages/PostPage.vue"),
 		params: {
-			documentId: zod.string(),
 			postId: zod.string(),
+		},
+		query: {
+			language: documentLanguageSchema,
 		},
 	},
 );
 
-export const postsPage = createPage(
-	"posts",
+export const postListPage = createPage(
+	"postList",
 	{
 		path: "/documents/:documentId/posts",
-		component: () => import("./pages/PostsPage.vue"),
+		component: () => import("./pages/PostListPage.vue"),
 		params: {
 			documentId: zod.string(),
 		},

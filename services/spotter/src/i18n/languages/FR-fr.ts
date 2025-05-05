@@ -53,6 +53,19 @@ export const FRfr = {
 		[searchResultsPage.name]: {
 			noResults: "Aucun résultat trouvé",
 		},
+		[postPage.name]: {
+			backToPostList: "Retour à la liste des posts",
+			countResponse: "{count}/{totalCount} Réponse(s)",
+			authorIs: "Posté par {author}",
+			noResponse: "Aucune réponse(s) pour ce post.",
+			writeAnAnswer: "Écrivez un commentaire",
+		},
+		[postListPage.name]: {
+			titleLinkPost: "Post(s) lié au document : {title}",
+			authorIs: "Posté par {author}",
+			responseCount: "{count} réponse(s)",
+			noPost: "Aucun post(s) trouvé pour ce document.",
+		},
 	},
 	layout: {
 		base: {
@@ -135,6 +148,8 @@ export const FRfr = {
 		connection: "Inscription / Connexion",
 		resetPassword: "Réinitialiser le mot de passe",
 		search: "Rechercher",
+		send: "Envoyer",
+		seeMore: "Voir plus",
 	},
 	responses: {
 		user: {
@@ -151,6 +166,9 @@ export const FRfr = {
 		},
 		post: {
 			notfound: "Post introuvable.",
+		},
+		answer: {
+			created: "réponse créer",
 		},
 		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur c'est produite.",
 	},

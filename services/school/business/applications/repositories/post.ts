@@ -1,4 +1,4 @@
-import { type PostId, type PostEntity, type NodeDocumentId } from "@business/domains/entities/post";
+import { type PostId, type PostEntity, type NodeSameRawDocumentId } from "@business/domains/entities/post";
 import { createRepositoryHandler, type Int, type RepositoryBase } from "@vendors/clean";
 
 interface FindByDocumentIdParams {
@@ -7,9 +7,12 @@ interface FindByDocumentIdParams {
 }
 export interface PostRepository extends RepositoryBase<PostEntity> {
 	generatePostId(): PostId;
-	findByNodeDocumentId(documentId: NodeDocumentId, params: FindByDocumentIdParams): Promise<PostEntity[]>;
+	findByNodeSameRawDocumentId(
+		documentId: NodeSameRawDocumentId,
+		params: FindByDocumentIdParams
+	): Promise<PostEntity[]>;
 	findOneById(postId: PostId): Promise<PostEntity | null>;
-	getTotalCountByNodeDocumentId(documentId: NodeDocumentId): Promise<Int>;
+	getTotalCountByNodeSameRawDocumentId(documentId: NodeSameRawDocumentId): Promise<Int>;
 }
 
 export const postRepository = createRepositoryHandler<PostRepository>();

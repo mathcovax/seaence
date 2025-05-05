@@ -11,11 +11,9 @@ answerRepository.default = {
 		return answerIdObjecter.unsafeCreate(uuidv7());
 	},
 	async findByPostId(postId, { quantityPerPage, page }) {
-		const mongoAnswers = mongo.answerCollection.find(
+		return mongo.answerCollection.find(
 			{ postId: postId.value },
-		);
-
-		return mongoAnswers
+		)
 			.sort(
 				{
 					createdAt: -1,

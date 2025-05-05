@@ -4,10 +4,22 @@ import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duploj
 import type { CodegenRoutes } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
-	CodegenRoutes>;
+	CodegenRoutes
+>;
 
 const { sonnerError, sonnerMessage, sonnerWarning } = useSonner();
+// const { enableLoader, disableLoader } = useLoader();
 const { accessToken } = useUserInformation();
+
+declare global {
+	interface RequestInit {
+		disabledLoader?: boolean;
+	}
+
+	interface Window {
+		horizonClient: HttpClient<HorizonClientRoute>;
+	}
+}
 
 export const horizonClient = new HttpClient<HorizonClientRoute>({
 	baseUrl: envs.VITE_HORIZON_ENTRYPOINT_BASE_URL,
@@ -20,6 +32,23 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 			},
 		},
 	})
+	.setInterceptor(
+		"request",
+		(requestDefinition) => {
+			if (requestDefinition.paramsRequest.disabledLoader !== false) {
+				// const loaderId = enableLoader();
+				// const responseInterceptors = requestDefinition.interceptors.response;
+
+				// requestDefinition.interceptors.response = (response) => {
+				// disableLoader(loaderId);
+
+				// return responseInterceptors(response);
+				// };
+			}
+
+			return requestDefinition;
+		},
+	)
 	.setInterceptor(
 		"response",
 		(response) => {
@@ -40,3 +69,6 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 			return response;
 		},
 	);
+
+// three checking bug auto import
+window.horizonClient = horizonClient;

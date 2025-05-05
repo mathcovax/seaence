@@ -1,19 +1,17 @@
 import { type PostEntity } from "@business/domains/entities/post";
-import { type Int, intObjecter, UsecaseHandler } from "@vendors/clean";
+import { type Int, UsecaseHandler } from "@vendors/clean";
 import { answerRepository } from "../repositories/answer";
 
 interface Input {
 	post: PostEntity;
 	page: Int;
+	quantityPerPage: Int;
 }
 
-const rawQuantityPerPage = 20;
-const quantityPerPage = intObjecter.unknownUnsafeCreate(rawQuantityPerPage);
-
-export class GetAnswersFromPostUsecase extends UsecaseHandler.create({
+export class FindAnswersFromPostUsecase extends UsecaseHandler.create({
 	answerRepository,
 }) {
-	public execute({ post, page }: Input) {
+	public execute({ post, page, quantityPerPage }: Input) {
 		return this.answerRepository.findByPostId(
 			post.id,
 			{

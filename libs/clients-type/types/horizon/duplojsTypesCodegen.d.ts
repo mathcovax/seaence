@@ -20,14 +20,20 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/posts/{postId}/answers";
+    path: "/create-answer";
     body: {
+        postId: string;
         content: string;
     };
-    params: {
-        postId: string;
-    };
     response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
         code: 404;
         information: "post.notfound";
         body?: undefined;
@@ -37,12 +43,10 @@ type CodegenRoutes = ({
         body?: undefined;
     };
 }) | ({
-    method: "GET";
-    path: "/posts/{postId}/answers";
-    params: {
+    method: "POST";
+    path: "/answer-list";
+    body: {
         postId: string;
-    };
-    query: {
         page: number;
     };
     response: {
@@ -51,7 +55,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "answers.found";
+        information: "answerList.found";
         body: {
             id: string;
             postId: string;
@@ -64,13 +68,21 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/posts";
+    path: "/create-post";
     body: {
         topic: string;
         content: string;
         documentId: string;
     };
     response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
         code: 404;
         information: "document.notfound";
         body?: undefined;
@@ -80,12 +92,10 @@ type CodegenRoutes = ({
         body?: undefined;
     };
 }) | ({
-    method: "GET";
-    path: "/documents/{documentId}/posts";
-    params: {
+    method: "POST";
+    path: "/post-list";
+    body: {
         documentId: string;
-    };
-    query: {
         page: number;
     };
     response: {
@@ -94,34 +104,25 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "posts.found";
+        information: "postList.found";
         body: {
-            postList: {
-                posts: {
-                    id: string;
-                    topic: string;
-                    content: string | null;
-                    author: {
-                        id: string;
-                        username: string;
-                    };
-                    answerCount: number;
-                    createdAt: string;
-                }[];
-                totalCount: number;
-                quantityPerPage: number;
-            };
-            document: {
+            id: string;
+            topic: string;
+            content: string | null;
+            author: {
                 id: string;
-                title: string;
+                username: string;
             };
-        };
+            createdAt: string;
+            answerCount: number;
+        }[];
     };
 }) | ({
-    method: "GET";
-    path: "/posts/{postId}";
-    params: {
+    method: "POST";
+    path: "/post-page";
+    body: {
         postId: string;
+        language: "fr-FR" | "en-US";
     };
     response: {
         code: 404;
@@ -133,21 +134,68 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "post.found";
+        information: "postPage.found";
         body: {
-            id: string;
-            topic: string;
-            content: string | null;
+            post: {
+                id: string;
+                topic: string;
+                content: string | null;
+                author: {
+                    id: string;
+                    username: string;
+                };
+                createdAt: string;
+                answerCount: number;
+            };
             document: {
                 id: string;
                 title: string;
+                language: "fr-FR" | "en-US";
             };
-            author: {
+            quantityAnswerPerPage: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/post-list-page";
+    body: {
+        documentId: string;
+    };
+    response: {
+        code: 404;
+        information: "document.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "postListPage.found";
+        body: {
+            document: {
                 id: string;
-                username: string;
+                title: string;
+                language: "fr-FR" | "en-US";
             };
-            answerCount: number;
-            createdAt: string;
+            totalPostCount: number;
+            quantityPostPerPage: number;
+        };
+    };
+}) | ({
+    method: "GET";
+    path: "/user";
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "user.get";
+        body: {
+            id: string;
+            username: string;
+            email: string;
         };
     };
 });

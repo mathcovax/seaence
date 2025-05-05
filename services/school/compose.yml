@@ -17,5 +17,15 @@ services:
       - "27005:27017"
     volumes:
       - "school-mongo-data:/data/db"
+  school-mongo-viewer:
+    image: mongo-express
+    ports:
+      - 55554:1506
+    env_file: ${INCLUDE_PATH}/school/.env
+    environment:
+      ME_CONFIG_MONGODB_URL: ${MONGO_DATABASE_URL}
+    depends_on:
+      - school-mongo
+    attach: false
 volumes:
   school-mongo-data:

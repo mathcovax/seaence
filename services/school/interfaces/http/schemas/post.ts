@@ -1,9 +1,10 @@
 import { zod } from "@vendors/clean";
 import { userSchema } from "./user";
-import { nodeDocumentIdObjecter } from "@business/domains/entities/post";
+import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/post";
 
-export const postSchema = zod.object({
+export const endpointPostSchema = zod.object({
 	id: zod.string(),
+	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.zodSchema,
 	topic: zod.string(),
 	content: zod.string().nullable(),
 	author: userSchema,
@@ -11,12 +12,6 @@ export const postSchema = zod.object({
 	createdAt: zod.date(),
 });
 
-export const endpointGetPostSchema = postSchema.extend({
-	nodeDocumentId: nodeDocumentIdObjecter.zodSchema,
-});
-
-export const endpointGetPostsSchema = zod.object({
-	posts: postSchema.array(),
+export const endpointPostsDetails = zod.object({
 	totalCount: zod.number(),
-	quantityPerPage: zod.number(),
 });

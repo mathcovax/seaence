@@ -1,7 +1,7 @@
 import { userObjecter } from "@business/domains/common/user";
 import { answerContentObjecter } from "@business/domains/entities/answer";
 import { postIdObjecter } from "@business/domains/entities/post";
-import { getAnswersFromPostUsecase, replyToPostUsecase } from "@interfaces/usecase";
+import { findAnswersFromPostUsecase, replyToPostUsecase } from "@interfaces/usecase";
 import { iWantPostExistById } from "../checkers/post";
 import { endpointAnswerSchema } from "../schemas/answer";
 import { intObjecter, toSimpleObject } from "@vendors/clean";
@@ -47,6 +47,7 @@ useBuilder()
 		},
 		query: {
 			page: zoderce.number().pipe(intObjecter.toZodSchema()),
+			quantityPerPage: zoderce.number().pipe(intObjecter.toZodSchema()),
 		},
 	})
 	.presetCheck(
@@ -55,12 +56,13 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const { post, page } = pickup(["post", "page"]);
+			const { post, page, quantityPerPage } = pickup(["post", "page", "quantityPerPage"]);
 
-			const answers = await getAnswersFromPostUsecase
+			const answers = await findAnswersFromPostUsecase
 				.execute({
 					post,
 					page,
+					quantityPerPage,
 				})
 				.then((answer) => answer.map(toSimpleObject));
 
