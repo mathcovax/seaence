@@ -3,7 +3,7 @@ import { endpointPostListSchema, endpointPostSchema } from "../schemas/post";
 import { iWantDocumentExistById } from "../checkers/document";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { iWantPostExistById } from "../checkers/post";
-import { documentLanguageSchema } from "../schemas/document";
+import { documentLanguageEnum } from "../schemas/document";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/posts")
@@ -80,9 +80,6 @@ useBuilder()
 		params: {
 			postId: zod.string(),
 		},
-		query: {
-			language: documentLanguageSchema,
-		},
 	})
 	.presetCheck(
 		iWantPostExistById,
@@ -90,9 +87,9 @@ useBuilder()
 	)
 	.cut(
 		({ pickup, dropper }) => {
-			const { language, post: { nodeDocumentId } } = pickup(["language", "post"]);
+			const { nodeDocumentId } = pickup("post");
 			return dropper({
-				documentId: `${nodeDocumentId}_${language}`,
+				documentId: `${nodeDocumentId}_${documentLanguageEnum["en-US"]}`,
 			});
 		},
 		["documentId"],

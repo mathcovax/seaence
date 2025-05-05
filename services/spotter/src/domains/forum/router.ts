@@ -1,20 +1,11 @@
-import { createEnum } from "@vendors/clean";
-
-const documentLanguageEnum = createEnum([
-	"fr-FR",
-	"en-US",
-]);
-
 export const postDetailsPage = createPage(
 	"postDetails",
 	{
-		path: "/posts/:postId",
+		path: "/documents/:documentId/posts/:postId",
 		component: () => import("./pages/PostDetailsPage.vue"),
 		params: {
+			documentId: zod.string(),
 			postId: zod.string(),
-		},
-		query: {
-			language: zod.enum(documentLanguageEnum.toTuple()),
 		},
 	},
 );

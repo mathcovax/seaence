@@ -123,9 +123,6 @@ type CodegenRoutes = ({
     params: {
         postId: string;
     };
-    query: {
-        language: "fr-FR" | "en-US";
-    };
     response: {
         code: 404;
         information: "post.notfound";

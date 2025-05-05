@@ -12,5 +12,3 @@ export type Post = FindHttpClientRouteResponse<
 	"information",
 	"post.found"
 >["body"];
-
-export type Language = FindHttpClientRoute<HorizonClientRoute, "GET", "/posts/{postId}">["query"]["language"];
