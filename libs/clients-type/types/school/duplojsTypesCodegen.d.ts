@@ -7,40 +7,50 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "GET";
-    path: "/articles/{articleId}/posts";
+    path: "/documents/{nodeSameRawDocumentId}/posts";
     params: {
-        articleId: string;
+        nodeSameRawDocumentId: string;
     };
     query: {
         page: number;
+        quantityPerPage: number;
     };
     response: {
         code: 200;
         information: "posts.found";
         body: {
             id: string;
+            nodeSameRawDocumentId: string;
             topic: string;
-            content: string;
-            article: {
-                id: string;
-                title: string;
-            };
+            content: string | null;
             author: {
                 id: string;
                 username: string;
             };
+            answerCount: number;
+            createdAt: Date;
         }[];
+    };
+}) | ({
+    method: "GET";
+    path: "/documents/{nodeSameRawDocumentId}/postsDetails";
+    params: {
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 200;
+        information: "document.posts.details";
+        body: {
+            totalCount: number;
+        };
     };
 }) | ({
     method: "POST";
     path: "/posts";
     body: {
         topic: string;
-        content: string;
-        article: {
-            id: string;
-            title: string;
-        };
+        content: string | null;
+        nodeSameRawDocumentId: string;
         author: {
             id: string;
             username: string;
@@ -49,18 +59,32 @@ type CodegenRoutes = ({
     response: {
         code: 201;
         information: "post.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "GET";
+    path: "/posts/{postId}";
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "post.found";
         body: {
             id: string;
+            nodeSameRawDocumentId: string;
             topic: string;
-            content: string;
-            article: {
-                id: string;
-                title: string;
-            };
+            content: string | null;
             author: {
                 id: string;
                 username: string;
             };
+            answerCount: number;
+            createdAt: Date;
         };
     };
 }) | ({
@@ -83,15 +107,7 @@ type CodegenRoutes = ({
     } | {
         code: 201;
         information: "answer.created";
-        body: {
-            id: string;
-            postId: string;
-            content: string;
-            author: {
-                id: string;
-                username: string;
-            };
-        };
+        body?: undefined;
     };
 }) | ({
     method: "GET";
@@ -101,6 +117,7 @@ type CodegenRoutes = ({
     };
     query: {
         page: number;
+        quantityPerPage: number;
     };
     response: {
         code: 404;

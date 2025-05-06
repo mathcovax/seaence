@@ -10,6 +10,8 @@
     "test:lint": "eslint",
     "test:types": "tsc",
 
+    "fixtures": "tsx interfaces/fixtures/index.ts",
+
     "postinstall": "npm run duplo:generate"
   },
   "dependencies": {

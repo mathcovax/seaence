@@ -1,38 +1,41 @@
-import { articleObjecter } from "@business/domains/common/article";
-import { intObjecter } from "@business/domains/common/Int";
 import { userObjecter } from "@business/domains/common/user";
-import { articleIdObjecter } from "@business/domains/entities/article";
 import {
+	nodeSameRawDocumentIdObjecter,
 	postContentObjecter,
+	postIdObjecter,
 	postTopicObjecter,
 } from "@business/domains/entities/post";
 import {
 	createPostUsecase,
-	getPostsFromArticleIdUsecase,
+	findPostsFromNodeSameRawDocumentIdUsecase,
+	getPostTotalCountFromNodeSameRawDocumentIdUsecase,
 } from "@interfaces/usecase";
-import { toSimpleObject } from "@vendors/clean";
-import { endpointPostSchema } from "../schemas/post";
+import { intObjecter } from "@vendors/clean";
+import { endpointPostSchema, endpointPostsDetails } from "../schemas/post";
+import { iWantPostExistById } from "../checkers/post";
 
 useBuilder()
-	.createRoute("GET", "/articles/{articleId}/posts")
+	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/posts")
 	.extract({
 		params: {
-			articleId: articleIdObjecter.toZodSchema(),
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
 		},
 		query: {
 			page: zoderce.number().pipe(intObjecter.toZodSchema()),
+			quantityPerPage: zoderce.number().pipe(intObjecter.toZodSchema()),
 		},
 	})
 	.handler(
 		async(pickup) => {
-			const { articleId, page } = pickup(["articleId", "page"]);
+			const { nodeSameRawDocumentId, page, quantityPerPage } = pickup(["nodeSameRawDocumentId", "page", "quantityPerPage"]);
 
-			const posts = await getPostsFromArticleIdUsecase
-				.execute({
-					articleId,
-					page,
-				})
-				.then((posts) => posts.map(toSimpleObject));
+			const posts = await findPostsFromNodeSameRawDocumentIdUsecase.execute({
+				quantityPerPage,
+				nodeSameRawDocumentId,
+				page,
+			}).then((posts) => posts.map(
+				(post) => post.toSimpleObject(),
+			));
 
 			return new OkHttpResponse(
 				"posts.found",
@@ -43,30 +46,75 @@ useBuilder()
 	);
 
 useBuilder()
+	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/postsDetails")
+	.extract({
+		params: {
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
+		},
+	})
+	.handler(
+		async(pickup) => {
+			const { nodeSameRawDocumentId } = pickup(["nodeSameRawDocumentId"]);
+
+			const totalCount = await getPostTotalCountFromNodeSameRawDocumentIdUsecase.execute({
+				nodeSameRawDocumentId,
+			});
+
+			return new OkHttpResponse(
+				"document.posts.details",
+				{ totalCount: totalCount.value },
+			);
+		},
+		makeResponseContract(OkHttpResponse, "document.posts.details", endpointPostsDetails),
+	);
+
+useBuilder()
 	.createRoute("POST", "/posts")
 	.extract({
 		body: zod.object({
 			topic: postTopicObjecter.toZodSchema(),
 			content: postContentObjecter.toZodSchema(),
-			article: articleObjecter.toZodSchema(),
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
 			author: userObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { topic, content, article, author } = pickup("body");
+			const { topic, content, nodeSameRawDocumentId, author } = pickup("body");
 
-			const createdPost = await createPostUsecase.execute({
+			await createPostUsecase.execute({
 				topic,
 				content,
-				article,
+				nodeSameRawDocumentId,
 				author,
 			});
 
 			return new CreatedHttpResponse(
 				"post.created",
-				createdPost.toSimpleObject(),
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "post.created", endpointPostSchema),
+		makeResponseContract(CreatedHttpResponse, "post.created"),
+	);
+
+useBuilder()
+	.createRoute("GET", "/posts/{postId}")
+	.extract({
+		params: {
+			postId: postIdObjecter.toZodSchema(),
+		},
+	})
+	.presetCheck(
+		iWantPostExistById,
+		(pickup) => pickup("postId"),
+	)
+	.handler(
+		(pickup) => {
+			const post = pickup("post");
+
+			return new OkHttpResponse(
+				"post.found",
+				post.toSimpleObject(),
+			);
+		},
+		makeResponseContract(OkHttpResponse, "post.found", endpointPostSchema),
 	);

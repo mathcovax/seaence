@@ -24,6 +24,22 @@ userRepository.default = {
 			user,
 		);
 	},
+	async findOneById(id) {
+		const user = await prismaClient.user.findFirst({
+			where: {
+				id: id.value,
+			},
+		});
+
+		if (!user) {
+			return null;
+		}
+
+		return EntityHandler.unsafeMapper(
+			UserEntity,
+			user,
+		);
+	},
 	async save(entity) {
 		const simpleEntity = entity.toSimpleObject();
 

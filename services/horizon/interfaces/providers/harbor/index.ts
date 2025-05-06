@@ -20,6 +20,17 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
+	public static async getUser(accessToken: string) {
+		return this.httpClient
+			.post(
+				"/user",
+				{
+					body: accessToken,
+				},
+			)
+			.iWantExpectedResponse();
+	}
+
 	static {
 		this.httpClient = new HttpClient({
 			baseUrl: envs.HARBOR_BASE_URL,

@@ -18,6 +18,27 @@ type CodegenRoutes = ({
         information: "user.logged";
         body: string;
     };
+}) | ({
+    method: "POST";
+    path: "/user";
+    body: string;
+    response: {
+        code: 401;
+        information: "access.token.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "user.found";
+        body: {
+            id: string;
+            email: string;
+            username: string;
+        };
+    };
 });
 
 export { CodegenRoutes };

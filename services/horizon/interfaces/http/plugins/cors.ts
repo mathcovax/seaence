@@ -4,7 +4,7 @@ export function cors(allowOrigin: string) {
 	return function(instance: Duplo) {
 		instance.hook(
 			"beforeSend",
-			(request, response) => {
+			(_request, response) => {
 				response.setHeader(
 					"Access-Control-Allow-Origin",
 					allowOrigin,
@@ -13,6 +13,14 @@ export function cors(allowOrigin: string) {
 					"Access-Control-Expose-Headers",
 					instance.config.keyToInformationInHeaders,
 				);
+			},
+		);
+		instance.hook(
+			"beforeRouteExecution",
+			(request) => {
+				if (request.method === "OPTIONS" && request.matchedPath === null) {
+					return new OkHttpResponse("cors").setHeader("Access-Control-Allow-Headers", "*");
+				}
 			},
 		);
 	};

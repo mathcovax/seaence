@@ -8,17 +8,21 @@ const { $pt } = connectionPage.use();
 const { goTo: goToHomePage } = homePage.use();
 const { setAccessToken, isConnected } = useUserInformation();
 
-if (isConnected.value) {
-	void goToHomePage();
-}
+watch(
+	isConnected,
+	() => {
+		if (isConnected.value) {
+			void goToHomePage();
+		}
+	},
+	{ immediate: true },
+);
 
 const { sonnerError } = useSonner();
-const { enableLoader, disableLoader } = useLoader();
 
 async function googleSign() {
 	const provider = new GoogleAuthProvider();
 	const auth = getAuth(firebaseApp);
-	const loaderId = enableLoader();
 
 	try {
 		const userCredential = await signInWithPopup(auth, provider);
@@ -41,8 +45,6 @@ async function googleSign() {
 	} catch {
 		sonnerError($pt("googleSignError"));
 	}
-
-	disableLoader(loaderId);
 }
 </script>
 

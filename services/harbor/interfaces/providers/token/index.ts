@@ -1,4 +1,4 @@
-import { type UserEntity } from "@business/domains/entities/user";
+import { userIdObjecter, type UserEntity } from "@business/domains/entities/user";
 import { ZodAccelerator } from "@duplojs/core";
 import { envs } from "@interfaces/envs";
 import jwt from "jsonwebtoken";
@@ -8,7 +8,7 @@ const { JWT_KEY, JWT_TIME } = envs;
 export class AccessToken {
 	public static readonly payloadSchema = ZodAccelerator.build(
 		zod.object({
-			userId: zod.string(),
+			userId: userIdObjecter.toZodSchema(),
 		}),
 	);
 
@@ -16,7 +16,7 @@ export class AccessToken {
 		const { id } = user;
 
 		const payload: ReturnType<typeof AccessToken["payloadSchema"]["parse"]> = {
-			userId: id.value,
+			userId: id,
 		};
 
 		return jwt.sign(

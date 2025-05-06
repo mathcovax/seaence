@@ -6,6 +6,6 @@
 
 - Cliquer sur `Générer une nouvelle clé privée`, (cela vous téléchargera un fichier json).
 
-- Renommer le fichier téléchargé en `firebase-credentials.json`.
+- Renommer le fichier téléchargé en `firebase.credential.json`.
 
 - Enfin, copier le à la racine du projet `harbor`.

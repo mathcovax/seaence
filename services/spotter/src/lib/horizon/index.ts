@@ -1,21 +1,57 @@
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { envs } from "@/envs";
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import type { CodegenRoutes } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
-	CodegenRoutes>;
+	CodegenRoutes
+>;
 
 const { sonnerError, sonnerMessage, sonnerWarning } = useSonner();
+const { enableLoader, disableLoader } = useLoader();
+const { accessToken } = useUserInformation();
+
+declare module "@duplojs/http-client" {
+	interface HttpClientRequestInit {
+		disabledLoader?: boolean;
+		loaderId?: string;
+	}
+}
+
+declare global {
+	interface Window {
+		horizonClient: HttpClient<HorizonClientRoute>;
+	}
+}
 
 export const horizonClient = new HttpClient<HorizonClientRoute>({
 	baseUrl: envs.VITE_HORIZON_ENTRYPOINT_BASE_URL,
 })
 	.setDefaultRequestParams({
 		mode: "cors",
+		headers: {
+			get authorization() {
+				return accessToken.value ?? undefined;
+			},
+		},
 	})
+	.setInterceptor(
+		"request",
+		(requestDefinition) => {
+			if (requestDefinition.paramsRequest.disabledLoader !== false) {
+				requestDefinition.paramsRequest.loaderId = enableLoader();
+			}
+
+			return requestDefinition;
+		},
+	)
 	.setInterceptor(
 		"response",
 		(response) => {
+			if (response.requestDefinition.paramsRequest.loaderId) {
+				disableLoader(response.requestDefinition.paramsRequest.loaderId);
+			}
+
 			const sonnerMessageKey = `responses.${response.information}`;
 
 			if (i18n.global.te(sonnerMessageKey)) {
@@ -33,3 +69,6 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 			return response;
 		},
 	);
+
+// three checking bug auto import
+window.horizonClient = horizonClient;

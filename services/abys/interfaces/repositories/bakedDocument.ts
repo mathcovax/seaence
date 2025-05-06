@@ -157,4 +157,21 @@ bakedDocumentRepository.default = {
 
 		return null;
 	},
+
+	async findOneById(id) {
+		const bakedDocumentMongo = await mongo.bakedDocumentCollection.findOne(
+			{
+				id: id.value,
+			},
+		);
+
+		if (!bakedDocumentMongo) {
+			return null;
+		}
+
+		return EntityHandler.unsafeMapper(
+			BakedDocumentEntity,
+			{ ...bakedDocumentMongo },
+		);
+	},
 };

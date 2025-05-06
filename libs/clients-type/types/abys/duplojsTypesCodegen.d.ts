@@ -82,6 +82,39 @@ type CodegenRoutes = ({
         information: "rawDocument.upsert";
         body?: undefined;
     };
+}) | ({
+    method: "GET";
+    path: "/bakedDocument/{id}";
+    params: {
+        id: string;
+    };
+    response: {
+        code: 404;
+        information: "bakedDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "bakedDocument.get";
+        body: {
+            id: string;
+            nodeSameRawDocumentId: string;
+            title: string;
+            language: "fr-FR" | "en-US";
+            abstract: string | null;
+            abstractDetails: {
+                name: string;
+                content: string;
+            }[] | null;
+            resources: {
+                resourceProvider: "DOIFoundation" | "pubmed";
+                url: string;
+            }[];
+            keywords: {
+                value: string;
+            }[];
+            articleTypes: ArticleType[];
+        };
+    };
 });
 
 export { CodegenRoutes };

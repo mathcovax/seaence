@@ -1,16 +1,18 @@
-import { type Int } from "@business/domains/common/Int";
-import { type ArticleId } from "@business/domains/entities/article";
-import { type PostId, type PostEntity } from "@business/domains/entities/post";
-import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
+import { type PostId, type PostEntity, type NodeSameRawDocumentId } from "@business/domains/entities/post";
+import { createRepositoryHandler, type Int, type RepositoryBase } from "@vendors/clean";
 
-interface FindByArticleIdParams {
+interface FindByDocumentIdParams {
 	page: Int;
 	quantityPerPage: Int;
 }
 export interface PostRepository extends RepositoryBase<PostEntity> {
 	generatePostId(): PostId;
-	findByArticleId(articleId: ArticleId, params: FindByArticleIdParams): Promise<PostEntity[]>;
+	findByNodeSameRawDocumentId(
+		documentId: NodeSameRawDocumentId,
+		params: FindByDocumentIdParams
+	): Promise<PostEntity[]>;
 	findOneById(postId: PostId): Promise<PostEntity | null>;
+	getTotalCountByNodeSameRawDocumentId(documentId: NodeSameRawDocumentId): Promise<Int>;
 }
 
 export const postRepository = createRepositoryHandler<PostRepository>();

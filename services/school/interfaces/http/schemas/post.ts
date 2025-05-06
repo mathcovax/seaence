@@ -1,11 +1,17 @@
 import { zod } from "@vendors/clean";
-import { endpointArticleSchema } from "./article";
-import { endpointUserSchema } from "./user";
+import { userSchema } from "./user";
+import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/post";
 
 export const endpointPostSchema = zod.object({
 	id: zod.string(),
+	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.zodSchema,
 	topic: zod.string(),
-	content: zod.string(),
-	article: endpointArticleSchema,
-	author: endpointUserSchema,
+	content: zod.string().nullable(),
+	author: userSchema,
+	answerCount: zod.number(),
+	createdAt: zod.date(),
+});
+
+export const endpointPostsDetails = zod.object({
+	totalCount: zod.number(),
 });

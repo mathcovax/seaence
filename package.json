@@ -36,6 +36,7 @@
     "prepare": "husky",
 
     "docker:school": "docker compose up school",
+    "docker:school:fixtures": "docker compose exec school npm -w services/school run fixtures --",
 
     "docker:spotter": "docker compose up spotter",
 

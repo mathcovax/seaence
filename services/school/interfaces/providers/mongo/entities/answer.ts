@@ -4,5 +4,6 @@ export interface MongoAnswer {
 	postId: string;
 	content: string;
 	author: MongoUser;
+	createdAt: Date;
 }
 

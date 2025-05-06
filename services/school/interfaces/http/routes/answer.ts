@@ -1,11 +1,10 @@
 import { userObjecter } from "@business/domains/common/user";
 import { answerContentObjecter } from "@business/domains/entities/answer";
 import { postIdObjecter } from "@business/domains/entities/post";
-import { getAnswersFromPostUsecase, replyToPostUsecase } from "@interfaces/usecase";
+import { findAnswersFromPostUsecase, replyToPostUsecase } from "@interfaces/usecase";
 import { iWantPostExistById } from "../checkers/post";
 import { endpointAnswerSchema } from "../schemas/answer";
-import { intObjecter } from "@business/domains/common/Int";
-import { toSimpleObject } from "@vendors/clean";
+import { intObjecter, toSimpleObject } from "@vendors/clean";
 
 useBuilder()
 	.createRoute("POST", "/posts/{postId}/answers")
@@ -26,20 +25,18 @@ useBuilder()
 		async(pickup) => {
 			const { post, content, author } = pickup(["post", "content", "author"]);
 
-			const repliedAnswer = await replyToPostUsecase
+			await replyToPostUsecase
 				.execute({
 					post,
 					content,
 					author,
-				})
-				.then((answer) => answer.toSimpleObject());
+				});
 
 			return new CreatedHttpResponse(
 				"answer.created",
-				repliedAnswer,
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "answer.created", endpointAnswerSchema),
+		makeResponseContract(CreatedHttpResponse, "answer.created"),
 	);
 
 useBuilder()
@@ -50,6 +47,7 @@ useBuilder()
 		},
 		query: {
 			page: zoderce.number().pipe(intObjecter.toZodSchema()),
+			quantityPerPage: zoderce.number().pipe(intObjecter.toZodSchema()),
 		},
 	})
 	.presetCheck(
@@ -58,12 +56,13 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const { post, page } = pickup(["post", "page"]);
+			const { post, page, quantityPerPage } = pickup(["post", "page", "quantityPerPage"]);
 
-			const answers = await getAnswersFromPostUsecase
+			const answers = await findAnswersFromPostUsecase
 				.execute({
 					post,
 					page,
+					quantityPerPage,
 				})
 				.then((answer) => answer.map(toSimpleObject));
 

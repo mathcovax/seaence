@@ -4,6 +4,7 @@ import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 export interface UserRepository extends RepositoryBase<UserEntity> {
 	generateUserId(): UserId;
 	findOneByEmail(email: UserEmail): Promise<UserEntity | null>;
+	findOneById(id: UserId): Promise<UserEntity | null>;
 }
 
 export const userRepository = createRepositoryHandler<UserRepository>();

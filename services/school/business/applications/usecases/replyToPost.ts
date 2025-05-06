@@ -3,6 +3,8 @@ import { answerRepository } from "../repositories/answer";
 import { AnswerEntity, type AnswerContent } from "@business/domains/entities/answer";
 import { type PostEntity } from "@business/domains/entities/post";
 import { type User } from "@business/domains/common/user";
+import { postRepository } from "../repositories/post";
+import { ComputePostAnswerUsecase } from "./computePostAnswer";
 
 interface Input {
 	post: PostEntity;
@@ -12,8 +14,10 @@ interface Input {
 
 export class ReplyToPostUsecase extends UsecaseHandler.create({
 	answerRepository,
+	postRepository,
+	computePostAnswer: ComputePostAnswerUsecase,
 }) {
-	public execute({ post, content, author }: Input) {
+	public async execute({ post, content, author }: Input) {
 		const answer = AnswerEntity.create({
 			id: this.answerRepository.generateAnswerId(),
 			postId: post.id,
@@ -21,6 +25,9 @@ export class ReplyToPostUsecase extends UsecaseHandler.create({
 			author,
 		});
 
-		return this.answerRepository.save(answer);
+		await this.answerRepository.save(answer);
+		await this.computePostAnswer({ post });
+
+		return answer;
 	}
 }
