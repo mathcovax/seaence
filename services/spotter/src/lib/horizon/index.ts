@@ -8,14 +8,17 @@ export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
 >;
 
 const { sonnerError, sonnerMessage, sonnerWarning } = useSonner();
-// const { enableLoader, disableLoader } = useLoader();
+const { enableLoader, disableLoader } = useLoader();
 const { accessToken } = useUserInformation();
 
-declare global {
-	interface RequestInit {
+declare module "@duplojs/http-client" {
+	interface HttpClientRequestInit {
 		disabledLoader?: boolean;
+		loaderId?: string;
 	}
+}
 
+declare global {
 	interface Window {
 		horizonClient: HttpClient<HorizonClientRoute>;
 	}
@@ -36,14 +39,7 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 		"request",
 		(requestDefinition) => {
 			if (requestDefinition.paramsRequest.disabledLoader !== false) {
-				// const loaderId = enableLoader();
-				// const responseInterceptors = requestDefinition.interceptors.response;
-
-				// requestDefinition.interceptors.response = (response) => {
-				// disableLoader(loaderId);
-
-				// return responseInterceptors(response);
-				// };
+				requestDefinition.paramsRequest.loaderId = enableLoader();
 			}
 
 			return requestDefinition;
@@ -52,6 +48,10 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 	.setInterceptor(
 		"response",
 		(response) => {
+			if (response.requestDefinition.paramsRequest.loaderId) {
+				disableLoader(response.requestDefinition.paramsRequest.loaderId);
+			}
+
 			const sonnerMessageKey = `responses.${response.information}`;
 
 			if (i18n.global.te(sonnerMessageKey)) {

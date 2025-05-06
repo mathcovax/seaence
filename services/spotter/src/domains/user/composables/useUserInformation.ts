@@ -27,7 +27,7 @@ export function useUserInformation() {
 					user.value = body;
 				},
 			)
-			.whenError(
+			.whenRequestError(
 				() => {
 					accessTokenItem.value = null;
 				},
