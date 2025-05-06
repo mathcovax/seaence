@@ -1,6 +1,5 @@
 import { type estypes } from "@elastic/elasticsearch";
 import { type Facet, type AggregationResult } from ".";
-import { type ExpectType } from "@duplojs/utils";
 
 export interface YearAggregationsResults {
 	journalPublishYearResult: AggregationResult<number>;
@@ -9,7 +8,7 @@ export interface YearAggregationsResults {
 	};
 }
 
-export function getYearAggregation() {
+export function buildYearAggregation() {
 	return {
 		journalPublishYearResult: {
 			terms: {

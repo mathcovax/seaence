@@ -6,7 +6,7 @@ export interface ArticleTypeAggregationsResults {
 	articleTypeResult: AggregationResult<ArticleType>;
 }
 
-export function getArticleTypeAggregation() {
+export function buildArticleTypeAggregation() {
 	return {
 		terms: {
 			field: "articleTypes",
@@ -24,4 +24,24 @@ export function articleTypeAggregationsResultsToFacet(
 			quantity: doc_count,
 		}),
 	);
+}
+
+export interface ArticleTypeFilterValues {
+	articleType?: ArticleType[];
+}
+
+export function buildArticleTypeFilter(
+	articleTypeFilterValues: ArticleTypeFilterValues["articleType"],
+) {
+	if (articleTypeFilterValues) {
+		return [
+			{
+				terms: {
+					articleTypes: articleTypeFilterValues,
+				},
+			},
+		] satisfies estypes.QueryDslQueryContainer[];
+	} else {
+		return [];
+	}
 }

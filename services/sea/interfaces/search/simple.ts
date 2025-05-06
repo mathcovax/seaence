@@ -2,13 +2,14 @@ import { elastic } from "@interfaces/providers/elastic";
 import { type ArticleType } from "@interfaces/providers/elastic/common/articleType";
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { match } from "ts-pattern";
-import { getFacetsAggregations, type AggregationsResults } from "./facet";
+import { buildFacetsAggregations, buildFilters, type FiltersValues, type AggregationsResults } from "./facet";
 
 export interface SimpleSearchParams {
 	language: Language;
 	page: number;
 	term: string;
 	quantityPerPage: number;
+	filtersValues?: FiltersValues;
 }
 
 interface SimpleSearchResponse {
@@ -53,7 +54,13 @@ interface Hit {
 }
 
 export function simpleSearch(
-	{ language, page, term, quantityPerPage }: SimpleSearchParams,
+	{
+		language,
+		page,
+		term,
+		quantityPerPage,
+		filtersValues,
+	}: SimpleSearchParams,
 ) {
 	const elasticIndex = match(language)
 		.with("fr-FR", () => elastic.frFrDocument)
@@ -79,6 +86,7 @@ export function simpleSearch(
 						},
 					},
 				],
+				...(filtersValues && buildFilters(filtersValues)),
 			},
 		},
 		highlight: {
@@ -91,6 +99,6 @@ export function simpleSearch(
 				authors: {},
 			},
 		},
-		aggregations: getFacetsAggregations(language),
+		aggregations: buildFacetsAggregations(language),
 	});
 }

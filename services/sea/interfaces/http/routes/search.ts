@@ -2,6 +2,7 @@ import { simpleSearch } from "@interfaces/search/simple";
 import { type EndpointSimpleSearchSchema, endpointSimpleSearchSchema } from "../schemas/search";
 import { languageSchema } from "../schemas/common";
 import { aggregationsResultsToFacetWrapper } from "@interfaces/search/facet";
+import { filtersValuesSchema } from "../schemas/filter";
 
 useBuilder()
 	.createRoute("POST", "/simple-search")
@@ -11,11 +12,18 @@ useBuilder()
 			page: zod.number(),
 			quantityPerPage: zod.number(),
 			term: zod.string(),
+			filtersValues: filtersValuesSchema.optional(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { language, term, page, quantityPerPage } = pickup("body");
+			const {
+				language,
+				term,
+				page,
+				quantityPerPage,
+				filtersValues,
+			} = pickup("body");
 
 			const summaryTronc = {
 				from: 0,
@@ -27,6 +35,7 @@ useBuilder()
 				term,
 				page,
 				quantityPerPage,
+				filtersValues,
 			})
 				.then(
 					(rawResult): EndpointSimpleSearchSchema => ({

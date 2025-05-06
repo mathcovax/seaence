@@ -1,11 +1,9 @@
-import { type ExpectType } from "@duplojs/utils";
 import { type estypes } from "@elastic/elasticsearch";
-import { type FacetWrapperSchema } from "@interfaces/http/schemas/facet";
 import { type Language } from "@interfaces/providers/elastic/common/language";
-import { type GenderAggregationsResults, genderAggregationResultsToFacet, getGenderAggregation } from "./gender";
-import { articleTypeAggregationsResultsToFacet, getArticleTypeAggregation, type ArticleTypeAggregationsResults } from "./articleTypes";
-import { getYearAggregation, yearAggregationsResultsToFacet, type YearAggregationsResults } from "./year";
-import { getSpeciesAggregation, speciesAggregationResultsToFacet, type SpeciesAggregationsResults } from "./species";
+import { type GenderAggregationsResults, genderAggregationResultsToFacet, buildGenderAggregation } from "./gender";
+import { articleTypeAggregationsResultsToFacet, type ArticleTypeFilterValues, buildArticleTypeAggregation, type ArticleTypeAggregationsResults, buildArticleTypeFilter } from "./articleTypes";
+import { buildYearAggregation, yearAggregationsResultsToFacet, type YearAggregationsResults } from "./year";
+import { buildSpeciesAggregation, speciesAggregationResultsToFacet, type SpeciesAggregationsResults } from "./species";
 
 export interface AggregationResult<
 	GenericKey extends unknown = unknown,
@@ -29,12 +27,12 @@ export type AggregationsResults =
 	& ArticleTypeAggregationsResults
 	& SpeciesAggregationsResults;
 
-export function getFacetsAggregations(language: Language) {
+export function buildFacetsAggregations(language: Language) {
 	return {
-		articleTypeResult: getArticleTypeAggregation(),
-		genderResult: getGenderAggregation(language),
-		...getYearAggregation(),
-		speciesResult: getSpeciesAggregation(language),
+		articleTypeResult: buildArticleTypeAggregation(),
+		genderResult: buildGenderAggregation(language),
+		...buildYearAggregation(),
+		speciesResult: buildSpeciesAggregation(language),
 	} satisfies Record<keyof AggregationsResults, estypes.AggregationsAggregationContainer>;
 }
 
@@ -47,11 +45,22 @@ export function aggregationsResultsToFacetWrapper(
 		genderResult,
 		speciesResult,
 	}: AggregationsResults,
-): FacetWrapperSchema {
+) {
 	return {
 		articleType: articleTypeAggregationsResultsToFacet(articleTypeResult),
 		year: yearAggregationsResultsToFacet(journalPublishYearResult, webPublishYearResult),
 		gender: genderAggregationResultsToFacet(language, genderResult),
 		species: speciesAggregationResultsToFacet(language, speciesResult),
-	};
+	} satisfies Record<string, Facet<unknown>[]>;
+}
+
+export type FiltersValues =
+	& ArticleTypeFilterValues;
+
+export function buildFilters(
+	filtersValues: FiltersValues,
+) {
+	return {
+		must: [...buildArticleTypeFilter(filtersValues.articleType)],
+	} satisfies estypes.QueryDslBoolQuery;
 }
