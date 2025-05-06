@@ -51,11 +51,11 @@ useBuilder()
 								keywords: highlight?.keywords ?? null,
 								webPublishDate: _source.webPublishDate,
 								journalPublishDate: _source.journalPublishDate,
-								summary: highlight?.abstract?.join(" ").substring(summaryTronc.from, summaryTronc.to)
+								summary: highlight?.abstract?.join(".. ").substring(summaryTronc.from, summaryTronc.to)
 									?? _source.summary,
 							}),
 						),
-						facetWrapper: aggregationsResultsToFacetWrapper(rawResult.aggregations),
+						facetWrapper: aggregationsResultsToFacetWrapper(language, rawResult.aggregations),
 					}),
 				);
 
@@ -64,5 +64,5 @@ useBuilder()
 				results,
 			);
 		},
-		// makeResponseContract(OkHttpResponse, "simpleSearch.results", endpointSimpleSearchSchema),
+		makeResponseContract(OkHttpResponse, "simpleSearch.results", endpointSimpleSearchSchema),
 	);
