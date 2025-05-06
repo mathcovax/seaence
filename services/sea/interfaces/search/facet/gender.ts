@@ -27,7 +27,7 @@ export interface GenderAggregationsResults {
 	};
 }
 
-export function getGenderAggregation(language: Language) {
+export function buildGenderAggregation(language: Language) {
 	const genderFacetValue = [
 		...languageToGenderFacetValue[language].male,
 		...languageToGenderFacetValue[language].female,

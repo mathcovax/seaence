@@ -27,7 +27,7 @@ export interface SpeciesAggregationsResults {
 	};
 }
 
-export function getSpeciesAggregation(language: Language) {
+export function buildSpeciesAggregation(language: Language) {
 	const speciesFacetValue = [
 		...languageToSpeciesFacetValue[language].human,
 		...languageToSpeciesFacetValue[language].otherAnimal,
