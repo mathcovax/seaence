@@ -2,7 +2,7 @@ import { elastic } from "@interfaces/providers/elastic";
 import { type ArticleType } from "@interfaces/providers/elastic/common/articleType";
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { match } from "ts-pattern";
-import { facetsAggregations, type AggregationsResults } from "./facet";
+import { getFacetsAggregations, type AggregationsResults } from "./facet";
 
 export interface SimpleSearchParams {
 	language: Language;
@@ -91,6 +91,6 @@ export function simpleSearch(
 				authors: {},
 			},
 		},
-		aggregations: facetsAggregations,
+		aggregations: getFacetsAggregations(language),
 	});
 }
