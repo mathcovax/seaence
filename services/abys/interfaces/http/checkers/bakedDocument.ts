@@ -1,6 +1,6 @@
 import { type BakedDocumentId } from "@business/domains/entities/bakedDocument";
 import { type GetTypeInput } from "@duplojs/core";
-import { getBakedDocumentByIdUsecase } from "@interfaces/usecase";
+import { findBakedDocumentByIdUsecase } from "@interfaces/usecase";
 import { match } from "ts-pattern";
 
 export const inputBakedDocumentExist = createTypeInput<{
@@ -13,7 +13,7 @@ export const bakedDocumentExistCheck = createChecker("bakedDocumentExist")
 			const bakedDocument = await match(input)
 				.with(
 					{ inputName: "id" },
-					({ value }) => getBakedDocumentByIdUsecase.execute({ id: value }),
+					({ value }) => findBakedDocumentByIdUsecase.execute({ id: value }),
 				)
 				.exhaustive();
 

@@ -6,7 +6,7 @@ interface Input {
 	id: BakedDocumentId;
 }
 
-export class GetBakedDocumentByIdUsecase extends UsecaseHandler.create({
+export class FindBakedDocumentByIdUsecase extends UsecaseHandler.create({
 	bakedDocumentRepository,
 }) {
 	public execute({ id }: Input) {

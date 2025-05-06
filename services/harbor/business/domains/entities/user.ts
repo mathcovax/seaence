@@ -34,7 +34,7 @@ export class UserEntity extends EntityHandler.create({
 	public static create(params: InputCreateUserEntity) {
 		return new UserEntity({
 			...params,
-			username: userUsernameObjecter.unknownThrowCreate(
+			username: userUsernameObjecter.unknownUnsafeCreate(
 				params.email.value.split("@").shift(),
 			),
 		});

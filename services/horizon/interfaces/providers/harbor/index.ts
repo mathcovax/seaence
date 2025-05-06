@@ -21,12 +21,14 @@ export class HarborAPI {
 	}
 
 	public static async getUser(accessToken: string) {
-		return this.httpClient.post(
-			"/user",
-			{
-				body: accessToken,
-			},
-		).iWantExpectedResponse();
+		return this.httpClient
+			.post(
+				"/user",
+				{
+					body: accessToken,
+				},
+			)
+			.iWantExpectedResponse();
 	}
 
 	static {

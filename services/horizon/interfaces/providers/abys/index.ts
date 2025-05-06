@@ -10,14 +10,16 @@ export class AbysAPI {
 	private static httpClient: HttpClient<AbysClientRoute>;
 
 	public static getBakedDocumentById(bakedDocumentId: string) {
-		return this.httpClient.get(
-			"/bakedDocument/{id}",
-			{
-				params: {
-					id: bakedDocumentId,
+		return this.httpClient
+			.get(
+				"/bakedDocument/{id}",
+				{
+					params: {
+						id: bakedDocumentId,
+					},
 				},
-			},
-		).iWantExpectedResponse();
+			)
+			.iWantExpectedResponse();
 	}
 
 	static {

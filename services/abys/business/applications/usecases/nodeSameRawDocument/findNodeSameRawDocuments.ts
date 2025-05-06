@@ -8,7 +8,7 @@ interface Input {
 const objectPerPage = 10;
 const nodeSameRawDocumentPerPage = intObjecter.unsafeCreate(objectPerPage);
 
-export class GetNodeSameRawDocumentsUsecase extends UsecaseHandler.create({
+export class FindNodeSameRawDocumentsUsecase extends UsecaseHandler.create({
 	nodeSameRawDocumentRepository,
 }) {
 	public execute(input: Input) {
