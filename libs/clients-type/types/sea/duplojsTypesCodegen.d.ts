@@ -20,22 +20,11 @@ type CodegenRoutes = ({
         abysBakedDocumentId: string;
         title: string;
         articleTypes: ArticleType[];
-        authors: {
-            name: string;
-            affiliations: string[] | null;
-        }[];
+        authors: string[];
         summary: string | null;
         abstract: string | null;
-        abstractDetails: {
-            name: string;
-            content: string;
-        }[] | null;
-        providers: {
-            value: "pubmed";
-        }[];
-        keywords: {
-            value: string;
-        }[];
+        providers: ("pubmed")[];
+        keywords: string[];
         webPublishDate: Date | null;
         webPublishSplitDate: {
             day: number | null;

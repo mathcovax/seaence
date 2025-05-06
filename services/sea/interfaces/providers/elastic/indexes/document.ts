@@ -22,17 +22,9 @@ export const elasticDocumentMappingSchema = {
 		type: "keyword",
 	},
 	authors: {
-		type: "nested",
-		properties: {
-			name: {
-				type: "text",
-				fields: {
-					keyword: {
-						type: "keyword",
-					},
-				},
-			},
-			affiliations: {
+		type: "text",
+		fields: {
+			keyword: {
 				type: "keyword",
 			},
 		},
@@ -43,35 +35,14 @@ export const elasticDocumentMappingSchema = {
 	abstract: {
 		type: "text",
 	},
-	abstractDetails: {
-		type: "nested",
-		properties: {
-			name: {
-				type: "keyword",
-			},
-			content: {
-				type: "text",
-			},
-		},
-	},
 	providers: {
-		type: "nested",
-		properties: {
-			value: {
-				type: "keyword",
-			},
-		},
+		type: "keyword",
 	},
 	keywords: {
-		type: "nested",
-		properties: {
-			value: {
-				type: "text",
-				fields: {
-					keyword: {
-						type: "keyword",
-					},
-				},
+		type: "text",
+		fields: {
+			keyword: {
+				type: "keyword",
 			},
 		},
 	},
@@ -109,38 +80,15 @@ export const elasticDocumentMappingSchema = {
 	},
 } satisfies Record<string, estypes.MappingProperty>;
 
-export const elasticDocumentSettingsSchema = {
-	analysis: {
-		analyzer: {
-			default: {
-				type: "standard",
-			},
-		},
-	},
-	index: {
-		number_of_shards: 3,
-		number_of_replicas: 1,
-	},
-} satisfies estypes.IndicesIndexSettings;
-
 export interface Document {
 	abysBakedDocumentId: string;
 	title: string;
 	articleTypes: ArticleType[];
-	authors: {
-		name: string;
-		affiliations: string[] | null;
-	}[];
+	authors: string[];
 	summary: string | null;
 	abstract: string | null;
-	abstractDetails: {
-		name: string;
-		content: string;
-	}[] | null;
-	providers: {
-		value: Provider;
-	}[];
-	keywords: { value: string }[];
+	providers: Provider[];
+	keywords: string[];
 	webPublishDate: Date | null;
 	webPublishSplitDate: {
 		year: number;
@@ -164,13 +112,37 @@ type _ExpectSameKeyof = ExpectType<
 export const enUsDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["en-US"]}`,
 	"abysBakedDocumentId",
-	elasticDocumentSettingsSchema,
+	{
+		analysis: {
+			analyzer: {
+				default: {
+					type: "english",
+				},
+			},
+		},
+		index: {
+			number_of_shards: 3,
+			number_of_replicas: 1,
+		},
+	},
 	elasticDocumentMappingSchema,
 );
 
 export const frFrDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["fr-FR"]}`,
 	"abysBakedDocumentId",
-	elasticDocumentSettingsSchema,
+	{
+		analysis: {
+			analyzer: {
+				default: {
+					type: "french",
+				},
+			},
+		},
+		index: {
+			number_of_shards: 3,
+			number_of_replicas: 1,
+		},
+	},
 	elasticDocumentMappingSchema,
 );
