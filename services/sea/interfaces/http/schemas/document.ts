@@ -13,25 +13,11 @@ export const entrypointDocumentSchema = zod
 		abysBakedDocumentId: zod.string(),
 		title: zod.string(),
 		articleTypes: articleTypeSchema.array(),
-		authors: zod.object({
-			name: zod.string(),
-			affiliations: zod.string().array().nullable(),
-		}).array(),
+		authors: zod.string().array(),
 		summary: zod.string().nullable(),
 		abstract: zod.string().nullable(),
-		abstractDetails: zod
-			.object({
-				name: zod.string(),
-				content: zod.string(),
-			})
-			.array()
-			.nullable(),
-		providers: zod.object({
-			value: zod.enum(providerEnum.toTuple()),
-		}).array(),
-		keywords: zod.object({
-			value: zod.string(),
-		}).array(),
+		providers: zod.enum(providerEnum.toTuple()).array(),
+		keywords: zod.string().array(),
 		webPublishDate: zod.coerce.date().nullable(),
 		webPublishSplitDate: splitDateSchema.nullable(),
 		journalPublishDate: zod.coerce.date().nullable(),

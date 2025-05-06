@@ -6,11 +6,11 @@ export const simpleSearchSchema = zod.object({
 	abysBakedDocumentId: zod.string(),
 	title: zod.string(),
 	articleType: articleTypeSchema.array(),
-	authorsNames: zod.string().array(),
+	authors: zod.string().array(),
 	webPublishDate: zod.string().nullable(),
 	journalPublishDate: zod.string().nullable(),
 	summary: zod.string().nullable(),
-	keywords: zod.string().array(),
+	keywords: zod.string().array().nullable(),
 });
 
 export const endpointSimpleSearchSchema = zod.object({

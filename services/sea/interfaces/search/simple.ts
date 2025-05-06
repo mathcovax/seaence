@@ -31,21 +31,6 @@ interface SimpleSearchResponse {
 	aggregations: AggregationsResults;
 }
 
-interface InnerHits<
-	GenericFieldsNames extends string,
-> {
-	hits: {
-		hits: {
-			_nested: {
-				offset: number;
-			};
-			highlight: {
-				[Prop in GenericFieldsNames]: string[];
-			};
-		}[];
-	};
-}
-
 interface Hit {
 	_index: string;
 	_id: string;
@@ -54,7 +39,7 @@ interface Hit {
 		abysBakedDocumentId: string;
 		title: string;
 		summary: string | null;
-		authors: { name: string }[];
+		authors: string[];
 		articleTypes: ArticleType[];
 		webPublishDate: string | null;
 		journalPublishDate: string | null;
@@ -62,11 +47,8 @@ interface Hit {
 	highlight?: {
 		title?: string[];
 		abstract?: string[];
-	};
-	inner_hits: {
-		abstractDetails: InnerHits<"abstractDetails.content">;
-		keywords: InnerHits<"keywords.value">;
-		authors: InnerHits<"authors.name">;
+		keywords?: string[];
+		authors?: string[];
 	};
 }
 
@@ -81,7 +63,7 @@ export function simpleSearch(
 	return elasticIndex.find<SimpleSearchResponse>({
 		from: page * quantityPerPage,
 		size: quantityPerPage,
-		_source: ["abysBakedDocumentId", "title", "summary", "authors.name", "articleTypes", "webPublishDate", "journalPublishDate"],
+		_source: ["abysBakedDocumentId", "title", "summary", "authors", "articleTypes", "webPublishDate", "journalPublishDate"],
 		query: {
 			bool: {
 				should: [
@@ -91,69 +73,9 @@ export function simpleSearch(
 							fields: [
 								"title^3",
 								"abstract",
+								"keywords^10",
+								"authors^10",
 							],
-						},
-					},
-					{
-						nested: {
-							path: "abstractDetails",
-							query: {
-								match: {
-									"abstractDetails.content": term,
-								},
-							},
-							inner_hits: {
-								_source: false,
-								highlight: {
-									fields: {
-										"abstractDetails.content": {
-											fragment_size: 50,
-										},
-									},
-								},
-							},
-						},
-					},
-					{
-						nested: {
-							path: "keywords",
-							query: {
-								match: {
-									"keywords.value": {
-										query: term,
-										boost: 10,
-									},
-								},
-							},
-							inner_hits: {
-								_source: false,
-								highlight: {
-									fields: {
-										"keywords.value": {},
-									},
-								},
-							},
-						},
-					},
-					{
-						nested: {
-							path: "authors",
-							query: {
-								match: {
-									"authors.name": {
-										query: term,
-										boost: 10,
-									},
-								},
-							},
-							inner_hits: {
-								_source: false,
-								highlight: {
-									fields: {
-										"authors.name": {},
-									},
-								},
-							},
 						},
 					},
 				],
@@ -165,6 +87,8 @@ export function simpleSearch(
 				abstract: {
 					fragment_size: 50,
 				},
+				keywords: {},
+				authors: {},
 			},
 		},
 		aggregations: facetsAggregations,

@@ -103,6 +103,7 @@ type CodegenRoutes = ({
             abstract: string | null;
             abstractDetails: {
                 name: string;
+                label: string;
                 content: string;
             }[] | null;
             resources: {

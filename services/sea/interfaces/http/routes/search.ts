@@ -32,27 +32,27 @@ useBuilder()
 					(rawResult): EndpointSimpleSearchSchema => ({
 						total: rawResult.hits.total.value,
 						results: rawResult.hits.hits.map(
-							({ _source, highlight, inner_hits, _score }) => ({
+							({ _source, highlight, _score }) => ({
 								score: _score,
 								abysBakedDocumentId: _source.abysBakedDocumentId,
 								title: highlight?.title?.shift() ?? _source.title,
 								articleType: _source.articleTypes,
-								authorsNames: _source.authors.map(
-									({ name }, index) => inner_hits.authors.hits.hits.find(
-										({ _nested }) => _nested.offset === index,
-									)?.highlight["authors.name"].shift()
-									?? name,
+								authors: _source.authors.map(
+									(author) => {
+										const highlighted = highlight
+											?.authors
+											?.find(
+												(highlightAuthor) => highlightAuthor.replace(/<\/?em>/g, "").toLowerCase() === author.toLowerCase(),
+											);
+
+										return highlighted ?? author;
+									},
 								),
-								keywords: inner_hits.keywords.hits.hits.flatMap(
-									({ highlight }) => highlight["keywords.value"],
-								),
+								keywords: highlight?.keywords ?? null,
 								webPublishDate: _source.webPublishDate,
 								journalPublishDate: _source.journalPublishDate,
 								summary: highlight?.abstract?.join(" ").substring(summaryTronc.from, summaryTronc.to)
-									|| inner_hits.abstractDetails.hits.hits.map(
-										({ highlight }) => highlight["abstractDetails.content"].join(".. "),
-									).join(".. ").substring(summaryTronc.from, summaryTronc.to)
-									|| _source.summary,
+									?? _source.summary,
 							}),
 						),
 						facetWrapper: aggregationsResultsToFacetWrapper(rawResult.aggregations),
@@ -64,5 +64,5 @@ useBuilder()
 				results,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "simpleSearch.results", endpointSimpleSearchSchema),
+		// makeResponseContract(OkHttpResponse, "simpleSearch.results", endpointSimpleSearchSchema),
 	);

@@ -38,8 +38,7 @@ seaRepository.default = {
 		const providers = restSimplifyObject
 			.resources
 			.map(({ resourceProvider }) => resourceProvider)
-			.filter((resourceProvider): resourceProvider is Provider["value"] => providerEnum.has(resourceProvider))
-			.map((value) => ({ value }));
+			.filter((resourceProvider): resourceProvider is Provider["value"] => providerEnum.has(resourceProvider));
 
 		const { abstract, abstractDetails } = restSimplifyObject;
 
@@ -48,25 +47,27 @@ seaRepository.default = {
 			to: 300,
 		};
 
+		const joinedAbstractDetails = abstractDetails
+			?.map(({ content, label }) => `${label}: ${content}`)
+			.join(" ") ?? null;
+
 		const summary = match({
 			abstract,
-			abstractDetails,
+			joinedAbstractDetails,
 		})
 			.with(
 				{ abstract: P.nonNullable },
 				({ abstract }) => abstract.substring(summaryTronc.from, summaryTronc.to),
 			)
 			.with(
-				{ abstractDetails: P.nonNullable },
-				({ abstractDetails }) => abstractDetails
-					.map(({ content }) => content)
-					.join(" ")
+				{ joinedAbstractDetails: P.nonNullable },
+				({ joinedAbstractDetails }) => joinedAbstractDetails
 					.substring(summaryTronc.from, summaryTronc.to),
 			)
 			.with(
 				{
 					abstract: null,
-					abstractDetails: null,
+					joinedAbstractDetails: null,
 				},
 				() => null,
 			)
@@ -77,12 +78,17 @@ seaRepository.default = {
 			{
 				abysBakedDocumentId: restSimplifyObject.id,
 				articleTypes: restSimplifyObject.articleTypes,
-				authors: restSimplifyObject.authors,
+				authors: restSimplifyObject.authors.map(
+					({ name }) => name,
+				),
 				title: restSimplifyObject.title,
 				summary,
-				abstract: restSimplifyObject.abstract,
-				abstractDetails: restSimplifyObject.abstractDetails,
-				keywords: restSimplifyObject.keywords,
+				abstract: abstract
+					?? joinedAbstractDetails
+					?? null,
+				keywords: restSimplifyObject.keywords.map(
+					({ value }) => value,
+				),
 				providers,
 				webPublishDate,
 				webPublishSplitDate: restSimplifyObject.webPublishDate,
