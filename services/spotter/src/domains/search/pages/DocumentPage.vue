@@ -78,7 +78,7 @@ const allAffiliations = computed(() => {
 				<div class="w-full lg:flex-2/3 space-y-8">
 					<div class="flex flex-col gap-2">
 						<h1 class="text-3xl md:text-4xl font-bold text-blue-seaence">
-							{{ document.title }}
+							{{ document.title }} ({{ params.id }})
 						</h1>
 
 						<div class="flex items-center gap-2">
