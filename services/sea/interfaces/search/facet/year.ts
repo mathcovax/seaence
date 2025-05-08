@@ -85,3 +85,54 @@ export function yearAggregationsResultsToFacet(
 		].toSorted(({ value: valueA }, { value: valueB }) => valueA - valueB),
 	};
 }
+
+export interface YearFilterValues {
+	year?: {
+		min: number;
+		max: number;
+	};
+}
+
+export function buildYearFilter(
+	yearFilterValues: YearFilterValues["year"],
+) {
+	if (yearFilterValues) {
+		return [
+			{
+				bool: {
+					should: [
+						{
+							range: {
+								"journalPublishSplitDate.year": {
+									gte: yearFilterValues.min,
+									lte: yearFilterValues.max,
+								},
+							},
+						},
+						{
+							bool: {
+								must_not: {
+									exists: {
+										field: "journalPublishSplitDate",
+									},
+								},
+								must: {
+									range: {
+										"webPublishSplitDate.year": {
+											gte: yearFilterValues.min,
+											lte: yearFilterValues.max,
+										},
+									},
+								},
+							},
+						},
+					],
+					minimum_should_match: 1,
+				},
+
+			},
+		] satisfies estypes.QueryDslQueryContainer[];
+	} else {
+		return [];
+	}
+}

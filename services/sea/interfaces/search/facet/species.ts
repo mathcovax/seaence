@@ -101,3 +101,26 @@ export function speciesAggregationResultsToFacet(
 		values,
 	};
 }
+
+export interface SpeciesFilterValues {
+	species?: Species[];
+}
+
+export function buildSpeciesFilter(
+	language: Language,
+	speciesFilterValues: SpeciesFilterValues["species"],
+) {
+	if (speciesFilterValues) {
+		return [
+			{
+				terms: {
+					"keywords.keyword": speciesFilterValues.flatMap(
+						(species) => languageToSpeciesFacetValue[language][species],
+					),
+				},
+			},
+		] satisfies estypes.QueryDslQueryContainer[];
+	} else {
+		return [];
+	}
+}

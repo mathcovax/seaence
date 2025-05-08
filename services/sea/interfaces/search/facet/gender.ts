@@ -101,3 +101,26 @@ export function genderAggregationResultsToFacet(
 		values,
 	};
 }
+
+export interface GenderFilterValues {
+	gender?: Gender[];
+}
+
+export function buildGenderFilter(
+	language: Language,
+	genderFilterValues: GenderFilterValues["gender"],
+) {
+	if (genderFilterValues) {
+		return [
+			{
+				terms: {
+					"keywords.keyword": genderFilterValues.flatMap(
+						(gender) => languageToGenderFacetValue[language][gender],
+					),
+				},
+			},
+		] satisfies estypes.QueryDslQueryContainer[];
+	} else {
+		return [];
+	}
+}
