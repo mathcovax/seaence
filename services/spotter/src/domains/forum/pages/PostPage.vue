@@ -2,6 +2,7 @@
 import { horizonClient } from "@/lib/horizon";
 import { usePostPage } from "../composables/usePostPage";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
+import { getRelativeTime } from "@vendors/design-system/lib/utils";
 
 const { params, query, $pt } = postPage.use();
 const router = useRouter();
@@ -46,6 +47,7 @@ function handleCreateAnswer() {
 							username,
 						},
 						postId: params.value.postId,
+						createdAt: new Date().toISOString(),
 					},
 				);
 				newAnswer.value = "";
@@ -56,112 +58,143 @@ function handleCreateAnswer() {
 </script>
 
 <template>
-	<section
-		class="flex flex-col gap-6"
-		v-if="postPageInformation"
-	>
-		<DSButton
-			as-child
-			class="self-start"
-		>
-			<RouterLink
-				:to="postListPage.createTo({
-					params: {
-						documentId: postPageInformation.document.id,
-					},
-				})"
-			>
-				{{ $pt("backToPostList") }}
-			</RouterLink>
-		</DSButton>
+	<section v-if="postPageInformation">
+		<article class="sticky top-24 z-5 mb-4 p-6 bg-white rounded-lg rounded-b-lg shadow-md">
+			<header class="border-b pb-4">
+				<div class="mb-6 flex gap-4 items-center">
+					<DSButtonIcon
+						as-child
+					>
+						<RouterLink
+							:to="postListPage.createTo({
+								params: {
+									documentId: postPageInformation.document.id,
+								},
+							})"
+						>
+							<DSIcon name="arrowLeft" />
+						</RouterLink>
+					</DSButtonIcon>
 
-		<article class="border rounded-lg shadow-sm p-6 bg-white sticky top-0">
-			<header class="mb-4 border-b pb-4">
-				<h1 class="text-3xl font-semibold mb-2">
-					{{ postPageInformation.post.topic }}
-				</h1>
+					<h1 class="text-3xl font-semibold text-blue-seaence">
+						{{ postPageInformation.post.topic }}
+					</h1>
+				</div>
 
-				<h2 class="text-3xl font-semibold mb-2">
+				<h2 class="text-xl font-medium mb-4 text-gray-700">
 					{{ postPageInformation.document.title }}
 				</h2>
 
-				<div class="flex items-center text-sm text-gray-500 gap-2">
-					<span>{{ $pt("authorIs", {author: postPageInformation.post.author.username}) }}</span>
+				<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
+					<div class="flex items-center gap-2">
+						<DSIcon
+							name="account"
+							size="14"
+						/>
 
-					<span>{{ postPageInformation.post.createdAt }}</span>
+						<span>{{ $pt("authorIs", { author: postPageInformation.post.author.username }) }}</span>
+					</div>
+
+					<div class="flex items-center gap-2">
+						<DSIcon
+							name="calendar"
+							size="14"
+						/>
+
+						<span>{{ getRelativeTime(postPageInformation.post.createdAt) }}</span>
+					</div>
 				</div>
 			</header>
 
-			<div class="text-gray-800 text-lg leading-relaxed">
+			<div class="text-gray-800 text-lg leading-relaxed whitespace-pre-line">
 				{{ postPageInformation.post.content ?? "" }}
 			</div>
 		</article>
 
 		<div class="flex flex-col gap-6">
-			<h2
-				v-if="postPageInformation"
-				class="text-2xl font-semibold mb-6"
-			>
-				{{ $pt("countResponse", {count: answers.length, totalCount: postPageInformation.post.answerCount}) }}
-			</h2>
+			<div class="flex items-center justify-between">
+				<h2
+					v-if="postPageInformation"
+					class="text-2xl font-semibold"
+				>
+					{{ $pt("countResponse", { count: answers.length, totalCount: postPageInformation.post.answerCount }) }}
+				</h2>
+
+				<DSButtonOutline
+					v-if="answers.length > 0 && answers.length < postPageInformation.post.answerCount"
+					@click="seeMoreAnswers"
+				>
+					{{ $pt("olderResponse") }}
+				</DSButtonOutline>
+			</div>
 
 			<div
 				v-if="answers && answers.length > 0"
 				class="space-y-6"
 			>
-				<div
-					v-if="answers.length < postPageInformation.post.answerCount"
-					class="text-center mt-6"
-				>
-					<DSButton
-						@click="seeMoreAnswers"
-					>
-						{{ $t("cta.seeMore") }}
-					</DSButton>
-				</div>
-
-				<div
+				<DSCard
 					v-for="answer in answers"
 					:key="answer.id"
-					class="border border-gray-200 rounded-lg p-5 bg-gray-50"
+					class="border border-gray-200 rounded-lg p-5 bg-gray-50 hover:shadow-sm transition-shadow"
 				>
-					<p class="text-gray-800 mb-3">
+					<p class="text-gray-800 mb-4 whitespace-pre-line">
 						{{ answer.content }}
 					</p>
 
-					<div class="text-sm text-gray-500">
-						{{ $pt("authorIs", {author: answer.author.username}) }}
+					<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
+						<div class="flex items-center gap-2">
+							<DSIcon
+								name="account"
+								size="14"
+							/>
+
+							<span>{{ $pt("authorIs", { author: answer.author.username }) }}</span>
+						</div>
+
+						<div class="flex items-center gap-2">
+							<DSIcon
+								name="calendar"
+								size="14"
+							/>
+
+							<span>{{ getRelativeTime(answer.createdAt) }}</span>
+						</div>
 					</div>
-				</div>
+				</DSCard>
 			</div>
 
 			<div
 				v-else
-				class="text-gray-500 italic mt-4"
+				class="text-muted-foreground italic my-8 text-center"
 			>
 				{{ $pt("noResponse") }}
 			</div>
 
-			<div
+			<DSCard
 				v-if="isConnected"
-				class="border border-gray-200 rounded-lg p-5 bg-gray-50"
+				class="border border-gray-200 rounded-lg p-6 bg-white mt-6"
 			>
-				{{ $pt("writeAnAnswer") }}
+				<h3 class="text-lg font-medium mb-4">
+					{{ $pt("writeAnAnswer") }}
+				</h3>
 
-				<textarea
-					class="w-full mt-2 p-2 border rounded-lg"
-					rows="4"
-					placeholder="Écrivez votre réponse ici..."
+				<DSTextarea
+					class="h-40 resize-none focus:border-blue-seaence focus:ring-2 focus:outline-none"
+					:placeholder="$t('cta.writeYourAnswer')"
 					v-model="newAnswer"
 				/>
 
-				<DSButton
-					class="mt-2"
+				<DSButtonPrimary
+					class="mt-4"
 					@click="handleCreateAnswer"
+					:disabled="!newAnswer.trim()"
 				>
+					<DSIcon
+						name="send"
+					/>
 					{{ $t("cta.send") }}
-				</DSButton>
-			</div>
+				</DSButtonPrimary>
+			</DSCard>
 		</div>
 	</section>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usePostListPage } from "../composables/usePostListPage";
+import { getRelativeTime } from "@vendors/design-system/lib/utils";
 
 const { params, $pt } = postListPage.use();
 const router = useRouter();
@@ -22,17 +23,35 @@ watch(
 		scrollToTop("instant");
 	},
 );
+
 </script>
 
 <template>
-	<section class="max-w-5xl mx-auto px-4 py-8">
+	<section>
 		<div
 			v-if="postListPageInforamtion"
 			class="flex flex-col gap-6"
 		>
-			<h1 class="text-3xl font-semibold mb-2">
-				{{ $pt("titleLinkPost", {title: postListPageInforamtion.document.title}) }}
-			</h1>
+			<div
+				class="sticky top-24 z-5 mb-4 p-6 flex flex-col md:flex-row gap-4 md:justify-between md:items-center bg-white rounded-b-lg shadow-md"
+			>
+				<DSButtonIcon
+					as-child
+					variant="outline"
+					class="self-start"
+				>
+					<RouterLink to="#">
+						<DSIcon name="arrowLeft" />
+					</RouterLink>
+				</DSButtonIcon>
+
+				<h1
+					:title="postListPageInforamtion.document.title"
+					class="text-3xl font-semibold line-clamp-3"
+				>
+					{{ $pt("titleLinkPost", { title: postListPageInforamtion.document.title }) }}
+				</h1>
+			</div>
 
 			<div v-if="postList && postList.length > 0">
 				<div class="space-y-6">
@@ -40,29 +59,51 @@ watch(
 						v-for="post in postList"
 						:key="post.id"
 					>
-						<article class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition">
+						<DSCard class="bg-white p-6">
 							<RouterLink
 								:to="postPage.createTo({
-									params: {postId: post.id},
-									query: {language: postListPageInforamtion.document.language}
+									params: { postId: post.id },
+									query: { language: postListPageInforamtion.document.language }
 								})"
-								class="text-2xl font-semibold text-blue-seaence mb-2"
 							>
-								{{ post.topic }}
+								<h3 class="text-2xl font-semibold text-blue-seaence mb-2 hover:underline">
+									{{ post.topic }}
+								</h3>
 							</RouterLink>
 
-							<p class="text-gray-700 mb-4">
+							<p class="text-gray-700 mb-4 line-clamp-3">
 								{{ post.content }}
 							</p>
 
-							<div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-								<span>{{ $pt("authorIs", {author: post.author.username}) }}</span>
+							<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
+								<div class="flex items-center gap-2">
+									<DSIcon
+										name="account"
+										size="14"
+									/>
 
-								<span>{{ post.createdAt }}</span>
+									<span>{{ $pt("authorIs", { author: post.author.username }) }}</span>
+								</div>
 
-								<span>{{ $pt("responseCount", {count: post.answerCount}) }}</span>
+								<div class="flex items-center gap-2">
+									<DSIcon
+										name="calendar"
+										size="14"
+									/>
+
+									<span>{{ getRelativeTime(post.createdAt) }}</span>
+								</div>
+
+								<div class="flex items-center gap-2">
+									<DSIcon
+										name="forum"
+										size="14"
+									/>
+
+									<span>{{ $pt("responseCount", {count: post.answerCount}) }}</span>
+								</div>
 							</div>
-						</article>
+						</DSCard>
 					</div>
 				</div>
 
@@ -78,9 +119,9 @@ watch(
 
 			<div
 				v-else
-				class="text-center text-gray-500 mt-10"
+				class="flex flex-col items-center justify-center py-16 text-center"
 			>
-				<p class="italic">
+				<p class="text-xl text-muted-foreground">
 					{{ $pt("noPost") }}
 				</p>
 			</div>

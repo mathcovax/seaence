@@ -58,6 +58,7 @@ export const FRfr = {
 			countResponse: "{count}/{totalCount} Réponse(s)",
 			authorIs: "Posté par {author}",
 			noResponse: "Aucune réponse(s) pour ce post.",
+			olderResponse: "Voir les réponses plus anciennes",
 			writeAnAnswer: "Écrivez un commentaire",
 		},
 		[postListPage.name]: {

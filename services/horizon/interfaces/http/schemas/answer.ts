@@ -8,4 +8,5 @@ export const endpointAnswerSchema = zod.object({
 		id: true,
 		username: true,
 	}),
+	createdAt: zod.string(),
 });
