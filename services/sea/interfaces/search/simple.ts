@@ -2,7 +2,8 @@ import { elastic } from "@interfaces/providers/elastic";
 import { type ArticleType } from "@interfaces/providers/elastic/common/articleType";
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { match } from "ts-pattern";
-import { buildFacetsAggregations, buildFilters, type FiltersValues, type AggregationsResults } from "./facet";
+import { buildFilters, type FiltersValues } from "./facet";
+import { type estypes } from "@elastic/elasticsearch";
 
 export interface SimpleSearchParams {
 	language: Language;
@@ -13,23 +14,9 @@ export interface SimpleSearchParams {
 }
 
 interface SimpleSearchResponse {
-	took: number;
-	timed_out: boolean;
-	_shards: {
-		total: number;
-		successful: number;
-		skipped: number;
-		failed: number;
-	};
 	hits: {
-		total: {
-			value: number;
-			relation: string;
-		};
-		max_score: number;
 		hits: Hit[];
 	};
-	aggregations: AggregationsResults;
 }
 
 interface Hit {
@@ -53,6 +40,30 @@ interface Hit {
 	};
 }
 
+export function buildSimpleSearchQuery(
+	term: string,
+	filtersValues?: FiltersValues,
+) {
+	return {
+		bool: {
+			should: [
+				{
+					multi_match: {
+						query: term,
+						fields: [
+							"title^3",
+							"abstract",
+							"keywords^10",
+							"authors^10",
+						],
+					},
+				},
+			],
+			...(filtersValues && buildFilters(filtersValues)),
+		},
+	} satisfies estypes.QueryDslQueryContainer;
+}
+
 export function simpleSearch(
 	{
 		language,
@@ -70,25 +81,9 @@ export function simpleSearch(
 	return elasticIndex.find<SimpleSearchResponse>({
 		from: page * quantityPerPage,
 		size: quantityPerPage,
+		track_total_hits: false,
 		_source: ["abysBakedDocumentId", "title", "summary", "authors", "articleTypes", "webPublishDate", "journalPublishDate"],
-		query: {
-			bool: {
-				should: [
-					{
-						multi_match: {
-							query: term,
-							fields: [
-								"title^3",
-								"abstract",
-								"keywords^10",
-								"authors^10",
-							],
-						},
-					},
-				],
-				...(filtersValues && buildFilters(filtersValues)),
-			},
-		},
+		query: buildSimpleSearchQuery(term, filtersValues),
 		highlight: {
 			fields: {
 				title: {},
@@ -99,6 +94,5 @@ export function simpleSearch(
 				authors: {},
 			},
 		},
-		aggregations: buildFacetsAggregations(language),
 	});
 }

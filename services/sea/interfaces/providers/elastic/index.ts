@@ -53,7 +53,7 @@ export class Elastic {
 
 if (envs.DB_CONNECTION) {
 	if (envs.ENVIROMENT === "DEV") {
-		const timeToWaitElasticUp = 2000;
+		const timeToWaitElasticUp = 3000;
 		await sleep(timeToWaitElasticUp);
 	}
 

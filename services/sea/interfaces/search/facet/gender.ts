@@ -1,23 +1,23 @@
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { createEnum, type GetEnumValue } from "@vendors/clean";
-import { type Facet, type AggregationResult } from ".";
+import { type Facet, type AggregationResult, type FacetValue } from ".";
 import { type estypes } from "@elastic/elasticsearch";
-import { FacetValues } from "@interfaces/utils/facetValues";
+import { StringArrayRegexed } from "@interfaces/utils/stringArrayRegexed";
 
 export const genderEnum = createEnum(["male", "female"]);
 
 export type Gender = GetEnumValue<typeof genderEnum>;
 
-export type GenderFacetValue = Record<Gender, FacetValues>;
+export type GenderFacetValue = Record<Gender, StringArrayRegexed>;
 
 export const languageToGenderFacetValue: Record<Language, GenderFacetValue> = {
 	"fr-FR": {
-		male: new FacetValues("Hommes", "Homme", "hommes", "homme"),
-		female: new FacetValues("Femmes", "Femme", "femmes", "femme"),
+		male: new StringArrayRegexed("Hommes", "Homme", "hommes", "homme"),
+		female: new StringArrayRegexed("Femmes", "Femme", "femmes", "femme"),
 	},
 	"en-US": {
-		male: new FacetValues("Males", "Male", "males", "male"),
-		female: new FacetValues("Females", "Female", "females", "female"),
+		male: new StringArrayRegexed("Males", "Male", "males", "male"),
+		female: new StringArrayRegexed("Females", "Female", "females", "female"),
 	},
 };
 
@@ -50,13 +50,18 @@ export function buildGenderAggregation(language: Language) {
 	} satisfies estypes.AggregationsAggregationContainer;
 }
 
+export type GenderFacet = Facet<
+	"gender",
+	FacetValue<Gender>
+>;
+
 const defaltAccGender = 0;
 
 function computeGenderFacet(
 	gender: Gender,
 	genderFacetValue: GenderFacetValue,
 	genderResult: GenderAggregationsResults["genderResult"],
-): Facet<Gender>[] {
+): GenderFacet["values"] {
 	const quantity = genderResult.genderFilteredResult.buckets
 		.filter(
 			(value) => genderFacetValue[gender].regex.test(value.key),
@@ -81,9 +86,18 @@ function computeGenderFacet(
 export function genderAggregationResultsToFacet(
 	language: Language,
 	genderResult: GenderAggregationsResults["genderResult"],
-): Facet<Gender>[] {
-	return [
+): GenderFacet | null {
+	const values = [
 		...computeGenderFacet("female", languageToGenderFacetValue[language], genderResult),
 		...computeGenderFacet("male", languageToGenderFacetValue[language], genderResult),
 	];
+
+	if (!values.length) {
+		return null;
+	}
+
+	return {
+		name: "gender",
+		values,
+	};
 }

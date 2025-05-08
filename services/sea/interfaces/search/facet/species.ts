@@ -1,23 +1,23 @@
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { createEnum, type GetEnumValue } from "@vendors/clean";
-import { type Facet, type AggregationResult } from ".";
+import { type Facet, type AggregationResult, type FacetValue } from ".";
 import { type estypes } from "@elastic/elasticsearch";
-import { FacetValues } from "@interfaces/utils/facetValues";
+import { StringArrayRegexed } from "@interfaces/utils/stringArrayRegexed";
 
 export const speciesEnum = createEnum(["human", "otherAnimal"]);
 
 export type Species = GetEnumValue<typeof speciesEnum>;
 
-export type SpeciesFacetValue = Record<Species, FacetValues>;
+export type SpeciesFacetValue = Record<Species, StringArrayRegexed>;
 
 export const languageToSpeciesFacetValue: Record<Language, SpeciesFacetValue> = {
 	"fr-FR": {
-		human: new FacetValues("Humains", "Humain", "humains", "humain"),
-		otherAnimal: new FacetValues("Animaux", "Animal", "animaux", "animal"),
+		human: new StringArrayRegexed("Humains", "Humain", "humains", "humain"),
+		otherAnimal: new StringArrayRegexed("Animaux", "Animal", "animaux", "animal"),
 	},
 	"en-US": {
-		human: new FacetValues("Humans", "Human", "humans", "human"),
-		otherAnimal: new FacetValues("Animals", "Animal", "animals", "animal"),
+		human: new StringArrayRegexed("Humans", "Human", "humans", "human"),
+		otherAnimal: new StringArrayRegexed("Animals", "Animal", "animals", "animal"),
 	},
 };
 
@@ -50,13 +50,18 @@ export function buildSpeciesAggregation(language: Language) {
 	} satisfies estypes.AggregationsAggregationContainer;
 }
 
+export type SpeciesFacet = Facet<
+	"species",
+	FacetValue<Species>
+>;
+
 const defaltAccSpecies = 0;
 
 function computeSpeciesFacet(
 	species: Species,
 	speciesFacetValue: SpeciesFacetValue,
 	speciesResult: SpeciesAggregationsResults["speciesResult"],
-): Facet<Species>[] {
+): SpeciesFacet["values"] {
 	const quantity = speciesResult.speciesFilteredResult.buckets
 		.filter(
 			(value) => speciesFacetValue[species].regex.test(value.key),
@@ -81,9 +86,18 @@ function computeSpeciesFacet(
 export function speciesAggregationResultsToFacet(
 	language: Language,
 	speciesResult: SpeciesAggregationsResults["speciesResult"],
-): Facet<Species>[] {
-	return [
+): SpeciesFacet | null {
+	const values = [
 		...computeSpeciesFacet("human", languageToSpeciesFacetValue[language], speciesResult),
 		...computeSpeciesFacet("otherAnimal", languageToSpeciesFacetValue[language], speciesResult),
 	];
+
+	if (!values.length) {
+		return null;
+	}
+
+	return {
+		name: "species",
+		values,
+	};
 }

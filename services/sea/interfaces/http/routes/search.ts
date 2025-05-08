@@ -1,11 +1,10 @@
 import { simpleSearch } from "@interfaces/search/simple";
-import { type EndpointSimpleSearchSchema, endpointSimpleSearchSchema } from "../schemas/search";
+import { type EndpointSimpleSearchResultSchema, endpointSimpleSearchResultSchema } from "../schemas/search";
 import { languageSchema } from "../schemas/common";
-import { aggregationsResultsToFacetWrapper } from "@interfaces/search/facet";
 import { filtersValuesSchema } from "../schemas/filter";
 
 useBuilder()
-	.createRoute("POST", "/simple-search")
+	.createRoute("POST", "/simple-search-result")
 	.extract({
 		body: zod.object({
 			language: languageSchema,
@@ -38,34 +37,30 @@ useBuilder()
 				filtersValues,
 			})
 				.then(
-					(rawResult): EndpointSimpleSearchSchema => ({
-						total: rawResult.hits.total.value,
-						results: rawResult.hits.hits.map(
-							({ _source, highlight, _score }) => ({
-								score: _score,
-								abysBakedDocumentId: _source.abysBakedDocumentId,
-								title: highlight?.title?.shift() ?? _source.title,
-								articleType: _source.articleTypes,
-								authors: _source.authors.map(
-									(author) => {
-										const highlighted = highlight
-											?.authors
-											?.find(
-												(highlightAuthor) => highlightAuthor.replace(/<\/?em>/g, "").toLowerCase() === author.toLowerCase(),
-											);
+					(rawResult): EndpointSimpleSearchResultSchema[] => rawResult.hits.hits.map(
+						({ _source, highlight, _score }) => ({
+							score: _score,
+							abysBakedDocumentId: _source.abysBakedDocumentId,
+							title: highlight?.title?.shift() ?? _source.title,
+							articleType: _source.articleTypes,
+							authors: _source.authors.map(
+								(author) => {
+									const highlighted = highlight
+										?.authors
+										?.find(
+											(highlightAuthor) => highlightAuthor.replace(/<\/?em>/g, "").toLowerCase() === author.toLowerCase(),
+										);
 
-										return highlighted ?? author;
-									},
-								),
-								keywords: highlight?.keywords ?? null,
-								webPublishDate: _source.webPublishDate,
-								journalPublishDate: _source.journalPublishDate,
-								summary: highlight?.abstract?.join(".. ").substring(summaryTronc.from, summaryTronc.to)
-									?? _source.summary,
-							}),
-						),
-						facetWrapper: aggregationsResultsToFacetWrapper(language, rawResult.aggregations),
-					}),
+									return highlighted ?? author;
+								},
+							),
+							keywords: highlight?.keywords ?? null,
+							webPublishDate: _source.webPublishDate,
+							journalPublishDate: _source.journalPublishDate,
+							summary: highlight?.abstract?.join(".. ").substring(summaryTronc.from, summaryTronc.to)
+								?? _source.summary,
+						}),
+					),
 				);
 
 			return new OkHttpResponse(
@@ -73,5 +68,5 @@ useBuilder()
 				results,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "simpleSearch.results", endpointSimpleSearchSchema),
+		makeResponseContract(OkHttpResponse, "simpleSearch.results", endpointSimpleSearchResultSchema.array()),
 	);

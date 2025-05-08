@@ -1,6 +1,6 @@
 import { stringArrayToRegex } from "./stringArrayToRegex";
 
-export class FacetValues extends Array<string> {
+export class StringArrayRegexed extends Array<string> {
 	public regex: RegExp;
 
 	public constructor(...values: string[]) {
