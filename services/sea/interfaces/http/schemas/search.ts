@@ -1,7 +1,6 @@
 import { articleTypeSchema } from "./common";
-import { facetWrapperSchema } from "./facet";
 
-export const simpleSearchSchema = zod.object({
+export const endpointSimpleSearchResultSchema = zod.object({
 	score: zod.number(),
 	abysBakedDocumentId: zod.string(),
 	title: zod.string(),
@@ -13,10 +12,4 @@ export const simpleSearchSchema = zod.object({
 	keywords: zod.string().array().nullable(),
 });
 
-export const endpointSimpleSearchSchema = zod.object({
-	total: zod.number(),
-	results: simpleSearchSchema.array(),
-	facetWrapper: facetWrapperSchema,
-});
-
-export type EndpointSimpleSearchSchema = typeof endpointSimpleSearchSchema["_output"];
+export type EndpointSimpleSearchResultSchema = typeof endpointSimpleSearchResultSchema["_output"];

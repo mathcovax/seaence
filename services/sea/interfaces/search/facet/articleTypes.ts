@@ -1,5 +1,5 @@
 import { type ArticleType } from "@interfaces/providers/elastic/common/articleType";
-import { type Facet, type AggregationResult } from ".";
+import { type Facet, type AggregationResult, type FacetValue } from ".";
 import { type estypes } from "@elastic/elasticsearch";
 
 export interface ArticleTypeAggregationsResults {
@@ -15,15 +15,29 @@ export function buildArticleTypeAggregation() {
 	} satisfies estypes.AggregationsAggregationContainer;
 }
 
+export type ArticleTypeFacet = Facet<
+	"articleType",
+	FacetValue<ArticleType>
+>;
+
 export function articleTypeAggregationsResultsToFacet(
 	articleTypeResult: ArticleTypeAggregationsResults["articleTypeResult"],
-): Facet<ArticleType>[] {
-	return articleTypeResult.buckets.map(
+): ArticleTypeFacet | null {
+	const values = articleTypeResult.buckets.map(
 		({ key, doc_count }) => ({
 			value: key,
 			quantity: doc_count,
 		}),
 	);
+
+	if (!values.length) {
+		return null;
+	}
+
+	return {
+		name: "articleType",
+		values,
+	};
 }
 
 export interface ArticleTypeFilterValues {

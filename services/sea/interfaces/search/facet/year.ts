@@ -1,5 +1,5 @@
 import { type estypes } from "@elastic/elasticsearch";
-import { type Facet, type AggregationResult } from ".";
+import { type Facet, type AggregationResult, type FacetValue } from ".";
 
 export interface YearAggregationsResults {
 	journalPublishYearResult: AggregationResult<number>;
@@ -36,44 +36,52 @@ export function buildYearAggregation() {
 	} satisfies Record<keyof YearAggregationsResults, estypes.AggregationsAggregationContainer>;
 }
 
+export type YearFacet = Facet<
+	"year",
+	FacetValue<number>
+>;
+
 export function yearAggregationsResultsToFacet(
 	journalPublishYearResult: YearAggregationsResults["journalPublishYearResult"],
 	webPublishYearResult: YearAggregationsResults["webPublishYearResult"],
-): Facet<number>[] {
-	return [
-		...journalPublishYearResult.buckets.map(
-			({ key, doc_count }) => {
-				const webPublishYear = webPublishYearResult.webPublishYearFilteredResult
-					.buckets.find(
-						({ key: webPublishYearKey }) => webPublishYearKey === key,
-					);
+): YearFacet {
+	return {
+		name: "year",
+		values: [
+			...journalPublishYearResult.buckets.map(
+				({ key, doc_count }) => {
+					const webPublishYear = webPublishYearResult.webPublishYearFilteredResult
+						.buckets.find(
+							({ key: webPublishYearKey }) => webPublishYearKey === key,
+						);
 
-				const quantity = webPublishYear
-					? doc_count + webPublishYear.doc_count
-					: doc_count;
+					const quantity = webPublishYear
+						? doc_count + webPublishYear.doc_count
+						: doc_count;
 
-				return {
-					value: key,
-					quantity,
-				};
-			},
-		),
-		...webPublishYearResult.webPublishYearFilteredResult.buckets.flatMap(
-			({ key, doc_count }) => {
-				const journalPublishYear = journalPublishYearResult
-					.buckets.find(
-						({ key: journalPublishKey }) => journalPublishKey === key,
-					);
+					return {
+						value: key,
+						quantity,
+					};
+				},
+			),
+			...webPublishYearResult.webPublishYearFilteredResult.buckets.flatMap(
+				({ key, doc_count }) => {
+					const journalPublishYear = journalPublishYearResult
+						.buckets.find(
+							({ key: journalPublishKey }) => journalPublishKey === key,
+						);
 
-				if (journalPublishYear) {
-					return [];
-				}
+					if (journalPublishYear) {
+						return [];
+					}
 
-				return {
-					value: key,
-					quantity: doc_count,
-				};
-			},
-		),
-	].toSorted(({ value: valueA }, { value: valueB }) => valueA - valueB);
+					return {
+						value: key,
+						quantity: doc_count,
+					};
+				},
+			),
+		].toSorted(({ value: valueA }, { value: valueB }) => valueA - valueB),
+	};
 }

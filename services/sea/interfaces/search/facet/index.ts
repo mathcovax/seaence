@@ -1,9 +1,21 @@
 import { type estypes } from "@elastic/elasticsearch";
 import { type Language } from "@interfaces/providers/elastic/common/language";
-import { type GenderAggregationsResults, genderAggregationResultsToFacet, buildGenderAggregation } from "./gender";
-import { articleTypeAggregationsResultsToFacet, type ArticleTypeFilterValues, buildArticleTypeAggregation, type ArticleTypeAggregationsResults, buildArticleTypeFilter } from "./articleTypes";
-import { buildYearAggregation, yearAggregationsResultsToFacet, type YearAggregationsResults } from "./year";
-import { buildSpeciesAggregation, speciesAggregationResultsToFacet, type SpeciesAggregationsResults } from "./species";
+import { type GenderAggregationsResults, genderAggregationResultsToFacet, buildGenderAggregation, type GenderFacet } from "./gender";
+import { articleTypeAggregationsResultsToFacet, type ArticleTypeFilterValues, buildArticleTypeAggregation, type ArticleTypeAggregationsResults, buildArticleTypeFilter, type ArticleTypeFacet } from "./articleTypes";
+import { buildYearAggregation, yearAggregationsResultsToFacet, type YearFacet, type YearAggregationsResults } from "./year";
+import { buildSpeciesAggregation, speciesAggregationResultsToFacet, type SpeciesFacet, type SpeciesAggregationsResults } from "./species";
+import { elastic } from "@interfaces/providers/elastic";
+import { match, P } from "ts-pattern";
+import { buildSimpleSearchQuery } from "../simple";
+
+interface FacetResponse {
+	hits: {
+		total: {
+			value: number;
+		};
+	};
+	aggregations: AggregationsResults;
+}
 
 export interface AggregationResult<
 	GenericKey extends unknown = unknown,
@@ -14,12 +26,27 @@ export interface AggregationResult<
 	}[];
 }
 
-export interface Facet<
+export interface FacetValue<
 	GenericValue extends unknown = unknown,
 > {
 	value: GenericValue;
 	quantity: number;
 }
+
+export interface Facet<
+	GenericName extends string,
+	GenericFacetValue extends FacetValue,
+> {
+	name: GenericName;
+	values: GenericFacetValue[];
+}
+
+export type Facets = (
+	| ArticleTypeFacet
+	| YearFacet
+	| GenderFacet
+	| SpeciesFacet
+)[];
 
 export type AggregationsResults =
 	& YearAggregationsResults
@@ -45,13 +72,28 @@ export function aggregationsResultsToFacetWrapper(
 		genderResult,
 		speciesResult,
 	}: AggregationsResults,
-) {
-	return {
-		articleType: articleTypeAggregationsResultsToFacet(articleTypeResult),
-		year: yearAggregationsResultsToFacet(journalPublishYearResult, webPublishYearResult),
-		gender: genderAggregationResultsToFacet(language, genderResult),
-		species: speciesAggregationResultsToFacet(language, speciesResult),
-	} satisfies Record<string, Facet<unknown>[]>;
+): Facets {
+	const facets: Facets = [yearAggregationsResultsToFacet(journalPublishYearResult, webPublishYearResult)];
+
+	const articleTypeFacet = articleTypeAggregationsResultsToFacet(articleTypeResult);
+
+	if (articleTypeFacet) {
+		facets.push(articleTypeFacet);
+	}
+
+	const genderFacet = genderAggregationResultsToFacet(language, genderResult);
+
+	if (genderFacet) {
+		facets.push(genderFacet);
+	}
+
+	const speciesFacet = speciesAggregationResultsToFacet(language, speciesResult);
+
+	if (speciesFacet) {
+		facets.push(speciesFacet);
+	}
+
+	return facets;
 }
 
 export type FiltersValues =
@@ -63,4 +105,34 @@ export function buildFilters(
 	return {
 		must: [...buildArticleTypeFilter(filtersValues.articleType)],
 	} satisfies estypes.QueryDslBoolQuery;
+}
+
+export interface FindFacetParams {
+	language: Language;
+	term: string;
+	filtersValues?: FiltersValues;
+}
+
+export function findFacets(
+	{
+		language,
+		term,
+		filtersValues,
+	}: FindFacetParams,
+) {
+	const elasticIndex = match(language)
+		.with("fr-FR", () => elastic.frFrDocument)
+		.with("en-US", () => elastic.enUsDocument)
+		.exhaustive();
+
+	const query = match(term)
+		.with(P.string, (term) => buildSimpleSearchQuery(term, filtersValues))
+		.exhaustive();
+
+	return elasticIndex.find<FacetResponse>({
+		size: 0,
+		_source: false,
+		query,
+		aggregations: buildFacetsAggregations(language),
+	});
 }

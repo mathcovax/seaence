@@ -48,39 +48,71 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/simple-search";
+    path: "/simple-search-result";
     body: {
         language: Language;
         page: number;
         quantityPerPage: number;
         term: string;
+        filtersValues?: {
+            articleType?: ArticleType[] | undefined;
+        } | undefined;
     };
     response: {
         code: 200;
         information: "simpleSearch.results";
         body: {
+            score: number;
+            abysBakedDocumentId: string;
+            title: string;
+            articleType: ArticleType[];
+            authors: string[];
+            webPublishDate: string | null;
+            journalPublishDate: string | null;
+            summary: string | null;
+            keywords: string[] | null;
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/facets";
+    body: {
+        language: Language;
+        term: string;
+        filtersValues?: {
+            articleType?: ArticleType[] | undefined;
+        } | undefined;
+    };
+    response: {
+        code: 200;
+        information: "facets.result";
+        body: {
             total: number;
-            results: {
-                score: number;
-                abysBakedDocumentId: string;
-                title: string;
-                articleType: ArticleType[];
-                authorsNames: string[];
-                webPublishDate: string | null;
-                journalPublishDate: string | null;
-                summary: string | null;
-                keywords: string[];
-            }[];
-            facetWrapper: {
-                articleType: {
+            facets: ({
+                name: "articleType";
+                values: {
                     value: ArticleType;
                     quantity: number;
                 }[];
-                year: {
+            } | {
+                name: "year";
+                values: {
                     value: number;
                     quantity: number;
                 }[];
-            };
+            } | {
+                name: "gender";
+                values: {
+                    value: "male" | "female";
+                    quantity: number;
+                }[];
+            } | {
+                name: "species";
+                values: {
+                    value: "human" | "otherAnimal";
+                    quantity: number;
+                }[];
+            })[];
         };
     };
 });
