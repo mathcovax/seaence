@@ -40,9 +40,18 @@ interface Hit {
 	};
 }
 
+interface BuildSimpleSearchQueryParams {
+	language: Language;
+	term: string;
+	filtersValues?: FiltersValues;
+}
+
 export function buildSimpleSearchQuery(
-	term: string,
-	filtersValues?: FiltersValues,
+	{
+		language,
+		term,
+		filtersValues,
+	}: BuildSimpleSearchQueryParams,
 ) {
 	return {
 		bool: {
@@ -59,7 +68,7 @@ export function buildSimpleSearchQuery(
 					},
 				},
 			],
-			...(filtersValues && buildFilters(filtersValues)),
+			...(filtersValues && buildFilters(language, filtersValues)),
 		},
 	} satisfies estypes.QueryDslQueryContainer;
 }
@@ -83,8 +92,14 @@ export function simpleSearch(
 		size: quantityPerPage,
 		track_total_hits: false,
 		_source: ["abysBakedDocumentId", "title", "summary", "authors", "articleTypes", "webPublishDate", "journalPublishDate"],
-		query: buildSimpleSearchQuery(term, filtersValues),
+		query: buildSimpleSearchQuery({
+			term,
+			filtersValues,
+			language,
+		}),
 		highlight: {
+			pre_tags: ["<strong class=\"matching-result\">>"],
+			post_tags: ["</strong>"],
 			fields: {
 				title: {},
 				abstract: {

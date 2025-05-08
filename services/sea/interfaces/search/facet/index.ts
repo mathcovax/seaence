@@ -1,9 +1,9 @@
 import { type estypes } from "@elastic/elasticsearch";
 import { type Language } from "@interfaces/providers/elastic/common/language";
-import { type GenderAggregationsResults, genderAggregationResultsToFacet, buildGenderAggregation, type GenderFacet } from "./gender";
+import { type GenderAggregationsResults, genderAggregationResultsToFacet, buildGenderAggregation, type GenderFacet, type GenderFilterValues, buildGenderFilter } from "./gender";
 import { articleTypeAggregationsResultsToFacet, type ArticleTypeFilterValues, buildArticleTypeAggregation, type ArticleTypeAggregationsResults, buildArticleTypeFilter, type ArticleTypeFacet } from "./articleTypes";
-import { buildYearAggregation, yearAggregationsResultsToFacet, type YearFacet, type YearAggregationsResults } from "./year";
-import { buildSpeciesAggregation, speciesAggregationResultsToFacet, type SpeciesFacet, type SpeciesAggregationsResults } from "./species";
+import { buildYearAggregation, yearAggregationsResultsToFacet, type YearFacet, type YearAggregationsResults, type YearFilterValues, buildYearFilter } from "./year";
+import { buildSpeciesAggregation, speciesAggregationResultsToFacet, type SpeciesFacet, type SpeciesAggregationsResults, buildSpeciesFilter, type SpeciesFilterValues } from "./species";
 import { elastic } from "@interfaces/providers/elastic";
 import { match, P } from "ts-pattern";
 import { buildSimpleSearchQuery } from "../simple";
@@ -97,13 +97,22 @@ export function aggregationsResultsToFacetWrapper(
 }
 
 export type FiltersValues =
-	& ArticleTypeFilterValues;
+	& ArticleTypeFilterValues
+	& GenderFilterValues
+	& SpeciesFilterValues
+	& YearFilterValues;
 
 export function buildFilters(
+	language: Language,
 	filtersValues: FiltersValues,
 ) {
 	return {
-		must: [...buildArticleTypeFilter(filtersValues.articleType)],
+		must: [
+			...buildArticleTypeFilter(filtersValues.articleType),
+			...buildGenderFilter(language, filtersValues.gender),
+			...buildSpeciesFilter(language, filtersValues.species),
+			...buildYearFilter(filtersValues.year),
+		],
 	} satisfies estypes.QueryDslBoolQuery;
 }
 
@@ -126,7 +135,14 @@ export function findFacets(
 		.exhaustive();
 
 	const query = match(term)
-		.with(P.string, (term) => buildSimpleSearchQuery(term, filtersValues))
+		.with(
+			P.string,
+			(term) => buildSimpleSearchQuery({
+				language,
+				term,
+				filtersValues,
+			}),
+		)
 		.exhaustive();
 
 	return elasticIndex.find<FacetResponse>({

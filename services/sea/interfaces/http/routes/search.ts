@@ -48,7 +48,7 @@ useBuilder()
 									const highlighted = highlight
 										?.authors
 										?.find(
-											(highlightAuthor) => highlightAuthor.replace(/<\/?em>/g, "").toLowerCase() === author.toLowerCase(),
+											(highlightAuthor) => highlightAuthor.replace(/<\/?strong[^>]*>/g, "") === author,
 										);
 
 									return highlighted ?? author;
