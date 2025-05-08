@@ -99,6 +99,7 @@ export const FRfr = {
 			publicationYear: "Année de publication",
 			gender: "Sexe",
 		},
+		apply: "Appliquer les filtres",
 		reset: "Réinitialiser les filtres",
 	},
 	scratch: {

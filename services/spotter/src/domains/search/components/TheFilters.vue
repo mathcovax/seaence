@@ -41,6 +41,14 @@ function toggleGender(id: string) {
 		filters.value.gender.splice(index, removeOne);
 	}
 }
+function applyFilters() {
+	const filtersApplied = {
+		articleType: filters.value.articleType,
+		gender: filters.value.gender,
+		publicationYear: filters.value.publicationYear,
+	};
+	console.log("Filters applied:", filtersApplied);
+}
 
 function resetFilters() {
 	filters.value = {
@@ -136,6 +144,18 @@ watch(
 
 			<div class="flex items-center justify-between pt-3 border-t border-gray-200">
 				<DSButtonPrimary
+					@click="applyFilters"
+					:disabled="
+						!filters.articleType &&
+
+							filters.gender.length === 0 &&
+							filters.publicationYear[0] === filtersYear.min &&
+							filters.publicationYear[1] === filtersYear.max"
+				>
+					{{ $t("filters.apply") }}
+				</DSButtonPrimary>
+
+				<DSButtonOutline
 					@click="resetFilters"
 					:disabled="
 						!filters.articleType && filters.gender.length === 0
@@ -143,7 +163,7 @@ watch(
 							&& filters.publicationYear[1] === filtersYear.max"
 				>
 					{{ $t("filters.reset") }}
-				</DSButtonPrimary>
+				</DSButtonOutline>
 			</div>
 		</div>
 	</transition>

@@ -9,6 +9,7 @@ import {
 	mdiAccount,
 	mdiCalendarMonth,
 	mdiFileDocument,
+	mdiTag,
 } from "@mdi/js";
 
 const iconsMapper = {
@@ -20,6 +21,7 @@ const iconsMapper = {
 	user: mdiAccount,
 	calendar: mdiCalendarMonth,
 	document: mdiFileDocument,
+	tag: mdiTag,
 };
 
 interface Props {
