@@ -1,10 +1,13 @@
 import { userRepository } from "@business/applications/repositories/user";
 import { UserEntity, userIdObjecter } from "@business/domains/entities/user";
 import { prismaClient } from "@interfaces/providers/prisma";
-import { EntityHandler } from "@vendors/clean";
+import { EntityHandler, RepositoryError } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
 userRepository.default = {
+	save() {
+		throw new RepositoryError("Unsupport methods");
+	},
 	generateUserId() {
 		return userIdObjecter.unsafeCreate(uuidv7());
 	},
@@ -40,17 +43,22 @@ userRepository.default = {
 			user,
 		);
 	},
-	async save(entity) {
-		const simpleEntity = entity.toSimpleObject();
-
-		await prismaClient.user.upsert({
-			where: {
-				email: simpleEntity.email,
-			},
-			create: simpleEntity,
-			update: simpleEntity,
+	async create(user) {
+		const simpleEntity = user.toSimpleObject();
+		await prismaClient.user.create({
+			data: simpleEntity,
 		});
 
-		return entity;
+		return user;
+	},
+	async update(user) {
+		const simpleEntity = user.toSimpleObject();
+		await prismaClient.user.update({
+			where: {
+				id: simpleEntity.id,
+			},
+			data: simpleEntity,
+		});
+		return user;
 	},
 };

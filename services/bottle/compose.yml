@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm -w services/bottle run dev
+    command: npm -w services/bottle run duplo:dev
     depends_on:
       - bottle-mongo
   bottle-mongo:
@@ -13,5 +13,13 @@ services:
     env_file: ${INCLUDE_PATH}/bottle/.env
     volumes:
       - "bottle-mongo-data:/data/db"
+  maildev:
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+    depends_on:
+      - bottle
+
 volumes:
   bottle-mongo-data:

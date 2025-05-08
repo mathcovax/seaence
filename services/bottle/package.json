@@ -3,19 +3,26 @@
   "description": "Microservice de gestion des notifications utilisateurs. Le nom 'Bottle' fait référence à la métaphore de la bouteille à la mer, symbolisant l'envoi de messages aux utilisateurs.",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch interfaces/main.ts",
+    "duplo:dev": "tsx --watch interfaces/http/main.ts",
+    "duplo:start": "tsx interfaces/http/main.ts",
+    "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/bottle/duplojsTypesCodegen.d.ts",
+
     "test:lint": "eslint",
     "test:types": "tsc",
-    "generate-types": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/routes/index.ts --output ../../libs/clients-type/types/bottle/duplojsTypesCodegen.d.ts"
+
+    "postinstall": "npm run duplo:generate"
   },
   "dependencies": {
     "@duplojs/core": "1.0.3",
     "@duplojs/node": "1.0.1",
     "dotenv": "16.4.5",
-    "dotenv-expand": "12.0.1"
+    "dotenv-expand": "12.0.1",
+    "nodemailer": "7.0.3",
+    "uuidv7": "1.0.2"
   },
   "devDependencies": {
     "@duplojs/types-codegen": "1.1.2",
+    "@types/nodemailer": "6.4.17",
     "@types/node": "22.13.10",
     "tsx": "4.19.3",
     "typescript": "5.8.2"

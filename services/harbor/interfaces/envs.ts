@@ -19,5 +19,6 @@ export const envs = zod
 		JWT_KEY: zod.string().min(minLenghtJWTKey),
 		JWT_TIME: zod.coerce.number(),
 		DB_CONNECTION: zod.booleanInString(),
+		BOTTLE_BASE_URL: zod.string(),
 	})
 	.parse(process.env);

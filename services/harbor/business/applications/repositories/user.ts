@@ -5,6 +5,8 @@ export interface UserRepository extends RepositoryBase<UserEntity> {
 	generateUserId(): UserId;
 	findOneByEmail(email: UserEmail): Promise<UserEntity | null>;
 	findOneById(id: UserId): Promise<UserEntity | null>;
+	create(user: UserEntity): Promise<UserEntity>;
+	update(user: UserEntity): Promise<UserEntity>;
 }
 
 export const userRepository = createRepositoryHandler<UserRepository>();

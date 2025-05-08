@@ -13,7 +13,7 @@ export class FindOrCreateUserUsecase extends UsecaseHandler.create({
 		let user = await this.userRepository.findOneByEmail(email);
 
 		if (!user) {
-			user = await this.userRepository.save(
+			user = await this.userRepository.create(
 				UserEntity.create({
 					id: this.userRepository.generateUserId(),
 					email,
