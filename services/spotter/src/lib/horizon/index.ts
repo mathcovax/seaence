@@ -38,7 +38,7 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 	.setInterceptor(
 		"request",
 		(requestDefinition) => {
-			if (requestDefinition.paramsRequest.disabledLoader !== false) {
+			if (requestDefinition.paramsRequest.disabledLoader !== true) {
 				requestDefinition.paramsRequest.loaderId = enableLoader();
 			}
 

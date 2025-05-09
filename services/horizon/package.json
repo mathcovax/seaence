@@ -5,7 +5,7 @@
   "scripts": {
     "duplo:start": "tsx interfaces/http/main.ts",
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
-    "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/horizon/duplojsTypesCodegen.d.ts",
+    "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --require interfaces/http/plugins/generate.ts --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/horizon/duplojsTypesCodegen.d.ts",
     "test:lint": "eslint",
     "test:types": "tsc",
     "postinstall": "npm run duplo:generate"

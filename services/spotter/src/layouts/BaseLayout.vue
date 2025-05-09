@@ -2,11 +2,13 @@
 </script>
 
 <template>
-	<TheHeader />
+	<div class="w-full h-[100vh] flex flex-col items-stretch overflow-auto">
+		<TheHeader class="shrink-0" />
 
-	<main class="container py-4 min-h-screen">
-		<RouterView />
-	</main>
+		<main class="container grow">
+			<RouterView />
+		</main>
 
-	<TheFooter />
+		<TheFooter />
+	</div>
 </template>

@@ -5,6 +5,56 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
+type BakedDocumentLanguage = "fr-FR" | "en-US";
+
+export { BakedDocumentLanguage };
+
+type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
+
+export { ArticleType };
+
+type Facet = {
+    name: "articleType";
+    values: {
+        value: ArticleType;
+        quantity: number;
+    }[];
+} | {
+    name: "gender";
+    values: {
+        value: "male" | "female";
+        quantity: number;
+    }[];
+} | {
+    name: "species";
+    values: {
+        value: "human" | "otherAnimal";
+        quantity: number;
+    }[];
+} | {
+    name: "year";
+    values: {
+        value: number;
+        quantity: number;
+    }[];
+};
+
+export { Facet };
+
+type bakedDocumentSearchResult = {
+    score: number;
+    bakedDocumentId: string;
+    title: string;
+    articleType: ArticleType[];
+    authors: string[];
+    webPublishDate: string | null;
+    journalPublishDate: string | null;
+    summary: string | null;
+    keywords: string[] | null;
+};
+
+export { bakedDocumentSearchResult };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/authentication";
@@ -124,7 +174,7 @@ type CodegenRoutes = ({
     path: "/post-page";
     body: {
         postId: string;
-        language: "fr-FR" | "en-US";
+        language: BakedDocumentLanguage;
     };
     response: {
         code: 404;
@@ -152,7 +202,7 @@ type CodegenRoutes = ({
             document: {
                 id: string;
                 title: string;
-                language: "fr-FR" | "en-US";
+                language: BakedDocumentLanguage;
             };
             quantityAnswerPerPage: number;
         };
@@ -174,7 +224,7 @@ type CodegenRoutes = ({
             document: {
                 id: string;
                 title: string;
-                language: "fr-FR" | "en-US";
+                language: BakedDocumentLanguage;
             };
             totalPostCount: number;
             quantityPostPerPage: number;
@@ -199,6 +249,53 @@ type CodegenRoutes = ({
             username: string;
             email: string;
         };
+    };
+}) | ({
+    method: "POST";
+    path: "/search-details";
+    body: {
+        language: BakedDocumentLanguage;
+        term: string;
+        filtersValues?: {
+            articleType?: ArticleType[] | undefined;
+            gender?: ("male" | "female")[] | undefined;
+            species?: ("human" | "otherAnimal")[] | undefined;
+            year?: {
+                from: number;
+                to: number;
+            } | undefined;
+        } | undefined;
+    };
+    response: {
+        code: 200;
+        information: "facets.results";
+        body: {
+            total: number;
+            facets: Facet[];
+            quantityPerPage: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/simple-search-results";
+    body: {
+        language: BakedDocumentLanguage;
+        page: number;
+        term: string;
+        filtersValues?: {
+            articleType?: ArticleType[] | undefined;
+            gender?: ("male" | "female")[] | undefined;
+            species?: ("human" | "otherAnimal")[] | undefined;
+            year?: {
+                from: number;
+                to: number;
+            } | undefined;
+        } | undefined;
+    };
+    response: {
+        code: 200;
+        information: "simpleSearch.results";
+        body: bakedDocumentSearchResult[];
     };
 });
 

@@ -3,6 +3,33 @@ import { filtersValuesSchema } from "../schemas/search/filter";
 import { SeaAPI } from "@interfaces/providers/sea";
 import { searchConfig } from "@interfaces/configs/search";
 import { endpointSimpleSearchResultSchema } from "../schemas/search/search";
+import { endpointSearchDetailsSchema } from "../schemas/search/facet";
+
+useBuilder()
+	.createRoute("POST", "/search-details")
+	.extract({
+		body: zod.object({
+			language: bakedDocumentLanguageObjecter.zodSchema,
+			term: zod.string(),
+			filtersValues: filtersValuesSchema.optional(),
+		}),
+	})
+	.handler(
+		async(pickup) => {
+			const body = pickup("body");
+
+			const { body: results } = await SeaAPI.facets(body);
+
+			return new OkHttpResponse(
+				"facets.results",
+				{
+					...results,
+					quantityPerPage: searchConfig.quantityPerPage,
+				},
+			);
+		},
+		makeResponseContract(OkHttpResponse, "facets.results", endpointSearchDetailsSchema),
+	);
 
 useBuilder()
 	.createRoute("POST", "/simple-search-results")

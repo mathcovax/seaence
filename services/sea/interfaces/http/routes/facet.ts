@@ -33,9 +33,9 @@ useBuilder()
 				);
 
 			return new OkHttpResponse(
-				"facets.result",
+				"facets.results",
 				facets,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "facets.result", endpointFacetsSchema),
+		makeResponseContract(OkHttpResponse, "facets.results", endpointFacetsSchema),
 	);

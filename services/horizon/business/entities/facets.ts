@@ -1,4 +1,5 @@
 import { createEnum, zod, type GetEnumValue } from "@vendors/clean";
+import { articleTypeObjecter } from "./common/articleType";
 
 export const genderFacetValueEnum = createEnum(["male", "female"]);
 
@@ -36,22 +37,11 @@ export const speciesFacetObjecter = zod
 	})
 	.createValueObjecter("speciesFacet");
 
-export const articleTypeFacetValueEnum = createEnum([
-	"metaAnalysis",
-	"randomizedControlledTrial",
-]);
-
-export type ArticleTypeFacetValue = GetEnumValue<typeof articleTypeFacetValueEnum>;
-
-export const articleTypeFacetValueObjecter = zod
-	.enum(articleTypeFacetValueEnum.toTuple())
-	.createValueObjecter("articleTypeFacetValue");
-
 export const articleTypeFacetObjecter = zod
 	.object({
 		name: zod.literal("articleType"),
 		values: zod.object({
-			value: articleTypeFacetValueObjecter.zodSchema,
+			value: articleTypeObjecter.zodSchema,
 			quantity: zod.number(),
 		}).array(),
 	})

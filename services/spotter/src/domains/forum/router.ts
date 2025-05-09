@@ -1,4 +1,4 @@
-import { documentLanguageSchema } from "@/lib/horizon/types/document";
+import { bakedDocumentLanguageSchema } from "@/lib/horizon/types/bakedDocument";
 
 export const postPage = createPage(
 	"post",
@@ -9,7 +9,7 @@ export const postPage = createPage(
 			postId: zod.string(),
 		},
 		query: {
-			language: documentLanguageSchema.default("en-US"),
+			language: bakedDocumentLanguageSchema.default("en-US"),
 		},
 	},
 );
