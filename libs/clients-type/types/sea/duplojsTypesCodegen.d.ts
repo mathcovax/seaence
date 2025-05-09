@@ -17,7 +17,7 @@ type CodegenRoutes = ({
     method: "PUT";
     path: "/document/{language}";
     body: {
-        abysBakedDocumentId: string;
+        bakedDocumentId: string;
         title: string;
         articleTypes: ArticleType[];
         authors: string[];
@@ -25,13 +25,13 @@ type CodegenRoutes = ({
         abstract: string | null;
         providers: ("pubmed")[];
         keywords: string[];
-        webPublishDate: Date | null;
+        webPublishDate: string | null;
         webPublishSplitDate: {
             day: number | null;
             month: number | null;
             year: number;
         } | null;
-        journalPublishDate: Date | null;
+        journalPublishDate: string | null;
         journalPublishSplitDate: {
             day: number | null;
             month: number | null;
@@ -48,7 +48,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/simple-search-result";
+    path: "/simple-search-results";
     body: {
         language: Language;
         page: number;
@@ -56,6 +56,12 @@ type CodegenRoutes = ({
         term: string;
         filtersValues?: {
             articleType?: ArticleType[] | undefined;
+            gender?: ("male" | "female")[] | undefined;
+            species?: ("human" | "otherAnimal")[] | undefined;
+            year?: {
+                from: number;
+                to: number;
+            } | undefined;
         } | undefined;
     };
     response: {
@@ -63,7 +69,7 @@ type CodegenRoutes = ({
         information: "simpleSearch.results";
         body: {
             score: number;
-            abysBakedDocumentId: string;
+            bakedDocumentId: string;
             title: string;
             articleType: ArticleType[];
             authors: string[];
@@ -81,6 +87,12 @@ type CodegenRoutes = ({
         term: string;
         filtersValues?: {
             articleType?: ArticleType[] | undefined;
+            gender?: ("male" | "female")[] | undefined;
+            species?: ("human" | "otherAnimal")[] | undefined;
+            year?: {
+                from: number;
+                to: number;
+            } | undefined;
         } | undefined;
     };
     response: {

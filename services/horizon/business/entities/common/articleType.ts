@@ -1,4 +1,4 @@
-import { createEnum, type GetEnumValue } from "@vendors/clean";
+import { createEnum, zod, type GetEnumValue } from "@vendors/clean";
 
 export const articleTypeEnum = createEnum([
 	"adaptiveClinicalTrial",
@@ -86,3 +86,7 @@ export const articleTypeEnum = createEnum([
 ]);
 
 export type ArticleType = GetEnumValue<typeof articleTypeEnum>;
+
+export const articleTypeObjecter = zod
+	.enum(articleTypeEnum.toTuple())
+	.createValueObjecter("articleType");

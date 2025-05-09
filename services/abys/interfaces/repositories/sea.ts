@@ -76,7 +76,7 @@ seaRepository.default = {
 		await SeaAPI.sendDocument(
 			language,
 			{
-				abysBakedDocumentId: restSimplifyObject.id,
+				bakedDocumentId: restSimplifyObject.id,
 				articleTypes: restSimplifyObject.articleTypes,
 				authors: restSimplifyObject.authors.map(
 					({ name }) => name,

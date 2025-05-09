@@ -10,7 +10,7 @@ export const splitDateSchema = zod
 
 export const entrypointDocumentSchema = zod
 	.object({
-		abysBakedDocumentId: zod.string(),
+		bakedDocumentId: zod.string(),
 		title: zod.string(),
 		articleTypes: articleTypeSchema.array(),
 		authors: zod.string().array(),
@@ -18,8 +18,8 @@ export const entrypointDocumentSchema = zod
 		abstract: zod.string().nullable(),
 		providers: zod.enum(providerEnum.toTuple()).array(),
 		keywords: zod.string().array(),
-		webPublishDate: zod.coerce.date().nullable(),
+		webPublishDate: zod.string().nullable(),
 		webPublishSplitDate: splitDateSchema.nullable(),
-		journalPublishDate: zod.coerce.date().nullable(),
+		journalPublishDate: zod.string().nullable(),
 		journalPublishSplitDate: splitDateSchema.nullable(),
 	});

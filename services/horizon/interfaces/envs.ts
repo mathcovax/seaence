@@ -16,6 +16,7 @@ export const envs = zod
 		HARBOR_BASE_URL: zod.string().url(),
 		SCHOOL_BASE_URL: zod.string().url(),
 		ABYS_BASE_URL: zod.string().url(),
+		SEA_BASE_URL: zod.string().url(),
 		CORS_ALLOW_ORIGIN: zod.string(),
 	})
 	.parse(process.env);
