@@ -88,8 +88,8 @@ export function yearAggregationsResultsToFacet(
 
 export interface YearFilterValues {
 	year?: {
-		min: number;
-		max: number;
+		from: number;
+		to: number;
 	};
 }
 
@@ -104,8 +104,8 @@ export function buildYearFilter(
 						{
 							range: {
 								"journalPublishSplitDate.year": {
-									gte: yearFilterValues.min,
-									lte: yearFilterValues.max,
+									gte: yearFilterValues.from,
+									lte: yearFilterValues.to,
 								},
 							},
 						},
@@ -119,8 +119,8 @@ export function buildYearFilter(
 								must: {
 									range: {
 										"webPublishSplitDate.year": {
-											gte: yearFilterValues.min,
-											lte: yearFilterValues.max,
+											gte: yearFilterValues.from,
+											lte: yearFilterValues.to,
 										},
 									},
 								},

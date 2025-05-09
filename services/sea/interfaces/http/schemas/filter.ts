@@ -7,8 +7,8 @@ export const filtersValuesSchema = zod.object({
 	species: speciesSchema.array().optional(),
 	year: zod
 		.object({
-			min: zod.number(),
-			max: zod.number(),
+			from: zod.number(),
+			to: zod.number(),
 		})
 		.optional(),
 });

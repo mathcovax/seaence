@@ -4,6 +4,7 @@ import { type Language } from "@interfaces/providers/elastic/common/language";
 import { match } from "ts-pattern";
 import { buildFilters, type FiltersValues } from "./facet";
 import { type estypes } from "@elastic/elasticsearch";
+import { type Document } from "@interfaces/providers/elastic/indexes/document";
 
 export interface SimpleSearchParams {
 	language: Language;
@@ -23,15 +24,16 @@ interface Hit {
 	_index: string;
 	_id: string;
 	_score: number;
-	_source: {
-		abysBakedDocumentId: string;
-		title: string;
-		summary: string | null;
-		authors: string[];
-		articleTypes: ArticleType[];
-		webPublishDate: string | null;
-		journalPublishDate: string | null;
-	};
+	_source: Pick<
+		Document,
+		| "bakedDocumentId"
+		| "title"
+		| "summary"
+		| "authors"
+		| "articleTypes"
+		| "webPublishDate"
+		| "journalPublishDate"
+	>;
 	highlight?: {
 		title?: string[];
 		abstract?: string[];

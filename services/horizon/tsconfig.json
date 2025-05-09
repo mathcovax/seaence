@@ -18,6 +18,9 @@
 			"@vendors/*": [
 				"./vendors/*"
 			],
+			"@business/*": [
+				"./business/*"
+			],
 			"@interfaces/*": [
 				"./interfaces/*"
 			],

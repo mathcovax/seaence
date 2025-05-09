@@ -7,7 +7,7 @@ import { ElasticDocument } from ".";
 import { languageEnum } from "../common/language";
 
 export const elasticDocumentMappingSchema = {
-	abysBakedDocumentId: {
+	bakedDocumentId: {
 		type: "keyword",
 	},
 	title: {
@@ -81,7 +81,7 @@ export const elasticDocumentMappingSchema = {
 } satisfies Record<string, estypes.MappingProperty>;
 
 export interface Document {
-	abysBakedDocumentId: string;
+	bakedDocumentId: string;
 	title: string;
 	articleTypes: ArticleType[];
 	authors: string[];
@@ -89,13 +89,13 @@ export interface Document {
 	abstract: string | null;
 	providers: Provider[];
 	keywords: string[];
-	webPublishDate: Date | null;
+	webPublishDate: string | null;
 	webPublishSplitDate: {
 		year: number;
 		month: number | null;
 		day: number | null;
 	} | null;
-	journalPublishDate: Date | null;
+	journalPublishDate: string | null;
 	journalPublishSplitDate: {
 		year: number;
 		month: number | null;
@@ -111,7 +111,7 @@ type _ExpectSameKeyof = ExpectType<
 
 export const enUsDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["en-US"]}`,
-	"abysBakedDocumentId",
+	"bakedDocumentId",
 	{
 		analysis: {
 			analyzer: {
@@ -130,7 +130,7 @@ export const enUsDocument = new ElasticDocument<Document>(
 
 export const frFrDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["fr-FR"]}`,
-	"abysBakedDocumentId",
+	"bakedDocumentId",
 	{
 		analysis: {
 			analyzer: {

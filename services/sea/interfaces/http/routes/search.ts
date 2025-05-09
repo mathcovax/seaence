@@ -4,7 +4,7 @@ import { languageSchema } from "../schemas/common";
 import { filtersValuesSchema } from "../schemas/filter";
 
 useBuilder()
-	.createRoute("POST", "/simple-search-result")
+	.createRoute("POST", "/simple-search-results")
 	.extract({
 		body: zod.object({
 			language: languageSchema,
@@ -40,7 +40,7 @@ useBuilder()
 					(rawResult): EndpointSimpleSearchResultSchema[] => rawResult.hits.hits.map(
 						({ _source, highlight, _score }) => ({
 							score: _score,
-							abysBakedDocumentId: _source.abysBakedDocumentId,
+							bakedDocumentId: _source.bakedDocumentId,
 							title: highlight?.title?.shift() ?? _source.title,
 							articleType: _source.articleTypes,
 							authors: _source.authors.map(
