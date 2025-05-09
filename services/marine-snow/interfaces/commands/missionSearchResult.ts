@@ -2,8 +2,10 @@ import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { providerObjecter } from "@business/domains/common/provider";
 import { program } from "commander";
 import { match } from "ts-pattern";
-import { createPubMedSearchResultMissionUsecase, startSearchResultMissionUsecase } from "@interfaces/usecase";
+import { createPubMedSearchResultMissionUsecase } from "@interfaces/usecase";
 import { dateYYYYMMDDIntervalObjecter } from "@vendors/clean";
+import { StartSearchResultMissionUsecase } from "@business/applications/usecases/missions/searchResult/startSearchResultMission";
+import { scienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
 
 program
 	.requiredOption("-p, --provider <char>")
@@ -17,10 +19,10 @@ const { provider: rawProvider } = program.opts<Record<string, string>>();
 
 const provider = providerObjecter.unknownUnsafeCreate(rawProvider);
 
-await match(provider)
+const mission = await match(provider)
 	.with(
 		{ value: "pubmed" },
-		async() => {
+		() => {
 			const {
 				articleType: rawArticleType,
 				dateTo: ramDateTo,
@@ -33,14 +35,33 @@ await match(provider)
 				to: new Date(ramDateTo),
 			});
 
-			const mission = await createPubMedSearchResultMissionUsecase.execute({
+			return createPubMedSearchResultMissionUsecase.execute({
 				articleType,
 				interval,
 			});
-
-			const result = await startSearchResultMissionUsecase.execute({ mission });
-
-			console.log(result);
 		},
 	)
 	.exhaustive();
+
+const implementedScienceDatabaseRepository = scienceDatabaseRepository.use;
+
+const startSearchResultMissionUsecase = new StartSearchResultMissionUsecase({
+	scienceDatabaseRepository: {
+		...implementedScienceDatabaseRepository,
+		async *startSearchResultMission(...args) {
+			for await (const result of implementedScienceDatabaseRepository.startSearchResultMission(...args)) {
+				if (!(result instanceof Error)) {
+					console.log(
+						`Date: ${result.currentStep.date.value.toISOString()}`,
+						`Page: ${result.currentStep.page.value}`,
+					);
+				}
+				yield result;
+			}
+		},
+	},
+});
+
+const result = await startSearchResultMissionUsecase.execute({ mission });
+
+console.log(result);
