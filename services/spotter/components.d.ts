@@ -57,6 +57,7 @@ declare module 'vue' {
     DSPaginationLast: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationLast.vue')['default']
     DSPaginationNext: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationNext.vue')['default']
     DSPaginationPrev: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationPrev.vue')['default']
+    DSRange: typeof import('./vendors/design-system/components/DSRange.vue')['default']
     DSSea: typeof import('./vendors/design-system/components/DSSea.vue')['default']
     DSSelect: typeof import('./vendors/design-system/components/ui/select/DSSelect.vue')['default']
     DSSelectContent: typeof import('./vendors/design-system/components/ui/select/DSSelectContent.vue')['default']

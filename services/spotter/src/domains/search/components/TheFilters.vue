@@ -5,7 +5,10 @@ interface Props {
 interface Filters {
 	articleType: string;
 	gender: string[];
-	publicationYear: [number, number];
+	publicationYear: {
+		from: number;
+		to: number;
+	};
 }
 
 defineProps<Props>();
@@ -28,7 +31,10 @@ const genderOptions = [
 const filters = ref<Filters>({
 	articleType: "",
 	gender: [],
-	publicationYear: [filtersYear.min, filtersYear.max],
+	publicationYear: {
+		from: filtersYear.min,
+		to: filtersYear.max,
+	},
 });
 
 const notFound = -1;
@@ -54,7 +60,10 @@ function resetFilters() {
 	filters.value = {
 		articleType: "",
 		gender: [],
-		publicationYear: [filtersYear.min, filtersYear.max] as [number, number],
+		publicationYear: {
+			from: filtersYear.min,
+			to: filtersYear.max,
+		},
 	};
 }
 
@@ -103,11 +112,11 @@ watch(
 						{{ $t("filters.label.publicationYear") }}
 					</DSLabel>
 
-					<DSFilterRange
+					<DSRange
 						name="publicationYear"
 						:min="filtersYear.min"
 						:max="filtersYear.max"
-						v-model:filter-value="filters.publicationYear"
+						v-model="filters.publicationYear"
 					/>
 				</div>
 
@@ -147,10 +156,7 @@ watch(
 					@click="applyFilters"
 					:disabled="
 						!filters.articleType &&
-
-							filters.gender.length === 0 &&
-							filters.publicationYear[0] === filtersYear.min &&
-							filters.publicationYear[1] === filtersYear.max"
+							filters.gender.length === 0"
 				>
 					{{ $t("filters.apply") }}
 				</DSButtonPrimary>
@@ -159,8 +165,7 @@ watch(
 					@click="resetFilters"
 					:disabled="
 						!filters.articleType && filters.gender.length === 0
-							&& filters.publicationYear[0] === filtersYear.min
-							&& filters.publicationYear[1] === filtersYear.max"
+					"
 				>
 					{{ $t("filters.reset") }}
 				</DSButtonOutline>

@@ -2,11 +2,10 @@
 import { computed, ref } from "vue";
 import SimpleSearch from "../components/SimpleSearch.vue";
 import TheFilters from "../components/TheFilters.vue";
-import SearchResutPagination from "../components/SearchResutPagination.vue";
 import DocumentResultRow from "../components/DocumentResultRow.vue";
 
 const { $pt } = simpleSearchPage.use();
-
+const { scrollToTop } = useScroll();
 const isResultExpanded = ref(false);
 const isFiltersVisible = ref(false);
 
@@ -64,7 +63,7 @@ const paginatedDocuments = computed(() => {
 
 function handlePageChange(page: number) {
 	currentPage.value = page;
-	window.scrollTo({ top: 0 });
+	scrollToTop();
 }
 
 function handleLanguageChange(language: string) {
@@ -111,12 +110,11 @@ function handleLanguageChange(language: string) {
 			class="h-full -mb-4 bg-background rounded-t-md shadow-md transition-all duration-1500 ease-in-out overflow-hidden"
 			:class="isResultExpanded ? 'max-h-[3236px]' : 'max-h-0'"
 		>
-			<SearchResutPagination
+			<DSPagination
 				:total="documents.length"
 				:current-page="currentPage"
-				:product-per-page="productPerPage"
+				:quantity-per-page="productPerPage"
 				@update="handlePageChange"
-				:key="'top-pagination-' + currentPage"
 			/>
 
 			<div class="w-full max-w-5xl mx-auto">
@@ -127,12 +125,11 @@ function handleLanguageChange(language: string) {
 				/>
 			</div>
 
-			<SearchResutPagination
+			<DSPagination
 				:total="documents.length"
 				:current-page="currentPage"
-				:product-per-page="productPerPage"
+				:quantity-per-page="productPerPage"
 				@update="handlePageChange"
-				:key="'bottom-pagination-' + currentPage"
 			/>
 		</div>
 

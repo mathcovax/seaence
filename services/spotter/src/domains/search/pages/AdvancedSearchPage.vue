@@ -2,7 +2,6 @@
 import type { OperatorContent } from "@vendors/scratch-type";
 import TheScratch from "../components/scratch/TheScratch.vue";
 import DocumentResultRow from "../components/DocumentResultRow.vue";
-import SearchResutPagination from "../components/SearchResutPagination.vue";
 import { computed, ref } from "vue";
 
 const { $pt } = advancedSearchPage.use();
@@ -129,12 +128,11 @@ watch(
 			class="h-full -mb-4 bg-background rounded-t-md shadow-md transition-all duration-1500 ease-in-out overflow-hidden"
 			:class="isResultExpanded ? 'max-h-[3236px]' : 'max-h-0'"
 		>
-			<SearchResutPagination
+			<DSPagination
 				:total="documents.length"
 				:current-page="currentPage"
-				:product-per-page="productPerPage"
+				:quantity-per-page="productPerPage"
 				@update="handlePageChange"
-				:key="'top-pagination-' + currentPage"
 			/>
 
 			<div class="w-full max-w-5xl mx-auto">
@@ -145,12 +143,11 @@ watch(
 				/>
 			</div>
 
-			<SearchResutPagination
+			<DSPagination
 				:total="documents.length"
 				:current-page="currentPage"
-				:product-per-page="productPerPage"
+				:quantity-per-page="productPerPage"
 				@update="handlePageChange"
-				:key="'bottom-pagination-' + currentPage"
 			/>
 		</div>
 
