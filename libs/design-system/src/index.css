@@ -37,6 +37,9 @@
 
 	/* Custom */
 	--blue-seaence: oklch(0.67 0.13 250);
+	--pink-seaence: oklch(0.732 0.206 18.2);
+	--green-seaence: oklch(0.715 0.071 187.6);
+	--purple-seaence: oklch(0.714 0.203 305.504);
 
 	font-family: 'Inter', sans-serif;
 }
@@ -81,6 +84,9 @@
 
 	/* Custom */
 	--color-blue-seaence: var(--blue-seaence);
+	--color-pink-seaence: var(--pink-seaence);
+	--color-green-seaence: var(--green-seaence);
+	--color-purple-seaence: var(--purple-seaence);
 
 	/* Animations */
 
@@ -131,6 +137,11 @@
 @utility container {
 	margin-inline: auto;
 	padding-inline: 2rem;
+}
+
+/* screen - header - padding y */
+@utility min-h-screen-nh {
+	min-height: calc(100vh - 6rem - 2 * 1rem);
 }
 
 img {

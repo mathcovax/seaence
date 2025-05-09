@@ -50,7 +50,10 @@ export const FRfr = {
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 			googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
 		},
-		[searchResultsPage.name]: {
+		[simpleSearchPage.name]: {
+			showFilters: "Afficher les filtres",
+			hideFilters: "Masquer les filtres",
+			foundResults: "{count} résultat(s) trouvé(s)",
 			noResults: "Aucun résultat trouvé",
 		},
 		[postPage.name]: {
@@ -90,6 +93,15 @@ export const FRfr = {
 			title: "Chargement...",
 		},
 	},
+	filters: {
+		label: {
+			articleType: "Type d'article",
+			publicationYear: "Année de publication",
+			gender: "Sexe",
+		},
+		apply: "Appliquer les filtres",
+		reset: "Réinitialiser les filtres",
+	},
 	scratch: {
 		tabs: {
 			comparator: "Comparateur",
@@ -97,19 +109,20 @@ export const FRfr = {
 		},
 		comparator: {
 			text: {
-				selectPlaceholder: "Selectioner un champ",
-				label: "Comparaison textuel",
+				selectPlaceholder: "Sélectionner un champ",
+				inputPlaceholder: "Entrer une valeur",
+				label: "Comparaison textuelle",
 				fields: {
-					allField: "Touts les champs",
+					allField: "Tous les champs",
 					abstract: "Abstract",
 					title: "Titre",
 				} satisfies Record<TextFieldEnumValue, string>,
 			},
 			year: {
-				selectPlaceholder: "Selectioner un champ",
-				label: "Comparaison d'annés",
+				selectPlaceholder: "Sélectionner un champ",
+				label: "Comparaison d'années",
 				fields: {
-					allDate: "Toute Date",
+					allDate: "Toutes Dates",
 					journalDate: "publication journal",
 					webDate: "publication web",
 				} satisfies Record<YearFieldEnumValue, string>,
@@ -138,10 +151,10 @@ export const FRfr = {
 		minAge: "Vous devez avoir au moins {value} ans.",
 		maxItems: "Vous pouvez au maximum avoir {value} éléments.",
 		blobToLarge: "L'image est supérieure à {value} Mo.",
-		minItems: "Vous devez minimum avoir {value} éléments.",
+		minItems: "Vous devez au minimum avoir {value} éléments.",
 		url: "Doit être sous la forme /path/to/page",
 		minDate: "Doit être après le {value}.",
-		int: "Le nombre doit étre un entier.",
+		int: "Le nombre doit être un entier.",
 	},
 	cta: {
 		backHome: "Retour à l'accueil",

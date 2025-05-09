@@ -1,21 +1,16 @@
-import { z } from "zod";
-
-export const searchResultsPage = createPage(
-	"searchResults",
+export const simpleSearchPage = createPage(
+	"simpleSearch",
 	{
-		path: "/search-results",
-		component: () => import("./pages/SearchResultsPage.vue"),
+		path: "/simple-search",
+		component: () => import("./pages/SimpleSearchPage.vue"),
 	},
 );
 
-export const documentPage = createPage(
-	"document",
+export const advancedSearchPage = createPage(
+	"advancedSearch",
 	{
-		path: "/document/:id",
-		component: () => import("./pages/DocumentPage.vue"),
-		params: {
-			id: z.string(),
-		},
+		path: "/advanced-search",
+		component: () => import("./pages/AdvancedSearchPage.vue"),
 	},
 );
 

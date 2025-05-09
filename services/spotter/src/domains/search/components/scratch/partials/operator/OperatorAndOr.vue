@@ -45,38 +45,92 @@ const { hintMessage } = useHintMessage(
 	}),
 );
 
+const sortedContents = computed(() => {
+	const contentsWithContentIndex = model.value.content.map(
+		(item, index) => ({
+			contentIndex: index,
+			item,
+		}),
+	);
+
+	return {
+		comparators: contentsWithContentIndex.filter(
+			({ item }) => item.type === "comparator",
+		),
+		operators: contentsWithContentIndex.filter(
+			({ item }) => item.type === "operator",
+		),
+	};
+});
+
+function comparatorTakefullWidth(index: number) {
+	const offset = 1;
+	const pos = index + offset;
+
+	return !isEven(pos) && pos === sortedContents.value.comparators.length;
+}
 </script>
 
 <template>
-	<div class="py-1 pl-1 rounded-l-sm bg-primary flex flex-col gap-1 select-none">
-		<div class="flex justify-between pr-1">
+	<div
+		class="border-4 rounded-md shadow-sm"
+		:class="{
+			'border-primary': model.name === 'and',
+			'border-green-seaence': model.name === 'or',
+		}"
+	>
+		<div
+			class="px-2 py-1 flex justify-between items-center text-white"
+			:class="{
+				'bg-primary': model.name === 'and',
+				'bg-green-seaence': model.name === 'or',
+			}"
+		>
 			<SelectOperator
-				class="w-[80px]"
+				class="w-20 text-white font-medium bg-white bg-opacity-20 border-0 rounded"
 				v-model="model.name"
 			/>
 
-			<DSIcon
-				name="close"
+			<DSButtonIcon
+				variant="ghost"
+				size="xs"
 				@click="emit('remove')"
-			/>
+				class="text-white hover:bg-white hover:bg-opacity-20"
+			>
+				<DSIcon name="close" />
+			</DSButtonIcon>
 		</div>
 
-		<div class="bg-white py-1 pl-1 rounded-l-sm flex flex-col gap-1">
-			<component
-				v-for="(item, index) of model.content"
-				:key="index"
-				:is="getComponent(item, index)"
-			/>
-
+		<div class="@container p-2 space-y-2">
 			<AddOperatorContent
 				v-if="model.content.length < 10"
 				@new-operator-content="newOperatorContent"
 			/>
-		</div>
 
-		<ScratchHint
-			v-if="hintMessage"
-			:message="hintMessage"
-		/>
+			<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
+				<component
+					v-for="({item, contentIndex}, index) of sortedContents.comparators"
+					:key="contentIndex"
+					:is="getComponent(item, contentIndex)"
+					class="col-span-1"
+					:class="{
+						'!col-span-full': comparatorTakefullWidth(index),
+					}"
+				/>
+
+				<component
+					v-for="{item, contentIndex} of sortedContents.operators"
+					:key="contentIndex"
+					:is="getComponent(item, contentIndex)"
+					class="col-span-full"
+				/>
+			</div>
+
+			<ScratchHint
+				v-if="hintMessage"
+				:message="hintMessage"
+				class="mt-1"
+			/>
+		</div>
 	</div>
 </template>

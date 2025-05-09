@@ -45,31 +45,35 @@ const { hintMessage } = useHintMessage(
 </script>
 
 <template>
-	<div class="py-1 pl-1 rounded-l-sm bg-primary flex flex-col gap-1 select-none">
-		<div class="flex justify-between pr-1">
-			<p>{{ $t("scratch.operator.not.label") }}</p>
+	<div class="border-4 border-pink-seaence rounded-md shadow-sm">
+		<div class="h-11 flex justify-between items-center px-2 py-1 text-white bg-pink-seaence">
+			<span class="font-medium text-sm">{{ $t("scratch.operator.not.label") }}</span>
 
-			<DSIcon
-				name="close"
+			<DSButtonIcon
+				variant="ghost"
+				size="xs"
 				@click="emit('remove')"
-			/>
+				class="text-white hover:bg-white hover:bg-opacity-20"
+			>
+				<DSIcon name="close" />
+			</DSButtonIcon>
 		</div>
 
-		<div class="bg-white py-1 pl-1 rounded-l-sm flex flex-col gap-1">
-			<component
-				v-if="model.content"
-				:is="getComponent(model.content)"
-			/>
+		<div class="bg-white p-2">
+			<div v-if="model.content">
+				<component :is="getComponent(model.content)" />
+			</div>
 
 			<AddOperatorContent
 				v-if="!model.content"
 				@new-operator-content="newOperatorContent"
 			/>
-		</div>
 
-		<ScratchHint
-			v-if="hintMessage"
-			:message="hintMessage"
-		/>
+			<ScratchHint
+				v-if="hintMessage"
+				:message="hintMessage"
+				class="mt-1"
+			/>
+		</div>
 	</div>
 </template>

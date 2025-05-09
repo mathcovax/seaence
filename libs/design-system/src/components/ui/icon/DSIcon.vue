@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiMenu, mdiClose, mdiViewGrid, mdiFormatListBulletedSquare, mdiPlus } from "@mdi/js";
+import {
+	mdiMenu,
+	mdiClose,
+	mdiViewGrid,
+	mdiFormatListBulletedSquare,
+	mdiPlus,
+	mdiAccount,
+	mdiCalendarMonth,
+	mdiFileDocument,
+	mdiTag,
+} from "@mdi/js";
 
 const iconsMapper = {
 	close: mdiClose,
@@ -8,6 +18,10 @@ const iconsMapper = {
 	viewGrid: mdiViewGrid,
 	formatListBulletedSquare: mdiFormatListBulletedSquare,
 	plus: mdiPlus,
+	user: mdiAccount,
+	calendar: mdiCalendarMonth,
+	document: mdiFileDocument,
+	tag: mdiTag,
 };
 
 interface Props {

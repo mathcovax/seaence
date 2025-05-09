@@ -23,6 +23,7 @@ declare global {
   const DSSheetTrigger: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetTrigger']
   const EffectScope: typeof import('vue')['EffectScope']
   const Input: typeof import('./vendors/design-system/components/ui/input/index')['Input']
+  const advancedSearchPage: typeof import('./src/domains/search/router')['advancedSearchPage']
   const buttonVariants: typeof import('./vendors/design-system/components/ui/button/index')['buttonVariants']
   const cn: typeof import('./vendors/design-system/lib/utils')['cn']
   const computed: typeof import('vue')['computed']
@@ -32,7 +33,7 @@ declare global {
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
-  const documentPage: typeof import('./src/domains/search/router')['documentPage']
+  const documentPage: typeof import('./src/domains/document/router')['documentPage']
   const effectScope: typeof import('vue')['effectScope']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
@@ -41,6 +42,7 @@ declare global {
   const horizonClient: typeof import('./src/lib/horizon/index')['horizonClient']
   const i18n: typeof import('./src/i18n/index')['i18n']
   const inject: typeof import('vue')['inject']
+  const isEven: typeof import('./src/utils/isEven')['isEven']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
@@ -73,11 +75,11 @@ declare global {
   const readonly: typeof import('vue')['readonly']
   const ref: typeof import('vue')['ref']
   const resolveComponent: typeof import('vue')['resolveComponent']
-  const searchResultsPage: typeof import('./src/domains/search/router')['searchResultsPage']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
   const sheetVariants: typeof import('./vendors/design-system/components/ui/sheet/index')['sheetVariants']
+  const simpleSearchPage: typeof import('./src/domains/search/router')['simpleSearchPage']
   const testPage: typeof import('./src/domains/search/router')['testPage']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
@@ -128,6 +130,7 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly advancedSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['advancedSearchPage']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly connectionPage: UnwrapRef<typeof import('./src/domains/auth/router')['connectionPage']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -135,7 +138,7 @@ declare module 'vue' {
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
-    readonly documentPage: UnwrapRef<typeof import('./src/domains/search/router')['documentPage']>
+    readonly documentPage: UnwrapRef<typeof import('./src/domains/document/router')['documentPage']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -144,6 +147,7 @@ declare module 'vue' {
     readonly horizonClient: UnwrapRef<typeof import('./src/lib/horizon/index')['horizonClient']>
     readonly i18n: UnwrapRef<typeof import('./src/i18n/index')['i18n']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
+    readonly isEven: UnwrapRef<typeof import('./src/utils/isEven')['isEven']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -174,10 +178,10 @@ declare module 'vue' {
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
-    readonly searchResultsPage: UnwrapRef<typeof import('./src/domains/search/router')['searchResultsPage']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly simpleSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['simpleSearchPage']>
     readonly testPage: UnwrapRef<typeof import('./src/domains/search/router')['testPage']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
