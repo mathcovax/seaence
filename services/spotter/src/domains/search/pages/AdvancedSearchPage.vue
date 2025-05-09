@@ -23,9 +23,6 @@ const content = ref<OperatorContent | null>({
 
 const scratchRef = ref<InstanceType<typeof TheScratch> | null>();
 
-// Mock data
-type ArticleType = "RESEARCH_ARTICLE" | "PEER_REVIEWED" | "CONFERENCE_PAPER" | "REVIEW_ARTICLE" | "BOOK_CHAPTER";
-
 const config = {
 	year: 2024,
 	month: 12,
@@ -35,9 +32,9 @@ const config = {
 const startIndex = 1;
 const documents = Array.from({ length: 180 }, (_unused, index) => ({
 	score: Math.random(),
-	abysBakedDocumentId: `doc-${index + startIndex}`,
+	bakedDocumentId: `doc-${index + startIndex}`,
 	title: `Scientific Research Paper ${index + startIndex}`,
-	articleType: ["RESEARCH_ARTICLE", "PEER_REVIEWED"] as ArticleType[],
+	articleType: [],
 	authors: [
 		"<strong>Albert Einstein</strong>",
 		"Marie Curie",

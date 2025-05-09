@@ -1,147 +1,145 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import SimpleSearch from "../components/SimpleSearch.vue";
 import TheFilters from "../components/TheFilters.vue";
 import DocumentResultRow from "../components/DocumentResultRow.vue";
+import { useSimpleSearchPage } from "../composables/useSimpleSearchPage";
+import type { BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import SimpleSearchInput from "../components/SimpleSearchInput.vue";
 
-const { $pt } = simpleSearchPage.use();
+const { $pt, goTo, query } = simpleSearchPage.use();
 const { scrollToTop } = useScroll();
-const isResultExpanded = ref(false);
+const {
+	search,
+	setPage,
+	result,
+	pageOfBakedDocumentSearchResult,
+	isFetching,
+} = useSimpleSearchPage();
+
+const bakedDocumentLanguage = ref<BakedDocumentLanguage>(query.value.language);
+const term = ref(query.value.term);
+
+const isResultExpanded = ref(!!term.value);
 const isFiltersVisible = ref(false);
 
-// Mock data
-type ArticleType = "RESEARCH_ARTICLE" | "PEER_REVIEWED" | "CONFERENCE_PAPER" | "REVIEW_ARTICLE" | "BOOK_CHAPTER";
+function onSubmit() {
+	void goTo({
+		query: {
+			term: term.value,
+			language: bakedDocumentLanguage.value,
+		},
+	});
 
-const config = {
-	year: 2024,
-	month: 12,
-	day: 28,
-};
+	void search({
+		language: bakedDocumentLanguage.value,
+		page: pageOfBakedDocumentSearchResult.value,
+		term: term.value,
+	});
 
-const startIndex = 1;
-const documents = Array.from({ length: 180 }, (_unused, index) => ({
-	score: Math.random(),
-	abysBakedDocumentId: `doc-${index + startIndex}`,
-	title: `Scientific Research Paper ${index + startIndex}`,
-	articleType: ["RESEARCH_ARTICLE", "PEER_REVIEWED"] as ArticleType[],
-	authors: [
-		"<strong>Albert Einstein</strong>",
-		"Marie Curie",
-		"Isaac Newton",
-	],
-	webPublishDate:
-		new Date(
-			config.year,
-			Math.floor(Math.random() * config.month),
-			Math.floor(Math.random() * config.day),
-		).toISOString(),
-	journalPublishDate:
-		new Date(
-			config.year,
-			Math.floor(Math.random() * config.month),
-			Math.floor(Math.random() * config.day),
-		).toISOString(),
-	summary: `
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor <strong>incididunt</strong> ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    `,
-	keywords: ["physics", "<strong>quantum mechanics</strong>", "relativity", "particle physics"],
-}));
-// End mock data
+	isResultExpanded.value = true;
+}
 
-const startPage = 1;
-const pageOffset = 1;
-const currentPage = ref(startPage);
-const productPerPage = 12;
+if (term.value) {
+	onSubmit();
+}
 
-const paginatedDocuments = computed(() => {
-	const start = (currentPage.value - pageOffset) * productPerPage;
-	const end = start + productPerPage;
-	return documents.slice(start, end);
+onMounted(() => {
+	scrollToTop();
 });
 
-function handlePageChange(page: number) {
-	currentPage.value = page;
-	scrollToTop();
-}
-
-function handleLanguageChange(language: string) {
-	console.log("Selected language:", language);
-}
 </script>
 
 <template>
-	<section class="min-h-[calc(100vh-6rem-2rem)] flex flex-col justify-between">
+	<section class="flex flex-col items-stretch min-h-screen relative">
 		<div
-			class="min-h-32 p-6 flex flex-col justify-center gap-8 items-center transition-all duration-1500 ease-in-out overflow-hidden"
+			v-if="isFetching"
+			class="w-full h-full absolute top-0 left-0 z-20"
+		/>
+
+		<div
+			class="min-h-32 py-6 flex flex-col justify-center gap-8 items-center transition-all duration-1500 ease-in-out"
 			:class="{
-				'flex-1': !isResultExpanded,
+				'mt-[calc(35vh)]': !isResultExpanded,
 				'sticky top-24 z-10 bg-white rounded-md shadow-md': isResultExpanded
 			}"
 		>
-			<SimpleSearch
-				@click="isResultExpanded = !isResultExpanded"
-				:large="true"
-				class="w-full max-w-xl mx-auto"
-				@update:language="handleLanguageChange"
+			<SimpleSearchInput
+				class="w-150"
+				v-model:language="bakedDocumentLanguage"
+				v-model="term"
+				:placeholder="$pt('searchInput.placeholder')"
+				@submit="onSubmit"
 			/>
 
 			<div
-				v-if="isResultExpanded"
-				class="w-full"
+				class="w-full transition-all duration-1500"
+				:class="{'opacity-0': !result || isFetching}"
 			>
-				<div class="flex justify-between items-center mb-4">
+				<div class="flex justify-between items-center px-6">
 					<DSButtonOutline
 						@click="isFiltersVisible = !isFiltersVisible"
 					>
 						<span>{{ isFiltersVisible ? $pt("hideFilters") : $pt("showFilters") }}</span>
 					</DSButtonOutline>
 
-					<span class="text-sm text-gray-500 flex items-center">{{ $pt("foundResults", { count: documents.length }) }}</span>
+					<span class="text-sm text-gray-500 flex items-center">{{ $pt("foundResults", { count: result?.total ?? "" }) }}</span>
 				</div>
 
-				<TheFilters :is-filters-visible="isFiltersVisible" />
+				<div
+					class="h-0"
+				>
+					<div
+						class="max-h-0 overflow-hidden transition-all duration-500 px-6 bg-white rounded-md"
+						:class="{'!max-h-200 shadow-md py-6': isFiltersVisible}"
+					>
+						<TheFilters :is-filters-visible="isFiltersVisible" />
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<div
-			v-if="documents && documents.length > 0"
-			class="h-full -mb-4 bg-background rounded-t-md shadow-md transition-all duration-1500 ease-in-out overflow-hidden"
-			:class="isResultExpanded ? 'max-h-[3236px]' : 'max-h-0'"
+			class="duration-1500 transition-all ease-in pb-10"
+			:class="{
+				'opacity-0': !result || isFetching
+			}"
 		>
-			<DSPagination
-				:total="documents.length"
-				:current-page="currentPage"
-				:quantity-per-page="productPerPage"
-				@update="handlePageChange"
-			/>
+			<div
+				v-if="result && result.searchResult.length > 0"
+				class="bg-white flex flex-col items-stretch rounded-b-xl"
+			>
+				<DSPagination
+					:total="result.total"
+					:current-page="pageOfBakedDocumentSearchResult"
+					:quantity-per-page="result.quantityPerPage"
+					@update="setPage"
+				/>
 
-			<div class="w-full max-w-5xl mx-auto">
-				<DocumentResultRow
-					v-for="(document, index) in paginatedDocuments"
-					:key="index"
-					:document="document"
+				<div class="w-full max-w-5xl mx-auto">
+					<DocumentResultRow
+						v-for="document in result.searchResult"
+						:key="document.bakedDocumentId"
+						:document="document"
+					/>
+				</div>
+
+				<DSPagination
+					:total="result.total"
+					:current-page="pageOfBakedDocumentSearchResult"
+					:quantity-per-page="result.quantityPerPage"
+					@update="setPage"
 				/>
 			</div>
 
-			<DSPagination
-				:total="documents.length"
-				:current-page="currentPage"
-				:quantity-per-page="productPerPage"
-				@update="handlePageChange"
-			/>
+			<div
+				v-else-if="result"
+				class="grow flex items-center justify-center mt-20"
+			>
+				<p class="text-2xl text-gray-500">
+					{{ $pt("noResults") }}
+				</p>
+			</div>
 		</div>
 
-		<div
-			v-else
-			class="grow flex items-center justify-center"
-		>
-			<p class="text-2xl text-gray-500">
-				{{ $pt("noResults") }}
-			</p>
-		</div>
-
-		<DSSea />
+		<DSSea :speed="isFetching" />
 	</section>
 </template>

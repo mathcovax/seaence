@@ -93,14 +93,14 @@ export function simpleSearch(
 		from: page * quantityPerPage,
 		size: quantityPerPage,
 		track_total_hits: false,
-		_source: ["abysBakedDocumentId", "title", "summary", "authors", "articleTypes", "webPublishDate", "journalPublishDate"],
+		_source: ["bakedDocumentId", "title", "summary", "authors", "articleTypes", "webPublishDate", "journalPublishDate"],
 		query: buildSimpleSearchQuery({
 			term,
 			filtersValues,
 			language,
 		}),
 		highlight: {
-			pre_tags: ["<strong class=\"matching-result\">>"],
+			pre_tags: ["<strong class=\"matching-result\">"],
 			post_tags: ["</strong>"],
 			fields: {
 				title: {},

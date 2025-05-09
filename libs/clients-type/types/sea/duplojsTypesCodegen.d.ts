@@ -97,7 +97,7 @@ type CodegenRoutes = ({
     };
     response: {
         code: 200;
-        information: "facets.result";
+        information: "facets.results";
         body: {
             total: number;
             facets: ({

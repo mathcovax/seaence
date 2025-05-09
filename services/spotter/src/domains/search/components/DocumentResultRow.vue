@@ -1,9 +1,9 @@
 <script setup lang="ts">
-type ArticleType = "RESEARCH_ARTICLE" | "PEER_REVIEWED" | "CONFERENCE_PAPER" | "REVIEW_ARTICLE" | "BOOK_CHAPTER";
+import type { ArticleType } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 interface Document {
 	score: number;
-	abysBakedDocumentId: string;
+	bakedDocumentId: string;
 	title: string;
 	articleType: ArticleType[];
 	authors: string[];
@@ -37,7 +37,7 @@ defineProps<{
 			</div>
 
 			<RouterLink
-				:to="documentPage.createTo({ params: { id: document.abysBakedDocumentId } })"
+				:to="documentPage.createTo({ params: { id: document.bakedDocumentId } })"
 				class="group"
 			>
 				<h3
@@ -55,7 +55,7 @@ defineProps<{
 				<div class="flex items-center gap-1">
 					<DSIcon
 						name="user"
-						size="16"
+						size="small"
 					/>
 
 					<span v-html="document.authors.join(', ')" />
@@ -67,7 +67,7 @@ defineProps<{
 				>
 					<DSIcon
 						name="calendar"
-						size="14"
+						size="small"
 					/>
 
 					<span>{{ new Date(document.webPublishDate).toLocaleDateString() }}</span>
@@ -79,7 +79,7 @@ defineProps<{
 				>
 					<DSIcon
 						name="tag"
-						size="14"
+						size="small"
 					/>
 
 					<span v-html="document.keywords.join(', ')" />
@@ -88,3 +88,9 @@ defineProps<{
 		</div>
 	</div>
 </template>
+
+<style>
+.matching-result {
+	font-weight: 900;
+}
+</style>

@@ -9,7 +9,7 @@ import { type HTMLAttributes } from "vue";
 
 interface Props extends SelectRootProps {
 	items: GenericItem[];
-	placeholder: string;
+	placeholder?: string;
 	label?(item: GenericItem): string;
 	class?: HTMLAttributes["class"];
 }
