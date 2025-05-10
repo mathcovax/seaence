@@ -71,7 +71,7 @@ type CodegenRoutes = ({
             score: number;
             bakedDocumentId: string;
             title: string;
-            articleType: ArticleType[];
+            articleTypes: ArticleType[];
             authors: string[];
             webPublishDate: string | null;
             journalPublishDate: string | null;

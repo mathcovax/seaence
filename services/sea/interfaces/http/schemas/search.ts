@@ -4,7 +4,7 @@ export const endpointSimpleSearchResultSchema = zod.object({
 	score: zod.number(),
 	bakedDocumentId: zod.string(),
 	title: zod.string(),
-	articleType: articleTypeSchema.array(),
+	articleTypes: articleTypeSchema.array(),
 	authors: zod.string().array(),
 	webPublishDate: zod.string().nullable(),
 	journalPublishDate: zod.string().nullable(),

@@ -42,7 +42,7 @@ useBuilder()
 							score: _score,
 							bakedDocumentId: _source.bakedDocumentId,
 							title: highlight?.title?.shift() ?? _source.title,
-							articleType: _source.articleTypes,
+							articleTypes: _source.articleTypes,
 							authors: _source.authors.map(
 								(author) => {
 									const highlighted = highlight
@@ -57,8 +57,9 @@ useBuilder()
 							keywords: highlight?.keywords ?? null,
 							webPublishDate: _source.webPublishDate,
 							journalPublishDate: _source.journalPublishDate,
-							summary: highlight?.abstract?.join(".. ").substring(summaryTronc.from, summaryTronc.to)
-								?? _source.summary,
+							summary: highlight?.abstract?.length
+								? `${highlight.abstract.join(".. ").substring(summaryTronc.from, summaryTronc.to)}..`
+								: _source.summary,
 						}),
 					),
 				);

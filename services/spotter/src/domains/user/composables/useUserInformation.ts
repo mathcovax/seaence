@@ -19,7 +19,8 @@ export function useUserInformation() {
 	const accessToken = computed(() => accessTokenItem.value);
 
 	function fetchInformation() {
-		return window.horizonClient
+		return window
+			.horizonClient
 			.get("/user")
 			.whenInformation(
 				"user.get",

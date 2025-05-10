@@ -24,7 +24,7 @@ const modelLanguage = defineModel<BakedDocumentLanguage>(
 		required: true,
 	},
 );
-
+const inputElement = ref<HTMLInputElement | null>(null);
 const message = ref("");
 
 const minLentgh = 3;
@@ -39,10 +39,11 @@ function onSubmit() {
 		});
 
 		return;
-	} else {
-		message.value = "";
-		modelValue.value = result.data;
 	}
+
+	message.value = "";
+	modelValue.value = result.data;
+	inputElement.value?.blur();
 
 	emit("submit");
 }
@@ -55,6 +56,8 @@ function onSubmit() {
 	>
 		<div class="z-10 w-full flex gap-2 border-2 items-center shadow-xl rounded-md pl-2 bg-white overflow-hidden">
 			<input
+				ref="inputElement"
+				type="search"
 				class="outline-0 min-w-0 grow"
 				v-model="modelValue"
 				:placeholder="placeholder"
