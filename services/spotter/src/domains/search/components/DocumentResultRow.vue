@@ -13,16 +13,23 @@ interface Document {
 	keywords: string[] | null;
 }
 
-defineProps<{
+const props = defineProps<{
 	document: Document;
 }>();
+
+const score = computed(() => Math.round(props.document.score));
+const authors = computed(() => props.document.authors.join(", "));
+const wenPublishDate = computed(() => props.document.webPublishDate
+	? new Date(props.document.webPublishDate).toLocaleDateString()
+	: "N/A");
+const keywords = computed(() => props.document.keywords?.join(", "));
 </script>
 
 <template>
 	<div class="flex items-start gap-4 p-6 border-b border-muted hover:bg-muted/5 transition-colors">
 		<div class="flex-1">
 			<div class="flex items-center gap-2 mb-1">
-				<span class="text-xs text-muted-foreground">Score: {{ Math.round(document.score * 100) }}%</span>
+				<span class="text-xs text-muted-foreground">Score: {{ score }}%</span>
 
 				<div class="flex gap-1">
 					<DSBadge
@@ -58,7 +65,7 @@ defineProps<{
 						size="small"
 					/>
 
-					<span v-html="document.authors.join(', ')" />
+					<span v-html="authors" />
 				</div>
 
 				<div
@@ -70,7 +77,7 @@ defineProps<{
 						size="small"
 					/>
 
-					<span>{{ new Date(document.webPublishDate).toLocaleDateString() }}</span>
+					<span>{{ wenPublishDate }}</span>
 				</div>
 
 				<div
@@ -82,7 +89,7 @@ defineProps<{
 						size="small"
 					/>
 
-					<span v-html="document.keywords.join(', ')" />
+					<span v-html="keywords" />
 				</div>
 			</div>
 		</div>
