@@ -3,6 +3,7 @@ import { computed, reactive, ref, watch } from "vue";
 const notfoundIndex = -1;
 const deleteCount = 1;
 const defaultSmoothTime = 200;
+
 export function useSmoothEnabled(smoothTime = defaultSmoothTime) {
 	const enabled = ref(false);
 

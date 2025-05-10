@@ -104,7 +104,6 @@ bakedDocumentRepository.default = {
 		const quantityPerPage = 10;
 
 		const lastSend = await KeyDate.get("lastSendBakedDocument");
-		await KeyDate.set("lastSendBakedDocument");
 
 		for (let page = startPage; true; page++) {
 			const bakedDocuments = await mongo
@@ -131,6 +130,8 @@ bakedDocumentRepository.default = {
 					nodeNameRawDocument,
 				);
 			}
+
+			await KeyDate.set("lastSendBakedDocument");
 		}
 	},
 	findDOIFoundationResourcesInRawDocument(rawDocuments) {
