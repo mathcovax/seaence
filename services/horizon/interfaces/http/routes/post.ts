@@ -13,7 +13,7 @@ useMustBeConnectedBuilder()
 	.extract({
 		body: zod.object({
 			topic: zod.string(),
-			content: zod.string(),
+			content: zod.string().nullable(),
 			documentId: zod.string(),
 		}),
 	})
@@ -132,7 +132,7 @@ useBuilder()
 	.cut(
 		async({ pickup, dropper }) => {
 			const { document } = pickup(["document"]);
-			const details = await SchoolAPI.findDucomentPostsDetails(document.nodeSameRawDocumentId);
+			const details = await SchoolAPI.findDocumentPostsDetails(document.nodeSameRawDocumentId);
 
 			return match(details)
 				.with(
