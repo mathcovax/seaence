@@ -59,7 +59,9 @@
     "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
     "docker:marine-snow:mission:sendOneSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendOneSearchResult --",
 
-    "docker:rosetta": "docker compose up rosetta"
+    "docker:rosetta": "docker compose up rosetta",
+
+    "docker:botlle": "docker compose up bottle"
   },
   "workspaces": [
     ".npm-packages",
