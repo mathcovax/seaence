@@ -64,6 +64,7 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const onWatcherCleanup: typeof import('vue')['onWatcherCleanup']
+  const postCreatePage: typeof import('./src/domains/forum/router')['postCreatePage']
   const postDetailsPage: typeof import('./src/domains/forum/router')['postDetailsPage']
   const postListPage: typeof import('./src/domains/forum/router')['postListPage']
   const postPage: typeof import('./src/domains/forum/router')['postPage']
@@ -167,6 +168,7 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
+    readonly postCreatePage: UnwrapRef<typeof import('./src/domains/forum/router')['postCreatePage']>
     readonly postListPage: UnwrapRef<typeof import('./src/domains/forum/router')['postListPage']>
     readonly postPage: UnwrapRef<typeof import('./src/domains/forum/router')['postPage']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
