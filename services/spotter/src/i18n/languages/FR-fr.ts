@@ -46,12 +46,7 @@ export const FRfr = {
 			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
 			googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
 		},
-		[simpleSearchPage.name]: {
-			showFilters: "Afficher les filtres",
-			hideFilters: "Masquer les filtres",
-			foundResults: "{count} résultat(s) trouvé(s)",
-			noResults: "Aucun résultat trouvé",
-		},
+		[simpleSearchPage.name]: {},
 		[postPage.name]: {
 			backToPostList: "Retour à la liste des posts",
 			countResponse: "{count}/{totalCount} Réponse(s)",
@@ -148,52 +143,58 @@ export const FRfr = {
 			title: "Chargement...",
 		},
 	},
-	filters: {
-		label: {
-			articleType: "Type d'article",
-			publicationYear: "Année de publication",
-			gender: "Sexe",
+	search: {
+		filters: {
+			showFilters: "Afficher les filtres",
+			hideFilters: "Masquer les filtres",
+			label: {
+				articleType: "Type d'article",
+				publicationYear: "Année de publication",
+				gender: "Sexe",
+			},
+			apply: "Appliquer les filtres",
+			reset: "Réinitialiser les filtres",
 		},
-		apply: "Appliquer les filtres",
-		reset: "Réinitialiser les filtres",
-	},
-	scratch: {
-		tabs: {
-			comparator: "Comparateur",
-			operator: "Opérateur",
-		},
-		comparator: {
-			text: {
-				selectPlaceholder: "Sélectionner un champ",
-				inputPlaceholder: "Entrer une valeur",
-				label: "Comparaison textuelle",
-				fields: {
-					allField: "Tous les champs",
-					abstract: "Abstract",
-					title: "Titre",
-				} satisfies Record<TextFieldEnumValue, string>,
+		scratch: {
+			tabs: {
+				comparator: "Comparateur",
+				operator: "Opérateur",
 			},
-			year: {
-				selectPlaceholder: "Sélectionner un champ",
-				label: "Comparaison d'années",
-				fields: {
-					allDate: "Toutes Dates",
-					journalDate: "publication journal",
-					webDate: "publication web",
-				} satisfies Record<YearFieldEnumValue, string>,
+			comparator: {
+				text: {
+					selectPlaceholder: "Sélectionner un champ",
+					inputPlaceholder: "Entrer une valeur",
+					label: "Comparaison textuelle",
+					fields: {
+						allField: "Tous les champs",
+						abstract: "Abstract",
+						title: "Titre",
+					} satisfies Record<TextFieldEnumValue, string>,
+				},
+				year: {
+					selectPlaceholder: "Sélectionner un champ",
+					label: "Comparaison d'années",
+					fields: {
+						allDate: "Toutes Dates",
+						journalDate: "publication journal",
+						webDate: "publication web",
+					} satisfies Record<YearFieldEnumValue, string>,
+				},
 			},
-		},
-		operator: {
-			and: {
-				label: "ET",
-			},
-			or: {
-				label: "OU",
-			},
-			not: {
-				label: "NON",
+			operator: {
+				and: {
+					label: "ET",
+				},
+				or: {
+					label: "OU",
+				},
+				not: {
+					label: "NON",
+				},
 			},
 		},
+		foundResults: "{count} résultat(s) trouvé(s)",
+		noResult: "Aucun résultat trouvé",
 	},
 	formMessage: {
 		required: "Champ obligatoire.",

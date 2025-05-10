@@ -87,7 +87,7 @@ watch(
 					for="articleType"
 					class="text-sm font-medium"
 				>
-					{{ $t("filters.label.articleType") }}
+					{{ $t("search.filters.label.articleType") }}
 				</DSLabel>
 
 				<DSSelect
@@ -101,7 +101,7 @@ watch(
 
 			<div class="filter-group">
 				<DSLabel class="text-sm font-medium">
-					{{ $t("filters.label.publicationYear") }}
+					{{ $t("search.filters.label.publicationYear") }}
 				</DSLabel>
 
 				<DSRange
@@ -114,7 +114,7 @@ watch(
 
 			<div class="filter-group">
 				<DSLabel class="text-sm font-medium">
-					{{ $t("filters.label.gender") }}
+					{{ $t("search.filters.label.gender") }}
 				</DSLabel>
 
 				<div
@@ -143,14 +143,14 @@ watch(
 			</div>
 		</div>
 
-		<div class="flex items-center justify-between pt-3 border-t border-gray-200">
+		<div class="flex flex-col-reverse md:flex-row gap-2 md:items-center justify-between pt-3 border-t border-gray-200">
 			<DSButtonPrimary
 				@click="applyFilters"
 				:disabled="
 					!filters.articleType &&
 						filters.gender.length === 0"
 			>
-				{{ $t("filters.apply") }}
+				{{ $t("search.filters.apply") }}
 			</DSButtonPrimary>
 
 			<DSButtonOutline
@@ -159,7 +159,7 @@ watch(
 					!filters.articleType && filters.gender.length === 0
 				"
 			>
-				{{ $t("filters.reset") }}
+				{{ $t("search.filters.reset") }}
 			</DSButtonOutline>
 		</div>
 	</div>
