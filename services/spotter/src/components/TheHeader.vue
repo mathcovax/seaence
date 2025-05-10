@@ -39,8 +39,6 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 			</DSButtonPrimary>
 
 			<AccountDropdown v-else />
-
-			<MobileSidebar />
 		</div>
 	</header>
 </template>

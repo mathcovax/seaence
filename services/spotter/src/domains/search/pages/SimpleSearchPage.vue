@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSimpleSearchPage } from "../composables/useSimpleSearchPage";
-import type { BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { BakedDocumentLanguage, FiltersValues } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import SimpleSearchInput from "../components/SimpleSearchInput.vue";
 import SearchResultWrapper from "../components/SearchResultWrapper.vue";
 import SearchContainer from "../components/SearchContainer.vue";
@@ -17,7 +17,7 @@ const {
 
 const bakedDocumentLanguage = ref<BakedDocumentLanguage>(query.value.language);
 const term = ref(query.value.term);
-
+const filtersValues = ref<FiltersValues>({});
 const isResultExpanded = ref(!!term.value);
 
 function onSubmit() {
@@ -32,6 +32,7 @@ function onSubmit() {
 		language: bakedDocumentLanguage.value,
 		page: pageOfBakedDocumentSearchResult.value,
 		term: term.value,
+		filtersValues: filtersValues.value,
 	});
 
 	isResultExpanded.value = true;
@@ -45,6 +46,12 @@ onMounted(() => {
 	scrollToTop();
 });
 
+watch(
+	filtersValues,
+	() => void console.log(filtersValues.value),
+	{ deep: true },
+);
+
 </script>
 
 <template>
@@ -57,8 +64,9 @@ onMounted(() => {
 		<SearchContainer
 			:is-expanded="isResultExpanded"
 			:is-fetching="isFetching"
-			:has-result="!!result"
+			:result="result"
 			:total="result?.total"
+			v-model:filters-values="filtersValues"
 		>
 			<SimpleSearchInput
 				class="w-full mx-4 max-w-150"

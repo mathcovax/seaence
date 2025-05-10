@@ -98,6 +98,7 @@ declare global {
   const useLocalStorageItem: typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']
   const useModel: typeof import('vue')['useModel']
   const useProvide: typeof import('./vendors/design-system/composables/useProvide')['useProvide']
+  const useRefHasChange: typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useScroll: typeof import('./vendors/design-system/composables/useScroll')['useScroll']
@@ -204,6 +205,7 @@ declare module 'vue' {
     readonly useLocalStorageItem: UnwrapRef<typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
+    readonly useRefHasChange: UnwrapRef<typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useScroll: UnwrapRef<typeof import('./vendors/design-system/composables/useScroll')['useScroll']>

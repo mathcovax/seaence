@@ -22,24 +22,15 @@ const forwarded = useForwardPropsEmits(props, emits);
 
 function getKey(item: GenericItem) {
 	if (props.label) {
-		const value = props.label(item);
-
-		if (typeof value === "string" || typeof value === "number") {
-			return value;
-		}
+		return props.label(item);
 	}
-
 	return null;
 }
+
 function getLabel(item: GenericItem) {
 	if (props.label) {
-		const value = props.label(item);
-
-		if (typeof value === "string" || typeof value === "number") {
-			return value;
-		}
+		return props.label(item);
 	}
-
 	return item;
 }
 

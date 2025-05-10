@@ -1,80 +1,11 @@
 <script setup lang="ts">
-interface Props {
-	facets?: never[];
-}
+import type { Facet } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
-interface Filters {
-	articleType: string;
-	gender: string[];
-	publicationYear: {
-		from: number;
-		to: number;
-	};
+interface Props {
+	facets?: Facet[];
 }
 
 defineProps<Props>();
-
-const articleTypes = ["Article scientifique", "Étude clinique", "Revue", "Méta-analyse", "Rapport de cas"];
-const filtersYear = {
-	min: 1800,
-	max: 2025,
-};
-const genderOptions = [
-	{
-		id: "male",
-		label: "Homme",
-	},
-	{
-		id: "female",
-		label: "Femme",
-	},
-];
-const filters = ref<Filters>({
-	articleType: "",
-	gender: [],
-	publicationYear: {
-		from: filtersYear.min,
-		to: filtersYear.max,
-	},
-});
-
-const notFound = -1;
-const removeOne = 1;
-function toggleGender(id: string) {
-	const index = filters.value.gender.indexOf(id);
-	if (index === notFound) {
-		filters.value.gender.push(id);
-	} else {
-		filters.value.gender.splice(index, removeOne);
-	}
-}
-function applyFilters() {
-	const filtersApplied = {
-		articleType: filters.value.articleType,
-		gender: filters.value.gender,
-		publicationYear: filters.value.publicationYear,
-	};
-	console.log("Filters applied:", filtersApplied);
-}
-
-function resetFilters() {
-	filters.value = {
-		articleType: "",
-		gender: [],
-		publicationYear: {
-			from: filtersYear.min,
-			to: filtersYear.max,
-		},
-	};
-}
-
-watch(
-	() => filters.value,
-	(newFilters) => {
-		console.log("Filters updated:", newFilters);
-	},
-	{ deep: true },
-);
 </script>
 
 <template>

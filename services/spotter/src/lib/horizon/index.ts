@@ -11,10 +11,14 @@ const { sonnerError, sonnerMessage, sonnerWarning } = useSonner();
 const { enableLoader, disableLoader } = useLoader();
 const { accessToken } = useUserInformation();
 
+const defaultRequestTimeout = 5000;
+
 declare module "@duplojs/http-client" {
 	interface HttpClientRequestInit {
 		disabledLoader?: boolean;
 		loaderId?: string;
+		timeoutId?: number;
+		requestTimeout?: number | boolean;
 	}
 }
 
@@ -42,6 +46,22 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 				requestDefinition.paramsRequest.loaderId = enableLoader();
 			}
 
+			if (requestDefinition.paramsRequest.requestTimeout !== false) {
+				const requestTimeout = requestDefinition.paramsRequest.requestTimeout;
+
+				const controller = new AbortController();
+				requestDefinition.paramsRequest.timeoutId = setTimeout(
+					() => {
+						void controller.abort();
+					},
+					requestTimeout === true || !requestTimeout
+						? defaultRequestTimeout
+						: requestTimeout,
+				);
+
+				requestDefinition.paramsRequest.signal = controller.signal;
+			}
+
 			return requestDefinition;
 		},
 	)
@@ -50,6 +70,10 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 		(response) => {
 			if (response.requestDefinition.paramsRequest.loaderId) {
 				disableLoader(response.requestDefinition.paramsRequest.loaderId);
+			}
+
+			if (response.requestDefinition.paramsRequest.timeoutId) {
+				clearTimeout(response.requestDefinition.paramsRequest.timeoutId);
 			}
 
 			const sonnerMessageKey = `responses.${response.information}`;
@@ -69,6 +93,15 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 			return response;
 		},
 	);
+
+horizonClient.hooks.add({
+	type: "error",
+	callback(_error, requestDefinition) {
+		if (requestDefinition.paramsRequest.loaderId) {
+			disableLoader(requestDefinition.paramsRequest.loaderId);
+		}
+	},
+});
 
 // three checking bug auto import
 window.horizonClient = horizonClient;

@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import type { bakedDocumentSearchResult, Facet } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import DocumentResultRow from "./DocumentResultRow.vue";
-
-interface Result {
-	total: number;
-	quantityPerPage: number;
-	facets: Facet[];
-	searchResult: bakedDocumentSearchResult[];
-}
+import type { SearchResult } from "../composables/useSimpleSearchPage";
 
 interface Props {
-	result: Result | null;
+	result: SearchResult | null;
 	isFetching: boolean;
 	pageOfBakedDocumentSearchResult: number;
 }

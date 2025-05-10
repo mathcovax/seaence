@@ -1,5 +1,12 @@
 import type { SearchDetailsBody, SimpleSearchResultBody } from "@/lib/horizon/types/search";
-import type { bakedDocumentSearchResult, Facet } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { BakedDocumentSearchResult, Facet } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+
+export interface SearchResult {
+	total: number;
+	quantityPerPage: number;
+	facets: Facet[];
+	searchResult: BakedDocumentSearchResult[];
+}
 
 const smoothTimeEnabled = 400;
 
@@ -8,7 +15,7 @@ export function useSimpleSearchPage() {
 	const total = ref<number | null>(null);
 	const quantityPerPage = ref<number | null>(null);
 	const facets = ref<null | Facet[]>(null);
-	const bakedDocumentSearchResult = ref<bakedDocumentSearchResult[] | null>(null);
+	const bakedDocumentSearchResult = ref<BakedDocumentSearchResult[] | null>(null);
 
 	const defaultPage = 1;
 	const pageOfBakedDocumentSearchResult = ref(defaultPage);

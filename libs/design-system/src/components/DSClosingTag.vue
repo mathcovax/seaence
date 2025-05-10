@@ -11,7 +11,7 @@ const emit = defineEmits<{
 		<slot />
 
 		<DSIcon
-			class="hover:scale-110 transition"
+			class="transition"
 			name="close"
 			@click="emit('close')"
 		/>

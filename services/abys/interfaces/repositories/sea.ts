@@ -82,7 +82,7 @@ seaRepository.default = {
 					({ name }) => name,
 				),
 				title: restSimplifyObject.title,
-				summary,
+				summary: summary && `${summary}..`,
 				abstract: abstract
 					?? joinedAbstractDetails
 					?? null,

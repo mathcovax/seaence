@@ -105,6 +105,8 @@ bakedDocumentRepository.default = {
 
 		const lastSend = await KeyDate.get("lastSendBakedDocument");
 
+		const applyNewDate = KeyDate.set("lastSendBakedDocument");
+
 		for (let page = startPage; true; page++) {
 			const bakedDocuments = await mongo
 				.bakedDocumentCollection
@@ -131,7 +133,7 @@ bakedDocumentRepository.default = {
 				);
 			}
 
-			await KeyDate.set("lastSendBakedDocument");
+			await applyNewDate();
 		}
 	},
 	findDOIFoundationResourcesInRawDocument(rawDocuments) {

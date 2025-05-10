@@ -5,7 +5,7 @@ interface Document {
 	score: number;
 	bakedDocumentId: string;
 	title: string;
-	articleType: ArticleType[];
+	articleTypes: ArticleType[];
 	authors: string[];
 	webPublishDate: string | null;
 	journalPublishDate: string | null;
@@ -19,9 +19,11 @@ const props = defineProps<{
 
 const score = computed(() => Math.round(props.document.score));
 const authors = computed(() => props.document.authors.join(", "));
-const wenPublishDate = computed(() => props.document.webPublishDate
-	? new Date(props.document.webPublishDate).toLocaleDateString()
-	: "N/A");
+const wenPublishDate = computed(
+	() => props.document.webPublishDate
+		? new Date(props.document.webPublishDate).toLocaleDateString()
+		: "N/A",
+);
 const keywords = computed(() => props.document.keywords?.join(", "));
 </script>
 
@@ -29,16 +31,16 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 	<div class="flex items-start gap-4 p-6 border-b border-muted hover:bg-muted/5 transition-colors">
 		<div class="flex-1">
 			<div class="flex items-center gap-2 mb-1">
-				<span class="text-xs text-muted-foreground">Score: {{ score }}%</span>
+				<span class="text-xs text-muted-foreground shrink-0">Score: {{ score }}</span>
 
-				<div class="flex gap-1">
+				<div class="flex gap-1 flex-wrap">
 					<DSBadge
-						v-for="type in document.articleType"
-						:key="type"
+						v-for="articleType in document.articleTypes"
+						:key="articleType"
 						variant="outline"
 						class="text-xs"
 					>
-						{{ type }}
+						{{ $t(`articleType.${articleType}`) }}
 					</DSBadge>
 				</div>
 			</div>

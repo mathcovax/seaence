@@ -1,5 +1,11 @@
-import { createEnum, zod, type GetEnumValue } from "@vendors/clean";
+import { createEnum, type GetValueObject, zod, type GetEnumValue } from "@vendors/clean";
 import { articleTypeObjecter } from "./common/articleType";
+
+export const facetTypeEnum = createEnum([
+	"checkbox",
+	"multiSelect",
+	"range",
+]);
 
 export const genderFacetValueEnum = createEnum(["male", "female"]);
 
@@ -11,6 +17,7 @@ export const genderFacetValueObjecter = zod
 
 export const genderFacetObjecter = zod
 	.object({
+		type: zod.literal(facetTypeEnum.checkbox),
 		name: zod.literal("gender"),
 		values: zod.object({
 			value: genderFacetValueObjecter.zodSchema,
@@ -29,6 +36,7 @@ export const speciesFacetValueObjecter = zod
 
 export const speciesFacetObjecter = zod
 	.object({
+		type: zod.literal(facetTypeEnum.checkbox),
 		name: zod.literal("species"),
 		values: zod.object({
 			value: speciesFacetValueObjecter.zodSchema,
@@ -39,6 +47,7 @@ export const speciesFacetObjecter = zod
 
 export const articleTypeFacetObjecter = zod
 	.object({
+		type: zod.literal(facetTypeEnum.multiSelect),
 		name: zod.literal("articleType"),
 		values: zod.object({
 			value: articleTypeObjecter.zodSchema,
@@ -53,6 +62,7 @@ export const yearFacetValueObjecter = zod
 
 export const yearFacetObjecter = zod
 	.object({
+		type: zod.literal(facetTypeEnum.range),
 		name: zod.literal("year"),
 		values: zod.object({
 			value: yearFacetValueObjecter.zodSchema,
@@ -69,3 +79,6 @@ export const facetObjecter = zod
 		yearFacetObjecter.zodSchema,
 	])
 	.createValueObjecter("facet");
+
+export type Facet = GetValueObject<typeof facetObjecter>["value"];
+

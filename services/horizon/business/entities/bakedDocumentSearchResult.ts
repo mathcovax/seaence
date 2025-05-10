@@ -6,7 +6,7 @@ export const bakedDocumentSearchResultObjecter = zod
 		score: zod.number(),
 		bakedDocumentId: zod.string(),
 		title: zod.string(),
-		articleType: articleTypeObjecter.zodSchema.array(),
+		articleTypes: articleTypeObjecter.zodSchema.array(),
 		authors: zod.string().array(),
 		webPublishDate: zod.string().nullable(),
 		journalPublishDate: zod.string().nullable(),

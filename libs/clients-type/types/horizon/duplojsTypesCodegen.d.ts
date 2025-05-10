@@ -13,25 +13,41 @@ type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibl
 
 export { ArticleType };
 
+type FiltersValues = {
+    articleType?: ArticleType[] | undefined;
+    gender?: ("male" | "female")[] | undefined;
+    species?: ("human" | "otherAnimal")[] | undefined;
+    year?: {
+        from: number;
+        to: number;
+    } | undefined;
+};
+
+export { FiltersValues };
+
 type Facet = {
+    type: "multiSelect";
     name: "articleType";
     values: {
         value: ArticleType;
         quantity: number;
     }[];
 } | {
+    type: "checkbox";
     name: "gender";
     values: {
         value: "male" | "female";
         quantity: number;
     }[];
 } | {
+    type: "checkbox";
     name: "species";
     values: {
         value: "human" | "otherAnimal";
         quantity: number;
     }[];
 } | {
+    type: "range";
     name: "year";
     values: {
         value: number;
@@ -41,11 +57,11 @@ type Facet = {
 
 export { Facet };
 
-type bakedDocumentSearchResult = {
+type BakedDocumentSearchResult = {
     score: number;
     bakedDocumentId: string;
     title: string;
-    articleType: ArticleType[];
+    articleTypes: ArticleType[];
     authors: string[];
     webPublishDate: string | null;
     journalPublishDate: string | null;
@@ -53,7 +69,7 @@ type bakedDocumentSearchResult = {
     keywords: string[] | null;
 };
 
-export { bakedDocumentSearchResult };
+export { BakedDocumentSearchResult };
 
 type CodegenRoutes = ({
     method: "POST";
@@ -256,15 +272,7 @@ type CodegenRoutes = ({
     body: {
         language: BakedDocumentLanguage;
         term: string;
-        filtersValues?: {
-            articleType?: ArticleType[] | undefined;
-            gender?: ("male" | "female")[] | undefined;
-            species?: ("human" | "otherAnimal")[] | undefined;
-            year?: {
-                from: number;
-                to: number;
-            } | undefined;
-        } | undefined;
+        filtersValues?: FiltersValues | undefined;
     };
     response: {
         code: 200;
@@ -282,20 +290,12 @@ type CodegenRoutes = ({
         language: BakedDocumentLanguage;
         page: number;
         term: string;
-        filtersValues?: {
-            articleType?: ArticleType[] | undefined;
-            gender?: ("male" | "female")[] | undefined;
-            species?: ("human" | "otherAnimal")[] | undefined;
-            year?: {
-                from: number;
-                to: number;
-            } | undefined;
-        } | undefined;
+        filtersValues?: FiltersValues | undefined;
     };
     response: {
         code: 200;
         information: "simpleSearch.results";
-        body: bakedDocumentSearchResult[];
+        body: BakedDocumentSearchResult[];
     };
 });
 

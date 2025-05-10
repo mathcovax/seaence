@@ -4,6 +4,8 @@ import { SeaAPI } from "@interfaces/providers/sea";
 import { searchConfig } from "@interfaces/configs/search";
 import { endpointSimpleSearchResultSchema } from "../schemas/search/search";
 import { endpointSearchDetailsSchema } from "../schemas/search/facet";
+import { match } from "ts-pattern";
+import { type Facet } from "@business/entities/facets";
 
 useBuilder()
 	.createRoute("POST", "/search-details")
@@ -20,10 +22,49 @@ useBuilder()
 
 			const { body: results } = await SeaAPI.facets(body);
 
+			const facets = results.facets.map(
+				(facet) => match(facet)
+					.returnType<Facet>()
+					.with(
+						{ name: "articleType" },
+						(facet) => ({
+							type: "multiSelect",
+							...facet,
+						}),
+					)
+					.with(
+						{ name: "gender" },
+						(facet) => ({
+							type: "checkbox",
+							...facet,
+						}),
+					)
+					.with(
+						{ name: "species" },
+						(facet) => ({
+							type: "checkbox",
+							...facet,
+						}),
+					)
+					.with(
+						{ name: "year" },
+						(facet) => ({
+							type: "range",
+							...facet,
+						}),
+					)
+					.exhaustive(),
+			);
+
+			const total = results.total > searchConfig.maxPage
+				? searchConfig.maxPage
+				: results.total;
+
 			return new OkHttpResponse(
 				"facets.results",
 				{
-					...results,
+					total,
+					facets,
 					quantityPerPage: searchConfig.quantityPerPage,
 				},
 			);
