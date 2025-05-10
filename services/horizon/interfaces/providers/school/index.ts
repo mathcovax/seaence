@@ -13,7 +13,7 @@ interface User {
 
 interface InputCreatePost {
 	topic: string;
-	content: string;
+	content: string | null;
 	nodeSameRawDocumentId: string;
 	author: User;
 }
@@ -119,7 +119,7 @@ export class SchoolAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static findDucomentPostsDetails(nodeSameRawDocumentId: string) {
+	public static findDocumentPostsDetails(nodeSameRawDocumentId: string) {
 		return this.httpClient
 			.get(
 				"/documents/{nodeSameRawDocumentId}/postsDetails",

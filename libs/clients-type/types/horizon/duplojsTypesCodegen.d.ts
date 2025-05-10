@@ -71,7 +71,7 @@ type CodegenRoutes = ({
     path: "/create-post";
     body: {
         topic: string;
-        content: string;
+        content: string | null;
         documentId: string;
     };
     response: {

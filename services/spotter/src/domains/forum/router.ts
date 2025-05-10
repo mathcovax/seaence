@@ -24,3 +24,14 @@ export const postListPage = createPage(
 		},
 	},
 );
+
+export const postCreatePage = createPage(
+	"postCreate",
+	{
+		path: "/documents/:documentId/create-post",
+		component: () => import("./pages/PostCreatePage.vue"),
+		params: {
+			documentId: zod.string(),
+		},
+	},
+);

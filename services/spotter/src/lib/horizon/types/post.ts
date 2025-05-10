@@ -17,3 +17,15 @@ export type PostPage = FindHttpClientRouteResponse<
 	"information",
 	"postPage.found"
 >["body"];
+
+export type PostTopic = FindHttpClientRouteResponse<
+	FindHttpClientRoute<HorizonClientRoute, "POST", "/post-page">,
+	"information",
+	"postPage.found"
+>["body"]["post"]["topic"];
+
+export type PostContent = FindHttpClientRouteResponse<
+	FindHttpClientRoute<HorizonClientRoute, "POST", "/post-page">,
+	"information",
+	"postPage.found"
+>["body"]["post"]["content"];

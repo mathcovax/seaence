@@ -69,6 +69,41 @@ export const FRfr = {
 			responseCount: "{count} réponse(s)",
 			noPost: "Aucun post(s) trouvé pour ce document.",
 		},
+		[postCreatePage.name]: {
+			title: "Posez une question",
+			form: {
+				topic: {
+					label: {
+						value: "Titre",
+						infos: "(soyez clair et précis)",
+					},
+					placeholder: "Exemple : Comment interpréter les données du graphique page 5 ?",
+					writingHelp: `Résumez le problème de manière concise.
+					Soyez spécifique pour augmenter les chances d’obtenir une réponse utile.`,
+					errors: {
+						minLength: "Le titre doit faire au moins {value} caractères.",
+						maxLength: "Le titre doit faire au plus {value} caractères.",
+					},
+				},
+				content: {
+					label: "Détaillez votre question",
+					placeholder:
+						"Expliquez ce que vous essayez de comprendre, ce que vous avez tenté, "
+						+ "et sur quelle partie du document vous avez un doute.",
+					writingHelps: {
+						one: "Expliquez le contexte du document (ex : chapitre, thème, graphique concerné...)",
+						two: "Dites ce que vous avez compris ou tenté",
+						three: "Posez une seule question claire par post si possible",
+					},
+					errors: {
+						minLength: "Le contenu doit faire au moins {value} caractères.",
+						maxLength: "Le contenu doit faire au plus {value} caractères.",
+					},
+				},
+				submitBtn: "Publier ma question",
+			},
+
+		},
 	},
 	layout: {
 		base: {
@@ -167,6 +202,7 @@ export const FRfr = {
 	responses: {
 		user: {
 			logged: "Connexion réalisé avec succés.",
+			notfound: "Utilisateur introuvable.",
 		},
 		credential: {
 			invalid: "Identifiant google invalide.",
@@ -178,10 +214,11 @@ export const FRfr = {
 			notfound: "Document introuvable.",
 		},
 		post: {
+			created: "Post créé avec succés.",
 			notfound: "Post introuvable.",
 		},
 		answer: {
-			created: "réponse créer",
+			created: "Réponse créé avec succés.",
 		},
 		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur c'est produite.",
 	},
