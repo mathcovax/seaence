@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Comparator } from "@vendors/scratch-type";
+import type { Comparator } from "@vendors/types-advanced-query";
 import { getProvidedDragComparatorValue } from "../../provides/dragComparator";
 
 interface Props {

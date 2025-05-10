@@ -51,8 +51,6 @@ onUnmounted(() => {
 					{{ $t("cta.connection") }}
 				</RouterLink>
 			</DSButtonPrimary>
-
-			<MobileSidebar />
 		</div>
 	</header>
 </template>

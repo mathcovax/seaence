@@ -1,5 +1,5 @@
 {
-  "name": "@lib/scratch-type",
+  "name": "@lib/types-advanced-query",
   "dependencies": {
     "zod": "3.24.2"
   }

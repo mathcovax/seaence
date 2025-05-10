@@ -1,4 +1,6 @@
 import "@duplojs/types-codegen";
-import { articleTypeSchema } from "../schemas/document";
+import { articleTypeSchema, languageSchema } from "../schemas/common";
 
-articleTypeSchema._zttIdentifier = "articleType";
+articleTypeSchema._zttIdentifier = "ArticleType";
+
+languageSchema._zttIdentifier = "Language";

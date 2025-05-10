@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+
 import { type estypes } from "@elastic/elasticsearch";
 import { type ArticleType } from "../common/articleType";
 import { type Provider } from "../common/provider";
@@ -7,8 +7,7 @@ import { ElasticDocument } from ".";
 import { languageEnum } from "../common/language";
 
 export const elasticDocumentMappingSchema = {
-
-	abysBakedDocumentId: {
+	bakedDocumentId: {
 		type: "keyword",
 	},
 	title: {
@@ -23,47 +22,26 @@ export const elasticDocumentMappingSchema = {
 		type: "keyword",
 	},
 	authors: {
-		type: "nested",
-		properties: {
-			name: {
-				type: "text",
-				fields: {
-					keyword: {
-						type: "keyword",
-					},
-				},
-			},
-			affiliations: {
+		type: "text",
+		fields: {
+			keyword: {
 				type: "keyword",
 			},
 		},
+	},
+	summary: {
+		type: "text",
 	},
 	abstract: {
 		type: "text",
 	},
-	abstractDetails: {
-		type: "nested",
-		properties: {
-			name: {
-				type: "keyword",
-			},
-			content: {
-				type: "text",
-			},
-		},
-	},
 	providers: {
-		type: "nested",
-		properties: {
-			value: {
-				type: "keyword",
-			},
-		},
+		type: "keyword",
 	},
 	keywords: {
-		type: "nested",
-		properties: {
-			value: {
+		type: "text",
+		fields: {
+			keyword: {
 				type: "keyword",
 			},
 		},
@@ -102,44 +80,22 @@ export const elasticDocumentMappingSchema = {
 	},
 } satisfies Record<string, estypes.MappingProperty>;
 
-export const elasticDocumentSettingsSchema = {
-	analysis: {
-		analyzer: {
-			default: {
-				type: "standard",
-			},
-		},
-	},
-	index: {
-		number_of_shards: 3,
-		number_of_replicas: 1,
-	},
-} satisfies estypes.IndicesIndexSettings;
-
 export interface Document {
-	abysBakedDocumentId: string;
+	bakedDocumentId: string;
 	title: string;
 	articleTypes: ArticleType[];
-	authors: {
-		name: string;
-		affiliations: string[] | null;
-	}[];
+	authors: string[];
+	summary: string | null;
 	abstract: string | null;
-	abstractDetails: {
-		name: string;
-		content: string;
-	}[] | null;
-	providers: {
-		value: Provider;
-	}[];
-	keywords: { value: string }[];
-	webPublishDate: Date | null;
+	providers: Provider[];
+	keywords: string[];
+	webPublishDate: string | null;
 	webPublishSplitDate: {
 		year: number;
 		month: number | null;
 		day: number | null;
 	} | null;
-	journalPublishDate: Date | null;
+	journalPublishDate: string | null;
 	journalPublishSplitDate: {
 		year: number;
 		month: number | null;
@@ -147,7 +103,7 @@ export interface Document {
 	} | null;
 }
 
-type _Check1 = ExpectType<
+type _ExpectSameKeyof = ExpectType<
 	keyof Document,
 	keyof typeof elasticDocumentMappingSchema,
 	"strict"
@@ -155,14 +111,38 @@ type _Check1 = ExpectType<
 
 export const enUsDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["en-US"]}`,
-	"abysBakedDocumentId",
-	elasticDocumentSettingsSchema,
+	"bakedDocumentId",
+	{
+		analysis: {
+			analyzer: {
+				default: {
+					type: "english",
+				},
+			},
+		},
+		index: {
+			number_of_shards: 3,
+			number_of_replicas: 1,
+		},
+	},
 	elasticDocumentMappingSchema,
 );
 
 export const frFrDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["fr-FR"]}`,
-	"abysBakedDocumentId",
-	elasticDocumentSettingsSchema,
+	"bakedDocumentId",
+	{
+		analysis: {
+			analyzer: {
+				default: {
+					type: "french",
+				},
+			},
+		},
+		index: {
+			number_of_shards: 3,
+			number_of_replicas: 1,
+		},
+	},
 	elasticDocumentMappingSchema,
 );

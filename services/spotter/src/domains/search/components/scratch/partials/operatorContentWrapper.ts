@@ -1,7 +1,7 @@
 import { match } from "ts-pattern";
 import { comparatorWrapper } from "./comparatorWrapper";
 import { operatorWrapper } from "./operatorWrapper";
-import type { OperatorContent } from "@vendors/scratch-type";
+import type { OperatorContent } from "@vendors/types-advanced-query";
 
 export interface OperatorContentEvent {
 	onUpdate(value: OperatorContent): void;

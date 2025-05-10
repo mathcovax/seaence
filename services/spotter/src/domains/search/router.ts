@@ -1,8 +1,14 @@
+import { bakedDocumentLanguageSchema } from "@/lib/horizon/types/bakedDocument";
+
 export const simpleSearchPage = createPage(
 	"simpleSearch",
 	{
 		path: "/simple-search",
 		component: () => import("./pages/SimpleSearchPage.vue"),
+		query: {
+			term: zod.string().default(""),
+			language: bakedDocumentLanguageSchema.default("en-US"),
+		},
 	},
 );
 
