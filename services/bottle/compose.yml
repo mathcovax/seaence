@@ -6,6 +6,7 @@ services:
     command: npm -w services/bottle run duplo:dev
     depends_on:
       - bottle-mongo
+      - maildev
   bottle-mongo:
     extends:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}
@@ -18,8 +19,6 @@ services:
     ports:
       - 1080:1080
       - 1025:1025
-    depends_on:
-      - bottle
 
 volumes:
   bottle-mongo-data:
