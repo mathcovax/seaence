@@ -13,6 +13,17 @@ const database = client.db(envs.MONGO_DB);
 const notificationCollection = database.collection<MongoNotification>("notification");
 const userCollection = database.collection<MongoUser>("user");
 
+if (envs.DB_CONNECTION) {
+	await notificationCollection.createIndex(
+		{
+			expiresAt: 1,
+		},
+		{
+			expireAfterSeconds: 0,
+		},
+	);
+}
+
 export const mongo = {
 	client,
 	database,

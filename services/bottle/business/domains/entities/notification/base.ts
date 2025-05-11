@@ -7,10 +7,14 @@ export type NotificationId = GetValueObject<typeof notificationIdObjecter>;
 export const processedObjecter = zod.boolean().createValueObjecter("processed");
 export type Processed = GetValueObject<typeof processedObjecter>;
 
+export const expiresAtObjecter = zod.date().createValueObjecter("expiresAt");
+export type ExpiresAt = GetValueObject<typeof expiresAtObjecter>;
+
 export class BaseNotificationEntity extends EntityHandler.create({
 	id: notificationIdObjecter,
 	userId: userIdObjecter,
 	processed: processedObjecter,
+	expiresAt: expiresAtObjecter,
 }) {
 	public static create(
 		params: Omit<
