@@ -8,6 +8,7 @@ const {
 	createPost,
 	formErrors,
 	formInputs,
+	formInputRules,
 } = useCreatePostForm(
 	computed(() => params.value.documentId),
 	() => {
@@ -23,12 +24,7 @@ const {
 		</h1>
 
 		<form
-			@submit.prevent="
-				createPost({
-					topic: formInputs.topic,
-					content: formInputs.content,
-				})
-			"
+			@submit.prevent="createPost()"
 			class="space-y-6"
 		>
 			<div>
@@ -42,13 +38,11 @@ const {
 					</span>
 				</label>
 
-				<input
+				<DSInput
 					v-model="formInputs.topic"
 					type="text"
-					id="topic"
-					class="mt-1 block w-full p-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
 					:placeholder="$pt('form.topic.placeholder')"
-				>
+				/>
 
 				<p
 					v-if="formErrors.topic"
@@ -70,11 +64,10 @@ const {
 					{{ $pt("form.content.label") }}
 				</label>
 
-				<textarea
+				<DSTextarea
 					v-model="formInputs.content"
-					id="content"
-					rows="6"
-					class="mt-1 block w-full text-sm p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+					:min-length="formInputRules.content.minLength"
+					:max-length="formInputRules.content.maxLength"
 					:placeholder="$pt('form.content.placeholder')"
 				/>
 

@@ -1,5 +1,5 @@
 import { SchoolAPI } from "@interfaces/providers/school";
-import { endpointPostListPageSchema, endpointPostPageSchema, endpointPostSchema } from "../schemas/post";
+import { endpointCreatePostPage, endpointPostListPageSchema, endpointPostPageSchema, endpointPostSchema } from "../schemas/post";
 import { iWantDocumentExistById } from "../checkers/document";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { iWantPostExistById } from "../checkers/post";
@@ -13,7 +13,7 @@ useMustBeConnectedBuilder()
 	.extract({
 		body: zod.object({
 			topic: zod.string(),
-			content: zod.string().nullable(),
+			content: zod.string(),
 			documentId: zod.string(),
 		}),
 	})
@@ -26,7 +26,7 @@ useMustBeConnectedBuilder()
 			const { user, body, document } = pickup(["user", "body", "document"]);
 			const { topic, content } = body;
 
-			await SchoolAPI.createPost({
+			const createdPost = await SchoolAPI.createPost({
 				topic,
 				content,
 				nodeSameRawDocumentId: document.nodeSameRawDocumentId,
@@ -38,9 +38,10 @@ useMustBeConnectedBuilder()
 
 			return new CreatedHttpResponse(
 				"post.created",
+				createdPost.body,
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "post.created"),
+		makeResponseContract(CreatedHttpResponse, "post.created", endpointCreatePostPage),
 	);
 
 useBuilder()

@@ -11,7 +11,7 @@ import {
 	getPostTotalCountFromNodeSameRawDocumentIdUsecase,
 } from "@interfaces/usecase";
 import { intObjecter } from "@vendors/clean";
-import { endpointPostSchema, endpointPostsDetails } from "../schemas/post";
+import { endpointCreatePost, endpointPostSchema, endpointPostsDetails } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
 
 useBuilder()
@@ -82,7 +82,7 @@ useBuilder()
 		async(pickup) => {
 			const { topic, content, nodeSameRawDocumentId, author } = pickup("body");
 
-			await createPostUsecase.execute({
+			const createdPost = await createPostUsecase.execute({
 				topic,
 				content,
 				nodeSameRawDocumentId,
@@ -91,9 +91,12 @@ useBuilder()
 
 			return new CreatedHttpResponse(
 				"post.created",
+				{
+					id: createdPost.id.value,
+				},
 			);
 		},
-		makeResponseContract(CreatedHttpResponse, "post.created"),
+		makeResponseContract(CreatedHttpResponse, "post.created", endpointCreatePost),
 	);
 
 useBuilder()

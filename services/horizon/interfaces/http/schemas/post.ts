@@ -4,7 +4,7 @@ import { endpointUserSchema } from "./user";
 export const endpointPostSchema = zod.object({
 	id: zod.string(),
 	topic: zod.string(),
-	content: zod.string().nullable(),
+	content: zod.string(),
 	author: endpointUserSchema.pick({
 		id: true,
 		username: true,
@@ -31,4 +31,8 @@ export const endpointPostListPageSchema = zod.object({
 	}),
 	totalPostCount: zod.number(),
 	quantityPostPerPage: zod.number(),
+});
+
+export const endpointCreatePostPage = zod.object({
+	id: zod.string(),
 });

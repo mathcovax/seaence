@@ -19,7 +19,7 @@ export const entrypointDocumentSchema = zod
 			name: zod.string(),
 			affiliations: zod.string().array().nullable(),
 		}).array(),
-		abstract: zod.string().nullable(),
+		abstract: zod.string(),
 		abstractDetails: zod
 			.object({
 				name: zod.string(),

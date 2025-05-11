@@ -9,7 +9,7 @@ export const postPage = createPage(
 			postId: zod.string(),
 		},
 		query: {
-			language: documentLanguageSchema,
+			language: documentLanguageSchema.default("en-US"),
 		},
 	},
 );

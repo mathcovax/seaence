@@ -4,7 +4,7 @@ import { userObjecter } from "../common/user";
 export const postTopicObjecter = zod.string().createValueObjecter("postTopic");
 export type PostTopic = GetValueObject<typeof postTopicObjecter>;
 
-export const postContentObjecter = zod.string().nullable().createValueObjecter("postContent");
+export const postContentObjecter = zod.string().createValueObjecter("postContent");
 export type PostContent = GetValueObject<typeof postContentObjecter>;
 
 export const postIdObjecter = zod.string().createValueObjecter("postId");

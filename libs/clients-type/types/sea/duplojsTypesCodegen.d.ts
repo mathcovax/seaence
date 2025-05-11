@@ -20,7 +20,7 @@ type CodegenRoutes = ({
             name: string;
             affiliations: string[] | null;
         }[];
-        abstract: string | null;
+        abstract: string;
         abstractDetails: {
             name: string;
             content: string;
