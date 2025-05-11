@@ -30,8 +30,6 @@ const remainingChars = computed(() => {
 
 	return props.minLength - modelValue.value.length;
 });
-
-const isValid = computed(() => remainingChars.value && props.minLength && remainingChars.value > props.minLength);
 </script>
 
 <template>
@@ -47,9 +45,7 @@ const isValid = computed(() => remainingChars.value && props.minLength && remain
 
 		<span
 			v-if="remainingChars"
-			:class="cn('text-xs text-green-600', {
-				'text-red-600': !isValid,
-			})"
+			class="text-xs"
 		>
 			{{ remainingChars }}
 		</span>
