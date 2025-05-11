@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { router } from "@/router";
-import { useCreatePostForm } from "@/domains/forum/composables/useCreatePostForm";
+import { useCreatePost } from "@/domains/forum/composables/useCreatePost";
 const { $pt } = postCreatePage.use();
 const { params } = postCreatePage.use();
 
@@ -9,13 +9,12 @@ const {
 	formErrors,
 	formInputs,
 	formInputRules,
-} = useCreatePostForm(
+} = useCreatePost(
 	computed(() => params.value.documentId),
 	() => {
 		router.back();
 	},
 );
-
 </script>
 <template>
 	<section class="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-10">
@@ -66,7 +65,8 @@ const {
 
 				<DSTextarea
 					v-model="formInputs.content"
-					:min-length="formInputRules.content.minLength"
+					:maxlength="formInputRules.content.maxLength"
+					:minlength="formInputRules.content.minLength"
 					:placeholder="$pt('form.content.placeholder')"
 				/>
 

@@ -15,7 +15,7 @@ const formInputRules = {
 
 const errorFirstIndex = 0;
 
-export function useCreatePostForm(
+export function useCreatePost(
 	documentId: Ref<DocumentId>,
 	whenFindError: () => void,
 ) {
