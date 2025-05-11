@@ -181,8 +181,8 @@ type CodegenRoutes = ({
         };
     };
 }) | ({
-    method: "GET";
-    path: "/user";
+    method: "POST";
+    path: "/me";
     response: {
         code: 403;
         information: "accessToken.invalid";
@@ -193,7 +193,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "user.get";
+        information: "me.info.get";
         body: {
             id: string;
             username: string;

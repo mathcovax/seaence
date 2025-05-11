@@ -63,8 +63,7 @@ export const FRfr = {
 			personalInfo: {
 				title: "Informations personnelles",
 				label: {
-					lastName: "Nom",
-					firstName: "Prénom",
+					username: "Nom d'utilisateur",
 					email: "Email",
 				},
 			},

@@ -1,7 +1,7 @@
 import type { FindHttpClientRoute, FindHttpClientRouteResponse } from "@duplojs/http-client";
 
 export type User = FindHttpClientRouteResponse<
-	FindHttpClientRoute<HorizonClientRoute, "GET", "/user">,
+	FindHttpClientRoute<HorizonClientRoute, "POST", "/me">,
 	"information",
-	"user.get"
+	"me.info.get"
 >["body"];

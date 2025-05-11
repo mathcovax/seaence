@@ -20,9 +20,9 @@ export function useUserInformation() {
 
 	function fetchInformation() {
 		return window.horizonClient
-			.get("/user")
+			.post("/me")
 			.whenInformation(
-				"user.get",
+				"me.info.get",
 				({ body }) => {
 					user.value = body;
 				},

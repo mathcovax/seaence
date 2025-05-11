@@ -66,6 +66,7 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const onWatcherCleanup: typeof import('vue')['onWatcherCleanup']
+  const postCreatePage: typeof import('./src/domains/forum/router')['postCreatePage']
   const postListPage: typeof import('./src/domains/forum/router')['postListPage']
   const postPage: typeof import('./src/domains/forum/router')['postPage']
   const profilePage: typeof import('./src/domains/user/router')['profilePage']

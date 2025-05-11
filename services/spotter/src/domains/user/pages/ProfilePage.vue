@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { useUserInformation } from "../composables/useUserInformation";
+
 const { $pt } = profilePage.use();
+
+const { fetchInformation, user } = useUserInformation();
+
+onMounted(async() => {
+	await fetchInformation();
+});
 </script>
 
 <template>
@@ -11,28 +19,16 @@ const { $pt } = profilePage.use();
 				</h1>
 
 				<div class="grid gap-4">
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<div class="grid gap-2">
-							<DSLabel for="last-name">
-								{{ $pt("personalInfo.label.lastName") }}
-							</DSLabel>
+					<div class=" grid gap-2">
+						<DSLabel for="username">
+							{{ $pt("personalInfo.label.username") }}
+						</DSLabel>
 
-							<DSInput
-								id="last-name"
-								disabled
-							/>
-						</div>
-
-						<div class="grid gap-2">
-							<DSLabel for="first-name">
-								{{ $pt("personalInfo.label.firstName") }}
-							</DSLabel>
-
-							<DSInput
-								id="first-name"
-								disabled
-							/>
-						</div>
+						<DSInput
+							id="last-name"
+							:default-value="user?.username"
+							disabled
+						/>
 					</div>
 
 					<div class="grid gap-2">
@@ -43,6 +39,7 @@ const { $pt } = profilePage.use();
 						<DSInput
 							id="email"
 							type="email"
+							:default-value="user?.email"
 							disabled
 						/>
 					</div>
