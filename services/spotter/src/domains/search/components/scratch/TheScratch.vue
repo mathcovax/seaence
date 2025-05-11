@@ -5,6 +5,10 @@ import { operatorContentWrapper } from "./partials/operatorContentWrapper";
 import { initDragComparatorProvide } from "./provides/dragComparator";
 import { initCheckFieldsProvide } from "./provides/checkFields";
 
+const emit = defineEmits<{
+	submit: [];
+}>();
+
 const model = defineModel<OperatorContent | null>({ required: true });
 
 function getComponent() {
@@ -42,13 +46,23 @@ defineExpose({
 		).length;
 	},
 });
+
+function onSubmit() {
+	const isFieldsValid = !checkFields.value.filter(
+		(checkField) => !checkField(),
+	).length;
+
+	if (isFieldsValid) {
+		emit("submit");
+	}
+}
 </script>
 
 <template>
-	<div class="mb-6 p-4 bg-white border rounded-lg shadow-sm">
+	<div class="w-full mb-6 p-4 bg-white border rounded-lg shadow-sm">
 		<div class="pb-2 mb-4 flex items-center justify-between border-b border-slate-200">
 			<h3 class="text-lg font-medium text-primary">
-				{{ $t('scratch.title') }}
+				{{ $t('search.scratch.title') }}
 			</h3>
 		</div>
 
@@ -67,16 +81,18 @@ defineExpose({
 
 		<div
 			v-if="model"
-			class="mt-4 flex justify-end"
+			class="mt-4 flex items-center justify-between"
 		>
-			<div class="flex gap-2">
-				<DSButtonOutline
-					size="sm"
-					@click="model = null"
-				>
-					{{ $t('scratch.reset') }}
-				</DSButtonOutline>
-			</div>
+			<DSButtonOutline
+				size="sm"
+				@click="model = null"
+			>
+				{{ $t('search.scratch.reset') }}
+			</DSButtonOutline>
+
+			<DSButtonPrimary @click="onSubmit">
+				{{ $t("cta.search") }}
+			</DSButtonPrimary>
 		</div>
 	</div>
 </template>

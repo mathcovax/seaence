@@ -176,7 +176,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             topic: string;
-            content: string;
+            content: string | null;
             author: {
                 id: string;
                 username: string;
@@ -207,7 +207,7 @@ type CodegenRoutes = ({
             post: {
                 id: string;
                 topic: string;
-                content: string;
+                content: string | null;
                 author: {
                     id: string;
                     username: string;

@@ -178,6 +178,10 @@ export const FRfr = {
 			year: { label: "Année" },
 		} satisfies Record<Facet["name"], object>,
 		scratch: {
+			title: "Recherche avancée",
+			reset: "Réinitialiser",
+			hide: "Masquer le scratch",
+			show: "Afficher le scratch",
 			tabs: {
 				comparator: "Comparateur",
 				operator: "Opérateur",

@@ -17,6 +17,10 @@ export const advancedSearchPage = createPage(
 	{
 		path: "/advanced-search",
 		component: () => import("./pages/AdvancedSearchPage.vue"),
+		query: {
+			term: zod.string().default(""),
+			language: bakedDocumentLanguageSchema.default("en-US"),
+		},
 	},
 );
 

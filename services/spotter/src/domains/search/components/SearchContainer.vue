@@ -4,6 +4,7 @@ import type { SearchResult } from "../composables/useSimpleSearchPage";
 import TheFilters from "./filters/TheFilters.vue";
 
 interface Props {
+	searchMode: "simple" | "advanced";
 	isExpanded: boolean;
 	isFetching: boolean;
 	result: SearchResult | null;
@@ -33,11 +34,15 @@ function commitFiltersValues() {
 	<div
 		class="relative transition-all duration-1500 ease-in-out"
 		:class="{
-			'mt-[calc(25vh)] md:mt-[calc(35vh)]': !isExpanded,
+			'mt-[calc(25vh)] md:mt-[calc(35vh)]': !isExpanded && searchMode === 'simple',
+			'mt-[calc(5vh)] md:mt-[calc(10vh)]': !isExpanded && searchMode === 'advanced',
 			'sticky top-24 z-10 bg-white rounded-md shadow-md': isExpanded
 		}"
 	>
-		<div class="w-full p-4 flex flex-col justify-center gap-8 items-center">
+		<div
+			class="w-full p-4 flex flex-col justify-center items-center"
+			:class="{ 'gap-8': searchMode === 'simple' }"
+		>
 			<slot />
 
 			<div
@@ -50,6 +55,8 @@ function commitFiltersValues() {
 					<span>{{ isFiltersVisible ? $t("search.filters.hideFilters") : $t("search.filters.showFilters") }}</span>
 				</DSButtonOutline>
 
+				<slot name="scratchToggle" />
+
 				<span class="text-sm text-right text-gray-500 flex items-center">{{ $t("search.foundResults", { count: total ?? "" }) }}</span>
 			</div>
 		</div>
@@ -60,7 +67,7 @@ function commitFiltersValues() {
 		>
 			<div
 				class="max-h-0 overflow-hidden transition-all duration-500 px-4 bg-white rounded-md"
-				:class="{'!max-h-200 shadow-md py-4': isFiltersVisible}"
+				:class="{ '!max-h-200 shadow-md py-4': isFiltersVisible }"
 			>
 				<TheFilters
 					:facets="result.facets"

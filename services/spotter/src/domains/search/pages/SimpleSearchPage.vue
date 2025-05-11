@@ -48,13 +48,6 @@ if (term.value) {
 onMounted(() => {
 	scrollToTop();
 });
-
-watch(
-	filtersValues,
-	() => void console.log(filtersValues.value),
-	{ deep: true },
-);
-
 </script>
 
 <template>
@@ -65,6 +58,7 @@ watch(
 		/>
 
 		<SearchContainer
+			search-mode="simple"
 			:is-expanded="isResultExpanded"
 			:is-fetching="isFetching"
 			:result="result"

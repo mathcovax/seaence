@@ -1,14 +1,23 @@
 <script setup lang="ts">
+import { useSimpleSearchPage } from "../composables/useSimpleSearchPage";
 import type { OperatorContent } from "@vendors/types-advanced-query";
+import type { BakedDocumentLanguage, FiltersValues } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import SearchResultWrapper from "../components/SearchResultWrapper.vue";
 import TheScratch from "../components/scratch/TheScratch.vue";
-import DocumentResultRow from "../components/DocumentResultRow.vue";
-import { computed, ref } from "vue";
+import SearchContainer from "../components/SearchContainer.vue";
 
-const { $pt } = advancedSearchPage.use();
+const router = useRouter();
+const { query } = advancedSearchPage.use();
+const { scrollToTop } = useScroll();
+const {
+	search,
+	setPage,
+	result,
+	pageOfBakedDocumentSearchResult,
+	isFetching,
+} = useSimpleSearchPage();
 
-const isResultExpanded = ref(false);
-
-const content = ref<OperatorContent | null>({
+const scratchContent = ref<OperatorContent | null>({
 	type: "operator",
 	name: "and",
 	content: [
@@ -20,143 +29,111 @@ const content = ref<OperatorContent | null>({
 		},
 	],
 });
+const bakedDocumentLanguage = ref<BakedDocumentLanguage>(query.value.language);
+const term = ref(query.value.term);
+const isScratchExpanded = ref(true);
+const isScratchContentVisible = ref(true);
+const filtersValues = ref<FiltersValues>({});
+const isResultExpanded = ref(!!term.value);
 
-const scratchRef = ref<InstanceType<typeof TheScratch> | null>();
-
-const config = {
-	year: 2024,
-	month: 12,
-	day: 28,
-};
-
-const startIndex = 1;
-const documents = Array.from({ length: 180 }, (_unused, index) => ({
-	score: Math.random(),
-	bakedDocumentId: `doc-${index + startIndex}`,
-	title: `Scientific Research Paper ${index + startIndex}`,
-	articleType: [],
-	authors: [
-		"<strong>Albert Einstein</strong>",
-		"Marie Curie",
-		"Isaac Newton",
-	],
-	webPublishDate:
-		new Date(
-			config.year,
-			Math.floor(Math.random() * config.month),
-			Math.floor(Math.random() * config.day),
-		).toISOString(),
-	journalPublishDate:
-		new Date(
-			config.year,
-			Math.floor(Math.random() * config.month),
-			Math.floor(Math.random() * config.day),
-		).toISOString(),
-	summary: `
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor <strong>incididunt</strong> ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    `,
-	keywords: ["physics", "<strong>quantum mechanics</strong>", "relativity", "particle physics"],
-}));
-// End mock data
-
-const START_PAGE = 1;
-const PAGE_OFFSET = 1;
-const currentPage = ref(START_PAGE);
-const productPerPage = 12;
-
-const paginatedDocuments = computed(() => {
-	const start = (currentPage.value - PAGE_OFFSET) * productPerPage;
-	const end = start + productPerPage;
-	return documents.slice(start, end);
-});
-
-function handleSubmit() {
-	scratchRef.value!.checkFields();
-
-	if (scratchRef.value!.checkFields()) {
-		isResultExpanded.value = true;
+function toggleScratch() {
+	isScratchExpanded.value = !isScratchExpanded.value;
+	if (!isScratchExpanded.value) {
+		isScratchContentVisible.value = false;
+	} else {
+		isScratchContentVisible.value = true;
 	}
 }
 
-function handlePageChange(page: number) {
-	currentPage.value = page;
-	window.scrollTo({ top: 0 });
+function onSubmit() {
+	console.log("onSubmit", scratchContent.value);
+	isResultExpanded.value = true;
+
+	void router.push(
+		advancedSearchPage.createTo({
+			query: {
+				term: term.value,
+				language: bakedDocumentLanguage.value,
+			},
+		}),
+	);
+
+	void search({
+		language: bakedDocumentLanguage.value,
+		page: pageOfBakedDocumentSearchResult.value,
+		term: term.value,
+		filtersValues: filtersValues.value,
+	});
+
+	isResultExpanded.value = true;
 }
 
-watch(
-	content,
-	(value) => void console.log(value),
-	{ deep: true },
-);
+if (term.value) {
+	onSubmit();
+}
+
+onMounted(() => {
+	scrollToTop();
+});
 </script>
 
 <template>
-	<section class="min-h-[calc(100vh-6rem-2rem)] flex flex-col justify-between">
+	<section class="relative min-h-screen-nh flex flex-col items-stretch">
 		<div
-			class="min-h-32 transition-all duration-1500 ease-in-out overflow-hidden"
-			:class="{
-				'flex-1': !isResultExpanded,
-				'sticky top-28 z-10': isResultExpanded
-			}"
+			v-if="isFetching"
+			class="w-full h-full absolute top-0 left-0 z-20"
+		/>
+
+		<SearchContainer
+			search-mode="advanced"
+			:is-expanded="isResultExpanded"
+			:is-fetching="isFetching"
+			:result="result"
+			:total="result?.total"
+			v-model:filters-values="filtersValues"
+			@commit-filters-values="onSubmit"
 		>
-			<template v-if="!isResultExpanded">
-				<TheScratch
-					ref="scratchRef"
-					v-model="content"
-				/>
-
-				<DSButtonPrimary @click="handleSubmit">
-					{{ $pt("scratch.checkFields") }}
-				</DSButtonPrimary>
-			</template>
-
-			<DSButtonPrimary
-				v-else
-				@click="isResultExpanded = !isResultExpanded"
-			>
-				{{ $pt("scratch.hideResults") }}
-			</DSButtonPrimary>
-		</div>
-
-		<div
-			v-if="documents && documents.length > 0"
-			class="h-full -mb-4 bg-background rounded-t-md shadow-md transition-all duration-1500 ease-in-out overflow-hidden"
-			:class="isResultExpanded ? 'max-h-[3236px]' : 'max-h-0'"
-		>
-			<DSPagination
-				:total="documents.length"
-				:current-page="currentPage"
-				:quantity-per-page="productPerPage"
-				@update="handlePageChange"
-			/>
-
-			<div class="w-full max-w-5xl mx-auto">
-				<DocumentResultRow
-					v-for="(document, index) in paginatedDocuments"
-					:key="index"
-					:document="document"
-				/>
+			<div class="w-full space-y-4">
+				<transition
+					enter-active-class="transition duration-500 ease-out"
+					enter-from-class="transform -translate-y-4 opacity-0"
+					enter-to-class="transform translate-y-0 opacity-100"
+					leave-active-class="transition duration-300 ease-in"
+					leave-from-class="transform translate-y-0 opacity-100"
+					leave-to-class="transform -translate-y-4 opacity-0"
+				>
+					<div
+						v-show="isScratchExpanded"
+						class="overflow-hidden"
+					>
+						<TheScratch
+							v-if="isScratchContentVisible"
+							:term="term"
+							:language="bakedDocumentLanguage"
+							v-model="scratchContent"
+							@submit="onSubmit"
+						/>
+					</div>
+				</transition>
 			</div>
 
-			<DSPagination
-				:total="documents.length"
-				:current-page="currentPage"
-				:quantity-per-page="productPerPage"
-				@update="handlePageChange"
-			/>
-		</div>
+			<template #scratchToggle>
+				<DSButtonOutline
+					v-if="isResultExpanded"
+					@click="toggleScratch"
+				>
+					{{ isScratchExpanded ? $t("search.scratch.hide") : $t("search.scratch.show") }}
+				</DSButtonOutline>
+			</template>
+		</SearchContainer>
 
-		<div
-			v-else
-			class="grow flex items-center justify-center"
-		>
-			<p class="text-2xl text-gray-500">
-				{{ $pt("noResults") }}
-			</p>
-		</div>
+		<SearchResultWrapper
+			:result="result"
+			:is-fetching="isFetching"
+			:page-of-baked-document-search-result="pageOfBakedDocumentSearchResult"
+			@update-page="setPage"
+		/>
 
-		<DSSea />
+		<DSSea :speed="isFetching" />
 	</section>
 </template>

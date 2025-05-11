@@ -32,7 +32,7 @@ const scratchRef = ref<InstanceType<typeof TheScratch> | null>();
 		/>
 
 		<DSButtonPrimary @click="scratchRef!.checkFields()">
-			{{ $t("scratch.checkFields") }}
+			{{ $t("search.scratch.checkFields") }}
 		</DSButtonPrimary>
 	</section>
 </template>

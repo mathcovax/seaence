@@ -12,7 +12,7 @@ const items = [
 <template>
 	<DSSelect
 		:items="items"
-		:label="item => $t(`scratch.operator.${item}.label`)"
+		:label="item => $t(`search.scratch.operator.${item}.label`)"
 		v-model="model"
 		placeholder=""
 	/>
