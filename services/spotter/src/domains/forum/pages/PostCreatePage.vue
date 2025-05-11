@@ -67,7 +67,6 @@ const {
 				<DSTextarea
 					v-model="formInputs.content"
 					:min-length="formInputRules.content.minLength"
-					:max-length="formInputRules.content.maxLength"
 					:placeholder="$pt('form.content.placeholder')"
 				/>
 

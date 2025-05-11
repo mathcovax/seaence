@@ -9,7 +9,6 @@ const props = defineProps<{
 	modelValue?: string;
 	placeholder?: string;
 	minLength?: number;
-	maxLength?: number;
 }>();
 
 const emits = defineEmits<(e: "update:modelValue", payload: string | number) => void>();
