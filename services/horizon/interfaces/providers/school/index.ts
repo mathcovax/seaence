@@ -13,7 +13,7 @@ interface User {
 
 interface InputCreatePost {
 	topic: string;
-	content: string | null;
+	content: string;
 	nodeSameRawDocumentId: string;
 	author: User;
 }
