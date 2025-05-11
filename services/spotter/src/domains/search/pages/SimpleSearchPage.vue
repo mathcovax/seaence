@@ -5,7 +5,8 @@ import SimpleSearchInput from "../components/SimpleSearchInput.vue";
 import SearchResultWrapper from "../components/SearchResultWrapper.vue";
 import SearchContainer from "../components/SearchContainer.vue";
 
-const { $pt, goTo, query } = simpleSearchPage.use();
+const router = useRouter();
+const { $pt, query } = simpleSearchPage.use();
 const { scrollToTop } = useScroll();
 const {
 	search,
@@ -21,12 +22,14 @@ const filtersValues = ref<FiltersValues>({});
 const isResultExpanded = ref(!!term.value);
 
 function onSubmit() {
-	void goTo({
-		query: {
-			term: term.value,
-			language: bakedDocumentLanguage.value,
-		},
-	});
+	void router.push(
+		simpleSearchPage.createTo({
+			query: {
+				term: term.value,
+				language: bakedDocumentLanguage.value,
+			},
+		}),
+	);
 
 	void search({
 		language: bakedDocumentLanguage.value,

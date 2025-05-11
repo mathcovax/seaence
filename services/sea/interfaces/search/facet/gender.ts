@@ -113,13 +113,14 @@ export function buildGenderFilter(
 	if (genderFilterValues) {
 		return [
 			{
+				__id: "genderFilter",
 				terms: {
 					"keywords.keyword": genderFilterValues.flatMap(
 						(gender) => languageToGenderFacetValue[language][gender],
 					),
 				},
 			},
-		] satisfies estypes.QueryDslQueryContainer[];
+		] satisfies (estypes.QueryDslQueryContainer & { __id: "genderFilter" })[];
 	} else {
 		return [];
 	}

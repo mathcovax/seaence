@@ -7,6 +7,7 @@ import { buildSpeciesAggregation, speciesAggregationResultsToFacet, type Species
 import { elastic } from "@interfaces/providers/elastic";
 import { match, P } from "ts-pattern";
 import { buildSimpleSearchQuery } from "../simple";
+import { removeElasticRequestFields } from "@interfaces/utils/removeElasticRequestFields";
 
 interface FacetResponse {
 	hits: {
@@ -48,17 +49,28 @@ export type Facets = (
 	| SpeciesFacet
 )[];
 
+export type BuildedQuery =
+	| ReturnType<typeof buildSimpleSearchQuery>;
+
 export type AggregationsResults =
-	& YearAggregationsResults
 	& GenderAggregationsResults
 	& ArticleTypeAggregationsResults
-	& SpeciesAggregationsResults;
+	& SpeciesAggregationsResults
+	& {
+		globalView:
+			& YearAggregationsResults;
+	};
 
-export function buildFacetsAggregations(language: Language) {
+export function buildFacetsAggregations(language: Language, query: BuildedQuery) {
 	return {
 		articleTypeResult: buildArticleTypeAggregation(),
 		genderResult: buildGenderAggregation(language),
-		...buildYearAggregation(),
+		globalView: {
+			global: {},
+			aggregations: {
+				...buildYearAggregation(query),
+			} satisfies Record<keyof AggregationsResults["globalView"], estypes.AggregationsAggregationContainer>,
+		},
 		speciesResult: buildSpeciesAggregation(language),
 	} satisfies Record<keyof AggregationsResults, estypes.AggregationsAggregationContainer>;
 }
@@ -67,13 +79,20 @@ export function aggregationsResultsToFacetWrapper(
 	language: Language,
 	{
 		articleTypeResult,
-		journalPublishYearResult,
-		webPublishYearResult,
+		globalView: {
+			journalPublishYearResult,
+			webPublishYearResult,
+		},
 		genderResult,
 		speciesResult,
 	}: AggregationsResults,
 ): Facets {
-	const facets: Facets = [yearAggregationsResultsToFacet(journalPublishYearResult, webPublishYearResult)];
+	const facets: Facets = [
+		yearAggregationsResultsToFacet({
+			webPublishYearResult,
+			journalPublishYearResult,
+		}),
+	];
 
 	const articleTypeFacet = articleTypeAggregationsResultsToFacet(articleTypeResult);
 
@@ -138,17 +157,22 @@ export function findFacets(
 		.with(
 			P.string,
 			(term) => buildSimpleSearchQuery({
-				language,
 				term,
+				language,
 				filtersValues,
 			}),
 		)
 		.exhaustive();
 
+	const aggregations = buildFacetsAggregations(language, query);
+
+	removeElasticRequestFields(query);
+	removeElasticRequestFields(aggregations);
+
 	return elasticIndex.find<FacetResponse>({
 		size: 0,
 		_source: false,
 		query,
-		aggregations: buildFacetsAggregations(language),
+		aggregations,
 	});
 }

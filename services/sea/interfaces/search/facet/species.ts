@@ -113,13 +113,14 @@ export function buildSpeciesFilter(
 	if (speciesFilterValues) {
 		return [
 			{
+				__id: "speciesFilter",
 				terms: {
 					"keywords.keyword": speciesFilterValues.flatMap(
 						(species) => languageToSpeciesFacetValue[language][species],
 					),
 				},
 			},
-		] satisfies estypes.QueryDslQueryContainer[];
+		] satisfies (estypes.QueryDslQueryContainer & { __id: "speciesFilter" })[];
 	} else {
 		return [];
 	}

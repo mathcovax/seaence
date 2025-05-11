@@ -50,11 +50,12 @@ export function buildArticleTypeFilter(
 	if (articleTypeFilterValues) {
 		return [
 			{
+				__id: "articleTypeFilter",
 				terms: {
 					articleTypes: articleTypeFilterValues,
 				},
 			},
-		] satisfies estypes.QueryDslQueryContainer[];
+		] satisfies (estypes.QueryDslQueryContainer & { __id: "articleTypeFilter" })[];
 	} else {
 		return [];
 	}

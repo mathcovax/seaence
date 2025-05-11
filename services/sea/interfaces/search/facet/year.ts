@@ -1,19 +1,44 @@
 import { type estypes } from "@elastic/elasticsearch";
-import { type Facet, type AggregationResult, type FacetValue } from ".";
+import { type Facet, type AggregationResult, type FacetValue, type BuildedQuery } from ".";
+import { match } from "ts-pattern";
 
 export interface YearAggregationsResults {
-	journalPublishYearResult: AggregationResult<number>;
+	journalPublishYearResult: {
+		journalPublishYearFilteredResult: AggregationResult<number>;
+	};
 	webPublishYearResult: {
 		webPublishYearFilteredResult: AggregationResult<number>;
 	};
 }
 
-export function buildYearAggregation() {
+export function buildYearAggregation(query: BuildedQuery) {
+	const bool = match(query)
+		.returnType<estypes.QueryDslBoolQuery>()
+		.with(
+			{ __id: "simpleSearchQuery" },
+			(query) => ({
+				...query.bool,
+				must: query.bool.must
+					? query.bool.must.filter(
+						(value) => value.__id !== "yearFilter",
+					)
+					: undefined,
+			}),
+		)
+		.exhaustive();
+
 	return {
 		journalPublishYearResult: {
-			terms: {
-				field: "journalPublishSplitDate.year",
+			filter: {
+				bool,
 			},
+			aggregations: {
+				journalPublishYearFilteredResult: {
+					terms: {
+						field: "journalPublishSplitDate.year",
+					},
+				},
+			} satisfies Record<keyof YearAggregationsResults["journalPublishYearResult"], estypes.AggregationsAggregationContainer>,
 		},
 		webPublishYearResult: {
 			filter: {
@@ -23,6 +48,7 @@ export function buildYearAggregation() {
 							field: "journalPublishSplitDate",
 						},
 					},
+					...bool,
 				},
 			},
 			aggregations: {
@@ -42,13 +68,15 @@ export type YearFacet = Facet<
 >;
 
 export function yearAggregationsResultsToFacet(
-	journalPublishYearResult: YearAggregationsResults["journalPublishYearResult"],
-	webPublishYearResult: YearAggregationsResults["webPublishYearResult"],
+	{
+		journalPublishYearResult,
+		webPublishYearResult,
+	}: YearAggregationsResults,
 ): YearFacet {
 	return {
 		name: "year",
 		values: [
-			...journalPublishYearResult.buckets.map(
+			...journalPublishYearResult.journalPublishYearFilteredResult.buckets.map(
 				({ key, doc_count }) => {
 					const webPublishYear = webPublishYearResult.webPublishYearFilteredResult
 						.buckets.find(
@@ -68,6 +96,7 @@ export function yearAggregationsResultsToFacet(
 			...webPublishYearResult.webPublishYearFilteredResult.buckets.flatMap(
 				({ key, doc_count }) => {
 					const journalPublishYear = journalPublishYearResult
+						.journalPublishYearFilteredResult
 						.buckets.find(
 							({ key: journalPublishKey }) => journalPublishKey === key,
 						);
@@ -99,6 +128,7 @@ export function buildYearFilter(
 	if (yearFilterValues) {
 		return [
 			{
+				__id: "yearFilter",
 				bool: {
 					should: [
 						{
@@ -131,7 +161,7 @@ export function buildYearFilter(
 				},
 
 			},
-		] satisfies estypes.QueryDslQueryContainer[];
+		] satisfies (estypes.QueryDslQueryContainer & { __id: "yearFilter" })[];
 	} else {
 		return [];
 	}

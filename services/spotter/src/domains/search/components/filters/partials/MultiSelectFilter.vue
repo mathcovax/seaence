@@ -6,7 +6,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
+const { t } = useI18n();
 const modelValue = defineModel<GenericFacet["values"][number]["value"][]>(
 	{ required: true },
 );
@@ -30,6 +30,12 @@ const multiSelectValue = computed<GenericFacet["values"]>({
 	},
 });
 
+function label(item: GenericFacet["values"][number]) {
+	const label = t(`search.facet.${props.facet.name}.valueLabel.${item.value}`);
+
+	return `${label} ${item.quantity}`;
+}
+
 </script>
 
 <template>
@@ -40,10 +46,10 @@ const multiSelectValue = computed<GenericFacet["values"]>({
 
 		<DSMultiComboBox
 			:items="facet.values"
-			:label="(item) => `${item.value} ${item.quantity}`"
+			:label="label"
 			:value="(item) => item.value"
-			:placeholder="$t('filter.multiSelect.placeholder')"
-			:empty-label="$t('filter.multiSelect.emptyLabel')"
+			:placeholder="$t(`search.filters.multiSelect.${facet.name}.placeholder`)"
+			:empty-label="$t(`search.filters.multiSelect.${facet.name}.emptyLabel`)"
 			v-model="multiSelectValue"
 		/>
 	</div>

@@ -1,10 +1,10 @@
 import { elastic } from "@interfaces/providers/elastic";
-import { type ArticleType } from "@interfaces/providers/elastic/common/articleType";
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { match } from "ts-pattern";
 import { buildFilters, type FiltersValues } from "./facet";
 import { type estypes } from "@elastic/elasticsearch";
 import { type Document } from "@interfaces/providers/elastic/indexes/document";
+import { removeElasticRequestFields } from "@interfaces/utils/removeElasticRequestFields";
 
 export interface SimpleSearchParams {
 	language: Language;
@@ -56,6 +56,7 @@ export function buildSimpleSearchQuery(
 	}: BuildSimpleSearchQueryParams,
 ) {
 	return {
+		__id: "simpleSearchQuery",
 		bool: {
 			should: [
 				{
@@ -72,7 +73,7 @@ export function buildSimpleSearchQuery(
 			],
 			...(filtersValues && buildFilters(language, filtersValues)),
 		},
-	} satisfies estypes.QueryDslQueryContainer;
+	} satisfies estypes.QueryDslQueryContainer & { __id: "simpleSearchQuery" };
 }
 
 export function simpleSearch(
@@ -89,16 +90,20 @@ export function simpleSearch(
 		.with("en-US", () => elastic.enUsDocument)
 		.exhaustive();
 
+	const query = buildSimpleSearchQuery({
+		term,
+		filtersValues,
+		language,
+	});
+
+	removeElasticRequestFields(query);
+
 	return elasticIndex.find<SimpleSearchResponse>({
 		from: page * quantityPerPage,
 		size: quantityPerPage,
 		track_total_hits: false,
 		_source: ["bakedDocumentId", "title", "summary", "authors", "articleTypes", "webPublishDate", "journalPublishDate"],
-		query: buildSimpleSearchQuery({
-			term,
-			filtersValues,
-			language,
-		}),
+		query,
 		highlight: {
 			pre_tags: ["<strong class=\"matching-result\">"],
 			post_tags: ["</strong>"],

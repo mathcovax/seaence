@@ -159,11 +159,22 @@ export const FRfr = {
 			},
 			apply: "Appliquer les filtres",
 			reset: "Réinitialiser les filtres",
+			multiSelect: {
+				articleType: {
+					placeholder: "Selectionez un type d'article",
+					emptyLabel: "Type d'article non touvez",
+				},
+			},
 		},
 		facet: {
 			gender: { label: "Genre" },
 			species: { label: "Espèce" },
-			articleType: { label: "Type d'article" },
+			articleType: {
+				label: "Type d'article",
+				get valueLabel() {
+					return FRfr.articleType;
+				},
+			},
 			year: { label: "Année" },
 		} satisfies Record<Facet["name"], object>,
 		scratch: {
