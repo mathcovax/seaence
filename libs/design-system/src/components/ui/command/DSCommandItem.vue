@@ -51,7 +51,7 @@ onMounted(() => {
 	}
 
 	// textValue to perform filter
-	allItems.value.set(id, currentElement.value.textContent ?? (props.value?.toString() ?? ""));
+	allItems.value.set(id, currentElement.value.textContent ?? (JSON.stringify(props.value) ?? ""));
 
 	const groupId = groupContext?.id;
 	if (groupId) {

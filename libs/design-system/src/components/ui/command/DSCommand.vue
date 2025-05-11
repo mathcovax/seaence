@@ -7,14 +7,19 @@ import {
 	useForwardPropsEmits,
 } from "reka-ui";
 import { cn } from "../../../lib/utils";
-import { computed, type HTMLAttributes, reactive, ref, watch } from "vue";
+import { computed, type HTMLAttributes, reactive, ref, toRef, watch } from "vue";
 import { provideCommandContext } from ".";
 
-const props = withDefaults(defineProps<ListboxRootProps & { class?: HTMLAttributes["class"] }>(), {
+const props = withDefaults(defineProps<ListboxRootProps & {
+	class?: HTMLAttributes["class"];
+	searchTerm: string;
+}>(), {
 	modelValue: "",
 });
 
-const emits = defineEmits<ListboxRootEmits>();
+const emits = defineEmits<ListboxRootEmits & {
+	"update:searchTerm": [value: string];
+}>();
 
 const delegatedProps = computed(() => {
 	const { class: _class, ...delegated } = props;
@@ -42,6 +47,18 @@ const filterState = reactive({
 		groups: new Set() as Set<string>,
 	},
 });
+
+watch(
+	() => props.searchTerm,
+	() => {
+		filterState.search = props.searchTerm;
+	},
+);
+
+watch(
+	() => filterState.search,
+	() => void emits("update:searchTerm", filterState.search),
+);
 
 function filterItems() {
 	if (!filterState.search) {

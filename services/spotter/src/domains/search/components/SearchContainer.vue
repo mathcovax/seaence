@@ -20,11 +20,12 @@ const filtersValues = defineModel<FiltersValues>(
 );
 
 const emit = defineEmits<{
-	commitFiltersValue: [];
+	commitFiltersValues: [];
 }>();
 
 function commitFiltersValues() {
-	emit("commitFiltersValue");
+	isFiltersVisible.value = false;
+	emit("commitFiltersValues");
 }
 </script>
 
@@ -64,7 +65,7 @@ function commitFiltersValues() {
 				<TheFilters
 					:facets="result.facets"
 					v-model:filters-values="filtersValues"
-					@commit-filters-value="commitFiltersValues"
+					@commit-filters-values="commitFiltersValues"
 				/>
 			</div>
 		</div>

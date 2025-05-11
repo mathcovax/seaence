@@ -67,6 +67,7 @@ watch(
 			:result="result"
 			:total="result?.total"
 			v-model:filters-values="filtersValues"
+			@commit-filters-values="onSubmit"
 		>
 			<SimpleSearchInput
 				class="w-full mx-4 max-w-150"

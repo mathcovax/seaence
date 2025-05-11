@@ -15,7 +15,11 @@ export function checkboxWrapper(
 					facet,
 					modelValue: ref.value[facet.name] ?? [],
 					"onUpdate:modelValue": (value) => {
-						ref.value[facet.name] = value;
+						if (value.length) {
+							ref.value[facet.name] = value;
+						} else {
+							ref.value[facet.name] = undefined;
+						}
 					},
 				},
 			),
@@ -28,7 +32,11 @@ export function checkboxWrapper(
 					facet,
 					modelValue: ref.value[facet.name] ?? [],
 					"onUpdate:modelValue": (value) => {
-						ref.value[facet.name] = value;
+						if (value.length) {
+							ref.value[facet.name] = value;
+						} else {
+							ref.value[facet.name] = undefined;
+						}
 					},
 				},
 			),

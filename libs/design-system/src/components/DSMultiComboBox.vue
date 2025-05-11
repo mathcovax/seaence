@@ -1,5 +1,5 @@
-<script setup lang="ts" generic="GenericItem extends object">
-import { ref, defineModel } from "vue";
+<script setup lang="ts" generic="GenericItem extends AcceptableValue">
+import { ref, defineModel, watch } from "vue";
 import DSPopover from "./ui/popover/DSPopover.vue";
 import DSPopoverTrigger from "./ui/popover/DSPopoverTrigger.vue";
 import DSPopoverContent from "./ui/popover/DSPopoverContent.vue";
@@ -12,10 +12,12 @@ import DSCommandEmpty from "./ui/command/DSCommandEmpty.vue";
 import DSCommandList from "./ui/command/DSCommandList.vue";
 import DSCommandGroup from "./ui/command/DSCommandGroup.vue";
 import DSCommandItem from "./ui/command/DSCommandItem.vue";
+import { type AcceptableValue } from "reka-ui";
 
 interface Props {
 	items: GenericItem[];
 	label?(item: GenericItem): string;
+	value?(item: GenericItem): AcceptableValue;
 	placeholder: string;
 	emptyLabel: string;
 	class?: string;
@@ -35,8 +37,6 @@ const searchTerm = defineModel<string>(
 const open = ref(false);
 
 function removeTag(removedItem: GenericItem) {
-	console.log(removedItem);
-
 	modelValue.value = modelValue.value.filter((item) => item !== removedItem);
 }
 
@@ -62,12 +62,18 @@ function getLabel(item: GenericItem) {
 	return item;
 }
 
+function getValue(item: GenericItem) {
+	if (props.value) {
+		return props.value(item);
+	}
+	return item;
+}
 </script>
 
 <template>
 	<DSPopover v-model:open="open">
 		<DSPopoverTrigger as-child>
-			<DSButton
+			<div
 				variant="outline"
 				role="combobox"
 				:aria-expanded="open"
@@ -84,27 +90,27 @@ function getLabel(item: GenericItem) {
 					</DSClosingTag>
 				</div>
 
-				<DSIcon name="plus" />
-			</DSButton>
+				<DSButton>
+					<DSIcon name="plus" />
+				</DSButton>
+			</div>
 		</DSPopoverTrigger>
 
 		<DSPopoverContent class="p-0">
-			<DSCommand
-				v-model="searchTerm"
-			>
+			<DSCommand v-model:search-term="searchTerm">
 				<DSCommandInput
 					class="h-9"
 					:placeholder="placeholder"
 				/>
 
-				<DSCommandEmpty>{{ emptyLabel }}</DSCommandEmpty>
-
 				<DSCommandList>
+					<DSCommandEmpty>{{ emptyLabel }}</DSCommandEmpty>
+
 					<DSCommandGroup>
 						<DSCommandItem
 							v-for="(item, index) in items"
 							:key="getKey(item) ?? index"
-							:value="item"
+							:value="getValue(item)"
 							@select="onSelect(item)"
 						>
 							{{ getLabel(item) }}

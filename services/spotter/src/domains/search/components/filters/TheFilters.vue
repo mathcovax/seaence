@@ -9,7 +9,7 @@ interface Props {
 defineProps<Props>();
 
 const emit = defineEmits<{
-	commitFiltersValue: [];
+	commitFiltersValues: [];
 }>();
 
 const filtersValues = defineModel<FiltersValues>(
@@ -31,7 +31,7 @@ function getComponent(facet: Facet) {
 
 function commitFiltersValues() {
 	resetChangeFiltersValues();
-	emit("commitFiltersValue");
+	emit("commitFiltersValues");
 }
 
 function resetFiltersValues() {
