@@ -82,10 +82,11 @@ export function useCreatePostForm(
 			)
 			.whenInformation(
 				"post.created",
-				async({ body }) => {
+				({ body }) => {
 					formErrors.topic = "";
 					formErrors.content = "";
-					await router.push(
+
+					void router.push(
 						postPage.createTo({
 							params: {
 								postId: body.id,
