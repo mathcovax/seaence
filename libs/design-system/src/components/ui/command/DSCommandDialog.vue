@@ -28,7 +28,7 @@ const forwarded = useForwardPropsEmits(props, emits);
 		</DSDialogHeader>
 
 		<DSDialogContent class="overflow-hidden p-0 ">
-			<Command>
+			<Command :search-term="''">
 				<slot />
 			</Command>
 		</DSDialogContent>

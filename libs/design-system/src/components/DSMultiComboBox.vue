@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="GenericItem extends AcceptableValue">
-import { ref, defineModel, watch } from "vue";
+import { type AcceptableValue } from "reka-ui";
+import { ref, defineModel } from "vue";
 import DSPopover from "./ui/popover/DSPopover.vue";
 import DSPopoverTrigger from "./ui/popover/DSPopoverTrigger.vue";
 import DSPopoverContent from "./ui/popover/DSPopoverContent.vue";
@@ -12,7 +13,6 @@ import DSCommandEmpty from "./ui/command/DSCommandEmpty.vue";
 import DSCommandList from "./ui/command/DSCommandList.vue";
 import DSCommandGroup from "./ui/command/DSCommandGroup.vue";
 import DSCommandItem from "./ui/command/DSCommandItem.vue";
-import { type AcceptableValue } from "reka-ui";
 
 interface Props {
 	items: GenericItem[];
@@ -74,29 +74,50 @@ function getValue(item: GenericItem) {
 	<DSPopover v-model:open="open">
 		<DSPopoverTrigger as-child>
 			<div
-				variant="outline"
 				role="combobox"
 				:aria-expanded="open"
-				:class="`${props.class} !px-2 !py-0 flex gap-2`"
+				:class="[
+					'h-12 px-3 py-2 flex gap-2 items-center bg-white border rounded-lg',
+					props.class,
+					open ? 'ring-2 ring-primary' : '',
+				]"
 			>
-				<div class="w-full justify-start flex overflow-y-hidden overflow-x-auto gap-2 py-2">
-					<DSClosingTag
-						v-for="(item, index) of modelValue"
-						:key="getKey(item) ?? index"
-						@close="removeTag(item)"
-						@click="$event.stopPropagation()"
-					>
-						{{ getLabel(item) }}
-					</DSClosingTag>
+				<div
+					class="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide"
+				>
+					<template v-if="modelValue.length">
+						<DSClosingTag
+							v-for="(item, index) of modelValue"
+							:key="getKey(item) ?? index"
+							@close="removeTag(item)"
+							@click="$event.stopPropagation()"
+							class="px-1 py-0.5 text-xs text-primary bg-primary/20"
+						>
+							{{ getLabel(item) }}
+						</DSClosingTag>
+					</template>
+
+					<template v-else>
+						<span class="text-sm text-neutral-400 select-none">{{ placeholder }}</span>
+					</template>
 				</div>
 
-				<DSButton>
-					<DSIcon name="plus" />
+				<span class="h-6 w-px bg-neutral-100 mx-1" />
+
+				<DSButton
+					variant="ghost"
+					size="icon"
+					class="rounded-full cursor-pointer hover:bg-primary/10"
+				>
+					<DSIcon
+						name="plus"
+						class="text-primary"
+					/>
 				</DSButton>
 			</div>
 		</DSPopoverTrigger>
 
-		<DSPopoverContent class="p-0">
+		<DSPopoverContent class="w-full max-w-xs p-0">
 			<DSCommand v-model:search-term="searchTerm">
 				<DSCommandInput
 					class="h-9"
@@ -123,7 +144,11 @@ function getValue(item: GenericItem) {
 </template>
 
 <style scoped>
-::-webkit-scrollbar {
-	height: 0px;
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 </style>

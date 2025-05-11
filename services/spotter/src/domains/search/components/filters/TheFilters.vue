@@ -44,11 +44,13 @@ function resetFiltersValues() {
 	<div
 		class="bg-gray-50 rounded-lg p-4 border border-gray-100 shadow-inner"
 	>
-		<component
-			v-for="facet of facets"
-			:key="facet.name"
-			:is="getComponent(facet)"
-		/>
+		<div class="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+			<component
+				v-for="facet of facets"
+				:key="facet.name"
+				:is="getComponent(facet)"
+			/>
+		</div>
 
 		<div class="flex flex-col-reverse md:flex-row gap-2 md:items-center justify-between pt-3 border-t border-gray-200">
 			<DSButtonPrimary

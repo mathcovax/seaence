@@ -55,7 +55,7 @@ watch(
 </script>
 
 <template>
-	<section class="flex flex-col items-stretch min-h-screen relative">
+	<section class="relative min-h-screen-nh flex flex-col items-stretch">
 		<div
 			v-if="isFetching"
 			class="w-full h-full absolute top-0 left-0 z-20"

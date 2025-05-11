@@ -7,11 +7,13 @@ const emit = defineEmits<{
 </script>
 
 <template>
-	<div class="flex gap-2 items-center bg-whiteless pl-3 pr-2 rounded-sm">
-		<slot />
+	<div class="pl-3 pr-2 flex gap-2 items-center whitespace-nowrap bg-whiteless rounded-sm">
+		<div class="truncate">
+			<slot />
+		</div>
 
 		<DSIcon
-			class="transition"
+			class="cursor-pointer transition"
 			name="close"
 			@click="emit('close')"
 		/>

@@ -33,8 +33,10 @@ const multiSelectValue = computed<GenericFacet["values"]>({
 </script>
 
 <template>
-	<div>
-		{{ $t(`search.facet.${facet.name}.label`) }}
+	<div class="flex flex-col gap-2">
+		<DSLabel class="text-sm font-medium">
+			{{ $t(`search.facet.${facet.name}.label`) }}
+		</DSLabel>
 
 		<DSMultiComboBox
 			:items="facet.values"

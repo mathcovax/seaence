@@ -2,7 +2,7 @@
 </script>
 
 <template>
-	<div class="w-full h-[100vh] flex flex-col items-stretch overflow-auto">
+	<div class="w-full min-h-screen-nh flex flex-col items-stretch overflow-auto">
 		<TheHeader class="shrink-0" />
 
 		<main class="container grow">

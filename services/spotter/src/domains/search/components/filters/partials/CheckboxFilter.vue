@@ -33,20 +33,24 @@ function toggleValue(selectedValue: GenericFacet["values"][number]["value"]) {
 <template>
 	<div
 		v-if="facet.values.length"
-		class="select-none"
+		class="flex flex-col gap-2 select-none"
 	>
-		{{ $t(`search.facet.${facet.name}.label`) }}
+		<DSLabel class="text-sm font-medium">
+			{{ $t(`search.facet.${facet.name}.label`) }}
+		</DSLabel>
+
 		<div>
 			<div
 				v-for="{value, quantity} of facet.values"
 				:key="value"
 				@click="toggleValue(value)"
+				class="flex gap-2 items-center"
 			>
 				<DSCheckbox
 					:model-value="modelValue.includes(value)"
 				/>
 				{{ value }}
-				{{ quantity }}
+				({{ quantity }})
 			</div>
 		</div>
 	</div>

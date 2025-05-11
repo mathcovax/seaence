@@ -7,7 +7,7 @@ import {
 	useForwardPropsEmits,
 } from "reka-ui";
 import { cn } from "../../../lib/utils";
-import { computed, type HTMLAttributes, reactive, ref, toRef, watch } from "vue";
+import { computed, type HTMLAttributes, reactive, ref, watch } from "vue";
 import { provideCommandContext } from ".";
 
 const props = withDefaults(defineProps<ListboxRootProps & {
