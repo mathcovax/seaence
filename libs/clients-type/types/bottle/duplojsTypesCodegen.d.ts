@@ -7,7 +7,7 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/send-registration-email";
+    path: "/create-register-notification";
     body: {
         userId: string;
         userEmail: string;

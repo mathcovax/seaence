@@ -6,14 +6,14 @@ export type BottleClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-type InputRegisterNotification = FindHttpClientRoute<BottleClientRoute, "POST", "/send-registration-email">["body"];
+type InputRegisterNotification = FindHttpClientRoute<BottleClientRoute, "POST", "/create-register-notification">["body"];
 
 export class BottleAPI {
 	private static httpClient: HttpClient<BottleClientRoute>;
 
-	public static sendRegisterNotification(input: InputRegisterNotification) {
+	public static createRegisterNotification(input: InputRegisterNotification) {
 		return this.httpClient.post(
-			"/send-registration-email",
+			"/create-register-notification",
 			{
 				body: input,
 			},

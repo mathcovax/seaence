@@ -6,7 +6,7 @@ import { mongo } from "@interfaces/providers/mongo";
 import { EmailProvider } from "@interfaces/providers/email";
 import { notificationRepository } from "@business/applications/repositories/notification";
 import { notificationIdObjecter } from "@business/domains/entities/notification/base";
-import { InscriptionNotificationEntity } from "@business/domains/entities/notification/email";
+import { RegisterNotificationEntity } from "@business/domains/entities/notification/register";
 
 notificationRepository.default = {
 	generateNotificationId() {
@@ -29,7 +29,7 @@ notificationRepository.default = {
 
 		return notification;
 	},
-	async sendNotificationToEmail(notification) {
+	async sendNotification(notification) {
 		const simpleNotification = notification.toSimpleObject();
 
 		const user = await mongo.userCollection.findOne(
@@ -49,11 +49,11 @@ notificationRepository.default = {
 
 		await match({ notification })
 			.with(
-				{ notification: P.instanceOf(InscriptionNotificationEntity) },
+				{ notification: P.instanceOf(RegisterNotificationEntity) },
 				async() => {
 					await EmailProvider.send({
 						to: user.email,
-						subject: "Inscription",
+						subject: "Register",
 						// TODO: add template
 						content: "",
 						from: envs.NO_REPLY_EMAIL,

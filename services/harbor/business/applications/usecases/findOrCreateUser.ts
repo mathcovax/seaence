@@ -1,7 +1,7 @@
 import { UsecaseHandler } from "@vendors/clean";
 import { userRepository } from "../repositories/user";
 import { UserEntity, type UserEmail } from "@business/domains/entities/user";
-import { SendInscriptionNotificationUsecase } from "./sendInscriptionNotification";
+import { CreateRegisterNotificationUsecase } from "./createRegisterNotification";
 
 interface Input {
 	email: UserEmail;
@@ -9,7 +9,7 @@ interface Input {
 
 export class FindOrCreateUserUsecase extends UsecaseHandler.create({
 	userRepository,
-	sendInscriptionNotification: SendInscriptionNotificationUsecase,
+	createRegisterNotification: CreateRegisterNotificationUsecase,
 }) {
 	public async execute({ email }: Input) {
 		let user = await this.userRepository.findOneByEmail(email);
@@ -21,7 +21,7 @@ export class FindOrCreateUserUsecase extends UsecaseHandler.create({
 					email,
 				}),
 			);
-			await this.sendInscriptionNotification({ user });
+			await this.createRegisterNotification({ user });
 		}
 
 		return user;

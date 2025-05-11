@@ -61,7 +61,7 @@
 
     "docker:rosetta": "docker compose up rosetta",
 
-    "docker:botlle": "docker compose up bottle"
+    "docker:bottle": "docker compose up bottle"
   },
   "workspaces": [
     ".npm-packages",

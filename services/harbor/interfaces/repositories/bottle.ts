@@ -4,11 +4,11 @@ import { RepositoryError } from "@vendors/clean";
 
 bottleRepository.default = {
 	save() {
-		throw new RepositoryError("Unsupport methods");
+		throw new RepositoryError("Unsupported methods");
 	},
-	async sendInscriptionNotification(user) {
+	async createRegisterNotification(user) {
 		const { id, email, username } = user.toSimpleObject();
-		return BottleAPI.sendRegisterNotification({
+		return BottleAPI.createRegisterNotification({
 			userId: id,
 			userEmail: email,
 			username,

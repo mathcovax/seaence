@@ -6,10 +6,10 @@ interface Input {
 	user: UserEntity;
 }
 
-export class SendInscriptionNotificationUsecase extends UsecaseHandler.create({
+export class CreateRegisterNotificationUsecase extends UsecaseHandler.create({
 	bottleRepository,
 }) {
 	public async execute({ user }: Input) {
-		return this.bottleRepository.sendInscriptionNotification(user);
+		return this.bottleRepository.createRegisterNotification(user);
 	}
 }

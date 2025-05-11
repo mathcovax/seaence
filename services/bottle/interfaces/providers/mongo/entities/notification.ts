@@ -1,7 +1,7 @@
-import { type InscriptionNotificationEntity } from "@business/domains/entities/notification/email";
+import { type RegisterNotificationEntity } from "@business/domains/entities/notification/register";
 import { type EntityToSimpleObject } from "@vendors/clean";
 
-export interface MongoInscriptionNotification extends EntityToSimpleObject<typeof InscriptionNotificationEntity> {}
+export interface MongoRegisterNotification extends EntityToSimpleObject<typeof RegisterNotificationEntity> {}
 
 export type MongoNotification =
-	| MongoInscriptionNotification;
+	| MongoRegisterNotification;

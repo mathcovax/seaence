@@ -2,14 +2,14 @@ import { UsecaseHandler } from "@vendors/clean";
 import { notificationRepository } from "../repositories/notification";
 import { userRepository } from "../repositories/user";
 import { UserEntity, type UserEmail, type UserId, type Username } from "@business/domains/entities/user";
-import { InscriptionNotificationEntity } from "@business/domains/entities/notification/email";
+import { RegisterNotificationEntity } from "@business/domains/entities/notification/register";
 
 interface Input {
 	userId: UserId;
 	username: Username;
 	userEmail: UserEmail;
 }
-export class CreateAndSendInscriptionUsecase extends UsecaseHandler.create({
+export class CreateAndSendRegisterUsecase extends UsecaseHandler.create({
 	notificationRepository,
 	userRepository,
 }) {
@@ -21,16 +21,19 @@ export class CreateAndSendInscriptionUsecase extends UsecaseHandler.create({
 			username,
 			email: userEmail,
 		});
-		await this.userRepository.save(user);
 
-		const inscriptionNotification = InscriptionNotificationEntity.create({
+		const registerNotification = RegisterNotificationEntity.create({
 			id: this.notificationRepository.generateNotificationId(),
 			userId,
 		});
-		await this.notificationRepository.save(inscriptionNotification);
 
-		await this.notificationRepository.sendNotificationToEmail(inscriptionNotification);
+		await Promise.all([
+			this.userRepository.save(user),
+			this.notificationRepository.save(registerNotification),
+		]);
 
-		await this.notificationRepository.save(inscriptionNotification.process());
+		await this.notificationRepository.sendNotification(registerNotification);
+
+		await this.notificationRepository.save(registerNotification.process());
 	}
 }

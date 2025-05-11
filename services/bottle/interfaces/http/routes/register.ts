@@ -1,8 +1,8 @@
 import { userEmailObjecter, userIdObjecter, usernameObjecter } from "@business/domains/entities/user";
-import { createAndSendInscriptionUsecase } from "@interfaces/usecases";
+import { createAndSendRegisterUsecase } from "@interfaces/usecases";
 
 useBuilder()
-	.createRoute("POST", "/send-registration-email")
+	.createRoute("POST", "/create-register-notification")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -14,7 +14,7 @@ useBuilder()
 		async(pickup) => {
 			const { userId, userEmail, username } = pickup("body");
 
-			await createAndSendInscriptionUsecase.execute({
+			await createAndSendRegisterUsecase.execute({
 				userId,
 				userEmail,
 				username,
