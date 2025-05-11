@@ -24,6 +24,11 @@ const wenPublishDate = computed(
 		? new Date(props.document.webPublishDate).toLocaleDateString()
 		: "N/A",
 );
+const journalPublishDate = computed(
+	() => props.document.journalPublishDate
+		? new Date(props.document.journalPublishDate).toLocaleDateString()
+		: "N/A",
+);
 const keywords = computed(() => props.document.keywords?.join(", "));
 </script>
 
@@ -76,6 +81,18 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 				>
 					<DSIcon
 						name="calendar"
+						size="small"
+					/>
+
+					<span>{{ journalPublishDate }}</span>
+				</div>
+
+				<div
+					v-if="document.webPublishDate"
+					class="flex items-center gap-1"
+				>
+					<DSIcon
+						name="web"
 						size="small"
 					/>
 

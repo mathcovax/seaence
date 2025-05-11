@@ -14,6 +14,7 @@ import {
 	mdiStar,
 	mdiMessageText,
 	mdiMagnify,
+	mdiWeb,
 } from "@mdi/js";
 import { computed } from "vue";
 
@@ -31,6 +32,7 @@ const iconsMapper = {
 	star: mdiStar,
 	messageText: mdiMessageText,
 	magnify: mdiMagnify,
+	web: mdiWeb,
 };
 
 const sizeMapper = {
