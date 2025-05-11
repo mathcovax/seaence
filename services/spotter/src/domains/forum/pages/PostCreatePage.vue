@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { router } from "@/router";
 import { useCreatePost } from "@/domains/forum/composables/useCreatePost";
 const { $pt } = postCreatePage.use();
 const { params } = postCreatePage.use();
@@ -11,9 +10,6 @@ const {
 	formInputRules,
 } = useCreatePost(
 	computed(() => params.value.documentId),
-	() => {
-		router.back();
-	},
 );
 </script>
 <template>

@@ -17,7 +17,6 @@ const errorFirstIndex = 0;
 
 export function useCreatePost(
 	documentId: Ref<DocumentId>,
-	whenFindError: () => void,
 ) {
 	const { t } = useI18n();
 	const router = useRouter();
@@ -95,9 +94,6 @@ export function useCreatePost(
 						}),
 					);
 				},
-			)
-			.whenRequestError(
-				whenFindError,
 			);
 	}
 
