@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { cn } from "../../../lib/utils";
 import { useVModel } from "@vueuse/core";
 
@@ -18,6 +18,19 @@ const modelValue = useVModel(props, "modelValue", emits, {
 	passive: true,
 	defaultValue: props.defaultValue,
 });
+
+const remainingChars = computed(() => {
+	if (
+		!props.minLength
+		|| !modelValue.value
+		|| modelValue.value.length > props.minLength
+
+	) {
+		return undefined;
+	}
+
+	return props.minLength - modelValue.value.length;
+});
 </script>
 
 <template>
@@ -32,12 +45,12 @@ const modelValue = useVModel(props, "modelValue", emits, {
 		/>
 
 		<span
-			:class="cn('text-xs text-right text-green-600', {
+			v-if="remainingChars"
+			:class="cn('text-xs text-green-600', {
 				'text-red-600': props.minLength && (modelValue?.length ?? 0) < props.minLength,
 			})"
 		>
-			Nombre de caractères restants :
-			{{ props.minLength && (modelValue?.length ?? 0) < props.minLength ? props.minLength - (modelValue?.length ?? 0) : 0 }}
+			{{ remainingChars }}
 		</span>
 	</div>
 </template>
