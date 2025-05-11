@@ -22,7 +22,7 @@ type CodegenRoutes = ({
             id: string;
             nodeSameRawDocumentId: string;
             topic: string;
-            content: string | null;
+            content: string;
             author: {
                 id: string;
                 username: string;
@@ -49,7 +49,7 @@ type CodegenRoutes = ({
     path: "/posts";
     body: {
         topic: string;
-        content: string | null;
+        content: string;
         nodeSameRawDocumentId: string;
         author: {
             id: string;
@@ -59,7 +59,9 @@ type CodegenRoutes = ({
     response: {
         code: 201;
         information: "post.created";
-        body?: undefined;
+        body: {
+            id: string;
+        };
     };
 }) | ({
     method: "GET";
@@ -78,7 +80,7 @@ type CodegenRoutes = ({
             id: string;
             nodeSameRawDocumentId: string;
             topic: string;
-            content: string | null;
+            content: string;
             author: {
                 id: string;
                 username: string;

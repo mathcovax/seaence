@@ -6,7 +6,7 @@ export const endpointPostSchema = zod.object({
 	id: zod.string(),
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.zodSchema,
 	topic: zod.string(),
-	content: zod.string().nullable(),
+	content: zod.string(),
 	author: userSchema,
 	answerCount: zod.number(),
 	createdAt: zod.date(),
@@ -14,4 +14,8 @@ export const endpointPostSchema = zod.object({
 
 export const endpointPostsDetails = zod.object({
 	totalCount: zod.number(),
+});
+
+export const endpointCreatePost = zod.object({
+	id: zod.string(),
 });

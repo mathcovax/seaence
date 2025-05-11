@@ -5,14 +5,16 @@ import { horizonClient } from "@/lib/horizon";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { $pt } = connectionPage.use();
-const { goTo: goToHomePage } = homePage.use();
+const router = useRouter();
 const { setAccessToken, isConnected } = useUserInformation();
 
 watch(
 	isConnected,
 	() => {
 		if (isConnected.value) {
-			void goToHomePage();
+			void router.push(
+				homePage.createTo(),
+			);
 		}
 	},
 	{ immediate: true },
@@ -39,7 +41,9 @@ async function googleSign() {
 				"user.logged",
 				({ body: accessToken }) => {
 					setAccessToken(accessToken);
-					void goToHomePage();
+					void router.push(
+						homePage.createTo(),
+					);
 				},
 			);
 	} catch {

@@ -9,7 +9,7 @@ export const postPage = createPage(
 			postId: zod.string(),
 		},
 		query: {
-			language: documentLanguageSchema,
+			language: documentLanguageSchema.default("en-US"),
 		},
 	},
 );
@@ -19,6 +19,17 @@ export const postListPage = createPage(
 	{
 		path: "/documents/:documentId/posts",
 		component: () => import("./pages/PostListPage.vue"),
+		params: {
+			documentId: zod.string(),
+		},
+	},
+);
+
+export const postCreatePage = createPage(
+	"postCreate",
+	{
+		path: "/documents/:documentId/create-post",
+		component: () => import("./pages/PostCreatePage.vue"),
 		params: {
 			documentId: zod.string(),
 		},

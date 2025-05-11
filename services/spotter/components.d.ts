@@ -84,6 +84,7 @@ declare module 'vue' {
     DSTabsContent: typeof import('./vendors/design-system/components/ui/tabs/DSTabsContent.vue')['default']
     DSTabsList: typeof import('./vendors/design-system/components/ui/tabs/DSTabsList.vue')['default']
     DSTabsTrigger: typeof import('./vendors/design-system/components/ui/tabs/DSTabsTrigger.vue')['default']
+    DSTextarea: typeof import('./vendors/design-system/components/ui/textarea/DSTextarea.vue')['default']
     MobileSidebar: typeof import('./src/components/MobileSidebar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

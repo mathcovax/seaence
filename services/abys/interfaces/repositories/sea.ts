@@ -47,7 +47,7 @@ seaRepository.default = {
 				articleTypes: restSimplifyObject.articleTypes,
 				authors: restSimplifyObject.authors,
 				title: restSimplifyObject.title,
-				abstract: restSimplifyObject.abstract,
+				abstract: restSimplifyObject.abstract ?? "",
 				abstractDetails: restSimplifyObject.abstractDetails,
 				keywords: restSimplifyObject.keywords,
 				providers,

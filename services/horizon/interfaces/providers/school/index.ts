@@ -119,7 +119,7 @@ export class SchoolAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static findDucomentPostsDetails(nodeSameRawDocumentId: string) {
+	public static findDocumentPostsDetails(nodeSameRawDocumentId: string) {
 		return this.httpClient
 			.get(
 				"/documents/{nodeSameRawDocumentId}/postsDetails",

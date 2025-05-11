@@ -89,7 +89,9 @@ type CodegenRoutes = ({
     } | {
         code: 201;
         information: "post.created";
-        body?: undefined;
+        body: {
+            id: string;
+        };
     };
 }) | ({
     method: "POST";
@@ -108,7 +110,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             topic: string;
-            content: string | null;
+            content: string;
             author: {
                 id: string;
                 username: string;
@@ -139,7 +141,7 @@ type CodegenRoutes = ({
             post: {
                 id: string;
                 topic: string;
-                content: string | null;
+                content: string;
                 author: {
                     id: string;
                     username: string;
