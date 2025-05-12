@@ -158,8 +158,7 @@ export function findFacets(
 			P.string,
 			(term) => buildSimpleSearchQuery({
 				term,
-				language,
-				filtersValues,
+				builedFilters: filtersValues && buildFilters(language, filtersValues),
 			}),
 		)
 		.exhaustive();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FiltersValues } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
-import type { SearchResult } from "../composables/useSimpleSearchPage";
+import type { SearchResult } from "../composables/useSearchPage";
 import TheFilters from "./filters/TheFilters.vue";
 
 interface Props {

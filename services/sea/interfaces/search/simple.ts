@@ -6,14 +6,6 @@ import { type estypes } from "@elastic/elasticsearch";
 import { type Document } from "@interfaces/providers/elastic/indexes/document";
 import { removeElasticRequestFields } from "@interfaces/utils/removeElasticRequestFields";
 
-export interface SimpleSearchParams {
-	language: Language;
-	page: number;
-	term: string;
-	quantityPerPage: number;
-	filtersValues?: FiltersValues;
-}
-
 interface SimpleSearchResponse {
 	hits: {
 		hits: Hit[];
@@ -35,24 +27,22 @@ interface Hit {
 		| "journalPublishDate"
 	>;
 	highlight?: {
-		title?: string[];
-		abstract?: string[];
+		"title.stemmed"?: string[];
+		"abstract.stemmed"?: string[];
 		keywords?: string[];
-		authors?: string[];
+		"authors.strict"?: string[];
 	};
 }
 
 interface BuildSimpleSearchQueryParams {
-	language: Language;
 	term: string;
-	filtersValues?: FiltersValues;
+	builedFilters?: ReturnType<typeof buildFilters>;
 }
 
 export function buildSimpleSearchQuery(
 	{
-		language,
 		term,
-		filtersValues,
+		builedFilters,
 	}: BuildSimpleSearchQueryParams,
 ) {
 	return {
@@ -62,18 +52,44 @@ export function buildSimpleSearchQuery(
 				{
 					multi_match: {
 						query: term,
+						type: "phrase",
 						fields: [
-							"title^3",
-							"abstract",
+							"title.stemmed^10",
+							"abstract.stemmed^5",
+						],
+						slop: 3,
+					},
+				},
+				{
+					multi_match: {
+						query: term,
+						fields: [
+							"title.stemmed^3",
+							"abstract.stemmed",
 							"keywords^10",
-							"authors^10",
 						],
 					},
 				},
+				{
+					match: {
+						"authors.strict": {
+							query: term,
+							boost: 20,
+						},
+					},
+				},
 			],
-			...(filtersValues && buildFilters(language, filtersValues)),
+			...builedFilters,
 		},
 	} satisfies estypes.QueryDslQueryContainer & { __id: "simpleSearchQuery" };
+}
+
+export interface SimpleSearchParams {
+	language: Language;
+	page: number;
+	term: string;
+	quantityPerPage: number;
+	filtersValues?: FiltersValues;
 }
 
 export function simpleSearch(
@@ -92,8 +108,7 @@ export function simpleSearch(
 
 	const query = buildSimpleSearchQuery({
 		term,
-		filtersValues,
-		language,
+		builedFilters: filtersValues && buildFilters(language, filtersValues),
 	});
 
 	removeElasticRequestFields(query);
@@ -108,13 +123,14 @@ export function simpleSearch(
 			pre_tags: ["<strong class=\"matching-result\">"],
 			post_tags: ["</strong>"],
 			fields: {
-				title: {},
-				abstract: {
+				"title.stemmed": {},
+				"abstract.stemmed": {
 					fragment_size: 50,
 				},
 				keywords: {},
-				authors: {},
-			},
+				"authors.strict": {},
+
+			} satisfies Record<keyof Exclude<Hit["highlight"], undefined>, estypes.SearchHighlightField>,
 		},
 	});
 }

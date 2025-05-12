@@ -13,10 +13,18 @@ type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibl
 
 export { ArticleType };
 
+type GenderFacetValue = "male" | "female";
+
+export { GenderFacetValue };
+
+type SpeciesFacetValue = "human" | "otherAnimal";
+
+export { SpeciesFacetValue };
+
 type FiltersValues = {
     articleType?: ArticleType[] | undefined;
-    gender?: ("male" | "female")[] | undefined;
-    species?: ("human" | "otherAnimal")[] | undefined;
+    gender?: GenderFacetValue[] | undefined;
+    species?: SpeciesFacetValue[] | undefined;
     year?: {
         from: number;
         to: number;
@@ -36,14 +44,14 @@ type Facet = {
     type: "checkbox";
     name: "gender";
     values: {
-        value: "male" | "female";
+        value: GenderFacetValue;
         quantity: number;
     }[];
 } | {
     type: "checkbox";
     name: "species";
     values: {
-        value: "human" | "otherAnimal";
+        value: SpeciesFacetValue;
         quantity: number;
     }[];
 } | {
@@ -176,7 +184,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             topic: string;
-            content: string | null;
+            content: string;
             author: {
                 id: string;
                 username: string;
@@ -207,7 +215,7 @@ type CodegenRoutes = ({
             post: {
                 id: string;
                 topic: string;
-                content: string | null;
+                content: string;
                 author: {
                     id: string;
                     username: string;

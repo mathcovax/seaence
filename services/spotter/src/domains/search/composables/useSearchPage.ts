@@ -10,7 +10,7 @@ export interface SearchResult {
 
 const smoothTimeEnabled = 400;
 
-export function useSimpleSearchPage() {
+export function useSearchPage() {
 	const { enable: fetchStart, isEnabled: isFetching, disable: fetchEnd } = useSmoothEnabled(smoothTimeEnabled);
 	const total = ref<number | null>(null);
 	const quantityPerPage = ref<number | null>(null);

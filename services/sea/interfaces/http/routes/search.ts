@@ -41,24 +41,17 @@ useBuilder()
 						({ _source, highlight, _score }) => ({
 							score: _score,
 							bakedDocumentId: _source.bakedDocumentId,
-							title: highlight?.title?.shift() ?? _source.title,
+							title: highlight?.["title.stemmed"]?.shift() ?? _source.title,
 							articleTypes: _source.articleTypes,
-							authors: _source.authors.map(
-								(author) => {
-									const highlighted = highlight
-										?.authors
-										?.find(
-											(highlightAuthor) => highlightAuthor.replace(/<\/?strong[^>]*>/g, "") === author,
-										);
-
-									return highlighted ?? author;
-								},
-							),
+							authors: [
+								...(highlight?.["authors.strict"] ? highlight["authors.strict"] : []),
+								..._source.authors,
+							],
 							keywords: highlight?.keywords ?? null,
 							webPublishDate: _source.webPublishDate,
 							journalPublishDate: _source.journalPublishDate,
-							summary: highlight?.abstract?.length
-								? `${highlight.abstract.join(".. ").substring(summaryTronc.from, summaryTronc.to)}..`
+							summary: highlight?.["abstract.stemmed"]?.length
+								? `${highlight["abstract.stemmed"].join(".. ").substring(summaryTronc.from, summaryTronc.to)}..`
 								: _source.summary,
 						}),
 					),

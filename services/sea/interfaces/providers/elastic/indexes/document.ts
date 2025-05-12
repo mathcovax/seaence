@@ -13,8 +13,9 @@ export const elasticDocumentMappingSchema = {
 	title: {
 		type: "text",
 		fields: {
-			keyword: {
-				type: "keyword",
+			stemmed: {
+				type: "text",
+				analyzer: "stemmer_analyzer",
 			},
 		},
 	},
@@ -27,6 +28,10 @@ export const elasticDocumentMappingSchema = {
 			keyword: {
 				type: "keyword",
 			},
+			strict: {
+				type: "text",
+				analyzer: "strict_analyzer",
+			},
 		},
 	},
 	summary: {
@@ -34,6 +39,12 @@ export const elasticDocumentMappingSchema = {
 	},
 	abstract: {
 		type: "text",
+		fields: {
+			stemmed: {
+				type: "text",
+				analyzer: "stemmer_analyzer",
+			},
+		},
 	},
 	providers: {
 		type: "keyword",
@@ -114,9 +125,44 @@ export const enUsDocument = new ElasticDocument<Document>(
 	"bakedDocumentId",
 	{
 		analysis: {
+			filter: {
+				stemmer_filter: {
+					type: "stemmer",
+					language: "english",
+				},
+				stop_filter: {
+					type: "stop",
+					stopwords: ["_english_"],
+				},
+			},
+			normalizer: {
+				flexible_normalizer: {
+					type: "custom",
+					filter: ["lowercase", "asciifolding"],
+				},
+			},
 			analyzer: {
 				default: {
 					type: "english",
+				},
+				stemmer_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stemmer_filter",
+						"stop_filter",
+					],
+				},
+				strict_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stop_filter",
+					],
 				},
 			},
 		},
@@ -133,9 +179,44 @@ export const frFrDocument = new ElasticDocument<Document>(
 	"bakedDocumentId",
 	{
 		analysis: {
+			filter: {
+				stemmer_filter: {
+					type: "stemmer",
+					language: "french",
+				},
+				stop_filter: {
+					type: "stop",
+					stopwords: ["_french_"],
+				},
+			},
+			normalizer: {
+				flexible_normalizer: {
+					type: "custom",
+					filter: ["lowercase", "asciifolding"],
+				},
+			},
 			analyzer: {
 				default: {
 					type: "french",
+				},
+				stemmer_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stemmer_filter",
+						"stop_filter",
+					],
+				},
+				strict_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stop_filter",
+					],
 				},
 			},
 		},

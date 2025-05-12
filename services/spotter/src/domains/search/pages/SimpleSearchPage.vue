@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useSimpleSearchPage } from "../composables/useSimpleSearchPage";
-import type { BakedDocumentLanguage, FiltersValues } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import { useSearchPage } from "../composables/useSearchPage";
+import type { BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import SimpleSearchInput from "../components/SimpleSearchInput.vue";
 import SearchResultWrapper from "../components/SearchResultWrapper.vue";
 import SearchContainer from "../components/SearchContainer.vue";
+import { convertFiltersToQuery, convertQueryTofilter } from "../utils/convertQueryTofilter";
 
 const router = useRouter();
 const { $pt, query } = simpleSearchPage.use();
@@ -14,11 +15,14 @@ const {
 	result,
 	pageOfBakedDocumentSearchResult,
 	isFetching,
-} = useSimpleSearchPage();
+} = useSearchPage();
 
 const bakedDocumentLanguage = ref<BakedDocumentLanguage>(query.value.language);
 const term = ref(query.value.term);
-const filtersValues = ref<FiltersValues>({});
+
+const filtersValues = ref(
+	convertQueryTofilter(query.value),
+);
 const isResultExpanded = ref(!!term.value);
 
 function onSubmit() {
@@ -27,6 +31,7 @@ function onSubmit() {
 			query: {
 				term: term.value,
 				language: bakedDocumentLanguage.value,
+				...convertFiltersToQuery(filtersValues.value),
 			},
 		}),
 	);
@@ -44,6 +49,18 @@ function onSubmit() {
 if (term.value) {
 	onSubmit();
 }
+
+watch(
+	query,
+	() => {
+		const newfilter = convertQueryTofilter(query.value);
+
+		if (JSON.stringify(newfilter) !== JSON.stringify(filtersValues.value)) {
+			filtersValues.value = newfilter;
+			onSubmit();
+		}
+	},
+);
 
 onMounted(() => {
 	scrollToTop();

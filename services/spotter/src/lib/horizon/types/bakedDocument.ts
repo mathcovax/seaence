@@ -1,6 +1,6 @@
-import type { UnionToTuple } from "@duplojs/utils";
-import { createEnum } from "@vendors/clean";
-import type { BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { ExpectType, UnionToTuple } from "@duplojs/utils";
+import { createEnum, type GetEnumValue } from "@vendors/clean";
+import type { ArticleType, BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 export const bakedDocumentLanguageEnum = createEnum<
 	BakedDocumentLanguage,
@@ -12,4 +12,99 @@ export const bakedDocumentLanguageEnum = createEnum<
 
 export const bakedDocumentLanguageSchema = zod.enum(
 	bakedDocumentLanguageEnum.toTuple(),
+);
+
+export const articleTypeEnum = createEnum([
+	"adaptiveClinicalTrial",
+	"address",
+	"autobiography",
+	"bibliography",
+	"biography",
+	"booksAndDocuments",
+	"caseReports",
+	"classicalArticle",
+	"clinicalConference",
+	"clinicalStudy",
+	"clinicalTrial",
+	"clinicalTrialProtocol",
+	"clinicalTrialPhaseI",
+	"clinicalTrialPhaseII",
+	"clinicalTrialPhaseIII",
+	"clinicalTrialPhaseIV",
+	"clinicalTrialVeterinary",
+	"collectedWork",
+	"comment",
+	"comparativeStudy",
+	"congress",
+	"consensusDevelopmentConference",
+	"consensusDevelopmentConferenceNIH",
+	"controlledClinicalTrial",
+	"correctedAndRepublishedArticle",
+	"dataset",
+	"dictionary",
+	"directory",
+	"duplicatePublication",
+	"editorial",
+	"electronicSupplementaryMaterials",
+	"englishAbstract",
+	"equivalenceTrial",
+	"evaluationStudy",
+	"expressionOfConcern",
+	"festschrift",
+	"governmentPublication",
+	"guideline",
+	"historicalArticle",
+	"interactiveTutorial",
+	"interview",
+	"introductoryJournalArticle",
+	"journalArticle",
+	"lecture",
+	"legalCase",
+	"legislation",
+	"letter",
+	"metaAnalysis",
+	"multicenterStudy",
+	"news",
+	"newspaperArticle",
+	"observationalStudy",
+	"observationalStudyVeterinary",
+	"overall",
+	"patientEducationHandout",
+	"periodicalIndex",
+	"personalNarrative",
+	"portrait",
+	"practiceGuideline",
+	"pragmaticClinicalTrial",
+	"preprint",
+	"publishedErratum",
+	"randomizedControlledTrial",
+	"randomizedControlledTrialVeterinary",
+	"researchSupportAmericanRecoveryAndReinvestmentAct",
+	"researchSupportNIHExtramural",
+	"researchSupportNIHIntramural",
+	"researchSupportNonUSGovt",
+	"researchSupportUSGovtNonPHS",
+	"researchSupportUSGovtPHS",
+	"researchSupportUSGovt",
+	"retractedPublication",
+	"retractionOfPublication",
+	"review",
+	"scopingReview",
+	"scientificIntegrityReview",
+	"systematicReview",
+	"technicalReport",
+	"twinStudy",
+	"validationStudy",
+	"videoAudioMedia",
+	"webcast",
+]);
+
+type _ExpectArticleTypeHasAllValues = ExpectType<
+	GetEnumValue<typeof articleTypeEnum>,
+	ArticleType,
+	"strict"
+>;
+
+export const articleTypeSchema = zod.enum(
+	articleTypeEnum.toTuple(),
 );

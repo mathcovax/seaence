@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSimpleSearchPage } from "../composables/useSimpleSearchPage";
+import { useSearchPage } from "../composables/useSearchPage";
 import type { OperatorContent } from "@vendors/types-advanced-query";
 import type { BakedDocumentLanguage, FiltersValues } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import SearchResultWrapper from "../components/SearchResultWrapper.vue";
@@ -15,7 +15,7 @@ const {
 	result,
 	pageOfBakedDocumentSearchResult,
 	isFetching,
-} = useSimpleSearchPage();
+} = useSearchPage();
 
 const scratchContent = ref<OperatorContent | null>({
 	type: "operator",

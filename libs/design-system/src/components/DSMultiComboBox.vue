@@ -36,18 +36,6 @@ const searchTerm = defineModel<string>(
 
 const open = ref(false);
 
-function removeTag(removedItem: GenericItem) {
-	modelValue.value = modelValue.value.filter((item) => item !== removedItem);
-}
-
-function onSelect(selectedItem: GenericItem) {
-	if (modelValue.value.find((item) => item === selectedItem)) {
-		return;
-	}
-	modelValue.value = [...modelValue.value, selectedItem];
-	open.value = false;
-}
-
 function getKey(item: GenericItem) {
 	if (props.label) {
 		return props.label(item);
@@ -67,6 +55,18 @@ function getValue(item: GenericItem) {
 		return props.value(item);
 	}
 	return item;
+}
+
+function removeTag(removedItem: GenericItem) {
+	modelValue.value = modelValue.value.filter((item) => item !== removedItem);
+}
+
+function onSelect(selectedItem: GenericItem) {
+	if (modelValue.value.find((item) => getValue(item) === getValue(selectedItem))) {
+		return;
+	}
+	modelValue.value = [...modelValue.value, selectedItem];
+	open.value = false;
 }
 </script>
 
@@ -145,10 +145,11 @@ function getValue(item: GenericItem) {
 
 <style scoped>
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+	display: none;
 }
+
 .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 </style>

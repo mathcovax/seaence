@@ -1,4 +1,6 @@
-import { bakedDocumentLanguageSchema } from "@/lib/horizon/types/bakedDocument";
+import { articleTypeSchema, bakedDocumentLanguageSchema } from "@/lib/horizon/types/bakedDocument";
+import { genderFacetValueSchema, speciesFacetValueSchema } from "@/lib/horizon/types/search";
+import { toArrayZodSchema } from "@/utils/toArrayZodSchema";
 
 export const simpleSearchPage = createPage(
 	"simpleSearch",
@@ -8,6 +10,10 @@ export const simpleSearchPage = createPage(
 		query: {
 			term: zod.string().default(""),
 			language: bakedDocumentLanguageSchema.default("en-US"),
+			articleType: toArrayZodSchema(articleTypeSchema).optional(),
+			gender: toArrayZodSchema(genderFacetValueSchema).optional(),
+			species: toArrayZodSchema(speciesFacetValueSchema).optional(),
+			year: zod.tuple([zod.coerce.number(), zod.coerce.number()]).optional().catch(undefined),
 		},
 	},
 );

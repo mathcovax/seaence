@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DocumentResultRow from "./DocumentResultRow.vue";
-import type { SearchResult } from "../composables/useSimpleSearchPage";
+import type { SearchResult } from "../composables/useSearchPage";
 
 interface Props {
 	result: SearchResult | null;
