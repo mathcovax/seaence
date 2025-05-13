@@ -6,13 +6,17 @@ import { endpointSimpleSearchResultSchema } from "../schemas/search/search";
 import { endpointSearchDetailsSchema } from "../schemas/search/facet";
 import { match } from "ts-pattern";
 import { type Facet } from "@business/entities/facets";
+import { operatorContentSchema } from "@vendors/types-advanced-query";
 
 useBuilder()
 	.createRoute("POST", "/search-details")
 	.extract({
 		body: zod.object({
 			language: bakedDocumentLanguageObjecter.zodSchema,
-			term: zod.string(),
+			term: zod.union([
+				zod.string(),
+				operatorContentSchema,
+			]),
 			filtersValues: filtersValuesSchema.optional(),
 		}),
 	})
@@ -61,7 +65,7 @@ useBuilder()
 				: results.total;
 
 			return new OkHttpResponse(
-				"facets.results",
+				"search.details",
 				{
 					total,
 					facets,
@@ -69,16 +73,19 @@ useBuilder()
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "facets.results", endpointSearchDetailsSchema),
+		makeResponseContract(OkHttpResponse, "search.details", endpointSearchDetailsSchema),
 	);
 
 useBuilder()
-	.createRoute("POST", "/simple-search-results")
+	.createRoute("POST", "/search-results")
 	.extract({
 		body: zod.object({
 			language: bakedDocumentLanguageObjecter.zodSchema,
 			page: zod.number().max(searchConfig.maxPage),
-			term: zod.string(),
+			term: zod.union([
+				zod.string(),
+				operatorContentSchema,
+			]),
 			filtersValues: filtersValuesSchema.optional(),
 		}),
 	})
@@ -86,7 +93,7 @@ useBuilder()
 		async(pickup) => {
 			const body = pickup("body");
 
-			const { body: results } = await SeaAPI.simpleSearchResult({
+			const { body: results } = await SeaAPI.searchResult({
 				...body,
 				quantityPerPage: searchConfig.quantityPerPage,
 				page: body.page - searchConfig.pageOffset,

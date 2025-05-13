@@ -3,6 +3,7 @@ import { bakedDocumentSearchResultObjecter } from "@business/entities/bakedDocum
 import { articleTypeObjecter } from "@business/entities/common/articleType";
 import { facetObjecter, genderFacetValueObjecter, speciesFacetValueObjecter } from "@business/entities/facets";
 import { filtersValuesSchema } from "../schemas/search/filter";
+import { comparatorTextSchema, comparatorYearSchema, operatorAndSchema, operatorContentSchema, operatorNotSchema, operatorOrSchema } from "@vendors/types-advanced-query";
 
 articleTypeObjecter.zodSchema._zttIdentifier = "ArticleType";
 
@@ -17,4 +18,11 @@ filtersValuesSchema._zttIdentifier = "FiltersValues";
 genderFacetValueObjecter.zodSchema._zttIdentifier = "GenderFacetValue";
 
 speciesFacetValueObjecter.zodSchema._zttIdentifier = "SpeciesFacetValue";
+
+comparatorYearSchema._zttIdentifier = "ComparatorYear";
+comparatorTextSchema._zttIdentifier = "ComparatorText";
+operatorContentSchema._zttIdentifier = "OperatorContent";
+operatorAndSchema._zttIdentifier = "OperatorAnd";
+operatorOrSchema._zttIdentifier = "OperatorOR";
+operatorNotSchema._zttIdentifier = "OperatorNot";
 

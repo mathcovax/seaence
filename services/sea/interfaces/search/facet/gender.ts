@@ -3,6 +3,7 @@ import { createEnum, type GetEnumValue } from "@vendors/clean";
 import { type Facet, type AggregationResult, type FacetValue } from ".";
 import { type estypes } from "@elastic/elasticsearch";
 import { StringArrayRegexed } from "@interfaces/utils/stringArrayRegexed";
+import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
 
 export const genderEnum = createEnum(["male", "female"]);
 
@@ -36,13 +37,13 @@ export function buildGenderAggregation(language: Language) {
 	return {
 		filter: {
 			terms: {
-				"keywords.keyword": genderFacetValue,
+				[availableFieldEnum["keywords.keyword"]]: genderFacetValue,
 			},
 		},
 		aggregations: {
 			genderFilteredResult: {
 				terms: {
-					field: "keywords.keyword",
+					field: availableFieldEnum["keywords.keyword"],
 					include: genderFacetValue,
 				},
 			},
@@ -115,9 +116,10 @@ export function buildGenderFilter(
 			{
 				__id: "genderFilter",
 				terms: {
-					"keywords.keyword": genderFilterValues.flatMap(
-						(gender) => languageToGenderFacetValue[language][gender],
-					),
+					[availableFieldEnum["keywords.keyword"]]: genderFilterValues
+						.flatMap(
+							(gender) => languageToGenderFacetValue[language][gender],
+						),
 				},
 			},
 		] satisfies (estypes.QueryDslQueryContainer & { __id: "genderFilter" })[];

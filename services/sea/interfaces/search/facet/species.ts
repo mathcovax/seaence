@@ -3,6 +3,7 @@ import { createEnum, type GetEnumValue } from "@vendors/clean";
 import { type Facet, type AggregationResult, type FacetValue } from ".";
 import { type estypes } from "@elastic/elasticsearch";
 import { StringArrayRegexed } from "@interfaces/utils/stringArrayRegexed";
+import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
 
 export const speciesEnum = createEnum(["human", "otherAnimal"]);
 
@@ -36,13 +37,13 @@ export function buildSpeciesAggregation(language: Language) {
 	return {
 		filter: {
 			terms: {
-				"keywords.keyword": speciesFacetValue,
+				[availableFieldEnum["keywords.keyword"]]: speciesFacetValue,
 			},
 		},
 		aggregations: {
 			speciesFilteredResult: {
 				terms: {
-					field: "keywords.keyword",
+					field: availableFieldEnum["keywords.keyword"],
 					include: speciesFacetValue,
 				},
 			},
@@ -115,9 +116,10 @@ export function buildSpeciesFilter(
 			{
 				__id: "speciesFilter",
 				terms: {
-					"keywords.keyword": speciesFilterValues.flatMap(
-						(species) => languageToSpeciesFacetValue[language][species],
-					),
+					[availableFieldEnum["keywords.keyword"]]: speciesFilterValues
+						.flatMap(
+							(species) => languageToSpeciesFacetValue[language][species],
+						),
 				},
 			},
 		] satisfies (estypes.QueryDslQueryContainer & { __id: "speciesFilter" })[];

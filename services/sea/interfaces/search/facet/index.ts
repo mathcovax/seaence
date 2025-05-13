@@ -8,6 +8,8 @@ import { elastic } from "@interfaces/providers/elastic";
 import { match, P } from "ts-pattern";
 import { buildSimpleSearchQuery } from "../simple";
 import { removeElasticRequestFields } from "@interfaces/utils/removeElasticRequestFields";
+import { type OperatorContent } from "@vendors/types-advanced-query";
+import { buildAdvencedSearchQuery } from "../advenced";
 
 interface FacetResponse {
 	hits: {
@@ -50,7 +52,8 @@ export type Facets = (
 )[];
 
 export type BuildedQuery =
-	| ReturnType<typeof buildSimpleSearchQuery>;
+	| ReturnType<typeof buildSimpleSearchQuery>
+	| ReturnType<typeof buildAdvencedSearchQuery>;
 
 export type AggregationsResults =
 	& GenderAggregationsResults
@@ -137,7 +140,7 @@ export function buildFilters(
 
 export interface FindFacetParams {
 	language: Language;
-	term: string;
+	term: string | OperatorContent;
 	filtersValues?: FiltersValues;
 }
 
@@ -153,15 +156,17 @@ export function findFacets(
 		.with("en-US", () => elastic.enUsDocument)
 		.exhaustive();
 
-	const query = match(term)
-		.with(
-			P.string,
-			(term) => buildSimpleSearchQuery({
-				term,
-				builedFilters: filtersValues && buildFilters(language, filtersValues),
-			}),
-		)
-		.exhaustive();
+	const buildedFilters = filtersValues && buildFilters(language, filtersValues);
+
+	const query = typeof term === "string"
+		? buildSimpleSearchQuery({
+			term,
+			buildedFilters,
+		})
+		: buildAdvencedSearchQuery({
+			term,
+			buildedFilters,
+		});
 
 	const aggregations = buildFacetsAggregations(language, query);
 

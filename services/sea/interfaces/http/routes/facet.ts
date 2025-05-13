@@ -2,13 +2,17 @@ import { aggregationsResultsToFacetWrapper, findFacets } from "@interfaces/searc
 import { languageSchema } from "../schemas/common";
 import { endpointFacetsSchema, type EndpointFacetsSchema } from "../schemas/facet";
 import { filtersValuesSchema } from "../schemas/filter";
+import { operatorContentSchema } from "@vendors/types-advanced-query";
 
 useBuilder()
 	.createRoute("POST", "/facets")
 	.extract({
 		body: zod.object({
 			language: languageSchema,
-			term: zod.string(),
+			term: zod.union([
+				zod.string(),
+				operatorContentSchema,
+			]),
 			filtersValues: filtersValuesSchema.optional(),
 		}),
 	})

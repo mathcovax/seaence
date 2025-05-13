@@ -9,17 +9,51 @@ type BakedDocumentLanguage = "fr-FR" | "en-US";
 
 export { BakedDocumentLanguage };
 
-type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
+type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
 
-export { ArticleType };
+export { OperatorContent };
 
-type GenderFacetValue = "male" | "female";
+type OperatorAnd = {
+    type: "operator";
+    name: "and";
+    content: OperatorContent[];
+};
 
-export { GenderFacetValue };
+export { OperatorAnd };
 
-type SpeciesFacetValue = "human" | "otherAnimal";
+type OperatorOR = {
+    type: "operator";
+    name: "or";
+    content: OperatorContent[];
+};
 
-export { SpeciesFacetValue };
+export { OperatorOR };
+
+type OperatorNot = {
+    type: "operator";
+    name: "not";
+    content: OperatorContent | null;
+};
+
+export { OperatorNot };
+
+type ComparatorText = {
+    type: "comparator";
+    name: "text";
+    field: "allField" | "title" | "abstract";
+    value: string;
+};
+
+export { ComparatorText };
+
+type ComparatorYear = {
+    type: "comparator";
+    name: "year";
+    field: "allDate" | "webDate" | "journalDate";
+    value: number;
+};
+
+export { ComparatorYear };
 
 type FiltersValues = {
     articleType?: ArticleType[] | undefined;
@@ -32,6 +66,18 @@ type FiltersValues = {
 };
 
 export { FiltersValues };
+
+type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
+
+export { ArticleType };
+
+type GenderFacetValue = "male" | "female";
+
+export { GenderFacetValue };
+
+type SpeciesFacetValue = "human" | "otherAnimal";
+
+export { SpeciesFacetValue };
 
 type Facet = {
     type: "multiSelect";
@@ -279,12 +325,12 @@ type CodegenRoutes = ({
     path: "/search-details";
     body: {
         language: BakedDocumentLanguage;
-        term: string;
+        term: string | OperatorContent;
         filtersValues?: FiltersValues | undefined;
     };
     response: {
         code: 200;
-        information: "facets.results";
+        information: "search.details";
         body: {
             total: number;
             facets: Facet[];
@@ -293,11 +339,11 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/simple-search-results";
+    path: "/search-results";
     body: {
         language: BakedDocumentLanguage;
         page: number;
-        term: string;
+        term: string | OperatorContent;
         filtersValues?: FiltersValues | undefined;
     };
     response: {

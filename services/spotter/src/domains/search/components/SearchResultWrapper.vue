@@ -5,7 +5,7 @@ import type { SearchResult } from "../composables/useSearchPage";
 interface Props {
 	result: SearchResult | null;
 	isFetching: boolean;
-	pageOfBakedDocumentSearchResult: number;
+	currentPage: number;
 }
 
 defineProps<Props>();
@@ -31,7 +31,7 @@ function updatePage(page: number) {
 		>
 			<DSPagination
 				:total="result.total"
-				:current-page="pageOfBakedDocumentSearchResult"
+				:current-page="currentPage"
 				:quantity-per-page="result.quantityPerPage"
 				@update="updatePage"
 			/>
@@ -46,7 +46,7 @@ function updatePage(page: number) {
 
 			<DSPagination
 				:total="result.total"
-				:current-page="pageOfBakedDocumentSearchResult"
+				:current-page="currentPage"
 				:quantity-per-page="result.quantityPerPage"
 				@update="updatePage"
 			/>

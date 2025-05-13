@@ -1,7 +1,7 @@
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/sea/duplojsTypesCodegen";
-import { type SimpleSearchResultBody } from "./types/simpleSearchResult";
+import { type SearchResultBody } from "./types/simpleSearchResult";
 import { type FacetBody } from "./types/facets";
 
 export type SeaClientRoute = TransformCodegenRouteToHttpClientRoute<
@@ -11,12 +11,12 @@ export type SeaClientRoute = TransformCodegenRouteToHttpClientRoute<
 export class SeaAPI {
 	private static httpClient: HttpClient<SeaClientRoute>;
 
-	public static simpleSearchResult(
-		body: SimpleSearchResultBody,
+	public static searchResult(
+		body: SearchResultBody,
 	) {
 		return this.httpClient
 			.post(
-				"/simple-search-results",
+				"/search-results",
 				{
 					body,
 				},

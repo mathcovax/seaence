@@ -13,6 +13,52 @@ type Language = "fr-FR" | "en-US";
 
 export { Language };
 
+type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
+
+export { OperatorContent };
+
+type OperatorAnd = {
+    type: "operator";
+    name: "and";
+    content: OperatorContent[];
+};
+
+export { OperatorAnd };
+
+type OperatorOR = {
+    type: "operator";
+    name: "or";
+    content: OperatorContent[];
+};
+
+export { OperatorOR };
+
+type OperatorNot = {
+    type: "operator";
+    name: "not";
+    content: OperatorContent | null;
+};
+
+export { OperatorNot };
+
+type ComparatorText = {
+    type: "comparator";
+    name: "text";
+    field: "allField" | "title" | "abstract";
+    value: string;
+};
+
+export { ComparatorText };
+
+type ComparatorYear = {
+    type: "comparator";
+    name: "year";
+    field: "allDate" | "webDate" | "journalDate";
+    value: number;
+};
+
+export { ComparatorYear };
+
 type CodegenRoutes = ({
     method: "PUT";
     path: "/document/{language}";
@@ -48,12 +94,12 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/simple-search-results";
+    path: "/search-results";
     body: {
         language: Language;
         page: number;
         quantityPerPage: number;
-        term: string;
+        term: string | OperatorContent;
         filtersValues?: {
             articleType?: ArticleType[] | undefined;
             gender?: ("male" | "female")[] | undefined;
@@ -84,7 +130,7 @@ type CodegenRoutes = ({
     path: "/facets";
     body: {
         language: Language;
-        term: string;
+        term: string | OperatorContent;
         filtersValues?: {
             articleType?: ArticleType[] | undefined;
             gender?: ("male" | "female")[] | undefined;

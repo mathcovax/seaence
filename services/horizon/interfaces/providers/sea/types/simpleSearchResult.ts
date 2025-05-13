@@ -1,8 +1,8 @@
 import { type FindHttpClientRoute } from "@duplojs/http-client";
 import { type SeaClientRoute } from "..";
 
-export type SimpleSearchResultBody = FindHttpClientRoute<
+export type SearchResultBody = FindHttpClientRoute<
 	SeaClientRoute,
 	"POST",
-	"/simple-search-results"
+	"/search-results"
 >["body"];

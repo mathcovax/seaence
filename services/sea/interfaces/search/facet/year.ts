@@ -1,6 +1,7 @@
 import { type estypes } from "@elastic/elasticsearch";
 import { type Facet, type AggregationResult, type FacetValue, type BuildedQuery } from ".";
 import { match } from "ts-pattern";
+import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
 
 export interface YearAggregationsResults {
 	journalPublishYearResult: {
@@ -25,6 +26,16 @@ export function buildYearAggregation(query: BuildedQuery) {
 					: undefined,
 			}),
 		)
+		.with(
+			{ __id: "advencedSearchQuery" },
+			(query) => ({
+				must: [
+					...query.bool.must.filter(
+						(value) => value.__id !== "yearFilter",
+					),
+				],
+			}),
+		)
 		.exhaustive();
 
 	return {
@@ -35,7 +46,7 @@ export function buildYearAggregation(query: BuildedQuery) {
 			aggregations: {
 				journalPublishYearFilteredResult: {
 					terms: {
-						field: "journalPublishSplitDate.year",
+						field: availableFieldEnum["journalPublishSplitDate.year"],
 					},
 				},
 			} satisfies Record<keyof YearAggregationsResults["journalPublishYearResult"], estypes.AggregationsAggregationContainer>,
@@ -45,7 +56,7 @@ export function buildYearAggregation(query: BuildedQuery) {
 				bool: {
 					must_not: {
 						exists: {
-							field: "journalPublishSplitDate",
+							field: availableFieldEnum.journalPublishSplitDate,
 						},
 					},
 					...bool,
@@ -54,7 +65,7 @@ export function buildYearAggregation(query: BuildedQuery) {
 			aggregations: {
 				webPublishYearFilteredResult: {
 					terms: {
-						field: "webPublishSplitDate.year",
+						field: availableFieldEnum["webPublishSplitDate.year"],
 					},
 				},
 			} satisfies Record<keyof YearAggregationsResults["webPublishYearResult"], estypes.AggregationsAggregationContainer>,
@@ -133,7 +144,7 @@ export function buildYearFilter(
 					should: [
 						{
 							range: {
-								"journalPublishSplitDate.year": {
+								[availableFieldEnum["journalPublishSplitDate.year"]]: {
 									gte: yearFilterValues.from,
 									lte: yearFilterValues.to,
 								},
@@ -143,12 +154,12 @@ export function buildYearFilter(
 							bool: {
 								must_not: {
 									exists: {
-										field: "journalPublishSplitDate",
+										field: availableFieldEnum.journalPublishSplitDate,
 									},
 								},
 								must: {
 									range: {
-										"webPublishSplitDate.year": {
+										[availableFieldEnum["webPublishSplitDate.year"]]: {
 											gte: yearFilterValues.from,
 											lte: yearFilterValues.to,
 										},

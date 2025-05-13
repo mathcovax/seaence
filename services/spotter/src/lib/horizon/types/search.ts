@@ -1,13 +1,13 @@
-import type { FindHttpClientRoute } from "@duplojs/http-client";
+import type { FindHttpClientRoute, FindHttpClientRouteResponse } from "@duplojs/http-client";
 import type { HorizonClientRoute } from "..";
 import { createEnum } from "@vendors/clean";
 import type { GenderFacetValue, SpeciesFacetValue } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import type { UnionToTuple } from "@duplojs/utils";
 
-export type SimpleSearchResultBody = FindHttpClientRoute<
+export type SearchParams = FindHttpClientRoute<
 	HorizonClientRoute,
 	"POST",
-	"/simple-search-results"
+	"/search-results"
 >["body"];
 
 export type SearchDetailsBody = FindHttpClientRoute<
@@ -39,3 +39,13 @@ export const speciesFacetValueEnum = createEnum<
 export const speciesFacetValueSchema = zod.enum(
 	speciesFacetValueEnum.toTuple(),
 );
+
+export type SearchDetails = FindHttpClientRouteResponse<
+	FindHttpClientRoute<
+		HorizonClientRoute,
+		"POST",
+		"/search-details"
+	>,
+	"information",
+	"search.details"
+>["body"];

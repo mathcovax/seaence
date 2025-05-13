@@ -1,16 +1,20 @@
-import { simpleSearch } from "@interfaces/search/simple";
 import { type EndpointSimpleSearchResultSchema, endpointSimpleSearchResultSchema } from "../schemas/search";
 import { languageSchema } from "../schemas/common";
 import { filtersValuesSchema } from "../schemas/filter";
+import { search } from "@interfaces/search";
+import { operatorContentSchema } from "@vendors/types-advanced-query";
 
 useBuilder()
-	.createRoute("POST", "/simple-search-results")
+	.createRoute("POST", "/search-results")
 	.extract({
 		body: zod.object({
 			language: languageSchema,
 			page: zod.number(),
 			quantityPerPage: zod.number(),
-			term: zod.string(),
+			term: zod.union([
+				zod.string(),
+				operatorContentSchema,
+			]),
 			filtersValues: filtersValuesSchema.optional(),
 		}),
 	})
@@ -29,7 +33,7 @@ useBuilder()
 				to: 300,
 			};
 
-			const results = await simpleSearch({
+			const results = await search({
 				language,
 				term,
 				page,

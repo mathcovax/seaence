@@ -54,6 +54,7 @@ export const operatorOrSchema: ZodType<OperatorOr> = zod.object({
 export const operatorNotSchema: ZodType<OperatorNot> = zod.object({
 	type: zod.literal("operator"),
 	name: zod.literal("not"),
-	content: operatorContentSchema,
-
+	content: operatorContentSchema.nullable(),
 });
+
+

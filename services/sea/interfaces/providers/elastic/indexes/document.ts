@@ -2,9 +2,10 @@
 import { type estypes } from "@elastic/elasticsearch";
 import { type ArticleType } from "../common/articleType";
 import { type Provider } from "../common/provider";
-import { type ExpectType } from "@duplojs/utils";
+import { type UnionToTuple, type ExpectType } from "@duplojs/utils";
 import { ElasticDocument } from ".";
 import { languageEnum } from "../common/language";
+import { createEnum, type GetEnumValue } from "@vendors/clean";
 
 export const elasticDocumentMappingSchema = {
 	bakedDocumentId: {
@@ -227,3 +228,39 @@ export const frFrDocument = new ElasticDocument<Document>(
 	},
 	elasticDocumentMappingSchema,
 );
+
+export type AvailableField =
+	| keyof Document
+	| "journalPublishSplitDate.year"
+	| "webPublishSplitDate.year"
+	| "title.stemmed"
+	| "abstract.stemmed"
+	| "authors.strict"
+	| "keywords.keyword";
+
+export const availableFieldEnum = createEnum([
+	"bakedDocumentId",
+	"title",
+	"articleTypes",
+	"authors",
+	"summary",
+	"abstract",
+	"providers",
+	"keywords",
+	"webPublishDate",
+	"webPublishSplitDate",
+	"journalPublishDate",
+	"journalPublishSplitDate",
+	"journalPublishSplitDate.year",
+	"webPublishSplitDate.year",
+	"title.stemmed",
+	"abstract.stemmed",
+	"authors.strict",
+	"keywords.keyword",
+] as const satisfies AvailableField[]);
+
+type _ExpectAvailableFieldEnumHasAllKey = ExpectType<
+	GetEnumValue<typeof availableFieldEnum>,
+	AvailableField,
+	"strict"
+>;
