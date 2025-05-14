@@ -35,11 +35,14 @@ const searchParams = reactive({
 	filtersValues: defaultPageSearchParams.filtersValues ?? {},
 });
 const isResultExpanded = ref(!!searchParams.term);
+const searchContainerRef = ref<InstanceType<typeof SearchContainer> | null>(null);
 
 function submit(
 	searchParams: SearchParams,
 	searchDetails = true,
 ) {
+	searchContainerRef.value?.toggle(false);
+
 	queryWatcher.pause();
 
 	void nextTick()
@@ -100,6 +103,7 @@ onMounted(() => {
 		/>
 
 		<SearchContainer
+			ref="searchContainerRef"
 			search-mode="simple"
 			:is-expanded="isResultExpanded"
 			:is-fetching="isFetching"

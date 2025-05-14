@@ -1,53 +1,47 @@
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { createEnum, type GetEnumValue } from "@vendors/clean";
-import { type Facet, type AggregationResult, type FacetValue } from ".";
+import { type Facet, type FacetValue, type AggregationWrappedBucketsResult } from ".";
 import { type estypes } from "@elastic/elasticsearch";
-import { StringArrayRegexed } from "@interfaces/utils/stringArrayRegexed";
 import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
+import { getTypedEntries } from "@duplojs/utils";
 
 export const speciesEnum = createEnum(["human", "otherAnimal"]);
 
 export type Species = GetEnumValue<typeof speciesEnum>;
 
-export type SpeciesFacetValue = Record<Species, StringArrayRegexed>;
+export type SpeciesFacetValue = Record<Species, string[]>;
 
 export const languageToSpeciesFacetValue: Record<Language, SpeciesFacetValue> = {
 	"fr-FR": {
-		human: new StringArrayRegexed("Humains", "Humain", "humains", "humain"),
-		otherAnimal: new StringArrayRegexed("Animaux", "Animal", "animaux", "animal"),
+		human: ["Humains", "Humain", "humains", "humain"],
+		otherAnimal: ["Animaux", "Animal", "animaux", "animal"],
 	},
 	"en-US": {
-		human: new StringArrayRegexed("Humans", "Human", "humans", "human"),
-		otherAnimal: new StringArrayRegexed("Animals", "Animal", "animals", "animal"),
+		human: ["Humans", "Human", "humans", "human"],
+		otherAnimal: ["Animals", "Animal", "animals", "animal"],
 	},
 };
 
 export interface SpeciesAggregationsResults {
-	speciesResult: {
-		speciesFilteredResult: AggregationResult<string>;
-	};
+	speciesResult: AggregationWrappedBucketsResult<Species>;
 }
 
 export function buildSpeciesAggregation(language: Language) {
-	const speciesFacetValue = [
-		...languageToSpeciesFacetValue[language].human,
-		...languageToSpeciesFacetValue[language].otherAnimal,
-	];
-
 	return {
-		filter: {
-			terms: {
-				[availableFieldEnum["keywords.keyword"]]: speciesFacetValue,
-			},
+		filters: {
+			filters: getTypedEntries(languageToSpeciesFacetValue[language])
+				.reduce<Partial<Record<Species, estypes.QueryDslQueryContainer>>>(
+					(acc, [key, value]) => {
+						acc[key] = {
+							terms: {
+								[availableFieldEnum["keywords.keyword"]]: value,
+							},
+						};
+						return acc;
+					},
+					{},
+				),
 		},
-		aggregations: {
-			speciesFilteredResult: {
-				terms: {
-					field: availableFieldEnum["keywords.keyword"],
-					include: speciesFacetValue,
-				},
-			},
-		} satisfies Record<keyof SpeciesAggregationsResults["speciesResult"], estypes.AggregationsAggregationContainer>,
 	} satisfies estypes.AggregationsAggregationContainer;
 }
 
@@ -56,27 +50,15 @@ export type SpeciesFacet = Facet<
 	FacetValue<Species>
 >;
 
-const defaltAccSpecies = 0;
-
 function computeSpeciesFacet(
 	species: Species,
-	speciesFacetValue: SpeciesFacetValue,
 	speciesResult: SpeciesAggregationsResults["speciesResult"],
 ): SpeciesFacet["values"] {
-	const quantity = speciesResult.speciesFilteredResult.buckets
-		.filter(
-			(value) => speciesFacetValue[species].regex.test(value.key),
-		)
-		.reduce(
-			(acc, { doc_count }) => acc + doc_count,
-			defaltAccSpecies,
-		);
-
-	if (quantity) {
+	if (speciesResult.buckets[species].doc_count) {
 		return [
 			{
 				value: species,
-				quantity,
+				quantity: speciesResult.buckets[species].doc_count,
 			},
 		];
 	} else {
@@ -85,12 +67,11 @@ function computeSpeciesFacet(
 }
 
 export function speciesAggregationResultsToFacet(
-	language: Language,
 	speciesResult: SpeciesAggregationsResults["speciesResult"],
 ): SpeciesFacet | null {
 	const values = [
-		...computeSpeciesFacet("human", languageToSpeciesFacetValue[language], speciesResult),
-		...computeSpeciesFacet("otherAnimal", languageToSpeciesFacetValue[language], speciesResult),
+		...computeSpeciesFacet("human", speciesResult),
+		...computeSpeciesFacet("otherAnimal", speciesResult),
 	];
 
 	if (!values.length) {

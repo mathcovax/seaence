@@ -1,53 +1,47 @@
 import { type Language } from "@interfaces/providers/elastic/common/language";
 import { createEnum, type GetEnumValue } from "@vendors/clean";
-import { type Facet, type AggregationResult, type FacetValue } from ".";
+import { type Facet, type FacetValue, type AggregationWrappedBucketsResult } from ".";
 import { type estypes } from "@elastic/elasticsearch";
-import { StringArrayRegexed } from "@interfaces/utils/stringArrayRegexed";
 import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
+import { getTypedEntries } from "@duplojs/utils";
 
 export const genderEnum = createEnum(["male", "female"]);
 
 export type Gender = GetEnumValue<typeof genderEnum>;
 
-export type GenderFacetValue = Record<Gender, StringArrayRegexed>;
+export type GenderFacetValue = Record<Gender, string[]>;
 
 export const languageToGenderFacetValue: Record<Language, GenderFacetValue> = {
 	"fr-FR": {
-		male: new StringArrayRegexed("Hommes", "Homme", "hommes", "homme"),
-		female: new StringArrayRegexed("Femmes", "Femme", "femmes", "femme"),
+		male: ["Hommes", "Homme", "hommes", "homme"],
+		female: ["Femmes", "Femme", "femmes", "femme"],
 	},
 	"en-US": {
-		male: new StringArrayRegexed("Males", "Male", "males", "male"),
-		female: new StringArrayRegexed("Females", "Female", "females", "female"),
+		male: ["Males", "Male", "males", "male"],
+		female: ["Females", "Female", "females", "female"],
 	},
 };
 
 export interface GenderAggregationsResults {
-	genderResult: {
-		genderFilteredResult: AggregationResult<string>;
-	};
+	genderResult: AggregationWrappedBucketsResult<Gender>;
 }
 
 export function buildGenderAggregation(language: Language) {
-	const genderFacetValue = [
-		...languageToGenderFacetValue[language].male,
-		...languageToGenderFacetValue[language].female,
-	];
-
 	return {
-		filter: {
-			terms: {
-				[availableFieldEnum["keywords.keyword"]]: genderFacetValue,
-			},
+		filters: {
+			filters: getTypedEntries(languageToGenderFacetValue[language])
+				.reduce<Partial<Record<Gender, estypes.QueryDslQueryContainer>>>(
+					(acc, [key, value]) => {
+						acc[key] = {
+							terms: {
+								[availableFieldEnum["keywords.keyword"]]: value,
+							},
+						};
+						return acc;
+					},
+					{},
+				),
 		},
-		aggregations: {
-			genderFilteredResult: {
-				terms: {
-					field: availableFieldEnum["keywords.keyword"],
-					include: genderFacetValue,
-				},
-			},
-		} satisfies Record<keyof GenderAggregationsResults["genderResult"], estypes.AggregationsAggregationContainer>,
 	} satisfies estypes.AggregationsAggregationContainer;
 }
 
@@ -56,27 +50,15 @@ export type GenderFacet = Facet<
 	FacetValue<Gender>
 >;
 
-const defaltAccGender = 0;
-
 function computeGenderFacet(
 	gender: Gender,
-	genderFacetValue: GenderFacetValue,
 	genderResult: GenderAggregationsResults["genderResult"],
 ): GenderFacet["values"] {
-	const quantity = genderResult.genderFilteredResult.buckets
-		.filter(
-			(value) => genderFacetValue[gender].regex.test(value.key),
-		)
-		.reduce(
-			(acc, { doc_count }) => acc + doc_count,
-			defaltAccGender,
-		);
-
-	if (quantity) {
+	if (genderResult.buckets[gender].doc_count) {
 		return [
 			{
 				value: gender,
-				quantity,
+				quantity: genderResult.buckets[gender].doc_count,
 			},
 		];
 	} else {
@@ -85,12 +67,11 @@ function computeGenderFacet(
 }
 
 export function genderAggregationResultsToFacet(
-	language: Language,
 	genderResult: GenderAggregationsResults["genderResult"],
 ): GenderFacet | null {
 	const values = [
-		...computeGenderFacet("female", languageToGenderFacetValue[language], genderResult),
-		...computeGenderFacet("male", languageToGenderFacetValue[language], genderResult),
+		...computeGenderFacet("female", genderResult),
+		...computeGenderFacet("male", genderResult),
 	];
 
 	if (!values.length) {

@@ -1,10 +1,10 @@
 import { type ArticleType } from "@interfaces/providers/elastic/common/articleType";
-import { type Facet, type AggregationResult, type FacetValue } from ".";
+import { type Facet, type AggregationBucketsResult, type FacetValue } from ".";
 import { type estypes } from "@elastic/elasticsearch";
 import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
 
 export interface ArticleTypeAggregationsResults {
-	articleTypeResult: AggregationResult<ArticleType>;
+	articleTypeResult: AggregationBucketsResult<ArticleType>;
 }
 
 export function buildArticleTypeAggregation() {

@@ -20,13 +20,19 @@ interface FacetResponse {
 	aggregations: AggregationsResults;
 }
 
-export interface AggregationResult<
+export interface AggregationBucketsResult<
 	GenericKey extends unknown = unknown,
 > {
 	buckets: {
 		key: GenericKey;
 		doc_count: number;
 	}[];
+}
+
+export interface AggregationWrappedBucketsResult<
+	GenericBucketsKey extends string = string,
+> {
+	buckets: Record<GenericBucketsKey, { doc_count: number }>;
 }
 
 export interface FacetValue<
@@ -103,13 +109,13 @@ export function aggregationsResultsToFacetWrapper(
 		facets.push(articleTypeFacet);
 	}
 
-	const genderFacet = genderAggregationResultsToFacet(language, genderResult);
+	const genderFacet = genderAggregationResultsToFacet(genderResult);
 
 	if (genderFacet) {
 		facets.push(genderFacet);
 	}
 
-	const speciesFacet = speciesAggregationResultsToFacet(language, speciesResult);
+	const speciesFacet = speciesAggregationResultsToFacet(speciesResult);
 
 	if (speciesFacet) {
 		facets.push(speciesFacet);

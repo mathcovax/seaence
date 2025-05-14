@@ -1,14 +1,14 @@
 import { type estypes } from "@elastic/elasticsearch";
-import { type Facet, type AggregationResult, type FacetValue, type BuildedQuery } from ".";
+import { type Facet, type AggregationBucketsResult, type FacetValue, type BuildedQuery } from ".";
 import { match } from "ts-pattern";
 import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
 
 export interface YearAggregationsResults {
 	journalPublishYearResult: {
-		journalPublishYearFilteredResult: AggregationResult<number>;
+		journalPublishYearFilteredResult: AggregationBucketsResult<number>;
 	};
 	webPublishYearResult: {
-		webPublishYearFilteredResult: AggregationResult<number>;
+		webPublishYearFilteredResult: AggregationBucketsResult<number>;
 	};
 }
 

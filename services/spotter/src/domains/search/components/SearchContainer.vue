@@ -28,6 +28,12 @@ function commitFiltersValues() {
 	isFiltersVisible.value = false;
 	emit("commitFiltersValues");
 }
+
+defineExpose({
+	toggle(state: boolean) {
+		isFiltersVisible.value = state;
+	},
+});
 </script>
 
 <template>
