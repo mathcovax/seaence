@@ -1,6 +1,6 @@
 import { baseTemplate } from "./baseTemplate";
 
-export function welcomeTemplate(username: string, url: string) {
+export function registerTemplate(username: string, url: string) {
 	return baseTemplate(/* html */
 		`
 		<h1 style="font-family: Arial, sans-serif; color: #22223b; font-size: 24px; margin: 0 0 36px 0">Bienvenue sur Seaence !</h1>
