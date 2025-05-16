@@ -53,7 +53,7 @@ async function googleSign() {
 </script>
 
 <template>
-	<section class="grid h-[calc(100vh-6rem-2rem)] lg:grid-cols-2">
+	<section class="h-[calc(100vh-6rem-2rem)] grid lg:grid-cols-2">
 		<div class="flex flex-1 items-center justify-center">
 			<div class="w-full max-w-xs flex flex-col gap-6">
 				<div class="flex flex-col items-center gap-2 text-center">

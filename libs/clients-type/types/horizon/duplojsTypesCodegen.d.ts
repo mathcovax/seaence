@@ -181,7 +181,7 @@ type CodegenRoutes = ({
         };
     };
 }) | ({
-    method: "GET";
+    method: "POST";
     path: "/user";
     response: {
         code: 403;
@@ -193,7 +193,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "user.get";
+        information: "user.self";
         body: {
             id: string;
             username: string;

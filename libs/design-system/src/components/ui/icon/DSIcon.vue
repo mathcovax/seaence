@@ -10,6 +10,9 @@ import {
 	mdiCalendarMonth,
 	mdiFileDocument,
 	mdiTag,
+	mdiStarOutline,
+	mdiStar,
+	mdiMessageText,
 } from "@mdi/js";
 
 const iconsMapper = {
@@ -18,10 +21,13 @@ const iconsMapper = {
 	viewGrid: mdiViewGrid,
 	formatListBulletedSquare: mdiFormatListBulletedSquare,
 	plus: mdiPlus,
-	user: mdiAccount,
 	calendar: mdiCalendarMonth,
 	document: mdiFileDocument,
 	tag: mdiTag,
+	account: mdiAccount,
+	starOutline: mdiStarOutline,
+	star: mdiStar,
+	messageText: mdiMessageText,
 };
 
 interface Props {

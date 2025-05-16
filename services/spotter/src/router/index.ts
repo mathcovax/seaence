@@ -18,6 +18,7 @@ export const router = createRouter({
 				postCreatePage.recordRaw,
 				testPage.recordRaw,
 				notFoundPage.recordRaw,
+				profilePage.recordRaw,
 			],
 		},
 	],

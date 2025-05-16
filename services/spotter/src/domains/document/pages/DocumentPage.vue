@@ -82,7 +82,7 @@ const allAffiliations = computed(() => {
 						</h1>
 
 						<div class="flex items-center gap-2">
-							<DSIcon name="user" />
+							<DSIcon name="account" />
 
 							<ul class="list-none inline">
 								<li

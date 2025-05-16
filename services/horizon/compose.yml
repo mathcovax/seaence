@@ -4,5 +4,5 @@ services:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
     ports:
-      - "1507:1507"
+      - "1507:1506"
     command: npm -w services/horizon run duplo:dev

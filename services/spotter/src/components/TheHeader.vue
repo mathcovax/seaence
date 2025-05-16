@@ -1,23 +1,9 @@
 <script setup lang="ts">
+import AccountDropdown from "@/domains/user/components/AccountDropdown.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { isConnected } = useUserInformation();
-
-const isScrolled = ref(false);
-
-const SCROLL_THRESHOLD = 0;
-function handleScroll() {
-	isScrolled.value = window.scrollY > SCROLL_THRESHOLD;
-}
-
-onMounted(() => {
-	window.addEventListener("scroll", handleScroll);
-	handleScroll();
-});
-
-onUnmounted(() => {
-	window.removeEventListener("scroll", handleScroll);
-});
+const { isScrolled } = useScroll({ allowScrollEvent: true });
 </script>
 
 <template>
@@ -45,12 +31,14 @@ onUnmounted(() => {
 			<DSButtonPrimary
 				v-if="!isConnected"
 				as-child
-				class="hidden md:block space-x-2"
+				class="hidden md:inline-flex"
 			>
 				<RouterLink :to="connectionPage.createTo()">
 					{{ $t("cta.connection") }}
 				</RouterLink>
 			</DSButtonPrimary>
+
+			<AccountDropdown v-else />
 
 			<MobileSidebar />
 		</div>
