@@ -29,6 +29,7 @@ declare global {
   const computed: typeof import('vue')['computed']
   const connectionPage: typeof import('./src/domains/auth/router')['connectionPage']
   const createApp: typeof import('vue')['createApp']
+  const createExternalPromise: typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']
   const createPage: typeof import('./vendors/design-system/utils/createPage')['createPage']
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
@@ -104,6 +105,7 @@ declare global {
   const useSmoothEnabled: typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']
   const useSonner: typeof import('./vendors/design-system/composables/useSonner')['useSonner']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
+  const useWindow: typeof import('./vendors/design-system/composables/useWindow')['useWindow']
   const valueUpdater: typeof import('./vendors/design-system/lib/utils')['valueUpdater']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
@@ -134,6 +136,7 @@ declare module 'vue' {
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly connectionPage: UnwrapRef<typeof import('./src/domains/auth/router')['connectionPage']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
+    readonly createExternalPromise: UnwrapRef<typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']>
     readonly createPage: UnwrapRef<typeof import('./vendors/design-system/utils/createPage')['createPage']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
@@ -208,6 +211,7 @@ declare module 'vue' {
     readonly useSmoothEnabled: UnwrapRef<typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']>
     readonly useSonner: UnwrapRef<typeof import('./vendors/design-system/composables/useSonner')['useSonner']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
+    readonly useWindow: UnwrapRef<typeof import('./vendors/design-system/composables/useWindow')['useWindow']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>

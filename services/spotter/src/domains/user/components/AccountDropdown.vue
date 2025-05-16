@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
-const { deleteAccessToken } = useUserInformation();
+const { disconect } = useUserInformation();
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const { deleteAccessToken } = useUserInformation();
 
 			<DSDropdownMenuSeparator />
 
-			<DSDropdownMenuItem @click="deleteAccessToken">
+			<DSDropdownMenuItem @click="disconect">
 				<span class="cursor-pointer">{{ $t("layout.base.header.accountDropdown.disconnect") }}</span>
 			</DSDropdownMenuItem>
 		</DSDropdownMenuContent>

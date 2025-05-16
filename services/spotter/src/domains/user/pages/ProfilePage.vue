@@ -1,17 +1,32 @@
 <script setup lang="ts">
+import type { User } from "@/lib/horizon/types/user";
 import { useUserInformation } from "../composables/useUserInformation";
 
+const router = useRouter();
 const { $pt } = profilePage.use();
+const user = ref<User | null>(null);
+const { promisedRequestInformation } = useUserInformation();
 
-const { fetchInformation, user } = useUserInformation();
+void promisedRequestInformation.value!
+	.then(
+		({ information, body }) => {
+			if (information === "user.self") {
+				user.value = body;
+			} else {
+				void router.push(
+					homePage.createTo(),
+				);
+			}
+		},
+	);
 
-onMounted(async() => {
-	await fetchInformation();
-});
 </script>
 
 <template>
-	<div class="min-h-[calc(100vh-6rem-2rem)]">
+	<div
+		v-if="user"
+		class="min-h-[calc(100vh-6rem-2rem)]"
+	>
 		<section class="mb-12 flex flex-col-reverse md:flex-row gap-6 md:gap-12 items-center">
 			<div class="space-y-6 w-full md:w-2/3">
 				<h1 class="text-2xl md:text-3xl font-bold">
@@ -26,7 +41,7 @@ onMounted(async() => {
 
 						<DSInput
 							id="last-name"
-							:default-value="user?.username"
+							v-model="user.username"
 							disabled
 						/>
 					</div>
@@ -39,7 +54,7 @@ onMounted(async() => {
 						<DSInput
 							id="email"
 							type="email"
-							:default-value="user?.email"
+							:model-value="user.email"
 							disabled
 						/>
 					</div>

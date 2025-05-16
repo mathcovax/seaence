@@ -1,7 +1,13 @@
 import type { User } from "@/lib/horizon/types/user";
+import type { FindHttpClientRoute, PromiseRequest } from "@duplojs/http-client";
 
 const accessTokenLocalStorageKey = "accessToken";
 const user = ref<User | null>(null);
+
+type RequestInformation = PromiseRequest<FindHttpClientRoute<HorizonClientRoute, "POST", "/user">["response"]>;
+const externalPromisedRequestInformation = ref(createExternalPromise<RequestInformation>());
+
+const { refresh } = useWindow();
 
 export function useUserInformation() {
 	const accessTokenItem = useLocalStorageItem<string>(accessTokenLocalStorageKey);
@@ -10,8 +16,9 @@ export function useUserInformation() {
 		accessTokenItem.value = accessToken;
 	}
 
-	function deleteAccessToken() {
+	function disconect() {
 		accessTokenItem.value = null;
+		refresh();
 	}
 
 	const isConnected = computed(() => !!user.value);
@@ -19,10 +26,15 @@ export function useUserInformation() {
 	const accessToken = computed(() => accessTokenItem.value);
 
 	function fetchInformation() {
-		return window.horizonClient
-			.post("/me")
+		const externalPromise = createExternalPromise<RequestInformation>();
+
+		externalPromisedRequestInformation.value.resolve(externalPromise.promise);
+		externalPromisedRequestInformation.value = externalPromise;
+
+		const result = window.horizonClient
+			.post("/user")
 			.whenInformation(
-				"me.info.get",
+				"user.self",
 				({ body }) => {
 					user.value = body;
 				},
@@ -32,15 +44,22 @@ export function useUserInformation() {
 					accessTokenItem.value = null;
 				},
 			);
+
+		externalPromise.resolve(result);
+
+		return result;
 	}
 
 	return {
 		setAccessToken,
-		deleteAccessToken,
+		disconect,
 		fetchInformation,
 		isConnected,
 		accessToken,
 		user,
+		promisedRequestInformation: computed(
+			() => externalPromisedRequestInformation.value!.promise,
+		),
 	};
 }
 

@@ -3,22 +3,7 @@ import AccountDropdown from "@/domains/user/components/AccountDropdown.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { isConnected } = useUserInformation();
-
-const isScrolled = ref(false);
-
-const SCROLL_THRESHOLD = 0;
-function handleScroll() {
-	isScrolled.value = window.scrollY > SCROLL_THRESHOLD;
-}
-
-onMounted(() => {
-	window.addEventListener("scroll", handleScroll);
-	handleScroll();
-});
-
-onUnmounted(() => {
-	window.removeEventListener("scroll", handleScroll);
-});
+const { isScrolled } = useScroll({ allowScrollEvent: true });
 </script>
 
 <template>
