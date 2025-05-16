@@ -5,7 +5,7 @@ import { articleTypeAggregationsResultsToFacet, type ArticleTypeFilterValues, bu
 import { buildYearAggregation, yearAggregationsResultsToFacet, type YearFacet, type YearAggregationsResults, type YearFilterValues, buildYearFilter } from "./year";
 import { buildSpeciesAggregation, speciesAggregationResultsToFacet, type SpeciesFacet, type SpeciesAggregationsResults, buildSpeciesFilter, type SpeciesFilterValues } from "./species";
 import { elastic } from "@interfaces/providers/elastic";
-import { match, P } from "ts-pattern";
+import { match } from "ts-pattern";
 import { buildSimpleSearchQuery } from "../simple";
 import { removeElasticRequestFields } from "@interfaces/utils/removeElasticRequestFields";
 import { type OperatorContent } from "@vendors/types-advanced-query";
@@ -96,32 +96,15 @@ export function aggregationsResultsToFacetWrapper(
 		speciesResult,
 	}: AggregationsResults,
 ): Facets {
-	const facets: Facets = [
+	return [
 		yearAggregationsResultsToFacet({
 			webPublishYearResult,
 			journalPublishYearResult,
 		}),
+		articleTypeAggregationsResultsToFacet(articleTypeResult),
+		genderAggregationResultsToFacet(genderResult),
+		speciesAggregationResultsToFacet(speciesResult),
 	];
-
-	const articleTypeFacet = articleTypeAggregationsResultsToFacet(articleTypeResult);
-
-	if (articleTypeFacet) {
-		facets.push(articleTypeFacet);
-	}
-
-	const genderFacet = genderAggregationResultsToFacet(genderResult);
-
-	if (genderFacet) {
-		facets.push(genderFacet);
-	}
-
-	const speciesFacet = speciesAggregationResultsToFacet(speciesResult);
-
-	if (speciesFacet) {
-		facets.push(speciesFacet);
-	}
-
-	return facets;
 }
 
 export type FiltersValues =

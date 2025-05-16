@@ -73,6 +73,7 @@ function onSubmit() {
 					:items="bakedDocumentLanguageEnum.toTuple()"
 					class="w-22 border-0 shadow-none"
 					@click="$event.stopPropagation()"
+					size="sm"
 				/>
 
 				<DSIcon

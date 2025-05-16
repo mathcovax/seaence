@@ -17,7 +17,7 @@ const props = defineProps<{
 	document: Document;
 }>();
 
-const score = computed(() => Math.round(props.document.score));
+const score = computed(() => Math.ceil(props.document.score));
 const authors = computed(() => props.document.authors.join(", "));
 const wenPublishDate = computed(
 	() => props.document.webPublishDate
@@ -68,7 +68,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 			<div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
 				<div class="flex items-center gap-1">
 					<DSIcon
-						name="user"
+						name="account"
 						size="small"
 					/>
 

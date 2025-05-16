@@ -12,6 +12,7 @@ interface Props extends SelectRootProps {
 	placeholder?: string;
 	label?(item: GenericItem): string;
 	class?: HTMLAttributes["class"];
+	size?: "default" | "sm";
 }
 const props = defineProps<Props>();
 const emits = defineEmits<SelectRootEmits>();
@@ -42,7 +43,10 @@ function getLabel(item: GenericItem) {
 		v-bind="forwarded"
 		v-model="model"
 	>
-		<DSSelectTrigger :class="props.class">
+		<DSSelectTrigger
+			:class="props.class"
+			:size="size"
+		>
 			<DSSelectValue :placeholder="placeholder" />
 		</DSSelectTrigger>
 

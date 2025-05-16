@@ -191,7 +191,6 @@ declare module 'vue' {
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly simpleSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['simpleSearchPage']>
-    readonly testPage: UnwrapRef<typeof import('./src/domains/search/router')['testPage']>
     readonly toArrayZodSchema: UnwrapRef<typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>

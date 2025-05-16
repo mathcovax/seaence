@@ -6,6 +6,7 @@ import SearchResultWrapper from "../components/SearchResultWrapper.vue";
 import SearchContainer from "../components/SearchContainer.vue";
 import { convertQueryToSearchParams, convertSearchParamsToQuery } from "../utils/convertQuery";
 import type { SearchParams } from "@/lib/horizon/types/search";
+import AdvancedSearchInput from "../components/AdvancedSearchInput.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -13,6 +14,10 @@ const currentSearcghPage
 	= route.name === simpleSearchPage.name
 		? simpleSearchPage
 		: advancedSearchPage;
+const searchMode
+	= route.name === simpleSearchPage.name
+		? "simple"
+		: "advanced";
 
 const { $pt, query } = currentSearcghPage.use();
 const { scrollToTop } = useScroll();
@@ -29,12 +34,9 @@ const defaultPageSearchParams = convertQueryToSearchParams(
 );
 const searchParams = reactive({
 	...defaultPageSearchParams,
-	term: route.name === simpleSearchPage.name
-		? defaultPageSearchParams.term
-		: "",
 	filtersValues: defaultPageSearchParams.filtersValues ?? {},
 });
-const isResultExpanded = ref(!!searchParams.term);
+const isResultExpanded = ref(false);
 const searchContainerRef = ref<InstanceType<typeof SearchContainer> | null>(null);
 
 function submit(
@@ -49,7 +51,7 @@ function submit(
 		.then(
 			() => router
 				.push(
-					simpleSearchPage.createTo({
+					currentSearcghPage.createTo({
 						query: convertSearchParamsToQuery(searchParams),
 					}),
 				),
@@ -64,7 +66,7 @@ function submit(
 	isResultExpanded.value = true;
 }
 
-function commitParams() {
+function commitSearchParams() {
 	searchParams.page = defaultPage;
 	submit(searchParams);
 }
@@ -86,7 +88,8 @@ const queryWatcher = watchPausable(
 	},
 );
 
-if (searchParams.term) {
+if (route.query.term) {
+	isResultExpanded.value = true;
 	submit(searchParams);
 }
 
@@ -104,13 +107,13 @@ onMounted(() => {
 
 		<SearchContainer
 			ref="searchContainerRef"
-			search-mode="simple"
+			:search-mode="searchMode"
 			:is-expanded="isResultExpanded"
 			:is-fetching="isFetching"
 			:result="result"
 			:total="result?.total"
 			v-model:filters-values="searchParams.filtersValues"
-			@commit-filters-values="commitParams"
+			@commit-filters-values="commitSearchParams"
 		>
 			<SimpleSearchInput
 				v-if="typeof searchParams.term === 'string'"
@@ -118,7 +121,15 @@ onMounted(() => {
 				v-model:language="searchParams.language"
 				v-model="searchParams.term"
 				:placeholder="$pt('searchInput.placeholder')"
-				@submit="commitParams"
+				@submit="commitSearchParams"
+			/>
+
+			<AdvancedSearchInput
+				v-else
+				class="w-full"
+				v-model:language="searchParams.language"
+				v-model="searchParams.term"
+				@submit="commitSearchParams"
 			/>
 		</SearchContainer>
 

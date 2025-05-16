@@ -1,13 +1,17 @@
 import type {
 	ArticleType,
-	FiltersValues,
 	GenderFacetValue,
+	OperatorContent,
 	SpeciesFacetValue,
 } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import type { ZodObject } from "zod";
 import type { searchPageQuery } from "../router";
 import type { SearchParams } from "@/lib/horizon/types/search";
-import { operatorContentSchema } from "@vendors/types-advanced-query";
+import {
+	operatorContentSchema,
+} from "@vendors/types-advanced-query";
+import { jsonKeyChanger, reverseJsonKeyChanger } from "./jsonKeyChanger";
+import { stringCompresor, stringDecompresor } from "./stringCompressor";
 
 export type SearchPageQueryInput = ZodObject<typeof searchPageQuery>["_input"];
 export type SearchPageQueryOutput = ZodObject<typeof searchPageQuery>["_output"];
@@ -19,6 +23,14 @@ export interface QueryFilters {
 	year?: [number, number];
 }
 
+const keyMapper: Record<string, string> = {
+	type: "t",
+	name: "n",
+	value: "v",
+	field: "f",
+	content: "c",
+};
+
 const queryYearIndex = {
 	from: 0,
 	to: 1,
@@ -26,7 +38,20 @@ const queryYearIndex = {
 
 type SearchPage = typeof simpleSearchPage | typeof advancedSearchPage;
 
-function getCorrectQueryTerm(
+export const defaultValue: OperatorContent = {
+	type: "operator",
+	name: "and",
+	content: [
+		{
+			type: "comparator",
+			name: "text",
+			field: "allField",
+			value: "",
+		},
+	],
+};
+
+function queryTermToTerm(
 	currentSearchPage: SearchPage,
 	term: SearchPageQueryOutput["term"],
 ): SearchParams["term"] {
@@ -35,23 +60,17 @@ function getCorrectQueryTerm(
 	}
 	try {
 		const result = operatorContentSchema.parse(
-			JSON.parse(term),
+			reverseJsonKeyChanger(
+				JSON.parse(
+					stringDecompresor(term),
+				),
+				keyMapper,
+			),
 		);
 
 		return result;
 	} catch {
-		return {
-			type: "operator",
-			name: "and",
-			content: [
-				{
-					type: "comparator",
-					name: "text",
-					field: "allField",
-					value: "",
-				},
-			],
-		};
+		return defaultValue;
 	}
 }
 
@@ -60,7 +79,7 @@ export function convertQueryToSearchParams(
 	query: SearchPageQueryOutput,
 ): Required<SearchParams> {
 	return {
-		term: getCorrectQueryTerm(currentSearchPage, query.term),
+		term: queryTermToTerm(currentSearchPage, query.term),
 		page: query.page,
 		language: query.language,
 		filtersValues: {
@@ -75,6 +94,21 @@ export function convertQueryToSearchParams(
 	};
 }
 
+function termToQueryTerm(value: string | OperatorContent): string {
+	if (typeof value === "string") {
+		return value;
+	} else {
+		return stringCompresor(
+			JSON.stringify(
+				jsonKeyChanger(
+					value,
+					keyMapper,
+				),
+			),
+		);
+	}
+}
+
 export function convertSearchParamsToQuery(
 	{
 		term,
@@ -84,7 +118,7 @@ export function convertSearchParamsToQuery(
 	}: SearchParams,
 ): SearchPageQueryInput {
 	return {
-		term,
+		term: termToQueryTerm(term),
 		page,
 		language,
 		articleType: filtersValues?.articleType,

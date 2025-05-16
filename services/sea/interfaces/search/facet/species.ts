@@ -50,37 +50,17 @@ export type SpeciesFacet = Facet<
 	FacetValue<Species>
 >;
 
-function computeSpeciesFacet(
-	species: Species,
-	speciesResult: SpeciesAggregationsResults["speciesResult"],
-): SpeciesFacet["values"] {
-	if (speciesResult.buckets[species].doc_count) {
-		return [
-			{
-				value: species,
-				quantity: speciesResult.buckets[species].doc_count,
-			},
-		];
-	} else {
-		return [];
-	}
-}
-
 export function speciesAggregationResultsToFacet(
 	speciesResult: SpeciesAggregationsResults["speciesResult"],
-): SpeciesFacet | null {
-	const values = [
-		...computeSpeciesFacet("human", speciesResult),
-		...computeSpeciesFacet("otherAnimal", speciesResult),
-	];
-
-	if (!values.length) {
-		return null;
-	}
-
+): SpeciesFacet {
 	return {
 		name: "species",
-		values,
+		values: speciesEnum
+			.toTuple()
+			.map((value) => ({
+				value,
+				quantity: speciesResult.buckets[value].doc_count,
+			})),
 	};
 }
 

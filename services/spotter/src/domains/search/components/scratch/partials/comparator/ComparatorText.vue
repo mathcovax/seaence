@@ -25,7 +25,6 @@ const { hintMessage } = useHintMessage(
 		},
 	}),
 );
-
 </script>
 
 <template>
@@ -57,6 +56,8 @@ const { hintMessage } = useHintMessage(
 			/>
 
 			<DSInput
+				@dragstart="console.log('test')"
+				draggable="false"
 				v-model="model.value"
 				:placeholder="$t('search.scratch.comparator.text.inputPlaceholder')"
 				class="text-sm"

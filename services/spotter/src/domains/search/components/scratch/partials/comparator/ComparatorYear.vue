@@ -57,7 +57,9 @@ const { hintMessage } = useHintMessage(
 			/>
 
 			<DSInput
+				@dragstart.prevent
 				type="number"
+				mode="numeric"
 				v-model="model.value"
 				placeholder="1999"
 				class="text-sm"

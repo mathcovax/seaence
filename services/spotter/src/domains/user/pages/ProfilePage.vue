@@ -61,11 +61,13 @@ void promisedRequestInformation.value!
 				</div>
 			</div>
 
-			<DSIcon
-				name="account"
-				size="200"
-				class="w-1/2 md:w-1/3 mt-4 md:mt-0 text-primary"
-			/>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				class="w-[160px] aspect-square fill-primary"
+			>
+				<path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+			</svg>
 		</section>
 
 		<section>

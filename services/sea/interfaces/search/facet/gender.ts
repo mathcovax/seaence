@@ -54,33 +54,25 @@ function computeGenderFacet(
 	gender: Gender,
 	genderResult: GenderAggregationsResults["genderResult"],
 ): GenderFacet["values"] {
-	if (genderResult.buckets[gender].doc_count) {
-		return [
-			{
-				value: gender,
-				quantity: genderResult.buckets[gender].doc_count,
-			},
-		];
-	} else {
-		return [];
-	}
+	return [
+		{
+			value: gender,
+			quantity: genderResult.buckets[gender].doc_count,
+		},
+	];
 }
 
 export function genderAggregationResultsToFacet(
 	genderResult: GenderAggregationsResults["genderResult"],
-): GenderFacet | null {
-	const values = [
-		...computeGenderFacet("female", genderResult),
-		...computeGenderFacet("male", genderResult),
-	];
-
-	if (!values.length) {
-		return null;
-	}
-
+): GenderFacet {
 	return {
 		name: "gender",
-		values,
+		values: genderEnum
+			.toTuple()
+			.map((value) => ({
+				value,
+				quantity: genderResult.buckets[value].doc_count,
+			})),
 	};
 }
 

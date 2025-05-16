@@ -27,15 +27,7 @@ export const advancedSearchPage = createPage(
 	"advancedSearch",
 	{
 		path: "/advanced-search",
-		component: () => import("./pages/AdvancedSearchPage.vue"),
+		component: () => import("./pages/SearchPage.vue"),
 		query: searchPageQuery,
-	},
-);
-
-export const testPage = createPage(
-	"test",
-	{
-		path: "/test",
-		component: () => import("./pages/TestPage.vue"),
 	},
 );

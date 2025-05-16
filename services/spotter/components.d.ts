@@ -74,6 +74,7 @@ declare module 'vue' {
     DSLabel: typeof import('./vendors/design-system/components/ui/label/DSLabel.vue')['default']
     DSLoadingLogo: typeof import('./vendors/design-system/components/DSLoadingLogo.vue')['default']
     DSMultiComboBox: typeof import('./vendors/design-system/components/DSMultiComboBox.vue')['default']
+    DSOpenTansition: typeof import('./vendors/design-system/components/DSOpenTansition.vue')['default']
     DSPagination: typeof import('./vendors/design-system/components/ui/pagination/DSPagination.vue')['default']
     DSPaginationEllipsis: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationEllipsis.vue')['default']
     DSPaginationFirst: typeof import('./vendors/design-system/components/ui/pagination/DSPaginationFirst.vue')['default']

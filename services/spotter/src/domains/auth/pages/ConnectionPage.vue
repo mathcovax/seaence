@@ -6,19 +6,16 @@ import { useUserInformation } from "@/domains/user/composables/useUserInformatio
 
 const { $pt } = connectionPage.use();
 const router = useRouter();
-const { setAccessToken, isConnected } = useUserInformation();
+const { setAccessToken, promisedRequestInformation } = useUserInformation();
 
-watch(
-	isConnected,
-	() => {
-		if (isConnected.value) {
+void promisedRequestInformation.value!
+	.then(({ information }) => {
+		if (information === "user.self") {
 			void router.push(
 				homePage.createTo(),
 			);
 		}
-	},
-	{ immediate: true },
-);
+	});
 
 const { sonnerError } = useSonner();
 

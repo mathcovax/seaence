@@ -23,17 +23,13 @@ export type ArticleTypeFacet = Facet<
 
 export function articleTypeAggregationsResultsToFacet(
 	articleTypeResult: ArticleTypeAggregationsResults["articleTypeResult"],
-): ArticleTypeFacet | null {
+): ArticleTypeFacet {
 	const values = articleTypeResult.buckets.map(
 		({ key, doc_count }) => ({
 			value: key,
 			quantity: doc_count,
 		}),
 	);
-
-	if (!values.length) {
-		return null;
-	}
 
 	return {
 		name: "articleType",

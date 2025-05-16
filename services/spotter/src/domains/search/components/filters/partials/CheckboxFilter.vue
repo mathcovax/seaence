@@ -49,7 +49,7 @@ function toggleValue(selectedValue: GenericFacet["values"][number]["value"]) {
 				<DSCheckbox
 					:model-value="modelValue.includes(value)"
 				/>
-				{{ value }}
+				{{ $t(`search.facet.${facet.name}.values.${value}`) }}
 				({{ quantity }})
 			</div>
 		</div>

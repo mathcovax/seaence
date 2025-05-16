@@ -42,7 +42,7 @@ function resetFiltersValues() {
 
 <template>
 	<div
-		class="bg-gray-50 rounded-lg p-4 border border-gray-100 shadow-inner"
+		class="bg-gray-50 rounded-b-lg p-4 border border-gray-100 shadow-inner"
 	>
 		<div class="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 			<component

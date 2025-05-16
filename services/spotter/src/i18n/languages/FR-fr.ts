@@ -1,4 +1,9 @@
-import type { ArticleType, Facet } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type {
+	ArticleType,
+	Facet,
+	GenderFacetValue,
+	SpeciesFacetValue,
+} from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/types-advanced-query";
 
 export const FRfr = {
@@ -152,6 +157,8 @@ export const FRfr = {
 		filters: {
 			showFilters: "Afficher les filtres",
 			hideFilters: "Masquer les filtres",
+			showScratch: "Afficher l'équation",
+			hideScratch: "Masquer l'équation",
 			label: {
 				articleType: "Type d'article",
 				publicationYear: "Année de publication",
@@ -167,8 +174,20 @@ export const FRfr = {
 			},
 		},
 		facet: {
-			gender: { label: "Genre" },
-			species: { label: "Espèce" },
+			gender: {
+				label: "Genre",
+				values: {
+					male: "Homme",
+					female: "Femme",
+				} satisfies Record<GenderFacetValue, string>,
+			},
+			species: {
+				label: "Espèce",
+				values: {
+					human: "Humain",
+					otherAnimal: "Autre Animals",
+				} satisfies Record<SpeciesFacetValue, string>,
+			},
 			articleType: {
 				label: "Type d'article",
 				get valueLabel() {
