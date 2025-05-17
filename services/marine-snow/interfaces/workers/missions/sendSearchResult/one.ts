@@ -44,7 +44,7 @@ export async function mission(mission: SupportedSendOneSearchResultMission) {
 		.with(
 			{ provider: "pubmed" },
 			async(searchResult) => {
-				const result = await pubmedSender(searchResult.reference);
+				const result = await pubmedSender([searchResult.reference]);
 
 				if (result instanceof Error) {
 					deepLog({

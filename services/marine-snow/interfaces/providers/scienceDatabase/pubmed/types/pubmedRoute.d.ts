@@ -33,7 +33,7 @@ export type PubMedRoute =
 		path: "/entrez/eutils/efetch.fcgi";
 		query: {
 			db: string;
-			id: string;
+			id: string | string[];
 			retmode: string;
 		};
 		response:

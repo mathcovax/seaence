@@ -26,8 +26,6 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 				/>
 			</RouterLink>
 
-			<!-- <SearchOverlay /> -->
-
 			<DSButtonPrimary
 				v-if="!isConnected"
 				as-child

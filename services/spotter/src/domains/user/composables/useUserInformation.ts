@@ -58,7 +58,7 @@ export function useUserInformation() {
 		accessToken,
 		user,
 		promisedRequestInformation: computed(
-			() => externalPromisedRequestInformation.value!.promise,
+			() => externalPromisedRequestInformation.value.promise,
 		),
 	};
 }
