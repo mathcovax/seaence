@@ -5,7 +5,7 @@
   "scripts": {
     "duplo:start": "tsx interfaces/http/main.ts",
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
-    "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/horizon/duplojsTypesCodegen.d.ts",
+    "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --require interfaces/http/plugins/generate.ts --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/horizon/duplojsTypesCodegen.d.ts",
     "test:lint": "eslint",
     "test:types": "tsc",
     "postinstall": "npm run duplo:generate"
@@ -14,12 +14,13 @@
     "@duplojs/core": "1.0.3",
     "@duplojs/http-client": "1.2.3",
     "@duplojs/node": "1.0.1",
+    "@duplojs/utils": "0.3.1",
     "dotenv": "16.4.5",
     "dotenv-expand": "12.0.1",
     "ts-pattern": "5.7.0"
   },
   "devDependencies": {
-    "@duplojs/types-codegen": "1.1.2",
+    "@duplojs/types-codegen": "1.1.3",
     "@types/node": "22.13.10",
     "tsx": "4.19.3",
     "typescript": "5.8.2"

@@ -1,4 +1,10 @@
-import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/scratch-type";
+import type {
+	ArticleType,
+	Facet,
+	GenderFacetValue,
+	SpeciesFacetValue,
+} from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/types-advanced-query";
 
 export const FRfr = {
 	page: {
@@ -47,10 +53,9 @@ export const FRfr = {
 			googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
 		},
 		[simpleSearchPage.name]: {
-			showFilters: "Afficher les filtres",
-			hideFilters: "Masquer les filtres",
-			foundResults: "{count} résultat(s) trouvé(s)",
-			noResults: "Aucun résultat trouvé",
+			searchInput: {
+				placeholder: "Rechercher...",
+			},
 		},
 		[postPage.name]: {
 			backToPostList: "Retour à la liste des posts",
@@ -148,52 +153,93 @@ export const FRfr = {
 			title: "Chargement...",
 		},
 	},
-	filters: {
-		label: {
-			articleType: "Type d'article",
-			publicationYear: "Année de publication",
-			gender: "Sexe",
-		},
-		apply: "Appliquer les filtres",
-		reset: "Réinitialiser les filtres",
-	},
-	scratch: {
-		tabs: {
-			comparator: "Comparateur",
-			operator: "Opérateur",
-		},
-		comparator: {
-			text: {
-				selectPlaceholder: "Sélectionner un champ",
-				inputPlaceholder: "Entrer une valeur",
-				label: "Comparaison textuelle",
-				fields: {
-					allField: "Tous les champs",
-					abstract: "Abstract",
-					title: "Titre",
-				} satisfies Record<TextFieldEnumValue, string>,
+	search: {
+		filters: {
+			showFilters: "Afficher les filtres",
+			hideFilters: "Masquer les filtres",
+			showScratch: "Afficher l'équation",
+			hideScratch: "Masquer l'équation",
+			label: {
+				articleType: "Type d'article",
+				publicationYear: "Année de publication",
+				gender: "Sexe",
 			},
-			year: {
-				selectPlaceholder: "Sélectionner un champ",
-				label: "Comparaison d'années",
-				fields: {
-					allDate: "Toutes Dates",
-					journalDate: "publication journal",
-					webDate: "publication web",
-				} satisfies Record<YearFieldEnumValue, string>,
+			apply: "Appliquer les filtres",
+			reset: "Réinitialiser les filtres",
+			multiSelect: {
+				articleType: {
+					placeholder: "Selectionez un type d'article",
+					emptyLabel: "Type d'article non touvez",
+				},
 			},
 		},
-		operator: {
-			and: {
-				label: "ET",
+		facet: {
+			gender: {
+				label: "Genre",
+				values: {
+					male: "Homme",
+					female: "Femme",
+				} satisfies Record<GenderFacetValue, string>,
 			},
-			or: {
-				label: "OU",
+			species: {
+				label: "Espèce",
+				values: {
+					human: "Humain",
+					otherAnimal: "Autre Animals",
+				} satisfies Record<SpeciesFacetValue, string>,
 			},
-			not: {
-				label: "NON",
+			articleType: {
+				label: "Type d'article",
+				get valueLabel() {
+					return FRfr.articleType;
+				},
+			},
+			year: { label: "Année" },
+		} satisfies Record<Facet["name"], object>,
+		scratch: {
+			title: "Recherche avancée",
+			reset: "Réinitialiser",
+			hide: "Masquer le scratch",
+			show: "Afficher le scratch",
+			tabs: {
+				comparator: "Comparateur",
+				operator: "Opérateur",
+			},
+			comparator: {
+				text: {
+					selectPlaceholder: "Sélectionner un champ",
+					inputPlaceholder: "Entrer une valeur",
+					label: "Comparaison textuelle",
+					fields: {
+						allField: "Tous les champs",
+						abstract: "Abstract",
+						title: "Titre",
+					} satisfies Record<TextFieldEnumValue, string>,
+				},
+				year: {
+					selectPlaceholder: "Sélectionner un champ",
+					label: "Comparaison d'années",
+					fields: {
+						allDate: "Toutes Dates",
+						journalDate: "publication journal",
+						webDate: "publication web",
+					} satisfies Record<YearFieldEnumValue, string>,
+				},
+			},
+			operator: {
+				and: {
+					label: "ET",
+				},
+				or: {
+					label: "OU",
+				},
+				not: {
+					label: "NON",
+				},
 			},
 		},
+		foundResults: "{count} résultat(s) trouvé(s)",
+		noResult: "Aucun résultat trouvé",
 	},
 	formMessage: {
 		required: "Champ obligatoire.",
@@ -219,6 +265,90 @@ export const FRfr = {
 		send: "Envoyer",
 		seeMore: "Voir plus",
 	},
+	articleType: {
+		adaptiveClinicalTrial: "Essai clinique adaptatif",
+		address: "Adresse",
+		autobiography: "Autobiographie",
+		bibliography: "Bibliographie",
+		biography: "Biographie",
+		booksAndDocuments: "Livres et documents",
+		caseReports: "Rapports de cas",
+		classicalArticle: "Article classique",
+		clinicalConference: "Conférence clinique",
+		clinicalStudy: "Étude clinique",
+		clinicalTrial: "Essai clinique",
+		clinicalTrialProtocol: "Protocole d'essai clinique",
+		clinicalTrialPhaseI: "Essai clinique phase I",
+		clinicalTrialPhaseII: "Essai clinique phase II",
+		clinicalTrialPhaseIII: "Essai clinique phase III",
+		clinicalTrialPhaseIV: "Essai clinique phase IV",
+		clinicalTrialVeterinary: "Essai clinique vétérinaire",
+		collectedWork: "Travail collectif",
+		comment: "Commentaire",
+		comparativeStudy: "Étude comparative",
+		congress: "Congrès",
+		consensusDevelopmentConference: "Conférence de consensus",
+		consensusDevelopmentConferenceNIH: "Conférence de consensus NIH",
+		controlledClinicalTrial: "Essai clinique contrôlé",
+		correctedAndRepublishedArticle: "Article corrigé et republié",
+		dataset: "Jeu de données",
+		dictionary: "Dictionnaire",
+		directory: "Répertoire",
+		duplicatePublication: "Publication en double",
+		editorial: "Éditorial",
+		electronicSupplementaryMaterials: "Matériaux supplémentaires électroniques",
+		englishAbstract: "Résumé en anglais",
+		equivalenceTrial: "Essai d'équivalence",
+		evaluationStudy: "Étude d'évaluation",
+		expressionOfConcern: "Expression de préoccupation",
+		festschrift: "Festschrift",
+		governmentPublication: "Publication gouvernementale",
+		guideline: "Directive",
+		historicalArticle: "Article historique",
+		interactiveTutorial: "Tutoriel interactif",
+		interview: "Entretien",
+		introductoryJournalArticle: "Article de journal introductif",
+		journalArticle: "Article de journal",
+		lecture: "Conférence",
+		legalCase: "Affaire juridique",
+		legislation: "Législation",
+		letter: "Lettre",
+		metaAnalysis: "Méta-analyse",
+		multicenterStudy: "Étude multicentrique",
+		news: "Actualités",
+		newspaperArticle: "Article de journal",
+		observationalStudy: "Étude observationnelle",
+		observationalStudyVeterinary: "Étude observationnelle vétérinaire",
+		overall: "Global",
+		patientEducationHandout: "Brochure d'éducation du patient",
+		periodicalIndex: "Index périodique",
+		personalNarrative: "Récit personnel",
+		portrait: "Portrait",
+		practiceGuideline: "Guide de pratique",
+		pragmaticClinicalTrial: "Essai clinique pragmatique",
+		preprint: "Prépublication",
+		publishedErratum: "Erratum publié",
+		randomizedControlledTrial: "Essai contrôlé randomisé",
+		randomizedControlledTrialVeterinary: "Essai contrôlé randomisé vétérinaire",
+		researchSupportAmericanRecoveryAndReinvestmentAct: "Soutien à la recherche (ARRA)",
+		researchSupportNIHExtramural: "Soutien à la recherche NIH (extramural)",
+		researchSupportNIHIntramural: "Soutien à la recherche NIH (intramural)",
+		researchSupportNonUSGovt: "Soutien à la recherche (hors gouvernement américain)",
+		researchSupportUSGovtNonPHS: "Soutien à la recherche (gouvernement américain hors PHS)",
+		researchSupportUSGovtPHS: "Soutien à la recherche (gouvernement américain PHS)",
+		researchSupportUSGovt: "Soutien à la recherche (gouvernement américain)",
+		retractedPublication: "Publication rétractée",
+		retractionOfPublication: "Rétractation de publication",
+		review: "Revue",
+		scopingReview: "Revue de cadrage",
+		scientificIntegrityReview: "Revue d'intégrité scientifique",
+		systematicReview: "Revue systématique",
+		technicalReport: "Rapport technique",
+		twinStudy: "Étude sur les jumeaux",
+		validationStudy: "Étude de validation",
+		videoAudioMedia: "Média vidéo/audio",
+		webcast: "Webcast",
+	} satisfies Record<ArticleType, string>,
 	responses: {
 		user: {
 			logged: "Connexion réalisé avec succés.",

@@ -2,6 +2,7 @@ import { seaRepository } from "@business/applications/repositories/sea";
 import { type Provider, providerEnum } from "@business/domains/common/provider";
 import { SeaAPI } from "@interfaces/providers/sea";
 import { TechnicalError } from "@vendors/clean/error";
+import { match, P } from "ts-pattern";
 
 seaRepository.default = {
 	save() {
@@ -37,19 +38,57 @@ seaRepository.default = {
 		const providers = restSimplifyObject
 			.resources
 			.map(({ resourceProvider }) => resourceProvider)
-			.filter((resourceProvider): resourceProvider is Provider["value"] => providerEnum.has(resourceProvider))
-			.map((value) => ({ value }));
+			.filter((resourceProvider): resourceProvider is Provider["value"] => providerEnum.has(resourceProvider));
+
+		const { abstract, abstractDetails } = restSimplifyObject;
+
+		const summaryTronc = {
+			from: 0,
+			to: 300,
+		};
+
+		const joinedAbstractDetails = abstractDetails
+			?.map(({ content, label }) => `${label}: ${content}`)
+			.join(" ") ?? null;
+
+		const summary = match({
+			abstract,
+			joinedAbstractDetails,
+		})
+			.with(
+				{ abstract: P.nonNullable },
+				({ abstract }) => abstract.substring(summaryTronc.from, summaryTronc.to),
+			)
+			.with(
+				{ joinedAbstractDetails: P.nonNullable },
+				({ joinedAbstractDetails }) => joinedAbstractDetails
+					.substring(summaryTronc.from, summaryTronc.to),
+			)
+			.with(
+				{
+					abstract: null,
+					joinedAbstractDetails: null,
+				},
+				() => null,
+			)
+			.exhaustive();
 
 		await SeaAPI.sendDocument(
 			language,
 			{
-				abysBakedDocumentId: restSimplifyObject.id,
+				bakedDocumentId: restSimplifyObject.id,
 				articleTypes: restSimplifyObject.articleTypes,
-				authors: restSimplifyObject.authors,
+				authors: restSimplifyObject.authors.map(
+					({ name }) => name,
+				),
 				title: restSimplifyObject.title,
-				abstract: restSimplifyObject.abstract ?? "",
-				abstractDetails: restSimplifyObject.abstractDetails,
-				keywords: restSimplifyObject.keywords,
+				summary: summary && `${summary}..`,
+				abstract: abstract
+					?? joinedAbstractDetails
+					?? null,
+				keywords: restSimplifyObject.keywords.map(
+					({ value }) => value,
+				),
 				providers,
 				webPublishDate,
 				webPublishSplitDate: restSimplifyObject.webPublishDate,

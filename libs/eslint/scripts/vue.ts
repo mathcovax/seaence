@@ -56,6 +56,7 @@ export const eslintConfigVue = [
 			"@typescript-eslint/no-unsafe-member-access": "off",
 			"@typescript-eslint/no-unsafe-unary-minus": "off",
 			"@typescript-eslint/no-redundant-type-constituents": "off",
+			"@typescript-eslint/no-use-before-define": "off",
 			"id-length": [
 				"error",
 				{

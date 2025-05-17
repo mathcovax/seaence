@@ -1,10 +1,11 @@
 import "@duplojs/node";
 import "@duplojs/node/globals";
 import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";
-import { cors } from "./plugins/cors";
 import { envs } from "../envs";
-import "./routes";
+import { cors } from "./plugins/cors";
 import { debug } from "@vendors/duplo-plugins/debug";
+import "./plugins/accelerator";
+import "./routes";
 
 const duplo = new Duplo({
 	environment: envs.ENVIROMENT,

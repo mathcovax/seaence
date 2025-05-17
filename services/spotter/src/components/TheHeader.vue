@@ -26,8 +26,6 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 				/>
 			</RouterLink>
 
-			<!-- <SearchOverlay /> -->
-
 			<DSButtonPrimary
 				v-if="!isConnected"
 				as-child
@@ -39,8 +37,6 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 			</DSButtonPrimary>
 
 			<AccountDropdown v-else />
-
-			<MobileSidebar />
 		</div>
 	</header>
 </template>

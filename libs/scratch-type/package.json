@@ -1,6 +1,0 @@
-{
-  "name": "@lib/scratch-type",
-  "dependencies": {
-    "zod": "3.24.2"
-  }
-}

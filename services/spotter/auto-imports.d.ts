@@ -76,12 +76,14 @@ declare global {
   const readonly: typeof import('vue')['readonly']
   const ref: typeof import('vue')['ref']
   const resolveComponent: typeof import('vue')['resolveComponent']
+  const searchPageQuery: typeof import('./src/domains/search/router')['searchPageQuery']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
   const sheetVariants: typeof import('./vendors/design-system/components/ui/sheet/index')['sheetVariants']
   const simpleSearchPage: typeof import('./src/domains/search/router')['simpleSearchPage']
   const testPage: typeof import('./src/domains/search/router')['testPage']
+  const toArrayZodSchema: typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
@@ -98,6 +100,7 @@ declare global {
   const useLocalStorageItem: typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']
   const useModel: typeof import('vue')['useModel']
   const useProvide: typeof import('./vendors/design-system/composables/useProvide')['useProvide']
+  const useRefHasChange: typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useScroll: typeof import('./vendors/design-system/composables/useScroll')['useScroll']
@@ -183,11 +186,12 @@ declare module 'vue' {
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
+    readonly searchPageQuery: UnwrapRef<typeof import('./src/domains/search/router')['searchPageQuery']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly simpleSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['simpleSearchPage']>
-    readonly testPage: UnwrapRef<typeof import('./src/domains/search/router')['testPage']>
+    readonly toArrayZodSchema: UnwrapRef<typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
@@ -204,6 +208,7 @@ declare module 'vue' {
     readonly useLocalStorageItem: UnwrapRef<typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
+    readonly useRefHasChange: UnwrapRef<typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useScroll: UnwrapRef<typeof import('./vendors/design-system/composables/useScroll')['useScroll']>

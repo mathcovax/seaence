@@ -2,7 +2,7 @@ import { match, P } from "ts-pattern";
 import OperatorAndOr from "./operator/OperatorAndOr.vue";
 import OperatorNot from "./operator/OperatorNot.vue";
 import type { OperatorContentEvent } from "./operatorContentWrapper";
-import type { Operator } from "@vendors/scratch-type";
+import type { Operator } from "@vendors/types-advanced-query";
 
 export function operatorWrapper(
 	operator: Operator,

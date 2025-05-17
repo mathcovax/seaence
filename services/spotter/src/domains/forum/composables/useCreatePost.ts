@@ -1,5 +1,4 @@
 import { horizonClient } from "@/lib/horizon";
-import type { DocumentId } from "@/lib/horizon/types/document";
 import { zod } from "@vendors/clean";
 
 const formInputRules = {
@@ -16,7 +15,7 @@ const formInputRules = {
 const errorFirstIndex = 0;
 
 export function useCreatePost(
-	documentId: Ref<DocumentId>,
+	documentId: Ref<string>,
 ) {
 	const { t } = useI18n();
 	const router = useRouter();

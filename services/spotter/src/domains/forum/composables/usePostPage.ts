@@ -1,12 +1,12 @@
 import type { AnswerList } from "@/lib/horizon/types/answer";
-import type { DocumentLanguage } from "@/lib/horizon/types/document";
 import type { PostPage } from "@/lib/horizon/types/post";
+import type { BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 const defaultAnswerPage = 0;
 
 export function usePostPage(
 	postId: Ref<string>,
-	language: Ref<DocumentLanguage>,
+	language: Ref<BakedDocumentLanguage>,
 	whenFindError: () => void,
 ) {
 	const postPageInformation = ref<PostPage | null>(null);

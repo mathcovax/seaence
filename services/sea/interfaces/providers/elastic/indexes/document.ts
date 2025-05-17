@@ -1,21 +1,22 @@
-/* eslint-disable camelcase */
+
 import { type estypes } from "@elastic/elasticsearch";
 import { type ArticleType } from "../common/articleType";
 import { type Provider } from "../common/provider";
-import { type ExpectType } from "@duplojs/utils";
+import { type UnionToTuple, type ExpectType } from "@duplojs/utils";
 import { ElasticDocument } from ".";
 import { languageEnum } from "../common/language";
+import { createEnum, type GetEnumValue } from "@vendors/clean";
 
 export const elasticDocumentMappingSchema = {
-
-	abysBakedDocumentId: {
+	bakedDocumentId: {
 		type: "keyword",
 	},
 	title: {
 		type: "text",
 		fields: {
-			keyword: {
-				type: "keyword",
+			stemmed: {
+				type: "text",
+				analyzer: "stemmer_analyzer",
 			},
 		},
 	},
@@ -23,47 +24,36 @@ export const elasticDocumentMappingSchema = {
 		type: "keyword",
 	},
 	authors: {
-		type: "nested",
-		properties: {
-			name: {
-				type: "text",
-				fields: {
-					keyword: {
-						type: "keyword",
-					},
-				},
-			},
-			affiliations: {
+		type: "text",
+		fields: {
+			keyword: {
 				type: "keyword",
+			},
+			strict: {
+				type: "text",
+				analyzer: "strict_analyzer",
 			},
 		},
 	},
-	abstract: {
+	summary: {
 		type: "text",
 	},
-	abstractDetails: {
-		type: "nested",
-		properties: {
-			name: {
-				type: "keyword",
-			},
-			content: {
+	abstract: {
+		type: "text",
+		fields: {
+			stemmed: {
 				type: "text",
+				analyzer: "stemmer_analyzer",
 			},
 		},
 	},
 	providers: {
-		type: "nested",
-		properties: {
-			value: {
-				type: "keyword",
-			},
-		},
+		type: "keyword",
 	},
 	keywords: {
-		type: "nested",
-		properties: {
-			value: {
+		type: "text",
+		fields: {
+			keyword: {
 				type: "keyword",
 			},
 		},
@@ -102,44 +92,22 @@ export const elasticDocumentMappingSchema = {
 	},
 } satisfies Record<string, estypes.MappingProperty>;
 
-export const elasticDocumentSettingsSchema = {
-	analysis: {
-		analyzer: {
-			default: {
-				type: "standard",
-			},
-		},
-	},
-	index: {
-		number_of_shards: 3,
-		number_of_replicas: 1,
-	},
-} satisfies estypes.IndicesIndexSettings;
-
 export interface Document {
-	abysBakedDocumentId: string;
+	bakedDocumentId: string;
 	title: string;
 	articleTypes: ArticleType[];
-	authors: {
-		name: string;
-		affiliations: string[] | null;
-	}[];
+	authors: string[];
+	summary: string | null;
 	abstract: string | null;
-	abstractDetails: {
-		name: string;
-		content: string;
-	}[] | null;
-	providers: {
-		value: Provider;
-	}[];
-	keywords: { value: string }[];
-	webPublishDate: Date | null;
+	providers: Provider[];
+	keywords: string[];
+	webPublishDate: string | null;
 	webPublishSplitDate: {
 		year: number;
 		month: number | null;
 		day: number | null;
 	} | null;
-	journalPublishDate: Date | null;
+	journalPublishDate: string | null;
 	journalPublishSplitDate: {
 		year: number;
 		month: number | null;
@@ -147,7 +115,7 @@ export interface Document {
 	} | null;
 }
 
-type _Check1 = ExpectType<
+type _ExpectSameKeyof = ExpectType<
 	keyof Document,
 	keyof typeof elasticDocumentMappingSchema,
 	"strict"
@@ -155,14 +123,144 @@ type _Check1 = ExpectType<
 
 export const enUsDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["en-US"]}`,
-	"abysBakedDocumentId",
-	elasticDocumentSettingsSchema,
+	"bakedDocumentId",
+	{
+		analysis: {
+			filter: {
+				stemmer_filter: {
+					type: "stemmer",
+					language: "english",
+				},
+				stop_filter: {
+					type: "stop",
+					stopwords: ["_english_"],
+				},
+			},
+			normalizer: {
+				flexible_normalizer: {
+					type: "custom",
+					filter: ["lowercase", "asciifolding"],
+				},
+			},
+			analyzer: {
+				default: {
+					type: "english",
+				},
+				stemmer_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stemmer_filter",
+						"stop_filter",
+					],
+				},
+				strict_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stop_filter",
+					],
+				},
+			},
+		},
+		index: {
+			number_of_shards: 3,
+			number_of_replicas: 1,
+		},
+	},
 	elasticDocumentMappingSchema,
 );
 
 export const frFrDocument = new ElasticDocument<Document>(
 	`document_${languageEnum["fr-FR"]}`,
-	"abysBakedDocumentId",
-	elasticDocumentSettingsSchema,
+	"bakedDocumentId",
+	{
+		analysis: {
+			filter: {
+				stemmer_filter: {
+					type: "stemmer",
+					language: "french",
+				},
+				stop_filter: {
+					type: "stop",
+					stopwords: ["_french_"],
+				},
+			},
+			normalizer: {
+				flexible_normalizer: {
+					type: "custom",
+					filter: ["lowercase", "asciifolding"],
+				},
+			},
+			analyzer: {
+				default: {
+					type: "french",
+				},
+				stemmer_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stemmer_filter",
+						"stop_filter",
+					],
+				},
+				strict_analyzer: {
+					type: "custom",
+					tokenizer: "standard",
+					filter: [
+						"lowercase",
+						"asciifolding",
+						"stop_filter",
+					],
+				},
+			},
+		},
+		index: {
+			number_of_shards: 3,
+			number_of_replicas: 1,
+		},
+	},
 	elasticDocumentMappingSchema,
 );
+
+export type AvailableField =
+	| keyof Document
+	| "journalPublishSplitDate.year"
+	| "webPublishSplitDate.year"
+	| "title.stemmed"
+	| "abstract.stemmed"
+	| "authors.strict"
+	| "keywords.keyword";
+
+export const availableFieldEnum = createEnum([
+	"bakedDocumentId",
+	"title",
+	"articleTypes",
+	"authors",
+	"summary",
+	"abstract",
+	"providers",
+	"keywords",
+	"webPublishDate",
+	"webPublishSplitDate",
+	"journalPublishDate",
+	"journalPublishSplitDate",
+	"journalPublishSplitDate.year",
+	"webPublishSplitDate.year",
+	"title.stemmed",
+	"abstract.stemmed",
+	"authors.strict",
+	"keywords.keyword",
+] as const satisfies AvailableField[]);
+
+type _ExpectAvailableFieldEnumHasAllKey = ExpectType<
+	GetEnumValue<typeof availableFieldEnum>,
+	AvailableField,
+	"strict"
+>;

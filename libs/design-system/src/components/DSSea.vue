@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 
+interface Props {
+	speed?: boolean;
+}
+
+defineProps<Props>();
+
 const boatConfig = {
 	randomThreshold: 0.5,
 	initialPos: 50,
@@ -22,30 +28,32 @@ const changePosIntervalTime = 5000;
 let timeoutId: number | null = null;
 
 function startBoatAnimation() {
-	timeoutId = setInterval(
-		() => {
-			if (
-				boatPosition.value >= boatConfig.maxPos
+	function moveBoat() {
+		if (
+			boatPosition.value >= boatConfig.maxPos
 				|| boatPosition.value <= boatConfig.minPos
 				|| Math.random() < boatConfig.directionChangeProba
-			) {
-				direction.value = !direction.value;
-			}
+		) {
+			direction.value = !direction.value;
+		}
 
-			const directionOperator = direction.value
-				? boatConfig.directionOperator.right
-				: boatConfig.directionOperator.left;
+		const directionOperator = direction.value
+			? boatConfig.directionOperator.right
+			: boatConfig.directionOperator.left;
 
-			let newBoatPosition = boatPosition.value + (boatConfig.distance * directionOperator);
+		let newBoatPosition = boatPosition.value + (boatConfig.distance * directionOperator);
 
-			if (newBoatPosition > boatConfig.maxPos) {
-				newBoatPosition = boatConfig.maxPos;
-			} else if (newBoatPosition < boatConfig.minPos) {
-				newBoatPosition = boatConfig.minPos;
-			}
+		if (newBoatPosition > boatConfig.maxPos) {
+			newBoatPosition = boatConfig.maxPos;
+		} else if (newBoatPosition < boatConfig.minPos) {
+			newBoatPosition = boatConfig.minPos;
+		}
 
-			boatPosition.value = newBoatPosition;
-		},
+		boatPosition.value = newBoatPosition;
+	}
+	moveBoat();
+	timeoutId = setInterval(
+		moveBoat,
 		changePosIntervalTime,
 	);
 }
@@ -74,17 +82,26 @@ onUnmounted(() => {
 			preserveAspectRatio="none"
 		>
 			<path
-				class="wave1 opacity-30 fill-blue-seaence"
+				:class="{
+					'wave-1-speed': speed
+				}"
+				class="wave-1 opacity-30 fill-blue-seaence"
 				d="M0,0L48,16C96,32,192,64,288,80C384,96,480,96,576,85.3C672,75,768,53,864,53.3C960,53,1056,75,1152,74.7C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
 			/>
 
 			<path
-				class="wave2 opacity-50 fill-blue-seaence"
+				:class="{
+					'wave-2-speed': speed
+				}"
+				class="wave-2 opacity-50 fill-blue-seaence"
 				d="M0,0L48,16C96,32,192,64,288,58.7C384,53,480,11,576,0C672,0,768,21,864,32C960,43,1056,75,1152,69.7C1248,64,1344,32,1392,21.3L1440,11L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
 			/>
 
 			<path
-				class="wave3 opacity-20 fill-blue-seaence"
+				:class="{
+					'wave-3-speed': speed
+				}"
+				class="wave-3 opacity-20 fill-blue-seaence"
 				d="M0,0L48,10.7C96,21,192,43,288,37.3C384,32,480,0,576,0C672,0,768,32,864,37.3C960,43,1056,21,1152,16C1248,11,1344,21,1392,26.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
 			/>
 		</svg>
@@ -137,26 +154,40 @@ onUnmounted(() => {
 
 <style scoped>
 @keyframes wave {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
+	0% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(-50%);
+	}
+
+	100% {
+		transform: translateX(0);
+	}
 }
 
-.wave1 {
-  animation: wave 45s linear infinite;
+.wave-1 {
+	animation: wave 45s linear infinite;
 }
 
-.wave2 {
-  animation: wave 35s linear reverse infinite;
+.wave-1-speed {
+	animation: wave 5s linear infinite;
 }
 
-.wave3 {
-  animation: wave 25s linear infinite;
+.wave-2 {
+	animation: wave 35s linear reverse infinite;
+}
+
+.wave-2-speed {
+	animation: wave 4s linear infinite;
+}
+
+.wave-3 {
+	animation: wave 25s linear infinite;
+}
+
+.wave-3-speed {
+	animation: wave 3s linear infinite;
 }
 </style>

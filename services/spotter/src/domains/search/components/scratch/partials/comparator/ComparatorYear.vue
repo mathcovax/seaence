@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yearFieldEnum, type ComparatorYear } from "@vendors/scratch-type";
+import { yearFieldEnum, type ComparatorYear } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
@@ -34,7 +34,7 @@ const { hintMessage } = useHintMessage(
 	>
 		<div class="mb-2 flex justify-between items-center">
 			<div class="flex gap-2 items-center">
-				<span class="font-medium text-sm">{{ $t('scratch.comparator.year.label') }}</span>
+				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.year.label') }}</span>
 			</div>
 
 			<DSButtonIcon
@@ -50,14 +50,16 @@ const { hintMessage } = useHintMessage(
 		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
 			<DSSelect
 				:items="yearFieldEnum.toTuple()"
-				:label="(item) => $t(`scratch.comparator.year.fields.${item}`) || item"
-				:placeholder="$t('scratch.comparator.year.selectPlaceholder')"
+				:label="(item) => $t(`search.scratch.comparator.year.fields.${item}`) || item"
+				:placeholder="$t('search.scratch.comparator.year.selectPlaceholder')"
 				v-model="model.field"
 				class="text-sm"
 			/>
 
 			<DSInput
+				@dragstart.prevent
 				type="number"
+				mode="numeric"
 				v-model="model.value"
 				placeholder="1999"
 				class="text-sm"

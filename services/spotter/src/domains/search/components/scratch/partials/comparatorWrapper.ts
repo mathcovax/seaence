@@ -2,7 +2,7 @@ import { match } from "ts-pattern";
 import ComparatorText from "./comparator/ComparatorText.vue";
 import ComparatorYear from "./comparator/ComparatorYear.vue";
 import type { OperatorContentEvent } from "./operatorContentWrapper";
-import type { Comparator } from "@vendors/scratch-type";
+import type { Comparator } from "@vendors/types-advanced-query";
 
 export function comparatorWrapper(
 	comparator: Comparator,
