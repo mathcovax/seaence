@@ -38,18 +38,20 @@ const queryYearIndex = {
 
 type SearchPage = typeof simpleSearchPage | typeof advancedSearchPage;
 
-export const defaultValue: OperatorContent = {
-	type: "operator",
-	name: "and",
-	content: [
-		{
-			type: "comparator",
-			name: "text",
-			field: "allField",
-			value: "",
-		},
-	],
-};
+export function getAdvencedDefaultValue(): OperatorContent {
+	return {
+		type: "operator",
+		name: "and",
+		content: [
+			{
+				type: "comparator",
+				name: "text",
+				field: "allField",
+				value: "",
+			},
+		],
+	};
+}
 
 function queryTermToTerm(
 	currentSearchPage: SearchPage,
@@ -70,7 +72,7 @@ function queryTermToTerm(
 
 		return result;
 	} catch {
-		return defaultValue;
+		return getAdvencedDefaultValue();
 	}
 }
 

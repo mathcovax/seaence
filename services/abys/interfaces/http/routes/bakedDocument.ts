@@ -17,9 +17,10 @@ useBuilder()
 		(pickup) => {
 			const bakedDocument = pickup("bakedDocument");
 
+			const { lastExportOnSea, lastUpdate, ...simpleBackedDocument } = bakedDocument.toSimpleObject();
 			return new OkHttpResponse(
 				"bakedDocument.get",
-				bakedDocument.toSimpleObject(),
+				simpleBackedDocument,
 			);
 		},
 		makeResponseContract(OkHttpResponse, "bakedDocument.get", endpointBakedDocumentSchema),

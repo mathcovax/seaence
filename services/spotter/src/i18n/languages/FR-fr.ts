@@ -57,12 +57,34 @@ export const FRfr = {
 				placeholder: "Rechercher...",
 			},
 		},
+		[documentPage.name]: {
+			download: "Télécharger l'article",
+			label: {
+				articleType: "Type d'article",
+				keywords: "Mots clés",
+				institutions: "Institutions",
+				ressources: "Ressources",
+				abstract: "Abstract",
+				linkedPosts: "Posts liés",
+			},
+			createPost: "Créer un poste",
+			noPost: "Aucun post(s) trouvé pour ce document.",
+		},
+		[postListPage.name]: {
+			titleLinkPost: "Post(s) lié au document : {title}",
+			authorIs: "Posté par {author}",
+			responseCount: "{count} réponse(s)",
+			noPost: "Aucun post(s) trouvé pour ce document.",
+			createPost: "Créer un poste",
+		},
 		[postPage.name]: {
+			connexionRequire: "Il est obligatoire d'étre connecter avant de écrire un message.",
 			backToPostList: "Retour à la liste des posts",
 			countResponse: "{count}/{totalCount} Réponse(s)",
 			authorIs: "Posté par {author}",
 			noResponse: "Aucune réponse(s) pour ce post.",
 			writeAnAnswer: "Écrivez un commentaire",
+			writeYourAnswer: "Un super commentaire...",
 		},
 		[profilePage.name]: {
 			personalInfo: {
@@ -91,6 +113,7 @@ export const FRfr = {
 		},
 		[postCreatePage.name]: {
 			title: "Posez une question",
+			connexionRequire: "Il est obligatoire d'étre connecter avant de créer un post.",
 			form: {
 				topic: {
 					label: {
@@ -128,12 +151,10 @@ export const FRfr = {
 	layout: {
 		base: {
 			header: {
-				search: {
-					tabs: {
-						simpleSearch: "Recherche simple",
-						advancedSearch: "Recherche avancée",
-					},
-					placeholder: "Recherche : Titre, Auteur, Contenu...",
+				link: {
+					search: "Recherche",
+					simple: "Simple",
+					advanced: "Avancée",
 				},
 				accountDropdown: {
 					title: "Mon compte",
@@ -241,6 +262,10 @@ export const FRfr = {
 		foundResults: "{count} résultat(s) trouvé(s)",
 		noResult: "Aucun résultat trouvé",
 	},
+	post: {
+		authorIs: "",
+		responseCount: "",
+	},
 	formMessage: {
 		required: "Champ obligatoire.",
 		positive: "Doit être un nombre positif.",
@@ -260,7 +285,7 @@ export const FRfr = {
 	cta: {
 		backHome: "Retour à l'accueil",
 		connection: "Inscription / Connexion",
-		resetPassword: "Réinitialiser le mot de passe",
+		explore: "Explorer",
 		search: "Rechercher",
 		send: "Envoyer",
 		seeMore: "Voir plus",
@@ -351,11 +376,11 @@ export const FRfr = {
 	} satisfies Record<ArticleType, string>,
 	responses: {
 		user: {
-			logged: "Connexion réalisé avec succés.",
+			logged: "Connexion réalisée avec succès.",
 			notfound: "Utilisateur introuvable.",
 		},
 		credential: {
-			invalid: "Identifiant google invalide.",
+			invalid: "Identifiant Google invalide.",
 		},
 		article: {
 			notfound: "Article introuvable.",
@@ -364,12 +389,12 @@ export const FRfr = {
 			notfound: "Document introuvable.",
 		},
 		post: {
-			created: "Post créé avec succés.",
+			created: "Post créé avec succès.",
 			notfound: "Post introuvable.",
 		},
 		answer: {
-			created: "Réponse créé avec succés.",
+			created: "Réponse créée avec succès.",
 		},
-		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur c'est produite.",
+		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur s'est produite.",
 	},
 };

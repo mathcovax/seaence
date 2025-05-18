@@ -65,7 +65,7 @@ function onSubmit() {
 
 			<button
 				type="submit"
-				class="rounded-l-full rounded-r flex gap-2 items-center bg-blue-seaence hover:bg-blue-seaence/90 text-white py-1 pl-4 pr-2 shrink-0"
+				class="rounded-l-full rounded-r flex gap-2 items-center bg-blue-seaence hover:bg-blue-seaence/90 text-white py-1 pl-4 pr-2 shrink-0 cursor-pointer"
 			>
 				<DSSelect
 					v-model="modelLanguage"

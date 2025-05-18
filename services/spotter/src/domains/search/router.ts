@@ -18,7 +18,7 @@ export const simpleSearchPage = createPage(
 	"simpleSearch",
 	{
 		path: "/simple-search",
-		component: () => import("./pages/SearchPage.vue"),
+		component: () => import("./pages/SimpleSearch.vue"),
 		query: searchPageQuery,
 	},
 );
@@ -27,7 +27,7 @@ export const advancedSearchPage = createPage(
 	"advancedSearch",
 	{
 		path: "/advanced-search",
-		component: () => import("./pages/SearchPage.vue"),
+		component: () => import("./pages/AdvencedSearch.vue"),
 		query: searchPageQuery,
 	},
 );

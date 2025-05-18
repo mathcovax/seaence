@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import RowPost from "../components/RowPost.vue";
 import { usePostListPage } from "../composables/usePostListPage";
 
 const { params, $pt } = postListPage.use();
@@ -30,40 +31,24 @@ watch(
 			v-if="postListPageInforamtion"
 			class="flex flex-col gap-6"
 		>
-			<h1 class="text-3xl font-semibold mb-2">
+			<h1 class="text-xl font-semibold mb-2">
 				{{ $pt("titleLinkPost", {title: postListPageInforamtion.document.title}) }}
 			</h1>
 
+			<DSButtonPrimary>
+				<RouterLink :to="postCreatePage.createTo({params: {documentId: params.documentId}})">
+					{{ $pt("createPost") }}
+				</RouterLink>
+			</DSButtonPrimary>
+
 			<div v-if="postList && postList.length > 0">
 				<div class="space-y-6">
-					<div
+					<RowPost
 						v-for="post in postList"
 						:key="post.id"
-					>
-						<article class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition">
-							<RouterLink
-								:to="postPage.createTo({
-									params: {postId: post.id},
-									query: {language: postListPageInforamtion.document.language}
-								})"
-								class="text-2xl font-semibold text-blue-seaence mb-2"
-							>
-								{{ post.topic }}
-							</RouterLink>
-
-							<p class="text-gray-700 mb-4">
-								{{ post.content }}
-							</p>
-
-							<div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-								<span>{{ $pt("authorIs", {author: post.author.username}) }}</span>
-
-								<span>{{ post.createdAt }}</span>
-
-								<span>{{ $pt("responseCount", {count: post.answerCount}) }}</span>
-							</div>
-						</article>
-					</div>
+						:post="post"
+						language="en-US"
+					/>
 				</div>
 
 				<div class="mt-10 flex justify-center">

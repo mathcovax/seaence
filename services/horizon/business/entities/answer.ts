@@ -10,5 +10,6 @@ export const answerObjecter = zod
 			id: true,
 			username: true,
 		}),
+		createdAt: zod.string(),
 	})
 	.createValueObjecter("answer");

@@ -118,6 +118,36 @@ type CodegenRoutes = ({
                 value: string;
             }[];
             articleTypes: ArticleType[];
+            authors: {
+                name: string;
+                affiliations: string[] | null;
+            }[];
+            webPublishDate: ({
+                day: null;
+                month: null;
+                year: number;
+            } | {
+                day: null;
+                month: number;
+                year: number;
+            } | {
+                day: number;
+                month: number;
+                year: number;
+            }) | null;
+            journalPublishDate: ({
+                day: null;
+                month: null;
+                year: number;
+            } | {
+                day: null;
+                month: number;
+                year: number;
+            } | {
+                day: number;
+                month: number;
+                year: number;
+            }) | null;
         };
     };
 });
