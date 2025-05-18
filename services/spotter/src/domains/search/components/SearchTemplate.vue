@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { watchPausable } from "@vueuse/core";
 import { useSearchPage } from "../composables/useSearchPage";
-import SimpleSearchInput from "../components/SimpleSearchInput.vue";
-import SearchResultWrapper from "../components/SearchResultWrapper.vue";
-import SearchContainer from "../components/SearchContainer.vue";
+import SimpleSearchInput from "./SimpleSearchInput.vue";
+import SearchResultWrapper from "./SearchResultWrapper.vue";
+import SearchContainer from "./SearchContainer.vue";
 import { convertQueryToSearchParams, convertSearchParamsToQuery } from "../utils/convertQuery";
 import type { SearchParams } from "@/lib/horizon/types/search";
-import AdvancedSearchInput from "../components/AdvancedSearchInput.vue";
+import AdvancedSearchInput from "./AdvancedSearchInput.vue";
 
 const router = useRouter();
 const route = useRoute();

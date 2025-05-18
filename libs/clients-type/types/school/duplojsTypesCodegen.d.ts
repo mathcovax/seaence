@@ -136,6 +136,7 @@ type CodegenRoutes = ({
                 id: string;
                 username: string;
             };
+            createdAt: Date;
         }[];
     };
 });

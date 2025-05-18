@@ -14,7 +14,12 @@ import {
 	mdiStar,
 	mdiMessageText,
 	mdiMagnify,
+	mdiMagnifyPlus,
 	mdiWeb,
+	mdiLogin,
+	mdiForum,
+	mdiArrowLeft,
+	mdiSend,
 } from "@mdi/js";
 import { computed } from "vue";
 
@@ -32,13 +37,18 @@ const iconsMapper = {
 	star: mdiStar,
 	messageText: mdiMessageText,
 	magnify: mdiMagnify,
+	magnifyPlus: mdiMagnifyPlus,
 	web: mdiWeb,
+	login: mdiLogin,
+	forum: mdiForum,
+	arrowLeft: mdiArrowLeft,
+	send: mdiSend,
 };
 
 const sizeMapper = {
-	small: 15,
-	normal: 25,
-	large: 35,
+	small: 14,
+	normal: 24,
+	large: 36,
 };
 
 interface Props {

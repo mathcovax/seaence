@@ -5,4 +5,5 @@ export const endpointAnswerSchema = zod.object({
 	postId: zod.string(),
 	content: zod.string(),
 	author: userSchema,
+	createdAt: zod.date(),
 });

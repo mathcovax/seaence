@@ -5,6 +5,20 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
+type Post = {
+    id: string;
+    topic: string;
+    content: string;
+    author: {
+        id: string;
+        username: string;
+    };
+    createdAt: string;
+    answerCount: number;
+};
+
+export { Post };
+
 type BakedDocumentLanguage = "fr-FR" | "en-US";
 
 export { BakedDocumentLanguage };
@@ -125,6 +139,51 @@ type BakedDocumentSearchResult = {
 
 export { BakedDocumentSearchResult };
 
+type BakedDocument = {
+    id: string;
+    nodeSameRawDocumentId: string;
+    articleTypes: ArticleType[];
+    title: string;
+    language: BakedDocumentLanguage;
+    abstract: string | null;
+    authors: {
+        name: string;
+        affiliations: string[] | null;
+    }[];
+    abstractDetails: {
+        name: string;
+        label: string;
+        content: string;
+    }[] | null;
+    resources: {
+        resourceProvider: "DOIFoundation" | "pubmed";
+        url: string;
+    }[];
+    keywords: {
+        value: string;
+    }[];
+    webPublishDate: FlexibleDate | null;
+    journalPublishDate: FlexibleDate | null;
+};
+
+export { BakedDocument };
+
+type FlexibleDate = {
+    day: null;
+    month: null;
+    year: number;
+} | {
+    day: null;
+    month: number;
+    year: number;
+} | {
+    day: number;
+    month: number;
+    year: number;
+};
+
+export { FlexibleDate };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/authentication";
@@ -184,6 +243,7 @@ type CodegenRoutes = ({
                 id: string;
                 username: string;
             };
+            createdAt: string;
         }[];
     };
 }) | ({
@@ -227,17 +287,7 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "postList.found";
-        body: {
-            id: string;
-            topic: string;
-            content: string;
-            author: {
-                id: string;
-                username: string;
-            };
-            createdAt: string;
-            answerCount: number;
-        }[];
+        body: Post[];
     };
 }) | ({
     method: "POST";
@@ -258,17 +308,7 @@ type CodegenRoutes = ({
         code: 200;
         information: "postPage.found";
         body: {
-            post: {
-                id: string;
-                topic: string;
-                content: string;
-                author: {
-                    id: string;
-                    username: string;
-                };
-                createdAt: string;
-                answerCount: number;
-            };
+            post: Post;
             document: {
                 id: string;
                 title: string;
@@ -350,6 +390,24 @@ type CodegenRoutes = ({
         code: 200;
         information: "simpleSearch.results";
         body: BakedDocumentSearchResult[];
+    };
+}) | ({
+    method: "POST";
+    path: "/document-page";
+    body: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 404;
+        information: "document.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentPage.found";
+        body: {
+            document: BakedDocument;
+            posts: Post[];
+        };
     };
 });
 

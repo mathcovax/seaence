@@ -57,7 +57,26 @@ export const FRfr = {
 				placeholder: "Rechercher...",
 			},
 		},
+		[documentPage.name]: {
+			download: "Télécharger l'article",
+			label: {
+				articleType: "Type d'article",
+				keywords: "Mots clés",
+				institutions: "Institutions",
+				ressources: "Ressources",
+				abstract: "Abstract",
+				linkedPosts: "Posts liés",
+			},
+			createPost: "Créer un poste",
+		},
+		[postListPage.name]: {
+			titleLinkPost: "Post(s) lié au document : {title}",
+			authorIs: "Posté par {author}",
+			responseCount: "{count} réponse(s)",
+			noPost: "Aucun post(s) trouvé pour ce document.",
+		},
 		[postPage.name]: {
+			connexionRequire: "Il est obligatoire d'étre connecter avant de écrire un message.",
 			backToPostList: "Retour à la liste des posts",
 			countResponse: "{count}/{totalCount} Réponse(s)",
 			authorIs: "Posté par {author}",
@@ -91,6 +110,7 @@ export const FRfr = {
 		},
 		[postCreatePage.name]: {
 			title: "Posez une question",
+			connexionRequire: "Il est obligatoire d'étre connecter avant de créer un post.",
 			form: {
 				topic: {
 					label: {
@@ -128,12 +148,10 @@ export const FRfr = {
 	layout: {
 		base: {
 			header: {
-				search: {
-					tabs: {
-						simpleSearch: "Recherche simple",
-						advancedSearch: "Recherche avancée",
-					},
-					placeholder: "Recherche : Titre, Auteur, Contenu...",
+				link: {
+					search: "Recherche",
+					simple: "Simple",
+					advanced: "Avancée",
 				},
 				accountDropdown: {
 					title: "Mon compte",
@@ -240,6 +258,10 @@ export const FRfr = {
 		},
 		foundResults: "{count} résultat(s) trouvé(s)",
 		noResult: "Aucun résultat trouvé",
+	},
+	post: {
+		authorIs: "",
+		responseCount: "",
 	},
 	formMessage: {
 		required: "Champ obligatoire.",

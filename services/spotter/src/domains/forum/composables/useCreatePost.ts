@@ -18,7 +18,6 @@ export function useCreatePost(
 	documentId: Ref<string>,
 ) {
 	const { t } = useI18n();
-	const router = useRouter();
 
 	const formInputSchema = zod.object({
 		topic: zod.string()
@@ -83,15 +82,6 @@ export function useCreatePost(
 				({ body }) => {
 					formErrors.topic = "";
 					formErrors.content = "";
-
-					void router.push(
-						postPage.createTo({
-							params: {
-								postId: body.id,
-							},
-							query: {},
-						}),
-					);
 				},
 			);
 	}

@@ -1,208 +1,156 @@
 <script setup lang="ts">
-const { params } = documentPage.use();
+import type { FlexibleDate } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import { useDocumentPage } from "../composables/useDocumentPage";
+import RowPost from "@/domains/forum/components/RowPost.vue";
 
-// Mock data
-const document = {
-	abysBakedDocumentId: "doc_123456789",
-	title: "Innovative Thermoelectric Solutions for IoT Applications",
-	articleTypes: ["RESEARCH", "REVIEW"],
-	authors: [
-		{
-			name: "Dr. Alice Dupont",
-			affiliations: ["Université de Lille", "CNRS"],
-		},
-		{
-			name: "Prof. John Smith",
-			affiliations: null,
-		},
-	],
-	summary: "A brief summary of the thermoelectric research applied to IoT devices.",
-	abstract: "This article explores thermoelectric generation as a key energy harvesting solution for powering IoT "
-		+ "systems, considering material science and electronic integration.",
-	abstractDetails: [
-		{
-			name: "Introduction",
-			content: "The growing demand for energy and expansion of IoT requires innovative energy sources.",
-		},
-		{
-			name: "Materials and Methods",
-			content: "Different thermoelectric materials were tested under varying temperature gradients.",
-		},
-	],
-	providers: [
-		{
-			value: "HAL",
-		},
-		{
-			value: "PUBMED",
-		},
-	],
-	keywords: [
-		{ value: "Thermoelectric" },
-		{ value: "IoT" },
-		{ value: "Energy Harvesting" },
-	],
-	webPublishDate: new Date("2024-11-15"),
-	webPublishSplitDate: {
-		day: 15,
-		month: 11,
-		year: 2024,
+const { $pt, params } = documentPage.use();
+const router = useRouter();
+
+const { document, posts } = useDocumentPage(
+	computed(() => params.value.id),
+	() => {
+		router.back();
 	},
-	journalPublishDate: new Date("2025-01-10"),
-	journalPublishSplitDate: {
-		day: 10,
-		month: 1,
-		year: 2025,
-	},
-};
-// End of mock data
+);
 
 const allAffiliations = computed(() => {
-	const affiliations = new Set<string>();
+	if (!document.value) {
+		return null;
+	}
 
-	document.authors.forEach((author) => {
-		if (author.affiliations) {
-			for (const affiliation of author.affiliations) {
-				affiliations.add(affiliation);
-			}
-		}
-	});
-	return Array.from(affiliations);
+	const affiliations = document.value.authors.flatMap(
+		({ affiliations }) => affiliations ?? [],
+	);
+
+	return Array.from(new Set<string>(affiliations));
 });
+
+function formatedDate(date: FlexibleDate) {
+	const secondIndex = 2;
+
+	if (!date) {
+		return "N/A";
+	}
+
+	if (date.day !== null && date.month !== null) {
+		return `
+			${String(date.day).padStart(secondIndex, "0")}/${String(date.month).padStart(secondIndex, "0")}/${date.year}
+		`;
+	}
+
+	if (date.month !== null) {
+		return `${String(date.month).padStart(secondIndex, "0")}/${date.year}`;
+	}
+
+	return `${date.year}`;
+}
 </script>
 
 <template>
 	<section class="min-h-screen-nh px-4 md:px-6 lg:px-8">
-		<article>
-			<header class="flex flex-col lg:flex-row gap-8 lg:gap-12">
-				<div class="w-full lg:flex-2/3 space-y-8">
-					<div class="flex flex-col gap-2">
-						<h1 class="text-3xl md:text-4xl font-bold text-blue-seaence">
-							{{ document.title }} ({{ params.id }})
-						</h1>
+		<article
+			v-if="document && allAffiliations && posts"
+			class="flex flex-col gap-12"
+		>
+			<header class="flex flex-col gap-8 lg:gap-12">
+				<div class="flex flex-col gap-2">
+					<h1
+						class="capitalize text-2xl md:text-3xl font-bold text-blue-seaence"
+					>
+						{{ document.title }}
+					</h1>
 
-						<div class="flex items-center gap-2">
-							<DSIcon name="account" />
+					<div
+						class="flex items-center gap-2"
+					>
+						<DSIcon
+							name="account"
+							class="shrink-0"
+						/>
 
-							<ul class="list-none inline">
-								<li
-									class="inline after:content-[',_'] last:after:content-['']"
-									v-for="author in document.authors"
-									:key="author.name"
+						<ul class="list-none inline">
+							<li
+								class="inline after:content-[',_'] last:after:content-['']"
+								v-for="author in document.authors"
+								:key="author.name"
+							>
+								{{ author.name }}
+							</li>
+						</ul>
+					</div>
+
+					<div class="flex gap-2">
+						<div
+							v-if="document?.journalPublishDate"
+							class="flex items-center gap-2"
+						>
+							<DSIcon
+								name="calendar"
+								class="shrink-0"
+							/>
+
+							{{ formatedDate(document.journalPublishDate) }}
+						</div>
+
+						<div
+							v-if="document?.webPublishDate"
+							class="flex items-center gap-2"
+						>
+							<DSIcon
+								name="web"
+								class="shrink-0"
+							/>
+
+							{{ formatedDate(document.webPublishDate) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="flex flex-col md:flex-row gap-6 md:gap-8">
+					<div class="space-y-4">
+						<h2 class="text-xl md:text-2xl font-bold">
+							{{ $pt("label.ressources") }}
+						</h2>
+
+						<ul class="ml-4 list-disc">
+							<li
+								v-for="(resources, index) in document.resources"
+								:key="index"
+							>
+								<a
+									:href="resources.url"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-blue-seaence hover:underline"
 								>
-									{{ author.name }}
-								</li>
-							</ul>
-						</div>
-
-						<div class="flex items-center gap-2">
-							<DSIcon name="calendar" />
-
-							<time :datetime="document.webPublishDate.toISOString().split('T')[0]">
-								{{ document.webPublishDate.toLocaleDateString() }}
-							</time>
-						</div>
+									{{ resources.resourceProvider }}
+								</a>
+							</li>
+						</ul>
 					</div>
 
 					<div class="space-y-4">
 						<h2 class="text-xl md:text-2xl font-bold">
-							Abstract
+							{{ $pt("label.articleType") }}
 						</h2>
 
-						<p>
-							{{ document.abstract }}
-						</p>
+						<ul class="flex flex-wrap gap-2 list-none">
+							<li
+								v-for="(type, index) in document.articleTypes"
+								:key="index"
+							>
+								<DSBadge class="bg-green-seaence/10 text-green-seaence">
+									{{ type }}
+								</DSBadge>
+							</li>
+						</ul>
 					</div>
 				</div>
-
-				<aside class="w-full lg:flex-1/3 space-y-10 lg:space-y-16">
-					<div>
-						<DSButtonPrimary
-							class="w-full sm:w-auto bg-green-seaence hover:bg-green-seaence/90"
-						>
-							<DSIcon name="document" />
-							Télécharger l'article
-						</DSButtonPrimary>
-					</div>
-
-					<div class="space-y-6 md:space-y-8">
-						<div class="space-y-4">
-							<h2 class="text-xl md:text-2xl font-bold">
-								Article Types
-							</h2>
-
-							<ul class="flex flex-wrap gap-2 list-none">
-								<li
-									v-for="(type, index) in document.articleTypes"
-									:key="index"
-								>
-									<DSBadge class="bg-green-seaence/10 text-green-seaence">
-										{{ type }}
-									</DSBadge>
-								</li>
-							</ul>
-						</div>
-
-						<div class="space-y-4">
-							<h2 class="text-xl md:text-2xl font-bold">
-								Keywords
-							</h2>
-
-							<ul class="flex flex-wrap gap-2 list-none">
-								<li
-									v-for="(keyword, index) in document.keywords"
-									:key="index"
-								>
-									<DSBadge class="bg-blue-seaence/10 text-blue-seaence">
-										{{ keyword.value }}
-									</DSBadge>
-								</li>
-							</ul>
-						</div>
-
-						<div
-							class="space-y-4"
-							v-if="allAffiliations.length"
-						>
-							<h2 class="text-xl md:text-2xl font-bold">
-								Institutions
-							</h2>
-
-							<ul class="flex flex-wrap gap-2 list-none">
-								<li
-									v-for="(affiliation, index) in allAffiliations"
-									:key="index"
-								>
-									<DSBadge class="bg-pink-seaence/10 text-pink-seaence">
-										{{ affiliation }}
-									</DSBadge>
-								</li>
-							</ul>
-						</div>
-
-						<div class="space-y-4">
-							<h2 class="text-xl md:text-2xl font-bold">
-								Providers
-							</h2>
-
-							<ul class="flex flex-wrap gap-2 list-none">
-								<li
-									v-for="(provider, index) in document.providers"
-									:key="index"
-								>
-									<DSBadge class="bg-yellow-600/10 text-yellow-600">
-										{{ provider.value }}
-									</DSBadge>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</aside>
 			</header>
 
-			<main class="mt-12 space-y-4">
+			<main class="space-y-4">
 				<h2 class="text-xl md:text-2xl text-center font-bold">
-					Content
+					{{ $pt("label.abstract") }}
 				</h2>
 
 				<section
@@ -210,15 +158,83 @@ const allAffiliations = computed(() => {
 					:key="index"
 					class="space-y-2"
 				>
-					<h3 class="text-lg md:text-xl font-semibold">
-						{{ detail.name }}
+					<h3 class="capitalize text-lg md:text-xl font-semibold">
+						{{ detail.label }}
 					</h3>
 
-					<p>
+					<p class="capitalize">
 						{{ detail.content }}
 					</p>
 				</section>
+
+				<p v-if="!document.abstractDetails">
+					{{ document.abstract }}
+				</p>
 			</main>
+
+			<div class="flex flex-col md:flex-row gap-6 md:gap-8">
+				<div class="space-y-4">
+					<h2 class="text-xl md:text-2xl font-bold">
+						{{ $pt("label.keywords") }}
+					</h2>
+
+					<ul class="flex flex-wrap gap-2 list-none">
+						<li
+							v-for="(keyword, index) in document.keywords"
+							:key="index"
+						>
+							<DSBadge class="bg-blue-seaence/10 text-blue-seaence">
+								{{ keyword.value }}
+							</DSBadge>
+						</li>
+					</ul>
+				</div>
+
+				<div
+					class="space-y-4"
+					v-if="allAffiliations.length"
+				>
+					<h2 class="text-xl md:text-2xl font-bold">
+						{{ $pt("label.institutions") }}
+					</h2>
+
+					<ul class="flex flex-wrap gap-2 list-none">
+						<li
+							v-for="(affiliation, index) in allAffiliations"
+							:key="index"
+							class="max-w-xs sm:max-w-sm md:max-w-md"
+						>
+							<DSBadge
+								class="bg-pink-seaence/10 text-pink-seaence w-full truncate"
+								:title="affiliation"
+							>
+								<span class="truncate block">{{ affiliation }}</span>
+							</DSBadge>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div v-if="posts.length">
+				<h2 class="text-xl md:text-2xl font-bold mb-4">
+					{{ $pt("label.linkedPosts") }}
+				</h2>
+
+				<div class="flex flex-col gap-4">
+					<RowPost
+						v-for="post in posts"
+						:key="post.id"
+						:post="post"
+						language="en-US"
+					/>
+				</div>
+			</div>
+
+			<DSButtonPrimary v-else>
+				<RouterLink :to="postCreatePage.createTo({params: {documentId: document.id}})">
+					{{ $pt("createPost") }}
+				</RouterLink>
+			</DSButtonPrimary>
 		</article>
 	</section>
 </template>

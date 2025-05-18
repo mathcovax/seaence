@@ -1,3 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "../vendors/design-system/index.css";
+
+:root {
+	--header-height: 4rem
+}
+
+/* screen - header - padding y */
+@utility min-h-screen-nh {
+	min-height: calc(100vh - var(--header-height));
+}

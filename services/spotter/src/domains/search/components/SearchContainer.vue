@@ -72,7 +72,7 @@ defineExpose({
 		:class="{
 			'mt-[calc(25vh)] md:mt-[calc(35vh)]': !isExpanded && searchMode === 'simple',
 			'mt-[calc(5vh)] md:mt-[calc(10vh)]': !isExpanded && searchMode === 'advanced',
-			'sticky top-24 z-10 bg-white rounded-md shadow-md': isExpanded,
+			'sticky top-[var(--header-height)] z-10 bg-white rounded-md shadow-md': isExpanded,
 			'!static': (isScratchVisible || isFiltersVisible),
 		}"
 	>

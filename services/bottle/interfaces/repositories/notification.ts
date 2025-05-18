@@ -55,7 +55,7 @@ notificationRepository.default = {
 					await EmailProvider.send({
 						to: user.email,
 						subject: "Bienvenue sur Seaence !",
-						html: registerTemplate(user.username, "https://seaence.org/"),
+						html: registerTemplate(user.username),
 						from: envs.NO_REPLY_EMAIL,
 					});
 				},

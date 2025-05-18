@@ -1,11 +1,15 @@
-import { bakedDocumentLanguageObjecter } from "@business/entities/bakedDocument";
+import { bakedDocumentLanguageObjecter, bakedDocumentObjecter } from "@business/entities/bakedDocument";
 import { bakedDocumentSearchResultObjecter } from "@business/entities/bakedDocumentSearchResult";
 import { articleTypeObjecter } from "@business/entities/common/articleType";
 import { facetObjecter, genderFacetValueObjecter, speciesFacetValueObjecter } from "@business/entities/facets";
 import { filtersValuesSchema } from "../schemas/search/filter";
 import { comparatorTextSchema, comparatorYearSchema, operatorAndSchema, operatorContentSchema, operatorNotSchema, operatorOrSchema } from "@vendors/types-advanced-query";
+import { flexibleDateObjecter } from "@vendors/clean";
+import { postObjecter } from "@business/entities/post";
 
 articleTypeObjecter.zodSchema._zttIdentifier = "ArticleType";
+
+bakedDocumentObjecter.zodSchema._zttIdentifier = "BakedDocument";
 
 bakedDocumentLanguageObjecter.zodSchema._zttIdentifier = "BakedDocumentLanguage";
 
@@ -26,3 +30,6 @@ operatorAndSchema._zttIdentifier = "OperatorAnd";
 operatorOrSchema._zttIdentifier = "OperatorOR";
 operatorNotSchema._zttIdentifier = "OperatorNot";
 
+flexibleDateObjecter.zodSchema._zttIdentifier = "FlexibleDate";
+
+postObjecter.zodSchema._zttIdentifier = "Post";

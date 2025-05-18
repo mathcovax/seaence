@@ -1,5 +1,6 @@
+import { flexibleDateObjecter } from "@vendors/clean";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentLanguageObjecter, bakedDocumentRessourceObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentLanguageObjecter, bakedDocumentRessourceObjecter, bakedDocumentAuthorObjecter } from "@business/domains/entities/bakedDocument";
 
 export const endpointBakedDocumentSchema = zod.object({
 	id: zod.string(),
@@ -14,4 +15,7 @@ export const endpointBakedDocumentSchema = zod.object({
 	resources: bakedDocumentRessourceObjecter.zodSchema.array(),
 	keywords: bakedDocumentKeywordObjecter.zodSchema.array(),
 	articleTypes: articleTypeObjecter.zodSchema.array(),
+	authors: bakedDocumentAuthorObjecter.zodSchema.array(),
+	webPublishDate: flexibleDateObjecter.zodSchema.nullable(),
+	journalPublishDate: flexibleDateObjecter.zodSchema.nullable(),
 });
