@@ -16,9 +16,6 @@ abys:
 bottle:
   - "services/bottle/**/*"
 
-colossal:
-  - "services/colossal/**/*"
-
 harbor:
   - "services/harbor/**/*"
 
@@ -27,9 +24,6 @@ horizon:
 
 marine-snow:
   - "services/marine-snow/**/*"
-
-pilot:
-  - "services/pilot/**/*"
 
 rosetta:
   - "services/rosetta/**/*"
@@ -43,11 +37,14 @@ sea:
 spotter:
   - "services/spotter/**/*"
 
-tide:
-  - "services/tide/**/*"
-
 design-system:
   - "libs/design-system/**/*"
+
+bridge:
+  - "services/bridge/**/*"
+
+lighthouse:
+  - "services/lighthouse/**/*"
 
 docker:
   - ".docker/**/*"

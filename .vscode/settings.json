@@ -33,16 +33,15 @@
     "libs/scratch-type",
     "services/abys",
     "services/bottle",
-    "services/colossal",
     "services/harbor",
     "services/horizon",
     "services/marine-snow",
-    "services/pilot",
     "services/rosetta",
     "services/school",
     "services/sea",
     "services/spotter",
-    "services/tide"
+	"services/bridge",
+	"services/lighthouse"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,

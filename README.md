@@ -31,10 +31,9 @@
 | Backend elasticSearch | Sea | Base de donnée vectorielle | ElasticSearch, Duplo | @Vitaalx, @ZeRiix, @mathcovax |
 | Backend de contenue | Abys | Contient les documents originaux | MongoDB, Duplo | @mathcovax, @ZeRiix |
 | Service de scrapping | MarineSnow | Scrapping de donnée | Duplo, WokerThread, SQLLite | @mathcovax, @ZeRiix |
-| Frontend contenue (BO) | Colossal | Backoffice | Vue, Vite | @Vitaalx |
-| Frontend scrapping (BO) | Tide | Backoffice | Vue, Vite | @ZeRiix |
+| Gateway BackOffice | Bridge | API Gateway pour le BackOffice | Duplo | @Vitaalx |
+| Frontend admin (BO) | Lighthouse | Backoffice | Vue, Vite | @Vitaalx |
 | Service de forum | School | Service de gestion de forum | Duplo, MongoDB | @Vitaalx |
-| Frontend forum (BO) | Pilot | BackOffice | Vue, Vite | @Vitaalx |
 | Service de notification | Bottle | | Duplo, MongoDB | @ZeRiix |
 | Service de traduction | Rosetta | | Duplo, MongoDB | @ZeRiix |
 
@@ -65,21 +64,9 @@ Service de stockage de documents. Il contiendra les documents originaux et les d
 
 Service de scrapping de donnée. Il permettra de récupérer des données sur le web et de les stocker dans Abys. Il sera capable de scrappé des sites web comme Pubmed, Pedro ou encore ScienceDirect. L'objetif est de faire en sorte que MarineSnow Puisse controller des mini sous service slave dans les thread worker qui seront capable de scrappé des sites web. Il faut faire en sorte qu'il soit le plus générique pour être adapté à n'importe quel site web.
 
-#### Colossal (BO)
-
-BackOffice du service Abys, son but est de gérer le flux d'indexation vers dans Sea.
-
-#### Tide (BO)
-
-BackOffice du service MarineSnow, son but est de gérer le scrapping de donnée.
-
 #### School
 
 Service de forum, il permettra de créer des forums autour d'un article ou d'un sujet à la manière de StackOverflow.
-
-#### Pilot (BO)
-
-BackOffice du service School, son but est de gérer les forums. admin, suppression, etc. (passer l'intégralité des messages en revue par dictionnaire de mots interdit avant leur prévalidation).
 
 #### Bottle
 
@@ -88,6 +75,14 @@ Service de notification, il permettra d'envoyer des notifications aux utilisateu
 #### Rosetta
 
 Service de traduction, il permettra de traduire les documents dans différentes langues.
+
+#### Bridge
+
+API Gateway pour le BackOffice. Il ne peut etre requeter que par le service Lighthouse.
+
+#### Lighthouse
+
+Backoffice permettant de gérer les utilisateurs, les documents et les forums.
 
 ## Architecture des services
 
@@ -99,6 +94,7 @@ flowchart TB
 
     subgraph Gateway
         Horizon[Horizon]
+        Bridge[Bridge]
     end
 
     subgraph Auth
@@ -110,13 +106,14 @@ flowchart TB
         Abys[Abys]
         Rosetta[Rosetta]
         MarineSnow[MarineSnow]
-        Colossal[Colossal]
-        Tide[Tide]
     end
 
     subgraph Social
         School[School]
-        Pilot[Pilot]
+    end
+
+    subgraph BackOffice
+        Lighthouse[Lighthouse]
     end
 
     subgraph Notification
@@ -125,6 +122,7 @@ flowchart TB
 
     %% Connexions Client
     Spotter --> Horizon
+    Lighthouse --> Bridge
 
     %% Connexions Gateway
     Horizon --> Harbor
@@ -132,15 +130,16 @@ flowchart TB
     Horizon --> Abys
     Horizon --> School
     Horizon --> Bottle
+    
+    Bridge --> Harbor
+    Bridge --> MarineSnow
+    Bridge --> Abys
+    Bridge --> School
 
     %% Connexions Search
     MarineSnow --> Abys
     Abys --> Sea
     Abys --> Rosetta
-    Colossal --> Abys
-    Tide --> MarineSnow
-    %% Connexions Social
-    Pilot --> School
 
     %% Connexions Notification
     School --> Bottle
@@ -157,21 +156,10 @@ flowchart TB
 
     %% Application des styles
     class Spotter frontend
-    class Horizon gateway
+    class Horizon,Bridge gateway
     class Harbor auth
     class Sea,Abys,MarineSnow,Rosetta search
     class School social
-    class Colossal,Tide,Pilot bo
+    class Lighthouse bo
     class Bottle notification
 ```
-
-## Repartition des équipes prévisionnelles
-
-Selon nos premiere estimation, "MarineSnow" et "Abys" sont les services les plus complexes à mettre en place. Il faudra donc une équipe dédiée à ces services. Les autres services sont plus simple à mettre en place et peuvent être géré par effectif réduit.
-
-Les compétences à maitriser pour ces services sont les suivantes:
-
-- Les [workers thread](https://nodejs.org/api/worker_threads.html)
-- Les [Regex](https://www.regextester.com/)
-- Les requêtes [MongoDB](https://docs.mongodb.com/manual/reference/method/)
-- La logique et l'algorithmie

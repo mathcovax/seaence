@@ -14,15 +14,9 @@ include:
   # school service
   - path:
       - ${INCLUDE_PATH}/school/compose.yml
-  # pilot service (BO school)
-  - path:
-      - ${INCLUDE_PATH}/pilot/compose.yml
   # marine-snow service
   - path:
       - ${INCLUDE_PATH}/marine-snow/compose.yml
-  # tide service (BO marine-snow)
-  - path:
-      - ${INCLUDE_PATH}/tide/compose.yml
   # horizon service (gateway)
   - path:
       - ${INCLUDE_PATH}/horizon/compose.yml
@@ -32,9 +26,12 @@ include:
   # abys service
   - path:
       - ${INCLUDE_PATH}/abys/compose.yml
-  # colossal service (BO abys)
+  # bridge service (gateway interne)
   - path:
-      - ${INCLUDE_PATH}/colossal/compose.yml
+      - ${INCLUDE_PATH}/bridge/compose.yml
+  # lighthouse service (BO admin)
+  - path:
+      - ${INCLUDE_PATH}/lighthouse/compose.yml
   # bottle service (notification)
   - path:
       - ${INCLUDE_PATH}/bottle/compose.yml
