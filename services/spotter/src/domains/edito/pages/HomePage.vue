@@ -21,8 +21,8 @@ const { $pt } = homePage.use();
 				</p>
 
 				<DSButtonPrimary as-child>
-					<RouterLink :to="connectionPage.createTo()">
-						{{ $t("cta.connection") }}
+					<RouterLink :to="simpleSearchPage">
+						{{ $t("cta.explore") }}
 					</RouterLink>
 				</DSButtonPrimary>
 			</div>

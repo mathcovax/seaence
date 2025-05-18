@@ -3,7 +3,7 @@
 </script>
 
 <template>
-	<DSSonner />
+	<DSSonner close-button />
 
 	<TheLoader />
 

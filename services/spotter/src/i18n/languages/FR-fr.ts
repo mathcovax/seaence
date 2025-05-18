@@ -260,7 +260,7 @@ export const FRfr = {
 	cta: {
 		backHome: "Retour à l'accueil",
 		connection: "Inscription / Connexion",
-		resetPassword: "Réinitialiser le mot de passe",
+		explore: "Explorer",
 		search: "Rechercher",
 		send: "Envoyer",
 		seeMore: "Voir plus",
@@ -351,11 +351,11 @@ export const FRfr = {
 	} satisfies Record<ArticleType, string>,
 	responses: {
 		user: {
-			logged: "Connexion réalisé avec succés.",
+			logged: "Connexion réalisée avec succès.",
 			notfound: "Utilisateur introuvable.",
 		},
 		credential: {
-			invalid: "Identifiant google invalide.",
+			invalid: "Identifiant Google invalide.",
 		},
 		article: {
 			notfound: "Article introuvable.",
@@ -364,12 +364,12 @@ export const FRfr = {
 			notfound: "Document introuvable.",
 		},
 		post: {
-			created: "Post créé avec succés.",
+			created: "Post créé avec succès.",
 			notfound: "Post introuvable.",
 		},
 		answer: {
-			created: "Réponse créé avec succés.",
+			created: "Réponse créée avec succès.",
 		},
-		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur c'est produite.",
+		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur s'est produite.",
 	},
 };
