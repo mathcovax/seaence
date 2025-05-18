@@ -11,7 +11,7 @@ export function baseTemplate(content: string) {
 						<table width="480" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border-radius: 8px; box-shadow: 0 2px 8px #e0e7ef; overflow: hidden">
 							<tr>
 								<td align="center" style="padding: 32px 24px 16px 24px">
-									<img src="./assets/logo-text.svg" alt="Seaence" width="192" style="display: block; margin-bottom: 24px" />
+									<img src="https://seaence.org/images/logos/logo-text.svg" alt="Seaence" width="192" style="display: block; margin-bottom: 24px" />
 									${content}
 								</td>
 							</tr>

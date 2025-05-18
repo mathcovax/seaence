@@ -6,7 +6,7 @@ interface SendInput {
 	to: string;
 	from: string;
 	subject: string;
-	content: string;
+	html: string;
 	attachments?: Attachment[];
 }
 
