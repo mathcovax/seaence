@@ -45,22 +45,24 @@ scienceDatabaseRepository.default = {
 			if (output instanceof Error) {
 				await stop();
 
-				throw new RepositoryError(
+				yield new RepositoryError(
 					"worker-reject-error",
 					{ error: output },
 				);
+				break;
 			} else if (
 				output.missionName !== "searchResult"
 			) {
 				await stop();
 
-				throw new RepositoryError(
+				yield new RepositoryError(
 					"worker-return-wrong-result",
 					{
 						input: missionData,
 						output: output,
 					},
 				);
+				break;
 			}
 
 			next();

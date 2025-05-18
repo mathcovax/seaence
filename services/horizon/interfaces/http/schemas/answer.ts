@@ -1,11 +1,3 @@
-import { endpointUserSchema } from "./user";
+import { answerObjecter } from "@business/entities/answer";
 
-export const endpointAnswerSchema = zod.object({
-	id: zod.string(),
-	postId: zod.string(),
-	content: zod.string(),
-	author: endpointUserSchema.pick({
-		id: true,
-		username: true,
-	}),
-});
+export const endpointAnswerSchema = answerObjecter.zodSchema;

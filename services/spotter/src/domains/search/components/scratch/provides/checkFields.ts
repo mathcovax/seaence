@@ -1,4 +1,4 @@
 export const {
 	initProvide: initCheckFieldsProvide,
 	getProvidedValue: getProvidedCheckFieldsValue,
-} = useProvide<Ref<(() => boolean)[]>>();
+} = useProvide<Ref<((disabledHint: boolean) => boolean)[]>>();

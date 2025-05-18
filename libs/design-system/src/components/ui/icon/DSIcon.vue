@@ -13,7 +13,10 @@ import {
 	mdiStarOutline,
 	mdiStar,
 	mdiMessageText,
+	mdiMagnify,
+	mdiWeb,
 } from "@mdi/js";
+import { computed } from "vue";
 
 const iconsMapper = {
 	close: mdiClose,
@@ -28,20 +31,41 @@ const iconsMapper = {
 	starOutline: mdiStarOutline,
 	star: mdiStar,
 	messageText: mdiMessageText,
+	magnify: mdiMagnify,
+	web: mdiWeb,
+};
+
+const sizeMapper = {
+	small: 15,
+	normal: 25,
+	large: 35,
 };
 
 interface Props {
 	name: keyof typeof iconsMapper;
-	size?: string;
+	size?: keyof typeof sizeMapper;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const iconStyle = computed(
+	() => props.size
+		? ({
+			height: `${sizeMapper[props.size]}px`,
+			width: `${sizeMapper[props.size]}px`,
+		})
+		: ({
+			height: `${sizeMapper.normal}px`,
+			width: `${sizeMapper.normal}px`,
+		}),
+);
+
 </script>
 
 <template>
 	<SvgIcon
 		type="mdi"
 		:path="iconsMapper[name]"
-		:size="size"
+		:style="iconStyle"
 	/>
 </template>

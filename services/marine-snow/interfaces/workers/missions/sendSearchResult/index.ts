@@ -1,12 +1,12 @@
 import { type SendSearchResultMissionEntity } from "@business/domains/entities/mission/sendSearchResult";
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
-import { type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { getTypedEntries, type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { prismaClient } from "@interfaces/providers/prisma";
 import { type EntityToSimpleObject } from "@vendors/clean";
-import { match } from "ts-pattern";
 import { pubmedSender } from "./senders/pubmed";
 import { postMessage } from "@interfaces/workers/postMessage";
 import { deepLog } from "@interfaces/utils/deepLog";
+import { match } from "ts-pattern";
 
 export type SupportedSendSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -49,30 +49,52 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 			break;
 		}
 
-		const searchResults = await Promise.all(
-			prismaSearchResults.map(
-				(searchResult) => match(searchResult)
-					.with(
-						{ provider: "pubmed" },
-						async(searchResult) => {
-							const success = await pubmedSender(searchResult.reference);
+		const searchResults = (
+			await Promise
+				.all(
+					getTypedEntries(
+						Object.groupBy(prismaSearchResults, ({ provider }) => provider),
+					).map(
+						([provider, groupedSearchResults]) => match(provider)
+							.with(
+								"pubmed",
+								async() => {
+									const result = await pubmedSender(
+										groupedSearchResults.map(({ reference }) => reference),
+									);
 
-							if (success instanceof Error) {
-								deepLog({
-									searchResult,
-									success,
-								});
-							}
+									if (result instanceof Error) {
+										deepLog(result);
 
-							return {
-								...searchResult,
-								failedToSend: success instanceof Error,
-							};
-						},
-					)
-					.exhaustive(),
-			),
-		);
+										return groupedSearchResults.map(
+											(searchResult) => ({
+												...searchResult,
+												failedToSend: true,
+											}),
+										);
+									}
+
+									return result.map<
+										SendSearchResultMissionOutput["searchResults"][number]
+									>(
+										({ reference, error }) => {
+											if (error) {
+												deepLog(error);
+											}
+
+											return {
+												provider: "pubmed",
+												reference,
+												failedToSend: !!error,
+											};
+										},
+									);
+								},
+							)
+							.exhaustive(),
+					),
+				)
+		).flat();
 
 		await output({
 			missionName: "sendSearchResult",

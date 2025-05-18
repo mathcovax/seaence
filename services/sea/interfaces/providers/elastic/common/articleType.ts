@@ -84,4 +84,5 @@ export const articleTypeEnum = createEnum([
 	"videoAudioMedia",
 	"webcast",
 ]);
+
 export type ArticleType = GetEnumValue<typeof articleTypeEnum>;

@@ -33,7 +33,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "GET";
-    path: "/documents/{nodeSameRawDocumentId}/postsDetails";
+    path: "/documents/{nodeSameRawDocumentId}/posts-details";
     params: {
         nodeSameRawDocumentId: string;
     };

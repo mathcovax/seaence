@@ -10,20 +10,22 @@ export class KeyDate {
 		return entity?.date ?? new Date(this.defaultDate);
 	}
 
-	public static async set(name: NameKeyDate) {
+	public static set(name: NameKeyDate) {
 		const date = new Date();
 
-		await mongo.keyDateCollection.updateOne(
-			{ name },
-			{
-				$set: {
-					name,
-					date,
+		return async() => {
+			await mongo.keyDateCollection.updateOne(
+				{ name },
+				{
+					$set: {
+						name,
+						date,
+					},
 				},
-			},
-			{ upsert: true },
-		);
+				{ upsert: true },
+			);
 
-		return date;
+			return date;
+		};
 	}
 }

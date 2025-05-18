@@ -1,2 +1,4 @@
 // document
-import "./document/upsert";
+import "./document";
+import "./search";
+import "./facet";

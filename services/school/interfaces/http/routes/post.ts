@@ -46,7 +46,7 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/postsDetails")
+	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/posts-details")
 	.extract({
 		params: {
 			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),

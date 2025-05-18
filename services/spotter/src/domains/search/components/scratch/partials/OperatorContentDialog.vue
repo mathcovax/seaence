@@ -7,7 +7,7 @@ import type {
 	OperatorContent,
 	OperatorNot,
 	OperatorOr,
-} from "@vendors/scratch-type";
+} from "@vendors/types-advanced-query";
 
 type Resolve = (value: OperatorContent | null) => void;
 
@@ -77,11 +77,11 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 			<DSTabs>
 				<DSTabsList class="w-full">
 					<DSTabsTrigger value="comparator">
-						{{ $t("scratch.tabs.comparator") }}
+						{{ $t("search.scratch.tabs.comparator") }}
 					</DSTabsTrigger>
 
 					<DSTabsTrigger value="operator">
-						{{ $t("scratch.tabs.operator") }}
+						{{ $t("search.scratch.tabs.operator") }}
 					</DSTabsTrigger>
 				</DSTabsList>
 
@@ -90,15 +90,15 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					class="flex gap-2 justify-center"
 				>
 					<DSButton @click="selectOperatorContent('and')">
-						{{ $t("scratch.operator.and.label") }}
+						{{ $t("search.scratch.operator.and.label") }}
 					</DSButton>
 
 					<DSButton @click="selectOperatorContent('or')">
-						{{ $t("scratch.operator.or.label") }}
+						{{ $t("search.scratch.operator.or.label") }}
 					</DSButton>
 
 					<DSButton @click="selectOperatorContent('not')">
-						{{ $t("scratch.operator.not.label") }}
+						{{ $t("search.scratch.operator.not.label") }}
 					</DSButton>
 				</DSTabsContent>
 
@@ -107,11 +107,11 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					class="flex gap-2 justify-center"
 				>
 					<DSButton @click="selectOperatorContent('text')">
-						{{ $t("scratch.comparator.text.label") }}
+						{{ $t("search.scratch.comparator.text.label") }}
 					</DSButton>
 
 					<DSButton @click="selectOperatorContent('year')">
-						{{ $t("scratch.comparator.year.label") }}
+						{{ $t("search.scratch.comparator.year.label") }}
 					</DSButton>
 				</DSTabsContent>
 			</DSTabs>

@@ -13,6 +13,10 @@ type UniqueFieldName = "digitalObjectIdentifier" | "specific";
 
 export { UniqueFieldName };
 
+type Language = "fr-FR" | "en-US";
+
+export { Language };
+
 type CodegenRoutes = ({
     method: "PUT";
     path: "/raw-document";
@@ -99,10 +103,11 @@ type CodegenRoutes = ({
             id: string;
             nodeSameRawDocumentId: string;
             title: string;
-            language: "fr-FR" | "en-US";
+            language: Language;
             abstract: string | null;
             abstractDetails: {
                 name: string;
+                label: string;
                 content: string;
             }[] | null;
             resources: {

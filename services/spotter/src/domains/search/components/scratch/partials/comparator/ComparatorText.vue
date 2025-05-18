@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComparatorText, textFieldEnum } from "@vendors/scratch-type";
+import { type ComparatorText, textFieldEnum } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
@@ -25,7 +25,6 @@ const { hintMessage } = useHintMessage(
 		},
 	}),
 );
-
 </script>
 
 <template>
@@ -35,7 +34,7 @@ const { hintMessage } = useHintMessage(
 		@deplace="emit('remove')"
 	>
 		<div class="mb-2 flex justify-between items-center">
-			<span class="font-medium text-sm">{{ $t('scratch.comparator.text.label') }}</span>
+			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.text.label') }}</span>
 
 			<DSButtonIcon
 				variant="ghost"
@@ -50,15 +49,17 @@ const { hintMessage } = useHintMessage(
 		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
 			<DSSelect
 				:items="textFieldEnum.toTuple()"
-				:label="(item) => $t(`scratch.comparator.text.fields.${item}`) || item"
-				:placeholder="$t('scratch.comparator.text.selectPlaceholder')"
+				:label="(item) => $t(`search.scratch.comparator.text.fields.${item}`) || item"
+				:placeholder="$t('search.scratch.comparator.text.selectPlaceholder')"
 				v-model="model.field"
 				class="text-sm"
 			/>
 
 			<DSInput
+				@dragstart="console.log('test')"
+				draggable="false"
 				v-model="model.value"
-				:placeholder="$t('scratch.comparator.text.inputPlaceholder')"
+				:placeholder="$t('search.scratch.comparator.text.inputPlaceholder')"
 				class="text-sm"
 			/>
 		</div>

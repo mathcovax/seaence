@@ -5,6 +5,126 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
+type BakedDocumentLanguage = "fr-FR" | "en-US";
+
+export { BakedDocumentLanguage };
+
+type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
+
+export { OperatorContent };
+
+type OperatorAnd = {
+    type: "operator";
+    name: "and";
+    content: OperatorContent[];
+};
+
+export { OperatorAnd };
+
+type OperatorOR = {
+    type: "operator";
+    name: "or";
+    content: OperatorContent[];
+};
+
+export { OperatorOR };
+
+type OperatorNot = {
+    type: "operator";
+    name: "not";
+    content: OperatorContent | null;
+};
+
+export { OperatorNot };
+
+type ComparatorText = {
+    type: "comparator";
+    name: "text";
+    field: "allField" | "title" | "abstract";
+    value: string;
+};
+
+export { ComparatorText };
+
+type ComparatorYear = {
+    type: "comparator";
+    name: "year";
+    field: "allDate" | "webDate" | "journalDate";
+    value: number;
+};
+
+export { ComparatorYear };
+
+type FiltersValues = {
+    articleType?: ArticleType[] | undefined;
+    gender?: GenderFacetValue[] | undefined;
+    species?: SpeciesFacetValue[] | undefined;
+    year?: {
+        from: number;
+        to: number;
+    } | undefined;
+};
+
+export { FiltersValues };
+
+type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
+
+export { ArticleType };
+
+type GenderFacetValue = "male" | "female";
+
+export { GenderFacetValue };
+
+type SpeciesFacetValue = "human" | "otherAnimal";
+
+export { SpeciesFacetValue };
+
+type Facet = {
+    type: "multiSelect";
+    name: "articleType";
+    values: {
+        value: ArticleType;
+        quantity: number;
+    }[];
+} | {
+    type: "checkbox";
+    name: "gender";
+    values: {
+        value: GenderFacetValue;
+        quantity: number;
+    }[];
+} | {
+    type: "checkbox";
+    name: "species";
+    values: {
+        value: SpeciesFacetValue;
+        quantity: number;
+    }[];
+} | {
+    type: "range";
+    name: "year";
+    values: {
+        value: number;
+        quantity: number;
+    }[];
+};
+
+export { Facet };
+
+type BakedDocumentSearchResult = {
+    score: number;
+    bakedDocumentId: string;
+    title: string;
+    articleTypes: ArticleType[];
+    authors: string[];
+    webPublishDate: string | null;
+    journalPublishDate: string | null;
+    summary: string | null;
+    keywords: string[] | null;
+};
+
+export { BakedDocumentSearchResult };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/authentication";
@@ -124,7 +244,7 @@ type CodegenRoutes = ({
     path: "/post-page";
     body: {
         postId: string;
-        language: "fr-FR" | "en-US";
+        language: BakedDocumentLanguage;
     };
     response: {
         code: 404;
@@ -152,7 +272,7 @@ type CodegenRoutes = ({
             document: {
                 id: string;
                 title: string;
-                language: "fr-FR" | "en-US";
+                language: BakedDocumentLanguage;
             };
             quantityAnswerPerPage: number;
         };
@@ -174,7 +294,7 @@ type CodegenRoutes = ({
             document: {
                 id: string;
                 title: string;
-                language: "fr-FR" | "en-US";
+                language: BakedDocumentLanguage;
             };
             totalPostCount: number;
             quantityPostPerPage: number;
@@ -199,6 +319,37 @@ type CodegenRoutes = ({
             username: string;
             email: string;
         };
+    };
+}) | ({
+    method: "POST";
+    path: "/search-details";
+    body: {
+        language: BakedDocumentLanguage;
+        term: string | OperatorContent;
+        filtersValues?: FiltersValues | undefined;
+    };
+    response: {
+        code: 200;
+        information: "search.details";
+        body: {
+            total: number;
+            facets: Facet[];
+            quantityPerPage: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/search-results";
+    body: {
+        language: BakedDocumentLanguage;
+        page: number;
+        term: string | OperatorContent;
+        filtersValues?: FiltersValues | undefined;
+    };
+    response: {
+        code: 200;
+        information: "simpleSearch.results";
+        body: BakedDocumentSearchResult[];
     };
 });
 

@@ -71,6 +71,9 @@ export const articlePayloadSchema = zo({
 		zo({
 			PubmedArticle: zo({
 				MedlineCitation: zo({
+					PMID: zo({
+						...stringValue,
+					}),
 					Article: zo({
 						Journal: zo({
 							JournalIssue: zo({
@@ -142,7 +145,7 @@ export const articlePayloadSchema = zo({
 						}).toArray(),
 					}),
 				}),
-			}),
+			}).toArray(),
 		}),
 		zo({
 			PubmedBookArticle: zo({

@@ -1,6 +1,6 @@
 import { type FindHttpClientRoute, HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
-import { type CodegenRoutes } from "@vendors/clients-type/sea/duplojsTypesCodegen";
+import { type CodegenRoutes, type Language as SeaDocumentLanguage } from "@vendors/clients-type/sea/duplojsTypesCodegen";
 
 type SeaHttpRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
@@ -11,12 +11,6 @@ export type SeaDocument = FindHttpClientRoute<
 	"PUT",
 	"/document/{language}"
 >["body"];
-
-export type SeaDocumentLanguage = FindHttpClientRoute<
-	SeaHttpRoute,
-	"PUT",
-	"/document/{language}"
->["params"]["language"];
 
 export class SeaAPI {
 	private static httpClient: HttpClient<SeaHttpRoute>;

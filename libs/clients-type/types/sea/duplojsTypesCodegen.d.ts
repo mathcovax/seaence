@@ -5,39 +5,79 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type articleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
+type ArticleType = "adaptiveClinicalTrial" | "address" | "autobiography" | "bibliography" | "biography" | "booksAndDocuments" | "caseReports" | "classicalArticle" | "clinicalConference" | "clinicalStudy" | "clinicalTrial" | "clinicalTrialProtocol" | "clinicalTrialPhaseI" | "clinicalTrialPhaseII" | "clinicalTrialPhaseIII" | "clinicalTrialPhaseIV" | "clinicalTrialVeterinary" | "collectedWork" | "comment" | "comparativeStudy" | "congress" | "consensusDevelopmentConference" | "consensusDevelopmentConferenceNIH" | "controlledClinicalTrial" | "correctedAndRepublishedArticle" | "dataset" | "dictionary" | "directory" | "duplicatePublication" | "editorial" | "electronicSupplementaryMaterials" | "englishAbstract" | "equivalenceTrial" | "evaluationStudy" | "expressionOfConcern" | "festschrift" | "governmentPublication" | "guideline" | "historicalArticle" | "interactiveTutorial" | "interview" | "introductoryJournalArticle" | "journalArticle" | "lecture" | "legalCase" | "legislation" | "letter" | "metaAnalysis" | "multicenterStudy" | "news" | "newspaperArticle" | "observationalStudy" | "observationalStudyVeterinary" | "overall" | "patientEducationHandout" | "periodicalIndex" | "personalNarrative" | "portrait" | "practiceGuideline" | "pragmaticClinicalTrial" | "preprint" | "publishedErratum" | "randomizedControlledTrial" | "randomizedControlledTrialVeterinary" | "researchSupportAmericanRecoveryAndReinvestmentAct" | "researchSupportNIHExtramural" | "researchSupportNIHIntramural" | "researchSupportNonUSGovt" | "researchSupportUSGovtNonPHS" | "researchSupportUSGovtPHS" | "researchSupportUSGovt" | "retractedPublication" | "retractionOfPublication" | "review" | "scopingReview" | "scientificIntegrityReview" | "systematicReview" | "technicalReport" | "twinStudy" | "validationStudy" | "videoAudioMedia" | "webcast";
 
-export { articleType };
+export { ArticleType };
+
+type Language = "fr-FR" | "en-US";
+
+export { Language };
+
+type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
+
+export { OperatorContent };
+
+type OperatorAnd = {
+    type: "operator";
+    name: "and";
+    content: OperatorContent[];
+};
+
+export { OperatorAnd };
+
+type OperatorOR = {
+    type: "operator";
+    name: "or";
+    content: OperatorContent[];
+};
+
+export { OperatorOR };
+
+type OperatorNot = {
+    type: "operator";
+    name: "not";
+    content: OperatorContent | null;
+};
+
+export { OperatorNot };
+
+type ComparatorText = {
+    type: "comparator";
+    name: "text";
+    field: "allField" | "title" | "abstract";
+    value: string;
+};
+
+export { ComparatorText };
+
+type ComparatorYear = {
+    type: "comparator";
+    name: "year";
+    field: "allDate" | "webDate" | "journalDate";
+    value: number;
+};
+
+export { ComparatorYear };
 
 type CodegenRoutes = ({
     method: "PUT";
     path: "/document/{language}";
     body: {
-        abysBakedDocumentId: string;
+        bakedDocumentId: string;
         title: string;
-        articleTypes: articleType[];
-        authors: {
-            name: string;
-            affiliations: string[] | null;
-        }[];
-        abstract: string;
-        abstractDetails: {
-            name: string;
-            content: string;
-        }[] | null;
-        providers: {
-            value: "pubmed";
-        }[];
-        keywords: {
-            value: string;
-        }[];
-        webPublishDate: Date | null;
+        articleTypes: ArticleType[];
+        authors: string[];
+        summary: string | null;
+        abstract: string | null;
+        providers: ("pubmed")[];
+        keywords: string[];
+        webPublishDate: string | null;
         webPublishSplitDate: {
             day: number | null;
             month: number | null;
             year: number;
         } | null;
-        journalPublishDate: Date | null;
+        journalPublishDate: string | null;
         journalPublishSplitDate: {
             day: number | null;
             month: number | null;
@@ -45,12 +85,93 @@ type CodegenRoutes = ({
         } | null;
     };
     params: {
-        language: "fr-FR" | "en-US";
+        language: Language;
     };
     response: {
         code: 200;
         information: "document.upsert";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/search-results";
+    body: {
+        language: Language;
+        page: number;
+        quantityPerPage: number;
+        term: string | OperatorContent;
+        filtersValues?: {
+            articleType?: ArticleType[] | undefined;
+            gender?: ("male" | "female")[] | undefined;
+            species?: ("human" | "otherAnimal")[] | undefined;
+            year?: {
+                from: number;
+                to: number;
+            } | undefined;
+        } | undefined;
+    };
+    response: {
+        code: 200;
+        information: "simpleSearch.results";
+        body: {
+            score: number;
+            bakedDocumentId: string;
+            title: string;
+            articleTypes: ArticleType[];
+            authors: string[];
+            webPublishDate: string | null;
+            journalPublishDate: string | null;
+            summary: string | null;
+            keywords: string[] | null;
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/facets";
+    body: {
+        language: Language;
+        term: string | OperatorContent;
+        filtersValues?: {
+            articleType?: ArticleType[] | undefined;
+            gender?: ("male" | "female")[] | undefined;
+            species?: ("human" | "otherAnimal")[] | undefined;
+            year?: {
+                from: number;
+                to: number;
+            } | undefined;
+        } | undefined;
+    };
+    response: {
+        code: 200;
+        information: "facets.results";
+        body: {
+            total: number;
+            facets: ({
+                name: "articleType";
+                values: {
+                    value: ArticleType;
+                    quantity: number;
+                }[];
+            } | {
+                name: "year";
+                values: {
+                    value: number;
+                    quantity: number;
+                }[];
+            } | {
+                name: "gender";
+                values: {
+                    value: "male" | "female";
+                    quantity: number;
+                }[];
+            } | {
+                name: "species";
+                values: {
+                    value: "human" | "otherAnimal";
+                    quantity: number;
+                }[];
+            })[];
+        };
     };
 });
 

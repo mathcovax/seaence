@@ -27,6 +27,7 @@ export type BakedDocumentAbstract = GetValueObject<typeof bakedDocumentAbstractO
 export const bakedDocumentAbstractPartObjecter = zod
 	.object({
 		name: zod.string(),
+		label: zod.string(),
 		content: zod.string(),
 	})
 	.createValueObjecter("bakedDocumentAbstractPart");

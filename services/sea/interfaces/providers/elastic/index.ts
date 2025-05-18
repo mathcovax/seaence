@@ -52,8 +52,10 @@ export class Elastic {
 }
 
 if (envs.DB_CONNECTION) {
-	const timeToWaitElasticUp = 5000;
-	await sleep(timeToWaitElasticUp);
+	if (envs.ENVIROMENT === "DEV") {
+		const timeToWaitElasticUp = 3000;
+		await sleep(timeToWaitElasticUp);
+	}
 
 	await Promise.all([
 		Elastic.register(enUsDocument),

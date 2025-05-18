@@ -3,10 +3,10 @@ import { endpointCreatePostPage, endpointPostListPageSchema, endpointPostPageSch
 import { iWantDocumentExistById } from "../checkers/document";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { iWantPostExistById } from "../checkers/post";
-import { documentLanguageSchema } from "../schemas/document";
 import { postConfig } from "@interfaces/configs/post";
 import { answerConfig } from "@interfaces/configs/answer";
 import { match } from "ts-pattern";
+import { bakedDocumentLanguageObjecter } from "@business/entities/bakedDocument";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/create-post")
@@ -79,7 +79,7 @@ useBuilder()
 	.extract({
 		body: {
 			postId: zod.string(),
-			language: documentLanguageSchema,
+			language: bakedDocumentLanguageObjecter.zodSchema,
 		},
 	})
 	.presetCheck(

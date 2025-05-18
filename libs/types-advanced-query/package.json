@@ -1,0 +1,7 @@
+{
+  "name": "@lib/types-advanced-query",
+  "type": "module",
+  "dependencies": {
+    "zod": "3.24.2"
+  }
+}

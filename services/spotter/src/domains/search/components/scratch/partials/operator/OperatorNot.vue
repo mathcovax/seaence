@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OperatorContent, OperatorNot } from "@vendors/scratch-type";
+import type { OperatorContent, OperatorNot } from "@vendors/types-advanced-query";
 import { operatorContentWrapper } from "../operatorContentWrapper";
 import AddOperatorContent from "./AddOperatorContent.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
@@ -47,7 +47,7 @@ const { hintMessage } = useHintMessage(
 <template>
 	<div class="border-4 border-pink-seaence rounded-md shadow-sm">
 		<div class="h-11 flex justify-between items-center px-2 py-1 text-white bg-pink-seaence">
-			<span class="font-medium text-sm">{{ $t("scratch.operator.not.label") }}</span>
+			<span class="font-medium text-sm">{{ $t("search.scratch.operator.not.label") }}</span>
 
 			<DSButtonIcon
 				variant="ghost"

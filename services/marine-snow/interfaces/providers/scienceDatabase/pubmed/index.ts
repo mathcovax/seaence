@@ -68,7 +68,7 @@ export class PubMedAPI {
 			.catch((error: unknown) => error as Error);
 	}
 
-	public static getArticle(pubmedId: string) {
+	public static getArticle(pubmedId: string[]) {
 		return retry(
 			() => this.httpClient.get(
 				"/entrez/eutils/efetch.fcgi",
@@ -114,6 +114,7 @@ export class PubMedAPI {
 			alwaysCreateTextNode: true,
 			parseAttributeValue: true,
 			ignoreAttributes: false,
+			htmlEntities: true,
 		});
 
 		this.httpClient.interceptors.response = (response) => {

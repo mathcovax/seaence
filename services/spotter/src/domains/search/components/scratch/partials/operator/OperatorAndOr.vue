@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type OperatorAnd, type OperatorContent, type OperatorOr } from "@vendors/scratch-type";
+import { type OperatorAnd, type OperatorContent, type OperatorOr } from "@vendors/types-advanced-query";
 import { operatorContentWrapper } from "../operatorContentWrapper";
 import AddOperatorContent from "./AddOperatorContent.vue";
 import SelectOperator from "./SelectOperator.vue";

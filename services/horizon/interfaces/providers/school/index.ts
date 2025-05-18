@@ -122,7 +122,7 @@ export class SchoolAPI {
 	public static findDocumentPostsDetails(nodeSameRawDocumentId: string) {
 		return this.httpClient
 			.get(
-				"/documents/{nodeSameRawDocumentId}/postsDetails",
+				"/documents/{nodeSameRawDocumentId}/posts-details",
 				{
 					params: {
 						nodeSameRawDocumentId,

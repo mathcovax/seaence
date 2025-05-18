@@ -70,7 +70,8 @@ nodeSameRawDocumentRepository.default = {
 		const quantityPerPage = 10;
 
 		const lastCook = await KeyDate.get("lastCookNodeSameRawDocument");
-		await KeyDate.set("lastCookNodeSameRawDocument");
+
+		const applyNewDate = KeyDate.set("lastCookNodeSameRawDocument");
 
 		for (let page = startPage; true; page++) {
 			const nodeNameRawDocuments = await mongo
@@ -98,5 +99,7 @@ nodeSameRawDocumentRepository.default = {
 				);
 			}
 		}
+
+		await applyNewDate();
 	},
 };

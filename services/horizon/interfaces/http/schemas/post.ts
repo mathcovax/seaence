@@ -1,21 +1,11 @@
-import { documentSchema } from "./document";
-import { endpointUserSchema } from "./user";
+import { bakedDocumentObjecter } from "@business/entities/bakedDocument";
+import { postObjecter } from "@business/entities/post";
 
-export const endpointPostSchema = zod.object({
-	id: zod.string(),
-	topic: zod.string(),
-	content: zod.string(),
-	author: endpointUserSchema.pick({
-		id: true,
-		username: true,
-	}),
-	createdAt: zod.string(),
-	answerCount: zod.number(),
-});
+export const endpointPostSchema = postObjecter.zodSchema;
 
 export const endpointPostPageSchema = zod.object({
 	post: endpointPostSchema,
-	document: documentSchema.pick({
+	document: bakedDocumentObjecter.zodSchema.pick({
 		id: true,
 		title: true,
 		language: true,
@@ -24,7 +14,7 @@ export const endpointPostPageSchema = zod.object({
 });
 
 export const endpointPostListPageSchema = zod.object({
-	document: documentSchema.pick({
+	document: bakedDocumentObjecter.zodSchema.pick({
 		id: true,
 		title: true,
 		language: true,

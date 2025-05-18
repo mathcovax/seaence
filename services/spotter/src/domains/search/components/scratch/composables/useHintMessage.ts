@@ -9,10 +9,12 @@ export function useHintMessage<
 ) {
 	const hintMessage = ref<string | null>();
 
-	function check() {
+	function check(disabledHint = true) {
 		const { success, data, error } = zodSchema.safeParse(currentValue.value);
 		if (!success) {
-			hintMessage.value = error.issues.shift()?.message ?? null;
+			if (!disabledHint) {
+				hintMessage.value = error.issues.shift()?.message ?? null;
+			}
 			return false;
 		}
 
@@ -23,6 +25,7 @@ export function useHintMessage<
 	}
 
 	const checkFields = getProvidedCheckFieldsValue();
+
 	onMounted(() => {
 		checkFields!.value.push(check);
 	});

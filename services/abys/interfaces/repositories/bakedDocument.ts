@@ -84,12 +84,17 @@ bakedDocumentRepository.default = {
 		return Promise.all(
 			rawAbstractDetails.map(
 				({ value: { name, content } }) => RosettaAPI
-					.translateText(content, languageMapper[language.value])
+					.translateText(`${name}\n${content}`, languageMapper[language.value])
 					.then(
-						(content) => bakedDocumentAbstractPartObjecter.unsafeCreate({
-							name,
-							content,
-						}),
+						(content) => {
+							const [label, ...contents] = content.split("\n");
+
+							return bakedDocumentAbstractPartObjecter.unsafeCreate({
+								name,
+								label,
+								content: contents.join("\n"),
+							});
+						},
 					),
 			),
 		);
@@ -99,7 +104,8 @@ bakedDocumentRepository.default = {
 		const quantityPerPage = 10;
 
 		const lastSend = await KeyDate.get("lastSendBakedDocument");
-		await KeyDate.set("lastSendBakedDocument");
+
+		const applyNewDate = KeyDate.set("lastSendBakedDocument");
 
 		for (let page = startPage; true; page++) {
 			const bakedDocuments = await mongo
@@ -126,6 +132,8 @@ bakedDocumentRepository.default = {
 					nodeNameRawDocument,
 				);
 			}
+
+			await applyNewDate();
 		}
 	},
 	findDOIFoundationResourcesInRawDocument(rawDocuments) {
