@@ -2,6 +2,7 @@
 import type { FlexibleDate } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useDocumentPage } from "../composables/useDocumentPage";
 import RowPost from "@/domains/forum/components/RowPost.vue";
+import { RouterLink } from "vue-router";
 
 const { $pt, params } = documentPage.use();
 const router = useRouter();
@@ -54,9 +55,7 @@ function formatedDate(date: FlexibleDate) {
 		>
 			<header class="flex flex-col gap-8 lg:gap-12">
 				<div class="flex flex-col gap-2">
-					<h1
-						class="capitalize text-2xl md:text-3xl font-bold text-blue-seaence"
-					>
+					<h1 class="capitalize text-xl md:text-3xl font-bold text-blue-seaence mb-4">
 						{{ document.title }}
 					</h1>
 
@@ -215,26 +214,42 @@ function formatedDate(date: FlexibleDate) {
 				</div>
 			</div>
 
-			<div v-if="posts.length">
-				<h2 class="text-xl md:text-2xl font-bold mb-4">
-					{{ $pt("label.linkedPosts") }}
-				</h2>
+			<div class="flex flex-col gap-4">
+				<RouterLink
+					:to="postListPage.createTo({params: {documentId: document.id}})"
+					class="flex gap-2 self-start hover:underline"
+				>
+					<h2 class="text-xl md:text-2xl font-bold hover:underline">
+						{{ $pt("label.linkedPosts") }}
+					</h2>
 
-				<div class="flex flex-col gap-4">
+					<DSIcon name="linkVariant" />
+				</RouterLink>
+
+				<template
+					v-if="posts.length"
+				>
 					<RowPost
 						v-for="post in posts"
 						:key="post.id"
 						:post="post"
 						language="en-US"
 					/>
-				</div>
-			</div>
+				</template>
 
-			<DSButtonPrimary v-else>
-				<RouterLink :to="postCreatePage.createTo({params: {documentId: document.id}})">
-					{{ $pt("createPost") }}
-				</RouterLink>
-			</DSButtonPrimary>
+				<template v-else>
+					<i>{{ $pt("noPost") }}</i>
+
+					<DSButtonPrimary
+						class="self-start"
+						as-child
+					>
+						<RouterLink :to="postCreatePage.createTo({params: {documentId: document.id}})">
+							{{ $pt("createPost") }}
+						</RouterLink>
+					</DSButtonPrimary>
+				</template>
+			</div>
 		</article>
 	</section>
 </template>

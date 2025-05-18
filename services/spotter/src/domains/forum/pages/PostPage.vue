@@ -63,21 +63,13 @@ function handleCreateAnswer() {
 
 <template>
 	<section v-if="postPageInformation">
-		<article class="sticky top-[var(--header-height)] z-5 mb-4 p-6 bg-white rounded-lg rounded-b-lg shadow-md">
+		<article class="stick z-5 mb-4 p-6 bg-white rounded-lg rounded-b-lg shadow-md">
 			<header class="border-b pb-4">
 				<div class="mb-6 flex gap-4 items-center">
 					<DSButtonIcon
-						as-child
+						@click="router.back()"
 					>
-						<RouterLink
-							:to="postListPage.createTo({
-								params: {
-									documentId: postPageInformation.document.id,
-								},
-							})"
-						>
-							<DSIcon name="arrowLeft" />
-						</RouterLink>
+						<DSIcon name="arrowLeft" />
 					</DSButtonIcon>
 
 					<h1 class="text-3xl font-semibold text-blue-seaence">
@@ -128,7 +120,7 @@ function handleCreateAnswer() {
 					v-if="answers.length > 0 && answers.length < postPageInformation.post.answerCount"
 					@click="seeMoreAnswers"
 				>
-					{{ $pt("olderResponse") }}
+					{{ $t("cta.seeMore") }}
 				</DSButtonOutline>
 			</div>
 
@@ -184,7 +176,7 @@ function handleCreateAnswer() {
 
 				<DSTextarea
 					class="h-40 resize-none focus:border-blue-seaence focus:ring-2 focus:outline-none"
-					:placeholder="$t('cta.writeYourAnswer')"
+					:placeholder="$pt('writeYourAnswer')"
 					v-model="newAnswer"
 				/>
 

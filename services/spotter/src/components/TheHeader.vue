@@ -67,7 +67,14 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 					:title="$t('cta.connection')"
 				>
 					<RouterLink :to="connectionPage.createTo()">
-						<DSIcon name="login" />
+						<p class="hidden lg:block">
+							{{ $t('cta.connection') }}
+						</p>
+
+						<DSIcon
+							class="lg:hidden"
+							name="login"
+						/>
 					</RouterLink>
 				</DSButtonPrimary>
 

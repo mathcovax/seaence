@@ -31,9 +31,15 @@ watch(
 			v-if="postListPageInforamtion"
 			class="flex flex-col gap-6"
 		>
-			<h1 class="text-3xl font-semibold mb-2">
+			<h1 class="text-xl font-semibold mb-2">
 				{{ $pt("titleLinkPost", {title: postListPageInforamtion.document.title}) }}
 			</h1>
+
+			<DSButtonPrimary>
+				<RouterLink :to="postCreatePage.createTo({params: {documentId: params.documentId}})">
+					{{ $pt("createPost") }}
+				</RouterLink>
+			</DSButtonPrimary>
 
 			<div v-if="postList && postList.length > 0">
 				<div class="space-y-6">

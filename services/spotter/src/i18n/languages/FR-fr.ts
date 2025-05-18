@@ -68,12 +68,14 @@ export const FRfr = {
 				linkedPosts: "Posts liés",
 			},
 			createPost: "Créer un poste",
+			noPost: "Aucun post(s) trouvé pour ce document.",
 		},
 		[postListPage.name]: {
 			titleLinkPost: "Post(s) lié au document : {title}",
 			authorIs: "Posté par {author}",
 			responseCount: "{count} réponse(s)",
 			noPost: "Aucun post(s) trouvé pour ce document.",
+			createPost: "Créer un poste",
 		},
 		[postPage.name]: {
 			connexionRequire: "Il est obligatoire d'étre connecter avant de écrire un message.",
@@ -82,6 +84,7 @@ export const FRfr = {
 			authorIs: "Posté par {author}",
 			noResponse: "Aucune réponse(s) pour ce post.",
 			writeAnAnswer: "Écrivez un commentaire",
+			writeYourAnswer: "Un super commentaire...",
 		},
 		[profilePage.name]: {
 			personalInfo: {

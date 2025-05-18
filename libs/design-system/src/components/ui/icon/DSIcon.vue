@@ -20,6 +20,7 @@ import {
 	mdiForum,
 	mdiArrowLeft,
 	mdiSend,
+	mdiLinkVariant,
 } from "@mdi/js";
 import { computed } from "vue";
 
@@ -43,6 +44,7 @@ const iconsMapper = {
 	forum: mdiForum,
 	arrowLeft: mdiArrowLeft,
 	send: mdiSend,
+	linkVariant: mdiLinkVariant,
 };
 
 const sizeMapper = {
