@@ -88,7 +88,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "GET";
-    path: "/bakedDocument/{id}";
+    path: "/baked-document/{id}";
     params: {
         id: string;
     };

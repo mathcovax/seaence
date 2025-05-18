@@ -91,6 +91,7 @@ jobs:
           echo '${{ secrets.MARINE_SNOW_ENV_LOCAL }}' > ./marine-snow.env.local
           echo '${{ secrets.ABYS_ENV_LOCAL }}' > ./abys.env.local
           echo '${{ secrets.SEA_ENV_LOCAL }}' > ./sea.env.local
+          echo '${{ secrets.BOTTLE_ENV_LOCAL }}' > ./bottle.env.local
       - run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key

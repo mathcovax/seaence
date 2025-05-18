@@ -3,7 +3,7 @@
 {
 	"...",
 	"scripts": {
-    	"duplo:start": "tsx --watch interfaces/http/main.ts",
+    	"duplo:start": "tsx interfaces/http/main.ts",
 		"...",
 	}
 }

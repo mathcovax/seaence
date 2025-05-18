@@ -95,3 +95,16 @@ services:
           - node.role == worker
     volumes:
       - ./sea.env.local:/home/node/project/services/sea/.env.local
+
+  bottle:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/bottle run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./bottle.env.local:/home/node/project/services/bottle/.env.local

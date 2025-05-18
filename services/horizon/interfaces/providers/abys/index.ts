@@ -12,7 +12,7 @@ export class AbysAPI {
 	public static getBakedDocumentById(bakedDocumentId: string) {
 		return this.httpClient
 			.get(
-				"/bakedDocument/{id}",
+				"/baked-document/{id}",
 				{
 					params: {
 						id: bakedDocumentId,

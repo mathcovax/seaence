@@ -3,7 +3,7 @@ import { IWantBakedDocumentExistsById } from "../checkers/bakedDocument";
 import { endpointBakedDocumentSchema } from "../schemas/bakedDocument";
 
 useBuilder()
-	.createRoute("GET", "/bakedDocument/{id}")
+	.createRoute("GET", "/baked-document/{id}")
 	.extract({
 		params: {
 			id: bakedDocumentIdObjecter.toZodSchema(),
