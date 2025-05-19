@@ -5,16 +5,7 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type CodegenRoutes = ({
-    method: "POST";
-    path: "";
-    body: undefined
-    response: {
-        code: 200;
-        information: "notification.sent";
-        body?: undefined;
-    };
-});
+type CodegenRoutes = never;
 
 export { CodegenRoutes };
 /* v8 ignore stop */

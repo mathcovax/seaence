@@ -116,5 +116,6 @@ declare module 'vue' {
     DSTextarea: typeof import('./vendors/design-system/components/ui/textarea/DSTextarea.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TheLoader: typeof import('./src/components/TheLoader.vue')['default']
   }
 }

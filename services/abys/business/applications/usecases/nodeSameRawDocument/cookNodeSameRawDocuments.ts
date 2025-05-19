@@ -19,12 +19,14 @@ export class CookNodeSameRawDocumentsUsecase extends UsecaseHandler.create({
 }) {
 	public async execute(__: Input) {
 		for await (const nodeSameRawDocument of this.nodeSameRawDocumentRepository.findUpdatedNode()) {
-			for (const language of bakedDocumentLanguages) {
-				await this.cookNode({
-					language,
-					nodeSameRawDocument,
-				});
-			}
+			await Promise.all(
+				bakedDocumentLanguages.map(
+					(language) => this.cookNode({
+						language,
+						nodeSameRawDocument,
+					}),
+				),
+			);
 
 			await this.nodeSameRawDocumentRepository.save(
 				nodeSameRawDocument.cook(),
