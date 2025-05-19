@@ -106,8 +106,7 @@ bakedDocumentRepository.default = {
 		const quantityPerPage = 10;
 
 		const lastSend = await KeyDate.get("lastSendBakedDocument");
-
-		const applyNewDate = KeyDate.set("lastSendBakedDocument");
+		const newLastSend = new Date();
 
 		for (let page = startPage; true; page++) {
 			const bakedDocuments = await mongo
@@ -115,11 +114,12 @@ bakedDocumentRepository.default = {
 				.find(
 					{
 						lastUpdate: {
-							$gt: lastSend,
+							$gte: lastSend,
 						},
 					},
 					{ projection: { _id: 0 } },
 				)
+				.sort({ lastUpdate: 1 })
 				.skip(page * quantityPerPage)
 				.limit(quantityPerPage)
 				.toArray();
@@ -128,15 +128,19 @@ bakedDocumentRepository.default = {
 				break;
 			}
 
-			for (const nodeNameRawDocument of bakedDocuments) {
+			for (const bakedDocument of bakedDocuments) {
 				yield EntityHandler.unsafeMapper(
 					BakedDocumentEntity,
-					nodeNameRawDocument,
+					bakedDocument,
 				);
 			}
 
-			await applyNewDate();
+			const lastBakedDocument = bakedDocuments.pop();
+
+			await KeyDate.set("lastSendBakedDocument", lastBakedDocument!.lastUpdate);
 		}
+
+		await KeyDate.set("lastSendBakedDocument", newLastSend);
 	},
 	findDOIFoundationResourcesInRawDocument(rawDocuments) {
 		for (const rawDocument of rawDocuments) {
