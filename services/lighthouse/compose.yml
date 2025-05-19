@@ -5,4 +5,4 @@ services:
       service: template-node
     command: npm -w services/lighthouse run dev
     ports:
-      - 3001:3000
+      - 3001:3001

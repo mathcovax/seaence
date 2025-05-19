@@ -22,5 +22,5 @@ duplo.register(
 );
 
 await duplo.launch(
-	() => void console.log("Horizon service is running !"),
+	() => void console.log("Bridge service is running !"),
 );
