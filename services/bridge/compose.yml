@@ -1,0 +1,8 @@
+services:
+  bridge:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm -w services/bridge run duplo:dev
+    ports:
+      - 1510:1506

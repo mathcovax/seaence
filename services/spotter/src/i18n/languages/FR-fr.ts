@@ -126,10 +126,6 @@ export const FRfr = {
 					placeholder: "Exemple : Comment interpréter les données du graphique page 5 ?",
 					writingHelp: `Résumez le problème de manière concise.
 					Soyez spécifique pour augmenter les chances d’obtenir une réponse utile.`,
-					errors: {
-						minLength: "Le titre doit faire au moins {value} caractères.",
-						maxLength: "Le titre doit faire au plus {value} caractères.",
-					},
 				},
 				content: {
 					label: "Détaillez votre question",

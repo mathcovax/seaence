@@ -1,0 +1,8 @@
+services:
+  lighthouse:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm -w services/lighthouse run dev
+    ports:
+      - 3001:3001

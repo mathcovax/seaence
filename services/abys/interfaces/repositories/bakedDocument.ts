@@ -44,7 +44,7 @@ bakedDocumentRepository.default = {
 		return bakedDocument;
 	},
 	async makeBakedTitleWithRawTitle(rawTitle, language) {
-		const title = await RosettaAPI.translateText(
+		const title = rawTitle.value && await RosettaAPI.translateText(
 			rawTitle.value,
 			languageMapper[language.value],
 		);
@@ -56,24 +56,26 @@ bakedDocumentRepository.default = {
 			.map((rawKeywordPubmed) => rawKeywordPubmed.value.value)
 			.join("\n");
 
-		const listKeywordProcesses = await RosettaAPI
-			.translateText(
-				rawKeywordList,
-				languageMapper[language.value],
-			)
-			.then(
-				(result) => result.split("\n").map((value) => value.trim()),
-			)
-			.then(
-				(result) => new Set(result).values().toArray(),
-			);
+		const listKeywordProcesses = rawKeywordList
+			? await RosettaAPI
+				.translateText(
+					rawKeywordList,
+					languageMapper[language.value],
+				)
+				.then(
+					(result) => result.split("\n").map((value) => value.trim()),
+				)
+				.then(
+					(result) => new Set(result).values().toArray(),
+				)
+			: [];
 
 		return listKeywordProcesses.map((keyword) => bakedDocumentKeywordObjecter.unsafeCreate({
 			value: keyword,
 		}));
 	},
 	async makeBakedAbstractWithRawAbstract(rawAbstract, language) {
-		const abstract = await RosettaAPI.translateText(
+		const abstract = rawAbstract.value && await RosettaAPI.translateText(
 			rawAbstract.value,
 			languageMapper[language.value],
 		);

@@ -1,6 +1,0 @@
-services:
-  pilot:
-    extends:
-      file: ${TEMPLATE_COMPOSE_NODE_DEV}
-      service: template-node
-    command: npm -w services/pilot run dev

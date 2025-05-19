@@ -11,17 +11,23 @@ services:
       - "CLI_JAVA_OPTS=-XX:UseSVE=0"
     ports:
       - 9200:9200
+    attach: false
   kibana:
     extends:
       file: ${INCLUDE_PATH}/sea/compose.template.yml
       service: kibana-template
     ports:
       - 5601:5601
+    depends_on:
+      - sea-es
+    attach: false
   sea-duplo:
     extends:
       file: ${INCLUDE_PATH}/sea/compose.template.yml
       service: sea-duplo-template
     command: npm -w services/sea run dev:duplo
+    depends_on:
+      - sea-es
 
 networks:
   elastic:
