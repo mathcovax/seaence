@@ -77,7 +77,7 @@ function onSelect(selectedItem: GenericItem) {
 				role="combobox"
 				:aria-expanded="open"
 				:class="[
-					'h-12 px-3 py-2 flex gap-2 items-center bg-white border rounded-lg',
+					'h-12 px-3 py-2 flex gap-2 items-center bg-background border rounded-lg',
 					props.class,
 					open ? 'ring-2 ring-primary' : '',
 				]"

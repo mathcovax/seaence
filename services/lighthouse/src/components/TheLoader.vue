@@ -5,7 +5,7 @@ const { loaderIsEnabled } = useLoader();
 <template>
 	<div
 		v-if="loaderIsEnabled"
-		class="fixed z-50 inset-0 flex flex-col items-center justify-center bg-white opacity-75"
+		class="fixed z-50 inset-0 flex flex-col items-center justify-center bg-background opacity-75"
 	>
 		<DSLoadingLogo />
 

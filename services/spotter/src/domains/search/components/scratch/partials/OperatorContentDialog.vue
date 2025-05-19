@@ -75,42 +75,63 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 	>
 		<template #content>
 			<DSTabs>
-				<DSTabsList class="w-full">
-					<DSTabsTrigger value="comparator">
+				<DSTabsList class="w-full flex-wrap">
+					<DSTabsTrigger
+						value="comparator"
+						class="grow"
+					>
 						{{ $t("search.scratch.tabs.comparator") }}
 					</DSTabsTrigger>
 
-					<DSTabsTrigger value="operator">
+					<DSTabsTrigger
+						value="operator"
+						class="grow"
+					>
 						{{ $t("search.scratch.tabs.operator") }}
 					</DSTabsTrigger>
 				</DSTabsList>
 
 				<DSTabsContent
 					value="operator"
-					class="flex gap-2 justify-center"
+					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
 				>
-					<DSButton @click="selectOperatorContent('and')">
+					<DSButton
+						class="w-full sm:w-auto"
+						@click="selectOperatorContent('and')"
+					>
 						{{ $t("search.scratch.operator.and.label") }}
 					</DSButton>
 
-					<DSButton @click="selectOperatorContent('or')">
+					<DSButton
+						class="w-full sm:w-auto"
+						@click="selectOperatorContent('or')"
+					>
 						{{ $t("search.scratch.operator.or.label") }}
 					</DSButton>
 
-					<DSButton @click="selectOperatorContent('not')">
+					<DSButton
+						class="w-full sm:w-auto"
+						@click="selectOperatorContent('not')"
+					>
 						{{ $t("search.scratch.operator.not.label") }}
 					</DSButton>
 				</DSTabsContent>
 
 				<DSTabsContent
 					value="comparator"
-					class="flex gap-2 justify-center"
+					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
 				>
-					<DSButton @click="selectOperatorContent('text')">
+					<DSButton
+						class="w-full sm:w-auto"
+						@click="selectOperatorContent('text')"
+					>
 						{{ $t("search.scratch.comparator.text.label") }}
 					</DSButton>
 
-					<DSButton @click="selectOperatorContent('year')">
+					<DSButton
+						class="w-full sm:w-auto"
+						@click="selectOperatorContent('year')"
+					>
 						{{ $t("search.scratch.comparator.year.label") }}
 					</DSButton>
 				</DSTabsContent>

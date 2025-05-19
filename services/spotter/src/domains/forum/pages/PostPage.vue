@@ -73,6 +73,11 @@ function handleCreateAnswer() {
 						createdAt: new Date().toJSON(),
 					},
 				);
+
+				if (postPageInformation.value?.post) {
+					postPageInformation.value.post.answerCount++;
+				}
+
 				newAnswer.value = "";
 			},
 		);
@@ -82,7 +87,7 @@ function handleCreateAnswer() {
 
 <template>
 	<section v-if="postPageInformation">
-		<article class="stick z-5 mb-4 p-6 bg-white rounded-lg rounded-b-lg shadow-md">
+		<article class="stick z-5 mb-4 p-6 bg-background rounded-lg rounded-b-lg shadow-md">
 			<header class="border-b pb-4">
 				<div class="mb-6 flex gap-4 items-center">
 					<DSButtonIcon
@@ -187,7 +192,7 @@ function handleCreateAnswer() {
 
 			<DSCard
 				v-if="isConnected"
-				class="border border-gray-200 rounded-lg p-6 bg-white mt-6 flex flex-col gap-4"
+				class="border border-gray-200 rounded-lg p-6 bg-background mt-6 flex flex-col gap-4"
 			>
 				<h3 class="text-lg font-medium mb-4">
 					{{ $pt("writeAnAnswer") }}

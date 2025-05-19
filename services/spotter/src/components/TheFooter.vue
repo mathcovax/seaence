@@ -2,7 +2,7 @@
 </script>
 
 <template>
-	<footer class="bg-white">
+	<footer class="bg-background">
 		<div class="container py-8">
 			<nav>
 				<ul class="flex gap-4 md:gap-8">
