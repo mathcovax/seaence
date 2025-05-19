@@ -9,7 +9,9 @@ useMustBeConnectedBuilder()
 	.extract({
 		body: {
 			postId: zod.string(),
-			content: zod.string(),
+			content: zod.string()
+				.max(answerConfig.create.maxLength)
+				.min(answerConfig.create.minLength),
 		},
 	})
 	.cut(

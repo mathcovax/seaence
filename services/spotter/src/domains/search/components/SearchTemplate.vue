@@ -21,6 +21,7 @@ const searchMode
 
 const { $pt, query } = currentSearcghPage.use();
 const { scrollToTop } = useScroll();
+const sonner = useSonner();
 const {
 	search,
 	result,
@@ -38,11 +39,20 @@ const searchParams = reactive({
 });
 const isResultExpanded = ref(false);
 const searchContainerRef = ref<InstanceType<typeof SearchContainer> | null>(null);
+const maxBytesLength = 15000;
 
 function submit(
 	searchParams: SearchParams,
 	searchDetails = true,
 ) {
+	if (searchMode === "advanced") {
+		const bytesLength = new Blob([JSON.stringify(searchParams)]).size;
+		if (bytesLength > maxBytesLength) {
+			sonner.sonnerError($pt("maxSizeRequest"));
+			return;
+		}
+	}
+
 	searchContainerRef.value?.toggle(false);
 
 	queryWatcher.pause();

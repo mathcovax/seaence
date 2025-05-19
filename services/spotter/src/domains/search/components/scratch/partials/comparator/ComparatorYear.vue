@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yearFieldEnum, type ComparatorYear } from "@vendors/types-advanced-query";
+import { comparatorConfig, yearFieldEnum, type ComparatorYear } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
@@ -11,7 +11,14 @@ const { t } = useI18n();
 const yearFieldSchema = zod
 	.number({ message: t("formMessage.required") })
 	.int({ message: t("formMessage.int") })
-	.positive({ message: t("formMessage.positive") });
+	.max(
+		comparatorConfig.year.max,
+		{ message: t("formMessage.max", { value: comparatorConfig.year.max }) },
+	)
+	.min(
+		comparatorConfig.year.min,
+		{ message: t("formMessage.min", { value: comparatorConfig.year.min }) },
+	);
 
 const { hintMessage } = useHintMessage(
 	yearFieldSchema,

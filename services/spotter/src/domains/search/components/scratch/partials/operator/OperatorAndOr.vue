@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type OperatorAnd, type OperatorContent, type OperatorOr } from "@vendors/types-advanced-query";
+import { operatorConfig, type OperatorAnd, type OperatorContent, type OperatorOr } from "@vendors/types-advanced-query";
 import { operatorContentWrapper } from "../operatorContentWrapper";
 import AddOperatorContent from "./AddOperatorContent.vue";
 import SelectOperator from "./SelectOperator.vue";
@@ -29,11 +29,10 @@ function newOperatorContent(operatorContent: OperatorContent) {
 	model.value.content.push(operatorContent);
 }
 
-const minLength = 1;
 const operatorSchema = zod
 	.any()
 	.array()
-	.min(minLength, { message: t("formMessage.minItems", { value: minLength }) });
+	.min(operatorConfig.minContent, { message: t("formMessage.minItems", { value: operatorConfig.minContent }) });
 
 const { hintMessage } = useHintMessage(
 	operatorSchema,
@@ -103,7 +102,7 @@ function comparatorTakefullWidth(index: number) {
 
 		<div class="@container p-2 space-y-2">
 			<AddOperatorContent
-				v-if="model.content.length < 10"
+				v-if="model.content.length < operatorConfig.maxContent"
 				@new-operator-content="newOperatorContent"
 			/>
 

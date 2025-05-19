@@ -28,7 +28,11 @@ const inputElement = ref<HTMLInputElement | null>(null);
 const message = ref("");
 
 const minLentgh = 3;
-const zodSchema = zod.string().trim().min(minLentgh);
+const maxLentgh = 350;
+const zodSchema = zod.string()
+	.trim()
+	.min(minLentgh)
+	.max(maxLentgh);
 
 function onSubmit() {
 	const result = zodSchema.safeParse(modelValue.value);

@@ -57,7 +57,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 			class="group block"
 		>
 			<h3
-				class="text-base sm:text-lg font-semibold text-primary group-hover:underline transition-colors break-words *:text-pink-seaence"
+				class="text-base first-letter:capitalize sm:text-lg font-semibold text-primary group-hover:underline transition-colors break-words *:text-pink-seaence"
 				v-html="document.title"
 			/>
 		</RouterLink>

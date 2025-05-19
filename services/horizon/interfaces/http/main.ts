@@ -6,6 +6,7 @@ import { cors } from "./plugins/cors";
 import { debug } from "@vendors/duplo-plugins/debug";
 import "./plugins/accelerator";
 import "./routes";
+import { bodyLimit } from "./plugins/bodyLimit";
 
 const duplo = new Duplo({
 	environment: envs.ENVIROMENT,
@@ -14,6 +15,7 @@ const duplo = new Duplo({
 	plugins: [
 		cors(envs.CORS_ALLOW_ORIGIN),
 		debug(),
+		bodyLimit(),
 	],
 });
 

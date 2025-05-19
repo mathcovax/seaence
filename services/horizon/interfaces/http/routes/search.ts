@@ -2,24 +2,29 @@ import { bakedDocumentLanguageObjecter } from "@business/entities/bakedDocument"
 import { filtersValuesSchema } from "../schemas/search/filter";
 import { SeaAPI } from "@interfaces/providers/sea";
 import { searchConfig } from "@interfaces/configs/search";
-import { endpointSimpleSearchResultSchema } from "../schemas/search/search";
+import { endpointSimpleSearchResultSchema, simpleSearchTermSchema } from "../schemas/search/search";
 import { endpointSearchDetailsSchema } from "../schemas/search/facet";
 import { match } from "ts-pattern";
 import { type Facet } from "@business/entities/facets";
 import { operatorContentSchema } from "@vendors/types-advanced-query";
+import { BodyLimitDescription } from "../plugins/bodyLimit";
 
 useBuilder()
 	.createRoute("POST", "/search-details")
-	.extract({
-		body: zod.object({
-			language: bakedDocumentLanguageObjecter.zodSchema,
-			term: zod.union([
-				zod.string(),
-				operatorContentSchema,
-			]),
-			filtersValues: filtersValuesSchema.optional(),
-		}),
-	})
+	.extract(
+		{
+			body: zod.object({
+				language: bakedDocumentLanguageObjecter.zodSchema,
+				term: zod.union([
+					simpleSearchTermSchema,
+					operatorContentSchema,
+				]),
+				filtersValues: filtersValuesSchema.optional(),
+			}),
+		},
+		undefined,
+		new BodyLimitDescription("15kb"),
+	)
 	.handler(
 		async(pickup) => {
 			const body = pickup("body");
@@ -78,17 +83,21 @@ useBuilder()
 
 useBuilder()
 	.createRoute("POST", "/search-results")
-	.extract({
-		body: zod.object({
-			language: bakedDocumentLanguageObjecter.zodSchema,
-			page: zod.number().max(searchConfig.maxPage),
-			term: zod.union([
-				zod.string(),
-				operatorContentSchema,
-			]),
-			filtersValues: filtersValuesSchema.optional(),
-		}),
-	})
+	.extract(
+		{
+			body: zod.object({
+				language: bakedDocumentLanguageObjecter.zodSchema,
+				page: zod.number().max(searchConfig.maxPage),
+				term: zod.union([
+					simpleSearchTermSchema,
+					operatorContentSchema,
+				]),
+				filtersValues: filtersValuesSchema.optional(),
+			}),
+		},
+		undefined,
+		new BodyLimitDescription("15kb"),
+	)
 	.handler(
 		async(pickup) => {
 			const body = pickup("body");

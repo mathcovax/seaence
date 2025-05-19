@@ -3,13 +3,16 @@ export function jsonKeyChanger(input: unknown, map: Record<string, string>): unk
 		return input.map((item) => jsonKeyChanger(item, map));
 	} else if (input && typeof input === "object") {
 		return Object.entries(input)
-			.reduce((acc, [key, value]) => {
-				const compressedKey = map[key] ?? key;
-				return {
-					...acc,
-					[compressedKey]: jsonKeyChanger(value, map),
-				};
-			}, {});
+			.reduce(
+				(acc, [key, value]) => {
+					const compressedKey = map[key] ?? key;
+					return {
+						...acc,
+						[compressedKey]: jsonKeyChanger(value, map),
+					};
+				},
+				{},
+			);
 	}
 
 	return input;

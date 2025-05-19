@@ -68,6 +68,7 @@ declare module 'vue' {
     DSDropdownMenuSubTrigger: typeof import('./vendors/design-system/components/ui/dropdown-menu/DSDropdownMenuSubTrigger.vue')['default']
     DSDropdownMenuTrigger: typeof import('./vendors/design-system/components/ui/dropdown-menu/DSDropdownMenuTrigger.vue')['default']
     DSGoogleLogo: typeof import('./vendors/design-system/components/DSGoogleLogo.vue')['default']
+    DSHintError: typeof import('./vendors/design-system/components/ui/hint/DSHintError.vue')['default']
     DSIcon: typeof import('./vendors/design-system/components/ui/icon/DSIcon.vue')['default']
     DSImage: typeof import('./vendors/design-system/components/DSImage.vue')['default']
     DSInput: typeof import('./vendors/design-system/components/ui/input/DSInput.vue')['default']

@@ -1,5 +1,5 @@
 import { SchoolAPI } from "@interfaces/providers/school";
-import { endpointCreatePostPage, endpointPostListPageSchema, endpointPostPageSchema, endpointPostSchema } from "../schemas/post";
+import { endpointCreatePostPage, endpointPostListPageSchema, endpointPostPageSchema, endpointPostSchema, entrypointCreatePost } from "../schemas/post";
 import { iWantDocumentExistById } from "../checkers/document";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { iWantPostExistById } from "../checkers/post";
@@ -11,11 +11,7 @@ import { bakedDocumentLanguageObjecter } from "@business/entities/bakedDocument"
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/create-post")
 	.extract({
-		body: zod.object({
-			topic: zod.string(),
-			content: zod.string(),
-			documentId: zod.string(),
-		}),
+		body: entrypointCreatePost,
 	})
 	.presetCheck(
 		iWantDocumentExistById,

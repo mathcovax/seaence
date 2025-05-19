@@ -8,6 +8,7 @@ const { params, query, $pt } = postPage.use();
 const router = useRouter();
 const { user, isConnected } = useUserInformation();
 const sonner = useSonner();
+const { t } = useI18n();
 
 const { postPageInformation, answers, seeMoreAnswers } = usePostPage(
 	computed(() => params.value.postId),
@@ -19,13 +20,31 @@ const { postPageInformation, answers, seeMoreAnswers } = usePostPage(
 
 const newAnswer = ref("");
 
+const minLength = 5;
+const maxLength = 500;
+const answerSchema
+	= zod.string()
+		.trim()
+		.min(minLength, { message: t("formMessage.minLength", { value: minLength }) })
+		.max(maxLength, { message: t("formMessage.maxLength", { value: maxLength }) });
+
+const errorMessage = ref("");
+
 function handleCreateAnswer() {
 	if (!user.value) {
 		sonner.sonnerError($pt("connexionRequire"));
 		return;
-	} else if (!newAnswer.value.trim()) {
+	}
+
+	const result = answerSchema.safeParse(newAnswer.value);
+
+	if (!result.success) {
+		const error = result.error.errors.pop();
+		errorMessage.value = error?.message ?? "";
 		return;
 	}
+
+	errorMessage.value = "";
 
 	const { id: userId, username } = user.value;
 
@@ -168,7 +187,7 @@ function handleCreateAnswer() {
 
 			<DSCard
 				v-if="isConnected"
-				class="border border-gray-200 rounded-lg p-6 bg-white mt-6"
+				class="border border-gray-200 rounded-lg p-6 bg-white mt-6 flex flex-col gap-4"
 			>
 				<h3 class="text-lg font-medium mb-4">
 					{{ $pt("writeAnAnswer") }}
@@ -180,8 +199,10 @@ function handleCreateAnswer() {
 					v-model="newAnswer"
 				/>
 
+				<DSHintError :message="errorMessage" />
+
 				<DSButtonPrimary
-					class="mt-4"
+					class="self-start"
 					@click="handleCreateAnswer"
 					:disabled="!newAnswer.trim()"
 				>

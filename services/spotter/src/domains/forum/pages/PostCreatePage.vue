@@ -65,12 +65,7 @@ function submit() {
 						:placeholder="$pt('form.topic.placeholder')"
 					/>
 
-					<p
-						v-if="formErrors.topic"
-						class="text-red-500 text-xs mt-1"
-					>
-						{{ formErrors.topic }}
-					</p>
+					<DSHintError :message="formErrors.topic" />
 
 					<p class="text-xs text-gray-500 mt-1">
 						{{ $pt("form.topic.writingHelp") }}
@@ -93,12 +88,7 @@ function submit() {
 						:placeholder="$pt('form.content.placeholder')"
 					/>
 
-					<p
-						v-if="formErrors.content"
-						class="text-red-500 text-xs mt-1"
-					>
-						{{ formErrors.content }}
-					</p>
+					<DSHintError :message="formErrors.content" />
 
 					<ul class="text-xs text-gray-500 mt-2 list-disc list-inside space-y-1">
 						<li>

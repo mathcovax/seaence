@@ -34,7 +34,7 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 							<RouterLink
 								class="flex gap-1 items-center hover:underline"
 								:to="simpleSearchPage"
-								:title="$t('layout.base.header.link.simpleSearch')"
+								:title="$t('layout.base.header.link.simple')"
 							>
 								<DSIcon name="magnify" />
 
@@ -48,7 +48,7 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 							<RouterLink
 								class="flex gap-1 items-center hover:underline"
 								:to="advancedSearchPage"
-								:title="$t('layout.base.header.link.advancedSearch')"
+								:title="$t('layout.base.header.link.advanced')"
 							>
 								<DSIcon name="magnifyPlus" />
 

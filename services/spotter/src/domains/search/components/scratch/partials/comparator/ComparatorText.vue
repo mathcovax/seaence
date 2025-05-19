@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComparatorText, textFieldEnum } from "@vendors/types-advanced-query";
+import { comparatorConfig, type ComparatorText, textFieldEnum } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
@@ -8,11 +8,17 @@ const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorText>({ required: true });
 const { t } = useI18n();
 
-const minLength = 1;
 const textFieldSchema = zod
 	.string({ message: t("formMessage.required") })
 	.trim()
-	.min(minLength, { message: t("formMessage.minLength", { value: minLength }) });
+	.max(
+		comparatorConfig.text.maxLength,
+		{ message: t("formMessage.maxLength", { value: comparatorConfig.text.maxLength }) },
+	)
+	.min(
+		comparatorConfig.text.minLength,
+		{ message: t("formMessage.minLength", { value: comparatorConfig.text.minLength }) },
+	);
 
 const { hintMessage } = useHintMessage(
 	textFieldSchema,

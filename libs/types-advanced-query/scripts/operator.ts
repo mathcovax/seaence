@@ -39,16 +39,27 @@ export const operatorContentSchema = zod.lazy(
 	]),
 );
 
+export const operatorConfig = {
+	maxContent: 10,
+	minContent: 1
+}
+
 export const operatorAndSchema: ZodType<OperatorAnd> = zod.object({
 	type: zod.literal("operator"),
 	name: zod.literal("and"),
-	content: operatorContentSchema.array().max(10).min(1),
+	content: operatorContentSchema
+		.array()
+		.max(operatorConfig.maxContent)
+		.min(operatorConfig.minContent),
 });
 
 export const operatorOrSchema: ZodType<OperatorOr> = zod.object({
 	type: zod.literal("operator"),
 	name: zod.literal("or"),
-	content: operatorContentSchema.array().max(10).min(1),
+	content: operatorContentSchema
+		.array()
+		.max(operatorConfig.maxContent)
+		.min(operatorConfig.minContent),
 });
 
 export const operatorNotSchema: ZodType<OperatorNot> = zod.object({

@@ -37,18 +37,33 @@ export type Comparator =
 	| ComparatorText
 	| ComparatorYear;
 
+export const comparatorConfig = {
+	text: {
+		minLength: 2,
+		maxLength: 50,
+	},
+	year: {
+		min: 1900,
+		max: 3000,
+	}
+}
+
 export const comparatorTextSchema = zod.object({
 	type: zod.literal("comparator"),
 	name: zod.literal("text"),
 	field: zod.enum(textFieldEnum.toTuple()),
-	value: zod.string(),
+	value: zod.string()
+		.max(comparatorConfig.text.maxLength)
+		.min(comparatorConfig.text.minLength),
 });
 
 export const comparatorYearSchema = zod.object({
 	type: zod.literal("comparator"),
 	name: zod.literal("year"),
 	field: zod.enum(yearFieldEnum.toTuple()),
-	value: zod.number(),
+	value: zod.number()
+		.max(comparatorConfig.year.max)
+		.min(comparatorConfig.year.min),
 });
 
 export const comparatorSchema = zod.union([

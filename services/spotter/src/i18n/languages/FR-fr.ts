@@ -57,6 +57,9 @@ export const FRfr = {
 				placeholder: "Rechercher...",
 			},
 		},
+		[advancedSearchPage.name]: {
+			maxSizeRequest: "L'équation est trop grande.",
+		},
 		[documentPage.name]: {
 			download: "Télécharger l'article",
 			label: {
