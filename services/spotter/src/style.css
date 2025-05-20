@@ -3,10 +3,11 @@
 @import "../vendors/design-system/index.css";
 
 :root {
-	--header-height: 4rem
+	--header-height: 4rem;
+	--py-page: 1rem;
 }
 
 /* screen - header - padding y */
 @utility min-h-screen-nh {
-	min-height: calc(100vh - var(--header-height));
+	min-height: calc(100vh - var(--header-height) - 2 * var(--py-page));
 }

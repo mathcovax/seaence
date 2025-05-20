@@ -58,7 +58,7 @@ function onSubmit() {
 		class="relative"
 		@submit.prevent="onSubmit"
 	>
-		<div class="z-10 w-full flex gap-2 border-2 items-center shadow-xl rounded-md pl-2 bg-white overflow-hidden">
+		<div class="z-10 w-full flex gap-2 border-2 items-center shadow-xl rounded-md pl-2 bg-background overflow-hidden">
 			<input
 				ref="inputElement"
 				type="search"

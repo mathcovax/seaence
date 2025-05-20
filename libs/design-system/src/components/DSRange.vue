@@ -53,12 +53,12 @@ function onCommit() {
 			</SliderTrack>
 
 			<SliderThumb
-				class="block w-5 h-5 bg-white border border-gray-200 rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
+				class="block w-5 h-5 bg-background border border-gray-200 rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
 				aria-label="Valeur minimale"
 			/>
 
 			<SliderThumb
-				class="block w-5 h-5 bg-white border border-gray-200 rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
+				class="block w-5 h-5 bg-background border border-gray-200 rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
 				aria-label="Valeur maximale"
 			/>
 		</SliderRoot>

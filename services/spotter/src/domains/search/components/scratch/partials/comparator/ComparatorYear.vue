@@ -35,7 +35,7 @@ const { hintMessage } = useHintMessage(
 
 <template>
 	<DraggableComparator
-		class="@container p-1.5 bg-white border-l-4 rounded-md drop-shadow-sm"
+		class="@container p-1.5 bg-background border-l-4 rounded-md drop-shadow-sm"
 		:comparator="model"
 		@deplace="emit('remove')"
 	>

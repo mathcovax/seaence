@@ -86,7 +86,7 @@ function comparatorTakefullWidth(index: number) {
 			}"
 		>
 			<SelectOperator
-				class="w-20 text-white font-medium bg-white bg-opacity-20 border-0 rounded"
+				class="w-20 text-white font-medium bg-background bg-opacity-20 border-0 rounded"
 				v-model="model.name"
 			/>
 
@@ -94,7 +94,7 @@ function comparatorTakefullWidth(index: number) {
 				variant="ghost"
 				size="xs"
 				@click="emit('remove')"
-				class="text-white hover:bg-white hover:bg-opacity-20"
+				class="text-white hover:bg-background hover:bg-opacity-20"
 			>
 				<DSIcon name="close" />
 			</DSButtonIcon>

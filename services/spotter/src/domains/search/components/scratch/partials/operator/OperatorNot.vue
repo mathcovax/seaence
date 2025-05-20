@@ -53,13 +53,13 @@ const { hintMessage } = useHintMessage(
 				variant="ghost"
 				size="xs"
 				@click="emit('remove')"
-				class="text-white hover:bg-white hover:bg-opacity-20"
+				class="text-white hover:bg-background hover:bg-opacity-20"
 			>
 				<DSIcon name="close" />
 			</DSButtonIcon>
 		</div>
 
-		<div class="bg-white p-2">
+		<div class="bg-background p-2">
 			<div v-if="model.content">
 				<component :is="getComponent(model.content)" />
 			</div>

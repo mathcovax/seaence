@@ -27,7 +27,7 @@ function updatePage(page: number) {
 	>
 		<div
 			v-if="result && result.searchResult.length > 0"
-			class="bg-white flex flex-col items-stretch rounded-b-xl"
+			class="bg-background flex flex-col items-stretch rounded-b-xl"
 		>
 			<DSPagination
 				:total="result.total"
@@ -53,10 +53,10 @@ function updatePage(page: number) {
 		</div>
 
 		<div
-			v-else-if="result"
-			class="grow flex items-center justify-center mt-20"
+			v-else
+			class="mt-20 flex items-center justify-center"
 		>
-			<p class="text-2xl text-gray-500">
+			<p class="p-3 text-2xl text-gray-700 rounded-xl bg-background/60 backdrop-blur-sm">
 				{{ $t("search.noResult") }}
 			</p>
 		</div>

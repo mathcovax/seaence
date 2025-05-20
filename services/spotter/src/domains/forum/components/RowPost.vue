@@ -15,7 +15,7 @@ defineProps<Props>();
 
 <template>
 	<article
-		class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition"
+		class="bg-background p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition"
 	>
 		<RouterLink
 			:to="postPage.createTo({
