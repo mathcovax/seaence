@@ -33,7 +33,12 @@ const defaultPageSearchParams = convertQueryToSearchParams(
 	currentSearcghPage,
 	query.value,
 );
-const searchParams = reactive({
+
+interface ReactiveSearchParams extends Omit<Required<SearchParams>, "term"> {
+	term: SearchParams["term"] | null;
+}
+
+const searchParams = reactive<ReactiveSearchParams>({
 	...defaultPageSearchParams,
 	filtersValues: defaultPageSearchParams.filtersValues ?? {},
 });
@@ -42,9 +47,18 @@ const searchContainerRef = ref<InstanceType<typeof SearchContainer> | null>(null
 const maxBytesLength = 15000;
 
 function submit(
-	searchParams: SearchParams,
+	reactiveSearchParams: ReactiveSearchParams,
 	searchDetails = true,
 ) {
+	if (!reactiveSearchParams.term) {
+		return;
+	}
+
+	const searchParams = {
+		...reactiveSearchParams,
+		term: reactiveSearchParams.term,
+	};
+
 	if (searchMode === "advanced") {
 		const bytesLength = new Blob([JSON.stringify(searchParams)]).size;
 		if (bytesLength > maxBytesLength) {

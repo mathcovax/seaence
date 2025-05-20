@@ -22,7 +22,7 @@ export function buildSimpleSearchQuery(
 						query: term,
 						type: "phrase",
 						fields: [
-							`${availableFieldEnum["title.stemmed"]}^10`,
+							`${availableFieldEnum["title.stemmed"]}^15`,
 							`${availableFieldEnum["abstract.stemmed"]}^5`,
 						],
 						slop: 3,
@@ -32,9 +32,9 @@ export function buildSimpleSearchQuery(
 					multi_match: {
 						query: term,
 						fields: [
-							`${availableFieldEnum["title.stemmed"]}^3`,
+							`${availableFieldEnum["title.stemmed"]}^5`,
 							availableFieldEnum["abstract.stemmed"],
-							`${availableFieldEnum.keywords}^10`,
+							`${availableFieldEnum.keywords}^20`,
 						],
 					},
 				},

@@ -115,7 +115,7 @@ defineExpose({
 					{{ isScratchVisible ? $t("search.filters.hideScratch") : $t("search.filters.showScratch") }}
 				</DSButtonPrimary>
 
-				<span class="text-sm text-right text-gray-500 lg:w-38 text-wrap">{{ $t("search.foundResults", { count: total ?? "" }) }}</span>
+				<span class="text-sm text-right text-gray-500 lg:w-40 text-wrap">{{ $t("search.foundResults", { count: total ?? "" }) }}</span>
 			</div>
 		</div>
 

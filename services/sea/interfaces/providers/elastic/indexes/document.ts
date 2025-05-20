@@ -2,7 +2,7 @@
 import { type estypes } from "@elastic/elasticsearch";
 import { type ArticleType } from "../common/articleType";
 import { type Provider } from "../common/provider";
-import { type UnionToTuple, type ExpectType } from "@duplojs/utils";
+import { type ExpectType } from "@duplojs/utils";
 import { ElasticDocument } from ".";
 import { languageEnum } from "../common/language";
 import { createEnum, type GetEnumValue } from "@vendors/clean";
@@ -189,6 +189,11 @@ export const frFrDocument = new ElasticDocument<Document>(
 					type: "stop",
 					stopwords: ["_french_"],
 				},
+				french_elision: {
+					type: "elision",
+					articles_case: true,
+					articles: ["l", "m", "t", "qu", "n", "s", "j", "d", "c", "jusqu", "quoiqu", "lorsqu", "puisqu"],
+				},
 			},
 			normalizer: {
 				flexible_normalizer: {
@@ -208,6 +213,7 @@ export const frFrDocument = new ElasticDocument<Document>(
 						"asciifolding",
 						"stemmer_filter",
 						"stop_filter",
+						"french_elision",
 					],
 				},
 				strict_analyzer: {

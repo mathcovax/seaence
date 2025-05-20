@@ -5,7 +5,7 @@ import type { BakedDocumentLanguage } from "@vendors/clients-type/horizon/duploj
 import { bakedDocumentLanguageEnum } from "@/lib/horizon/types/bakedDocument";
 
 const modelValue = defineModel<
-	OperatorContent
+	OperatorContent | null
 >(
 	{ required: true },
 );

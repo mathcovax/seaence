@@ -65,14 +65,10 @@ useBuilder()
 					.exhaustive(),
 			);
 
-			const total = results.total > searchConfig.maxPage
-				? searchConfig.maxPage
-				: results.total;
-
 			return new OkHttpResponse(
 				"search.details",
 				{
-					total,
+					total: results.total,
 					facets,
 					quantityPerPage: searchConfig.quantityPerPage,
 				},

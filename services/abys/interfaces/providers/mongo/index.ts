@@ -7,15 +7,16 @@ import { type MongoKeyDate } from "./entities/keyDate";
 
 const client = new MongoClient(envs.MONGO_DATABASE_URL);
 
-if (envs.DB_CONNECTION) {
-	await client.connect();
-}
-
 const database = client.db(envs.MONGO_DB);
 const rawDocumentCollection = database.collection<MongoRawDocument>("rawDocument");
 const nodeNameRawDocumentCollection = database.collection<MongoNodeSameRawDocument>("nodeSameRawDocument");
 const bakedDocumentCollection = database.collection<MongoBakedDocument>("bakedDocument");
 const keyDateCollection = database.collection<MongoKeyDate>("keyDate");
+
+if (envs.DB_CONNECTION) {
+	await client.connect();
+	await bakedDocumentCollection.createIndex({ lastUpdate: 1 });
+}
 
 export const mongo = {
 	client,

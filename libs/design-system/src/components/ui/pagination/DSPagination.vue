@@ -10,27 +10,36 @@ import DSButton from "../button/DSButton.vue";
 import DSPaginationEllipsis from "./DSPaginationEllipsis.vue";
 import DSPaginationNext from "./DSPaginationNext.vue";
 import DSPaginationLast from "./DSPaginationLast.vue";
+import { computed } from "vue";
 
 const emit = defineEmits<{
 	update: [value: number];
 }>();
 
-defineProps<{
+const props = defineProps<{
 	total: number;
 	currentPage: number;
 	quantityPerPage: number;
+	maxPage?: number;
 }>();
 
 function update(page: number) {
 	emit("update", page);
 }
+
+const limitedTotal = computed(
+	() => props.maxPage && ((props.total / props.quantityPerPage) > props.maxPage)
+		? props.maxPage * props.quantityPerPage
+		: props.total,
+);
+
 </script>
 
 <template>
 	<PaginationRoot
 		v-slot="{ page }"
 		:items-per-page="quantityPerPage"
-		:total="total * quantityPerPage / quantityPerPage"
+		:total="limitedTotal"
 		:sibling-count="1"
 		show-edges
 		:page="currentPage"

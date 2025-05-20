@@ -16,6 +16,8 @@ const emit = defineEmits<{
 function updatePage(page: number) {
 	emit("updatePage", page);
 }
+
+const maxPage = 100;
 </script>
 
 <template>
@@ -30,6 +32,7 @@ function updatePage(page: number) {
 			class="bg-background flex flex-col items-stretch rounded-b-xl"
 		>
 			<DSPagination
+				:max-page="maxPage"
 				:total="result.total"
 				:current-page="currentPage"
 				:quantity-per-page="result.quantityPerPage"
@@ -45,6 +48,7 @@ function updatePage(page: number) {
 			</div>
 
 			<DSPagination
+				:max-page="maxPage"
 				:total="result.total"
 				:current-page="currentPage"
 				:quantity-per-page="result.quantityPerPage"
