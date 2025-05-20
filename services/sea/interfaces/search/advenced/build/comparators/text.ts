@@ -3,8 +3,8 @@ import { type AvailableField, availableFieldEnum } from "@interfaces/providers/e
 import { type TextFieldEnumValue, type ComparatorText } from "@vendors/types-advanced-query";
 
 const fieldsMapper: Record<TextFieldEnumValue, AvailableField[] | undefined> = {
-	abstract: [availableFieldEnum["abstract.stemmed"]],
-	title: [availableFieldEnum["title.stemmed"]],
+	abstract: [availableFieldEnum["abstract.stemmed"], availableFieldEnum.abstract],
+	title: [availableFieldEnum["title.stemmed"], availableFieldEnum.title],
 	allField: undefined,
 };
 

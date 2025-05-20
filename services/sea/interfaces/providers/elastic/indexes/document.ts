@@ -191,7 +191,6 @@ export const frFrDocument = new ElasticDocument<Document>(
 				},
 				french_elision: {
 					type: "elision",
-					articles_case: true,
 					articles: ["l", "m", "t", "qu", "n", "s", "j", "d", "c", "jusqu", "quoiqu", "lorsqu", "puisqu"],
 				},
 			},
@@ -211,9 +210,9 @@ export const frFrDocument = new ElasticDocument<Document>(
 					filter: [
 						"lowercase",
 						"asciifolding",
+						"french_elision",
 						"stemmer_filter",
 						"stop_filter",
-						"french_elision",
 					],
 				},
 				strict_analyzer: {

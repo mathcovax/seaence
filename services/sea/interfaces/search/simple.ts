@@ -22,8 +22,10 @@ export function buildSimpleSearchQuery(
 						query: term,
 						type: "phrase",
 						fields: [
-							`${availableFieldEnum["title.stemmed"]}^15`,
-							`${availableFieldEnum["abstract.stemmed"]}^5`,
+							`${availableFieldEnum["title.stemmed"]}^30`,
+							`${availableFieldEnum["abstract.stemmed"]}^15`,
+							`${availableFieldEnum.title}^30`,
+							`${availableFieldEnum.abstract}^15`,
 						],
 						slop: 3,
 					},
@@ -32,9 +34,11 @@ export function buildSimpleSearchQuery(
 					multi_match: {
 						query: term,
 						fields: [
-							`${availableFieldEnum["title.stemmed"]}^5`,
+							`${availableFieldEnum["title.stemmed"]}^10`,
 							availableFieldEnum["abstract.stemmed"],
-							`${availableFieldEnum.keywords}^20`,
+							`${availableFieldEnum.title}^10`,
+							availableFieldEnum.abstract,
+							`${availableFieldEnum.keywords}^50`,
 						],
 					},
 				},
@@ -42,11 +46,12 @@ export function buildSimpleSearchQuery(
 					match: {
 						[availableFieldEnum["authors.strict"]]: {
 							query: term,
-							boost: 20,
+							boost: 50,
 						},
 					},
 				},
 			],
+			minimum_should_match: 1,
 			...buildedFilters,
 		},
 	} satisfies estypes.QueryDslQueryContainer & { __id: "simpleSearchQuery" };
