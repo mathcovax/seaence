@@ -1,5 +1,6 @@
 
 import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { userRules } from "@vendors/entity-rules";
 
 export const userIdObjecter = zod
 	.string()
@@ -10,14 +11,10 @@ export const userEmailObjecter = zod
 	.email()
 	.createValueObjecter("userEmail");
 
-export const usernameRule = {
-	min: 3,
-	max: 30,
-};
 export const userUsernameObjecter = zod
 	.string()
-	.min(usernameRule.min)
-	.max(usernameRule.max)
+	.min(userRules.username.minLength)
+	.max(userRules.username.maxLength)
 	.createValueObjecter("userUsername");
 
 export type UserEmail = GetValueObject<typeof userEmailObjecter>;
@@ -37,6 +34,12 @@ export class UserEntity extends EntityHandler.create({
 			username: userUsernameObjecter.unknownUnsafeCreate(
 				params.email.value.split("@").shift(),
 			),
+		});
+	}
+
+	public rename(newUsername: UserUsername) {
+		return this.update({
+			username: newUsername,
 		});
 	}
 }

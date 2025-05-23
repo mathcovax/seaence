@@ -5,6 +5,7 @@ import { FindAnswersFromPostUsecase } from "@business/applications/usecases/find
 import { ReplyToPostUsecase } from "@business/applications/usecases/replyToPost";
 import { GetPostTotalCountFromNodeSameRawDocumentIdUsecase } from "@business/applications/usecases/getPostTotalCountFromNodeSameRawDocumentId";
 import { FindPostByIdUsecase } from "@business/applications/usecases/findPostById";
+import { RenameAuthorUsecase } from "@business/applications/usecases/renameAuthor";
 
 export const createPostUsecase = new CreatePostUsecase();
 export const findPostsFromNodeSameRawDocumentIdUsecase = new FindPostsFromNodeSameRawDocumentIdUsecase();
@@ -13,3 +14,4 @@ export const findAnswersFromPostUsecase = new FindAnswersFromPostUsecase();
 export const getPostTotalCountFromNodeSameRawDocumentIdUsecase
 	= new GetPostTotalCountFromNodeSameRawDocumentIdUsecase();
 export const replyToPostUsecase = new ReplyToPostUsecase();
+export const renameAuthor = new RenameAuthorUsecase();

@@ -8,6 +8,7 @@ services:
       - 55552:5555
     depends_on:
       - harbor-postgres
+      - async-message-mongo
   harbor-postgres:
     image: postgres:17.4-alpine3.21
     env_file: ${INCLUDE_PATH}/harbor/.env

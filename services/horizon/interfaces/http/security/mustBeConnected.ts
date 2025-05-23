@@ -19,7 +19,7 @@ export const mustBeConnectedProcess = createProcess(
 		async({ pickup, dropper }) => {
 			const accessToken = pickup("authorization");
 
-			const harborResponse = await HarborAPI.getUser(
+			const harborResponse = await HarborAPI.findUser(
 				accessToken,
 			);
 

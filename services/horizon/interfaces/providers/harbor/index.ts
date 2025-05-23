@@ -20,12 +20,29 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static async getUser(accessToken: string) {
+	public static async findUser(accessToken: string) {
 		return this.httpClient
 			.post(
-				"/user",
+				"/find-user",
 				{
-					body: accessToken,
+					body: { accessToken },
+				},
+			)
+			.iWantExpectedResponse();
+	}
+
+	public static async renameUser(
+		userId: string,
+		newUsername: string,
+	) {
+		return this.httpClient
+			.post(
+				"/rename-user",
+				{
+					body: {
+						userId,
+						newUsername,
+					},
 				},
 			)
 			.iWantExpectedResponse();

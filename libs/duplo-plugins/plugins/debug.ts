@@ -1,4 +1,6 @@
 import { Duplo } from "@duplojs/core";
+import "@vendors/backend-logger"
+import { logger } from "@vendors/backend-logger/logger";
 
 export function debug(){
 	return function(instance: Duplo) {
@@ -8,7 +10,7 @@ export function debug(){
 		instance.hook(
 			"onError",
 			(request, error) => {
-				console.log(`${request.method}:${request.path}`, error);
+				logger(`${request.method}:${request.path}`, error);
 			}
 		)
 	}

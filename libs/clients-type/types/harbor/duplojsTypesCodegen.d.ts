@@ -20,8 +20,10 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/user";
-    body: string;
+    path: "/find-user";
+    body: {
+        accessToken: string;
+    };
     response: {
         code: 401;
         information: "access.token.invalid";
@@ -38,6 +40,22 @@ type CodegenRoutes = ({
             email: string;
             username: string;
         };
+    };
+}) | ({
+    method: "POST";
+    path: "/rename-user";
+    body: {
+        userId: string;
+        newUsername: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "user.rename";
+        body?: undefined;
     };
 });
 

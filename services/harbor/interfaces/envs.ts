@@ -20,5 +20,7 @@ export const envs = zod
 		JWT_TIME: zod.coerce.number(),
 		DB_CONNECTION: zod.booleanInString(),
 		BOTTLE_BASE_URL: zod.string().url(),
+		ASYNC_MESSAGE_MONGO_URL: zod.string(),
+		SERVICE_NAME: zod.literal("harbor").default("harbor"),
 	})
 	.parse(process.env);

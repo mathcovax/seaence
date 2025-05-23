@@ -3,6 +3,7 @@ import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
 import { match } from "ts-pattern";
 import { endpointAnswerSchema } from "../schemas/answer";
 import { answerConfig } from "@interfaces/configs/answer";
+import { answerRules } from "@vendors/entity-rules";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/create-answer")
@@ -10,8 +11,8 @@ useMustBeConnectedBuilder()
 		body: {
 			postId: zod.string(),
 			content: zod.string()
-				.max(answerConfig.create.maxLength)
-				.min(answerConfig.create.minLength),
+				.max(answerRules.content.maxLength)
+				.min(answerRules.content.minLength),
 		},
 	})
 	.cut(
