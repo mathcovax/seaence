@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCreatePost } from "@/domains/forum/composables/useCreatePost";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
+import { postRules } from "@vendors/entity-rules";
 
 const router = useRouter();
 const { $pt } = postCreatePage.use();
@@ -12,7 +13,6 @@ const {
 	createPost,
 	formErrors,
 	formInputs,
-	formInputRules,
 } = useCreatePost(
 	computed(() => params.value.documentId),
 );
@@ -83,8 +83,8 @@ function submit() {
 					<DSTextarea
 						class="maw-w-full"
 						v-model="formInputs.content"
-						:maxlength="formInputRules.content.maxLength"
-						:minlength="formInputRules.content.minLength"
+						:maxlength="postRules.content.maxLength"
+						:minlength="postRules.content.minLength"
 						:placeholder="$pt('form.content.placeholder')"
 					/>
 

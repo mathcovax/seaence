@@ -23,6 +23,14 @@ type BakedDocumentLanguage = "fr-FR" | "en-US";
 
 export { BakedDocumentLanguage };
 
+type User = {
+    id: string;
+    username: string;
+    email: string;
+};
+
+export { User };
+
 type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
 
 export { OperatorContent };
@@ -342,7 +350,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/user";
+    path: "/self-user";
     response: {
         code: 403;
         information: "accessToken.invalid";
@@ -354,11 +362,26 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "user.self";
-        body: {
-            id: string;
-            username: string;
-            email: string;
-        };
+        body: User;
+    };
+}) | ({
+    method: "POST";
+    path: "/self-rename-user";
+    body: {
+        newUsername: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "user.rename";
+        body?: undefined;
     };
 }) | ({
     method: "POST";

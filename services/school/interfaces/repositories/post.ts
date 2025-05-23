@@ -76,4 +76,37 @@ postRepository.default = {
 
 		return post;
 	},
+	async *findByAuthorId(userId) {
+		const startPage = 0;
+		const quantityPerPage = 10;
+
+		for (let page = startPage; true; page++) {
+			const posts = await mongo.postCollection.find(
+				{ "author.id": userId.value },
+			)
+				.skip(page * quantityPerPage)
+				.limit(quantityPerPage)
+				.map(
+					(mongoPost) => EntityHandler.unsafeMapper(
+						PostEntity,
+						{
+							...mongoPost,
+							author: EntityHandler.unsafeMapper(
+								UserEntity,
+								mongoPost.author,
+							),
+						},
+					),
+				)
+				.toArray();
+
+			if (!posts.length) {
+				break;
+			}
+
+			for (const post of posts) {
+				yield post;
+			}
+		}
+	},
 };

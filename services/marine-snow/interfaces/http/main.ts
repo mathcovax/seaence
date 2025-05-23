@@ -3,11 +3,13 @@ import "@duplojs/node/globals";
 import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";
 import { envs } from "../envs";
 import "./routes";
+import { debug } from "@vendors/duplo-plugins/debug";
 
 const duplo = new Duplo({
 	environment: envs.ENVIROMENT,
 	host: envs.HOST,
 	port: envs.PORT,
+	plugins: [debug()],
 });
 
 duplo.register(

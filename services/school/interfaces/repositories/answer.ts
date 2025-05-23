@@ -56,4 +56,37 @@ answerRepository.default = {
 
 		return answer;
 	},
+	async *findByAuthorId(userId) {
+		const startPage = 0;
+		const quantityPerPage = 10;
+
+		for (let page = startPage; true; page++) {
+			const answers = await mongo.answerCollection.find(
+				{ "author.id": userId.value },
+			)
+				.skip(page * quantityPerPage)
+				.limit(quantityPerPage)
+				.map(
+					(mongoAnswer) => EntityHandler.unsafeMapper(
+						AnswerEntity,
+						{
+							...mongoAnswer,
+							author: EntityHandler.unsafeMapper(
+								UserEntity,
+								mongoAnswer.author,
+							),
+						},
+					),
+				)
+				.toArray();
+
+			if (!answers.length) {
+				break;
+			}
+
+			for (const answer of answers) {
+				yield answer;
+			}
+		}
+	},
 };

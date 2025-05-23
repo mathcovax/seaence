@@ -1,3 +1,4 @@
+import "@vendors/backend-logger";
 import "@duplojs/node";
 import "@duplojs/node/globals";
 import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";

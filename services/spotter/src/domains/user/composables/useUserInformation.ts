@@ -1,10 +1,10 @@
-import type { User } from "@/lib/horizon/types/user";
 import type { FindHttpClientRoute } from "@duplojs/http-client";
+import type { User } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 const accessTokenLocalStorageKey = "accessToken";
 const user = ref<User | null>(null);
 
-type RequestInformation = FindHttpClientRoute<HorizonClientRoute, "POST", "/user">["response"];
+type RequestInformation = FindHttpClientRoute<HorizonClientRoute, "POST", "/self-user">["response"];
 const externalPromisedRequestInformation = ref(createExternalPromise<RequestInformation>());
 
 const { refresh } = useWindow();
@@ -32,7 +32,7 @@ export function useUserInformation() {
 		externalPromisedRequestInformation.value = externalPromise;
 
 		const result = window.horizonClient
-			.post("/user")
+			.post("/self-user")
 			.whenInformation(
 				"user.self",
 				({ body }) => {

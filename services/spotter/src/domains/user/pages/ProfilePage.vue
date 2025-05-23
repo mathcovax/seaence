@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { User } from "@/lib/horizon/types/user";
+import type { User } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useUserInformation } from "../composables/useUserInformation";
 
 const router = useRouter();
@@ -20,6 +20,21 @@ void promisedRequestInformation.value!
 		},
 	);
 
+function renameUser() {
+	if (!user.value) {
+		return;
+	}
+
+	return horizonClient
+		.post(
+			"/self-rename-user",
+			{
+				body: {
+					newUsername: user.value.username,
+				},
+			},
+		);
+}
 </script>
 
 <template>
@@ -42,7 +57,6 @@ void promisedRequestInformation.value!
 						<DSInput
 							id="last-name"
 							v-model="user.username"
-							disabled
 						/>
 					</div>
 

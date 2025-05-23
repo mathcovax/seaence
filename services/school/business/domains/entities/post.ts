@@ -1,10 +1,18 @@
 import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { userObjecter } from "../common/user";
+import { type Username } from "./user";
+import { postRules } from "@vendors/entity-rules";
 
-export const postTopicObjecter = zod.string().createValueObjecter("postTopic");
+export const postTopicObjecter = zod.string()
+	.min(postRules.topic.minLength)
+	.max(postRules.topic.maxLength)
+	.createValueObjecter("postTopic");
 export type PostTopic = GetValueObject<typeof postTopicObjecter>;
 
-export const postContentObjecter = zod.string().createValueObjecter("postContent");
+export const postContentObjecter = zod.string()
+	.min(postRules.content.minLength)
+	.max(postRules.content.maxLength)
+	.createValueObjecter("postContent");
 export type PostContent = GetValueObject<typeof postContentObjecter>;
 
 export const postIdObjecter = zod.string().createValueObjecter("postId");
@@ -43,5 +51,15 @@ export class PostEntity extends EntityHandler.create({
 				answerCount,
 			},
 		);
+	}
+
+	public renameAuthor(newAuthorName: Username) {
+		const updatedAuthor = this.author.value.update({
+			username: newAuthorName,
+		});
+
+		return this.update({
+			author: userObjecter.unsafeCreate(updatedAuthor),
+		});
 	}
 }

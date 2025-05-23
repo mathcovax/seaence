@@ -1,5 +1,6 @@
 import { userRepository } from "@business/applications/repositories/user";
 import { UserEntity, userIdObjecter } from "@business/domains/entities/user";
+import { asyncMessage } from "@interfaces/providers/asyncMessage";
 import { prismaClient } from "@interfaces/providers/prisma";
 import { EntityHandler } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
@@ -43,13 +44,32 @@ userRepository.default = {
 	async save(entity) {
 		const simpleEntity = entity.toSimpleObject();
 
-		await prismaClient.user.upsert({
+		const prismaUser = await prismaClient.user.findFirst({
 			where: {
-				email: simpleEntity.email,
+				id: simpleEntity.id,
 			},
-			create: simpleEntity,
-			update: simpleEntity,
 		});
+
+		if (prismaUser) {
+			if (prismaUser.username !== simpleEntity.username) {
+				await asyncMessage.collections.renameUser.emit({
+					userId: simpleEntity.id,
+					newName: simpleEntity.username,
+					oldName: prismaUser.username,
+				});
+			}
+
+			await prismaClient.user.update({
+				where: {
+					id: simpleEntity.id,
+				},
+				data: simpleEntity,
+			});
+		} else {
+			await prismaClient.user.create({
+				data: simpleEntity,
+			});
+		}
 
 		return entity;
 	},

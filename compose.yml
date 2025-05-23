@@ -35,3 +35,23 @@ include:
   # bottle service (notification)
   - path:
       - ${INCLUDE_PATH}/bottle/compose.yml
+
+services:
+  async-message-mongo:
+    extends:
+      file: ${TEMPLATE_COMPOSE_MONGO_DEV}
+      service: template-mongo
+    attach: false
+    command: ["mongod", "--replSet", "rs0"]
+    post_start:
+      - command: |
+          bash -c "
+            sleep 5 && \
+            mongosh --eval 'try { rs.status().ok } catch(e) { rs.initiate({ _id: \"rs0\", members: [{ _id: 0, host: \"async-message-mongo:27017\" }] }) }' && \
+            echo '✅ Replica set prêt avec authentification'
+          "
+    volumes:
+      - "async-message-mongo-data:/data/db"
+
+volumes:
+  async-message-mongo-data:
