@@ -21,5 +21,6 @@ export const envs = zod
 		NO_REPLY_EMAIL: zod.string(),
 		SUPPORT_EMAIL: zod.string(),
 		CONTACT_EMAIL: zod.string(),
+		GLITCHTIP_DSN: zod.string(),
 	})
 	.parse(process.env);
