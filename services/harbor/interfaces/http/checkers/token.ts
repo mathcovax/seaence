@@ -38,7 +38,7 @@ export const accessTokenChecker = createChecker("accessToken")
 			if (accessToken) {
 				return output("access.token.valid", accessToken);
 			} else {
-				return output("access.token.invalid", null);
+				return output("accessToken.invalid", null);
 			}
 		},
 	);
@@ -47,8 +47,8 @@ export const IWantAccessTokenIsValid = createPresetChecker(
 	accessTokenChecker,
 	{
 		result: "access.token.valid",
-		catch: () => new UnauthorizedHttpResponse("access.token.invalid"),
+		catch: () => new UnauthorizedHttpResponse("accessToken.invalid"),
 		indexing: "accessTokenContent",
 	},
-	makeResponseContract(UnauthorizedHttpResponse, "access.token.invalid"),
+	makeResponseContract(UnauthorizedHttpResponse, "accessToken.invalid"),
 );

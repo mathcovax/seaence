@@ -1,6 +1,7 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
 import { endpointUserSchema } from "../schemas/user";
 import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
+import { match } from "ts-pattern";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/self-user")
@@ -14,22 +15,43 @@ useMustBeConnectedBuilder()
 	);
 
 useMustBeConnectedBuilder()
-	.createRoute("POST", "/self-rename-user")
+	.createRoute("POST", "/update-self-user")
 	.extract({
 		body: {
-			newUsername: zod.string(),
+			username: zod.string().optional(),
 		},
 	})
-	.handler(
-		async(pickup) => {
-			const { user, newUsername } = pickup(["user", "newUsername"]);
+	.cut(
+		async({ pickup, dropper }) => {
+			const { user, username } = pickup(["user", "username"]);
 
-			await HarborAPI.renameUser(
+			const result = await HarborAPI.updateUser(
 				user.id,
-				newUsername,
+				{ username },
 			);
 
-			return new NoContentHttpResponse("user.rename");
+			return match(result)
+				.with(
+					{ information: "user.shortUpdatedDelay" },
+					({ information }) => new ForbiddenHttpResponse(information),
+				)
+				.with(
+					{ information: "user.notfound" },
+					({ information }) => new NotFoundHttpResponse(information),
+				)
+				.with(
+					{ information: "user.updated" },
+					() => dropper(null),
+				)
+				.exhaustive();
 		},
+		[],
+		[
+			...makeResponseContract(ForbiddenHttpResponse, "user.shortUpdatedDelay"),
+			...makeResponseContract(NotFoundHttpResponse, "user.notfound"),
+		],
+	)
+	.handler(
+		() => new NoContentHttpResponse("user.rename"),
 		makeResponseContract(NoContentHttpResponse, "user.rename"),
 	);

@@ -10,6 +10,7 @@ export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
 const { sonnerError, sonnerMessage, sonnerWarning } = useSonner();
 const { enableLoader, disableLoader } = useLoader();
 const { accessToken } = useUserInformation();
+const { refresh } = useWindow();
 
 const defaultRequestTimeout = 5000;
 
@@ -100,6 +101,14 @@ horizonClient.hooks.add({
 		if (requestDefinition.paramsRequest.loaderId) {
 			disableLoader(requestDefinition.paramsRequest.loaderId);
 		}
+	},
+});
+
+horizonClient.hooks.add({
+	type: "information",
+	value: "accessToken.invalid",
+	callback() {
+		refresh();
 	},
 });
 

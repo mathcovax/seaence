@@ -1,11 +1,12 @@
 import { IWantFirebaseTokenIsValid } from "@interfaces/http/checkers/token";
 import { endpointAuthSchema } from "@interfaces/http/schemas/auth";
 import { AccessToken } from "@interfaces/providers/token";
-import { findOrCreateUser, renameUserUsecase } from "@interfaces/usecases";
+import { findOrCreateUser, updateUserUsecase } from "@interfaces/usecases";
 import { endpointUserSchema } from "../schemas/user";
-import { userIdObjecter, userUsernameObjecter } from "@business/domains/entities/user";
+import { UserEntity, userIdObjecter, userUsernameObjecter } from "@business/domains/entities/user";
 import { findUserWithAccessTokenProcess } from "../processes/findUserWithAccessToken";
 import { IWantUserExistsById } from "../checkers/user";
+import { match, P } from "ts-pattern";
 
 useBuilder()
 	.createRoute("POST", "/authentication")
@@ -53,27 +54,40 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("POST", "/rename-user")
+	.createRoute("POST", "/update-user")
 	.extract({
 		body: {
 			userId: userIdObjecter.toZodSchema(),
-			newUsername: userUsernameObjecter.toZodSchema(),
+			username: userUsernameObjecter.toZodSchema().optional(),
 		},
 	})
 	.presetCheck(
 		IWantUserExistsById,
 		(pickup) => pickup("userId"),
 	)
-	.handler(
-		async(pickup) => {
-			const { user, newUsername } = pickup(["newUsername", "user"]);
-
-			await renameUserUsecase.execute({
+	.cut(
+		async({ pickup, dropper }) => {
+			const { user, username } = pickup(["username", "user"]);
+			const result = await updateUserUsecase.execute({
 				user,
-				newUsername,
+				username,
 			});
 
-			return new NoContentHttpResponse("user.rename");
+			return match({ result })
+				.with(
+					{ result: { information: "update-delay-is-not-respected" } },
+					() => new ForbiddenHttpResponse("user.shortUpdatedDelay"),
+				)
+				.with(
+					{ result: P.instanceOf(UserEntity) },
+					() => dropper(null),
+				)
+				.exhaustive();
 		},
-		makeResponseContract(NoContentHttpResponse, "user.rename"),
+		[],
+		makeResponseContract(ForbiddenHttpResponse, "user.shortUpdatedDelay"),
+	)
+	.handler(
+		() => new NoContentHttpResponse("user.updated"),
+		makeResponseContract(NoContentHttpResponse, "user.updated"),
 	);

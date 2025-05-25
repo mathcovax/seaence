@@ -27,6 +27,7 @@ type User = {
     id: string;
     username: string;
     email: string;
+    lastUpdate: string;
 };
 
 export { User };
@@ -218,10 +219,6 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 404;
-        information: "user.notfound";
-        body?: undefined;
-    } | {
-        code: 404;
         information: "post.notfound";
         body?: undefined;
     } | {
@@ -265,10 +262,6 @@ type CodegenRoutes = ({
     response: {
         code: 403;
         information: "accessToken.invalid";
-        body?: undefined;
-    } | {
-        code: 404;
-        information: "user.notfound";
         body?: undefined;
     } | {
         code: 404;
@@ -356,23 +349,23 @@ type CodegenRoutes = ({
         information: "accessToken.invalid";
         body?: undefined;
     } | {
-        code: 404;
-        information: "user.notfound";
-        body?: undefined;
-    } | {
         code: 200;
         information: "user.self";
         body: User;
     };
 }) | ({
     method: "POST";
-    path: "/self-rename-user";
-    body: {
-        newUsername: string;
-    };
+    path: "/update-self-user";
+    body?: {
+        username?: string | undefined;
+    } | undefined;
     response: {
         code: 403;
         information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "user.shortUpdatedDelay";
         body?: undefined;
     } | {
         code: 404;

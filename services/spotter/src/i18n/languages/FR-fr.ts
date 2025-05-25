@@ -288,6 +288,7 @@ export const FRfr = {
 		search: "Rechercher",
 		send: "Envoyer",
 		seeMore: "Voir plus",
+		save: "Enregistré",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
@@ -377,6 +378,7 @@ export const FRfr = {
 		user: {
 			logged: "Connexion réalisée avec succès.",
 			notfound: "Utilisateur introuvable.",
+			shortUpdatedDelay: "Le delai de mise a jour des information n'est pas terminer.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",

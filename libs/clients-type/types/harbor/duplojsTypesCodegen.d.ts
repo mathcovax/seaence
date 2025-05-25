@@ -26,7 +26,7 @@ type CodegenRoutes = ({
     };
     response: {
         code: 401;
-        information: "access.token.invalid";
+        information: "accessToken.invalid";
         body?: undefined;
     } | {
         code: 404;
@@ -39,22 +39,27 @@ type CodegenRoutes = ({
             id: string;
             email: string;
             username: string;
+            lastUpdate: Date;
         };
     };
 }) | ({
     method: "POST";
-    path: "/rename-user";
+    path: "/update-user";
     body: {
         userId: string;
-        newUsername: string;
+        username?: string | undefined;
     };
     response: {
         code: 404;
         information: "user.notfound";
         body?: undefined;
     } | {
+        code: 403;
+        information: "user.shortUpdatedDelay";
+        body?: undefined;
+    } | {
         code: 204;
-        information: "user.rename";
+        information: "user.updated";
         body?: undefined;
     };
 });

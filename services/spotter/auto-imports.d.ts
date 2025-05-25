@@ -36,6 +36,7 @@ declare global {
   const defineComponent: typeof import('vue')['defineComponent']
   const documentPage: typeof import('./src/domains/document/router')['documentPage']
   const effectScope: typeof import('vue')['effectScope']
+  const formField: typeof import('./vendors/design-system/utils/formFields')['formField']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const h: typeof import('vue')['h']
@@ -83,6 +84,7 @@ declare global {
   const sheetVariants: typeof import('./vendors/design-system/components/ui/sheet/index')['sheetVariants']
   const simpleSearchPage: typeof import('./src/domains/search/router')['simpleSearchPage']
   const testPage: typeof import('./src/domains/search/router')['testPage']
+  const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toArrayZodSchema: typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
@@ -191,6 +193,7 @@ declare module 'vue' {
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly simpleSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['simpleSearchPage']>
+    readonly textformField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textformField']>
     readonly toArrayZodSchema: UnwrapRef<typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>

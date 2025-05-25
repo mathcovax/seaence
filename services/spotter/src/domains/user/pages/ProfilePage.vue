@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import type { User } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useUserInformation } from "../composables/useUserInformation";
+import { useEditProfileForm } from "../composables/useEditProfileForm";
 
 const router = useRouter();
 const { $pt } = profilePage.use();
 const user = ref<User | null>(null);
-const { promisedRequestInformation } = useUserInformation();
+const { promisedRequestInformation, fetchInformation } = useUserInformation();
+const { EditProfileForm, editProfileformValue, editProfileformCheck } = useEditProfileForm();
 
 void promisedRequestInformation.value!
 	.then(
 		({ information, body }) => {
 			if (information === "user.self") {
-				user.value = body;
+				user.value = { ...body };
+				editProfileformValue.value = { ...body };
 			} else {
 				void router.push(
 					homePage.createTo(),
@@ -20,21 +23,41 @@ void promisedRequestInformation.value!
 		},
 	);
 
-function renameUser() {
-	if (!user.value) {
+function editUser() {
+	const result = editProfileformCheck();
+
+	if (!result || !user.value) {
 		return;
 	}
 
 	return horizonClient
 		.post(
-			"/self-rename-user",
+			"/update-self-user",
 			{
 				body: {
-					newUsername: user.value.username,
+					username: result.username !== user.value.username
+						? result.username
+						: undefined,
 				},
+			},
+		)
+		.whenInformation(
+			"user.rename",
+			() => {
+				void fetchInformation()
+					.whenInformation(
+						"user.self",
+						({ body }) => {
+							user.value = { ...body };
+						},
+					);
 			},
 		);
 }
+
+const hasChange = computed(
+	() => editProfileformValue.value.username !== user.value?.username,
+);
 </script>
 
 <template>
@@ -49,29 +72,14 @@ function renameUser() {
 				</h1>
 
 				<div class="grid gap-4">
-					<div class=" grid gap-2">
-						<DSLabel for="username">
-							{{ $pt("personalInfo.label.username") }}
-						</DSLabel>
-
-						<DSInput
-							id="last-name"
-							v-model="user.username"
-						/>
-					</div>
-
-					<div class="grid gap-2">
-						<DSLabel for="email">
-							{{ $pt("personalInfo.label.email") }}
-						</DSLabel>
-
-						<DSInput
-							id="email"
-							type="email"
-							:model-value="user.email"
-							disabled
-						/>
-					</div>
+					<EditProfileForm @submit="editUser">
+						<DSButtonPrimary
+							type="submit"
+							:disabled="!hasChange"
+						>
+							{{ $t("cta.save") }}
+						</DSButtonPrimary>
+					</EditProfileForm>
 				</div>
 			</div>
 

@@ -8,6 +8,7 @@ bottleRepository.default = {
 	},
 	async createRegisterNotification(user) {
 		const { id, email, username } = user.toSimpleObject();
+
 		return BottleAPI.createRegisterNotification({
 			userId: id,
 			userEmail: email,

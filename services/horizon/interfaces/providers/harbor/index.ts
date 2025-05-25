@@ -1,10 +1,16 @@
-import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
+import { type FindHttpClientRoute, HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/harbor/duplojsTypesCodegen";
 
 export type HarborClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
+
+type UpdateUserPayload = FindHttpClientRoute<
+	HarborClientRoute,
+	"POST",
+	"/update-user"
+>["body"];
 
 export class HarborAPI {
 	private static httpClient: HttpClient<HarborClientRoute>;
@@ -31,17 +37,17 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static async renameUser(
+	public static async updateUser(
 		userId: string,
-		newUsername: string,
+		payload: Omit<UpdateUserPayload, "userId">,
 	) {
 		return this.httpClient
 			.post(
-				"/rename-user",
+				"/update-user",
 				{
 					body: {
 						userId,
-						newUsername,
+						...payload,
 					},
 				},
 			)
