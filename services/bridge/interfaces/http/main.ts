@@ -11,7 +11,9 @@ const duplo = new Duplo({
 	host: envs.HOST,
 	port: envs.PORT,
 	plugins: [
-		debug(),
+		debug({
+			dsn: envs.GLITCHTIP_DSN,
+		}),
 		cors(envs.CORS_ALLOW_ORIGIN),
 	],
 });
