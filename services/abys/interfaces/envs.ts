@@ -18,5 +18,6 @@ export const envs = zod
 		DB_CONNECTION: zod.booleanInString(),
 		SEA_BASE_URL: zod.string().url(),
 		ROSETTA_BASE_URL: zod.string().url(),
+		GLITCHTIP_DSN: zod.string(),
 	})
 	.parse(process.env);
