@@ -3,8 +3,13 @@ import "./style.css";
 import App from "./App.vue";
 import { router } from "./router";
 import { i18n } from "./i18n";
+import { initSentry } from "./libs/sentry";
 
-createApp(App)
+const app = createApp(App);
+
+initSentry(app);
+
+app
 	.use(router)
 	.use(i18n)
 	.mount("#app");
