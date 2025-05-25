@@ -3,11 +3,12 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm -w services/school run duplo:dev
+    command: npm -w services/school run dev
     ports:
       - "1506:1506"
     depends_on:
       - school-mongo
+      - async-message-mongo
   school-mongo:
     extends:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}

@@ -1,7 +1,7 @@
 import { z as zod, type ZodType } from "zod";
 import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject, type AnyRecord, setProperty, type AttributeError, applyAttributes, type ApplyValueObjecterAttribute } from "./utils";
 import { EntityObjecter, type ValueObjectError, type ValueObjecter } from "./valueObject";
-import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual } from "@duplojs/utils";
+import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual, getTypedEntries } from "@duplojs/utils";
 import { CleanError } from "./error";
 
 export type EntityPropertiesDefinition = Record<string, ValueObjecter | EntityObjecter>;
@@ -135,7 +135,10 @@ export class EntityHandler {
 				const constructor = this.constructor as typeof Entity;
 				const updatedEntity = new constructor({
 					...this,
-					...values,
+					...Object.fromEntries(
+						getTypedEntries(values)
+							.filter((entity) => !!entity[1]),
+					) as Properties,
 				});
 
 				updatedEntity[updatedValuesKey] = {

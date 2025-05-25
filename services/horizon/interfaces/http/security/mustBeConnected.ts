@@ -1,5 +1,5 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
-import { match } from "ts-pattern";
+import { match, P } from "ts-pattern";
 import { IgnoreByTypeCodegenDescription } from "@duplojs/types-codegen";
 
 export const mustBeConnectedProcess = createProcess(
@@ -19,18 +19,14 @@ export const mustBeConnectedProcess = createProcess(
 		async({ pickup, dropper }) => {
 			const accessToken = pickup("authorization");
 
-			const harborResponse = await HarborAPI.getUser(
+			const harborResponse = await HarborAPI.findUser(
 				accessToken,
 			);
 
 			return match(harborResponse)
 				.with(
-					{ information: "access.token.invalid" },
+					{ information: P.union("accessToken.invalid", "user.notfound") },
 					() => new ForbiddenHttpResponse("accessToken.invalid"),
-				)
-				.with(
-					{ information: "user.notfound" },
-					() => new NotFoundHttpResponse("user.notfound"),
 				)
 				.with(
 					{ information: "user.found" },
@@ -39,10 +35,7 @@ export const mustBeConnectedProcess = createProcess(
 				.exhaustive();
 		},
 		["user"],
-		[
-			...makeResponseContract(ForbiddenHttpResponse, "accessToken.invalid"),
-			...makeResponseContract(NotFoundHttpResponse, "user.notfound"),
-		],
+		makeResponseContract(ForbiddenHttpResponse, "accessToken.invalid"),
 	)
 	.exportation(["user"]);
 

@@ -1,0 +1,13 @@
+{
+  "name": "@lib/async-message",
+  "type": "module",
+  "dependencies": {
+    "mongodb": "6.15.0",
+    "zod": "3.24.2"
+  },
+  "devDependencies": {
+    "@duplojs/utils": "0.3.1",
+    "@types/node": "22.13.10",
+    "typescript": "5.8.2"
+  }
+}

@@ -1,16 +1,6 @@
 import { horizonClient } from "@/lib/horizon";
 import { zod } from "@vendors/clean";
-
-const formInputRules = {
-	topic: {
-		minLength: 15,
-		maxLength: 100,
-	},
-	content: {
-		minLength: 30,
-		maxLength: 5000,
-	},
-};
+import { postRules } from "@vendors/entity-rules";
 
 const errorFirstIndex = 0;
 
@@ -21,30 +11,24 @@ export function useCreatePost(
 
 	const formInputSchema = zod.object({
 		topic: zod.string()
+			.trim()
 			.min(
-				formInputRules.topic.minLength,
-				{
-					message: t("formMessage.minLength", { value: formInputRules.topic.minLength }),
-				},
+				postRules.topic.minLength,
+				{ message: t("formMessage.minLength", { value: postRules.topic.minLength }) },
 			)
 			.max(
-				formInputRules.topic.maxLength,
-				{
-					message: t("formMessage.maxLength", { value: formInputRules.topic.maxLength }),
-				},
+				postRules.topic.maxLength,
+				{ message: t("formMessage.maxLength", { value: postRules.topic.maxLength }) },
 			),
 		content: zod.string()
+			.trim()
 			.min(
-				formInputRules.content.minLength,
-				{
-					message: t("formMessage.minLength", { value: formInputRules.content.minLength }),
-				},
+				postRules.content.minLength,
+				{ message: t("formMessage.minLength", { value: postRules.content.minLength }) },
 			)
 			.max(
-				formInputRules.content.maxLength,
-				{
-					message: t("formMessage.maxLength", { value: formInputRules.content.maxLength }),
-				},
+				postRules.content.maxLength,
+				{ message: t("formMessage.maxLength", { value: postRules.content.maxLength }) },
 			),
 	});
 
@@ -79,7 +63,7 @@ export function useCreatePost(
 			)
 			.whenInformation(
 				"post.created",
-				({ body }) => {
+				() => {
 					formErrors.topic = "";
 					formErrors.content = "";
 				},
@@ -90,6 +74,5 @@ export function useCreatePost(
 		createPost,
 		formInputs,
 		formErrors,
-		formInputRules,
 	};
 }

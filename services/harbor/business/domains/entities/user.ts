@@ -1,5 +1,6 @@
 
-import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { userRules } from "@vendors/entity-rules";
 
 export const userIdObjecter = zod
 	.string()
@@ -10,26 +11,27 @@ export const userEmailObjecter = zod
 	.email()
 	.createValueObjecter("userEmail");
 
-export const usernameRule = {
-	min: 3,
-	max: 30,
-};
 export const userUsernameObjecter = zod
 	.string()
-	.min(usernameRule.min)
-	.max(usernameRule.max)
+	.min(userRules.username.minLength)
+	.max(userRules.username.maxLength)
 	.createValueObjecter("userUsername");
 
 export type UserEmail = GetValueObject<typeof userEmailObjecter>;
 export type UserUsername = GetValueObject<typeof userUsernameObjecter>;
 export type UserId = GetValueObject<typeof userIdObjecter>;
 
-type InputCreateUserEntity = Omit<GetEntityProperties<typeof UserEntity>, "username">;
+type InputCreateUserEntity = Omit<GetEntityProperties<typeof UserEntity>, "username" | "lastUpdate">;
+
+type UpdatePropsUserEntity = Partial<
+	Pick<GetEntityProperties<typeof UserEntity>, "username">
+>;
 
 export class UserEntity extends EntityHandler.create({
 	id: userIdObjecter,
 	email: userEmailObjecter,
 	username: userUsernameObjecter,
+	lastUpdate: commonDateObjecter,
 }) {
 	public static create(params: InputCreateUserEntity) {
 		return new UserEntity({
@@ -37,6 +39,18 @@ export class UserEntity extends EntityHandler.create({
 			username: userUsernameObjecter.unknownUnsafeCreate(
 				params.email.value.split("@").shift(),
 			),
+			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
 		});
+	}
+
+	public updateProps(values: UpdatePropsUserEntity) {
+		return this.update({
+			...values,
+			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
+		});
+	}
+
+	public updateDelayIsRespected() {
+		return (Date.now() - this.lastUpdate.value.getTime()) > userRules.updateDelay;
 	}
 }

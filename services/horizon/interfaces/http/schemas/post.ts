@@ -1,6 +1,7 @@
 import { bakedDocumentObjecter } from "@business/entities/bakedDocument";
 import { postObjecter } from "@business/entities/post";
 import { postConfig } from "@interfaces/configs/post";
+import { postRules } from "@vendors/entity-rules";
 
 export const endpointPostSchema = postObjecter.zodSchema;
 
@@ -30,10 +31,10 @@ export const endpointCreatePostPage = zod.object({
 
 export const entrypointCreatePost = zod.object({
 	topic: zod.string()
-		.max(postConfig.create.topic.maxLength)
-		.min(postConfig.create.topic.minLength),
+		.max(postRules.topic.maxLength)
+		.min(postRules.topic.minLength),
 	content: zod.string()
-		.max(postConfig.create.content.maxLength)
-		.min(postConfig.create.content.minLength),
+		.max(postRules.content.maxLength)
+		.min(postRules.content.minLength),
 	documentId: zod.string(),
 });
