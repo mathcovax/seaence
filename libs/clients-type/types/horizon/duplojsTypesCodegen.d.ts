@@ -5,6 +5,19 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
+type Answer = {
+    id: string;
+    postId: string;
+    content: string;
+    author: {
+        id: string;
+        username: string;
+    };
+    createdAt: string;
+};
+
+export { Answer };
+
 type Post = {
     id: string;
     topic: string;
@@ -240,16 +253,7 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "answerList.found";
-        body: {
-            id: string;
-            postId: string;
-            content: string;
-            author: {
-                id: string;
-                username: string;
-            };
-            createdAt: string;
-        }[];
+        body: Answer[];
     };
 }) | ({
     method: "POST";

@@ -3,6 +3,7 @@ import { horizonClient } from "@/lib/horizon";
 import { usePostPage } from "../composables/usePostPage";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
+import PostAnswer from "../components/PostAnswer.vue";
 
 const { params, query, $pt } = postPage.use();
 const router = useRouter();
@@ -101,9 +102,11 @@ function handleCreateAnswer() {
 					</h1>
 				</div>
 
-				<h2 class="text-xl font-medium mb-4 text-gray-700">
-					{{ postPageInformation.document.title }}
-				</h2>
+				<RouterLink :to="documentPage.createTo({ params: { id: postPageInformation.document.id } })">
+					<h2 class="text-xl font-medium mb-4 text-blue-seaence hover:underline">
+						{{ postPageInformation.document.title }}
+					</h2>
+				</RouterLink>
 
 				<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
 					<div class="flex items-center gap-2">
@@ -152,35 +155,11 @@ function handleCreateAnswer() {
 				v-if="answers && answers.length > 0"
 				class="space-y-6"
 			>
-				<DSCard
+				<PostAnswer
 					v-for="answer in answers"
 					:key="answer.id"
-					class="border border-gray-200 rounded-lg p-5 bg-gray-50 hover:shadow-sm transition-shadow"
-				>
-					<p class="text-gray-800 mb-4 whitespace-pre-line">
-						{{ answer.content }}
-					</p>
-
-					<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
-						<div class="flex items-center gap-2">
-							<DSIcon
-								name="account"
-								size="small"
-							/>
-
-							<span>{{ $pt("authorIs", { author: answer.author.username }) }}</span>
-						</div>
-
-						<div class="flex items-center gap-2">
-							<DSIcon
-								name="calendar"
-								size="small"
-							/>
-
-							<span>{{ getRelativeTime(answer.createdAt) }}</span>
-						</div>
-					</div>
-				</DSCard>
+					:answer="answer"
+				/>
 			</div>
 
 			<div

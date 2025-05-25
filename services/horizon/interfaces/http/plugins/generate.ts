@@ -6,6 +6,7 @@ import { filtersValuesSchema } from "../schemas/search/filter";
 import { comparatorTextSchema, comparatorYearSchema, operatorAndSchema, operatorContentSchema, operatorNotSchema, operatorOrSchema } from "@vendors/types-advanced-query";
 import { flexibleDateObjecter } from "@vendors/clean";
 import { postObjecter } from "@business/entities/post";
+import { answerObjecter } from "@business/entities/answer";
 import { userObjecter } from "@business/entities/user";
 
 articleTypeObjecter.zodSchema._zttIdentifier = "ArticleType";
@@ -34,5 +35,6 @@ operatorNotSchema._zttIdentifier = "OperatorNot";
 flexibleDateObjecter.zodSchema._zttIdentifier = "FlexibleDate";
 
 postObjecter.zodSchema._zttIdentifier = "Post";
+answerObjecter.zodSchema._zttIdentifier = "Answer";
 
 userObjecter.zodSchema._zttIdentifier = "User";

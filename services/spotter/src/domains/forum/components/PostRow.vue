@@ -14,22 +14,24 @@ defineProps<Props>();
 </script>
 
 <template>
-	<article
+	<DSCard
 		class="bg-background p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition"
 	>
-		<RouterLink
-			:to="postPage.createTo({
-				params: {postId: post.id},
-				query: {language}
-			})"
-			class="text-2xl font-semibold text-blue-seaence mb-2 hover:underline"
-		>
-			{{ post.topic }}
-		</RouterLink>
+		<div class="mb-4 flex flex-col gap-2">
+			<RouterLink
+				:to="postPage.createTo({
+					params: {postId: post.id},
+					query: {language}
+				})"
+				class="text-2xl font-semibold text-blue-seaence hover:underline"
+			>
+				{{ post.topic }}
+			</RouterLink>
 
-		<p class="text-gray-700 mb-4 w-full text-ellipsis overflow-hidden">
-			{{ post.content }}
-		</p>
+			<p class="text-gray-700 w-full text-ellipsis overflow-hidden">
+				{{ post.content }}
+			</p>
+		</div>
 
 		<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
 			<div class="flex items-center gap-2">
@@ -59,5 +61,5 @@ defineProps<Props>();
 				<span>{{ $pt("responseCount", {count: post.answerCount}) }}</span>
 			</div>
 		</div>
-	</article>
+	</DSCard>
 </template>

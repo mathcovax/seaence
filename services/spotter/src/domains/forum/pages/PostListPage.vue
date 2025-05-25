@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import RowPost from "../components/RowPost.vue";
 import { usePostListPage } from "../composables/usePostListPage";
+import PostRow from "../components/PostRow.vue";
 
 const { params, $pt } = postListPage.use();
 const router = useRouter();
@@ -31,19 +31,25 @@ watch(
 			v-if="postListPageInforamtion"
 			class="flex flex-col gap-6"
 		>
-			<h1 class="text-xl font-semibold mb-2">
-				{{ $pt("titleLinkPost", {title: postListPageInforamtion.document.title}) }}
-			</h1>
+			<div class="mb-6 flex gap-4 items-center">
+				<DSButtonIcon @click="router.back()">
+					<DSIcon name="arrowLeft" />
+				</DSButtonIcon>
+
+				<h1 class="text-3xl font-semibold text-blue-seaence">
+					{{ $pt("titleLinkPost", { title: postListPageInforamtion.document.title }) }}
+				</h1>
+			</div>
 
 			<DSButtonPrimary>
-				<RouterLink :to="postCreatePage.createTo({params: {documentId: params.documentId}})">
+				<RouterLink :to="postCreatePage.createTo({params: { documentId: params.documentId }})">
 					{{ $pt("createPost") }}
 				</RouterLink>
 			</DSButtonPrimary>
 
 			<div v-if="postList && postList.length > 0">
 				<div class="space-y-6">
-					<RowPost
+					<PostRow
 						v-for="post in postList"
 						:key="post.id"
 						:post="post"

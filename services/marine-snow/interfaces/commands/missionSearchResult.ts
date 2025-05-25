@@ -64,4 +64,4 @@ const startSearchResultMissionUsecase = new StartSearchResultMissionUsecase({
 
 const result = await startSearchResultMissionUsecase.execute({ mission });
 
-console.log(result);
+console.dir(result, { deep: 10 });
