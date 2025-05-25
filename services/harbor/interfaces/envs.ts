@@ -22,5 +22,6 @@ export const envs = zod
 		BOTTLE_BASE_URL: zod.string().url(),
 		ASYNC_MESSAGE_MONGO_URL: zod.string(),
 		SERVICE_NAME: zod.literal("harbor").default("harbor"),
+		GLITCHTIP_DSN: zod.string(),
 	})
 	.parse(process.env);
