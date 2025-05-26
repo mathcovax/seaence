@@ -161,6 +161,58 @@
 	}
 }
 
+@layer components {
+
+	/* Form Builder */
+	.formBilderForm {
+		@apply w-full grid grid-cols-1 gap-4;
+	}
+
+	.formBilderDiv {
+		@apply grid grid-cols-1 gap-2;
+	}
+
+	.formBilderDivSubmit {
+		@apply mt-4 grid grid-cols-1 justify-items-start;
+	}
+
+	.formBilderLayout {
+		@apply w-full;
+	}
+
+	.formBilderBaseLayout {
+		@apply grid grid-cols-1 gap-2;
+	}
+
+	.formBilderDivBaseLayout {
+		@apply grid grid-cols-1 gap-2;
+	}
+
+	.formBilderLabelBaseLayout {
+		@apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+	}
+
+	.formBilderCheckLayout {
+		@apply grid grid-cols-1 gap-2;
+	}
+
+	.formBilderDivCheckLayout {
+		@apply grid grid-cols-1 gap-1;
+	}
+
+	.formBilderSmallCheckLayout {
+		@apply text-sm text-destructive h-[1rem];
+	}
+
+	.formBilderLabel {
+		@apply text-sm font-medium leading-none;
+	}
+
+	.formBilderSmall {
+		@apply text-sm select-none;
+	}
+}
+
 img {
 	user-select: none;
 	-webkit-user-drag: none;

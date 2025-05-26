@@ -2,11 +2,11 @@ import { type SendOneSearchResultMissionEntity } from "@business/domains/entitie
 import { type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { prismaClient } from "@interfaces/providers/prisma";
-import { deepLog } from "@interfaces/utils/deepLog";
 import { postMessage } from "@interfaces/workers/postMessage";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { pubmedSender } from "./senders/pubmed";
+import { logger } from "@vendors/backend-logger";
 
 export type SupportedSendOneSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -47,7 +47,7 @@ export async function mission(mission: SupportedSendOneSearchResultMission) {
 				const result = await pubmedSender([searchResult.reference]);
 
 				if (result instanceof Error) {
-					deepLog({
+					logger({
 						searchResult,
 						result,
 					});

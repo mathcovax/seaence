@@ -2,6 +2,7 @@
 import { type SimplifyTypeForce } from "@duplojs/utils";
 import { type FunctionalComponent, h, ref, type Ref } from "vue";
 import { type FormField, type GetGenericFormField } from "./formField";
+import { type FormTemplateRender } from "./templates/form";
 
 export * from "./formField";
 export * from "./createFormField";
@@ -15,10 +16,15 @@ export interface FormContext {
 	slots: { default?(): any };
 }
 
+export interface FormOptions {
+	template?: FormTemplateRender;
+}
+
 export function useFormBuilder<
 	GenericFormField extends FormField,
 >(
 	formField: GenericFormField,
+	options?: FormOptions,
 ) {
 	const formValue = ref<
 		SimplifyTypeForce<GetGenericFormField<GenericFormField>["GenericValueType"]>
@@ -26,7 +32,7 @@ export function useFormBuilder<
 
 	const formFieldComponent = formField({
 		modelValue: formValue,
-		key: ".",
+		key: "",
 	});
 
 	function check():
@@ -43,10 +49,31 @@ export function useFormBuilder<
 		return result;
 	}
 
-	function From(
+	const {
+		template,
+	} = options ?? {};
+
+	function Form(
 		porps: object,
 		{ slots }: FormContext,
 	) {
+		const child = {
+			formField: () => formFieldComponent.getVNode(),
+			default: () => slots.default?.(),
+		};
+
+		if (template) {
+			return template(
+				{},
+				child,
+			);
+		} else if (useFormBuilder.defaultTemplate) {
+			return useFormBuilder.defaultTemplate(
+				{},
+				child,
+			);
+		}
+
 		return h(
 			"form",
 			{
@@ -56,21 +83,25 @@ export function useFormBuilder<
 				},
 			},
 			[
-				formFieldComponent.getVNode(),
+				child.formField(),
 				h(
 					"div",
 					{
 						class: "formBilderDiv formBilderDivSubmit",
 					},
-					[slots.default?.()],
+					[child.default()],
 				),
 			],
 		);
 	}
 
 	return {
-		From: From as FunctionalComponent<unknown, { submit: [] }>,
+		Form: Form as FunctionalComponent<unknown, { submit: [] }>,
 		formValue,
 		check,
 	};
 }
+
+useFormBuilder.defaultTemplate = undefined as
+	| undefined
+	| FormTemplateRender;

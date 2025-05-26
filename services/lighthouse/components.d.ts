@@ -8,6 +8,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BaseLayout: typeof import('./vendors/design-system/components/form/BaseLayout.vue')['default']
+    BaseLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseLayoutTemplate.vue')['default']
+    CheckLayoutTemplate: typeof import('./vendors/design-system/components/form/CheckLayoutTemplate.vue')['default']
     DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/DSAccordion.vue')['default']
     DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
     DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
@@ -114,6 +117,8 @@ declare module 'vue' {
     DSTabsList: typeof import('./vendors/design-system/components/ui/tabs/DSTabsList.vue')['default']
     DSTabsTrigger: typeof import('./vendors/design-system/components/ui/tabs/DSTabsTrigger.vue')['default']
     DSTextarea: typeof import('./vendors/design-system/components/ui/textarea/DSTextarea.vue')['default']
+    FormTemplate: typeof import('./vendors/design-system/components/form/FormTemplate.vue')['default']
+    MultiLayoutTemplate: typeof import('./vendors/design-system/components/form/MultiLayoutTemplate.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']

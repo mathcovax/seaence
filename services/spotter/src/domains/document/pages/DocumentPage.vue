@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FlexibleDate } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useDocumentPage } from "../composables/useDocumentPage";
-import RowPost from "@/domains/forum/components/RowPost.vue";
+import PostRow from "@/domains/forum/components/PostRow.vue";
 import { RouterLink } from "vue-router";
 
 const { $pt, params } = documentPage.use();
@@ -55,7 +55,7 @@ function formatedDate(date: FlexibleDate) {
 		>
 			<header class="flex flex-col gap-8 lg:gap-12">
 				<div class="flex flex-col gap-2">
-					<h1 class="capitalize text-xl md:text-3xl font-bold text-blue-seaence mb-4">
+					<h1 class="mb-4 text-xl md:text-3xl font-bold text-blue-seaence first-letter:uppercase">
 						{{ document.title }}
 					</h1>
 
@@ -157,11 +157,11 @@ function formatedDate(date: FlexibleDate) {
 					:key="index"
 					class="space-y-2"
 				>
-					<h3 class="capitalize text-lg md:text-xl font-semibold">
+					<h3 class="text-lg md:text-xl font-semibold first-letter:uppercase">
 						{{ detail.label }}
 					</h3>
 
-					<p class="capitalize">
+					<p class="first-letter:uppercase">
 						{{ detail.content }}
 					</p>
 				</section>
@@ -229,11 +229,11 @@ function formatedDate(date: FlexibleDate) {
 				<template
 					v-if="posts.length"
 				>
-					<RowPost
+					<PostRow
 						v-for="post in posts"
 						:key="post.id"
 						:post="post"
-						language="en-US"
+						:language="document.language"
 					/>
 				</template>
 

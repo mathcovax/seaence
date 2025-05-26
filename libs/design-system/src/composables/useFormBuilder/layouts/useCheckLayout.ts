@@ -3,10 +3,14 @@ import { effect, h, ref, toRef, watch } from "vue";
 import { type FormFieldParams, type GetGenericFormField, type FormField, type FormFieldInstance } from "../formField";
 import { type ZodType } from "zod";
 import { type MaybeCheckedType, useBaseLayout, type BaseLayoutOptions, type ChouseDefaultValue } from "./useBaseLayout";
+import { type CheckLayoutTemplateRender } from "../templates/checkLayout";
 
 export interface CheckLayoutOptions<
 	GenericFormField extends FormField = FormField,
-> extends BaseLayoutOptions<GenericFormField> {
+> extends BaseLayoutOptions<
+		GenericFormField,
+		CheckLayoutTemplateRender
+	> {
 	schema: ZodType;
 }
 
@@ -33,6 +37,7 @@ export function useCheckLayout<
 		props: propsFromOptions,
 		label,
 		disabled: optionalDisabled,
+		template,
 	} = options;
 
 	function checkLayout(params: FormFieldParams): FormFieldInstance {
@@ -92,18 +97,34 @@ export function useCheckLayout<
 			exposed: {
 				check,
 			},
-			getVNode: () => !disable.value && h(
-				"div",
-				{ class: "formBilderDiv formBilderLayout formBilderCheckLayout formBilderDivCheckLayout" },
-				[
-					formFieldComponent.getVNode(),
-					h(
-						"small",
-						{ class: "formBilderSmall formBilderLayout formBilderCheckLayout formBilderSmallCheckLayout" },
-						[errorMessage.value],
-					),
-				],
-			),
+			getVNode: () => {
+				if (disable.value) {
+					return null;
+				} else if (template) {
+					return template(
+						{ errorMessage: errorMessage.value },
+						formFieldComponent.getVNode(),
+					);
+				} else if (useCheckLayout.defaultTemplate) {
+					return useCheckLayout.defaultTemplate(
+						{ errorMessage: errorMessage.value },
+						formFieldComponent.getVNode(),
+					);
+				}
+
+				return h(
+					"div",
+					{ class: "formBilderDiv formBilderLayout formBilderCheckLayout formBilderDivCheckLayout" },
+					[
+						formFieldComponent.getVNode(),
+						h(
+							"small",
+							{ class: "formBilderSmall formBilderLayout formBilderCheckLayout formBilderSmallCheckLayout" },
+							[errorMessage.value],
+						),
+					],
+				);
+			},
 		};
 	}
 
@@ -111,3 +132,7 @@ export function useCheckLayout<
 
 	return checkLayout;
 }
+
+useCheckLayout.defaultTemplate = undefined as
+	| undefined
+	| CheckLayoutTemplateRender;

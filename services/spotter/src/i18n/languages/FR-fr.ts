@@ -74,14 +74,14 @@ export const FRfr = {
 			noPost: "Aucun post(s) trouvé pour ce document.",
 		},
 		[postListPage.name]: {
-			titleLinkPost: "Post(s) lié au document : {title}",
+			titleLinkPost: "Post(s) lié(s) au document : {title}",
 			authorIs: "Posté par {author}",
 			responseCount: "{count} réponse(s)",
 			noPost: "Aucun post(s) trouvé pour ce document.",
 			createPost: "Créer un poste",
 		},
 		[postPage.name]: {
-			connexionRequire: "Il est obligatoire d'étre connecter avant de écrire un message.",
+			connexionRequire: "Il est obligatoire d'être connecté avant d'écrire un message.",
 			backToPostList: "Retour à la liste des posts",
 			countResponse: "{count}/{totalCount} Réponse(s)",
 			authorIs: "Posté par {author}",
@@ -116,7 +116,7 @@ export const FRfr = {
 		},
 		[postCreatePage.name]: {
 			title: "Posez une question",
-			connexionRequire: "Il est obligatoire d'étre connecter avant de créer un post.",
+			connexionRequire: "Il est obligatoire d'être connecté avant de créer un post.",
 			form: {
 				topic: {
 					label: {
@@ -188,8 +188,8 @@ export const FRfr = {
 			reset: "Réinitialiser les filtres",
 			multiSelect: {
 				articleType: {
-					placeholder: "Selectionez un type d'article",
-					emptyLabel: "Type d'article non touvez",
+					placeholder: "Sélectionnez un type d'article",
+					emptyLabel: "Type d'article non trouvé",
 				},
 			},
 		},
@@ -205,7 +205,7 @@ export const FRfr = {
 				label: "Espèce",
 				values: {
 					human: "Humain",
-					otherAnimal: "Autre Animals",
+					otherAnimal: "Autres Animaux",
 				} satisfies Record<SpeciesFacetValue, string>,
 			},
 			articleType: {
@@ -288,7 +288,7 @@ export const FRfr = {
 		search: "Rechercher",
 		send: "Envoyer",
 		seeMore: "Voir plus",
-		save: "Enregistré",
+		save: "Enregistrer",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
@@ -378,7 +378,7 @@ export const FRfr = {
 		user: {
 			logged: "Connexion réalisée avec succès.",
 			notfound: "Utilisateur introuvable.",
-			shortUpdatedDelay: "Le delai de mise a jour des information n'est pas terminer.",
+			shortUpdatedDelay: "Vous devez attendre avant de pouvoir modifier à nouveau ces informations.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",
@@ -396,6 +396,6 @@ export const FRfr = {
 		answer: {
 			created: "Réponse créée avec succès.",
 		},
-		SERVER_ERROR: "Veuillez nous excusez, une erreur serveur s'est produite.",
+		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},
 };

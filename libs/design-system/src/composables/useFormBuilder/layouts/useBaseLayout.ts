@@ -7,7 +7,8 @@ import {
 	type FormFieldInstance,
 	type BaseProps,
 } from "../formField";
-import { type IsEqual } from "@duplojs/utils";
+import { type AnyFunction, type IsEqual } from "@duplojs/utils";
+import { type BaseLayoutTemplateRender } from "../templates/baseLayout";
 
 interface BaseOptions {
 	obligate: true;
@@ -15,11 +16,13 @@ interface BaseOptions {
 
 export interface BaseLayoutOptions<
 	GenericFormField extends FormField = FormField,
+	GenericTemplate extends AnyFunction = AnyFunction,
 > extends BaseOptions {
 	props?: MaybeRef<GetGenericFormField<GenericFormField>["GenericProps"] & BaseProps>;
 	defaultValue?: GetGenericFormField<GenericFormField>["GenericValueType"];
 	label?: string;
 	disabled?: MaybeRef<boolean>;
+	template?: GenericTemplate;
 }
 
 export type MaybeCheckedType<
@@ -38,7 +41,10 @@ export type ChouseDefaultValue<
 
 export function useBaseLayout<
 	GenericFormField extends FormField,
-	GenericBaseLayoutOptions extends BaseLayoutOptions<GenericFormField> = { obligate: true },
+	GenericBaseLayoutOptions extends BaseLayoutOptions<
+		GenericFormField,
+		BaseLayoutTemplateRender
+	> = { obligate: true },
 >(
 	formField: GenericFormField,
 	options?: GenericBaseLayoutOptions,
@@ -58,6 +64,7 @@ export function useBaseLayout<
 		props: propsFromOptions,
 		label,
 		disabled: optionalDisabled,
+		template,
 	} = options ?? {};
 
 	function baseLayout(params: FormFieldParams): FormFieldInstance {
@@ -86,18 +93,40 @@ export function useBaseLayout<
 			exposed: {
 				check,
 			},
-			getVNode: () => !disable.value && h(
-				"div",
-				{ class: "formBilderDiv formBilderLayout formBilderBaseLayout formBilderDivBaseLayout" },
-				[
-					label && h(
-						"label",
-						{ class: "formBilderLabel formBilderLayout formBilderBaseLayout formBilderLabelBaseLayout" },
-						[label],
-					),
-					formFieldComponent.getVNode(),
-				],
-			),
+			getVNode: () => {
+				if (disable.value) {
+					return null;
+				} else if (template) {
+					return template(
+						{
+							label,
+							formKey: key,
+						},
+						formFieldComponent.getVNode(),
+					);
+				} else if (useBaseLayout.defaultTemplate) {
+					return useBaseLayout.defaultTemplate(
+						{
+							label,
+							formKey: key,
+						},
+						formFieldComponent.getVNode(),
+					);
+				}
+
+				return h(
+					"div",
+					{ class: "formBilderDiv formBilderLayout formBilderBaseLayout formBilderDivBaseLayout" },
+					[
+						label && h(
+							"label",
+							{ class: "formBilderLabel formBilderLayout formBilderBaseLayout formBilderLabelBaseLayout" },
+							[label],
+						),
+						formFieldComponent.getVNode(),
+					],
+				);
+			},
 		};
 	}
 
@@ -105,3 +134,7 @@ export function useBaseLayout<
 
 	return baseLayout;
 }
+
+useBaseLayout.defaultTemplate = undefined as
+	| undefined
+	| BaseLayoutTemplateRender;
