@@ -1,7 +1,7 @@
 import { abysRepository } from "@business/applications/repositories/abys";
 import { StartSendSearchResultMissionUsecase } from "@business/applications/usecases/missions/sendSearchResult/startSendSearchResultMission";
 import { createSendSearchResultMissionUsecase } from "@interfaces/usecase";
-import { deepLog } from "@interfaces/utils/deepLog";
+import { logger } from "@vendors/backend-logger";
 import { intObjecter } from "@vendors/clean";
 import { program } from "commander";
 
@@ -26,7 +26,7 @@ const startSendSearchResultMissionUsecase = new StartSendSearchResultMissionUsec
 		async *startSendSearchResultMission(...args) {
 			for await (const result of implementedAbysRepository.startSendSearchResultMission(...args)) {
 				if (!(result instanceof Error)) {
-					console.log(`Quantity Processed: ${result.step.quantityProcessed.value}`);
+					logger(`Quantity Processed: ${result.step.quantityProcessed.value}`);
 				}
 				yield result;
 			}
@@ -38,4 +38,4 @@ const finishMission = await startSendSearchResultMissionUsecase.execute({
 	mission,
 });
 
-deepLog(finishMission);
+logger(finishMission);

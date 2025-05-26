@@ -6,6 +6,7 @@ import { createPubMedSearchResultMissionUsecase } from "@interfaces/usecase";
 import { dateYYYYMMDDIntervalObjecter } from "@vendors/clean";
 import { StartSearchResultMissionUsecase } from "@business/applications/usecases/missions/searchResult/startSearchResultMission";
 import { scienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
+import { logger } from "@vendors/backend-logger";
 
 program
 	.requiredOption("-p, --provider <char>")
@@ -64,4 +65,4 @@ const startSearchResultMissionUsecase = new StartSearchResultMissionUsecase({
 
 const result = await startSearchResultMissionUsecase.execute({ mission });
 
-console.dir(result, { deep: 10 });
+logger(result);

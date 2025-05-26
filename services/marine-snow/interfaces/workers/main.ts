@@ -3,12 +3,10 @@ import { workerData } from "worker_threads";
 import { type SearchResultMissionOutput, type SupportedSearchResultMission } from "./missions/searchResult";
 import { type SendSearchResultMissionOutput, type SupportedSendSearchResultMission } from "./missions/sendSearchResult";
 import { postMessage } from "./postMessage";
-import { deepLog } from "@interfaces/utils/deepLog";
 import { type SupportedSendOneSearchResultMission, type SendOneSearchResultMissionOutput } from "./missions/sendSearchResult/one";
+import "@vendors/backend-logger";
 
-process.on("uncaughtException", async(error) => {
-	deepLog(error);
-
+process.on("uncaughtException", async() => {
 	await postMessage("finish");
 });
 

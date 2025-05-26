@@ -1,4 +1,5 @@
 import { logger } from "./logger";
+export * from "./logger";
 
 process.on(
 	"uncaughtException",

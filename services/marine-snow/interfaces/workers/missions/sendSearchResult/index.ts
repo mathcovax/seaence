@@ -5,8 +5,8 @@ import { prismaClient } from "@interfaces/providers/prisma";
 import { type EntityToSimpleObject } from "@vendors/clean";
 import { pubmedSender } from "./senders/pubmed";
 import { postMessage } from "@interfaces/workers/postMessage";
-import { deepLog } from "@interfaces/utils/deepLog";
 import { match } from "ts-pattern";
+import { logger } from "@vendors/backend-logger";
 
 export type SupportedSendSearchResultMission = SimplifyObjectTopLevel<
 	(
@@ -64,7 +64,7 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 									);
 
 									if (result instanceof Error) {
-										deepLog(result);
+										logger(result);
 
 										return groupedSearchResults.map(
 											(searchResult) => ({
@@ -79,7 +79,7 @@ export async function mission(mission: SupportedSendSearchResultMission) {
 									>(
 										({ reference, error }) => {
 											if (error) {
-												deepLog(error);
+												logger(error);
 											}
 
 											return {

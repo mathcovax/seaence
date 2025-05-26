@@ -2,7 +2,7 @@ import { providerObjecter } from "@business/domains/common/provider";
 import { searchResultObjecter } from "@business/domains/common/searchResult";
 import { searchResultReferenceObjecter } from "@business/domains/entities/searchResult";
 import { createSendOneSearchResultMissionUsecase, findOneSearchResultUsecase, startSendOneSearchResultMissionUsecase } from "@interfaces/usecase";
-import { deepLog } from "@interfaces/utils/deepLog";
+import { logger } from "@vendors/backend-logger";
 import { TechnicalError } from "@vendors/clean/error";
 import { program } from "commander";
 
@@ -34,4 +34,4 @@ const valueSearchResult = searchResultObjecter.throwCreate(searchResult);
 const mission = await createSendOneSearchResultMissionUsecase.execute({ valueSearchResult });
 const finishMission = await startSendOneSearchResultMissionUsecase.execute({ mission });
 
-deepLog(finishMission);
+logger(finishMission);
