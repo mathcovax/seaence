@@ -24,7 +24,7 @@ export default defineConfig({
 				"src/domains/**/router.ts",
 				"src/lib/zod/index.ts",
 				"src/lib/horizon/index.ts",
-				"vendors/design-system/composables",
+				"vendors/design-system/composables/**",
 				"vendors/design-system/utils",
 				"src/utils",
 			],

@@ -8,6 +8,11 @@ import {
 	type FormFieldInstance,
 	type ExposedProperties,
 } from "../formField";
+import { type MultiLayoutTemplateRender } from "../templates/multiLayout";
+
+export interface MultiLayoutOptions {
+	template?: MultiLayoutTemplateRender;
+}
 
 type FormFieldsWrapper = Record<string, FormField>;
 
@@ -34,11 +39,16 @@ export function useMultiFieldLayout<
 	GenericFormFieldsWrapper extends FormFieldsWrapper,
 >(
 	formFieldsWrapper: GenericFormFieldsWrapper,
+	options?: MultiLayoutOptions,
 ): FormField<
 		FormFieldsWrapperToFormValuesWrapper<GenericFormFieldsWrapper>,
 		FormFieldsWrapperToFormCheckedValuesWrapper<GenericFormFieldsWrapper>,
 		any
 	> {
+	const {
+		template,
+	} = options ?? {};
+
 	function multiFieldLayout(params: FormFieldParams<Record<string, unknown>>): FormFieldInstance {
 		const { modelValue, key: paramsKey } = params;
 
@@ -107,14 +117,34 @@ export function useMultiFieldLayout<
 			exposed: {
 				check,
 			},
-			getVNode: () => h(
-				"div",
-				{ class: "formBilderDiv formBilderLayout formBilderMultiFieldLayout formBilderDivMultiFieldLayout" },
-				formFieldVNode
-					.map(
-						(formFieldComponent) => h(formFieldComponent),
-					),
-			),
+			getVNode: () => {
+				if (template) {
+					return template(
+						{ },
+						formFieldVNode
+							.map(
+								(formFieldComponent) => h(formFieldComponent),
+							),
+					);
+				} else if (useMultiFieldLayout.defaultTemplate) {
+					return useMultiFieldLayout.defaultTemplate(
+						{ },
+						formFieldVNode
+							.map(
+								(formFieldComponent) => h(formFieldComponent),
+							),
+					);
+				}
+
+				return h(
+					"div",
+					{ class: "formBilderDiv formBilderLayout formBilderMultiFieldLayout formBilderDivMultiFieldLayout" },
+					formFieldVNode
+						.map(
+							(formFieldComponent) => h(formFieldComponent),
+						),
+				);
+			},
 		};
 	}
 
@@ -130,3 +160,7 @@ export function useMultiFieldLayout<
 
 	return multiFieldLayout;
 }
+
+useMultiFieldLayout.defaultTemplate = undefined as
+	| undefined
+	| MultiLayoutTemplateRender;

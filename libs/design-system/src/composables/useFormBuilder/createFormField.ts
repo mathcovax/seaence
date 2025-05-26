@@ -34,17 +34,33 @@ type GetPropFromInputComponentInstance<
 	>
 >;
 
+export interface FormFieldOptions<
+	GenericInputComponent extends InputComponent,
+	GenericValueType extends unknown,
+> {
+	defaultValue: GenericValueType;
+	props: GetPropFromInputComponentInstance<InstanceType<GenericInputComponent>>;
+}
+
 export function createFormField<
 	GenericInputComponent extends InputComponent,
 	GenericValueType extends GetValueType<InstanceType<GenericInputComponent>>,
 >(
 	input: GenericInputComponent,
-	defaultValue: GenericValueType,
+	options: FormFieldOptions<
+		GenericInputComponent,
+		GenericValueType
+	>,
 ): FormField<
 		GenericValueType,
 		GenericValueType,
 		GetPropFromInputComponentInstance<InstanceType<GenericInputComponent>>
 	> {
+	const {
+		defaultValue,
+		props: propsFromOptions,
+	} = options;
+
 	function formField(params: FormFieldParams): FormFieldInstance {
 		const { modelValue, props, key } = params;
 		function check() {
@@ -58,12 +74,14 @@ export function createFormField<
 			getVNode: () => h(
 				input,
 				{
+					...propsFromOptions,
 					...props?.value,
 					modelValue: modelValue.value,
 					"onUpdate:modelValue": (value: any) => {
 						modelValue.value = value;
 					},
 					key,
+					id: key,
 				},
 			),
 		};
