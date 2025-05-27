@@ -36,6 +36,7 @@
 | Service de forum | School | Service de gestion de forum | Duplo, MongoDB | @Vitaalx |
 | Service de notification | Bottle | | Duplo, MongoDB | @ZeRiix |
 | Service de traduction | Rosetta | | Duplo, MongoDB | @ZeRiix |
+| Service de gestion de données utilisateur | Coral | | Duplo, MongoDB | @ZeRiix |
 
 ### Description des services
 
@@ -84,6 +85,10 @@ API Gateway pour le BackOffice. Il ne peut etre requeter que par le service Ligh
 
 Backoffice permettant de gérer les utilisateurs, les documents et les forums.
 
+#### Coral
+
+Service de gestion de données utilisateur. Il permettra de stocker les données utilisateur et de les gérer.
+
 ## Architecture des services
 
 ```mermaid
@@ -97,8 +102,9 @@ flowchart TB
         Bridge[Bridge]
     end
 
-    subgraph Auth
+    subgraph User
         Harbor[Harbor]
+		Coral[Coral]
     end
 
     subgraph Search
@@ -130,6 +136,7 @@ flowchart TB
     Horizon --> Abys
     Horizon --> School
     Horizon --> Bottle
+	Horizon --> Coral
     
     Bridge --> Harbor
     Bridge --> MarineSnow
@@ -137,6 +144,8 @@ flowchart TB
     Bridge --> School
 
     %% Connexions Search
+	Coral --> Sea
+	Coral --> Abys
     MarineSnow --> Abys
     Abys --> Sea
     Abys --> Rosetta
@@ -145,6 +154,9 @@ flowchart TB
     School --> Bottle
     Harbor --> Bottle
 
+	%% Connexions User
+	Harbor --> Coral
+	
     %% Styles
     classDef frontend fill:#42b883,color:white
     classDef gateway fill:#6272a4,color:white

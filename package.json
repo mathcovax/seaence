@@ -65,7 +65,9 @@
 
     "docker:lighthouse": "docker compose up lighthouse",
 
-    "docker:bridge": "docker compose up bridge"
+    "docker:bridge": "docker compose up bridge",
+
+    "docker:coral": "docker compose up coral"
   },
   "workspaces": [
     ".npm-packages",
