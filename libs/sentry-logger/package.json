@@ -1,0 +1,11 @@
+{
+  "name": "@lib/sentry-logger",
+  "type": "module",
+  "dependencies": {
+    "@sentry/node": "9.22.0"
+  },
+  "devDependencies": {
+    "@duplojs/utils": "0.3.1",
+    "typescript": "5.8.2"
+  }
+}
