@@ -1,0 +1,19 @@
+import { AddEquationInFavoriUsecase } from "@business/applications/usecases/addEquationInFavori";
+import { ComputeDocumentQuantityInFolderrUsecase } from "@business/applications/usecases/computeDocumentQuantityInFolder";
+import { CreateDocumentInFolderUsecase } from "@business/applications/usecases/createDocumentInFolder";
+import { DropDocumentInFolderUsecase } from "@business/applications/usecases/dropDocumentInFolder";
+import { DeleteDocumentFolderUsecase } from "@business/applications/usecases/deleteDocumentFolder";
+import { DropEquationInFavoriUsecase } from "@business/applications/usecases/dropEquationInfavori";
+import { CreateDocumentFolderUsecase } from "@business/applications/usecases/createDocumentFolder";
+import { FindDocumentInFolderUsecase } from "@business/applications/usecases/findDocumentInFolder";
+import { FindEquationInFavoriUsecase } from "@business/applications/usecases/findEquationInFavori";
+
+export const addEquationInFavoriUsecase = new AddEquationInFavoriUsecase();
+export const computeDocumentQuantityInFolderrUsecase = new ComputeDocumentQuantityInFolderrUsecase();
+export const createDocumentInFolderUsecase = new CreateDocumentInFolderUsecase();
+export const dropDocumentInFolderUsecase = new DropDocumentInFolderUsecase();
+export const deleteDocumentFolderUsecase = new DeleteDocumentFolderUsecase();
+export const dropEquationInFavoriUsecase = new DropEquationInFavoriUsecase();
+export const createDocumentFolderUsecase = new CreateDocumentFolderUsecase();
+export const findDocumentInFolderUsecase = new FindDocumentInFolderUsecase();
+export const findEquationInFavoriUsecase = new FindEquationInFavoriUsecase();
