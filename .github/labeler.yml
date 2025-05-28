@@ -46,6 +46,9 @@ bridge:
 lighthouse:
   - "services/lighthouse/**/*"
 
+coral:
+  - "services/coral/**/*"
+
 docker:
   - ".docker/**/*"
   - "compose.yml"
