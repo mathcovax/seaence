@@ -1,10 +1,11 @@
-import { type UserId } from "@business/domains/entities/user";
+import { type UserEmail, type UserId } from "@business/domains/entities/user";
 import { type GetTypeInput } from "@duplojs/core";
-import { findUserById } from "@interfaces/usecases";
+import { findUserByEmail, findUserById } from "@interfaces/usecases";
 import { match } from "ts-pattern";
 
 export const inputUserExist = createTypeInput<{
 	id: UserId;
+	email: UserEmail;
 }>();
 
 export const userExistCheck = createChecker("userExist")
@@ -14,6 +15,10 @@ export const userExistCheck = createChecker("userExist")
 				.with(
 					{ inputName: "id" },
 					({ value }) => findUserById.execute({ id: value }),
+				)
+				.with(
+					{ inputName: "email" },
+					({ value }) => findUserByEmail.execute({ email: value }),
 				)
 				.exhaustive();
 
@@ -25,13 +30,18 @@ export const userExistCheck = createChecker("userExist")
 		},
 	);
 
-export const IWantUserExistsById = createPresetChecker(
+export const IWantUserExists = createPresetChecker(
 	userExistCheck,
 	{
 		result: "user.exist",
 		catch: () => new NotFoundHttpResponse("user.notfound"),
-		transformInput: inputUserExist.id,
 		indexing: "user",
 	},
 	makeResponseContract(NotFoundHttpResponse, "user.notfound"),
 );
+
+export const IWantUserExistsById = IWantUserExists
+	.transformInput(inputUserExist.id);
+
+export const IWantUserExistsByEmail = IWantUserExists
+	.transformInput(inputUserExist.email);

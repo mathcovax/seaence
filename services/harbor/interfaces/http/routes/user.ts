@@ -1,39 +1,9 @@
-import { IWantFirebaseTokenIsValid } from "@interfaces/http/checkers/token";
-import { endpointAuthSchema } from "@interfaces/http/schemas/auth";
-import { AccessToken } from "@interfaces/providers/token";
-import { findOrCreateUser, updateUserUsecase } from "@interfaces/usecases";
+import { updateUser } from "@interfaces/usecases";
 import { endpointUserSchema } from "../schemas/user";
 import { UserEntity, userIdObjecter, userUsernameObjecter } from "@business/domains/entities/user";
 import { findUserWithAccessTokenProcess } from "../processes/findUserWithAccessToken";
 import { IWantUserExistsById } from "../checkers/user";
 import { match, P } from "ts-pattern";
-
-useBuilder()
-	.createRoute("POST", "/authentication")
-	.extract({
-		body: zod.string(),
-	})
-	.presetCheck(
-		IWantFirebaseTokenIsValid,
-		(pickup) => pickup("body"),
-	)
-	.handler(
-		async(pickup) => {
-			const { email } = pickup("firebaseTokenContent");
-
-			const user = await findOrCreateUser.execute({
-				email,
-			});
-
-			const token = AccessToken.generateToken(user);
-
-			return new OkHttpResponse(
-				"user.logged",
-				token,
-			);
-		},
-		makeResponseContract(OkHttpResponse, "user.logged", endpointAuthSchema),
-	);
 
 useBuilder()
 	.createRoute("POST", "/find-user")
@@ -43,7 +13,7 @@ useBuilder()
 	)
 	.handler(
 		(pickup) => {
-			const user = pickup("user");
+			const { user } = pickup(["user"]);
 
 			return new OkHttpResponse(
 				"user.found",
@@ -68,7 +38,7 @@ useBuilder()
 	.cut(
 		async({ pickup, dropper }) => {
 			const { user, username } = pickup(["username", "user"]);
-			const result = await updateUserUsecase.execute({
+			const result = await updateUser.execute({
 				user,
 				username,
 			});

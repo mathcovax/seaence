@@ -208,16 +208,46 @@ export { FlexibleDate };
 
 type CodegenRoutes = ({
     method: "POST";
-    path: "/authentication";
-    body: string;
+    path: "/login";
+    body: {
+        firebaseToken: string;
+    };
     response: {
         code: 401;
         information: "credential.invalid";
         body?: undefined;
     } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "user.logged";
-        body: string;
+        body: {
+            accessToken: string;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/register";
+    body: {
+        firebaseToken: string;
+        username: string;
+    };
+    response: {
+        code: 401;
+        information: "credential.invalid";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "user.alreadyExist";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "user.registered";
+        body: {
+            accessToken: string;
+        };
     };
 }) | ({
     method: "POST";

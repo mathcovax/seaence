@@ -9,7 +9,6 @@ export const router = createRouter({
 			component: () => import("../layouts/BaseLayout.vue"),
 			children: [
 				homePage.recordRaw,
-				connectionPage.recordRaw,
 				simpleSearchPage.recordRaw,
 				advancedSearchPage.recordRaw,
 				documentPage.recordRaw,

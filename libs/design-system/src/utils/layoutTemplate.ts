@@ -29,4 +29,4 @@ export const formTemplate = createLayoutTemplate(
 	useFormBuilder,
 	FormTemplate,
 );
-useFormBuilder.defaultTemplate = formTemplate({});
+useFormBuilder.defaultTemplate = formTemplate({ align: "auto" });

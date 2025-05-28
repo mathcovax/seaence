@@ -44,13 +44,17 @@ const searchParams = reactive<ReactiveSearchParams>({
 });
 const isResultExpanded = ref(false);
 const searchContainerRef = ref<InstanceType<typeof SearchContainer> | null>(null);
+const advancedSearchInput = ref<InstanceType<typeof AdvancedSearchInput> | null>(null);
 const maxBytesLength = 15000;
 
 function submit(
 	reactiveSearchParams: ReactiveSearchParams,
 	searchDetails = true,
 ) {
-	if (!reactiveSearchParams.term) {
+	if (
+		!reactiveSearchParams.term
+		|| !advancedSearchInput.value?.checkFields()
+	) {
 		return;
 	}
 
@@ -114,11 +118,14 @@ const queryWatcher = watchPausable(
 
 if (route.query.term) {
 	isResultExpanded.value = true;
-	submit(searchParams);
 }
 
 onMounted(() => {
 	scrollToTop();
+
+	if (route.query.term) {
+		submit(searchParams);
+	}
 });
 </script>
 
@@ -150,6 +157,7 @@ onMounted(() => {
 
 			<AdvancedSearchInput
 				v-else
+				ref="advancedSearchInput"
 				class="w-full"
 				v-model:language="searchParams.language"
 				v-model="searchParams.term"

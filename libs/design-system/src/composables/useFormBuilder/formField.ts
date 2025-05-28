@@ -2,6 +2,7 @@
 
 import { type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { type VNode, type Ref, type HTMLAttributes } from "vue";
+import { type ZodError } from "zod";
 
 export interface BaseProps {
 	class?: HTMLAttributes["class"];
@@ -12,7 +13,7 @@ export interface BaseProps {
 export interface ExposedProperties<
 	GenericCheckedType extends unknown = unknown,
 > {
-	check(): Error | GenericCheckedType;
+	check(): ZodError | GenericCheckedType;
 }
 
 export interface FormFieldParams<
