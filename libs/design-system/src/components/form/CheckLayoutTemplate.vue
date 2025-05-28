@@ -17,6 +17,6 @@ defineProps<Props>();
 	>
 		<slot />
 
-		<small class="text-sm text-destructive h-[1rem]">{{ errorMessage }}</small>
+		<small class="text-sm text-destructive h-[1.2rem] overflow-hidden text-ellipsis text-nowrap">{{ errorMessage }}</small>
 	</div>
 </template>

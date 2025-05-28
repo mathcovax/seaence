@@ -47,11 +47,6 @@ export const FRfr = {
 				},
 			},
 		},
-		[connectionPage.name]: {
-			title: "Inscription / Connexion",
-			subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
-			googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
-		},
 		[simpleSearchPage.name]: {
 			searchInput: {
 				placeholder: "Rechercher...",
@@ -145,6 +140,16 @@ export const FRfr = {
 				submitBtn: "Publier ma question",
 			},
 
+		},
+	},
+	authDialog: {
+		title: "Authtification",
+		subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
+		googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
+		registerForm: {
+			usernameLabel: "Nom utilisateur",
+			CGULabel: "Accepter les contion général d'utilisation.",
+			requireCGU: "L'acceptation des condition général d'utilisation est obligatoire.",
 		},
 	},
 	layout: {
@@ -289,6 +294,7 @@ export const FRfr = {
 		send: "Envoyer",
 		seeMore: "Voir plus",
 		save: "Enregistrer",
+		register: "Créée un compte",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
@@ -377,8 +383,10 @@ export const FRfr = {
 	responses: {
 		user: {
 			logged: "Connexion réalisée avec succès.",
+			registered: "Création de compte réalisée avec succès.",
 			notfound: "Utilisateur introuvable.",
 			shortUpdatedDelay: "Vous devez attendre avant de pouvoir modifier à nouveau ces informations.",
+			alreadyExist: "Un utilisateur avec cette address eùail éxiste déjà.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",

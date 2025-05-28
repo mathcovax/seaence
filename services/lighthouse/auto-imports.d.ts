@@ -8,6 +8,7 @@ export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const baseLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']
+  const booleanFormField: typeof import('./vendors/design-system/utils/formFields')['booleanFormField']
   const checkLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -102,6 +103,7 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly baseLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']>
+    readonly booleanFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['booleanFormField']>
     readonly checkLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>

@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useAuthDialog } from "@/domains/auth/composables/useAuthDialog";
 import AccountDropdown from "@/domains/user/components/AccountDropdown.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import DSIcon from "@vendors/design-system/components/ui/icon/DSIcon.vue";
 
 const { isConnected } = useUserInformation();
 const { isScrolled } = useScroll({ allowScrollEvent: true });
+
+const { toggle } = useAuthDialog();
 </script>
 
 <template>
@@ -62,20 +65,18 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 
 				<DSButtonPrimary
 					v-if="!isConnected"
-					as-child
 					class="md:inline-flex"
 					:title="$t('cta.connection')"
+					@click="toggle"
 				>
-					<RouterLink :to="connectionPage.createTo()">
-						<p class="hidden lg:block">
-							{{ $t('cta.connection') }}
-						</p>
+					<p class="hidden lg:block">
+						{{ $t('cta.connection') }}
+					</p>
 
-						<DSIcon
-							class="lg:hidden"
-							name="login"
-						/>
-					</RouterLink>
+					<DSIcon
+						class="lg:hidden"
+						name="login"
+					/>
 				</DSButtonPrimary>
 
 				<AccountDropdown v-else />

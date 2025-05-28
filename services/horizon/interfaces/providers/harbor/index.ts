@@ -15,18 +15,32 @@ type UpdateUserPayload = FindHttpClientRoute<
 export class HarborAPI {
 	private static httpClient: HttpClient<HarborClientRoute>;
 
-	public static async auth(firebaseTokenId: string) {
+	public static login(firebaseToken: string) {
 		return this.httpClient
 			.post(
-				"/authentication",
+				"/login",
 				{
-					body: firebaseTokenId,
+					body: { firebaseToken },
 				},
 			)
 			.iWantExpectedResponse();
 	}
 
-	public static async findUser(accessToken: string) {
+	public static register(firebaseToken: string, username: string) {
+		return this.httpClient
+			.post(
+				"/register",
+				{
+					body: {
+						firebaseToken,
+						username,
+					},
+				},
+			)
+			.iWantExpectedResponse();
+	}
+
+	public static findUser(accessToken: string) {
 		return this.httpClient
 			.post(
 				"/find-user",
@@ -37,7 +51,7 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static async updateUser(
+	public static updateUser(
 		userId: string,
 		payload: Omit<UpdateUserPayload, "userId">,
 	) {

@@ -7,19 +7,6 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/authentication";
-    body: string;
-    response: {
-        code: 401;
-        information: "firebase.token.invalid";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "user.logged";
-        body: string;
-    };
-}) | ({
-    method: "POST";
     path: "/find-user";
     body: {
         accessToken: string;
@@ -61,6 +48,49 @@ type CodegenRoutes = ({
         code: 204;
         information: "user.updated";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/login";
+    body: {
+        firebaseToken: string;
+    };
+    response: {
+        code: 401;
+        information: "firebase.token.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "user.logged";
+        body: {
+            accessToken: string;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/register";
+    body: {
+        firebaseToken: string;
+        username: string;
+    };
+    response: {
+        code: 401;
+        information: "firebase.token.invalid";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "user.emailAlreadyExist";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "user.registered";
+        body: {
+            accessToken: string;
+        };
     };
 });
 

@@ -1,1 +1,3 @@
-export const endpointAuthSchema = zod.string();
+export const endpointAuthSchema = zod.object({
+	accessToken: zod.string(),
+});

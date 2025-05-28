@@ -25,6 +25,7 @@ declare global {
   const Input: typeof import('./vendors/design-system/components/ui/input/index')['Input']
   const advancedSearchPage: typeof import('./src/domains/search/router')['advancedSearchPage']
   const baseLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']
+  const booleanFormField: typeof import('./vendors/design-system/utils/formFields')['booleanFormField']
   const buttonVariants: typeof import('./vendors/design-system/components/ui/button/index')['buttonVariants']
   const checkLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']
   const cn: typeof import('./vendors/design-system/lib/utils')['cn']
@@ -182,9 +183,9 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly advancedSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['advancedSearchPage']>
     readonly baseLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']>
+    readonly booleanFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['booleanFormField']>
     readonly checkLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
-    readonly connectionPage: UnwrapRef<typeof import('./src/domains/auth/router')['connectionPage']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createExternalPromise: UnwrapRef<typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']>
     readonly createFormField: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']>

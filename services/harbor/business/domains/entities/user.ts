@@ -21,7 +21,7 @@ export type UserEmail = GetValueObject<typeof userEmailObjecter>;
 export type UserUsername = GetValueObject<typeof userUsernameObjecter>;
 export type UserId = GetValueObject<typeof userIdObjecter>;
 
-type InputCreateUserEntity = Omit<GetEntityProperties<typeof UserEntity>, "username" | "lastUpdate">;
+type InputCreateUserEntity = Omit<GetEntityProperties<typeof UserEntity>, "lastUpdate">;
 
 type UpdatePropsUserEntity = Partial<
 	Pick<GetEntityProperties<typeof UserEntity>, "username">
@@ -36,9 +36,6 @@ export class UserEntity extends EntityHandler.create({
 	public static create(params: InputCreateUserEntity) {
 		return new UserEntity({
 			...params,
-			username: userUsernameObjecter.unknownUnsafeCreate(
-				params.email.value.split("@").shift(),
-			),
 			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}

@@ -20,6 +20,7 @@ declare module "@duplojs/http-client" {
 		loaderId?: string;
 		timeoutId?: number;
 		requestTimeout?: number | boolean;
+		disabledSonner?: boolean | string[];
 	}
 }
 
@@ -77,17 +78,27 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 				clearTimeout(response.requestDefinition.paramsRequest.timeoutId);
 			}
 
-			const sonnerMessageKey = `responses.${response.information}`;
+			const disabledSonner = response.requestDefinition.paramsRequest.disabledSonner;
 
-			if (i18n.global.te(sonnerMessageKey)) {
-				const sonnerMessageContent = i18n.global.t(sonnerMessageKey);
+			if (
+				!disabledSonner
+				|| (
+					disabledSonner instanceof Array
+					&& !disabledSonner.includes(response.information ?? "")
+				)
+			) {
+				const sonnerMessageKey = `responses.${response.information}`;
 
-				if (response.ok === true) {
-					sonnerMessage(sonnerMessageContent);
-				} else if (response.ok === false) {
-					sonnerWarning(sonnerMessageContent);
-				} else if (response.ok === null) {
-					sonnerError(sonnerMessageContent);
+				if (i18n.global.te(sonnerMessageKey)) {
+					const sonnerMessageContent = i18n.global.t(sonnerMessageKey);
+
+					if (response.ok === true) {
+						sonnerMessage(sonnerMessageContent);
+					} else if (response.ok === false) {
+						sonnerWarning(sonnerMessageContent);
+					} else if (response.ok === null) {
+						sonnerError(sonnerMessageContent);
+					}
 				}
 			}
 

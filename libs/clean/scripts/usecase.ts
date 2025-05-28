@@ -1,6 +1,6 @@
 import { type SimplifyObjectTopLevel, type IsEqual, type ObjectKey, hasKey } from "@duplojs/utils";
 import { isRepositoryHandler, type RepositoryHandler } from "./repository";
-import { CleanError } from "./error";
+import { CleanError, type CleanErrorMoreData } from "./error";
 
 export type UsecaseRawDependence =
 	| UsecaseClass<any>
@@ -161,6 +161,7 @@ export function isUsecase(usecase: new(...args: any[]) => any): usecase is Useca
 
 export class UsecaseError<
 	GenericInformation extends string = string,
-> extends CleanError<GenericInformation> {
+	GenericMoreDate extends CleanErrorMoreData = {},
+> extends CleanError<GenericInformation, GenericMoreDate> {
 
 }

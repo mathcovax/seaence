@@ -29,13 +29,15 @@ useBuilder()
 		async(pickup) => {
 			const { nodeSameRawDocumentId, page, quantityPerPage } = pickup(["nodeSameRawDocumentId", "page", "quantityPerPage"]);
 
-			const posts = await findPostsFromNodeSameRawDocumentIdUsecase.execute({
-				quantityPerPage,
-				nodeSameRawDocumentId,
-				page,
-			}).then((posts) => posts.map(
-				(post) => post.toSimpleObject(),
-			));
+			const posts = await findPostsFromNodeSameRawDocumentIdUsecase
+				.execute({
+					quantityPerPage,
+					nodeSameRawDocumentId,
+					page,
+				})
+				.then((posts) => posts.map(
+					(post) => post.toSimpleObject(),
+				));
 
 			return new OkHttpResponse(
 				"posts.found",

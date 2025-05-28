@@ -3,6 +3,12 @@ const emit = defineEmits<{
 	submit: [];
 }>();
 
+interface Props {
+	align: "auto" | "center";
+}
+
+defineProps<Props>();
+
 function submit(event: Event) {
 	event.preventDefault();
 	emit("submit");
@@ -21,7 +27,10 @@ defineSlots<{
 	>
 		<slot name="formField" />
 
-		<div>
+		<div
+			class="flex"
+			:class="{'justify-center': align === 'center'}"
+		>
 			<slot />
 		</div>
 	</form>

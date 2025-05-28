@@ -6,9 +6,7 @@ import { type CheckLayoutTemplateItem } from "./checkLayout";
 import { type MultiLayoutTemplateItem } from "./multiLayout";
 import { type FormTemplateItem } from "./form";
 
-type TemplateComponent<
-	GenericProps extends object = object,
-> = DefineComponent<GenericProps, any, any, any, any, any, any, any, any, object, any>;
+type TemplateComponent = DefineComponent<any, any, any, any, any, any, any, any, any, object, any>;
 
 export interface LayoutTemplateItem<
 	GenericLayout extends AnyFunction = AnyFunction,
@@ -44,8 +42,8 @@ export type FindLayoutTemplateItem<
 	GenericLayout extends AnyFunction,
 > = Extract<
 	LayoutTemplateItems,
-	LayoutTemplateItem<GenericLayout, any>
-> extends infer InferedLayoutTemplateItem extends LayoutTemplateItem
+	LayoutTemplateItem<GenericLayout, any, any>
+> extends infer InferedLayoutTemplateItem extends LayoutTemplateItem<any, any, any>
 	? InferedLayoutTemplateItem
 	: never;
 
@@ -63,8 +61,8 @@ export function createLayoutTemplate<
 		>,
 	): FindLayoutTemplateItem<GenericLayout>["templateRender"] {
 		return (
-			options,
-			defaultSlot,
+			options: any,
+			defaultSlot: any,
 		) => h(
 			component,
 			{
