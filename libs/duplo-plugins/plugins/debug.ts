@@ -15,7 +15,7 @@ export function debug(options: DebugOptions) {
 
 			Sentry.init({
 				dsn,
-				environment: instance.config.environment === "PROD" ? "production" : "development",
+				environment: "production",
 				tracesSampleRate: tracesSampleRate,
 			});
 

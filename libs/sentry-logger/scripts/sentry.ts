@@ -4,7 +4,6 @@ export type SentryEnvironment = "production" | "development";
 
 export interface SentryConfigParams {
 	dsn: string;
-	environment?: SentryEnvironment;
 }
 
 export interface SentryContext {
@@ -13,14 +12,29 @@ export interface SentryContext {
 }
 
 export class SentryLogger {
+	private static isInit = false;
+
 	public static init(config: SentryConfigParams) {
 		Sentry.init({
 			dsn: config.dsn,
-			environment: config.environment || "production",
+			environment: "production",
 		});
+
+		process.on(
+			"uncaughtException",
+			(error, origine) => {
+				this.captureException(error, { origine });
+			},
+		);
+
+		this.isInit = true;
 	}
 
 	public static setContext(input: SentryContext) {
+		if (!this.isInit) {
+			return;
+		}
+
 		const scope = Sentry.getCurrentScope();
 
 		if (input.tags) {
@@ -29,14 +43,16 @@ export class SentryLogger {
 		if (input.data) {
 			scope.setExtra("data", input.data);
 		}
-
-		return input;
 	}
 
 	public static captureException(
 		exception: unknown,
 		additional?: Record<string, string>,
 	): void {
+		if (!this.isInit) {
+			return;
+		}
+
 		if (additional) {
 			Sentry.setContext("additional", additional);
 		}
@@ -47,6 +63,10 @@ export class SentryLogger {
 		message: string,
 		additional?: Record<string, string>,
 	): void {
+		if (!this.isInit) {
+			return;
+		}
+
 		if (additional) {
 			Sentry.setContext("additional", additional);
 		}

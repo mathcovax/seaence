@@ -5,10 +5,13 @@ import App from "./App.vue";
 import { router } from "./router";
 import { i18n } from "./i18n";
 import { SentryLogger } from "./lib/sentry";
+import { envs } from "./envs";
 
 const app = createApp(App);
 
-SentryLogger.init(app);
+if (envs.VITE_ENVIRONEMENT === "PROD") {
+	SentryLogger.init(app);
+}
 
 app
 	.use(router)

@@ -17,6 +17,8 @@ export interface SentryContext {
 }
 
 export class SentryLogger {
+	private static isInit = false;
+
 	public static init(app: App) {
 		Sentry.init({
 			app,
@@ -25,13 +27,26 @@ export class SentryLogger {
 			integrations: [Sentry.browserTracingIntegration({ router })],
 			tracesSampleRate: 1,
 			attachProps: true,
-			environment: envs.VITE_ENVIRONEMENT === "PROD"
-				? "production"
-				: "development",
+			environment: "production",
 		});
+
+		const { user } = useUserInformation();
+
+		watch(
+			user,
+			(value) => {
+				SentryLogger.setUser(value);
+			},
+		);
+
+		this.isInit = true;
 	}
 
 	public static setContext(input: SentryContext) {
+		if (!this.isInit) {
+			return;
+		}
+
 		const scope = Sentry.getCurrentScope();
 
 		if (input.tags) {
@@ -40,15 +55,21 @@ export class SentryLogger {
 		if (input.data) {
 			scope.setExtra("data", input.data);
 		}
-
-		return input;
 	}
 
-	public static setUser(user: User) {
+	public static setUser(user: User | null) {
+		if (!this.isInit) {
+			return;
+		}
+
 		Sentry.setUser(user);
 	}
 
 	public static captureMessage(message: string, additional?: Record<string, string>) {
+		if (!this.isInit) {
+			return;
+		}
+
 		if (additional) {
 			Sentry.setContext("additional", additional);
 		}
@@ -56,6 +77,10 @@ export class SentryLogger {
 	}
 
 	public static captureException(message: string, additional?: Record<string, string>) {
+		if (!this.isInit) {
+			return;
+		}
+
 		if (additional) {
 			Sentry.setContext("additional", additional);
 		}
@@ -63,13 +88,3 @@ export class SentryLogger {
 	}
 }
 
-const { user } = useUserInformation();
-
-watch(
-	user,
-	(value) => {
-		if (value) {
-			SentryLogger.setUser(value);
-		}
-	},
-);
