@@ -3,8 +3,16 @@ import "./style.css";
 import App from "./App.vue";
 import { router } from "./router";
 import { i18n } from "./i18n";
+import { SentryLogger } from "./libs/sentry";
+import { envs } from "./envs";
 
-createApp(App)
+const app = createApp(App);
+
+if (envs.VITE_ENVIRONEMENT === "PROD") {
+	SentryLogger.init(app);
+}
+
+app
 	.use(router)
 	.use(i18n)
 	.mount("#app");

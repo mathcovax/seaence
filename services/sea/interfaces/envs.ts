@@ -15,5 +15,6 @@ export const envs = zod
 		ENVIROMENT: zod.enum(["DEV", "PROD"]),
 		ES_BASE_URL: zod.string().url(),
 		DB_CONNECTION: zod.booleanInString(),
+		GLITCHTIP_DSN: zod.string(),
 	})
 	.parse(process.env);

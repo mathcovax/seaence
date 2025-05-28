@@ -28,6 +28,7 @@
     "libs/async-message",
     "libs/clean",
 	"libs/fixture",
+	"libs/sentry-logger",
     "libs/clients-type",
     "libs/design-system",
     "libs/eslint",
