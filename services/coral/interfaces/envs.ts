@@ -16,5 +16,6 @@ export const envs = zod
 		MONGO_DATABASE_URL: zod.string(),
 		MONGO_DB: zod.string(),
 		DB_CONNECTION: zod.booleanInString(),
+		GLITCHTIP_DSN: zod.string(),
 	})
 	.parse(process.env);
