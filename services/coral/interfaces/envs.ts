@@ -17,5 +17,7 @@ export const envs = zod
 		MONGO_DB: zod.string(),
 		DB_CONNECTION: zod.booleanInString(),
 		GLITCHTIP_DSN: zod.string(),
+		ASYNC_MESSAGE_MONGO_URL: zod.string(),
+		SERVICE_NAME: zod.literal("coral").default("coral"),
 	})
 	.parse(process.env);

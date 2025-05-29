@@ -7,6 +7,7 @@ import { DropEquationInFavoriUsecase } from "@business/applications/usecases/dro
 import { CreateDocumentFolderUsecase } from "@business/applications/usecases/createDocumentFolder";
 import { FindDocumentInFolderUsecase } from "@business/applications/usecases/findDocumentInFolder";
 import { FindEquationInFavoriUsecase } from "@business/applications/usecases/findEquationInFavori";
+import { UpdateDocumentInFoldersUsecase } from "@business/applications/usecases/updateDocumentInFolders";
 
 export const addEquationInFavoriUsecase = new AddEquationInFavoriUsecase();
 export const computeDocumentQuantityInFolderrUsecase = new ComputeDocumentQuantityInFolderrUsecase();
@@ -17,3 +18,4 @@ export const dropEquationInFavoriUsecase = new DropEquationInFavoriUsecase();
 export const createDocumentFolderUsecase = new CreateDocumentFolderUsecase();
 export const findDocumentInFolderUsecase = new FindDocumentInFolderUsecase();
 export const findEquationInFavoriUsecase = new FindEquationInFavoriUsecase();
+export const updateDocumentInFoldersUsecase = new UpdateDocumentInFoldersUsecase();

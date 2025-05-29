@@ -2,6 +2,7 @@ import { type Collection, type Db, MongoClient } from "mongodb";
 import { extractIdFromMongoUrl } from "./extractIdFromMongoUrl";
 import { RenameUserMessageColletion } from "./collections/renameUser";
 import { getTypedEntries } from "@duplojs/utils";
+import { UpdateDocumentMessageColletion } from "./collections/updateDocument";
 
 export interface AsyncMessageParams {
 	mongoUrl: string;
@@ -10,6 +11,7 @@ export interface AsyncMessageParams {
 
 export interface AsyncMessageCollection {
 	renameUser: RenameUserMessageColletion;
+	updateDocument: UpdateDocumentMessageColletion;
 }
 
 export interface Resume {
@@ -36,6 +38,7 @@ export class AsyncMessage {
 		this.resumeCollection = this.database.collection("resume");
 
 		this.collections = {
+			updateDocument: new UpdateDocumentMessageColletion(this),
 			renameUser: new RenameUserMessageColletion(this),
 		};
 	}

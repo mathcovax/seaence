@@ -3,6 +3,19 @@ import { DocumentInFolderEntity } from "@business/domains/entities/documentInFol
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
 
+const maxKeywordsInSummary = 30;
+
+function limitSummaryLength(summary: string, maxWords: number): string {
+	const words = summary.trim().split(/\s+/);
+	const start = 0;
+
+	if (words.length <= maxWords) {
+		return summary;
+	}
+
+	return `${words.slice(start, maxWords).join(" ")}...`;
+}
+
 documentInFolderRepository.default = {
 	async save(documentInFolderEntity) {
 		const simpledocumentInFolder = documentInFolderEntity.toSimpleObject();
@@ -14,6 +27,8 @@ documentInFolderRepository.default = {
 
 		const createdAt = beforedocumentInFolder?.createdAt || new Date();
 
+		const summary = limitSummaryLength(simpledocumentInFolder.summary, maxKeywordsInSummary);
+
 		await mongo.documentInFolder.updateOne(
 			{
 				id: simpledocumentInFolder.id,
@@ -21,6 +36,7 @@ documentInFolderRepository.default = {
 			{
 				$set: {
 					...simpledocumentInFolder,
+					summary,
 					createdAt,
 					updatedAt: new Date(),
 				},

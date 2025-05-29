@@ -19,5 +19,7 @@ export const envs = zod
 		SEA_BASE_URL: zod.string().url(),
 		ROSETTA_BASE_URL: zod.string().url(),
 		GLITCHTIP_DSN: zod.string(),
+		ASYNC_MESSAGE_MONGO_URL: zod.string(),
+		SERVICE_NAME: zod.literal("abys").default("abys"),
 	})
 	.parse(process.env);
