@@ -6,7 +6,7 @@ interface Input {
 	favoriEquation: FavoriEquationEntity;
 }
 
-export class DropEquationInFavoriUsecase extends UsecaseHandler.create({
+export class RemoveEquationInFavoriUsecase extends UsecaseHandler.create({
 	favoriEquationRepository,
 }) {
 	public async execute({ favoriEquation }: Input) {

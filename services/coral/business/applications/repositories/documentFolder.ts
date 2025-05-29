@@ -5,6 +5,7 @@ export interface DocumentFolderRepository extends RepositoryBase<DocumentFolderE
 	generateDocumentFolderId(): DocumentFolderId;
 	delete(folder: DocumentFolderEntity): Promise<void>;
 	countDocumentsInFolder(folder: DocumentFolderEntity): Promise<Int>;
+	findDocumentFolderById(documentFolderId: DocumentFolderId): Promise<DocumentFolderEntity | null>;
 }
 
 export const documentFolderRepository = createRepositoryHandler<DocumentFolderRepository>();

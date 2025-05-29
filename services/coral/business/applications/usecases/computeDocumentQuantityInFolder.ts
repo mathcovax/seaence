@@ -3,16 +3,16 @@ import { type DocumentFolderEntity } from "@business/domains/entities/documentFo
 import { documentFolderRepository } from "../repositories/documentFolder";
 
 interface Input {
-	folder: DocumentFolderEntity;
+	documentFolder: DocumentFolderEntity;
 }
 
 export class ComputeDocumentQuantityInFolderrUsecase extends UsecaseHandler.create({
 	documentFolderRepository,
 }) {
-	public async execute({ folder }: Input) {
-		const documentinFolderQuantity = await this.documentFolderRepository.countDocumentsInFolder(folder);
+	public async execute({ documentFolder }: Input) {
+		const documentinFolderQuantity = await this.documentFolderRepository.countDocumentsInFolder(documentFolder);
 
-		const documentInFolder = folder.updateDocumentInFolderQuantity(documentinFolderQuantity);
+		const documentInFolder = documentFolder.updateDocumentInFolderQuantity(documentinFolderQuantity);
 
 		await this.documentFolderRepository.save(documentInFolder);
 	}

@@ -4,7 +4,13 @@ import { userIdObjecter } from "../common/user";
 export const documentFolderIdObjecter = zod.string().createValueObjecter("documentFolderId");
 export type DocumentFolderId = GetValueObject<typeof documentFolderIdObjecter>;
 
-export const documentFolderTitleObjecter = zod.string().createValueObjecter("documentFolderTitle");
+const maxSizeOfDocumentFolderTitle = 50;
+const minSizeOfDocumentFolderTitle = 1;
+export const documentFolderTitleObjecter = zod
+	.string()
+	.min(minSizeOfDocumentFolderTitle)
+	.max(maxSizeOfDocumentFolderTitle)
+	.createValueObjecter("documentFolderTitle");
 export type DocumentFolderTitle = GetValueObject<typeof documentFolderTitleObjecter>;
 
 const defaultNumberOfDocument = 0;

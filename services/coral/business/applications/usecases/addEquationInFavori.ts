@@ -22,5 +22,7 @@ export class AddEquationInFavoriUsecase extends UsecaseHandler.create({
 		});
 
 		await this.favoriEquationRepository.save(favoriEquation);
+
+		return favoriEquation;
 	}
 }

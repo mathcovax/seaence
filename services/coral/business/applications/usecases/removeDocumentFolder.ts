@@ -3,13 +3,13 @@ import { type DocumentFolderEntity } from "@business/domains/entities/documentFo
 import { documentFolderRepository } from "../repositories/documentFolder";
 
 interface Input {
-	folder: DocumentFolderEntity;
+	documentFolder: DocumentFolderEntity;
 }
 
-export class DeleteDocumentFolderUsecase extends UsecaseHandler.create({
+export class RemoveDocumentFolderUsecase extends UsecaseHandler.create({
 	documentFolderRepository,
 }) {
-	public async execute({ folder }: Input) {
-		await this.documentFolderRepository.delete(folder);
+	public async execute({ documentFolder }: Input) {
+		await this.documentFolderRepository.delete(documentFolder);
 	}
 }

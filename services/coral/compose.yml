@@ -3,7 +3,7 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm -w services/coral run duplo:dev
+    command: npm -w services/coral run dev
     depends_on:
       - coral-mongo
       - coral-mongo-viewer

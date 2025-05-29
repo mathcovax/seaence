@@ -1,7 +1,7 @@
 import { documentFolderRepository } from "@business/applications/repositories/documentFolder";
-import { documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
+import { DocumentFolderEntity, documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
 import { mongo } from "@interfaces/providers/mongo";
-import { intObjecter } from "@vendors/clean";
+import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
 documentFolderRepository.default = {
@@ -53,5 +53,19 @@ documentFolderRepository.default = {
 		});
 
 		return intObjecter.unsafeCreate(documentInFolderCount);
+	},
+	async findDocumentFolderById(documentFolderId) {
+		const documentFolder = await mongo.documentFolder.findOne({
+			id: documentFolderId,
+		});
+
+		if (!documentFolder) {
+			return null;
+		}
+
+		return EntityHandler.unsafeMapper(
+			DocumentFolderEntity,
+			documentFolder,
+		);
 	},
 };

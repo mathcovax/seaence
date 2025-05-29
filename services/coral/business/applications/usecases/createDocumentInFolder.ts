@@ -6,7 +6,7 @@ import { ComputeDocumentQuantityInFolderrUsecase } from "./computeDocumentQuanti
 import { FindDocumentInFolderUsecase } from "./findDocumentInFolder";
 
 interface Input {
-	folder: DocumentFolderEntity;
+	documentFolder: DocumentFolderEntity;
 	document: {
 		id: DocumentId;
 		title: DocumentTitle;
@@ -19,9 +19,9 @@ export class CreateDocumentInFolderUsecase extends UsecaseHandler.create({
 	computeDocumentQuantityInFolderrUsecase: ComputeDocumentQuantityInFolderrUsecase,
 	findDocumentInFolderUsecase: FindDocumentInFolderUsecase,
 }) {
-	public async execute({ folder, document }: Input) {
+	public async execute({ documentFolder, document }: Input) {
 		const existingDocumentInFolder = await this.findDocumentInFolderUsecase({
-			folderId: folder.id,
+			folderId: documentFolder.id,
 			documentId: document.id,
 		});
 
@@ -31,13 +31,13 @@ export class CreateDocumentInFolderUsecase extends UsecaseHandler.create({
 
 		const documentInFolder = DocumentInFolderEntity.create({
 			...document,
-			documentFolderId: folder.id,
+			documentFolderId: documentFolder.id,
 		});
 
 		await this.documentInFolderRepository.save(documentInFolder);
 
 		await this.computeDocumentQuantityInFolderrUsecase({
-			folder,
+			documentFolder,
 		});
 
 		return documentInFolder;
