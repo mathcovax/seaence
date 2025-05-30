@@ -1,8 +1,15 @@
+import { postPage } from "@/domains/post/router";
 import { createWebHistory, createRouter } from "vue-router";
 
 export const router = createRouter({
 	history: createWebHistory(),
-	routes: [],
+	routes: [
+		{
+			path: "/",
+			component: () => import("../layouts/BaseLayout.vue"),
+			children: [postPage.recordRaw],
+		},
+	],
 	scrollBehavior(_to, _from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;

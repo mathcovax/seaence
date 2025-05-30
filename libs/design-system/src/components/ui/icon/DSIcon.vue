@@ -21,6 +21,8 @@ import {
 	mdiArrowLeft,
 	mdiSend,
 	mdiLinkVariant,
+	mdiCheck,
+	mdiClock,
 } from "@mdi/js";
 import { computed } from "vue";
 
@@ -45,6 +47,8 @@ const iconsMapper = {
 	arrowLeft: mdiArrowLeft,
 	send: mdiSend,
 	linkVariant: mdiLinkVariant,
+	check: mdiCheck,
+	clock: mdiClock,
 };
 
 const sizeMapper = {

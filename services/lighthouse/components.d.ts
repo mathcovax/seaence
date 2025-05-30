@@ -18,6 +18,7 @@ declare module 'vue' {
     DSAccordionTrigger: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionTrigger.vue')['default']
     DSBadge: typeof import('./vendors/design-system/components/ui/badge/DSBadge.vue')['default']
     DSButton: typeof import('./vendors/design-system/components/ui/button/DSButton.vue')['default']
+    DSButtonDestructive: typeof import('./vendors/design-system/components/DSButtonDestructive.vue')['default']
     DSButtonIcon: typeof import('./vendors/design-system/components/DSButtonIcon.vue')['default']
     DSButtonOutline: typeof import('./vendors/design-system/components/DSButtonOutline.vue')['default']
     DSButtonPrimary: typeof import('./vendors/design-system/components/DSButtonPrimary.vue')['default']
@@ -120,8 +121,13 @@ declare module 'vue' {
     DSTextarea: typeof import('./vendors/design-system/components/ui/textarea/DSTextarea.vue')['default']
     FormTemplate: typeof import('./vendors/design-system/components/form/FormTemplate.vue')['default']
     MultiLayoutTemplate: typeof import('./vendors/design-system/components/form/MultiLayoutTemplate.vue')['default']
+    PostStats: typeof import('./src/domains/post/components/PostStats.vue')['default']
+    RadioGroup: typeof import('./vendors/design-system/components/ui/radio-group/RadioGroup.vue')['default']
+    RadioGroupItem: typeof import('./vendors/design-system/components/ui/radio-group/RadioGroupItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TheFooter: typeof import('./src/components/TheFooter.vue')['default']
+    TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
   }
 }
