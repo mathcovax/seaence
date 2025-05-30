@@ -108,4 +108,15 @@ documentInFolderRepository.default = {
 			numberOfDocumentsInFolder,
 		};
 	},
+	async *streamByDocumentId(documentId) {
+		const cursor = mongo.documentInFolder
+			.find({ id: documentId.value });
+
+		for await (const documentInFolder of cursor) {
+			yield EntityHandler.unsafeMapper(
+				DocumentInFolderEntity,
+				documentInFolder,
+			);
+		}
+	},
 };

@@ -26,6 +26,7 @@ export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFol
 	getDetailsOfSearchDocumentInFolder(
 		input: InputGetDetailsOfSearchDocumentInFolder
 	): Promise<{ numberOfDocumentsInFolder: Int }>;
+	streamByDocumentId(documentId: DocumentId): AsyncGenerator<DocumentInFolderEntity>;
 }
 
 export const documentInFolderRepository = createRepositoryHandler<DocumentInFolderRepository>();

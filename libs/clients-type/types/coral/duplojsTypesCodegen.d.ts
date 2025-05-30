@@ -78,6 +78,7 @@ type CodegenRoutes = ({
             userId: string;
             title: string;
             numberOfDocument: number;
+            createdAt: Date;
         };
     };
 }) | ({
@@ -109,6 +110,7 @@ type CodegenRoutes = ({
             userId: string;
             title: string;
             numberOfDocument: number;
+            createdAt: Date;
         }[];
     };
 }) | ({
@@ -134,7 +136,6 @@ type CodegenRoutes = ({
     } & {
         documentId: string;
         documentTitle: string;
-        documentSummary: string;
     };
     response: {
         code: 200;
@@ -157,7 +158,7 @@ type CodegenRoutes = ({
             documentFolderId: string;
             id: string;
             title: string;
-            summary: string;
+            addedAt: Date;
         };
     };
 }) | ({
@@ -192,7 +193,7 @@ type CodegenRoutes = ({
             documentFolderId: string;
             id: string;
             title: string;
-            summary: string;
+            addedAt: Date;
         }[];
     };
 }) | ({
@@ -239,6 +240,7 @@ type CodegenRoutes = ({
             name: string;
             userId: string;
             equation: OperatorContent;
+            addedAt: Date;
         };
     };
 }) | ({
@@ -270,6 +272,7 @@ type CodegenRoutes = ({
             name: string;
             userId: string;
             equation: OperatorContent;
+            addedAt: Date;
         }[];
     };
 }) | ({

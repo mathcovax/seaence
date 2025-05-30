@@ -11,6 +11,16 @@ export class RenameDocumentInFoldersUsecase extends UsecaseHandler.create({
 	documentInFolderRepository,
 }) {
 	public async execute({ documentId, newTitle }: Input) {
-		// todo
+		const documentInFolderGenerator = this.documentInFolderRepository.streamByDocumentId(documentId);
+
+		let count = 0;
+
+		for await (const documentInFolder of documentInFolderGenerator) {
+			documentInFolder.renameDocumentInFolder(newTitle);
+			await this.documentInFolderRepository.save(documentInFolder);
+			count++;
+		}
+
+		return count;
 	}
 }
