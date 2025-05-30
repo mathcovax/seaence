@@ -1,3 +1,4 @@
+import { postPage } from "@/domains/post/router";
 import { reportingBakedDocumentTranslationPage } from "@/domains/reporting/reportingBakedDocumentTranslation/router";
 import {
 	reportingBakedDocumentTranslationListPage,
@@ -5,6 +6,41 @@ import {
 
 export const FRfr = {
 	page: {
+		[postPage.name]: {
+			title: "Modération des Posts",
+			description: "Examinez et modérez les posts en attente de validation.",
+			postStatus: "En attente",
+			isProssessing: "Traitement en cours...",
+			rejectModal: {
+				title: "Motif de rejet",
+				reason: {
+					title: "Raison du rejet",
+					placeholder: "Sélectionnez une raison",
+					choices: {
+						spam: "Contenu spam ou publicitaire",
+						inappropriate: "Contenu inapproprié",
+						offTopic: "Hors sujet",
+						duplicate: "Contenu dupliqué",
+						lowQuality: "Qualité insuffisante",
+						other: "Autre raison",
+					},
+				},
+				action: {
+					title: "Action à effectuer",
+					type: {
+						warning: "Avertissement simple",
+						block: "Bloquer l'accès aux posts",
+					},
+				},
+
+				confirm: "Confirmer le rejet",
+			},
+			postStats: {
+				pending: "Posts en attente",
+				approved: "Posts approuvés",
+				rejected: "Posts rejetés",
+			},
+		},
 		[reportingBakedDocumentTranslationListPage.name]: {
 			bakedDocumentId: "Id du document cuit:",
 			title: "Titre du document cuit:",
@@ -57,6 +93,9 @@ export const FRfr = {
 		explore: "Explorer",
 		search: "Rechercher",
 		send: "Envoyer",
+		cancel: "Annuler",
+		approuve: "Approuver",
+		reject: "Rejeter",
 		seeMore: "Voir plus",
 	},
 	responses: {

@@ -24,6 +24,8 @@ import {
 	mdiBellOutline,
 	mdiBell,
 	mdiMessageOutline,
+	mdiCheck,
+	mdiClock,
 } from "@mdi/js";
 import { computed } from "vue";
 
@@ -51,6 +53,8 @@ const iconsMapper = {
 	bell: mdiBell,
 	bellOutline: mdiBellOutline,
 	messageOutline: mdiMessageOutline,
+	check: mdiCheck,
+	clock: mdiClock,
 };
 
 const sizeMapper = {

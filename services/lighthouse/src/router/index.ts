@@ -1,3 +1,4 @@
+import { postPage } from "@/domains/post/router";
 import { createWebHistory, createRouter } from "vue-router";
 import {
 	reportingBakedDocumentTranslationListPage,
@@ -9,8 +10,15 @@ import {
 export const router = createRouter({
 	history: createWebHistory(),
 	routes: [
-		reportingBakedDocumentTranslationListPage.recordRaw,
-		reportingBakedDocumentTranslationPage.recordRaw,
+		{
+			path: "/",
+			component: () => import("../layouts/BaseLayout.vue"),
+			children: [
+				postPage.recordRaw,
+				reportingBakedDocumentTranslationListPage.recordRaw,
+				reportingBakedDocumentTranslationPage.recordRaw,
+			],
+		},
 	],
 	scrollBehavior(_to, _from, savedPosition) {
 		if (savedPosition) {
