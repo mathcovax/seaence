@@ -1,0 +1,18 @@
+services:
+  beacon:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm -w services/beacon run dev
+    depends_on:
+      - beacon-mongo
+  beacon-mongo:
+    extends:
+      file: ${TEMPLATE_COMPOSE_MONGO_DEV}
+      service: template-mongo
+    env_file: ${INCLUDE_PATH}/beacon/.env
+    volumes:
+      - "beacon-mongo-data:/data/db"
+      
+volumes:
+  beacon-mongo-data:

@@ -85,4 +85,15 @@
 			">();",
 		]
 	},
+	"clean-objecter": {
+		"prefix": "co",
+		"scope": "typescript",
+		"body": [
+			"export const $1Objecter = zod",
+			".$2",
+			".createValueObjecter(\"$1\");",
+			"",
+			"export type $1 = GetValueObject<typeof $1Objecter>;",
+		]
+	},
 }
