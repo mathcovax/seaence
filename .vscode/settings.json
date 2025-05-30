@@ -45,7 +45,8 @@
     "services/sea",
     "services/spotter",
 	"services/bridge",
-	"services/lighthouse"
+	"services/lighthouse",
+	"services/beacon",
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,

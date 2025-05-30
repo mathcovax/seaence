@@ -46,6 +46,9 @@ bridge:
 lighthouse:
   - "services/lighthouse/**/*"
 
+beacon:
+  - "services/beacon/**/*"
+
 docker:
   - ".docker/**/*"
   - "compose.yml"

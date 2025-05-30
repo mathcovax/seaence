@@ -65,15 +65,14 @@
 
     "docker:lighthouse": "docker compose up lighthouse",
 
-    "docker:bridge": "docker compose up bridge"
+    "docker:bridge": "docker compose up bridge",
+
+    "docker:beacon": "docker compose up beacon"
   },
   "workspaces": [
     ".npm-packages",
     "libs/**",
     "services/**"
   ],
-  "license": "./LICENSE",
-  "devDependencies": {
-    "@types/pako": "^2.0.3"
-  }
+  "license": "./LICENSE"
 }
