@@ -4,9 +4,6 @@ import { endpointSearchDocumentFolderRouteSchema } from "@interfaces/http/schema
 import { searchDocumentFolderUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
-const rawDocumentFolderPerPage = 10;
-const documentFolderPerPage = positiveIntObjecter.unsafeCreate(rawDocumentFolderPerPage);
-
 useBuilder()
 	.createRoute("POST", "/search-document-folders-per-page")
 	.extract({
@@ -14,17 +11,18 @@ useBuilder()
 			userId: userIdObjecter.toZodSchema(),
 			partialTitleDocumentFolder: documentFolderTitleObjecter.toZodSchema(),
 			page: positiveIntObjecter.toZodSchema(),
+			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { userId, partialTitleDocumentFolder, page } = pickup("body");
+			const { userId, partialTitleDocumentFolder, page, quantityPerPage } = pickup("body");
 
 			const { documentFolders, numberOfDocumentFolder } = await searchDocumentFolderUsecase.execute({
 				userId,
 				documentFolderTitle: partialTitleDocumentFolder,
 				page,
-				quantityPerPage: documentFolderPerPage,
+				quantityPerPage,
 			});
 
 			const simpleDocumentFolders = documentFolders.map(

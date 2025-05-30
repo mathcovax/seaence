@@ -4,21 +4,19 @@ import { endpointSearchDocumentInFolderRouteSchema } from "@interfaces/http/sche
 import { searchDocumentInFolderUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
-const rawDocumentInFolderPerPage = 10;
-const documentInFolderPerPage = positiveIntObjecter.unsafeCreate(rawDocumentInFolderPerPage);
-
 mustBeProprietaryOfDocumentFolderRouteBuilder()
 	.createRoute("POST", "/search-documents-in-folder-per-page")
 	.extract({
 		body: zod.object({
 			partialTitleDocument: documentTitleObjecter.toZodSchema(),
 			page: positiveIntObjecter.toZodSchema(),
+			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
 			const {
-				body: { partialTitleDocument, page },
+				body: { partialTitleDocument, page, quantityPerPage },
 				documentFolder,
 			} = pickup(["body", "documentFolder"]);
 
@@ -26,7 +24,7 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 				documentFolder,
 				documentTitle: partialTitleDocument,
 				page,
-				quantityPerPage: documentInFolderPerPage,
+				quantityPerPage,
 			});
 
 			const simpleDocumentsInFolder = documentsInFolder.map(

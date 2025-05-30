@@ -4,11 +4,6 @@ import { endpointSearchFavoriEquationRouteSchema } from "@interfaces/http/schema
 import { searchFavoriEquationUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
-const rawDocumentInFolderPerPage = 10;
-const documentInFolderPerPage = positiveIntObjecter.unsafeCreate(
-	rawDocumentInFolderPerPage,
-);
-
 useBuilder()
 	.createRoute("POST", "/search-favori-equations-per-page")
 	.extract({
@@ -16,16 +11,17 @@ useBuilder()
 			userId: userIdObjecter.toZodSchema(),
 			partialNameFavoriEquation: favoriEquatioonNameObjecter.toZodSchema(),
 			page: positiveIntObjecter.toZodSchema(),
+			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { userId, partialNameFavoriEquation, page } = pickup("body");
+			const { userId, partialNameFavoriEquation, page, quantityPerPage } = pickup("body");
 
 			const { favoriEquations, numberOfEqation } = await searchFavoriEquationUsecase.execute({
 				favoriEquationName: partialNameFavoriEquation,
 				page,
-				quantityPerPage: documentInFolderPerPage,
+				quantityPerPage,
 				userId,
 			});
 

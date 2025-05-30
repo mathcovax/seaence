@@ -99,6 +99,7 @@ type CodegenRoutes = ({
         userId: string;
         partialTitleDocumentFolder: string;
         page: number;
+        quantityPerPage: number;
     };
     response: {
         code: 200;
@@ -171,6 +172,7 @@ type CodegenRoutes = ({
     } & {
         partialTitleDocument: string;
         page: number;
+        quantityPerPage: number;
     };
     response: {
         code: 200;
@@ -234,6 +236,7 @@ type CodegenRoutes = ({
         userId: string;
         partialNameFavoriEquation: string;
         page: number;
+        quantityPerPage: number;
     };
     response: {
         code: 200;
