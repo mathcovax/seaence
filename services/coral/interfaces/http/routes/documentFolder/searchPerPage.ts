@@ -33,7 +33,7 @@ useBuilder()
 
 			const result = {
 				documentFolders: simpleDocumentFolders,
-				numberOfDocumentFolder: numberOfDocumentFolder.toSimpleObject(),
+				numberOfDocumentFolder: numberOfDocumentFolder.value,
 			};
 
 			return new OkHttpResponse("documentFolders.found", result);

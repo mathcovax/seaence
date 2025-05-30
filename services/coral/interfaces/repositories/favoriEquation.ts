@@ -54,7 +54,10 @@ favoriEquationRepository.default = {
 
 		const query = {
 			userId,
-			name: favoriEquationName,
+			name: {
+				$regex: favoriEquationName.value,
+				options: "i",
+			},
 		};
 
 		const numberOfEqation = await mongo.favoriEquation

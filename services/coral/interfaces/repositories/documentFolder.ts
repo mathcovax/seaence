@@ -75,7 +75,10 @@ documentFolderRepository.default = {
 
 		const query = {
 			userId: userId.value,
-			title: documentFolderTitle.value,
+			title: {
+				$regex: documentFolderTitle.value,
+				$options: "i",
+			},
 		};
 
 		const numberOfDocumentFolder = await mongo.documentFolder

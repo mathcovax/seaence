@@ -35,7 +35,7 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 
 			const result = {
 				documentsInFolder: simpleDocumentsInFolder,
-				numberOfDocumentInFolder: numberOfDocumentInFolder.toSimpleObject(),
+				numberOfDocumentInFolder: numberOfDocumentInFolder.value,
 			};
 
 			return new OkHttpResponse("documentsInFolder.found", result);

@@ -35,7 +35,7 @@ useBuilder()
 
 			const result = {
 				favoriEquations: simpleFavoriEquations,
-				numberOfEqation: numberOfEqation.toSimpleObject(),
+				numberOfEqation: numberOfEqation.value,
 			};
 
 			return new OkHttpResponse("favoriEquations.found", result);
