@@ -1,7 +1,7 @@
 import { UsecaseHandler } from "@vendors/clean";
 import { DocumentFolderEntity, type DocumentFolderTitle } from "@business/domains/entities/documentFolder";
 import { type UserId } from "@business/domains/common/user";
-import { documentFolderRepository } from "../repositories/documentFolder";
+import { documentFolderRepository } from "../../repositories/documentFolder";
 
 interface Input {
 	title: DocumentFolderTitle;

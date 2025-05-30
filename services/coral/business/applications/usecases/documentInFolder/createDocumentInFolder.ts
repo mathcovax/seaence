@@ -1,8 +1,8 @@
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { type DocumentFolderEntity } from "@business/domains/entities/documentFolder";
-import { documentInFolderRepository } from "../repositories/documentInFolder";
-import { type DocumentTitle, type DocumentSummary, DocumentInFolderEntity, type DocumentId } from "@business/domains/entities/documentInFolder";
-import { ComputeDocumentQuantityInFolderrUsecase } from "./computeDocumentQuantityInFolder";
+import { documentInFolderRepository } from "../../repositories/documentInFolder";
+import { type DocumentTitle, DocumentInFolderEntity, type DocumentId } from "@business/domains/entities/documentInFolder";
+import { ComputeDocumentQuantityInFolderrUsecase } from "../documentFolder/computeDocumentQuantityInFolder";
 import { FindDocumentInFolderUsecase } from "./findDocumentInFolder";
 
 interface Input {
@@ -10,7 +10,6 @@ interface Input {
 	document: {
 		id: DocumentId;
 		title: DocumentTitle;
-		summary: DocumentSummary;
 	};
 }
 

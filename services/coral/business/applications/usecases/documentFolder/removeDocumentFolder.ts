@@ -1,6 +1,6 @@
 import { UsecaseHandler } from "@vendors/clean";
 import { type DocumentFolderEntity } from "@business/domains/entities/documentFolder";
-import { documentFolderRepository } from "../repositories/documentFolder";
+import { documentFolderRepository } from "../../repositories/documentFolder";
 
 interface Input {
 	documentFolder: DocumentFolderEntity;

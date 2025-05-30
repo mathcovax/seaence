@@ -1,5 +1,5 @@
-import { EntityHandler, type GetEntityProperties, type GetValueObject, type Int, intObjecter, zod } from "@vendors/clean";
-import { userIdObjecter } from "../common/user";
+import { dateYYYYMMDDObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, type Int, intObjecter, zod } from "@vendors/clean";
+import { userIdObjecter } from "../../common/user";
 
 export const documentFolderIdObjecter = zod.string().createValueObjecter("documentFolderId");
 export type DocumentFolderId = GetValueObject<typeof documentFolderIdObjecter>;
@@ -20,21 +20,24 @@ export class DocumentFolderEntity extends EntityHandler.create({
 	userId: userIdObjecter,
 	title: documentFolderTitleObjecter,
 	numberOfDocument: intObjecter,
+	createdAt: dateYYYYMMDDObjecter,
 }) {
 	public static create(
 		params: Omit<
-			GetEntityProperties<typeof DocumentFolderEntity>, "numberOfDocument"
+			GetEntityProperties<typeof DocumentFolderEntity>,
+			"numberOfDocument" | "createdAt"
 		>,
 	) {
 		return new DocumentFolderEntity({
 			...params,
 			numberOfDocument: intObjecter.unsafeCreate(defaultNumberOfDocument),
+			createdAt: dateYYYYMMDDObjecter.unsafeCreate(new Date()),
 		});
 	}
 
 	public updateDocumentInFolderQuantity(
 		numberOfDocument: Int,
-	): this {
+	) {
 		return this.update({
 			numberOfDocument,
 		});

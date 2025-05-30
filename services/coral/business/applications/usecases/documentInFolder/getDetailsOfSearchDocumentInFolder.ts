@@ -1,7 +1,7 @@
 import { type DocumentFolderEntity } from "@business/domains/entities/documentFolder";
 import { type DocumentTitle } from "@business/domains/entities/documentInFolder";
 import { UsecaseHandler } from "@vendors/clean";
-import { documentInFolderRepository } from "../repositories/documentInFolder";
+import { documentInFolderRepository } from "../../repositories/documentInFolder";
 
 interface Input {
 	documentFolder: DocumentFolderEntity;

@@ -21,15 +21,6 @@ documentInFolderRepository.default = {
 	async save(documentInFolderEntity) {
 		const simpledocumentInFolder = documentInFolderEntity.toSimpleObject();
 
-		const beforedocumentInFolder = await mongo.documentInFolder.findOne({
-			id: simpledocumentInFolder.id,
-			documentFolderId: simpledocumentInFolder.documentFolderId,
-		});
-
-		const createdAt = beforedocumentInFolder?.createdAt || new Date();
-
-		const summary = limitSummaryLength(simpledocumentInFolder.summary, maxKeywordsInSummary);
-
 		await mongo.documentInFolder.updateOne(
 			{
 				id: simpledocumentInFolder.id,
@@ -37,8 +28,6 @@ documentInFolderRepository.default = {
 			{
 				$set: {
 					...simpledocumentInFolder,
-					summary,
-					createdAt,
 					updatedAt: new Date(),
 				},
 			},
@@ -83,6 +72,7 @@ documentInFolderRepository.default = {
 					},
 				},
 			)
+			.sort({ addedAt: -1 })
 			.skip((page.value - one) * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();

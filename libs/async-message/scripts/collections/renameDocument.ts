@@ -1,13 +1,13 @@
 import { type AsyncMessage } from "../asyncMessage";
 import { MessageCollection } from "../messageCollection";
 
-export interface UpdateDocumentMessageValue {
+export interface RenameDocumentMessageValue {
 	documentId: string;
 	newTitle: string;
-	newAbstract: string;
+	oldTitle: string;
 }
 
-export class UpdateDocumentMessageColletion extends MessageCollection<UpdateDocumentMessageValue> {
+export class RenameDocumentMessageColletion extends MessageCollection<RenameDocumentMessageValue> {
 	public static readonly oneWeekInSecond = 604800;
 
 	public constructor(asyncMessage: AsyncMessage) {
@@ -15,7 +15,7 @@ export class UpdateDocumentMessageColletion extends MessageCollection<UpdateDocu
 			asyncMessage,
 			{
 				name: "updateDocument",
-				expireIn: UpdateDocumentMessageColletion.oneWeekInSecond,
+				expireIn: RenameDocumentMessageColletion.oneWeekInSecond,
 			},
 		);
 	}

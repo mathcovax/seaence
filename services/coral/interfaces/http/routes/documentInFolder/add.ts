@@ -1,4 +1,4 @@
-import { documentIdObjecter, documentSummaryObjecter, documentTitleObjecter } from "@business/domains/entities/documentInFolder";
+import { documentIdObjecter, documentTitleObjecter } from "@business/domains/entities/documentInFolder";
 import { iDontWantDocumentInFolderExistById } from "@interfaces/http/checkers/documentInFolder";
 import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
 import { createDocumentInFolderUsecase } from "@interfaces/usecase";
@@ -9,7 +9,6 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 		body: zod.object({
 			documentId: documentIdObjecter.toZodSchema(),
 			documentTitle: documentTitleObjecter.toZodSchema(),
-			documentSummary: documentSummaryObjecter.toZodSchema(),
 		}),
 	})
 	.presetCheck(
@@ -23,7 +22,7 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 		async(pickup) => {
 			const {
 				documentFolder,
-				body: { documentId, documentTitle, documentSummary },
+				body: { documentId, documentTitle },
 			} = pickup(["documentFolder", "body"]);
 
 			await createDocumentInFolderUsecase.execute({
@@ -31,7 +30,6 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 				document: {
 					id: documentId,
 					title: documentTitle,
-					summary: documentSummary,
 				},
 			});
 			return new OkHttpResponse("documentInFolder.added");

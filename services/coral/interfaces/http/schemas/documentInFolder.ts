@@ -1,11 +1,12 @@
 import { documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
-import { documentIdObjecter, documentSummaryObjecter, documentTitleObjecter } from "@business/domains/entities/documentInFolder";
+import { documentIdObjecter, documentTitleObjecter } from "@business/domains/entities/documentInFolder";
+import { dateYYYYMMDDObjecter } from "@vendors/clean";
 
 const documentInFolderSchema = zod.object({
 	documentFolderId: documentFolderIdObjecter.zodSchema,
 	id: documentIdObjecter.zodSchema,
 	title: documentTitleObjecter.zodSchema,
-	summary: documentSummaryObjecter.zodSchema,
+	addedAt: dateYYYYMMDDObjecter.zodSchema,
 });
 
 export const endpointGetDocumentInFolderRouteSchema = documentInFolderSchema;

@@ -13,12 +13,6 @@ documentFolderRepository.default = {
 	async save(documentFolderEntity) {
 		const simpleDocumentFolder = documentFolderEntity.toSimpleObject();
 
-		const beforeDocumentFolder = await mongo.documentFolder.findOne({
-			id: simpleDocumentFolder.id,
-		});
-
-		const createdAt = beforeDocumentFolder?.createdAt ?? new Date();
-
 		await mongo.documentFolder.updateOne(
 			{
 				id: simpleDocumentFolder.id,
@@ -26,7 +20,6 @@ documentFolderRepository.default = {
 			{
 				$set: {
 					...simpleDocumentFolder,
-					createdAt,
 					updatedAt: new Date(),
 				},
 			},
@@ -83,6 +76,7 @@ documentFolderRepository.default = {
 					},
 				},
 			)
+			.sort({ createdAt: -1 })
 			.skip((page.value - one) * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();

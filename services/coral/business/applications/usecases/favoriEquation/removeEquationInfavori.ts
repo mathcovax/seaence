@@ -1,5 +1,5 @@
 import { UsecaseHandler } from "@vendors/clean";
-import { favoriEquationRepository } from "../repositories/favoriEquation";
+import { favoriEquationRepository } from "../../repositories/favoriEquation";
 import { type FavoriEquationEntity } from "@business/domains/entities/favoriEquation";
 
 interface Input {

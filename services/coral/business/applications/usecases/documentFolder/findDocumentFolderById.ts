@@ -1,5 +1,5 @@
 import { UsecaseHandler } from "@vendors/clean";
-import { documentFolderRepository } from "../repositories/documentFolder";
+import { documentFolderRepository } from "../../repositories/documentFolder";
 import { type DocumentFolderId } from "@business/domains/entities/documentFolder";
 
 interface Input {

@@ -42,14 +42,11 @@ bakedDocumentRepository.default = {
 			{ upsert: true },
 		);
 
-		if (
-			beforeBakedDocument?.abstract !== simpleBakedDocument.abstract
-			|| beforeBakedDocument?.title !== simpleBakedDocument.title
-		) {
-			await asyncMessage.collections.updateDocument.emit({
+		if (beforeBakedDocument) {
+			await asyncMessage.collections.renameDocument.emit({
 				documentId: simpleBakedDocument.id,
 				newTitle: simpleBakedDocument.title,
-				newAbstract: simpleBakedDocument.abstract ?? "",
+				oldTitle: beforeBakedDocument.title,
 			});
 		}
 

@@ -18,10 +18,7 @@ favoriEquationRepository.default = {
 				id: simpleFavoriEquation.id,
 			},
 			{
-				$set: {
-					...simpleFavoriEquation,
-					createdAt: new Date(),
-				},
+				$set: simpleFavoriEquation,
 			},
 			{ upsert: true },
 		);
@@ -62,6 +59,7 @@ favoriEquationRepository.default = {
 					},
 				},
 			)
+			.sort({ addedAt: -1 })
 			.skip((page.value - one) * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
