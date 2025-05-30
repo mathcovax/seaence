@@ -1,8 +1,9 @@
 import { documentInFolderRepository } from "@business/applications/repositories/documentInFolder";
 import { DocumentInFolderEntity } from "@business/domains/entities/documentInFolder";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler } from "@vendors/clean";
+import { EntityHandler, intObjecter } from "@vendors/clean";
 
+const one = 1;
 const maxKeywordsInSummary = 30;
 
 function limitSummaryLength(summary: string, maxWords: number): string {
@@ -67,5 +68,38 @@ documentInFolderRepository.default = {
 			DocumentInFolderEntity,
 			documentInFolder,
 		);
+	},
+	async searchDocumentInFolderPerPageWhereTitleIs(input) {
+		const { documentFolder, documentTitle, quantityPerPage, page } = input;
+		const simpleDocumentFolder = documentFolder.toSimpleObject();
+
+		const query = {
+			documentFolderId: simpleDocumentFolder.id,
+			title: documentTitle.value,
+		};
+
+		const numberOfDocumentInFolder = await mongo.documentInFolder
+			.countDocuments(query)
+			.then(
+				(numberOfDocumentInFolder) => intObjecter.unsafeCreate(numberOfDocumentInFolder),
+			);
+
+		const mongoDocumentsInFolder = await mongo.documentInFolder
+			.find(query)
+			.skip((page.value - one) * quantityPerPage.value)
+			.limit(quantityPerPage.value)
+			.toArray();
+
+		const documentsInFolder = mongoDocumentsInFolder.map(
+			(mongoDocumentInFolder) => EntityHandler.unsafeMapper(
+				DocumentInFolderEntity,
+				mongoDocumentInFolder,
+			),
+		);
+
+		return {
+			numberOfDocumentInFolder,
+			documentsInFolder,
+		};
 	},
 };

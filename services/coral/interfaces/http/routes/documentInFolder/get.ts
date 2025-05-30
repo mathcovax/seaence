@@ -1,7 +1,7 @@
 import { documentIdObjecter } from "@business/domains/entities/documentInFolder";
 import { IWantDocumentInFolderExistById } from "@interfaces/http/checkers/documentInFolder";
 import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
-import { endpointGetDocumentInFolderRoute } from "@interfaces/http/schemas/documentInFolder";
+import { endpointGetDocumentInFolderRouteSchema } from "@interfaces/http/schemas/documentInFolder";
 
 mustBeProprietaryOfDocumentFolderRouteBuilder()
 	.createRoute("POST", "/get-document-in-folder")
@@ -23,5 +23,5 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 
 			return new OkHttpResponse("documentInFolder.found", documentInFolder.toSimpleObject());
 		},
-		makeResponseContract(OkHttpResponse, "documentInFolder.found", endpointGetDocumentInFolderRoute),
+		makeResponseContract(OkHttpResponse, "documentInFolder.found", endpointGetDocumentInFolderRouteSchema),
 	);

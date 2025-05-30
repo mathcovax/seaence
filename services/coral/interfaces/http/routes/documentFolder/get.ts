@@ -1,14 +1,14 @@
 
 import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
-import { endpointGetDocumentFolderRoute } from "@interfaces/http/schemas/documentFolder";
+import { endpointGetDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
 
 mustBeProprietaryOfDocumentFolderRouteBuilder()
-	.createRoute("POST", "get-document-folder")
+	.createRoute("POST", "/get-document-folder")
 	.handler(
 		(pickup) => {
 			const { documentFolder } = pickup(["documentFolder"]);
 
 			return new OkHttpResponse("documentFolder.found", documentFolder.toSimpleObject());
 		},
-		makeResponseContract(OkHttpResponse, "documentFolder.found", endpointGetDocumentFolderRoute),
+		makeResponseContract(OkHttpResponse, "documentFolder.found", endpointGetDocumentFolderRouteSchema),
 	);

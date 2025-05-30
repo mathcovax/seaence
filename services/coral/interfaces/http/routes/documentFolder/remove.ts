@@ -2,7 +2,7 @@ import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/
 import { removeDocumentFolderUsecase } from "@interfaces/usecase";
 
 mustBeProprietaryOfDocumentFolderRouteBuilder()
-	.createRoute("POST", "remove-document-folder")
+	.createRoute("POST", "/remove-document-folder")
 	.handler(
 		async(pickup) => {
 			const { documentFolder } = pickup(["documentFolder"]);

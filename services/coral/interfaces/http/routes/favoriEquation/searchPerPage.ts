@@ -1,11 +1,44 @@
+import { userIdObjecter } from "@business/domains/common/user";
 import { favoriEquatioonNameObjecter } from "@business/domains/entities/favoriEquation";
+import { endpointSearchFavoriEquationRouteSchema } from "@interfaces/http/schemas/favoriEquation";
+import { searchFavoriEquationUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
+
+const rawDocumentInFolderPerPage = 10;
+const documentInFolderPerPage = positiveIntObjecter.unsafeCreate(
+	rawDocumentInFolderPerPage,
+);
 
 useBuilder()
 	.createRoute("POST", "/search-favori-equations-per-page")
 	.extract({
 		body: zod.object({
+			userId: userIdObjecter.toZodSchema(),
 			partialNameFavoriEquation: favoriEquatioonNameObjecter.toZodSchema(),
 			page: positiveIntObjecter.toZodSchema(),
 		}),
-	});
+	})
+	.handler(
+		async(pickup) => {
+			const { userId, partialNameFavoriEquation, page } = pickup("body");
+
+			const { favoriEquations, numberOfEqation } = await searchFavoriEquationUsecase.execute({
+				favoriEquationName: partialNameFavoriEquation,
+				page,
+				quantityPerPage: documentInFolderPerPage,
+				userId,
+			});
+
+			const simpleFavoriEquations = favoriEquations.map(
+				(favoriEquation) => favoriEquation.toSimpleObject(),
+			);
+
+			const result = {
+				favoriEquations: simpleFavoriEquations,
+				numberOfEqation: numberOfEqation.toSimpleObject(),
+			};
+
+			return new OkHttpResponse("favoriEquations.found", result);
+		},
+		makeResponseContract(OkHttpResponse, "favoriEquations.found", endpointSearchFavoriEquationRouteSchema),
+	);

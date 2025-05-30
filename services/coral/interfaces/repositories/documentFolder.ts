@@ -4,6 +4,8 @@ import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
+const one = 1;
+
 documentFolderRepository.default = {
 	generateDocumentFolderId() {
 		return documentFolderIdObjecter.unsafeCreate(uuidv7());
@@ -67,5 +69,37 @@ documentFolderRepository.default = {
 			DocumentFolderEntity,
 			documentFolder,
 		);
+	},
+	async searchDocumentFolderPerPageWhereTitleIs(input) {
+		const { userId, documentFolderTitle, page, quantityPerPage } = input;
+
+		const query = {
+			userId: userId.value,
+			title: documentFolderTitle.value,
+		};
+
+		const numberOfDocumentFolder = await mongo.documentFolder
+			.countDocuments(query)
+			.then(
+				(numberOfDocumentFolder) => intObjecter.unsafeCreate(numberOfDocumentFolder),
+			);
+
+		const mongoDocumentFolders = await mongo.documentFolder
+			.find(query)
+			.skip((page.value - one) * quantityPerPage.value)
+			.limit(quantityPerPage.value)
+			.toArray();
+
+		const documentFolders = mongoDocumentFolders.map(
+			(mongoDocumentFolder) => EntityHandler.unsafeMapper(
+				DocumentFolderEntity,
+				mongoDocumentFolder,
+			),
+		);
+
+		return {
+			numberOfDocumentFolder,
+			documentFolders,
+		};
 	},
 };

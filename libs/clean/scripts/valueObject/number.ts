@@ -13,3 +13,5 @@ export const positiveIntObjecter = zod
 	.int()
 	.positive()
 	.createValueObjecter("positiveInt");
+
+export type PositiveInt = GetValueObject<typeof positiveIntObjecter>;

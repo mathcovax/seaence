@@ -94,6 +94,27 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/search-document-folders-per-page";
+    body: {
+        userId: string;
+        partialTitleDocumentFolder: string;
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "documentFolders.found";
+        body: {
+            documentFolders: {
+                id: string;
+                userId: string;
+                title: string;
+                numberOfDocument: number;
+            }[];
+            numberOfDocumentFolder: number;
+        };
+    };
+}) | ({
+    method: "POST";
     path: "/add-document-in-folder";
     body: {
         userId: string;
@@ -143,6 +164,29 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/search-documents-in-folder-per-page";
+    body: {
+        userId: string;
+        documentFolderId: string;
+    } & {
+        partialTitleDocument: string;
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "documentsInFolder.found";
+        body: {
+            documentsInFolder: {
+                documentFolderId: string;
+                id: string;
+                title: string;
+                summary: string;
+            }[];
+            numberOfDocumentInFolder: number;
+        };
+    };
+}) | ({
+    method: "POST";
     path: "/add-equation-to-favorite";
     body: {
         userId: string;
@@ -182,6 +226,27 @@ type CodegenRoutes = ({
         code: 200;
         information: "favoriequation.removed";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/search-favori-equations-per-page";
+    body: {
+        userId: string;
+        partialNameFavoriEquation: string;
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "favoriEquations.found";
+        body: {
+            favoriEquations: {
+                id: string;
+                name: string;
+                userId: string;
+                equation: OperatorContent;
+            }[];
+            numberOfEqation: number;
+        };
     };
 });
 
