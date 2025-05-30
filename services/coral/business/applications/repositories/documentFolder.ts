@@ -9,9 +9,9 @@ interface InputSearchDocumentFolderPerPageWhereTitleIs {
 	quantityPerPage: PositiveInt;
 }
 
-interface OutputSearchDocumentFolderPerPageWhereTitleIs {
-	documentFolders: DocumentFolderEntity[];
-	numberOfDocumentFolder: Int;
+interface InputGetDetailsSearchDocumentFolder {
+	userId: UserId;
+	documentFolderTitle: DocumentFolderTitle;
 }
 
 export interface DocumentFolderRepository extends RepositoryBase<DocumentFolderEntity> {
@@ -20,8 +20,11 @@ export interface DocumentFolderRepository extends RepositoryBase<DocumentFolderE
 	countDocumentsInFolder(folder: DocumentFolderEntity): Promise<Int>;
 	findDocumentFolderById(documentFolderId: DocumentFolderId): Promise<DocumentFolderEntity | null>;
 	searchDocumentFolderPerPageWhereTitleIs(
-		input: InputSearchDocumentFolderPerPageWhereTitleIs
-	): Promise<OutputSearchDocumentFolderPerPageWhereTitleIs>;
+		input: InputSearchDocumentFolderPerPageWhereTitleIs,
+	): Promise<DocumentFolderEntity[]>;
+	getDetailsSearchDocumentFolder(
+		input: InputGetDetailsSearchDocumentFolder,
+	): Promise<{ numberOfDocumentFolders: Int }>;
 }
 
 export const documentFolderRepository = createRepositoryHandler<DocumentFolderRepository>();

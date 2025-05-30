@@ -13,6 +13,9 @@ import { FindDocumentFolderByIdUsecase } from "@business/applications/usecases/f
 import { SearchDocumentInFolderUsecase } from "@business/applications/usecases/searchDocumentInFolder";
 import { SearchFavoriEquationUsecase } from "@business/applications/usecases/searchFavoriEquation";
 import { SearchDocumentFolderUsecase } from "@business/applications/usecases/searchDocumentFolder";
+import { GetDetailOfSearchFavoriEquationUsecase } from "@business/applications/usecases/getDetailsOfSearchFavoriEquation";
+import { GetDetailsOfSearchDocumentFolderUsecase } from "@business/applications/usecases/getDetailsOfSearchDocumentFolder";
+import { GetDetailsSearchDocumentInFolderUsecase } from "@business/applications/usecases/getDetailsOfSearchDocumentInFolder";
 
 export const addEquationInFavoriUsecase = new AddEquationInFavoriUsecase();
 export const computeDocumentQuantityInFolderrUsecase = new ComputeDocumentQuantityInFolderrUsecase();
@@ -28,3 +31,6 @@ export const findDocumentFolderByIdUsecase = new FindDocumentFolderByIdUsecase()
 export const searchDocumentInFolderUsecase = new SearchDocumentInFolderUsecase();
 export const searchFavoriEquationUsecase = new SearchFavoriEquationUsecase();
 export const searchDocumentFolderUsecase = new SearchDocumentFolderUsecase();
+export const getDetailOfSearchFavoriEquationUsecase = new GetDetailOfSearchFavoriEquationUsecase();
+export const getDetailsOfSearchDocumentFolderUsecase = new GetDetailsOfSearchDocumentFolderUsecase();
+export const getDetailsSearchDocumentInFolderUsecase = new GetDetailsSearchDocumentInFolderUsecase();

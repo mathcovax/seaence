@@ -52,22 +52,16 @@ favoriEquationRepository.default = {
 	async searchFavoriEquationPerPageWhereNameIs(input) {
 		const { userId, favoriEquationName, page, quantityPerPage } = input;
 
-		const query = {
-			userId,
-			name: {
-				$regex: favoriEquationName.value,
-				options: "i",
-			},
-		};
-
-		const numberOfEqation = await mongo.favoriEquation
-			.countDocuments(query)
-			.then(
-				(numberOfEqation) => intObjecter.unsafeCreate(numberOfEqation),
-			);
-
 		const mongoFavoriEquations = await mongo.favoriEquation
-			.find(query)
+			.find(
+				{
+					userId,
+					name: {
+						$regex: favoriEquationName.value,
+						options: "i",
+					},
+				},
+			)
 			.skip((page.value - one) * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
@@ -79,9 +73,25 @@ favoriEquationRepository.default = {
 			),
 		);
 
-		return {
-			favoriEquations,
-			numberOfEqation,
-		};
+		return favoriEquations;
+	},
+	async getDetailOfSearchFavoriEquations(input) {
+		const { userId, favoriEquationName } = input;
+
+		const numberOfFavoriEquation = await mongo.favoriEquation
+			.countDocuments(
+				{
+					userId,
+					name: {
+						$regex: favoriEquationName.value,
+						options: "i",
+					},
+				},
+			)
+			.then(
+				(numberOfFavoriEquation) => intObjecter.unsafeCreate(numberOfFavoriEquation),
+			);
+
+		return { numberOfFavoriEquation };
 	},
 };

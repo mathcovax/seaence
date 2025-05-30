@@ -1,7 +1,7 @@
 import { documentTitleObjecter } from "@business/domains/entities/documentInFolder";
 import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
-import { endpointSearchDocumentInFolderRouteSchema } from "@interfaces/http/schemas/documentInFolder";
-import { searchDocumentInFolderUsecase } from "@interfaces/usecase";
+import { endpointGetDetailsSearchDocumentInFolderRouteSchema, endpointSearchDocumentInFolderRouteSchema } from "@interfaces/http/schemas/documentInFolder";
+import { getDetailsSearchDocumentInFolderUsecase, searchDocumentInFolderUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
 mustBeProprietaryOfDocumentFolderRouteBuilder()
@@ -20,7 +20,7 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 				documentFolder,
 			} = pickup(["body", "documentFolder"]);
 
-			const { documentsInFolder, numberOfDocumentInFolder } = await searchDocumentInFolderUsecase.execute({
+			const documentsInFolder = await searchDocumentInFolderUsecase.execute({
 				documentFolder,
 				documentTitle: partialTitleDocument,
 				page,
@@ -31,12 +31,35 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 				(documentInFolder) => documentInFolder.toSimpleObject(),
 			);
 
-			const result = {
-				documentsInFolder: simpleDocumentsInFolder,
-				numberOfDocumentInFolder: numberOfDocumentInFolder.value,
-			};
-
-			return new OkHttpResponse("documentsInFolder.found", result);
+			return new OkHttpResponse("documentsInFolder.found", simpleDocumentsInFolder);
 		},
 		makeResponseContract(OkHttpResponse, "documentsInFolder.found", endpointSearchDocumentInFolderRouteSchema),
+	);
+
+mustBeProprietaryOfDocumentFolderRouteBuilder()
+	.createRoute("POST", "/get-search-documents-in-folder-details")
+	.extract({
+		body: zod.object({
+			partialTitleDocument: documentTitleObjecter.toZodSchema(),
+		}),
+	})
+	.handler(
+		async(pickup) => {
+			const {
+				body: { partialTitleDocument },
+				documentFolder,
+			} = pickup(["body", "documentFolder"]);
+
+			const { numberOfDocumentsInFolder } = await getDetailsSearchDocumentInFolderUsecase.execute({
+				documentFolder,
+				documentTitle: partialTitleDocument,
+			});
+
+			const result = {
+				numberOfDocumentsInFolder: numberOfDocumentsInFolder.value,
+			};
+
+			return new OkHttpResponse("documentsInFolder.searchDetails", result);
+		},
+		makeResponseContract(OkHttpResponse, "documentsInFolder.searchDetails", endpointGetDetailsSearchDocumentInFolderRouteSchema),
 	);

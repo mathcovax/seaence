@@ -10,7 +10,8 @@ const documentInFolderSchema = zod.object({
 
 export const endpointGetDocumentInFolderRouteSchema = documentInFolderSchema;
 
-export const endpointSearchDocumentInFolderRouteSchema = zod.object({
-	documentsInFolder: documentInFolderSchema.array(),
-	numberOfDocumentInFolder: zod.number(),
+export const endpointSearchDocumentInFolderRouteSchema = documentInFolderSchema.array();
+
+export const endpointGetDetailsSearchDocumentInFolderRouteSchema = zod.object({
+	numberOfDocumentsInFolder: zod.number(),
 });

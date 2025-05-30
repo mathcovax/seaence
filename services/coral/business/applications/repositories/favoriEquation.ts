@@ -9,9 +9,9 @@ interface InputSearchFavoriEquationPerPageWhereNameIs {
 	quantityPerPage: PositiveInt;
 }
 
-interface OutputSearchFavoriEquationPerPageWhereNameIs {
-	favoriEquations: FavoriEquationEntity[];
-	numberOfEqation: Int;
+interface InputCountFavoriEquationsByUserIdAndName {
+	userId: UserId;
+	favoriEquationName: FavoriEquationName;
 }
 
 export interface FavoriEquationRepository extends RepositoryBase<FavoriEquationEntity> {
@@ -20,7 +20,10 @@ export interface FavoriEquationRepository extends RepositoryBase<FavoriEquationE
 	findFavoriEquationById(favoriEquationId: FavoriEquationId): Promise<FavoriEquationEntity | null>;
 	searchFavoriEquationPerPageWhereNameIs(
 		input: InputSearchFavoriEquationPerPageWhereNameIs,
-	): Promise<OutputSearchFavoriEquationPerPageWhereNameIs>;
+	): Promise<FavoriEquationEntity[]>;
+	getDetailOfSearchFavoriEquations(
+		input: InputCountFavoriEquationsByUserIdAndName
+	): Promise<{ numberOfFavoriEquation: Int }>;
 }
 
 export const favoriEquationRepository = createRepositoryHandler<FavoriEquationRepository>();

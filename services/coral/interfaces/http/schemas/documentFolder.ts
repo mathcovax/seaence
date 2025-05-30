@@ -11,7 +11,8 @@ const documentFolderSchema = zod.object({
 
 export const endpointGetDocumentFolderRouteSchema = documentFolderSchema;
 
-export const endpointSearchDocumentFolderRouteSchema = zod.object({
-	documentFolders: documentFolderSchema.array(),
-	numberOfDocumentFolder: zod.number(),
+export const endpointSearchDocumentFolderRouteSchema = documentFolderSchema.array();
+
+export const endpointGetDetailsSearchDocumentFolderRouteSchema = zod.object({
+	numberOfDocumentFolders: zod.number(),
 });

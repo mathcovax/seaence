@@ -71,24 +71,18 @@ documentInFolderRepository.default = {
 	},
 	async searchDocumentInFolderPerPageWhereTitleIs(input) {
 		const { documentFolder, documentTitle, quantityPerPage, page } = input;
-		const simpleDocumentFolder = documentFolder.toSimpleObject();
-
-		const query = {
-			documentFolderId: simpleDocumentFolder.id,
-			title: {
-				$regex: documentTitle.value,
-				$options: "i",
-			},
-		};
-
-		const numberOfDocumentInFolder = await mongo.documentInFolder
-			.countDocuments(query)
-			.then(
-				(numberOfDocumentInFolder) => intObjecter.unsafeCreate(numberOfDocumentInFolder),
-			);
+		const { id } = documentFolder.toSimpleObject();
 
 		const mongoDocumentsInFolder = await mongo.documentInFolder
-			.find(query)
+			.find(
+				{
+					documentFolderId: id,
+					title: {
+						$regex: documentTitle.value,
+						$options: "i",
+					},
+				},
+			)
 			.skip((page.value - one) * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
@@ -100,9 +94,28 @@ documentInFolderRepository.default = {
 			),
 		);
 
+		return documentsInFolder;
+	},
+	async getDetailsOfSearchDocumentInFolder(input) {
+		const { documentFolder, documentTitle } = input;
+		const { id } = documentFolder.toSimpleObject();
+
+		const numberOfDocumentsInFolder = await mongo.documentInFolder
+			.countDocuments(
+				{
+					documentFolderId: id,
+					title: {
+						$regex: documentTitle.value,
+						$options: "i",
+					},
+				},
+			)
+			.then(
+				(numberOfDocumentsInFolder) => intObjecter.unsafeCreate(numberOfDocumentsInFolder),
+			);
+
 		return {
-			numberOfDocumentInFolder,
-			documentsInFolder,
+			numberOfDocumentsInFolder,
 		};
 	},
 };

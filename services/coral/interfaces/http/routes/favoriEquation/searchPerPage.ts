@@ -1,7 +1,7 @@
 import { userIdObjecter } from "@business/domains/common/user";
 import { favoriEquatioonNameObjecter } from "@business/domains/entities/favoriEquation";
-import { endpointSearchFavoriEquationRouteSchema } from "@interfaces/http/schemas/favoriEquation";
-import { searchFavoriEquationUsecase } from "@interfaces/usecase";
+import { endpointGetDetailOfSearchFavoriEquationRouteSchema, endpointSearchFavoriEquationRouteSchema } from "@interfaces/http/schemas/favoriEquation";
+import { getDetailOfSearchFavoriEquationUsecase, searchFavoriEquationUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
 useBuilder()
@@ -18,7 +18,7 @@ useBuilder()
 		async(pickup) => {
 			const { userId, partialNameFavoriEquation, page, quantityPerPage } = pickup("body");
 
-			const { favoriEquations, numberOfEqation } = await searchFavoriEquationUsecase.execute({
+			const favoriEquations = await searchFavoriEquationUsecase.execute({
 				favoriEquationName: partialNameFavoriEquation,
 				page,
 				quantityPerPage,
@@ -29,12 +29,33 @@ useBuilder()
 				(favoriEquation) => favoriEquation.toSimpleObject(),
 			);
 
-			const result = {
-				favoriEquations: simpleFavoriEquations,
-				numberOfEqation: numberOfEqation.value,
-			};
-
-			return new OkHttpResponse("favoriEquations.found", result);
+			return new OkHttpResponse("favoriEquations.found", simpleFavoriEquations);
 		},
 		makeResponseContract(OkHttpResponse, "favoriEquations.found", endpointSearchFavoriEquationRouteSchema),
+	);
+
+useBuilder()
+	.createRoute("POST", "/get-search-favori-equations-details ")
+	.extract({
+		body: zod.object({
+			userId: userIdObjecter.toZodSchema(),
+			partialNameFavoriEquation: favoriEquatioonNameObjecter.toZodSchema(),
+		}),
+	})
+	.handler(
+		async(pickup) => {
+			const { userId, partialNameFavoriEquation } = pickup("body");
+
+			const { numberOfFavoriEquation } = await getDetailOfSearchFavoriEquationUsecase.execute({
+				favoriEquationName: partialNameFavoriEquation,
+				userId,
+			});
+
+			const result = {
+				numberOfFavoriEquation: numberOfFavoriEquation.value,
+			};
+
+			return new OkHttpResponse("favoriEquations.searchDetails", result);
+		},
+		makeResponseContract(OkHttpResponse, "favoriEquations.searchDetails", endpointGetDetailOfSearchFavoriEquationRouteSchema),
 	);

@@ -9,9 +9,9 @@ interface InputSearchDocumentInFolderPerPageWhereTitleIs {
 	page: PositiveInt;
 }
 
-interface OutputSearchDocumentInFolderPerPageWhereTitleIs {
-	documentsInFolder: DocumentInFolderEntity[];
-	numberOfDocumentInFolder: Int;
+interface InputGetDetailsOfSearchDocumentInFolder {
+	documentFolder: DocumentFolderEntity;
+	documentTitle: DocumentTitle;
 }
 
 export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFolderEntity> {
@@ -22,7 +22,10 @@ export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFol
 	): Promise<DocumentInFolderEntity | null>;
 	searchDocumentInFolderPerPageWhereTitleIs(
 		input: InputSearchDocumentInFolderPerPageWhereTitleIs
-	): Promise<OutputSearchDocumentInFolderPerPageWhereTitleIs>;
+	): Promise<DocumentInFolderEntity[]>;
+	getDetailsOfSearchDocumentInFolder(
+		input: InputGetDetailsOfSearchDocumentInFolder
+	): Promise<{ numberOfDocumentsInFolder: Int }>;
 }
 
 export const documentInFolderRepository = createRepositoryHandler<DocumentInFolderRepository>();

@@ -11,7 +11,8 @@ const favoriEquationSchema = zod.object({
 
 export const endpointGetFavoriEquationRouteSchema = favoriEquationSchema;
 
-export const endpointSearchFavoriEquationRouteSchema = zod.object({
-	favoriEquations: favoriEquationSchema.array(),
-	numberOfEqation: zod.number(),
+export const endpointSearchFavoriEquationRouteSchema = favoriEquationSchema.array();
+
+export const endpointGetDetailOfSearchFavoriEquationRouteSchema = zod.object({
+	numberOfFavoriEquation: zod.number(),
 });

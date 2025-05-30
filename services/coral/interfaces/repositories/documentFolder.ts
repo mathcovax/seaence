@@ -73,22 +73,16 @@ documentFolderRepository.default = {
 	async searchDocumentFolderPerPageWhereTitleIs(input) {
 		const { userId, documentFolderTitle, page, quantityPerPage } = input;
 
-		const query = {
-			userId: userId.value,
-			title: {
-				$regex: documentFolderTitle.value,
-				$options: "i",
-			},
-		};
-
-		const numberOfDocumentFolder = await mongo.documentFolder
-			.countDocuments(query)
-			.then(
-				(numberOfDocumentFolder) => intObjecter.unsafeCreate(numberOfDocumentFolder),
-			);
-
 		const mongoDocumentFolders = await mongo.documentFolder
-			.find(query)
+			.find(
+				{
+					userId: userId.value,
+					title: {
+						$regex: documentFolderTitle.value,
+						$options: "i",
+					},
+				},
+			)
 			.skip((page.value - one) * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
@@ -100,9 +94,26 @@ documentFolderRepository.default = {
 			),
 		);
 
+		return documentFolders;
+	},
+	async getDetailsSearchDocumentFolder(input) {
+		const { userId, documentFolderTitle } = input;
+
+		const numberOfDocumentFolders = await mongo.documentFolder
+			.countDocuments(
+				{
+					userId: userId.value,
+					title: {
+						$regex: documentFolderTitle.value,
+						$options: "i",
+					},
+				},
+			).then(
+				(numberOfDocumentFolders) => intObjecter.unsafeCreate(numberOfDocumentFolders),
+			);
+
 		return {
-			numberOfDocumentFolder,
-			documentFolders,
+			numberOfDocumentFolders,
 		};
 	},
 };

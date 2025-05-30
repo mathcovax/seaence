@@ -1,7 +1,7 @@
 import { userIdObjecter } from "@business/domains/common/user";
 import { documentFolderTitleObjecter } from "@business/domains/entities/documentFolder";
-import { endpointSearchDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
-import { searchDocumentFolderUsecase } from "@interfaces/usecase";
+import { endpointGetDetailsSearchDocumentFolderRouteSchema, endpointSearchDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
+import { getDetailsOfSearchDocumentFolderUsecase, searchDocumentFolderUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
 useBuilder()
@@ -18,7 +18,7 @@ useBuilder()
 		async(pickup) => {
 			const { userId, partialTitleDocumentFolder, page, quantityPerPage } = pickup("body");
 
-			const { documentFolders, numberOfDocumentFolder } = await searchDocumentFolderUsecase.execute({
+			const documentFolders = await searchDocumentFolderUsecase.execute({
 				userId,
 				documentFolderTitle: partialTitleDocumentFolder,
 				page,
@@ -29,12 +29,33 @@ useBuilder()
 				(documentFolder) => documentFolder.toSimpleObject(),
 			);
 
-			const result = {
-				documentFolders: simpleDocumentFolders,
-				numberOfDocumentFolder: numberOfDocumentFolder.value,
-			};
-
-			return new OkHttpResponse("documentFolders.found", result);
+			return new OkHttpResponse("documentFolders.found", simpleDocumentFolders);
 		},
 		makeResponseContract(OkHttpResponse, "documentFolders.found", endpointSearchDocumentFolderRouteSchema),
+	);
+
+useBuilder()
+	.createRoute("POST", "get-search-document-folders-details")
+	.extract({
+		body: zod.object({
+			userId: userIdObjecter.toZodSchema(),
+			partialTitleDocumentFolder: documentFolderTitleObjecter.toZodSchema(),
+		}),
+	})
+	.handler(
+		async(pickup) => {
+			const { userId, partialTitleDocumentFolder } = pickup("body");
+
+			const { numberOfDocumentFolders } = await getDetailsOfSearchDocumentFolderUsecase.execute({
+				userId,
+				documentFolderTitle: partialTitleDocumentFolder,
+			});
+
+			const result = {
+				numberOfDocumentFolders: numberOfDocumentFolders.value,
+			};
+
+			return new OkHttpResponse("documentFolders.searchDetails", result);
+		},
+		makeResponseContract(OkHttpResponse, "documentFolders.searchDetails", endpointGetDetailsSearchDocumentFolderRouteSchema),
 	);

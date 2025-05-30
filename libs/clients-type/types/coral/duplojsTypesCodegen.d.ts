@@ -105,13 +105,24 @@ type CodegenRoutes = ({
         code: 200;
         information: "documentFolders.found";
         body: {
-            documentFolders: {
-                id: string;
-                userId: string;
-                title: string;
-                numberOfDocument: number;
-            }[];
-            numberOfDocumentFolder: number;
+            id: string;
+            userId: string;
+            title: string;
+            numberOfDocument: number;
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/get-search-document-folders-details";
+    body: {
+        userId: string;
+        partialTitleDocumentFolder: string;
+    };
+    response: {
+        code: 200;
+        information: "documentFolders.searchDetails";
+        body: {
+            numberOfDocumentFolders: number;
         };
     };
 }) | ({
@@ -178,13 +189,26 @@ type CodegenRoutes = ({
         code: 200;
         information: "documentsInFolder.found";
         body: {
-            documentsInFolder: {
-                documentFolderId: string;
-                id: string;
-                title: string;
-                summary: string;
-            }[];
-            numberOfDocumentInFolder: number;
+            documentFolderId: string;
+            id: string;
+            title: string;
+            summary: string;
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/get-search-documents-in-folder-details";
+    body: {
+        userId: string;
+        documentFolderId: string;
+    } & {
+        partialTitleDocument: string;
+    };
+    response: {
+        code: 200;
+        information: "documentsInFolder.searchDetails";
+        body: {
+            numberOfDocumentsInFolder: number;
         };
     };
 }) | ({
@@ -242,13 +266,24 @@ type CodegenRoutes = ({
         code: 200;
         information: "favoriEquations.found";
         body: {
-            favoriEquations: {
-                id: string;
-                name: string;
-                userId: string;
-                equation: OperatorContent;
-            }[];
-            numberOfEqation: number;
+            id: string;
+            name: string;
+            userId: string;
+            equation: OperatorContent;
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/get-search-favori-equations-details ";
+    body: {
+        userId: string;
+        partialNameFavoriEquation: string;
+    };
+    response: {
+        code: 200;
+        information: "favoriEquations.searchDetails";
+        body: {
+            numberOfFavoriEquation: number;
         };
     };
 });
