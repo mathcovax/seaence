@@ -4,8 +4,6 @@ import { escapeRegExp } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 
-const one = 1;
-
 documentInFolderRepository.default = {
 	async save(documentInFolderEntity) {
 		const simpledocumentInFolder = documentInFolderEntity.toSimpleObject();
@@ -26,16 +24,14 @@ documentInFolderRepository.default = {
 		return documentInFolderEntity;
 	},
 	async delete(documentInFolderEntity) {
-		const { nodeSameRawDocumentId } = documentInFolderEntity.toSimpleObject();
-
 		await mongo.documentInFolder.deleteOne({
-			nodeSameRawDocumentId,
+			nodeSameRawDocumentId: documentInFolderEntity.nodeSameRawDocumentId.value,
 		});
 	},
-	async findDocumentInFolder(documentFolderId, nodeSameRawNodeSameRawDocumentId) {
+	async findDocumentInFolder(documentFolderId, nodeSameRawDocumentId) {
 		const documentInFolder = await mongo.documentInFolder.findOne({
-			documentFolderId,
-			nodeSameRawNodeSameRawDocumentId,
+			documentFolderId: documentFolderId.value,
+			nodeSameRawDocumentId: nodeSameRawDocumentId.value,
 		});
 
 		if (!documentInFolder) {
@@ -47,22 +43,21 @@ documentInFolderRepository.default = {
 			documentInFolder,
 		);
 	},
-	async findDocuments(input) {
-		const { documentFolder, documentInFolderName, quantityPerPage, page } = input;
-		const { id } = documentFolder.toSimpleObject();
+	async searchDocuments(input) {
+		const { documentFolder, partialDocumentInFolderName, quantityPerPage, page } = input;
 
 		const mongoDocumentsInFolder = await mongo.documentInFolder
 			.find(
 				{
-					documentFolderId: id,
+					documentFolderId: documentFolder.id.value,
 					name: {
-						$regex: escapeRegExp(documentInFolderName.value),
+						$regex: escapeRegExp(partialDocumentInFolderName.value),
 						$options: "i",
 					},
 				},
 			)
 			.sort({ addedAt: -1 })
-			.skip((page.value - one) * quantityPerPage.value)
+			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
 
@@ -75,18 +70,17 @@ documentInFolderRepository.default = {
 
 		return documentsInFolder;
 	},
-	async countResultOfFindDocumentInFolder(input) {
-		const { documentFolder, documentInFolderName } = input;
-		const { id } = documentFolder.toSimpleObject();
-
+	async countResultOfSearchDocumentInFolder(documentFolder, partialDocumentInFolderName) {
 		const numberOfDocumentsInFolder = await mongo.documentInFolder
 			.countDocuments(
 				{
-					documentFolderId: id,
-					name: {
-						$regex: escapeRegExp(documentInFolderName.value),
-						$options: "i",
-					},
+					documentFolderId: documentFolder.id.value,
+					name: partialDocumentInFolderName
+						? {
+							$regex: escapeRegExp(partialDocumentInFolderName.value),
+							$options: "i",
+						}
+						: undefined,
 				},
 			)
 			.then(

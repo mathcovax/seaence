@@ -5,7 +5,7 @@ import { createRepositoryHandler, type PositiveInt, type Int, type RepositoryBas
 interface InputFindDocumentFolders {
 	userId: UserId;
 	partialDocumentFolderName: Text;
-	page: PositiveInt;
+	page: Int;
 	quantityPerPage: PositiveInt;
 }
 
@@ -13,16 +13,17 @@ export interface DocumentFolderRepository extends RepositoryBase<DocumentFolderE
 	generateDocumentFolderId(): DocumentFolderId;
 	delete(folder: DocumentFolderEntity): Promise<void>;
 	countDocumentsInFolder(folder: DocumentFolderEntity): Promise<Int>;
+	findDocumentFolderById(documentFolderId: DocumentFolderId): Promise<DocumentFolderEntity | null>;
 	findDocumentFolder(
 		userId: UserId,
 		documentFolderName: DocumentFolderName,
 	): Promise<DocumentFolderEntity | null>;
-	findDocumentFolders(
+	searchDocumentFolders(
 		input: InputFindDocumentFolders,
 	): Promise<DocumentFolderEntity[]>;
-	countResultOfFindDocumentFolder(
+	countResultOfSearchDocumentFolder(
 		userId: UserId,
-		partialDocumentFolderName: Text,
+		partialDocumentFolderName: Text | null,
 	): Promise<Int>;
 }
 

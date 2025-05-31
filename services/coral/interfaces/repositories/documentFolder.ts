@@ -5,8 +5,6 @@ import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
-const one = 1;
-
 documentFolderRepository.default = {
 	generateDocumentFolderId() {
 		return documentFolderIdObjecter.unsafeCreate(uuidv7());
@@ -30,29 +28,26 @@ documentFolderRepository.default = {
 		return documentFolderEntity;
 	},
 	async delete(documentFolderEntity) {
-		const { id } = documentFolderEntity.toSimpleObject();
-
 		await mongo.documentInFolder.deleteMany({
-			documentFolderId: id,
+			documentFolderId: documentFolderEntity.id.value,
 		});
 
 		await mongo.documentFolder.deleteOne({
-			id,
+			id: documentFolderEntity.id.value,
 		});
 	},
 
 	async countDocumentsInFolder(documentFolderEntity) {
-		const { id } = documentFolderEntity.toSimpleObject();
-
 		const documentInFolderCount = await mongo.documentInFolder.countDocuments({
-			documentFolderId: id,
+			documentFolderId: documentFolderEntity.id.value,
 		});
 
 		return intObjecter.unsafeCreate(documentInFolderCount);
 	},
-	async findDocumentFolderById(documentFolderId) {
+	async findDocumentFolder(userId, documentFolderName) {
 		const documentFolder = await mongo.documentFolder.findOne({
-			id: documentFolderId,
+			userId: userId.value,
+			name: documentFolderName.value,
 		});
 
 		if (!documentFolder) {
@@ -64,21 +59,35 @@ documentFolderRepository.default = {
 			documentFolder,
 		);
 	},
-	async findDocumentFolders(input) {
-		const { userId, documentFolderName, page, quantityPerPage } = input;
+	async findDocumentFolderById(documentFolderId) {
+		const documentFolder = await mongo.documentFolder.findOne({
+			id: documentFolderId.value,
+		});
+
+		if (!documentFolder) {
+			return null;
+		}
+
+		return EntityHandler.unsafeMapper(
+			DocumentFolderEntity,
+			documentFolder,
+		);
+	},
+	async searchDocumentFolders(input) {
+		const { userId, partialDocumentFolderName, page, quantityPerPage } = input;
 
 		const mongoDocumentFolders = await mongo.documentFolder
 			.find(
 				{
 					userId: userId.value,
 					title: {
-						$regex: escapeRegExp(documentFolderName.value),
+						$regex: escapeRegExp(partialDocumentFolderName.value),
 						$options: "i",
 					},
 				},
 			)
 			.sort({ createdAt: -1 })
-			.skip((page.value - one) * quantityPerPage.value)
+			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
 
@@ -91,19 +100,20 @@ documentFolderRepository.default = {
 
 		return documentFolders;
 	},
-	async countResultOfFindDocumentFolder(input) {
-		const { userId, documentFolderName } = input;
-
+	async countResultOfSearchDocumentFolder(userId, documentFolderName) {
 		const numberOfDocumentFolders = await mongo.documentFolder
 			.countDocuments(
 				{
 					userId: userId.value,
-					title: {
-						$regex: escapeRegExp(documentFolderName.value),
-						$options: "i",
-					},
+					name: documentFolderName
+						? {
+							$regex: escapeRegExp(documentFolderName.value),
+							$options: "i",
+						}
+						: undefined,
 				},
-			).then(
+			)
+			.then(
 				(numberOfDocumentFolders) => intObjecter.unsafeCreate(numberOfDocumentFolders),
 			);
 

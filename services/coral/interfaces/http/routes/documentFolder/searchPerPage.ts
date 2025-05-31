@@ -1,26 +1,25 @@
 import { userIdObjecter } from "@business/domains/common/user";
-import { documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
 import { endpointGetCountSearchDocumentFolderRouteSchema, endpointSearchDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
-import { countResultOfFindDocumentFolderUsecase, searchDocumentFolderUsecase } from "@interfaces/usecase";
-import { positiveIntObjecter } from "@vendors/clean";
+import { userCountResultOfSearchDocumentFolderUsecase, userSearchDocumentFolderUsecase } from "@interfaces/usecase";
+import { intObjecter, positiveIntObjecter, textObjecter } from "@vendors/clean";
 
 useBuilder()
-	.createRoute("POST", "/search-document-folders-per-page")
+	.createRoute("POST", "/search-document-folders")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
-			partialTitleDocumentFolder: documentFolderNameObjecter.toZodSchema(),
-			page: positiveIntObjecter.toZodSchema(),
+			partialDocumentFolderName: textObjecter.toZodSchema(),
+			page: intObjecter.toZodSchema(),
 			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { userId, partialTitleDocumentFolder, page, quantityPerPage } = pickup("body");
+			const { userId, partialDocumentFolderName, page, quantityPerPage } = pickup("body");
 
-			const documentFolders = await searchDocumentFolderUsecase.execute({
+			const documentFolders = await userSearchDocumentFolderUsecase.execute({
 				userId,
-				documentFolderName: partialTitleDocumentFolder,
+				partialDocumentFolderName,
 				page,
 				quantityPerPage,
 			});
@@ -35,23 +34,23 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("POST", "get-search-document-folders-count")
+	.createRoute("POST", "/get-search-document-folders-count")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
-			partialTitleDocumentFolder: documentFolderNameObjecter.toZodSchema(),
+			partialDocumentFolderName: textObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { userId, partialTitleDocumentFolder } = pickup("body");
+			const { userId, partialDocumentFolderName } = pickup("body");
 
-			const numberOfDocumentFolders = await countResultOfFindDocumentFolderUsecase.execute({
+			const numberOfDocumentFolders = await userCountResultOfSearchDocumentFolderUsecase.execute({
 				userId,
-				documentFolderName: partialTitleDocumentFolder,
+				partialDocumentFolderName,
 			});
 
-			return new OkHttpResponse("documentFolders.searchDetails", numberOfDocumentFolders.value);
+			return new OkHttpResponse("documentFolders.searchDetails", { total: numberOfDocumentFolders.value });
 		},
 		makeResponseContract(OkHttpResponse, "documentFolders.searchDetails", endpointGetCountSearchDocumentFolderRouteSchema),
 	);

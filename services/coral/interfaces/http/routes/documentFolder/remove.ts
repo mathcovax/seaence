@@ -1,14 +1,18 @@
-import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
-import { removeDocumentFolderUsecase } from "@interfaces/usecase";
+import { mustBeUserDocumentFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentFolderExistProcess";
+import { userRemoveDocumentFolderUsecase } from "@interfaces/usecase";
 
-mustBeProprietaryOfDocumentFolderRouteBuilder()
+useBuilder()
 	.createRoute("POST", "/remove-document-folder")
+	.execute(
+		mustBeUserDocumentFolderExistProcess,
+		{ pickup: ["userDocumentFolder"] },
+	)
 	.handler(
 		async(pickup) => {
-			const { documentFolder } = pickup(["documentFolder"]);
+			const { userDocumentFolder } = pickup(["userDocumentFolder"]);
 
-			await removeDocumentFolderUsecase.execute({
-				documentFolder,
+			await userRemoveDocumentFolderUsecase.execute({
+				userDocumentFolder,
 			});
 
 			return new OkHttpResponse("documentFolder.removed");

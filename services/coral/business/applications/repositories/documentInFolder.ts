@@ -6,21 +6,21 @@ interface InputFindDocuments {
 	documentFolder: DocumentFolderEntity;
 	partialDocumentInFolderName: Text;
 	quantityPerPage: PositiveInt;
-	page: PositiveInt;
+	page: Int;
 }
 
 export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFolderEntity> {
-	delete(document: DocumentInFolderEntity): Promise<void>;
+	delete(documentInFolderEntity: DocumentInFolderEntity): Promise<void>;
 	findDocumentInFolder(
 		documentFolderId: DocumentFolderId,
 		nodeSameRawDocumentId: NodeSameRawDocumentId,
 	): Promise<DocumentInFolderEntity | null>;
-	findDocuments(
+	searchDocuments(
 		input: InputFindDocuments,
 	): Promise<DocumentInFolderEntity[]>;
-	countResultOfFindDocumentInFolder(
+	countResultOfSearchDocumentInFolder(
 		documentFolder: DocumentFolderEntity,
-		partialDocumentInFolderName: Text,
+		partialDocumentInFolderName: Text | null,
 	): Promise<Int>;
 }
 

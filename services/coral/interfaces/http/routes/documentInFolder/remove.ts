@@ -1,29 +1,20 @@
-import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/documentInFolder";
-import { IWantDocumentInFolderExistById } from "@interfaces/http/checkers/documentInFolder";
-import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
-import { removeDocumentInFolderUsecase } from "@interfaces/usecase";
+import { mustBeUserDocumentInFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentInFolderExistProcess";
+import { userRemoveDocumentInFolderUsecase } from "@interfaces/usecase";
 
-mustBeProprietaryOfDocumentFolderRouteBuilder()
+useBuilder()
 	.createRoute("POST", "/remove-document-in-folder")
-	.extract({
-		body: zod.object({
-			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
-		}),
-	})
-	.presetCheck(
-		IWantDocumentInFolderExistById,
-		(pickup) => ({
-			documentFolderId: pickup("documentFolder").id,
-			nodeSameRawDocumentId: pickup("body").nodeSameRawDocumentId,
-		}),
+	.execute(
+		mustBeUserDocumentInFolderExistProcess,
+		{ pickup: ["userDocumentInFolder"] },
 	)
 	.handler(
 		async(pickup) => {
-			const { documentInFolder } = pickup(["documentInFolder"]);
+			const { userDocumentInFolder } = pickup(["userDocumentInFolder"]);
 
-			await removeDocumentInFolderUsecase.execute({
-				documentInFolder,
+			await userRemoveDocumentInFolderUsecase.execute({
+				userDocumentInFolder,
 			});
+
 			return new OkHttpResponse("documentInFolder.removed");
 		},
 		makeResponseContract(OkHttpResponse, "documentInFolder.removed"),

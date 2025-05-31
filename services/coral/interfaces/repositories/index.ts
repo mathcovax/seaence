@@ -1,3 +1,3 @@
 import "./documentFolder";
-import "./favoriEquation";
+import "./favoriteEquation";
 import "./documentInFolder";

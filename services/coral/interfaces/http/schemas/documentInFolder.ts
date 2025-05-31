@@ -13,4 +13,6 @@ export const endpointGetDocumentInFolderRouteSchema = documentInFolderSchema;
 
 export const endpointSearchDocumentInFolderRouteSchema = documentInFolderSchema.array();
 
-export const endpointGetCountSearchDocumentInFolderRouteSchema = zod.number();
+export const endpointGetCountSearchDocumentInFolderRouteSchema = zod.object({
+	total: zod.number(),
+});

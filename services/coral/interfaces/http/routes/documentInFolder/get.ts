@@ -1,27 +1,17 @@
-import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/documentInFolder";
-import { IWantDocumentInFolderExistById } from "@interfaces/http/checkers/documentInFolder";
-import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
+import { mustBeUserDocumentInFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentInFolderExistProcess";
 import { endpointGetDocumentInFolderRouteSchema } from "@interfaces/http/schemas/documentInFolder";
 
-mustBeProprietaryOfDocumentFolderRouteBuilder()
+useBuilder()
 	.createRoute("POST", "/get-document-in-folder")
-	.extract({
-		body: zod.object({
-			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
-		}),
-	})
-	.presetCheck(
-		IWantDocumentInFolderExistById,
-		(pickup) => ({
-			documentFolderId: pickup("documentFolder").id,
-			nodeSameRawDocumentId: pickup("body").nodeSameRawDocumentId,
-		}),
+	.execute(
+		mustBeUserDocumentInFolderExistProcess,
+		{ pickup: ["userDocumentInFolder"] },
 	)
 	.handler(
 		(pickup) => {
-			const { documentInFolder } = pickup(["documentInFolder"]);
+			const { userDocumentInFolder } = pickup(["userDocumentInFolder"]);
 
-			return new OkHttpResponse("documentInFolder.found", documentInFolder.toSimpleObject());
+			return new OkHttpResponse("documentInFolder.found", userDocumentInFolder.value.toSimpleObject());
 		},
 		makeResponseContract(OkHttpResponse, "documentInFolder.found", endpointGetDocumentInFolderRouteSchema),
 	);

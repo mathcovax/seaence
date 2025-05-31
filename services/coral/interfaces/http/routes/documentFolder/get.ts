@@ -1,14 +1,17 @@
-
-import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
+import { mustBeUserDocumentFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentFolderExistProcess";
 import { endpointGetDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
 
-mustBeProprietaryOfDocumentFolderRouteBuilder()
+useBuilder()
 	.createRoute("POST", "/get-document-folder")
+	.execute(
+		mustBeUserDocumentFolderExistProcess,
+		{ pickup: ["userDocumentFolder"] },
+	)
 	.handler(
 		(pickup) => {
-			const { documentFolder } = pickup(["documentFolder"]);
+			const { userDocumentFolder } = pickup(["userDocumentFolder"]);
 
-			return new OkHttpResponse("documentFolder.found", documentFolder.toSimpleObject());
+			return new OkHttpResponse("documentFolder.found", userDocumentFolder.value.toSimpleObject());
 		},
 		makeResponseContract(OkHttpResponse, "documentFolder.found", endpointGetDocumentFolderRouteSchema),
 	);

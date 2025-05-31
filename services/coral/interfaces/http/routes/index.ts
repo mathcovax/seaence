@@ -5,13 +5,13 @@ import "./documentFolder/remove";
 import "./documentFolder/searchPerPage";
 
 // documentInFolder
-import "./documentInFolder/add";
+import "./documentInFolder/create";
 import "./documentInFolder/get";
 import "./documentInFolder/remove";
 import "./documentInFolder/searchPerPage";
 
 // favoriEquation
-import "./favoriEquation/add";
-import "./favoriEquation/get";
-import "./favoriEquation/remove";
-import "./favoriEquation/searchPerPage";
+import "./favoriteEquation/create";
+import "./favoriteEquation/get";
+import "./favoriteEquation/remove";
+import "./favoriteEquation/searchPerPage";

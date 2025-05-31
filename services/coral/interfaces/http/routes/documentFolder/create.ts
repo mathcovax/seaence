@@ -1,25 +1,44 @@
 import { userIdObjecter } from "@business/domains/common/user";
-import { documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
-import { createDocumentFolderUsecase } from "@interfaces/usecase";
+import { DocumentFolderEntity, documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
+import { userCreateDocumentFolderUsecase } from "@interfaces/usecase";
+import { match, P } from "ts-pattern";
 
 useBuilder()
 	.createRoute("POST", "/create-document-folder")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
-			title: documentFolderNameObjecter.toZodSchema(),
+			documentFolderName: documentFolderNameObjecter.toZodSchema(),
 		}),
 	})
-	.handler(
-		async(pickup) => {
-			const { userId, title } = pickup("body");
+	.cut(
+		async({ pickup, dropper }) => {
+			const { userId, documentFolderName } = pickup("body");
 
-			await createDocumentFolderUsecase.execute({
+			const result = await userCreateDocumentFolderUsecase.execute({
 				userId,
-				title,
+				documentFolderName,
 			});
 
-			return new OkHttpResponse("documentFolder.created");
+			return match({ result })
+				.with(
+					{ result: { information: "document-folder-already-exist" } },
+					() => new ConflictHttpResponse("documentFolder.alreadyExists"),
+				)
+				.with(
+					{ result: { information: "document-folder-max-quantity" } },
+					() => new ConflictHttpResponse("documentFolder.maxQuantity"),
+				)
+				.with(
+					{ result: P.instanceOf(DocumentFolderEntity) },
+					() => dropper(null),
+				)
+				.exhaustive();
 		},
+		[],
+		makeResponseContract(ConflictHttpResponse, ["documentFolder.alreadyExists", "documentFolder.maxQuantity"]),
+	)
+	.handler(
+		() => new OkHttpResponse("documentFolder.created"),
 		makeResponseContract(OkHttpResponse, "documentFolder.created"),
 	);
