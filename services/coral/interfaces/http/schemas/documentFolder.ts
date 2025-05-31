@@ -1,11 +1,11 @@
 import { userIdObjecter } from "@business/domains/common/user";
-import { documentFolderIdObjecter, documentFolderTitleObjecter } from "@business/domains/entities/documentFolder";
+import { documentFolderIdObjecter, documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
 import { dateYYYYMMDDObjecter, intObjecter } from "@vendors/clean";
 
 const documentFolderSchema = zod.object({
 	id: documentFolderIdObjecter.zodSchema,
 	userId: userIdObjecter.zodSchema,
-	title: documentFolderTitleObjecter.zodSchema,
+	title: documentFolderNameObjecter.zodSchema,
 	numberOfDocument: intObjecter.zodSchema,
 	createdAt: dateYYYYMMDDObjecter.zodSchema,
 });

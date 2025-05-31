@@ -1,5 +1,5 @@
 import { userIdObjecter } from "@business/domains/common/user";
-import { documentFolderTitleObjecter } from "@business/domains/entities/documentFolder";
+import { documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
 import { createDocumentFolderUsecase } from "@interfaces/usecase";
 
 useBuilder()
@@ -7,7 +7,7 @@ useBuilder()
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
-			title: documentFolderTitleObjecter.toZodSchema(),
+			title: documentFolderNameObjecter.toZodSchema(),
 		}),
 	})
 	.handler(

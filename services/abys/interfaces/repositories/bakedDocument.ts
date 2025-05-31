@@ -6,7 +6,6 @@ import { RosettaAPI, type SupportedLanguage } from "@interfaces/providers/rosett
 import { KeyDate } from "@interfaces/providers/keyDate";
 import { match, P } from "ts-pattern";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
-import { asyncMessage } from "@interfaces/providers/asyncMessage";
 
 const languageMapper: Record<BakedDocumentLanguage["value"], SupportedLanguage> = {
 	"fr-FR": "fr",

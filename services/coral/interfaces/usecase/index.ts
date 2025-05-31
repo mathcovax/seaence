@@ -4,11 +4,11 @@ import { ComputeDocumentQuantityInFolderUsecase } from "@business/applications/u
 import { CreateDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/createDocumentInFolder";
 import { RemoveDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/removeDocumentInFolder";
 import { RemoveDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/removeDocumentFolder";
-import { RemoveEquationInFavoriUsecase } from "@business/applications/usecases/favoriEquation/removeEquationInfavori";
+import { RemoveFavoriEquationUsecase } from "@business/applications/usecases/favoriEquation/removeFavoriEquation";
 import { CreateDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/createDocumentFolder";
 import { FindDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/findDocumentInFolder";
 import { FindEquationInFavoriByIdUsecase } from "@business/applications/usecases/favoriEquation/findEquationInFavoriById";
-import { FindDocumentFolderByIdUsecase } from "@business/applications/usecases/documentFolder/findDocumentFolderById";
+import { FindDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/findDocumentFolder";
 import { SearchFavoriEquationUsecase } from "@business/applications/usecases/favoriEquation/searchFavoriEquation";
 import { SearchDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/searchDocumentFolder";
 import { CountResultOfFindFavoriEquationUsecase } from "@business/applications/usecases/favoriEquation/countResultOfFindFavoriEquation";
@@ -21,11 +21,11 @@ export const computeDocumentQuantityInFolderrUsecase = new ComputeDocumentQuanti
 export const createDocumentInFolderUsecase = new CreateDocumentInFolderUsecase();
 export const removeDocumentInFolderUsecase = new RemoveDocumentInFolderUsecase();
 export const removeDocumentFolderUsecase = new RemoveDocumentFolderUsecase();
-export const removeEquationInFavoriUsecase = new RemoveEquationInFavoriUsecase();
+export const removeEquationInFavoriUsecase = new RemoveFavoriEquationUsecase();
 export const createDocumentFolderUsecase = new CreateDocumentFolderUsecase();
 export const findDocumentInFolderUsecase = new FindDocumentInFolderUsecase();
 export const findEquationInFavoriByIdUsecase = new FindEquationInFavoriByIdUsecase();
-export const findDocumentFolderByIdUsecase = new FindDocumentFolderByIdUsecase();
+export const findDocumentFolderByIdUsecase = new FindDocumentFolderUsecase();
 export const searchFavoriEquationUsecase = new SearchFavoriEquationUsecase();
 export const searchDocumentFolderUsecase = new SearchDocumentFolderUsecase();
 export const searchDocumentInFolderUsecase = new SearchDocumentInFolderUsecase();

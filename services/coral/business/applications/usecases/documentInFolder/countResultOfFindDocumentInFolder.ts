@@ -1,20 +1,19 @@
 import { documentInFolderRepository } from "@business/applications/repositories/documentInFolder";
 import { type DocumentFolderEntity } from "@business/domains/entities/documentFolder";
-import { type DocumentInFolderName } from "@business/domains/entities/documentInFolder";
-import { UsecaseHandler } from "@vendors/clean";
+import { type Text, UsecaseHandler } from "@vendors/clean";
 
 interface Input {
 	documentFolder: DocumentFolderEntity;
-	documentInFolderName: DocumentInFolderName;
+	partialDocumentInFolderName: Text;
 }
 
 export class CountResultOfFindDocumentInFolderUsecase extends UsecaseHandler.create({
 	documentInFolderRepository,
 }) {
-	public execute({ documentFolder, documentInFolderName }: Input) {
-		return this.documentInFolderRepository.countResultOfFindDocumentInFolder({
+	public execute({ documentFolder, partialDocumentInFolderName }: Input) {
+		return this.documentInFolderRepository.countResultOfFindDocumentInFolder(
 			documentFolder,
-			documentInFolderName,
-		});
+			partialDocumentInFolderName,
+		);
 	}
 }

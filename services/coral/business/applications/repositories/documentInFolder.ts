@@ -1,17 +1,12 @@
 import { type DocumentFolderEntity, type DocumentFolderId } from "@business/domains/entities/documentFolder";
-import { type NodeSameRawDocumentId, type DocumentInFolderEntity, type DocumentInFolderName } from "@business/domains/entities/documentInFolder";
-import { createRepositoryHandler, type Int, type PositiveInt, type RepositoryBase } from "@vendors/clean";
+import { type NodeSameRawDocumentId, type DocumentInFolderEntity } from "@business/domains/entities/documentInFolder";
+import { createRepositoryHandler, type Text, type Int, type PositiveInt, type RepositoryBase } from "@vendors/clean";
 
 interface InputFindDocuments {
 	documentFolder: DocumentFolderEntity;
-	documentInFolderName: DocumentInFolderName;
+	partialDocumentInFolderName: Text;
 	quantityPerPage: PositiveInt;
 	page: PositiveInt;
-}
-
-interface InputCountResultOfFindDocumentInFolder {
-	documentFolder: DocumentFolderEntity;
-	documentInFolderName: DocumentInFolderName;
 }
 
 export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFolderEntity> {
@@ -24,7 +19,8 @@ export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFol
 		input: InputFindDocuments,
 	): Promise<DocumentInFolderEntity[]>;
 	countResultOfFindDocumentInFolder(
-		input: InputCountResultOfFindDocumentInFolder,
+		documentFolder: DocumentFolderEntity,
+		partialDocumentInFolderName: Text,
 	): Promise<Int>;
 }
 

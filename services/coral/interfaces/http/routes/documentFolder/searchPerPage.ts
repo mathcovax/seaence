@@ -1,5 +1,5 @@
 import { userIdObjecter } from "@business/domains/common/user";
-import { documentFolderTitleObjecter } from "@business/domains/entities/documentFolder";
+import { documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
 import { endpointGetCountSearchDocumentFolderRouteSchema, endpointSearchDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
 import { countResultOfFindDocumentFolderUsecase, searchDocumentFolderUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
@@ -9,7 +9,7 @@ useBuilder()
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
-			partialTitleDocumentFolder: documentFolderTitleObjecter.toZodSchema(),
+			partialTitleDocumentFolder: documentFolderNameObjecter.toZodSchema(),
 			page: positiveIntObjecter.toZodSchema(),
 			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
@@ -20,7 +20,7 @@ useBuilder()
 
 			const documentFolders = await searchDocumentFolderUsecase.execute({
 				userId,
-				documentFolderTitle: partialTitleDocumentFolder,
+				documentFolderName: partialTitleDocumentFolder,
 				page,
 				quantityPerPage,
 			});
@@ -39,7 +39,7 @@ useBuilder()
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
-			partialTitleDocumentFolder: documentFolderTitleObjecter.toZodSchema(),
+			partialTitleDocumentFolder: documentFolderNameObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
@@ -48,7 +48,7 @@ useBuilder()
 
 			const numberOfDocumentFolders = await countResultOfFindDocumentFolderUsecase.execute({
 				userId,
-				documentFolderTitle: partialTitleDocumentFolder,
+				documentFolderName: partialTitleDocumentFolder,
 			});
 
 			return new OkHttpResponse("documentFolders.searchDetails", numberOfDocumentFolders.value);

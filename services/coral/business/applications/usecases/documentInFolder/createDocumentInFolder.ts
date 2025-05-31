@@ -24,8 +24,8 @@ export class CreateDocumentInFolderUsecase extends UsecaseHandler.create({
 			nodeSameRawDocumentId: document.nodeSameRawDocumentId,
 		});
 
-		if (findedDocumentInFolder instanceof DocumentInFolderEntity) {
-			return new UsecaseError("documentInFolder.alreadyExists", { findedDocumentInFolder });
+		if (findedDocumentInFolder) {
+			return new UsecaseError("document-in-folder-already-exists", { findedDocumentInFolder });
 		}
 
 		const documentInFolder = DocumentInFolderEntity.create({

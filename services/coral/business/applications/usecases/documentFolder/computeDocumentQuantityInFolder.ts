@@ -12,8 +12,8 @@ export class ComputeDocumentQuantityInFolderUsecase extends UsecaseHandler.creat
 	public async execute({ documentFolder }: Input) {
 		const documentinFolderQuantity = await this.documentFolderRepository.countDocumentsInFolder(documentFolder);
 
-		const documentInFolder = documentFolder.updateDocumentInFolderQuantity(documentinFolderQuantity);
+		const updatedDocumentFolder = documentFolder.updateDocumentInFolderQuantity(documentinFolderQuantity);
 
-		await this.documentFolderRepository.save(documentInFolder);
+		await this.documentFolderRepository.save(updatedDocumentFolder);
 	}
 }

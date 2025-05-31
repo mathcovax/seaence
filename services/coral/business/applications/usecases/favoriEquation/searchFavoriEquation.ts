@@ -1,11 +1,10 @@
-import { type FavoriEquationName } from "@business/domains/entities/favoriEquation";
-import { UsecaseHandler, type PositiveInt } from "@vendors/clean";
+import { type Text, UsecaseHandler, type PositiveInt } from "@vendors/clean";
 import { favoriEquationRepository } from "../../repositories/favoriEquation";
 import { type UserId } from "@business/domains/common/user";
 
 interface Input {
 	userId: UserId;
-	favoriEquationName: FavoriEquationName;
+	partialFavoriEquationName: Text;
 	page: PositiveInt;
 	quantityPerPage: PositiveInt;
 }
@@ -13,10 +12,10 @@ interface Input {
 export class SearchFavoriEquationUsecase extends UsecaseHandler.create({
 	favoriEquationRepository,
 }) {
-	public execute({ favoriEquationName, page, quantityPerPage, userId }: Input) {
+	public execute({ partialFavoriEquationName, page, quantityPerPage, userId }: Input) {
 		return this.favoriEquationRepository.findFavoriEquations({
 			userId,
-			favoriEquationName,
+			partialFavoriEquationName,
 			quantityPerPage,
 			page,
 		});

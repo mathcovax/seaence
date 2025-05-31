@@ -6,10 +6,10 @@ interface Input {
 	favoriEquation: FavoriEquationEntity;
 }
 
-export class RemoveEquationInFavoriUsecase extends UsecaseHandler.create({
+export class RemoveFavoriEquationUsecase extends UsecaseHandler.create({
 	favoriEquationRepository,
 }) {
 	public async execute({ favoriEquation }: Input) {
-		await this.favoriEquationRepository.deleteFavoriEquation(favoriEquation);
+		await this.favoriEquationRepository.delete(favoriEquation);
 	}
 }

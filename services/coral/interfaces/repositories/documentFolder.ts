@@ -65,14 +65,14 @@ documentFolderRepository.default = {
 		);
 	},
 	async findDocumentFolders(input) {
-		const { userId, documentFolderTitle, page, quantityPerPage } = input;
+		const { userId, documentFolderName, page, quantityPerPage } = input;
 
 		const mongoDocumentFolders = await mongo.documentFolder
 			.find(
 				{
 					userId: userId.value,
 					title: {
-						$regex: escapeRegExp(documentFolderTitle.value),
+						$regex: escapeRegExp(documentFolderName.value),
 						$options: "i",
 					},
 				},
@@ -92,14 +92,14 @@ documentFolderRepository.default = {
 		return documentFolders;
 	},
 	async countResultOfFindDocumentFolder(input) {
-		const { userId, documentFolderTitle } = input;
+		const { userId, documentFolderName } = input;
 
 		const numberOfDocumentFolders = await mongo.documentFolder
 			.countDocuments(
 				{
 					userId: userId.value,
 					title: {
-						$regex: escapeRegExp(documentFolderTitle.value),
+						$regex: escapeRegExp(documentFolderName.value),
 						$options: "i",
 					},
 				},

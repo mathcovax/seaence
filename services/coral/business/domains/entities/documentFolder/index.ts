@@ -1,24 +1,24 @@
 import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, type Int, intObjecter, zod } from "@vendors/clean";
 import { userIdObjecter } from "../../common/user";
+import { documentFolderRules } from "@vendors/entity-rules";
 
 export const documentFolderIdObjecter = zod.string().createValueObjecter("documentFolderId");
 export type DocumentFolderId = GetValueObject<typeof documentFolderIdObjecter>;
 
-const maxSizeOfDocumentFolderTitle = 50;
-const minSizeOfDocumentFolderTitle = 1;
-export const documentFolderTitleObjecter = zod
+export const documentFolderNameObjecter = zod
 	.string()
-	.min(minSizeOfDocumentFolderTitle)
-	.max(maxSizeOfDocumentFolderTitle)
-	.createValueObjecter("documentFolderTitle");
-export type DocumentFolderTitle = GetValueObject<typeof documentFolderTitleObjecter>;
+	.min(documentFolderRules.name.minLength)
+	.max(documentFolderRules.name.maxLength)
+	.createValueObjecter("documentFolderName");
+
+export type DocumentFolderName = GetValueObject<typeof documentFolderNameObjecter>;
 
 const defaultNumberOfDocument = 0;
 
 export class DocumentFolderEntity extends EntityHandler.create({
 	id: documentFolderIdObjecter,
 	userId: userIdObjecter,
-	title: documentFolderTitleObjecter,
+	name: documentFolderNameObjecter,
 	numberOfDocument: intObjecter,
 	createdAt: commonDateObjecter,
 }) {
