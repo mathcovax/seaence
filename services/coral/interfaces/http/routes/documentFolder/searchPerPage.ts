@@ -1,7 +1,7 @@
 import { userIdObjecter } from "@business/domains/common/user";
 import { documentFolderTitleObjecter } from "@business/domains/entities/documentFolder";
-import { endpointGetDetailsSearchDocumentFolderRouteSchema, endpointSearchDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
-import { getDetailsOfSearchDocumentFolderUsecase, searchDocumentFolderUsecase } from "@interfaces/usecase";
+import { endpointGetCountSearchDocumentFolderRouteSchema, endpointSearchDocumentFolderRouteSchema } from "@interfaces/http/schemas/documentFolder";
+import { countResultOfFindDocumentFolderUsecase, searchDocumentFolderUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
 useBuilder()
@@ -35,7 +35,7 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("POST", "get-search-document-folders-details")
+	.createRoute("POST", "get-search-document-folders-count")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -46,16 +46,12 @@ useBuilder()
 		async(pickup) => {
 			const { userId, partialTitleDocumentFolder } = pickup("body");
 
-			const { numberOfDocumentFolders } = await getDetailsOfSearchDocumentFolderUsecase.execute({
+			const numberOfDocumentFolders = await countResultOfFindDocumentFolderUsecase.execute({
 				userId,
 				documentFolderTitle: partialTitleDocumentFolder,
 			});
 
-			const result = {
-				numberOfDocumentFolders: numberOfDocumentFolders.value,
-			};
-
-			return new OkHttpResponse("documentFolders.searchDetails", result);
+			return new OkHttpResponse("documentFolders.searchDetails", numberOfDocumentFolders.value);
 		},
-		makeResponseContract(OkHttpResponse, "documentFolders.searchDetails", endpointGetDetailsSearchDocumentFolderRouteSchema),
+		makeResponseContract(OkHttpResponse, "documentFolders.searchDetails", endpointGetCountSearchDocumentFolderRouteSchema),
 	);

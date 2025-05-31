@@ -14,7 +14,7 @@ export class SearchFavoriEquationUsecase extends UsecaseHandler.create({
 	favoriEquationRepository,
 }) {
 	public execute({ favoriEquationName, page, quantityPerPage, userId }: Input) {
-		return this.favoriEquationRepository.searchFavoriEquationPerPageWhereNameIs({
+		return this.favoriEquationRepository.findFavoriEquations({
 			userId,
 			favoriEquationName,
 			quantityPerPage,

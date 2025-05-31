@@ -14,7 +14,7 @@ export class SearchDocumentFolderUsecase extends UsecaseHandler.create({
 	documentFolderRepository,
 }) {
 	public execute({ userId, documentFolderTitle, quantityPerPage, page }: Input) {
-		return this.documentFolderRepository.searchDocumentFolderPerPageWhereTitleIs({
+		return this.documentFolderRepository.findDocumentFolders({
 			documentFolderTitle,
 			quantityPerPage,
 			page,

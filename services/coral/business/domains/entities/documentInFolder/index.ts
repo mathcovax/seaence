@@ -1,17 +1,19 @@
-import { dateYYYYMMDDObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { documentFolderIdObjecter } from "../documentFolder";
 
-export const documentIdObjecter = zod.string().createValueObjecter("documentId");
-export type DocumentId = GetValueObject<typeof documentIdObjecter>;
+export const nodeSameRawDocumentIdObjecter = zod.string().createValueObjecter("nodeSameRawDocumentId");
 
-export const documentTitleObjecter = zod.string().createValueObjecter("documentInFolderTitle");
-export type DocumentTitle = GetValueObject<typeof documentTitleObjecter>;
+export type NodeSameRawDocumentId = GetValueObject<typeof nodeSameRawDocumentIdObjecter>;
+
+export const documentInFolderNameObjecter = zod.string().createValueObjecter("documentInFolderName");
+
+export type DocumentInFolderName = GetValueObject<typeof documentInFolderNameObjecter>;
 
 export class DocumentInFolderEntity extends EntityHandler.create({
+	name: documentInFolderNameObjecter,
 	documentFolderId: documentFolderIdObjecter,
-	id: documentIdObjecter,
-	title: documentTitleObjecter,
-	addedAt: dateYYYYMMDDObjecter,
+	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
+	addedAt: commonDateObjecter,
 }) {
 	public static create(
 		params: Omit<
@@ -21,18 +23,7 @@ export class DocumentInFolderEntity extends EntityHandler.create({
 	) {
 		return new DocumentInFolderEntity({
 			...params,
-			addedAt: dateYYYYMMDDObjecter.unsafeCreate(new Date()),
-		});
-	}
-
-	public renameDocumentInFolder(
-		newTitle: DocumentTitle,
-	) {
-		return this.update({
-			title: newTitle,
+			addedAt: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
 }
-
-export const documentInFolderEntityObjecter = EntityHandler.createEntityObjecter("documentInFolder", DocumentInFolderEntity);
-export type DocumentInFolder = GetValueObject<typeof documentInFolderEntityObjecter>;

@@ -1,32 +1,31 @@
 import { type DocumentFolderEntity, type DocumentFolderId } from "@business/domains/entities/documentFolder";
-import { type DocumentTitle, type DocumentId, type DocumentInFolderEntity } from "@business/domains/entities/documentInFolder";
+import { type NodeSameRawDocumentId, type DocumentInFolderEntity, type DocumentInFolderName } from "@business/domains/entities/documentInFolder";
 import { createRepositoryHandler, type Int, type PositiveInt, type RepositoryBase } from "@vendors/clean";
 
-interface InputSearchDocumentInFolderPerPageWhereTitleIs {
+interface InputFindDocuments {
 	documentFolder: DocumentFolderEntity;
-	documentTitle: DocumentTitle;
+	documentInFolderName: DocumentInFolderName;
 	quantityPerPage: PositiveInt;
 	page: PositiveInt;
 }
 
-interface InputGetDetailsOfSearchDocumentInFolder {
+interface InputCountResultOfFindDocumentInFolder {
 	documentFolder: DocumentFolderEntity;
-	documentTitle: DocumentTitle;
+	documentInFolderName: DocumentInFolderName;
 }
 
 export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFolderEntity> {
 	delete(document: DocumentInFolderEntity): Promise<void>;
 	findDocumentInFolder(
 		documentFolderId: DocumentFolderId,
-		documentId: DocumentId,
+		nodeSameRawDocumentId: NodeSameRawDocumentId,
 	): Promise<DocumentInFolderEntity | null>;
-	searchDocumentInFolderPerPageWhereTitleIs(
-		input: InputSearchDocumentInFolderPerPageWhereTitleIs
+	findDocuments(
+		input: InputFindDocuments,
 	): Promise<DocumentInFolderEntity[]>;
-	getDetailsOfSearchDocumentInFolder(
-		input: InputGetDetailsOfSearchDocumentInFolder
-	): Promise<{ numberOfDocumentsInFolder: Int }>;
-	streamByDocumentId(documentId: DocumentId): AsyncGenerator<DocumentInFolderEntity>;
+	countResultOfFindDocumentInFolder(
+		input: InputCountResultOfFindDocumentInFolder,
+	): Promise<Int>;
 }
 
 export const documentInFolderRepository = createRepositoryHandler<DocumentInFolderRepository>();

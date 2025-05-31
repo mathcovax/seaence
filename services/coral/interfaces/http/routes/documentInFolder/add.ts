@@ -1,4 +1,4 @@
-import { documentIdObjecter, documentTitleObjecter } from "@business/domains/entities/documentInFolder";
+import { nodeSameRawDocumentIdObjecter, documentInFolderNameObjecter } from "@business/domains/entities/documentInFolder";
 import { iDontWantDocumentInFolderExistById } from "@interfaces/http/checkers/documentInFolder";
 import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
 import { createDocumentInFolderUsecase } from "@interfaces/usecase";
@@ -7,29 +7,29 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 	.createRoute("POST", "/add-document-in-folder")
 	.extract({
 		body: zod.object({
-			documentId: documentIdObjecter.toZodSchema(),
-			documentTitle: documentTitleObjecter.toZodSchema(),
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
+			documentInFolderName: documentInFolderNameObjecter.toZodSchema(),
 		}),
 	})
 	.presetCheck(
 		iDontWantDocumentInFolderExistById,
 		(pickup) => ({
 			documentFolderId: pickup("documentFolder").id,
-			documentId: pickup("body").documentId,
+			nodeSameRawDocumentId: pickup("body").nodeSameRawDocumentId,
 		}),
 	)
 	.handler(
 		async(pickup) => {
 			const {
 				documentFolder,
-				body: { documentId, documentTitle },
+				body: { nodeSameRawDocumentId, documentInFolderName },
 			} = pickup(["documentFolder", "body"]);
 
 			await createDocumentInFolderUsecase.execute({
 				documentFolder,
 				document: {
-					id: documentId,
-					title: documentTitle,
+					nodeSameRawDocumentId,
+					name: documentInFolderName,
 				},
 			});
 			return new OkHttpResponse("documentInFolder.added");

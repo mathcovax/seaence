@@ -1,14 +1,14 @@
-import { documentTitleObjecter } from "@business/domains/entities/documentInFolder";
+import { documentInFolderNameObjecter } from "@business/domains/entities/documentInFolder";
 import { mustBeProprietaryOfDocumentFolderRouteBuilder } from "@interfaces/http/process/mustBeProprietaryOfDocumentFolder";
-import { endpointGetDetailsSearchDocumentInFolderRouteSchema, endpointSearchDocumentInFolderRouteSchema } from "@interfaces/http/schemas/documentInFolder";
-import { getDetailsSearchDocumentInFolderUsecase, searchDocumentInFolderUsecase } from "@interfaces/usecase";
+import { endpointGetCountSearchDocumentInFolderRouteSchema, endpointSearchDocumentInFolderRouteSchema } from "@interfaces/http/schemas/documentInFolder";
+import { countResultOfFindDocumentInFolderUsecase, searchDocumentInFolderUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
 mustBeProprietaryOfDocumentFolderRouteBuilder()
-	.createRoute("POST", "/search-documents-in-folder-per-page")
+	.createRoute("POST", "/search-documents-in-folder")
 	.extract({
 		body: zod.object({
-			partialTitleDocument: documentTitleObjecter.toZodSchema(),
+			partialNameDocument: documentInFolderNameObjecter.toZodSchema(),
 			page: positiveIntObjecter.toZodSchema(),
 			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
@@ -16,13 +16,13 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 	.handler(
 		async(pickup) => {
 			const {
-				body: { partialTitleDocument, page, quantityPerPage },
+				body: { partialNameDocument, page, quantityPerPage },
 				documentFolder,
 			} = pickup(["body", "documentFolder"]);
 
 			const documentsInFolder = await searchDocumentInFolderUsecase.execute({
 				documentFolder,
-				documentTitle: partialTitleDocument,
+				documentInFolderName: partialNameDocument,
 				page,
 				quantityPerPage,
 			});
@@ -37,29 +37,25 @@ mustBeProprietaryOfDocumentFolderRouteBuilder()
 	);
 
 mustBeProprietaryOfDocumentFolderRouteBuilder()
-	.createRoute("POST", "/get-search-documents-in-folder-details")
+	.createRoute("POST", "/get-search-documents-in-folder-count")
 	.extract({
 		body: zod.object({
-			partialTitleDocument: documentTitleObjecter.toZodSchema(),
+			partialNameDocument: documentInFolderNameObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
 			const {
-				body: { partialTitleDocument },
+				body: { partialNameDocument },
 				documentFolder,
 			} = pickup(["body", "documentFolder"]);
 
-			const { numberOfDocumentsInFolder } = await getDetailsSearchDocumentInFolderUsecase.execute({
+			const numberOfDocumentsInFolder = await countResultOfFindDocumentInFolderUsecase.execute({
 				documentFolder,
-				documentTitle: partialTitleDocument,
+				documentInFolderName: partialNameDocument,
 			});
 
-			const result = {
-				numberOfDocumentsInFolder: numberOfDocumentsInFolder.value,
-			};
-
-			return new OkHttpResponse("documentsInFolder.searchDetails", result);
+			return new OkHttpResponse("documentsInFolder.searchDetails", numberOfDocumentsInFolder.value);
 		},
-		makeResponseContract(OkHttpResponse, "documentsInFolder.searchDetails", endpointGetDetailsSearchDocumentInFolderRouteSchema),
+		makeResponseContract(OkHttpResponse, "documentsInFolder.searchDetails", endpointGetCountSearchDocumentInFolderRouteSchema),
 	);

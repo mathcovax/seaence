@@ -1,4 +1,4 @@
-import { dateYYYYMMDDObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, type Int, intObjecter, zod } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, type Int, intObjecter, zod } from "@vendors/clean";
 import { userIdObjecter } from "../../common/user";
 
 export const documentFolderIdObjecter = zod.string().createValueObjecter("documentFolderId");
@@ -20,7 +20,7 @@ export class DocumentFolderEntity extends EntityHandler.create({
 	userId: userIdObjecter,
 	title: documentFolderTitleObjecter,
 	numberOfDocument: intObjecter,
-	createdAt: dateYYYYMMDDObjecter,
+	createdAt: commonDateObjecter,
 }) {
 	public static create(
 		params: Omit<
@@ -31,7 +31,7 @@ export class DocumentFolderEntity extends EntityHandler.create({
 		return new DocumentFolderEntity({
 			...params,
 			numberOfDocument: intObjecter.unsafeCreate(defaultNumberOfDocument),
-			createdAt: dateYYYYMMDDObjecter.unsafeCreate(new Date()),
+			createdAt: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
 

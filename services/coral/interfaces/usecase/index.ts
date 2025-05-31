@@ -1,6 +1,6 @@
 import "../repositories";
 import { AddEquationInFavoriUsecase } from "@business/applications/usecases/favoriEquation/addEquationInFavori";
-import { ComputeDocumentQuantityInFolderrUsecase } from "@business/applications/usecases/documentFolder/computeDocumentQuantityInFolder";
+import { ComputeDocumentQuantityInFolderUsecase } from "@business/applications/usecases/documentFolder/computeDocumentQuantityInFolder";
 import { CreateDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/createDocumentInFolder";
 import { RemoveDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/removeDocumentInFolder";
 import { RemoveDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/removeDocumentFolder";
@@ -8,17 +8,16 @@ import { RemoveEquationInFavoriUsecase } from "@business/applications/usecases/f
 import { CreateDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/createDocumentFolder";
 import { FindDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/findDocumentInFolder";
 import { FindEquationInFavoriByIdUsecase } from "@business/applications/usecases/favoriEquation/findEquationInFavoriById";
-import { RenameDocumentInFoldersUsecase } from "@business/applications/usecases/documentInFolder/renameDocumentInFolders";
 import { FindDocumentFolderByIdUsecase } from "@business/applications/usecases/documentFolder/findDocumentFolderById";
-import { SearchDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/searchDocumentInFolder";
 import { SearchFavoriEquationUsecase } from "@business/applications/usecases/favoriEquation/searchFavoriEquation";
 import { SearchDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/searchDocumentFolder";
-import { GetDetailOfSearchFavoriEquationUsecase } from "@business/applications/usecases/favoriEquation/getDetailsOfSearchFavoriEquation";
-import { GetDetailsOfSearchDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/getDetailsOfSearchDocumentFolder";
-import { GetDetailsSearchDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/getDetailsOfSearchDocumentInFolder";
+import { CountResultOfFindFavoriEquationUsecase } from "@business/applications/usecases/favoriEquation/countResultOfFindFavoriEquation";
+import { CountResultOfFindDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/countResultOfFindDocumentFolder";
+import { CountResultOfFindDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/countResultOfFindDocumentInFolder";
+import { SearchDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/searchDocumentInFolder";
 
 export const addEquationInFavoriUsecase = new AddEquationInFavoriUsecase();
-export const computeDocumentQuantityInFolderrUsecase = new ComputeDocumentQuantityInFolderrUsecase();
+export const computeDocumentQuantityInFolderrUsecase = new ComputeDocumentQuantityInFolderUsecase();
 export const createDocumentInFolderUsecase = new CreateDocumentInFolderUsecase();
 export const removeDocumentInFolderUsecase = new RemoveDocumentInFolderUsecase();
 export const removeDocumentFolderUsecase = new RemoveDocumentFolderUsecase();
@@ -26,11 +25,10 @@ export const removeEquationInFavoriUsecase = new RemoveEquationInFavoriUsecase()
 export const createDocumentFolderUsecase = new CreateDocumentFolderUsecase();
 export const findDocumentInFolderUsecase = new FindDocumentInFolderUsecase();
 export const findEquationInFavoriByIdUsecase = new FindEquationInFavoriByIdUsecase();
-export const renameDocumentInFoldersUsecase = new RenameDocumentInFoldersUsecase();
 export const findDocumentFolderByIdUsecase = new FindDocumentFolderByIdUsecase();
-export const searchDocumentInFolderUsecase = new SearchDocumentInFolderUsecase();
 export const searchFavoriEquationUsecase = new SearchFavoriEquationUsecase();
 export const searchDocumentFolderUsecase = new SearchDocumentFolderUsecase();
-export const getDetailOfSearchFavoriEquationUsecase = new GetDetailOfSearchFavoriEquationUsecase();
-export const getDetailsOfSearchDocumentFolderUsecase = new GetDetailsOfSearchDocumentFolderUsecase();
-export const getDetailsSearchDocumentInFolderUsecase = new GetDetailsSearchDocumentInFolderUsecase();
+export const searchDocumentInFolderUsecase = new SearchDocumentInFolderUsecase();
+export const countResultOfFindFavoriEquationUsecase = new CountResultOfFindFavoriEquationUsecase();
+export const countResultOfFindDocumentFolderUsecase = new CountResultOfFindDocumentFolderUsecase();
+export const countResultOfFindDocumentInFolderUsecase = new CountResultOfFindDocumentInFolderUsecase();

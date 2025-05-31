@@ -115,7 +115,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/get-search-document-folders-details";
+    path: "/get-search-document-folders-count";
     body: {
         userId: string;
         partialTitleDocumentFolder: string;
@@ -123,9 +123,7 @@ type CodegenRoutes = ({
     response: {
         code: 200;
         information: "documentFolders.searchDetails";
-        body: {
-            numberOfDocumentFolders: number;
-        };
+        body: number;
     };
 }) | ({
     method: "POST";
@@ -134,8 +132,8 @@ type CodegenRoutes = ({
         userId: string;
         documentFolderId: string;
     } & {
-        documentId: string;
-        documentTitle: string;
+        nodeSameRawDocumentId: string;
+        documentInFolderName: string;
     };
     response: {
         code: 200;
@@ -149,15 +147,15 @@ type CodegenRoutes = ({
         userId: string;
         documentFolderId: string;
     } & {
-        documentId: string;
+        nodeSameRawDocumentId: string;
     };
     response: {
         code: 200;
         information: "documentInFolder.found";
         body: {
             documentFolderId: string;
-            id: string;
-            title: string;
+            nodeSameRawDocumentId: string;
+            name: string;
             addedAt: Date;
         };
     };
@@ -168,7 +166,7 @@ type CodegenRoutes = ({
         userId: string;
         documentFolderId: string;
     } & {
-        documentId: string;
+        nodeSameRawDocumentId: string;
     };
     response: {
         code: 200;
@@ -177,12 +175,12 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/search-documents-in-folder-per-page";
+    path: "/search-documents-in-folder";
     body: {
         userId: string;
         documentFolderId: string;
     } & {
-        partialTitleDocument: string;
+        partialNameDocument: string;
         page: number;
         quantityPerPage: number;
     };
@@ -191,26 +189,24 @@ type CodegenRoutes = ({
         information: "documentsInFolder.found";
         body: {
             documentFolderId: string;
-            id: string;
-            title: string;
+            nodeSameRawDocumentId: string;
+            name: string;
             addedAt: Date;
         }[];
     };
 }) | ({
     method: "POST";
-    path: "/get-search-documents-in-folder-details";
+    path: "/get-search-documents-in-folder-count";
     body: {
         userId: string;
         documentFolderId: string;
     } & {
-        partialTitleDocument: string;
+        partialNameDocument: string;
     };
     response: {
         code: 200;
         information: "documentsInFolder.searchDetails";
-        body: {
-            numberOfDocumentsInFolder: number;
-        };
+        body: number;
     };
 }) | ({
     method: "POST";
@@ -257,7 +253,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/search-favori-equations-per-page";
+    path: "/search-favori-equations";
     body: {
         userId: string;
         partialNameFavoriEquation: string;
@@ -277,7 +273,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/get-search-favori-equations-details ";
+    path: "/get-search-favori-equations-count";
     body: {
         userId: string;
         partialNameFavoriEquation: string;
@@ -285,9 +281,7 @@ type CodegenRoutes = ({
     response: {
         code: 200;
         information: "favoriEquations.searchDetails";
-        body: {
-            numberOfFavoriEquation: number;
-        };
+        body: number;
     };
 });
 

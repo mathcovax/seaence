@@ -1,5 +1,5 @@
 import { type DocumentFolderId } from "@business/domains/entities/documentFolder";
-import { type DocumentId } from "@business/domains/entities/documentInFolder";
+import { type NodeSameRawDocumentId } from "@business/domains/entities/documentInFolder";
 import { type GetTypeInput } from "@duplojs/core";
 import { findDocumentInFolderUsecase } from "@interfaces/usecase";
 import { match } from "ts-pattern";
@@ -7,7 +7,7 @@ import { match } from "ts-pattern";
 export const inputDocumentInFolderExist = createTypeInput<{
 	id: {
 		documentFolderId: DocumentFolderId;
-		documentId: DocumentId;
+		nodeSameRawDocumentId: NodeSameRawDocumentId;
 	};
 }>();
 
@@ -19,7 +19,7 @@ export const documentInFolderExistChecker = createChecker("documentInFolderExist
 					{ inputName: "id" },
 					({ value }) => findDocumentInFolderUsecase.execute({
 						folderId: value.documentFolderId,
-						documentId: value.documentId,
+						nodeSameRawDocumentId: value.nodeSameRawDocumentId,
 					}),
 				)
 				.exhaustive();

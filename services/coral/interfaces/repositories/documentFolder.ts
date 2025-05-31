@@ -1,5 +1,6 @@
 import { documentFolderRepository } from "@business/applications/repositories/documentFolder";
 import { DocumentFolderEntity, documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
+import { escapeRegExp } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
@@ -63,7 +64,7 @@ documentFolderRepository.default = {
 			documentFolder,
 		);
 	},
-	async searchDocumentFolderPerPageWhereTitleIs(input) {
+	async findDocumentFolders(input) {
 		const { userId, documentFolderTitle, page, quantityPerPage } = input;
 
 		const mongoDocumentFolders = await mongo.documentFolder
@@ -71,7 +72,7 @@ documentFolderRepository.default = {
 				{
 					userId: userId.value,
 					title: {
-						$regex: documentFolderTitle.value,
+						$regex: escapeRegExp(documentFolderTitle.value),
 						$options: "i",
 					},
 				},
@@ -90,7 +91,7 @@ documentFolderRepository.default = {
 
 		return documentFolders;
 	},
-	async getDetailsSearchDocumentFolder(input) {
+	async countResultOfFindDocumentFolder(input) {
 		const { userId, documentFolderTitle } = input;
 
 		const numberOfDocumentFolders = await mongo.documentFolder
@@ -98,7 +99,7 @@ documentFolderRepository.default = {
 				{
 					userId: userId.value,
 					title: {
-						$regex: documentFolderTitle.value,
+						$regex: escapeRegExp(documentFolderTitle.value),
 						$options: "i",
 					},
 				},
@@ -106,8 +107,6 @@ documentFolderRepository.default = {
 				(numberOfDocumentFolders) => intObjecter.unsafeCreate(numberOfDocumentFolders),
 			);
 
-		return {
-			numberOfDocumentFolders,
-		};
+		return numberOfDocumentFolders;
 	},
 };

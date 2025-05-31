@@ -3,6 +3,7 @@ import { favoriEquationRepository } from "@business/applications/repositories/fa
 import { FavoriEquationEntity, favoriEquationIdObjecter } from "@business/domains/entities/favoriEquation";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
+import { escapeRegExp } from "@duplojs/utils";
 
 const one = 1;
 
@@ -14,12 +15,8 @@ favoriEquationRepository.default = {
 		const simpleFavoriEquation = favoriEquationEntity.toSimpleObject();
 
 		await mongo.favoriEquation.updateOne(
-			{
-				id: simpleFavoriEquation.id,
-			},
-			{
-				$set: simpleFavoriEquation,
-			},
+			{ id: simpleFavoriEquation.id },
+			{ $set: simpleFavoriEquation },
 			{ upsert: true },
 		);
 
@@ -46,7 +43,7 @@ favoriEquationRepository.default = {
 			favoriEquation,
 		);
 	},
-	async searchFavoriEquationPerPageWhereNameIs(input) {
+	async findFavoriEquations(input) {
 		const { userId, favoriEquationName, page, quantityPerPage } = input;
 
 		const mongoFavoriEquations = await mongo.favoriEquation
@@ -54,7 +51,7 @@ favoriEquationRepository.default = {
 				{
 					userId,
 					name: {
-						$regex: favoriEquationName.value,
+						$regex: escapeRegExp(favoriEquationName.value),
 						options: "i",
 					},
 				},
@@ -73,7 +70,7 @@ favoriEquationRepository.default = {
 
 		return favoriEquations;
 	},
-	async getDetailOfSearchFavoriEquations(input) {
+	async countResultOfFindFavoriEquation(input) {
 		const { userId, favoriEquationName } = input;
 
 		const numberOfFavoriEquation = await mongo.favoriEquation
@@ -81,7 +78,7 @@ favoriEquationRepository.default = {
 				{
 					userId,
 					name: {
-						$regex: favoriEquationName.value,
+						$regex: escapeRegExp(favoriEquationName.value),
 						options: "i",
 					},
 				},
@@ -90,6 +87,6 @@ favoriEquationRepository.default = {
 				(numberOfFavoriEquation) => intObjecter.unsafeCreate(numberOfFavoriEquation),
 			);
 
-		return { numberOfFavoriEquation };
+		return numberOfFavoriEquation;
 	},
 };

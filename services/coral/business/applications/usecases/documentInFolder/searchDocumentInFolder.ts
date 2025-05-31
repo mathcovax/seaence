@@ -1,11 +1,11 @@
 import { type DocumentFolderEntity } from "@business/domains/entities/documentFolder";
-import { type DocumentTitle } from "@business/domains/entities/documentInFolder";
+import { type DocumentInFolderName } from "@business/domains/entities/documentInFolder";
 import { UsecaseHandler, type PositiveInt } from "@vendors/clean";
 import { documentInFolderRepository } from "../../repositories/documentInFolder";
 
 interface Input {
 	documentFolder: DocumentFolderEntity;
-	documentTitle: DocumentTitle;
+	documentInFolderName: DocumentInFolderName;
 	page: PositiveInt;
 	quantityPerPage: PositiveInt;
 }
@@ -13,10 +13,10 @@ interface Input {
 export class SearchDocumentInFolderUsecase extends UsecaseHandler.create({
 	documentInFolderRepository,
 }) {
-	public execute({ documentFolder, documentTitle, quantityPerPage, page }: Input) {
-		return this.documentInFolderRepository.searchDocumentInFolderPerPageWhereTitleIs({
+	public execute({ documentFolder, documentInFolderName, quantityPerPage, page }: Input) {
+		return this.documentInFolderRepository.findDocuments({
 			documentFolder,
-			documentTitle,
+			documentInFolderName,
 			quantityPerPage,
 			page,
 		});

@@ -1,4 +1,4 @@
-import { dateYYYYMMDDObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { userIdObjecter } from "../../common/user";
 import { equationObjecter } from "../../common/equation";
 
@@ -13,7 +13,7 @@ export class FavoriEquationEntity extends EntityHandler.create({
 	name: favoriEquatioonNameObjecter,
 	userId: userIdObjecter,
 	equation: equationObjecter,
-	addedAt: dateYYYYMMDDObjecter,
+	addedAt: commonDateObjecter,
 }) {
 	public static create(
 		params: Omit<
@@ -23,7 +23,7 @@ export class FavoriEquationEntity extends EntityHandler.create({
 	) {
 		return new FavoriEquationEntity({
 			...params,
-			addedAt: dateYYYYMMDDObjecter.unsafeCreate(new Date()),
+			addedAt: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
 }

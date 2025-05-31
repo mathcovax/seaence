@@ -1,11 +1,11 @@
 import { userIdObjecter } from "@business/domains/common/user";
 import { favoriEquatioonNameObjecter } from "@business/domains/entities/favoriEquation";
-import { endpointGetDetailOfSearchFavoriEquationRouteSchema, endpointSearchFavoriEquationRouteSchema } from "@interfaces/http/schemas/favoriEquation";
-import { getDetailOfSearchFavoriEquationUsecase, searchFavoriEquationUsecase } from "@interfaces/usecase";
+import { endpointGetCountOfSearchFavoriEquationRouteSchema, endpointSearchFavoriEquationRouteSchema } from "@interfaces/http/schemas/favoriEquation";
+import { countResultOfFindFavoriEquationUsecase, searchFavoriEquationUsecase } from "@interfaces/usecase";
 import { positiveIntObjecter } from "@vendors/clean";
 
 useBuilder()
-	.createRoute("POST", "/search-favori-equations-per-page")
+	.createRoute("POST", "/search-favori-equations")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -35,7 +35,7 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("POST", "/get-search-favori-equations-details ")
+	.createRoute("POST", "/get-search-favori-equations-count")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -46,16 +46,12 @@ useBuilder()
 		async(pickup) => {
 			const { userId, partialNameFavoriEquation } = pickup("body");
 
-			const { numberOfFavoriEquation } = await getDetailOfSearchFavoriEquationUsecase.execute({
+			const numberOfFavoriEquation = await countResultOfFindFavoriEquationUsecase.execute({
 				favoriEquationName: partialNameFavoriEquation,
 				userId,
 			});
 
-			const result = {
-				numberOfFavoriEquation: numberOfFavoriEquation.value,
-			};
-
-			return new OkHttpResponse("favoriEquations.searchDetails", result);
+			return new OkHttpResponse("favoriEquations.searchDetails", numberOfFavoriEquation.value);
 		},
-		makeResponseContract(OkHttpResponse, "favoriEquations.searchDetails", endpointGetDetailOfSearchFavoriEquationRouteSchema),
+		makeResponseContract(OkHttpResponse, "favoriEquations.searchDetails", endpointGetCountOfSearchFavoriEquationRouteSchema),
 	);

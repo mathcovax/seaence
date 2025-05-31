@@ -6,7 +6,7 @@ interface Input {
 	documentFolder: DocumentFolderEntity;
 }
 
-export class ComputeDocumentQuantityInFolderrUsecase extends UsecaseHandler.create({
+export class ComputeDocumentQuantityInFolderUsecase extends UsecaseHandler.create({
 	documentFolderRepository,
 }) {
 	public async execute({ documentFolder }: Input) {

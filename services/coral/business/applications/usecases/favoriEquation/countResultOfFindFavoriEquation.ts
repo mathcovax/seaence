@@ -8,11 +8,11 @@ interface Input {
 	favoriEquationName: FavoriEquationName;
 }
 
-export class GetDetailOfSearchFavoriEquationUsecase extends UsecaseHandler.create({
+export class CountResultOfFindFavoriEquationUsecase extends UsecaseHandler.create({
 	favoriEquationRepository,
 }) {
 	public execute({ favoriEquationName, userId }: Input) {
-		return this.favoriEquationRepository.getDetailOfSearchFavoriEquations({
+		return this.favoriEquationRepository.countResultOfFindFavoriEquation({
 			userId,
 			favoriEquationName,
 		});

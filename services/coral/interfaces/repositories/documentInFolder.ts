@@ -1,21 +1,10 @@
 import { documentInFolderRepository } from "@business/applications/repositories/documentInFolder";
 import { DocumentInFolderEntity } from "@business/domains/entities/documentInFolder";
+import { escapeRegExp } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 
 const one = 1;
-const maxKeywordsInSummary = 30;
-
-function limitSummaryLength(summary: string, maxWords: number): string {
-	const words = summary.trim().split(/\s+/);
-	const start = 0;
-
-	if (words.length <= maxWords) {
-		return summary;
-	}
-
-	return `${words.slice(start, maxWords).join(" ")}...`;
-}
 
 documentInFolderRepository.default = {
 	async save(documentInFolderEntity) {
@@ -23,7 +12,7 @@ documentInFolderRepository.default = {
 
 		await mongo.documentInFolder.updateOne(
 			{
-				id: simpledocumentInFolder.id,
+				nodeSameRawDocumentId: simpledocumentInFolder.nodeSameRawDocumentId,
 			},
 			{
 				$set: {
@@ -37,16 +26,16 @@ documentInFolderRepository.default = {
 		return documentInFolderEntity;
 	},
 	async delete(documentInFolderEntity) {
-		const { id } = documentInFolderEntity.toSimpleObject();
+		const { nodeSameRawDocumentId } = documentInFolderEntity.toSimpleObject();
 
 		await mongo.documentInFolder.deleteOne({
-			id,
+			nodeSameRawDocumentId,
 		});
 	},
-	async findDocumentInFolder(documentFolderId, documentId) {
+	async findDocumentInFolder(documentFolderId, nodeSameRawNodeSameRawDocumentId) {
 		const documentInFolder = await mongo.documentInFolder.findOne({
 			documentFolderId,
-			documentId,
+			nodeSameRawNodeSameRawDocumentId,
 		});
 
 		if (!documentInFolder) {
@@ -58,16 +47,16 @@ documentInFolderRepository.default = {
 			documentInFolder,
 		);
 	},
-	async searchDocumentInFolderPerPageWhereTitleIs(input) {
-		const { documentFolder, documentTitle, quantityPerPage, page } = input;
+	async findDocuments(input) {
+		const { documentFolder, documentInFolderName, quantityPerPage, page } = input;
 		const { id } = documentFolder.toSimpleObject();
 
 		const mongoDocumentsInFolder = await mongo.documentInFolder
 			.find(
 				{
 					documentFolderId: id,
-					title: {
-						$regex: documentTitle.value,
+					name: {
+						$regex: escapeRegExp(documentInFolderName.value),
 						$options: "i",
 					},
 				},
@@ -86,16 +75,16 @@ documentInFolderRepository.default = {
 
 		return documentsInFolder;
 	},
-	async getDetailsOfSearchDocumentInFolder(input) {
-		const { documentFolder, documentTitle } = input;
+	async countResultOfFindDocumentInFolder(input) {
+		const { documentFolder, documentInFolderName } = input;
 		const { id } = documentFolder.toSimpleObject();
 
 		const numberOfDocumentsInFolder = await mongo.documentInFolder
 			.countDocuments(
 				{
 					documentFolderId: id,
-					title: {
-						$regex: documentTitle.value,
+					name: {
+						$regex: escapeRegExp(documentInFolderName.value),
 						$options: "i",
 					},
 				},
@@ -104,19 +93,6 @@ documentInFolderRepository.default = {
 				(numberOfDocumentsInFolder) => intObjecter.unsafeCreate(numberOfDocumentsInFolder),
 			);
 
-		return {
-			numberOfDocumentsInFolder,
-		};
-	},
-	async *streamByDocumentId(documentId) {
-		const cursor = mongo.documentInFolder
-			.find({ id: documentId.value });
-
-		for await (const documentInFolder of cursor) {
-			yield EntityHandler.unsafeMapper(
-				DocumentInFolderEntity,
-				documentInFolder,
-			);
-		}
+		return numberOfDocumentsInFolder;
 	},
 };

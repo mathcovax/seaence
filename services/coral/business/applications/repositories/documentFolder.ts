@@ -2,14 +2,14 @@ import { type UserId } from "@business/domains/common/user";
 import { type DocumentFolderId, type DocumentFolderEntity, type DocumentFolderTitle } from "@business/domains/entities/documentFolder";
 import { createRepositoryHandler, type PositiveInt, type Int, type RepositoryBase } from "@vendors/clean";
 
-interface InputSearchDocumentFolderPerPageWhereTitleIs {
+interface InputFindDocumentFolders {
 	userId: UserId;
 	documentFolderTitle: DocumentFolderTitle;
 	page: PositiveInt;
 	quantityPerPage: PositiveInt;
 }
 
-interface InputGetDetailsSearchDocumentFolder {
+interface InputCountResultOfFindDocumentFolder {
 	userId: UserId;
 	documentFolderTitle: DocumentFolderTitle;
 }
@@ -19,12 +19,12 @@ export interface DocumentFolderRepository extends RepositoryBase<DocumentFolderE
 	delete(folder: DocumentFolderEntity): Promise<void>;
 	countDocumentsInFolder(folder: DocumentFolderEntity): Promise<Int>;
 	findDocumentFolderById(documentFolderId: DocumentFolderId): Promise<DocumentFolderEntity | null>;
-	searchDocumentFolderPerPageWhereTitleIs(
-		input: InputSearchDocumentFolderPerPageWhereTitleIs,
+	findDocumentFolders(
+		input: InputFindDocumentFolders,
 	): Promise<DocumentFolderEntity[]>;
-	getDetailsSearchDocumentFolder(
-		input: InputGetDetailsSearchDocumentFolder,
-	): Promise<{ numberOfDocumentFolders: Int }>;
+	countResultOfFindDocumentFolder(
+		input: InputCountResultOfFindDocumentFolder,
+	): Promise<Int>;
 }
 
 export const documentFolderRepository = createRepositoryHandler<DocumentFolderRepository>();

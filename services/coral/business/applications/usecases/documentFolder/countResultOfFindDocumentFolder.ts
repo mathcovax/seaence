@@ -8,11 +8,11 @@ interface Input {
 	documentFolderTitle: DocumentFolderTitle;
 }
 
-export class GetDetailsOfSearchDocumentFolderUsecase extends UsecaseHandler.create({
+export class CountResultOfFindDocumentFolderUsecase extends UsecaseHandler.create({
 	documentFolderRepository,
 }) {
 	public execute({ userId, documentFolderTitle }: Input) {
-		return this.documentFolderRepository.getDetailsSearchDocumentFolder({
+		return this.documentFolderRepository.countResultOfFindDocumentFolder({
 			userId,
 			documentFolderTitle,
 		});

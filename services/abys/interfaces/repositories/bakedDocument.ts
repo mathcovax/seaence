@@ -42,14 +42,6 @@ bakedDocumentRepository.default = {
 			{ upsert: true },
 		);
 
-		if (beforeBakedDocument) {
-			await asyncMessage.collections.renameDocument.emit({
-				documentId: simpleBakedDocument.id,
-				newTitle: simpleBakedDocument.title,
-				oldTitle: beforeBakedDocument.title,
-			});
-		}
-
 		return bakedDocument;
 	},
 	async makeBakedTitleWithRawTitle(rawTitle, language) {
