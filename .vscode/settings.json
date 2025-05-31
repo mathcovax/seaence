@@ -45,6 +45,7 @@
     "services/sea",
     "services/spotter",
 	"services/bridge",
+	"services/coral",
 	"services/lighthouse"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",

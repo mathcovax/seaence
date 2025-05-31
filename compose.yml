@@ -35,6 +35,8 @@ include:
   # bottle service (notification)
   - path:
       - ${INCLUDE_PATH}/bottle/compose.yml
+  - path:
+      - ${INCLUDE_PATH}/coral/compose.yml
 
 services:
   async-message-mongo:
@@ -42,7 +44,7 @@ services:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}
       service: template-mongo
     attach: false
-    command: ["mongod", "--replSet", "rs0"]
+    command: [ "mongod", "--replSet", "rs0" ]
     post_start:
       - command: |
           bash -c "

@@ -14,3 +14,10 @@ export const emailObjecter = zod
 	.createValueObjecter("email");
 
 export type Email = GetValueObject<typeof emailObjecter>;
+
+export const textObjecter = zod
+	.string()
+	.createValueObjecter("text");
+
+export type Text = GetValueObject<typeof textObjecter>;
+
