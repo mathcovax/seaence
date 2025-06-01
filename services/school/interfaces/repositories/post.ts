@@ -9,6 +9,33 @@ postRepository.default = {
 	generatePostId() {
 		return postIdObjecter.unsafeCreate(uuidv7());
 	},
+	async findOldestUnprocessedPost() {
+		const unprocessedOldestMongoPost = await mongo.postCollection.findOne(
+			{
+				status: "unprocessed",
+			},
+			{
+				sort: {
+					createdAt: 1,
+				},
+			},
+		);
+
+		if (!unprocessedOldestMongoPost) {
+			return null;
+		}
+
+		return EntityHandler.unsafeMapper(
+			PostEntity,
+			{
+				...unprocessedOldestMongoPost,
+				author: EntityHandler.unsafeMapper(
+					UserEntity,
+					unprocessedOldestMongoPost.author,
+				),
+			},
+		);
+	},
 	async findByNodeSameRawDocumentId(nodeSameRawDocumentId, { quantityPerPage, page }) {
 		const mongoPosts = mongo.postCollection.find({
 			nodeSameRawDocumentId: nodeSameRawDocumentId.value,
@@ -20,6 +47,7 @@ postRepository.default = {
 					answerCount: -1,
 				},
 			)
+			.filter({ status: { $ne: "non_compliant" } })
 			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.map(
