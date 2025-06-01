@@ -1,0 +1,20 @@
+services:
+  coral:
+    extends:
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
+    command: npm -w services/coral run duplo:dev
+    depends_on:
+      - coral-mongo
+      - coral-mongo-viewer
+  coral-mongo:
+    extends:
+      file: ${TEMPLATE_COMPOSE_MONGO_DEV}
+      service: template-mongo
+    env_file: ${INCLUDE_PATH}/coral/.env
+    volumes:
+      - "coral-mongo-data:/data/db"
+    attach: false
+
+volumes:
+  coral-mongo-data:

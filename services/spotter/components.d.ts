@@ -8,7 +8,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    BaseLayout: typeof import('./vendors/design-system/components/form/BaseLayout.vue')['default']
     BaseLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseLayoutTemplate.vue')['default']
     CheckboxTemplate: typeof import('./vendors/design-system/components/form/CheckboxTemplate.vue')['default']
     CheckLayoutTemplate: typeof import('./vendors/design-system/components/form/CheckLayoutTemplate.vue')['default']

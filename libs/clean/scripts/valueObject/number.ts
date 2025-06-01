@@ -7,3 +7,11 @@ export const intObjecter = zod
 	.createValueObjecter("int");
 
 export type Int = GetValueObject<typeof intObjecter>;
+
+export const positiveIntObjecter = zod
+	.number()
+	.int()
+	.positive()
+	.createValueObjecter("positiveInt");
+
+export type PositiveInt = GetValueObject<typeof positiveIntObjecter>;
