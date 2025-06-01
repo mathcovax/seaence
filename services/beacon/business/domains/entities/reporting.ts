@@ -19,5 +19,9 @@ export class ReportingEntity extends EntityHandler.create({
 	id: reportingIdObjecter,
 	details: reportingDetailsObjecter,
 }) {
-
+	public updateDetails(details: ReportingDetails) {
+		return this.update({
+			details,
+		});
+	}
 }
