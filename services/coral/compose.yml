@@ -6,7 +6,6 @@ services:
     command: npm -w services/coral run duplo:dev
     depends_on:
       - coral-mongo
-      - coral-mongo-viewer
   coral-mongo:
     extends:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}

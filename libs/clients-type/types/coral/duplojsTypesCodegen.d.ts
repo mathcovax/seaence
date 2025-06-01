@@ -56,9 +56,17 @@ type CodegenRoutes = ({
     path: "/create-document-folder";
     body: {
         userId: string;
-        title: string;
+        documentFolderName: string;
     };
     response: {
+        code: 409;
+        information: "documentFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentFolder.maxQuantity";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentFolder.created";
         body?: undefined;
@@ -67,16 +75,24 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/get-document-folder";
     body: {
-        userId: string;
         documentFolderId: string;
+        userId: string;
     };
     response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentFolder.found";
         body: {
             id: string;
             userId: string;
-            title: string;
+            name: string;
             numberOfDocument: number;
             createdAt: Date;
         };
@@ -85,20 +101,28 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/remove-document-folder";
     body: {
-        userId: string;
         documentFolderId: string;
+        userId: string;
     };
     response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentFolder.removed";
         body?: undefined;
     };
 }) | ({
     method: "POST";
-    path: "/search-document-folders-per-page";
+    path: "/search-document-folders";
     body: {
         userId: string;
-        partialTitleDocumentFolder: string;
+        partialDocumentFolderName: string;
         page: number;
         quantityPerPage: number;
     };
@@ -108,7 +132,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             userId: string;
-            title: string;
+            name: string;
             numberOfDocument: number;
             createdAt: Date;
         }[];
@@ -118,38 +142,68 @@ type CodegenRoutes = ({
     path: "/get-search-document-folders-count";
     body: {
         userId: string;
-        partialTitleDocumentFolder: string;
+        partialDocumentFolderName: string;
     };
     response: {
         code: 200;
         information: "documentFolders.searchDetails";
-        body: number;
+        body: {
+            total: number;
+        };
     };
 }) | ({
     method: "POST";
-    path: "/add-document-in-folder";
+    path: "/create-document-in-folder";
     body: {
-        userId: string;
         documentFolderId: string;
+        userId: string;
     } & {
         nodeSameRawDocumentId: string;
         documentInFolderName: string;
     };
     response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentInFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentInFolder.maxQuantity";
+        body?: undefined;
+    } | {
         code: 200;
-        information: "documentInFolder.added";
+        information: "documentInFolder.created";
         body?: undefined;
     };
 }) | ({
     method: "POST";
     path: "/get-document-in-folder";
     body: {
-        userId: string;
         documentFolderId: string;
+        userId: string;
     } & {
         nodeSameRawDocumentId: string;
     };
     response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentInFolder.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentInFolder.found";
         body: {
@@ -163,12 +217,24 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/remove-document-in-folder";
     body: {
-        userId: string;
         documentFolderId: string;
+        userId: string;
     } & {
         nodeSameRawDocumentId: string;
     };
     response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentInFolder.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentInFolder.removed";
         body?: undefined;
@@ -177,14 +243,22 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/search-documents-in-folder";
     body: {
-        userId: string;
         documentFolderId: string;
+        userId: string;
     } & {
-        partialNameDocument: string;
+        partialDocumentInFolderName: string;
         page: number;
         quantityPerPage: number;
     };
     response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentsInFolder.found";
         body: {
@@ -198,27 +272,41 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/get-search-documents-in-folder-count";
     body: {
-        userId: string;
         documentFolderId: string;
+        userId: string;
     } & {
-        partialNameDocument: string;
+        partialDocumentInFolderName: string;
     };
     response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentsInFolder.searchDetails";
-        body: number;
+        body: {
+            total: number;
+        };
     };
 }) | ({
     method: "POST";
-    path: "/add-equation-to-favorite";
+    path: "/create-favorite-equation";
     body: {
         userId: string;
         equation: OperatorContent;
-        equationName: string;
+        favoriteEquationName: string;
     };
     response: {
+        code: 409;
+        information: "favoriEquation.nameAlreadyUse";
+        body?: undefined;
+    } | {
         code: 200;
-        information: "eqaution.added-to-favorite";
+        information: "favoriEqaution.created";
         body?: undefined;
     };
 }) | ({
@@ -226,9 +314,17 @@ type CodegenRoutes = ({
     path: "/get-favorite-equation";
     body: {
         userId: string;
-        favoriEquationId: string;
+        favoriteEquationId: string;
     };
     response: {
+        code: 403;
+        information: "favoriteEquation.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "favoriteEquation.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "favoriEquation.found";
         body: {
@@ -244,19 +340,27 @@ type CodegenRoutes = ({
     path: "/remove-equation-from-favorite";
     body: {
         userId: string;
-        favoriEquationId: string;
+        favoriteEquationId: string;
     };
     response: {
+        code: 403;
+        information: "favoriteEquation.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "favoriteEquation.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "favoriequation.removed";
         body?: undefined;
     };
 }) | ({
     method: "POST";
-    path: "/search-favori-equations";
+    path: "/search-favorite-equations";
     body: {
         userId: string;
-        partialNameFavoriEquation: string;
+        partialFavoriteEquationName: string;
         page: number;
         quantityPerPage: number;
     };
@@ -273,15 +377,17 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/get-search-favori-equations-count";
+    path: "/get-search-favorite-equations-count";
     body: {
         userId: string;
-        partialNameFavoriEquation: string;
+        partialFavoriteEquationName: string;
     };
     response: {
         code: 200;
         information: "favoriEquations.searchDetails";
-        body: number;
+        body: {
+            total: number;
+        };
     };
 });
 
