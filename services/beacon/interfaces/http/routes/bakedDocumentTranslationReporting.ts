@@ -1,12 +1,10 @@
 import { bakedDocumentIdObjecter } from "@business/domains/common/bakedDocument";
 import { userIdObjecter } from "@business/domains/common/user";
-import { BakedDocumentTranslationReportingEntity } from "@business/domains/entities/bakedDocumentTranslationReporting";
 import { reportingDetailsObjecter } from "@business/domains/entities/reporting";
-import { createBakedDocumentTranslationReportingUsecase } from "@interfaces/usecase";
-import { match, P } from "ts-pattern";
+import { upsertBakedDocumentTranslationReportingUsecase } from "@interfaces/usecase";
 
 useBuilder()
-	.createRoute("POST", "/create-baked-document-translation-reporting")
+	.createRoute("POST", "/upsert-baked-document-translation-reporting")
 	.extract({
 		body: {
 			userId: userIdObjecter.toZodSchema(),
@@ -14,36 +12,22 @@ useBuilder()
 			reportingDetails: reportingDetailsObjecter.toZodSchema(),
 		},
 	})
-	.cut(
-		async({ pickup, dropper }) => {
+	.handler(
+		async(pickup) => {
 			const {
 				bakedDocumentId,
 				reportingDetails,
 				userId,
 			} = pickup(["bakedDocumentId", "reportingDetails", "userId"]);
 
-			const result = await createBakedDocumentTranslationReportingUsecase
+			await upsertBakedDocumentTranslationReportingUsecase
 				.execute({
 					userId,
 					reportingDetails,
 					bakedDocumentId,
 				});
 
-			return match({ result })
-				.with(
-					{ result: { information: "reporting-already-exist" } },
-					() => new ConflictHttpResponse("bakedDocumentTranslationReporting.alreadyExist"),
-				)
-				.with(
-					{ result: P.instanceOf(BakedDocumentTranslationReportingEntity) },
-					() => dropper(null),
-				)
-				.exhaustive();
+			return new NoContentHttpResponse("bakedDocumentTranslationReporting.upsert");
 		},
-		[],
-		makeResponseContract(ConflictHttpResponse, "bakedDocumentTranslationReporting.alreadyExist"),
-	)
-	.handler(
-		() => new NoContentHttpResponse("bakedDocumentTranslationReporting.created"),
-		makeResponseContract(NoContentHttpResponse, "bakedDocumentTranslationReporting.created"),
+		makeResponseContract(NoContentHttpResponse, "bakedDocumentTranslationReporting.upsert"),
 	);
