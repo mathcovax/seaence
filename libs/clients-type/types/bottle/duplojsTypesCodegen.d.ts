@@ -9,9 +9,10 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/create-register-notification";
     body: {
-        userId: string;
-        userEmail: string;
+        id: string;
         username: string;
+        email: string;
+        language: "fr-FR" | "en-US";
     };
     response: {
         code: 200;

@@ -10,9 +10,10 @@ bottleRepository.default = {
 		const { id, email, username } = user.toSimpleObject();
 
 		await BottleAPI.createRegisterNotification({
-			userId: id,
-			userEmail: email,
+			id,
+			email,
 			username,
+			language: "fr-FR",
 		});
 	},
 };

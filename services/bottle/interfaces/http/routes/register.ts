@@ -1,24 +1,16 @@
-import { userEmailObjecter, userIdObjecter, usernameObjecter } from "@business/domains/entities/user";
-import { createAndSendRegisterUsecase } from "@interfaces/usecases";
+import { userObjecter } from "@business/domains/common/user";
+import { createAndSendRegisterNotificationUsecase } from "@interfaces/usecases";
 
 useBuilder()
 	.createRoute("POST", "/create-register-notification")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			userEmail: userEmailObjecter.toZodSchema(),
-			username: usernameObjecter.toZodSchema(),
-		}),
+		body: userObjecter.toZodSchema(),
 	})
 	.handler(
 		async(pickup) => {
-			const { userId, userEmail, username } = pickup("body");
+			const user = pickup("body");
 
-			await createAndSendRegisterUsecase.execute({
-				userId,
-				userEmail,
-				username,
-			});
+			await createAndSendRegisterNotificationUsecase.execute({ user });
 
 			return new OkHttpResponse("notification.sent");
 		},

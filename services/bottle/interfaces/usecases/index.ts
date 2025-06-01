@@ -1,4 +1,4 @@
 import "../repositories";
-import { CreateAndSendRegisterUsecase } from "@business/applications/usecases/createAndSendRegister";
+import { CreateAndSendRegisterNotificationUsecase } from "@business/applications/usecases/createAndSendRegisterNotification";
 
-export const createAndSendRegisterUsecase = new CreateAndSendRegisterUsecase();
+export const createAndSendRegisterNotificationUsecase = new CreateAndSendRegisterNotificationUsecase();
