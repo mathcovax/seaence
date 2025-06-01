@@ -1,4 +1,4 @@
-import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { userObjecter } from "../common/user";
 import { type Username } from "./user";
 import { postRules } from "@vendors/entity-rules";
@@ -24,6 +24,15 @@ export type PostAnswerCount = GetValueObject<typeof postAnswerCountObjecter>;
 export const nodeSameRawDocumentIdObjecter = zod.string().createValueObjecter("nodeSameRawDocumentId");
 export type NodeSameRawDocumentId = GetValueObject<typeof nodeSameRawDocumentIdObjecter>;
 
+export const postStatusEnum = createEnum([
+	"verified",
+	"unprocessed",
+	"not_compliant",
+]);
+
+export const postStatusObjecter = zod.enum(postStatusEnum.toTuple()).createValueObjecter("postStatus");
+export type PostStatus = GetValueObject<typeof postStatusObjecter>;
+
 const defaultAnswerCount = 0;
 
 type InputCreatePostEntity = Omit<GetEntityProperties<typeof PostEntity>, "answerCount" | "createdAt">;
@@ -35,11 +44,13 @@ export class PostEntity extends EntityHandler.create({
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
 	answerCount: postAnswerCountObjecter,
 	author: userObjecter,
+	status: postStatusObjecter,
 	createdAt: commonDateObjecter,
 }) {
 	public static create(params: InputCreatePostEntity) {
 		return new PostEntity({
 			...params,
+			status: postStatusObjecter.unsafeCreate("unprocessed"),
 			answerCount: postAnswerCountObjecter.unsafeCreate(defaultAnswerCount),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
 		});

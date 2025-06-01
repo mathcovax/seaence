@@ -14,6 +14,10 @@ interface InputEnableNotification {
 export class BottleAPI {
 	private static httpClient: HttpClient<BottleClientRoute>;
 
+	public static createWarningNotification() {
+		throw new Error("Method not implemented.");
+	}
+
 	public static enableNotification(input: InputEnableNotification) {
 		return this.httpClient
 			.post(

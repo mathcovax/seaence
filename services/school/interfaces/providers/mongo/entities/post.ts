@@ -1,3 +1,4 @@
+import { type PostStatus } from "@business/domains/entities/post";
 import { type MongoUser } from "./user";
 
 export interface MongoPost {
@@ -7,5 +8,6 @@ export interface MongoPost {
 	nodeSameRawDocumentId: string;
 	author: MongoUser;
 	answerCount: number;
+	status: PostStatus["value"];
 	createdAt: Date;
 }
