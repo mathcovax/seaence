@@ -7,6 +7,52 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
+    path: "/create-warning";
+    body: {
+        type: "post";
+        makeUserBan: boolean;
+        reason: string;
+        postId: string;
+    } | never;
+    response: {
+        code: 200;
+        information: "warning.created";
+        body: {
+            id: string;
+            makeUserBan: boolean;
+            reason: string;
+        } | {
+            id: string;
+            makeUserBan: boolean;
+            reason: string;
+            postId: string;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/create-warning";
+    body: {
+        type: "post";
+        makeUserBan: boolean;
+        reason: string;
+        postId: string;
+    } | never;
+    response: {
+        code: 200;
+        information: "warning.created";
+        body: {
+            id: string;
+            makeUserBan: boolean;
+            reason: string;
+        } | {
+            id: string;
+            makeUserBan: boolean;
+            reason: string;
+            postId: string;
+        };
+    };
+}) | ({
+    method: "POST";
     path: "/find-user";
     body: {
         accessToken: string;

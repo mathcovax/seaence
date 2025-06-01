@@ -2,12 +2,14 @@ import { userObjecter } from "@business/domains/common/user";
 import {
 	nodeSameRawDocumentIdObjecter,
 	postContentObjecter,
+	PostEntity,
 	postIdObjecter,
 	postTopicObjecter,
 } from "@business/domains/entities/post";
 import {
 	createPostUsecase,
 	findPostsFromNodeSameRawDocumentIdUsecase,
+	getOldestUnprocessedPostUsecase,
 	getPostTotalCountFromNodeSameRawDocumentIdUsecase,
 } from "@interfaces/usecase";
 import { intObjecter } from "@vendors/clean";
@@ -122,4 +124,20 @@ useBuilder()
 			);
 		},
 		makeResponseContract(OkHttpResponse, "post.found", endpointPostSchema),
+	);
+
+useBuilder()
+	.createRoute("GET", "/get-oldest-unprocessed-post")
+	.handler(
+		async() => {
+			const post = await getOldestUnprocessedPostUsecase.execute();
+
+			const simplePost = post instanceof PostEntity ? post.toSimpleObject() : null;
+
+			return new OkHttpResponse(
+				"oldestUnprocessedPost.found",
+				simplePost,
+			);
+		},
+		makeResponseContract(OkHttpResponse, "oldestUnprocessedPost.found", endpointPostSchema.nullable()),
 	);

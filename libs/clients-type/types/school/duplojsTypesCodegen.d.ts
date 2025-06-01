@@ -90,6 +90,25 @@ type CodegenRoutes = ({
         };
     };
 }) | ({
+    method: "GET";
+    path: "/get-oldest-unprocessed-post";
+    response: {
+        code: 200;
+        information: "oldestUnprocessedPost.found";
+        body: {
+            id: string;
+            nodeSameRawDocumentId: string;
+            topic: string;
+            content: string;
+            author: {
+                id: string;
+                username: string;
+            };
+            answerCount: number;
+            createdAt: Date;
+        } | null;
+    };
+}) | ({
     method: "POST";
     path: "/posts/{postId}/answers";
     body: {
