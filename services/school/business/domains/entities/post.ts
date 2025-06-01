@@ -35,7 +35,7 @@ export type PostStatus = GetValueObject<typeof postStatusObjecter>;
 
 const defaultAnswerCount = 0;
 
-type InputCreatePostEntity = Omit<GetEntityProperties<typeof PostEntity>, "answerCount" | "createdAt">;
+type InputCreatePostEntity = Omit<GetEntityProperties<typeof PostEntity>, "answerCount" | "createdAt" | "status">;
 
 export class PostEntity extends EntityHandler.create({
 	id: postIdObjecter,

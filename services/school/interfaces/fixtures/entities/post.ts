@@ -32,6 +32,7 @@ export async function makePost(
 						username: post?.author?.username || faker.internet.displayName(),
 					},
 				),
+				status: post?.status || "unprocessed",
 				createdAt: post?.createdAt || faker.date.past({
 					years: 1,
 					refDate: new Date(),
