@@ -21,7 +21,7 @@
 Quand une réponse a un poste est créer, le service envoie un async message `createReplyToPost`
 
 PS :
-- Doit ce faire uniquement lors de la création du poste dans la méthode save. 
+- Doit ce faire uniquement lors de la création d'un post. 
 
 ### Bottle implémentation
 

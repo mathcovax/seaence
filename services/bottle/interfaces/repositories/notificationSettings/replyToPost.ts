@@ -7,7 +7,7 @@ const zero = 0;
 
 replyToPostNotificationSettingsRepository.default = {
 	save() {
-		throw new RepositoryError("unsupportedMethod");
+		throw new RepositoryError("unsupported-method");
 	},
 	async findReplyToPostNotificationSettings(userId, postId) {
 		const mongoReplyToPostNotificationSettings = await mongo

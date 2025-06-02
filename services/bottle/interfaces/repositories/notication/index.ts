@@ -9,6 +9,7 @@ import { RegisterNotificationEntity } from "@business/domains/entities/notificat
 import { registerTemplate } from "@interfaces/providers/email/templates/registerTemplate";
 import { ReplyToPostNotificationEntity } from "@business/domains/entities/notification/replyToPost";
 import { type MongoNotification } from "@interfaces/providers/mongo/entities/notification";
+import { EntityHandler } from "@vendors/clean";
 
 notificationRepository.default = {
 	generateNotificationId() {
@@ -67,5 +68,32 @@ notificationRepository.default = {
 				},
 			)
 			.exhaustive();
+	},
+	async findProcessedNotificationToUser(userId, params) {
+		const mongoNotifications = await mongo.notificationCollection
+			.find({
+				userId: userId.value,
+				processed: true,
+			})
+			.skip(params.page.value * params.quantityPerPage.value)
+			.limit(params.quantityPerPage.value)
+			.toArray();
+
+		return mongoNotifications.map((notification) => match({ notification })
+			.with(
+				{ notification: { type: "register" } },
+				({ notification }) => EntityHandler.unsafeMapper(
+					RegisterNotificationEntity,
+					notification,
+				),
+			)
+			.with(
+				{ notification: { type: "replyToPost" } },
+				({ notification }) => EntityHandler.unsafeMapper(
+					RegisterNotificationEntity,
+					notification,
+				),
+			)
+			.exhaustive());
 	},
 };

@@ -6,7 +6,7 @@ const timeToLive = 604800;
 
 export class RegisterNotificationEntity extends EntityHandler.create(
 	{
-		...createEntityKind("test"),
+		...createEntityKind("register"),
 	},
 	BaseNotificationEntity,
 ) {
@@ -24,5 +24,3 @@ export class RegisterNotificationEntity extends EntityHandler.create(
 		});
 	}
 }
-
-type tt = RegisterNotificationEntity["kind"];

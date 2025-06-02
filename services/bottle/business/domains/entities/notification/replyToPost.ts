@@ -17,6 +17,7 @@ export type SummaryOfReplyPost = GetValueObject<typeof summaryOfReplyPostObjecte
 
 export class ReplyToPostNotificationEntity extends EntityHandler.create(
 	{
+		...createEntityKind("ReplyToPost"),
 		postId: postIdObjecter,
 		usernameOfReplyPost: usernameObjecter,
 		summaryOfReplyPost: summaryOfReplyPostObjecter,
