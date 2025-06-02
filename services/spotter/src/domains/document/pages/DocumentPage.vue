@@ -3,6 +3,7 @@ import type { FlexibleDate } from "@vendors/clients-type/horizon/duplojsTypesCod
 import { useDocumentPage } from "../composables/useDocumentPage";
 import PostRow from "@/domains/forum/components/PostRow.vue";
 import { RouterLink } from "vue-router";
+import ReportingWrongTranslateDialog from "../components/ReportingWrongTranslateDialog.vue";
 
 const { $pt, params } = documentPage.use();
 const router = useRouter();
@@ -23,7 +24,7 @@ const allAffiliations = computed(() => {
 		({ affiliations }) => affiliations ?? [],
 	);
 
-	return Array.from(new Set<string>(affiliations));
+	return Array.from(new Set(affiliations));
 });
 
 function formatedDate(date: FlexibleDate) {
@@ -103,6 +104,13 @@ function formatedDate(date: FlexibleDate) {
 							{{ formatedDate(document.webPublishDate) }}
 						</div>
 					</div>
+
+					<ReportingWrongTranslateDialog :baked-document-id="document.id">
+						<DSClickableText
+							class="self-start"
+							:content="$pt('reportingWrongTranslate.cta')"
+						/>
+					</ReportingWrongTranslateDialog>
 				</div>
 
 				<div class="flex flex-col md:flex-row gap-6 md:gap-8">

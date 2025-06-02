@@ -80,6 +80,11 @@ export function useCheckLayout<
 			}
 		}
 
+		function reset() {
+			formFieldComponent.exposed.check();
+			errorMessage.value = "";
+		}
+
 		effect(() => {
 			if (errorMessage.value) {
 				check();
@@ -96,6 +101,7 @@ export function useCheckLayout<
 		return {
 			exposed: {
 				check,
+				reset,
 			},
 			getVNode: () => {
 				if (disable.value) {

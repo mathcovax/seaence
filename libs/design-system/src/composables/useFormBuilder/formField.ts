@@ -14,6 +14,7 @@ export interface ExposedProperties<
 	GenericCheckedType extends unknown = unknown,
 > {
 	check(): ZodError | GenericCheckedType;
+	reset(): void;
 }
 
 export interface FormFieldParams<

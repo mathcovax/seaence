@@ -10,7 +10,7 @@ bakedDocumentTranslationReportingRepository.default = {
 		await mongo.bakedDocumentTranslationReportingCollection
 			.updateOne(
 				{ id: simpleEntity.id },
-				simpleEntity,
+				{ $set: simpleEntity },
 				{ upsert: true },
 			);
 

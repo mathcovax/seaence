@@ -7,19 +7,15 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/create-baked-document-translation-reporting";
+    path: "/upsert-baked-document-translation-reporting";
     body: {
         userId: string;
         bakedDocumentId: string;
         reportingDetails: string;
     };
     response: {
-        code: 409;
-        information: "bakedDocumentTranslationReporting.alreadyExist";
-        body?: undefined;
-    } | {
         code: 204;
-        information: "bakedDocumentTranslationReporting.created";
+        information: "bakedDocumentTranslationReporting.upsert";
         body?: undefined;
     };
 });
