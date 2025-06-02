@@ -1,11 +1,13 @@
-import { commonDateObjecter, EntityHandler, type GetEntityProperties } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, createEntityKind } from "@vendors/clean";
 import { BaseNotificationEntity, processedObjecter } from "./base";
 
 // 7 days
 const timeToLive = 604800;
 
 export class RegisterNotificationEntity extends EntityHandler.create(
-	{},
+	{
+		...createEntityKind("test"),
+	},
 	BaseNotificationEntity,
 ) {
 	public static create(
@@ -22,3 +24,5 @@ export class RegisterNotificationEntity extends EntityHandler.create(
 		});
 	}
 }
+
+type tt = RegisterNotificationEntity["kind"];

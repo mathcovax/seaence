@@ -19,7 +19,8 @@
     "dotenv": "16.4.5",
     "dotenv-expand": "12.0.1",
     "nodemailer": "7.0.3",
-    "uuidv7": "1.0.2"
+    "uuidv7": "1.0.2",
+    "ts-pattern": "5.7.0"
   },
   "devDependencies": {
     "@duplojs/types-codegen": "1.1.3",

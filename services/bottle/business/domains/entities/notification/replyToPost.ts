@@ -1,8 +1,8 @@
-import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, createEntityKind, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { BaseNotificationEntity, processedObjecter } from "./base";
 import { replyToPostNotificationRules } from "@vendors/entity-rules";
-import { usernameObjecter } from "@business/domains/common/user";
 import { postIdObjecter } from "@business/domains/common/post";
+import { usernameObjecter } from "../user";
 
 // 7 days
 const timeToLive = 604800;

@@ -23,7 +23,7 @@
 Lors de la création d'un post il faut créer un settings de notification aux réponses de ce post
 
 PS:
-- L'action de création de settings de notification aux réponses d'un post, ce fait de facon synchrone (route `BottleProvider`)
+- L'action de création de settings de notification aux réponses d'un post, ce fait de facon synchrone (route `BottleAPI`)
 
 ### Bottle implémentation
 

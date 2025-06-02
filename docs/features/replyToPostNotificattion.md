@@ -4,7 +4,7 @@
 
 - je suis sur une page poste
 - je réponde au poste
-- tout les utilisateur qui ont autotriés l'envois de notification sur ce poste reçoive une notification.
+- tout les utilisateur qui ont autorisés l'envois de notification sur ce poste reçoive une notification.
 
 ### School user story
 

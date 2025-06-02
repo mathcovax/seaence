@@ -19,5 +19,6 @@ export const envs = zod
 		ASYNC_MESSAGE_MONGO_URL: zod.string(),
 		SERVICE_NAME: zod.literal("school").default("school"),
 		GLITCHTIP_DSN: zod.string(),
+		BOTTLE_BASE_URL: zod.string().url(),
 	})
 	.parse(process.env);

@@ -9,14 +9,27 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/create-register-notification";
     body: {
-        id: string;
-        username: string;
-        email: string;
-        language: "fr-FR" | "en-US";
+        userId: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notification.sent";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/activate-reply-post-notification";
+    body: {
+        userId: string;
+        postId: string;
     };
     response: {
         code: 200;
-        information: "notification.sent";
+        information: "replyPostNotification.activate";
         body?: undefined;
     };
 });

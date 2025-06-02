@@ -7,13 +7,6 @@ bottleRepository.default = {
 		throw new RepositoryError("Unsupported methods");
 	},
 	async createRegisterNotification(user) {
-		const { id, email, username } = user.toSimpleObject();
-
-		await BottleAPI.createRegisterNotification({
-			id,
-			email,
-			username,
-			language: "fr-FR",
-		});
+		await BottleAPI.createRegisterNotification(user.id.value);
 	},
 };

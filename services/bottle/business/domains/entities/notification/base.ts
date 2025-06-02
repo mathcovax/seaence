@@ -1,5 +1,5 @@
 import { commonDateObjecter, EntityHandler, type GetValueObject, zod } from "@vendors/clean";
-import { userObjecter } from "@business/domains/common/user";
+import { userIdObjecter } from "../user";
 
 export const notificationIdObjecter = zod.string().createValueObjecter("notificationId");
 export type NotificationId = GetValueObject<typeof notificationIdObjecter>;
@@ -9,7 +9,7 @@ export type Processed = GetValueObject<typeof processedObjecter>;
 
 export class BaseNotificationEntity extends EntityHandler.create({
 	id: notificationIdObjecter,
-	user: userObjecter,
+	userId: userIdObjecter,
 	processed: processedObjecter,
 	createdAt: commonDateObjecter,
 	deleteAt: commonDateObjecter,
