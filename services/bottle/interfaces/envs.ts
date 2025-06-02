@@ -22,5 +22,7 @@ export const envs = zod
 		SUPPORT_EMAIL: zod.string(),
 		CONTACT_EMAIL: zod.string(),
 		GLITCHTIP_DSN: zod.string(),
+		ASYNC_MESSAGE_MONGO_URL: zod.string(),
+		SERVICE_NAME: zod.literal("bottle").default("bottle"),
 	})
 	.parse(process.env);

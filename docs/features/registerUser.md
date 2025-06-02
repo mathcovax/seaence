@@ -26,7 +26,7 @@
 Je créer un user.
 
 PS:
-- envois d'un async message `createUser` quand l'utilisateur n'éxister pas avant
+- envoi d'un async message `createUser` quand l'utilisateur n'existe pas
 
 ### Bottle implémentation
 
