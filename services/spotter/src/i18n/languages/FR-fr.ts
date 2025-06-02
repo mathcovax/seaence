@@ -67,6 +67,18 @@ export const FRfr = {
 			},
 			createPost: "Créer un poste",
 			noPost: "Aucun post(s) trouvé pour ce document.",
+			reportingWrongTranslate: {
+				connexionRequire: "Il est obligatoire d'être connecté avant d'écrire un message.",
+				cta: "Signaler un problème de traduction du document.",
+				information: [
+					"La tarduction est faite pars un model machine learning généric, cela",
+					"implique que certain mots n'arrive pas a étre traduit. Signaler une mauvaise traduction",
+					"nous permer d'amélioré le model et donc d'amélioré votre expérience utilisateur de seance.",
+				].join(" "),
+				form: {
+					textareaLabel: "Détails du probléme de traduction.",
+				},
+			},
 		},
 		[postListPage.name]: {
 			titleLinkPost: "Post(s) lié(s) au document : {title}",
@@ -408,6 +420,9 @@ export const FRfr = {
 		},
 		answer: {
 			created: "Réponse créée avec succès.",
+		},
+		bakedDocumentTranslationReporting: {
+			upsert: "Le signalment a corectement étais pris en compte, merci de votre contribution.",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},

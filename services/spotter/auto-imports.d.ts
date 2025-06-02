@@ -92,6 +92,7 @@ declare global {
   const sheetVariants: typeof import('./vendors/design-system/components/ui/sheet/index')['sheetVariants']
   const simpleSearchPage: typeof import('./src/domains/search/router')['simpleSearchPage']
   const testPage: typeof import('./src/domains/search/router')['testPage']
+  const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
   const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toArrayZodSchema: typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']
   const toRaw: typeof import('vue')['toRaw']
@@ -148,14 +149,14 @@ declare global {
   export type { CheckLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout'
   import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')
   // @ts-ignore
+  export type { MultiLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')
+  // @ts-ignore
   export type { MaybeRef, FormContext, FormOptions } from './vendors/design-system/composables/useFormBuilder/index'
   import('./vendors/design-system/composables/useFormBuilder/index')
   // @ts-ignore
   export type { BaseLayoutOptions, MaybeCheckedType, ChouseDefaultValue } from './vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout'
   import('./vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout')
-  // @ts-ignore
-  export type { MultiLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout'
-  import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')
   // @ts-ignore
   export type { BaseLayoutTemplateProps, BaseLayoutTemplateItem, BaseLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/baseLayout'
   import('./vendors/design-system/composables/useFormBuilder/templates/baseLayout')
@@ -245,6 +246,7 @@ declare module 'vue' {
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly simpleSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['simpleSearchPage']>
+    readonly textareaFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textareaFormField']>
     readonly textformField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textformField']>
     readonly toArrayZodSchema: UnwrapRef<typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>

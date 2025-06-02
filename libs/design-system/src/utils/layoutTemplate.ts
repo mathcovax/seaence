@@ -6,6 +6,8 @@ import CheckLayoutTemplate from "../components/form/CheckLayoutTemplate.vue";
 import { useMultiFieldLayout } from "../composables/useFormBuilder/layouts/useMultiFieldLayout";
 import MultiLayoutTemplate from "../components/form/MultiLayoutTemplate.vue";
 import FormTemplate from "../components/form/FormTemplate.vue";
+import { useTextLayout } from "../composables/useFormBuilder/layouts/useTextLayout";
+import TextLayoutTemplate from "../components/form/TextLayoutTemplate.vue";
 
 export const baseLayoutTemplateGridCols = createLayoutTemplate(
 	useBaseLayout,
@@ -30,3 +32,9 @@ export const formTemplate = createLayoutTemplate(
 	FormTemplate,
 );
 useFormBuilder.defaultTemplate = formTemplate({ align: "auto" });
+
+export const textLayoutTemplateGridCols = createLayoutTemplate(
+	useTextLayout,
+	TextLayoutTemplate,
+);
+useTextLayout.defaultTemplate = textLayoutTemplateGridCols({ cols: 12 });

@@ -89,9 +89,14 @@ export function useBaseLayout<
 			return formFieldComponent.exposed.check();
 		}
 
+		function reset() {
+			formFieldComponent.exposed.check();
+		}
+
 		return {
 			exposed: {
 				check,
+				reset,
 			},
 			getVNode: () => {
 				if (disable.value) {

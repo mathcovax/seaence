@@ -55,6 +55,8 @@ declare global {
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
+  const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
   const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
@@ -150,6 +152,8 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly textLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']>
+    readonly textareaFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textareaFormField']>
     readonly textformField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textformField']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
