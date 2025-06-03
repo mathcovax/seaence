@@ -94,7 +94,7 @@ function loadNextPost() {
 </script>
 
 <template>
-	<section class="min-h-screen-nh p-6 bg-gray-50">
+	<section class="min-h-screen-nh p-6">
 		<div class="max-w-4xl mx-auto">
 			<header class="mb-8">
 				<h1 class="mb-2 text-3xl font-bold">

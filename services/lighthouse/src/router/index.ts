@@ -1,3 +1,4 @@
+import { dashboardPage } from "@/domains/dashboard/router";
 import { postPage } from "@/domains/post/router";
 import { createWebHistory, createRouter } from "vue-router";
 import {
@@ -14,6 +15,7 @@ export const router = createRouter({
 			path: "/",
 			component: () => import("../layouts/BaseLayout.vue"),
 			children: [
+				dashboardPage.recordRaw,
 				postPage.recordRaw,
 				reportingBakedDocumentTranslationListPage.recordRaw,
 				reportingBakedDocumentTranslationPage.recordRaw,

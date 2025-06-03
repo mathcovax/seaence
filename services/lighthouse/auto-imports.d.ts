@@ -16,6 +16,7 @@ declare global {
   const createExternalPromise: typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']
   const createPage: typeof import('./vendors/design-system/utils/createPage')['createPage']
   const customRef: typeof import('vue')['customRef']
+  const dashboardPage: typeof import('./src/domains/dashboard/router')['dashboardPage']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const effectScope: typeof import('vue')['effectScope']
@@ -151,7 +152,6 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
-    readonly postPage: UnwrapRef<typeof import('./src/domains/post/router')['postPage']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>

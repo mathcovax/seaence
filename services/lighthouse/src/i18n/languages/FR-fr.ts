@@ -1,3 +1,4 @@
+import { dashboardPage } from "@/domains/dashboard/router";
 import { postPage } from "@/domains/post/router";
 import { reportingBakedDocumentTranslationPage } from "@/domains/reporting/reportingBakedDocumentTranslation/router";
 import {
@@ -6,6 +7,22 @@ import {
 
 export const FRfr = {
 	page: {
+		[dashboardPage.name]: {
+			title: "Tableau de bord",
+			description: "Bienvenue sur votre tableau de bord.",
+			status: {
+				title: "État des services",
+				up: "En ligne",
+				down: "Hors ligne",
+			},
+			modules: {
+				title: "Modules d'administration",
+				post: {
+					title: "Modération des Posts",
+					description: "Examinez et modérez les posts en attente de validation.",
+				},
+			},
+		},
 		[postPage.name]: {
 			title: "Modération des Posts",
 			description: "Examinez et modérez les posts en attente de validation.",
@@ -68,6 +85,16 @@ export const FRfr = {
 				ctaTrigger: "Faire une re-traduction",
 				loading: "Chargement de la traduction en cours.",
 				ctaSubmit: "Valider la nouvel traduction",
+			},
+		},
+	},
+	layout: {
+		loader: {
+			title: "Chargement en cours...",
+		},
+		footer: {
+			nav: {
+				dashboard: "Tableau de bord",
 			},
 		},
 	},

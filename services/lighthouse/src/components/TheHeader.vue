@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { dashboardPage } from "@/domains/dashboard/router";
+
 const { isScrolled } = useScroll({ allowScrollEvent: true });
 </script>
 
@@ -8,7 +10,7 @@ const { isScrolled } = useScroll({ allowScrollEvent: true });
 		:class="{ 'shadow-md': isScrolled }"
 	>
 		<div class="container h-[var(--header-height)] flex items-center justify-between">
-			<RouterLink :to="'#'">
+			<RouterLink :to="dashboardPage">
 				<DSImage
 					src="/images/logos/logo-text.svg"
 					alt="Seaence"
