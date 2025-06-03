@@ -1,11 +1,11 @@
 import { postIdObjecter } from "@business/domains/common/post";
 import { userIdObjecter } from "@business/domains/entities/user";
-import { activateReplyToPostNotificationSettingsToPostUsecase, findReplyToPostNotificationSettingsToUserByPostIdUsecase } from "@interfaces/usecases";
+import { disableReplyToPostNotificationSettingsToPostUsecase, enableReplyToPostNotificationSettingsToPostUsecase, findReplyToPostNotificationSettingsToUserByPostIdUsecase } from "@interfaces/usecases";
 import { IWantUserExistsById } from "../checkers/user";
 import { endpointFindReplyToPostNotificationSettings } from "../schemas/notificationSettings";
 
 useBuilder()
-	.createRoute("POST", "/activate-reply-post-notification-settings")
+	.createRoute("POST", "/enable-reply-post-notification-settings")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -20,16 +20,46 @@ useBuilder()
 		async(pickup) => {
 			const { body: { postId }, user } = pickup(["body", "user"]);
 
-			await activateReplyToPostNotificationSettingsToPostUsecase.execute(
-				{
-					user,
-					postId,
-				},
-			);
+			await enableReplyToPostNotificationSettingsToPostUsecase
+				.execute(
+					{
+						user,
+						postId,
+					},
+				);
 
-			return new OkHttpResponse("replyPostNotification.activate");
+			return new OkHttpResponse("replyPostNotification.enable");
 		},
-		makeResponseContract(OkHttpResponse, "replyPostNotification.activate"),
+		makeResponseContract(OkHttpResponse, "replyPostNotification.enable"),
+	);
+
+useBuilder()
+	.createRoute("POST", "/disable-reply-post-notification-settings")
+	.extract({
+		body: zod.object({
+			userId: userIdObjecter.toZodSchema(),
+			postId: postIdObjecter.toZodSchema(),
+		}),
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const { body: { postId }, user } = pickup(["body", "user"]);
+
+			await disableReplyToPostNotificationSettingsToPostUsecase
+				.execute(
+					{
+						user,
+						postId,
+					},
+				);
+
+			return new OkHttpResponse("replyPostNotification.disable");
+		},
+		makeResponseContract(OkHttpResponse, "replyPostNotification.disable"),
 	);
 
 useBuilder()
@@ -44,8 +74,8 @@ useBuilder()
 		IWantUserExistsById,
 		(pickup) => pickup("body").userId,
 	)
-	.handler(
-		async(pickup) => {
+	.cut(
+		async({ pickup, dropper }) => {
 			const { body: { postId }, user } = pickup(["body", "user"]);
 
 			const replyToPostNotificationSettings = await findReplyToPostNotificationSettingsToUserByPostIdUsecase
@@ -61,7 +91,20 @@ useBuilder()
 						: null,
 				);
 
-			return new OkHttpResponse("replyPostNotification.found", replyToPostNotificationSettings);
+			if (!replyToPostNotificationSettings) {
+				return new NotFoundHttpResponse("replyToPostNotificationSettings.notfound");
+			}
+
+			return dropper({ replyToPostNotificationSettings });
 		},
-		makeResponseContract(OkHttpResponse, "replyPostNotification.found", endpointFindReplyToPostNotificationSettings),
+		["replyToPostNotificationSettings"],
+		makeResponseContract(NotFoundHttpResponse, "replyToPostNotificationSettings.notfound"),
+	)
+	.handler(
+		(pickup) => {
+			const { replyToPostNotificationSettings } = pickup(["replyToPostNotificationSettings"]);
+
+			return new OkHttpResponse("replyPostNotificationSettings.found", replyToPostNotificationSettings);
+		},
+		makeResponseContract(OkHttpResponse, "replyPostNotificationSettings.found", endpointFindReplyToPostNotificationSettings),
 	);

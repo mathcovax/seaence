@@ -64,4 +64,12 @@ replyToPostNotificationSettingsRepository.default = {
 			yield notificationSettings;
 		}
 	},
+	async delete(entity) {
+		const simpleEntity = entity.toSimpleObject();
+
+		await mongo.notificationSettingsCollection.deleteOne({
+			user: simpleEntity.user,
+			postId: simpleEntity.postId,
+		});
+	},
 };

@@ -12,6 +12,7 @@ export interface ReplyToPostNotificationSettingsRepository extends RepositoryBas
 	findReplyToPostNotificationsSettings(
 		postId: PostId,
 	): AsyncGenerator<ReplyToPostNotificationSettingsEntity[]>;
+	delete(entity: ReplyToPostNotificationSettingsEntity): Promise<void>;
 }
 
 export const replyToPostNotificationSettingsRepository

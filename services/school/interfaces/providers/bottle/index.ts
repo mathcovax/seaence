@@ -14,15 +14,15 @@ interface InputActivateReplyPostNotification {
 export class BottleAPI {
 	private static httpClient: HttpClient<BottleClientRoute>;
 
-	public static activateReplyPostNotification(input: InputActivateReplyPostNotification) {
+	public static enableReplyPostNotification(input: InputActivateReplyPostNotification) {
 		return this.httpClient
 			.post(
-				"/activate-reply-post-notification-settings",
+				"/enable-reply-post-notification-settings",
 				{
 					body: input,
 				},
 			)
-			.iWantInformation("replyPostNotification.activate");
+			.iWantInformation("replyPostNotification.enable");
 	}
 
 	static {

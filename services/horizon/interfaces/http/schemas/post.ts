@@ -11,6 +11,7 @@ export const endpointPostPageSchema = zod.object({
 		language: true,
 	}),
 	quantityAnswerPerPage: zod.number(),
+	notificationOfPostIsActivate: zod.boolean(),
 });
 
 export const endpointPostListPageSchema = zod.object({

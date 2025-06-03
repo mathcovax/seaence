@@ -7,14 +7,26 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/activate-reply-post-notification-settings";
+    path: "/enable-reply-post-notification-settings";
     body: {
         userId: string;
         postId: string;
     };
     response: {
         code: 200;
-        information: "replyPostNotification.activate";
+        information: "replyPostNotification.enable";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/disable-reply-post-notification-settings";
+    body: {
+        userId: string;
+        postId: string;
+    };
+    response: {
+        code: 200;
+        information: "replyPostNotification.disable";
         body?: undefined;
     };
 }) | ({
@@ -25,8 +37,12 @@ type CodegenRoutes = ({
         postId: string;
     };
     response: {
+        code: 404;
+        information: "replyToPostNotificationSettings.notfound";
+        body?: undefined;
+    } | {
         code: 200;
-        information: "replyPostNotification.found";
+        information: "replyPostNotificationSettings.found";
         body: {
             user: {
                 id: string;

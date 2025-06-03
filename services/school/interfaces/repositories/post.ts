@@ -82,7 +82,7 @@ postRepository.default = {
 		);
 
 		if (!mongoPost) {
-			await BottleAPI.activateReplyPostNotification({
+			await BottleAPI.enableReplyPostNotification({
 				postId: simplePost.id,
 				userId: simplePost.author.id,
 			});
