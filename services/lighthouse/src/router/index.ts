@@ -1,3 +1,4 @@
+import { dashboardPage } from "@/domains/dashboard/router";
 import { postPage } from "@/domains/post/router";
 import { createWebHistory, createRouter } from "vue-router";
 
@@ -7,7 +8,10 @@ export const router = createRouter({
 		{
 			path: "/",
 			component: () => import("../layouts/BaseLayout.vue"),
-			children: [postPage.recordRaw],
+			children: [
+				dashboardPage.recordRaw,
+				postPage.recordRaw,
+			],
 		},
 	],
 	scrollBehavior(_to, _from, savedPosition) {

@@ -1,7 +1,7 @@
 export const postPage = createPage(
 	"post",
 	{
-		path: "/",
+		path: "/post",
 		component: () => import("./pages/PostPage.vue"),
 	},
 );

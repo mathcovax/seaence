@@ -23,6 +23,7 @@ import {
 	mdiLinkVariant,
 	mdiCheck,
 	mdiClock,
+	mdiPost,
 } from "@mdi/js";
 import { computed } from "vue";
 
@@ -49,6 +50,7 @@ const iconsMapper = {
 	linkVariant: mdiLinkVariant,
 	check: mdiCheck,
 	clock: mdiClock,
+	post: mdiPost,
 };
 
 const sizeMapper = {

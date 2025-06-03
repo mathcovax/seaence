@@ -7,7 +7,11 @@
 	--py-page: 1rem;
 }
 
+body {
+	@apply bg-gray-50;
+}
+
 /* screen - header - padding y */
 @utility min-h-screen-nh {
-	min-height: calc(100vh - var(--header-height) - 2 * var(--py-page));
+	min-height: calc(100vh - var(--header-height));
 }

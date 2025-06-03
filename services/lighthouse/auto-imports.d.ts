@@ -15,6 +15,7 @@ declare global {
   const createExternalPromise: typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']
   const createPage: typeof import('./vendors/design-system/utils/createPage')['createPage']
   const customRef: typeof import('vue')['customRef']
+  const dashboardPage: typeof import('./src/domains/dashboard/router')['dashboardPage']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const effectScope: typeof import('vue')['effectScope']
@@ -111,6 +112,7 @@ declare module 'vue' {
     readonly createExternalPromise: UnwrapRef<typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']>
     readonly createPage: UnwrapRef<typeof import('./vendors/design-system/utils/createPage')['createPage']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
+    readonly dashboardPage: UnwrapRef<typeof import('./src/domains/dashboard/router')['dashboardPage']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
