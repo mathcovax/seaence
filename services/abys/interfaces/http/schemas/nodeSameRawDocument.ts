@@ -1,10 +1,9 @@
-import { flexibleDateObjecter } from "@vendors/clean";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentRessourceObjecter, bakedDocumentAuthorObjecter } from "@business/domains/entities/bakedDocument";
 import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
+import { bakedDocumentAbstractPartObjecter, bakedDocumentAuthorObjecter, bakedDocumentKeywordObjecter, bakedDocumentRessourceObjecter } from "@business/domains/entities/bakedDocument";
+import { flexibleDateObjecter } from "@vendors/clean";
 
-export const endpointBakedDocumentSchema = zod.object({
-	id: zod.string(),
+export const endpointCookedNodeSameRawDocumentSchema = zod.object({
 	nodeSameRawDocumentId: zod.string(),
 	title: zod.string(),
 	language: bakedDocumentLanguageObjecter.zodSchema,
@@ -20,5 +19,3 @@ export const endpointBakedDocumentSchema = zod.object({
 	webPublishDate: flexibleDateObjecter.zodSchema.nullable(),
 	journalPublishDate: flexibleDateObjecter.zodSchema.nullable(),
 });
-
-export const endpointFindManyBakedDocumentTitleSchema = zod.string().array();

@@ -16,6 +16,7 @@ export interface NodeSameRawDocumentRepository extends RepositoryBase<NodeSameRa
 		options: FindNodeSameRawDocumentPerPageOptions
 	): Promise<NodeSameRawDocumentEntity[]>;
 	findUpdatedNode(): AsyncGenerator<NodeSameRawDocumentEntity>;
+	findOneById(id: NodeSameRawDocumentId): Promise<NodeSameRawDocumentEntity | null>;
 }
 
 export const nodeSameRawDocumentRepository = createRepositoryHandler<NodeSameRawDocumentRepository>();

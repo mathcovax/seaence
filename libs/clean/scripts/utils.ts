@@ -314,5 +314,7 @@ export function promiseObject<
 						: [key, promisedValue],
 				),
 		)
-		.then((entries) => Object.fromEntries(entries) as AwaitedPromiseObject<GenericObject>);
+		.then(
+			(entries) => Object.fromEntries(entries) as SimplifyObjectTopLevel<AwaitedPromiseObject<GenericObject>>,
+		);
 }
