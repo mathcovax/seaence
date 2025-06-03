@@ -1,4 +1,10 @@
 import "../repositories";
+import { FindManyBakedDocumentTranslationReportingUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/findManyBakedDocumentTranslationReporting";
+import { FindManyBakedDocumentTranslationReportingAggregateUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/findManyBakedDocumentTranslationReportingAggregate";
 import { UpsertBakedDocumentTranslationReportingUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/upsertBakedDocumentTranslationReporting";
 
 export const upsertBakedDocumentTranslationReportingUsecase = new UpsertBakedDocumentTranslationReportingUsecase();
+export const findManyBakedDocumentTranslationReportingUsecase = new FindManyBakedDocumentTranslationReportingUsecase();
+
+export const findManyBakedDocumentTranslationReportingAggregateUsecase
+	= new FindManyBakedDocumentTranslationReportingAggregateUsecase();

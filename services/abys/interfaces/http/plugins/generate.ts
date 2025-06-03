@@ -1,6 +1,6 @@
 import { articleTypeObjecter } from "@business/domains/common/articleType";
+import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
-import { bakedDocumentLanguageObjecter } from "@business/domains/entities/bakedDocument";
 import "@duplojs/types-codegen";
 
 bakedDocumentLanguageObjecter.zodSchema._zttIdentifier = "Language";

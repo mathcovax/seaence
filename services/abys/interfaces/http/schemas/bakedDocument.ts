@@ -1,6 +1,7 @@
 import { flexibleDateObjecter } from "@vendors/clean";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentLanguageObjecter, bakedDocumentRessourceObjecter, bakedDocumentAuthorObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentRessourceObjecter, bakedDocumentAuthorObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 
 export const endpointBakedDocumentSchema = zod.object({
 	id: zod.string(),

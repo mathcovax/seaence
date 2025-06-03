@@ -19,7 +19,7 @@ export class UpsertBakedDocumentTranslationReportingUsecase extends UsecaseHandl
 }) {
 	public async execute({ userId, bakedDocumentId, reportingDetails }: Input) {
 		const findedReporting = await this.bakedDocumentTranslationReportingRepository
-			.find(userId, bakedDocumentId);
+			.findOne(userId, bakedDocumentId);
 
 		const bakedDocumentTranslationReporting = match({ findedReporting })
 			.with(
