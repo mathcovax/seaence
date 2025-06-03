@@ -2,9 +2,14 @@ import { type AsyncMessage } from "../asyncMessage";
 import { MessageCollection } from "../messageCollection";
 
 export interface CreateReplyToPostMessageValue {
+	id: string;
 	postId: string;
-	usernameOfReplyPost: string;
-	summaryOfReplyPost: string;
+	content: string;
+	author: {
+		id: string;
+		username: string;
+	};
+	createdAt: Date;
 }
 
 export class CreateReplyToPostMessageCollection extends MessageCollection<CreateReplyToPostMessageValue> {

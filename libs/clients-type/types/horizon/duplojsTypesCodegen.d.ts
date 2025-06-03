@@ -332,10 +332,6 @@ type CodegenRoutes = ({
         language: BakedDocumentLanguage;
     };
     response: {
-        code: 403;
-        information: "accessToken.invalid";
-        body?: undefined;
-    } | {
         code: 404;
         information: "post.notfound";
         body?: undefined;
@@ -533,7 +529,7 @@ type CodegenRoutes = ({
         body?: undefined;
     };
 }) | ({
-    method: "GET";
+    method: "POST";
     path: "/notification-list-page";
     response: {
         code: 403;

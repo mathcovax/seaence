@@ -7,27 +7,6 @@ import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
-const zero = 0;
-const defaultMaxWorld = 50;
-
-function summarizeText(
-	text: string,
-	maxWords = defaultMaxWorld,
-) {
-	if (!text) {
-		return "";
-	}
-
-	const words = text.trim().split(/\s+/);
-
-	if (words.length <= maxWords) {
-		return text;
-	}
-
-	const truncatedWords = words.slice(zero, maxWords);
-	return `${truncatedWords.join(" ")}...`;
-}
-
 answerRepository.default = {
 	generateAnswerId() {
 		return answerIdObjecter.unsafeCreate(uuidv7());
@@ -81,11 +60,7 @@ answerRepository.default = {
 		);
 
 		if (!mongoAnswer) {
-			await asyncMessage.collections.createReplyToPost.emit({
-				postId: simpleEntity.postId,
-				usernameOfReplyPost: simpleEntity.author.username,
-				summaryOfReplyPost: summarizeText(simpleEntity.content),
-			});
+			await asyncMessage.collections.createReplyToPost.emit(simpleEntity);
 		}
 
 		return entity;

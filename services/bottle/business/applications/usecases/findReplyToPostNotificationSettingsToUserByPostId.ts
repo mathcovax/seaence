@@ -1,7 +1,7 @@
 import { type PostId } from "@business/domains/common/post";
 import { type UserEntity } from "@business/domains/entities/user";
 import { UsecaseHandler } from "@vendors/clean";
-import { replyToPostNotificationRepository } from "../repositories/notification/replyToPost";
+import { replyToPostNotificationSettingsRepository } from "../repositories/notificationSettings/replyToPost";
 
 interface Input {
 	user: UserEntity;
@@ -9,10 +9,10 @@ interface Input {
 }
 
 export class FindReplyToPostNotificationSettingsToUserByPostIdUsecase extends UsecaseHandler.create({
-	replyToPostNotificationRepository,
+	replyToPostNotificationSettingsRepository,
 }) {
 	public execute({ user, postId }: Input) {
-		return this.replyToPostNotificationRepository.findReplyToPostNotificationByPostId(
+		return this.replyToPostNotificationSettingsRepository.findReplyToPostNotificationSettings(
 			user,
 			postId,
 		);

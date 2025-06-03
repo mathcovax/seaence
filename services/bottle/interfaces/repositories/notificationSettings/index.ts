@@ -19,7 +19,7 @@ notificationSettingsRepository.default = {
 
 		await mongo.notificationSettingsCollection.updateOne(
 			{
-				user: simpleEntity.user,
+				"user.id": simpleEntity.user.id,
 				postId: simpleEntity.postId,
 				type: "replyToPost",
 			},

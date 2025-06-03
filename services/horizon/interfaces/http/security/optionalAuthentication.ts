@@ -30,7 +30,7 @@ export const optionalAuthenticationProcess = createProcess(
 			return match(harborResponse)
 				.with(
 					{ information: P.union("accessToken.invalid", "user.notfound") },
-					() => new ForbiddenHttpResponse("accessToken.invalid"),
+					() => dropper({ user: null }),
 				)
 				.with(
 					{ information: "user.found" },
@@ -39,7 +39,6 @@ export const optionalAuthenticationProcess = createProcess(
 				.exhaustive();
 		},
 		["user"],
-		makeResponseContract(ForbiddenHttpResponse, "accessToken.invalid"),
 	)
 	.exportation(["user"]);
 

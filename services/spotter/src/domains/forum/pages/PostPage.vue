@@ -4,12 +4,14 @@ import { usePostPage } from "../composables/usePostPage";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
 import PostAnswer from "../components/PostAnswer.vue";
+import BellButton from "@/domains/notification/components/BellButton.vue";
 
 const { params, query, $pt } = postPage.use();
 const router = useRouter();
 const { user, isConnected } = useUserInformation();
 const sonner = useSonner();
 const { t } = useI18n();
+const replyPostNotificationIsEnable = ref(false);
 
 const { postPageInformation, answers, seeMoreAnswers } = usePostPage(
 	computed(() => params.value.postId),
@@ -84,6 +86,46 @@ function handleCreateAnswer() {
 		);
 }
 
+function handleReplyPostNotification() {
+	if (!user.value) {
+		sonner.sonnerError($pt("connexionRequire"));
+		replyPostNotificationIsEnable.value = !replyPostNotificationIsEnable.value;
+		return;
+	}
+	const postId = postPageInformation.value?.post.id;
+
+	if (!postId) {
+		return;
+	}
+
+	void horizonClient
+		.post(
+			"/toggle-post-notification",
+			{
+				body: {
+					postId,
+					enable: replyPostNotificationIsEnable.value,
+				},
+			},
+		)
+		.whenInformation(
+			"togglePostNotification.noChange",
+			() => {
+				replyPostNotificationIsEnable.value = !replyPostNotificationIsEnable.value;
+			},
+		)
+		.catch(() => {
+			replyPostNotificationIsEnable.value = !replyPostNotificationIsEnable.value;
+		});
+}
+
+watch(
+	() => postPageInformation.value?.notificationOfPostIsActivate,
+	() => {
+		replyPostNotificationIsEnable.value = !!postPageInformation.value?.notificationOfPostIsActivate;
+	},
+);
+
 </script>
 
 <template>
@@ -108,8 +150,13 @@ function handleCreateAnswer() {
 					</h2>
 				</RouterLink>
 
-				<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
-					<div class="flex items-center gap-2">
+				<div class="flex flex-wrap items-center text-sm gap-4">
+					<BellButton
+						v-model="replyPostNotificationIsEnable"
+						@click="handleReplyPostNotification"
+					/>
+
+					<div class="flex items-center gap-2 text-muted-foreground">
 						<DSIcon
 							name="account"
 							size="small"
@@ -118,7 +165,7 @@ function handleCreateAnswer() {
 						<span>{{ $pt("authorIs", { author: postPageInformation.post.author.username }) }}</span>
 					</div>
 
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-2 text-muted-foreground">
 						<DSIcon
 							name="calendar"
 							size="small"

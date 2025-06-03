@@ -164,6 +164,7 @@ export const FRfr = {
 					title: "Mon compte",
 					profile: "Mon profil",
 					disconnect: "Se déconnecter",
+					notification: "Notifications",
 				},
 			},
 			footer: {

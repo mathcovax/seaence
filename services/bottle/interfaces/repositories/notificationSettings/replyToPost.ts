@@ -9,13 +9,13 @@ replyToPostNotificationSettingsRepository.default = {
 		throw new RepositoryError("unsupported-method");
 	},
 	async findReplyToPostNotificationSettings(user, postId) {
-		const simpleUser = user.toSimpleObject();
 		const mongoReplyToPostNotificationSettings = await mongo
 			.notificationSettingsCollection
 			.findOne(
 				{
-					user: simpleUser,
+					"user.id": user.id.value,
 					postId: postId.value,
+					type: "replyToPost",
 				},
 			);
 
@@ -65,11 +65,9 @@ replyToPostNotificationSettingsRepository.default = {
 		}
 	},
 	async delete(entity) {
-		const simpleEntity = entity.toSimpleObject();
-
 		await mongo.notificationSettingsCollection.deleteOne({
-			user: simpleEntity.user,
-			postId: simpleEntity.postId,
+			"user.id": entity.user.value.id.value,
+			postId: entity.postId.value,
 		});
 	},
 };

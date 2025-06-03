@@ -56,11 +56,10 @@ replyToPostNotificationRepository.default = {
 		}
 	},
 	async findReplyToPostNotificationByPostId(user, postId) {
-		const simpleUser = user.toSimpleObject();
 		const mongoReplyToPostNotification = await mongo.notificationCollection
 			.findOne(
 				{
-					user: simpleUser,
+					"user.id": user.id.value,
 					type: "replyToPost",
 					postId: postId.value,
 				},
