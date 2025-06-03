@@ -19,9 +19,9 @@ export class TransformeNodeSameRawDocumentToBakedDocumentUsecase extends Usecase
 	public async execute({ nodeSameRawDocument, bakedDocumentLanguages }: Input) {
 		const bakedDocuments = await Promise.all(
 			bakedDocumentLanguages.map(
-				(language) => this
+				(bakedDocumentLanguage) => this
 					.cookNode({
-						language,
+						bakedDocumentLanguage,
 						nodeSameRawDocument,
 					})
 					.then(

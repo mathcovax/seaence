@@ -11,7 +11,7 @@ import { match, P } from "ts-pattern";
 
 interface Input {
 	nodeSameRawDocument: NodeSameRawDocumentEntity;
-	language: BakedDocumentLanguage;
+	bakedDocumentLanguage: BakedDocumentLanguage;
 }
 
 const priority = ["pubmed"] as const;
@@ -26,7 +26,7 @@ export class CookNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 	rawDocumentRepository,
 	bakedDocumentRepository,
 }) {
-	public async execute({ nodeSameRawDocument, language }: Input) {
+	public async execute({ nodeSameRawDocument, bakedDocumentLanguage }: Input) {
 		const rawDocumentWrapper = await this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
 
 		const rawDocumentKey = priority.find((key) => !!rawDocumentWrapper[key]);
@@ -42,27 +42,27 @@ export class CookNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 					authors: rawDocument.authors?.map(
 						(author) => bakedDocumentAuthorObjecter.unsafeCreate(author.value),
 					) ?? [],
-					language: language,
+					language: bakedDocumentLanguage,
 					title: this.bakedDocumentRepository.makeBakedTitleWithRawTitle(
 						rawDocument.title,
-						language,
+						bakedDocumentLanguage,
 					),
 					abstract: rawDocument.abstract
 						? this.bakedDocumentRepository.makeBakedAbstractWithRawAbstract(
 							rawDocument.abstract,
-							language,
+							bakedDocumentLanguage,
 						)
 						: null,
 					resources: this.bakedDocumentRepository
 						.makeBakedResourcesWithRawDocumentWrapper(rawDocumentWrapper),
 					keywords: this.bakedDocumentRepository.makeBakedKeywordsWithKeywordPubmed(
 						rawDocument.keywords,
-						language,
+						bakedDocumentLanguage,
 					),
 					abstractDetails: rawDocument.abstractDetails
 						? this.bakedDocumentRepository.makeBakedAbstractDetailsWithRawAbstractDetails(
 							rawDocument.abstractDetails,
-							language,
+							bakedDocumentLanguage,
 						)
 						: null,
 					journalPublishDate: rawDocument.journalPublishDate,
@@ -75,7 +75,7 @@ export class CookNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 					"unmatching-priority-raw-document",
 					{
 						nodeSameRawDocument,
-						language,
+						bakedDocumentLanguage,
 					},
 				),
 			)

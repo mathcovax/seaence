@@ -6,7 +6,7 @@ import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetVa
 
 export const nodeSameRawDocumentIdObjecter = zod
 	.string()
-	.createValueObjecter("NodeSameRawDocumentId");
+	.createValueObjecter("nodeSameRawDocumentId");
 
 export type NodeSameRawDocumentId = GetValueObject<typeof nodeSameRawDocumentIdObjecter>;
 
