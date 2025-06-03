@@ -18,6 +18,39 @@ type CodegenRoutes = ({
         information: "bakedDocumentTranslationReporting.upsert";
         body?: undefined;
     };
+}) | ({
+    method: "POST";
+    path: "/find-many-baked-document-translation-reporting";
+    body: {
+        bakedDocumentId: string;
+        quantityPerPage: number;
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "bakedDocumentTranslationReporting.findMany";
+        body: {
+            bakedDocumentId: string;
+            userId: string;
+            id: string;
+            details: string;
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/find-many-baked-document-translation-reporting-aggregate";
+    body: {
+        quantityPerPage: number;
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "bakedDocumentTranslationReporting.findMany";
+        body: {
+            bakedDocumentId: string;
+            reportingQuantity: number;
+        }[];
+    };
 });
 
 export { CodegenRoutes };

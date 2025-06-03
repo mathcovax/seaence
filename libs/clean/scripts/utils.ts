@@ -1,4 +1,4 @@
-import { type AnyFunction, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel, hasKey } from "@duplojs/utils";
 import { type ValueObject, type ValueObjecterAttribute, type ValueObjectError } from "./valueObject";
 import { type ZodType } from "zod";
 
@@ -294,4 +294,25 @@ export function applyAttributesToZodSchema(
 			},
 			zodSchema,
 		);
+}
+
+export type AwaitedPromiseObject<
+	GenericObject extends Record<string, MybePromise<unknown>>,
+> = {
+	[Prop in keyof GenericObject]: Awaited<GenericObject[Prop]>
+};
+
+export function promiseObject<
+	GenericObject extends Record<string, MybePromise<unknown>>,
+>(object: GenericObject) {
+	return Promise
+		.all(
+			Object.entries(object)
+				.map<MybePromise<[string, unknown]>>(
+					([key, promisedValue]) => promisedValue instanceof Promise
+						? promisedValue.then((value) => [key, value])
+						: [key, promisedValue],
+				),
+		)
+		.then((entries) => Object.fromEntries(entries) as AwaitedPromiseObject<GenericObject>);
 }

@@ -16,7 +16,7 @@ bakedDocumentTranslationReportingRepository.default = {
 
 		return bakedDocumentTranslationReporting;
 	},
-	find(userId, bakedDocumentId) {
+	findOne(userId, bakedDocumentId) {
 		return mongo.bakedDocumentTranslationReportingCollection
 			.findOne({
 				userId: userId.value,
@@ -27,6 +27,24 @@ bakedDocumentTranslationReportingRepository.default = {
 					BakedDocumentTranslationReportingEntity,
 					mongoEntity,
 				),
+			);
+	},
+	findMany({ bakedDocumentId, page, quantityPerPage }) {
+		return mongo.bakedDocumentTranslationReportingCollection
+			.find({
+				bakedDocumentId: bakedDocumentId.value,
+			})
+			.skip(page.value * quantityPerPage.value)
+			.limit(quantityPerPage.value)
+			.toArray()
+			.then(
+				(mongoEntitys) => mongoEntitys
+					.map(
+						(mongoEntity) => EntityHandler.unsafeMapper(
+							BakedDocumentTranslationReportingEntity,
+							mongoEntity,
+						),
+					),
 			);
 	},
 };

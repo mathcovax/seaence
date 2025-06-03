@@ -41,7 +41,7 @@
 
     "docker:spotter": "docker compose up spotter",
     "docker:abys": "docker compose up abys",
-    "docker:abys:cookNodeSameRawDocument": "docker compose exec abys npm -w services/abys run cookNodeSameRawDocument --",
+    "docker:abys:transformeUpdatedNodeSameRawDocumentsToBakedDocuments": "docker compose exec abys npm -w services/abys run transformeUpdatedNodeSameRawDocumentsToBakedDocuments --",
     "docker:abys:exportBakedDocument": "docker compose exec abys npm -w services/abys run exportBakedDocument --",
     "docker:abys:fixtures": "docker compose exec abys npm -w services/abys run fixtures --",
 

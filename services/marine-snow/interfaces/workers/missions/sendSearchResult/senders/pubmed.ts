@@ -58,12 +58,12 @@ export async function pubmedSender(references: string[]): Promise<ProcessedResul
 
 					const abysResponse = await AbysAPI.sendRawDocument(result);
 
-					if (abysResponse.information !== "rawDocument.upsert") {
+					if (abysResponse instanceof Error) {
 						return {
 							reference,
 							error: new TechnicalError(
 								"Wrong response when send doccument to abys.",
-								{ abysResponse },
+								{ error: abysResponse },
 							),
 						};
 					}

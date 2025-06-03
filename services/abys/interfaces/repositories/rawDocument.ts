@@ -1,5 +1,5 @@
 import { EntityHandler, RepositoryError } from "@vendors/clean";
-import { rawDocumentRepository, type ResultOfFindByNodeSameRawDocument } from "@business/applications/repositories/rawDocument";
+import { rawDocumentRepository, type NodeSameRawDocumentWrapper } from "@business/applications/repositories/rawDocument";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { mongo } from "@interfaces/providers/mongo";
 import { type MongoRawDocument } from "@interfaces/providers/mongo/entities/rawDocument";
@@ -53,7 +53,7 @@ rawDocumentRepository.default = {
 	},
 	async findByNodeSameRawDocument(nodeSameRawDocument) {
 		const resourcesKey = providerEnum.toTuple();
-		const result: ResultOfFindByNodeSameRawDocument = {};
+		const result: NodeSameRawDocumentWrapper = {};
 
 		for (const resource of resourcesKey) {
 			if (nodeSameRawDocument.rawDocumentWrapper.value[resource]) {
