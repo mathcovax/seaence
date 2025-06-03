@@ -1,20 +1,20 @@
 import { type PostId } from "@business/domains/common/post";
 import { UsecaseHandler } from "@vendors/clean";
-import { type UserId } from "@business/domains/entities/user";
 import { replyToPostNotificationSettingsRepository } from "../repositories/notificationSettings/replyToPost";
+import { type UserEntity } from "@business/domains/entities/user";
 
 interface Input {
-	userId: UserId;
+	user: UserEntity;
 	postId: PostId;
 }
 
 export class FindReplyPostNotificationSettingsUsecase extends UsecaseHandler.create({
 	replyToPostNotificationSettingsRepository,
 }) {
-	public async execute({ userId, postId }: Input) {
+	public async execute({ user, postId }: Input) {
 		const replyPostNotificationSetting = await this.replyToPostNotificationSettingsRepository
 			.findReplyToPostNotificationSettings(
-				userId,
+				user,
 				postId,
 			);
 

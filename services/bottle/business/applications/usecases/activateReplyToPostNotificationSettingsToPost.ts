@@ -2,19 +2,20 @@ import { type PostId } from "@business/domains/common/post";
 import { UsecaseHandler } from "@vendors/clean";
 import { notificationSettingsRepository } from "../repositories/notificationSettings";
 import { ReplyToPostNotificationSettingsEntity } from "@business/domains/entities/settings/replyToPost";
-import { type UserId } from "@business/domains/entities/user";
+import { type UserEntity } from "@business/domains/entities/user";
+import { userObjecter } from "@business/domains/common/user";
 
 interface Input {
-	userId: UserId;
+	user: UserEntity;
 	postId: PostId;
 }
 
 export class ActivateReplyToPostNotificationSettingsToPostUsecase extends UsecaseHandler.create({
 	notificationSettingsRepository,
 }) {
-	public async execute({ userId, postId }: Input) {
+	public async execute({ user, postId }: Input) {
 		const replyToPostSettingNotification = ReplyToPostNotificationSettingsEntity.create({
-			userId,
+			user: userObjecter.unsafeCreate(user),
 			postId,
 		});
 

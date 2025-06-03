@@ -7,22 +7,7 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/create-register-notification";
-    body: {
-        userId: string;
-    };
-    response: {
-        code: 404;
-        information: "user.notfound";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "notification.sent";
-        body?: undefined;
-    };
-}) | ({
-    method: "POST";
-    path: "/activate-reply-post-notification";
+    path: "/activate-reply-post-notification-settings";
     body: {
         userId: string;
         postId: string;
@@ -31,6 +16,77 @@ type CodegenRoutes = ({
         code: 200;
         information: "replyPostNotification.activate";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/find-reply-to-post-notification-settings";
+    body: {
+        userId: string;
+        postId: string;
+    };
+    response: {
+        code: 200;
+        information: "replyPostNotification.found";
+        body: {
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            postId: string;
+        } | null;
+    };
+}) | ({
+    method: "POST";
+    path: "/find-notifications";
+    body: {
+        userId: string;
+        page: number;
+        quantityPerPage: number;
+    };
+    response: {
+        code: 200;
+        information: "notications.found";
+        body: ({
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+        } | {
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+            postId: string;
+            usernameOfReplyPost: string;
+            summaryOfReplyPost: string;
+        })[];
+    };
+}) | ({
+    method: "POST";
+    path: "/count-notification";
+    body: {
+        userId: string;
+    };
+    response: {
+        code: 200;
+        information: "notications.count";
+        body: {
+            count: number;
+        };
     };
 });
 

@@ -1,4 +1,4 @@
-import { type NotificationSetting, notificationSettingsRepository } from "@business/applications/repositories/notificationSettings";
+import { type NotificationSettings, notificationSettingsRepository } from "@business/applications/repositories/notificationSettings";
 import { ReplyToPostNotificationSettingsEntity } from "@business/domains/entities/settings/replyToPost";
 import { mongo } from "@interfaces/providers/mongo";
 import { type MongoNotificationSettings } from "@interfaces/providers/mongo/entities/notificationSettings";
@@ -6,7 +6,7 @@ import { match, P } from "ts-pattern";
 
 notificationSettingsRepository.default = {
 	async save(entity) {
-		const simpleEntity = match({ entity: entity as NotificationSetting })
+		const simpleEntity = match({ entity: entity as NotificationSettings })
 			.returnType<MongoNotificationSettings>()
 			.with(
 				{ entity: P.instanceOf(ReplyToPostNotificationSettingsEntity) },
@@ -19,7 +19,7 @@ notificationSettingsRepository.default = {
 
 		await mongo.notificationSettingsCollection.updateOne(
 			{
-				userId: simpleEntity.userId,
+				user: simpleEntity.user,
 				postId: simpleEntity.postId,
 				type: "replyToPost",
 			},

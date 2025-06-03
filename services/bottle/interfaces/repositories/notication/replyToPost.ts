@@ -1,21 +1,17 @@
 import { replyToPostNotificationRepository } from "@business/applications/repositories/notification/replyToPost";
 import { ReplyToPostNotificationEntity } from "@business/domains/entities/notification/replyToPost";
+import { UserEntity } from "@business/domains/entities/user";
 import { mongo } from "@interfaces/providers/mongo";
-import { type MongoReplyToPostNotification } from "@interfaces/providers/mongo/entities/notification";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
-
-const zero = 0;
 
 replyToPostNotificationRepository.default = {
 	save() {
 		throw new RepositoryError("unsupported-method");
 	},
 	async *findUnprocessedReplyToPostNotifications() {
-		const top = 10;
-		let skip = 0;
-		let hasMore = true;
+		const quantityPerPage = 10;
 
-		while (hasMore) {
+		for (let page = 0; true; page++) {
 			const mongoNotifications = await mongo.notificationCollection
 				.find(
 					{
@@ -23,27 +19,77 @@ replyToPostNotificationRepository.default = {
 						type: "replyToPost",
 					},
 				)
-				.skip(skip)
-				.limit(top)
+				.skip(page * quantityPerPage)
+				.limit(quantityPerPage)
 				.toArray();
 
-			if (mongoNotifications.length === zero) {
-				hasMore = false;
-				return;
+			if (!mongoNotifications.length) {
+				break;
 			}
 
 			const notifications = mongoNotifications.map(
-				(notification) => EntityHandler.unsafeMapper(
-					ReplyToPostNotificationEntity,
-					// claquer au sol mongodb
-					notification as MongoReplyToPostNotification,
-				),
+				(notification) => {
+					if (notification.type !== "replyToPost") {
+						throw new RepositoryError(
+							"wrong-notification-type",
+							{
+								notification,
+								expectType: "replyToPost",
+							},
+						);
+					}
+
+					return EntityHandler.unsafeMapper(
+						ReplyToPostNotificationEntity,
+						{
+							...notification,
+							user: EntityHandler.unsafeMapper(
+								UserEntity,
+								notification.user,
+							),
+						},
+					);
+				},
 			);
 
 			yield notifications;
-
-			skip += top;
-			hasMore = mongoNotifications.length === top;
 		}
 	},
+	async findReplyToPostNotificationByPostId(user, postId) {
+		const simpleUser = user.toSimpleObject();
+		const mongoReplyToPostNotification = await mongo.notificationCollection
+			.findOne(
+				{
+					user: simpleUser,
+					type: "replyToPost",
+					postId: postId.value,
+				},
+			);
+
+		if (!mongoReplyToPostNotification) {
+			return null;
+		}
+
+		if (mongoReplyToPostNotification.type !== "replyToPost") {
+			throw new RepositoryError(
+				"wrong-notification-type",
+				{
+					mongoReplyToPostNotification,
+					expectType: "replyToPost",
+				},
+			);
+		}
+
+		return EntityHandler.unsafeMapper(
+			ReplyToPostNotificationEntity,
+			{
+				...mongoReplyToPostNotification,
+				user: EntityHandler.unsafeMapper(
+					UserEntity,
+					mongoReplyToPostNotification.user,
+				),
+			},
+		);
+	},
 };
+

@@ -17,7 +17,7 @@ export class BottleAPI {
 	public static activateReplyPostNotification(input: InputActivateReplyPostNotification) {
 		return this.httpClient
 			.post(
-				"/activate-reply-post-notification",
+				"/activate-reply-post-notification-settings",
 				{
 					body: input,
 				},

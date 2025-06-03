@@ -2,7 +2,6 @@ import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { userRepository } from "../repositories/user";
 import { UserEntity, type UserUsername, type UserEmail } from "@business/domains/entities/user";
 import { FindUserByEmailUsecase } from "./findUserByEmail";
-import { bottleRepository } from "../repositories/bottle";
 
 interface Input {
 	email: UserEmail;
@@ -11,7 +10,6 @@ interface Input {
 
 export class CreateUserUsecase extends UsecaseHandler.create({
 	userRepository,
-	bottleRepository,
 	findUserByEmail: FindUserByEmailUsecase,
 }) {
 	public async execute({ email, username }: Input) {
@@ -31,8 +29,6 @@ export class CreateUserUsecase extends UsecaseHandler.create({
 				username,
 			}),
 		);
-
-		await this.bottleRepository.createRegisterNotification(user);
 
 		return user;
 	}

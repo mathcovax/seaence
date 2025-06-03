@@ -11,6 +11,7 @@
 - Je vois un formulaire ou je doit indiquer mon pseudo et valider les condition d'utilisation
 - Je valide le fomulaire
 - Le dialog ce ferme et je suis connecter.
+- Je recois notification de bienvenue.
 
 ### Harbor user story
 
@@ -18,19 +19,22 @@
 - Je créer un nouvel utilisateur
 
 ### Bottle user story
-- je recois un utilisateur qui vient d'étre créer,
-- je le créée de mon coté 
+
+- Je recois un utilisateur qui vient d'étre créer,
+- Je le créée de mon coté 
+- Je créer une notification de bienvenue
 
 ### Harbor implémentation
 
 Je créer un user.
 
 PS:
-- envoi d'un async message `createUser` quand l'utilisateur n'existe pas
+- envoi d'un async message `createUser`
 
 ### Bottle implémentation
 
-Je créer un user.
+Je créer un user de manière desynchronisé.
 
 PS:
 - La création d'un user ce fait via l'écoute de l'async message `createUser`
+- Je créer la notification de bienvenue après avoir la création du user.

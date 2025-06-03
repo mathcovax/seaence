@@ -9,7 +9,9 @@ import { RegisterNotificationEntity } from "@business/domains/entities/notificat
 import { registerTemplate } from "@interfaces/providers/email/templates/registerTemplate";
 import { ReplyToPostNotificationEntity } from "@business/domains/entities/notification/replyToPost";
 import { type MongoNotification } from "@interfaces/providers/mongo/entities/notification";
-import { EntityHandler } from "@vendors/clean";
+import { EntityHandler, intObjecter } from "@vendors/clean";
+import { UserEntity } from "@business/domains/entities/user";
+import { count } from "console";
 
 notificationRepository.default = {
 	generateNotificationId() {
@@ -46,17 +48,17 @@ notificationRepository.default = {
 
 		return entity;
 	},
-	async sendNotification(notification, user) {
-		const simpleUser = user.toSimpleObject();
+	async sendNotification(notification) {
+		const simpleNotification = notification.toSimpleObject();
 
 		await match({ notification })
 			.with(
 				{ notification: P.instanceOf(RegisterNotificationEntity) },
 				async() => {
 					await EmailProvider.send({
-						to: simpleUser.email,
+						to: simpleNotification.user.email,
 						subject: "Bienvenue sur Seaence !",
-						html: registerTemplate(simpleUser.username),
+						html: registerTemplate(simpleNotification.user.username),
 						from: envs.NO_REPLY_EMAIL,
 					});
 				},
@@ -69,31 +71,57 @@ notificationRepository.default = {
 			)
 			.exhaustive();
 	},
-	async findProcessedNotificationToUser(userId, params) {
+	async findNotificationToUser(user, params) {
+		const simpleUser = user.toSimpleObject();
+
 		const mongoNotifications = await mongo.notificationCollection
 			.find({
-				userId: userId.value,
-				processed: true,
+				user: simpleUser,
 			})
 			.skip(params.page.value * params.quantityPerPage.value)
 			.limit(params.quantityPerPage.value)
 			.toArray();
 
-		return mongoNotifications.map((notification) => match({ notification })
+		return mongoNotifications.map((notification) => match(notification)
 			.with(
-				{ notification: { type: "register" } },
-				({ notification }) => EntityHandler.unsafeMapper(
+				{ type: "register" },
+				(notification) => EntityHandler.unsafeMapper(
 					RegisterNotificationEntity,
-					notification,
+					{
+						...notification,
+						user: EntityHandler.unsafeMapper(
+							UserEntity,
+							notification.user,
+						),
+					},
 				),
 			)
 			.with(
-				{ notification: { type: "replyToPost" } },
-				({ notification }) => EntityHandler.unsafeMapper(
-					RegisterNotificationEntity,
-					notification,
+				{ type: "replyToPost" },
+				(notification) => EntityHandler.unsafeMapper(
+					ReplyToPostNotificationEntity,
+					{
+						...notification,
+						user: EntityHandler.unsafeMapper(
+							UserEntity,
+							notification.user,
+						),
+					},
 				),
 			)
 			.exhaustive());
+	},
+	async countNotificationToUser(user) {
+		const simpleUser = user.toSimpleObject();
+
+		return mongo.notificationCollection
+			.countDocuments(
+				{
+					user: simpleUser,
+				},
+			)
+			.then(
+				(count) => intObjecter.unsafeCreate(count),
+			);
 	},
 };

@@ -1,19 +1,11 @@
-import { RegisterNotificationEntity } from "@business/domains/entities/notification/register";
-import { ReplyToPostNotificationEntity } from "@business/domains/entities/notification/replyToPost";
 import { userIdObjecter } from "@business/domains/entities/user";
-import { findProcessedNotificationToUserUsecase } from "@interfaces/usecases";
-import { type EntityToSimpleObject, intObjecter, positiveIntObjecter } from "@vendors/clean";
-import { match, P } from "ts-pattern";
-import { endpointFindProcessedNotification } from "../schemas/notification";
-
-// revoir avec @mathcovax
-
-type SimpleNotification =
-	| EntityToSimpleObject<typeof RegisterNotificationEntity>
-	| EntityToSimpleObject<typeof ReplyToPostNotificationEntity>;
+import { countNotificationToUserUsecase, findNotificationToUserUsecase } from "@interfaces/usecases";
+import { intObjecter, positiveIntObjecter } from "@vendors/clean";
+import { endpointCountNotification, endpointFindNotification } from "../schemas/notification";
+import { IWantUserExistsById } from "../checkers/user";
 
 useBuilder()
-	.createRoute("POST", "/find-processed-notification")
+	.createRoute("POST", "/find-notifications")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -21,32 +13,48 @@ useBuilder()
 			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
 	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
 	.handler(
 		async(pickup) => {
-			const { userId, page, quantityPerPage } = pickup("body");
+			const { body: { page, quantityPerPage }, user } = pickup(["body", "user"]);
 
-			const processedNotifications = await findProcessedNotificationToUserUsecase.execute({
-				userId,
+			const notifications = await findNotificationToUserUsecase.execute({
+				user,
 				page,
 				quantityPerPage,
 			});
 
-			const simpleProcessedNotifications = processedNotifications
+			const simpleNotifications = notifications
 				.map(
-					(processedNotification) => match({ processedNotification })
-						.returnType<SimpleNotification>()
-						.with(
-							{ processedNotification: P.instanceOf(RegisterNotificationEntity) },
-							({ processedNotification }) => processedNotification.toSimpleObject(),
-						)
-						.with(
-							{ processedNotification: P.instanceOf(ReplyToPostNotificationEntity) },
-							({ processedNotification }) => processedNotification.toSimpleObject(),
-						)
-						.exhaustive(),
+					(processedNotification) => processedNotification.toSimpleObject(),
 				);
 
-			return new OkHttpResponse("notications.found", simpleProcessedNotifications);
+			return new OkHttpResponse("notications.found", simpleNotifications);
 		},
-		makeResponseContract(OkHttpResponse, "notications.found", endpointFindProcessedNotification),
+		makeResponseContract(OkHttpResponse, "notications.found", endpointFindNotification),
+	);
+
+useBuilder()
+	.createRoute("POST", "/count-notification")
+	.extract({
+		body: zod.object({
+			userId: userIdObjecter.toZodSchema(),
+		}),
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const { user } = pickup(["user"]);
+
+			const countNotification = await countNotificationToUserUsecase.execute({ user });
+
+			return new OkHttpResponse("notications.count", { count: countNotification.value });
+		},
+		makeResponseContract(OkHttpResponse, "notications.count", endpointCountNotification),
 	);
