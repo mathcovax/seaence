@@ -311,7 +311,7 @@ export const FRfr = {
 		send: "Envoyer",
 		seeMore: "Voir plus",
 		save: "Enregistrer",
-		register: "Créée un compte",
+		register: "Créer un compte",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",

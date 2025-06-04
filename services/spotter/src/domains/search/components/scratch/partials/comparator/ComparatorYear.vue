@@ -44,14 +44,13 @@ const { hintMessage } = useHintMessage(
 				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.year.label') }}</span>
 			</div>
 
-			<DSButtonIcon
+			<DSButton
 				variant="ghost"
-				size="sm"
+				size="icon"
 				@click="emit('remove')"
-				class="text-slate-500 hover:bg-slate-100 hover:text-slate-700"
 			>
 				<DSIcon name="close" />
-			</DSButtonIcon>
+			</DSButton>
 		</div>
 
 		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">

@@ -20,10 +20,13 @@ const { $pt } = notFoundPage.use();
 			{{ $pt("subtitle") }}
 		</p>
 
-		<DSButtonPrimary as-child>
+		<DSButton
+			variant="primary"
+			as-child
+		>
 			<RouterLink :to="homePage.createTo()">
 				{{ $t("cta.backHome") }}
 			</RouterLink>
-		</DSButtonPrimary>
+		</DSButton>
 	</section>
 </template>

@@ -127,11 +127,13 @@ watch(
 		<article class="stick z-5 mb-4 p-6 bg-background rounded-lg rounded-b-lg shadow-md">
 			<header class="border-b pb-4">
 				<div class="mb-6 flex gap-4 items-center">
-					<DSButtonIcon
+					<DSButton
+						variant="outline"
+						size="icon"
 						@click="router.back()"
 					>
 						<DSIcon name="arrowLeft" />
-					</DSButtonIcon>
+					</DSButton>
 
 					<h1 class="text-3xl font-semibold text-blue-seaence">
 						{{ postPageInformation.post.topic }}
@@ -184,12 +186,13 @@ watch(
 					{{ $pt("countResponse", { count: answers.length, totalCount: postPageInformation.post.answerCount }) }}
 				</h2>
 
-				<DSButtonOutline
+				<DSButton
 					v-if="answers.length > 0 && answers.length < postPageInformation.post.answerCount"
+					variant="outline"
 					@click="seeMoreAnswers"
 				>
 					{{ $t("cta.seeMore") }}
-				</DSButtonOutline>
+				</DSButton>
 			</div>
 
 			<div
@@ -226,16 +229,15 @@ watch(
 
 				<DSHintError :message="errorMessage" />
 
-				<DSButtonPrimary
+				<DSButton
+					variant="primary"
 					class="self-start"
-					@click="handleCreateAnswer"
 					:disabled="!newAnswer.trim()"
+					@click="handleCreateAnswer"
 				>
-					<DSIcon
-						name="send"
-					/>
+					<DSIcon name="send" />
 					{{ $t("cta.send") }}
-				</DSButtonPrimary>
+				</DSButton>
 			</DSCard>
 		</div>
 	</section>
