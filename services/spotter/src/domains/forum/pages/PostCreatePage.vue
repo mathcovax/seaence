@@ -105,12 +105,13 @@ function submit() {
 					</ul>
 				</div>
 
-				<DSButtonPrimary
+				<DSButton
+					variant="primary"
+					size="full"
 					type="submit"
-					class="w-full"
 				>
 					{{ $pt("form.submitBtn") }}
-				</DSButtonPrimary>
+				</DSButton>
 			</form>
 		</div>
 	</section>

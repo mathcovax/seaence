@@ -42,14 +42,13 @@ const { hintMessage } = useHintMessage(
 		<div class="mb-2 flex justify-between items-center">
 			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.text.label') }}</span>
 
-			<DSButtonIcon
+			<DSButton
 				variant="ghost"
-				size="sm"
+				size="icon"
 				@click="emit('remove')"
-				class="text-slate-500 hover:text-slate-700 hover:bg-slate-100"
 			>
 				<DSIcon name="close" />
-			</DSButtonIcon>
+			</DSButton>
 		</div>
 
 		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">

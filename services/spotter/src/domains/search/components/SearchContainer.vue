@@ -100,22 +100,24 @@ defineExpose({
 				class="w-full flex gap-4 justify-between items-end transition-all duration-1500 flex-wrap"
 				:class="{'opacity-0': !result || isFetching}"
 			>
-				<DSButtonOutline
+				<DSButton
+					variant="outline"
 					class="w-38"
 					@click="toggleFilters"
 				>
 					<span>{{ isFiltersVisible ? $t("search.filters.hideFilters") : $t("search.filters.showFilters") }}</span>
-				</DSButtonOutline>
+				</DSButton>
 
-				<DSButtonPrimary
-					class="w-38"
+				<DSButton
 					v-if="searchMode === 'advanced'"
+					variant="primary"
+					class="w-38"
 					@click="toggleScratch"
 				>
 					{{ isScratchVisible ? $t("search.filters.hideScratch") : $t("search.filters.showScratch") }}
-				</DSButtonPrimary>
+				</DSButton>
 
-				<span class="text-sm text-right text-gray-500 lg:w-40 text-wrap">{{ $t("search.foundResults", { count: total ?? "" }) }}</span>
+				<span class="text-sm text-right text-muted-foreground lg:w-40 text-wrap">{{ $t("search.foundResults", { count: total ?? "" }) }}</span>
 			</div>
 		</div>
 

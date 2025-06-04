@@ -107,7 +107,7 @@ function onSelect(selectedItem: GenericItem) {
 				<DSButton
 					variant="ghost"
 					size="icon"
-					class="rounded-full cursor-pointer hover:bg-primary/10"
+					class="rounded-full hover:bg-primary/10"
 				>
 					<DSIcon
 						name="plus"

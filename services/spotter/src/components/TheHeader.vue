@@ -63,9 +63,9 @@ const { toggle } = useAuthDialog();
 					</ul>
 				</nav>
 
-				<DSButtonPrimary
+				<DSButton
 					v-if="!isConnected"
-					class="md:inline-flex"
+					variant="primary"
 					:title="$t('cta.connection')"
 					@click="toggle"
 				>
@@ -77,7 +77,7 @@ const { toggle } = useAuthDialog();
 						class="lg:hidden"
 						name="login"
 					/>
-				</DSButtonPrimary>
+				</DSButton>
 
 				<AccountDropdown v-else />
 			</div>
