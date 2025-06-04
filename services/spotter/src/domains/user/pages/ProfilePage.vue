@@ -77,6 +77,7 @@ const hasChange = computed(
 							variant="primary"
 							type="submit"
 							:disabled="!hasChange"
+							class="mt-6"
 						>
 							{{ $t("cta.save") }}
 						</DSButton>

@@ -41,7 +41,7 @@ function onCommit() {
 	<div class="flex flex-col gap-4 my-2">
 		<SliderRoot
 			v-model="sliderValue"
-			class="relative flex items-center h-2 bg-gray-200 rounded-full"
+			class="relative flex items-center h-2 bg-input rounded-full"
 			:min="min"
 			:max="max"
 			:step="1"
@@ -53,12 +53,12 @@ function onCommit() {
 			</SliderTrack>
 
 			<SliderThumb
-				class="block w-5 h-5 bg-background border border-gray-200 rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
+				class="block w-5 h-5 bg-background border border-input rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
 				aria-label="Valeur minimale"
 			/>
 
 			<SliderThumb
-				class="block w-5 h-5 bg-background border border-gray-200 rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
+				class="block w-5 h-5 bg-background border border-input rounded-full cursor-pointer shadow-md hover:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
 				aria-label="Valeur maximale"
 			/>
 		</SliderRoot>

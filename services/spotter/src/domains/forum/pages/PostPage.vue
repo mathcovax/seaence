@@ -126,10 +126,12 @@ watch(
 	<section v-if="postPageInformation">
 		<article class="stick z-5 mb-4 p-6 bg-background rounded-lg rounded-b-lg shadow-md">
 			<header class="border-b pb-4">
-				<div class="mb-6 flex gap-4 items-center">
+				<div class="mb-6 flex gap-4 items-start">
 					<DSButton
 						variant="outline"
 						size="icon"
+						class="shrink-0"
+						:aria-label="$pt('backToDocument')"
 						@click="router.back()"
 					>
 						<DSIcon name="arrowLeft" />
