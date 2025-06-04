@@ -115,6 +115,7 @@ watch(
 				<RegisterForm @submit="register">
 					<DSButton
 						variant="primary"
+						size="full"
 						type="submit"
 					>
 						{{ $t("cta.register") }}

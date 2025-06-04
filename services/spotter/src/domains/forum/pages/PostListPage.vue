@@ -31,10 +31,11 @@ watch(
 			v-if="postListPageInforamtion"
 			class="flex flex-col gap-6"
 		>
-			<div class="mb-6 flex gap-4 items-center">
+			<div class="mb-6 flex gap-4 items-start">
 				<DSButton
 					variant="outline"
 					size="icon"
+					class="shrink-0"
 					@click="router.back()"
 				>
 					<DSIcon name="arrowLeft" />
@@ -47,6 +48,7 @@ watch(
 
 			<DSButton
 				variant="primary"
+				size="full"
 				as-child
 			>
 				<RouterLink :to="postCreatePage.createTo({params: { documentId: params.documentId }})">

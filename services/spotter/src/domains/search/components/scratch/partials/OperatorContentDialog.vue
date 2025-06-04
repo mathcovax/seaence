@@ -96,6 +96,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
 				>
 					<DSButton
+						variant="primary"
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('and')"
 					>
@@ -103,6 +104,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					</DSButton>
 
 					<DSButton
+						variant="primary"
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('or')"
 					>
@@ -110,6 +112,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					</DSButton>
 
 					<DSButton
+						variant="primary"
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('not')"
 					>
@@ -122,6 +125,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
 				>
 					<DSButton
+						variant="primary"
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('text')"
 					>
@@ -129,6 +133,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					</DSButton>
 
 					<DSButton
+						variant="primary"
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('year')"
 					>

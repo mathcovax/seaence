@@ -8,15 +8,15 @@ export const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
-				primary: "bg-primary text-primary-foreground hover:bg-primary/80",
-				destructive:
-					"bg-destructive text-primary-foreground hover:bg-destructive/60",
-				outline:
-					"border border-primary bg-background text-primary hover:bg-accent",
-				secondary:
-					"bg-secondary text-secondary-foreground hover:bg-secondary/80",
 				seaence:
 					"bg-blue-seaence text-primary-foreground hover:bg-seaence/80",
+				primary: "bg-primary text-primary-foreground hover:bg-primary/80",
+				secondary:
+					"bg-secondary text-secondary-foreground hover:bg-secondary/80",
+				outline:
+					"border border-primary bg-background text-primary hover:bg-accent",
+				destructive:
+					"bg-destructive text-primary-foreground hover:bg-destructive/60",
 				ghost: "bg-transparent text-muted-foreground hover:bg-accent/40",
 				link: "text-primary underline-offset-4 hover:underline",
 			},
