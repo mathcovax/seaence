@@ -7,6 +7,13 @@ export type NotificationId = GetValueObject<typeof notificationIdObjecter>;
 export const processedObjecter = zod.boolean().createValueObjecter("processed");
 export type Processed = GetValueObject<typeof processedObjecter>;
 
+export function createNotificationTypeObjecter<
+	GenericNotificationType extends string,
+>(type: GenericNotificationType) {
+	return zod.literal(type)
+		.createValueObjecter(type);
+}
+
 export class BaseNotificationEntity extends EntityHandler.create({
 	id: notificationIdObjecter,
 	user: userObjecter,

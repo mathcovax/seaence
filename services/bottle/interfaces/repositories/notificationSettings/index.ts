@@ -12,7 +12,7 @@ notificationSettingsRepository.default = {
 				{ entity: P.instanceOf(ReplyToPostNotificationSettingsEntity) },
 				({ entity }) => ({
 					...entity.toSimpleObject(),
-					type: "replyToPost",
+					type: "replyToPostNotificationSettingsType",
 				}),
 			)
 			.exhaustive();
@@ -21,7 +21,7 @@ notificationSettingsRepository.default = {
 			{
 				"user.id": simpleEntity.user.id,
 				postId: simpleEntity.postId,
-				type: "replyToPost",
+				type: simpleEntity.type,
 			},
 			{
 				$set: simpleEntity,

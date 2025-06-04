@@ -16,7 +16,7 @@ replyToPostNotificationRepository.default = {
 				.find(
 					{
 						processed: false,
-						type: "replyToPost",
+						type: "replyToPostNotificationType",
 					},
 				)
 				.skip(page * quantityPerPage)
@@ -29,12 +29,12 @@ replyToPostNotificationRepository.default = {
 
 			const notifications = mongoNotifications.map(
 				(notification) => {
-					if (notification.type !== "replyToPost") {
+					if (notification.type !== "replyToPostNotificationType") {
 						throw new RepositoryError(
 							"wrong-notification-type",
 							{
 								notification,
-								expectType: "replyToPost",
+								expectType: "registerNotificationType",
 							},
 						);
 					}
@@ -60,7 +60,7 @@ replyToPostNotificationRepository.default = {
 			.findOne(
 				{
 					"user.id": user.id.value,
-					type: "replyToPost",
+					type: "replyToPostNotificationType",
 					postId: postId.value,
 				},
 			);
@@ -69,7 +69,7 @@ replyToPostNotificationRepository.default = {
 			return null;
 		}
 
-		if (mongoReplyToPostNotification.type !== "replyToPost") {
+		if (mongoReplyToPostNotification.type !== "replyToPostNotificationType") {
 			throw new RepositoryError(
 				"wrong-notification-type",
 				{

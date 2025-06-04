@@ -51,6 +51,7 @@ type CodegenRoutes = ({
                 language: "fr-FR" | "en-US";
             };
             postId: string;
+            type: "replyToPostNotificationSettingsType";
         } | null;
     };
 }) | ({
@@ -75,6 +76,7 @@ type CodegenRoutes = ({
             processed: boolean;
             createdAt: Date;
             deleteAt: Date;
+            type: "registerNotificationType";
         } | {
             id: string;
             user: {
@@ -89,6 +91,7 @@ type CodegenRoutes = ({
             postId: string;
             usernameOfReplyPost: string;
             summaryOfReplyPost: string;
+            type: "replyToPostNotificationType";
         })[];
     };
 }) | ({

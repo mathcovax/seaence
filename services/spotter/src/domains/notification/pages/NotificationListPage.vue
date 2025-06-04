@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import RegisterNotificationCard from "../components/RegisterNotificationCard.vue";
+import ReplyToPostNotificationCard from "../components/ReplyToPostNotificationCard.vue";
 import { useNotificationListPage } from "../composables/useNotificationListPage";
 
 const { $pt } = notificationListPage.use();
@@ -14,6 +16,17 @@ const {
 		router.back();
 	},
 );
+
+function onClikReplyPostNotification(postId: string) {
+	void router.push(
+		postPage.createTo({
+			params: {
+				postId,
+			},
+			query: {},
+		}),
+	);
+}
 
 watch(
 	pageOfNotificationList,
@@ -45,7 +58,16 @@ watch(
 						v-for="notification in notificationList"
 						:key="notification.id"
 					>
-						{{ notification.user.username }}
+						<RegisterNotificationCard
+							v-if="notification.type === 'registerNotificationType'"
+							:register-notification="notification"
+						/>
+
+						<ReplyToPostNotificationCard
+							v-else-if="notification.type === 'replyToPostNotificationType'"
+							:reply-to-post-notification="notification"
+							@click="onClikReplyPostNotification(notification.postId)"
+						/>
 					</div>
 				</div>
 

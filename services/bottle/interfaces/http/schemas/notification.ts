@@ -1,6 +1,7 @@
 import { postIdObjecter } from "@business/domains/common/post";
 import { notificationIdObjecter, processedObjecter } from "@business/domains/entities/notification/base";
-import { summaryOfReplyPostObjecter } from "@business/domains/entities/notification/replyToPost";
+import { registerNotificationTypeObjecter } from "@business/domains/entities/notification/register";
+import { replyToPostNotificationTypeObjecter, summaryOfReplyPostObjecter } from "@business/domains/entities/notification/replyToPost";
 import { userEmailObjecter, userIdObjecter, userLanguageObjecter, usernameObjecter } from "@business/domains/entities/user";
 import { commonDateObjecter } from "@vendors/clean";
 
@@ -17,12 +18,15 @@ const baseNotificatinSchema = zod.object({
 	deleteAt: commonDateObjecter.zodSchema,
 });
 
-const registerNotificationSchema = baseNotificatinSchema;
+const registerNotificationSchema = baseNotificatinSchema.extend({
+	type: registerNotificationTypeObjecter.zodSchema,
+});
 
 const replyToPostNotificationSchema = baseNotificatinSchema.extend({
 	postId: postIdObjecter.zodSchema,
 	usernameOfReplyPost: usernameObjecter.zodSchema,
 	summaryOfReplyPost: summaryOfReplyPostObjecter.zodSchema,
+	type: replyToPostNotificationTypeObjecter.zodSchema,
 });
 
 export const endpointFindNotification = zod.union([

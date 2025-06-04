@@ -484,6 +484,7 @@ type CodegenRoutes = ({
             processed: boolean;
             createdAt: string;
             deleteAt: string;
+            type: "registerNotificationType";
         } | {
             id: string;
             user: {
@@ -496,6 +497,7 @@ type CodegenRoutes = ({
             createdAt: string;
             deleteAt: string;
             postId: string;
+            type: "replyToPostNotificationType";
             usernameOfReplyPost: string;
             summaryOfReplyPost: string;
         })[];

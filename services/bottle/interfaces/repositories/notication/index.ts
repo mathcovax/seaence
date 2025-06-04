@@ -23,14 +23,14 @@ notificationRepository.default = {
 				{ entity: P.instanceOf(RegisterNotificationEntity) },
 				({ entity }) => ({
 					...entity.toSimpleObject(),
-					type: "register",
+					type: "registerNotificationType",
 				}),
 			)
 			.with(
 				{ entity: P.instanceOf(ReplyToPostNotificationEntity) },
 				({ entity }) => ({
 					...entity.toSimpleObject(),
-					type: "replyToPost",
+					type: "replyToPostNotificationType",
 				}),
 			)
 			.exhaustive();
@@ -83,7 +83,7 @@ notificationRepository.default = {
 
 		return mongoNotifications.map((notification) => match(notification)
 			.with(
-				{ type: "register" },
+				{ type: "registerNotificationType" },
 				(notification) => EntityHandler.unsafeMapper(
 					RegisterNotificationEntity,
 					{
@@ -96,7 +96,7 @@ notificationRepository.default = {
 				),
 			)
 			.with(
-				{ type: "replyToPost" },
+				{ type: "replyToPostNotificationType" },
 				(notification) => EntityHandler.unsafeMapper(
 					ReplyToPostNotificationEntity,
 					{

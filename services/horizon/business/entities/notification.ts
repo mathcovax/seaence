@@ -14,12 +14,15 @@ const baseNotificatinSchema = zod.object({
 	deleteAt: zod.string(),
 });
 
-export const registerNotificationObjecter = baseNotificatinSchema.createValueObjecter("registerNotification");
+export const registerNotificationObjecter = baseNotificatinSchema.extend({
+	type: zod.literal("registerNotificationType"),
+}).createValueObjecter("registerNotification");
 
 export const summaryOfReplyPostObjecter = zod.string().createValueObjecter("summaryOfReplyPost");
 
 export const replyToPostNotificationObjecter = baseNotificatinSchema.extend({
 	postId: zod.string(),
+	type: zod.literal("replyToPostNotificationType"),
 	usernameOfReplyPost: userUsernameObjecter.zodSchema,
 	summaryOfReplyPost: summaryOfReplyPostObjecter.zodSchema,
 }).createValueObjecter("replyToPostNotification");

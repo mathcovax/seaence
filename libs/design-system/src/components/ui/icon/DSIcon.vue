@@ -23,6 +23,7 @@ import {
 	mdiLinkVariant,
 	mdiBellOutline,
 	mdiBell,
+	mdiMessageOutline,
 } from "@mdi/js";
 import { computed } from "vue";
 
@@ -49,6 +50,7 @@ const iconsMapper = {
 	linkVariant: mdiLinkVariant,
 	bell: mdiBell,
 	bellOutline: mdiBellOutline,
+	messageOutline: mdiMessageOutline,
 };
 
 const sizeMapper = {

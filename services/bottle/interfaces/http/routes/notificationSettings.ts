@@ -91,8 +91,6 @@ useBuilder()
 						: null,
 				);
 
-			console.log(replyToPostNotificationSettings);
-
 			if (!replyToPostNotificationSettings) {
 				return new NotFoundHttpResponse("replyToPostNotificationSettings.notfound");
 			}

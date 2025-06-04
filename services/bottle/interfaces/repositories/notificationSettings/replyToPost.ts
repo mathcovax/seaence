@@ -15,7 +15,7 @@ replyToPostNotificationSettingsRepository.default = {
 				{
 					"user.id": user.id.value,
 					postId: postId.value,
-					type: "replyToPost",
+					type: "replyToPostNotificationSettingsType",
 				},
 			);
 
