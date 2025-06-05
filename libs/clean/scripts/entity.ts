@@ -47,15 +47,11 @@ export interface EntityInstanceBase<
 	): this;
 	toJSON(): ToJSON<
 		SimplifyObjectTopLevel<
-			RemoveKindProperty<
-				GenericProperties
-			>
+			GenericProperties
 		>
 	>;
 	toSimpleObject(): ToSimpleObject<
-		RemoveKindProperty<
-			GenericProperties
-		>
+		GenericProperties
 	>;
 	getUpdatedValues(): ToSimpleObject<
 		Partial<
@@ -84,9 +80,7 @@ export interface EntityClass<
 	GenericInheritProperties extends Record<string, AnyFunction> = {},
 > {
 	new(
-		properties: RemoveKindProperty<
-			GenericProperties
-		>
+		properties: GenericProperties
 	): EntityInstance<
 		GenericPropertiesDefinition,
 		GenericProperties,
@@ -159,12 +153,10 @@ export class EntityHandler {
 				return toJSON(
 					Object.keys(Entity.propertiesDefinition)
 						.reduce(
-							(pv, key) => key === kindKey
-								? pv
-								: ({
-									...pv,
-									[key]: this[key],
-								}),
+							(pv, key) => ({
+								...pv,
+								[key]: this[key],
+							}),
 							{},
 						),
 				);
@@ -174,12 +166,10 @@ export class EntityHandler {
 				return toSimpleObject(
 					Object.keys(Entity.propertiesDefinition)
 						.reduce(
-							(pv, key) => key === kindKey
-								? pv
-								: ({
-									...pv,
-									[key]: this[key],
-								}),
+							(pv, key) => ({
+								...pv,
+								[key]: this[key],
+							}),
 							{},
 						),
 				);
@@ -203,11 +193,7 @@ export class EntityHandler {
 		GenericEntityClass extends EntityClass<any, any>,
 	>(
 		Entity: GenericEntityClass,
-		rawProperties: RemoveKindProperty<
-			EntityPropertiesDefinitionToRawProperties<
-				GenericEntityClass["propertiesDefinition"]
-			>
-		>,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]>,
 	): InstanceType<GenericEntityClass> | ValueObjectError | AttributeError {
 		const properties = Object.entries(Entity.propertiesDefinition as EntityPropertiesDefinition)
 			.reduce(
@@ -216,7 +202,7 @@ export class EntityHandler {
 						return pv;
 					}
 
-					const value = (rawProperties as EntityPropertiesDefinition)[key];
+					const value = rawProperties[key];
 
 					const result = applyAttributes(
 						(value) => propertyDefinition.create(value),
@@ -248,11 +234,7 @@ export class EntityHandler {
 		GenericEntityClass extends EntityClass<any, any>,
 	>(
 		Entity: GenericEntityClass,
-		rawProperties: RemoveKindProperty<
-			EntityPropertiesDefinitionToRawProperties<
-				GenericEntityClass["propertiesDefinition"]
-			>
-		>,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]>,
 	): InstanceType<GenericEntityClass> {
 		const result = this.mapper(Entity, rawProperties);
 
@@ -267,11 +249,7 @@ export class EntityHandler {
 		GenericEntityClass extends EntityClass<any, any>,
 	>(
 		Entity: GenericEntityClass,
-		rawProperties: RemoveKindProperty<
-			EntityPropertiesDefinitionToRawProperties<
-				GenericEntityClass["propertiesDefinition"]
-			>
-		>,
+		rawProperties: EntityPropertiesDefinitionToRawProperties<GenericEntityClass["propertiesDefinition"]>,
 	): InstanceType<GenericEntityClass> {
 		const properties = Object.entries(Entity.propertiesDefinition as EntityPropertiesDefinition)
 			.reduce(
@@ -280,7 +258,7 @@ export class EntityHandler {
 						return pv;
 					}
 
-					const value = (rawProperties as EntityPropertiesDefinition)[key];
+					const value = rawProperties[key];
 
 					const result = applyAttributes(
 						(value) => propertyDefinition.unsafeCreate(value),
@@ -354,10 +332,8 @@ export type GetEntityProperties<
 	GenericEntityInstance extends EntityClass<any, any, any>,
 > = GenericEntityInstance extends EntityClass<infer InferedEntityPropertiesDefinition, any, any>
 	? SimplifyObjectTopLevel<
-		RemoveKindProperty<
-			EntityPropertiesDefinitionToEntityProperties<
-				InferedEntityPropertiesDefinition
-			>
+		EntityPropertiesDefinitionToEntityProperties<
+			InferedEntityPropertiesDefinition
 		>
 	>
 	: never;
@@ -375,23 +351,3 @@ export class EntityError<
 > extends CleanError<GenericInformation> {
 
 }
-
-const kindKey = "kind";
-
-export function createEntityKind<
-	GenericKindName extends string,
->(name: GenericKindName) {
-	return {
-		[kindKey]: zod.literal(name)
-			.optional()
-			.catch(name)
-			.createValueObjecter(name),
-	};
-}
-
-export type RemoveKindProperty<
-	GenricProperties extends object,
-> = Omit<
-	GenricProperties,
-	typeof kindKey
->;

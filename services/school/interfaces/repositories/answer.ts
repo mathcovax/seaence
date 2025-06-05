@@ -49,6 +49,10 @@ answerRepository.default = {
 			id: simpleEntity.id,
 		});
 
+		if (!mongoAnswer) {
+			await asyncMessage.collections.createReplyToPost.emit(simpleEntity);
+		}
+
 		await mongo.answerCollection.updateOne(
 			{
 				id: simpleEntity.id,
@@ -58,10 +62,6 @@ answerRepository.default = {
 			},
 			{ upsert: true },
 		);
-
-		if (!mongoAnswer) {
-			await asyncMessage.collections.createReplyToPost.emit(simpleEntity);
-		}
 
 		return entity;
 	},

@@ -71,11 +71,9 @@ notificationRepository.default = {
 			.exhaustive();
 	},
 	async findNotificationToUser(user, params) {
-		const simpleUser = user.toSimpleObject();
-
 		const mongoNotifications = await mongo.notificationCollection
 			.find({
-				user: simpleUser,
+				"user.id": user.id.value,
 			})
 			.skip(params.page.value * params.quantityPerPage.value)
 			.limit(params.quantityPerPage.value)
@@ -111,12 +109,10 @@ notificationRepository.default = {
 			.exhaustive());
 	},
 	async countNotificationToUser(user) {
-		const simpleUser = user.toSimpleObject();
-
 		return mongo.notificationCollection
 			.countDocuments(
 				{
-					user: simpleUser,
+					"user.id": user.id.value,
 				},
 			)
 			.then(

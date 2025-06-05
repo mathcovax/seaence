@@ -4,7 +4,7 @@ import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConne
 import { BottleAPI } from "@interfaces/providers/bottle";
 
 useMustBeConnectedBuilder()
-	.createRoute("POST", "notification-list-page")
+	.createRoute("POST", "/notification-list-page")
 	.handler(
 		async(pickup) => {
 			const { user } = pickup(["user"]);

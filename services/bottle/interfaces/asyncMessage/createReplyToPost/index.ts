@@ -14,7 +14,7 @@ asyncMessage.collections.createReplyToPost.on(
 		const summaryOfReplyPost = summaryOfReplyPostObjecter.unsafeCreate(
 			summarizeText(createReplyToPostValue.value.content),
 		);
-		const userIdOfReplyPost = userIdObjecter.unsafeCreate(createReplyToPostValue.value.author.username);
+		const userIdOfReplyPost = userIdObjecter.unsafeCreate(createReplyToPostValue.value.author.id);
 
 		await createReplyToPostNotificationsUsecase.execute({
 			postId,

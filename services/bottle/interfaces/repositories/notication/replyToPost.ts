@@ -11,7 +11,7 @@ replyToPostNotificationRepository.default = {
 	async *findUnprocessedReplyToPostNotifications() {
 		const quantityPerPage = 10;
 
-		for (let page = 0; true; page++) {
+		while (true) {
 			const mongoNotifications = await mongo.notificationCollection
 				.find(
 					{
@@ -19,7 +19,6 @@ replyToPostNotificationRepository.default = {
 						type: "replyToPostNotificationType",
 					},
 				)
-				.skip(page * quantityPerPage)
 				.limit(quantityPerPage)
 				.toArray();
 
@@ -27,7 +26,7 @@ replyToPostNotificationRepository.default = {
 				break;
 			}
 
-			const notifications = mongoNotifications.map(
+			yield mongoNotifications.map(
 				(notification) => {
 					if (notification.type !== "replyToPostNotificationType") {
 						throw new RepositoryError(
@@ -51,8 +50,6 @@ replyToPostNotificationRepository.default = {
 					);
 				},
 			);
-
-			yield notifications;
 		}
 	},
 	async findReplyToPostNotificationByPostId(user, postId) {

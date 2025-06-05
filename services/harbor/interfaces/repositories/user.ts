@@ -66,16 +66,15 @@ userRepository.default = {
 				data: simpleEntity,
 			});
 		} else {
-			await prismaClient.user.create({
-				data: simpleEntity,
-			});
-
 			await asyncMessage.collections.createUser.emit({
 				userId: simpleEntity.id,
 				email: simpleEntity.email,
 				username: simpleEntity.username,
-				// refacto in the futur
-				language: "fr-FR",
+				language: "en-US",
+			});
+
+			await prismaClient.user.create({
+				data: simpleEntity,
 			});
 		}
 
