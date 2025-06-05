@@ -5,7 +5,69 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type CodegenRoutes = never;
+type ReportingBakedDocumentTranslationRow = {
+    bakedDocumentTitle: string;
+    bakedDocumentId: string;
+    reportingQuantity: number;
+};
+
+export { ReportingBakedDocumentTranslationRow };
+
+type CodegenRoutes = ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-list-page";
+    response: {
+        code: 200;
+        information: "reportingBakedDocumentTranslationListPage.found";
+        body: {
+            countTotal: number;
+            quantityPerPage: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-list";
+    body: {
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "reportingBakeDocumentTranslationList.found";
+        body: ReportingBakedDocumentTranslationRow[];
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-page";
+    body: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 404;
+        information: "bakedDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "reportingBakedDocumentTranslationPage.found";
+        body: {
+            bakedDocument: {
+                id: string;
+                nodeSameRawDocumentId: string;
+                language: "fr-FR" | "en-US";
+                title: string;
+                abstract: string | null;
+                abstractDetails: {
+                    label: string;
+                    content: string;
+                }[] | null;
+                keywords: string[];
+            };
+            reporting: {
+                countTotal: number;
+                quantityPerPage: number;
+            };
+        };
+    };
+});
 
 export { CodegenRoutes };
 /* v8 ignore stop */

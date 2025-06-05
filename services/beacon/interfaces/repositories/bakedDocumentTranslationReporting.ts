@@ -1,7 +1,7 @@
 import { bakedDocumentTranslationReportingRepository } from "@business/applications/repositories/bakedDocumentTranslationReporting";
 import { BakedDocumentTranslationReportingEntity } from "@business/domains/entities/bakedDocumentTranslationReporting";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler } from "@vendors/clean";
+import { EntityHandler, intObjecter } from "@vendors/clean";
 
 bakedDocumentTranslationReportingRepository.default = {
 	async save(bakedDocumentTranslationReporting) {
@@ -46,5 +46,19 @@ bakedDocumentTranslationReportingRepository.default = {
 						),
 					),
 			);
+	},
+	async deleteMany(bakedDocumentId) {
+		await mongo
+			.bakedDocumentTranslationReportingCollection
+			.deleteMany({ bakedDocumentId: bakedDocumentId.value });
+	},
+
+	countTotalByBakedDocumentId(bakedDocumentId) {
+		return mongo
+			.bakedDocumentTranslationReportingCollection
+			.countDocuments({
+				bakedDocumentId: bakedDocumentId.value,
+			})
+			.then(intObjecter.unsafeCreate);
 	},
 };

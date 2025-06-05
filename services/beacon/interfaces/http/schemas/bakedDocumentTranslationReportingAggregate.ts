@@ -8,3 +8,8 @@ export const bakedDocumentTranslationReportingAggregateSchema = zod.object({
 
 export const endpointFindManyBakedDocumentTranslationReportingAggregateSchema
 	= bakedDocumentTranslationReportingAggregateSchema.array();
+
+export const endpointFindManyBakedDocumentTranslationReportingAggregateDetailsSchema
+		= zod.object({
+			countTotal: intObjecter.zodSchema,
+		});

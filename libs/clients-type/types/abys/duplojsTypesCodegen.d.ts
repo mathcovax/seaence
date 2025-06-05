@@ -150,6 +150,23 @@ type CodegenRoutes = ({
             }) | null;
         };
     };
+}) | ({
+    method: "POST";
+    path: "/find-many-baked-document-title";
+    body: {
+        bakedDocumentIds: string[];
+    };
+    response: {
+        code: 404;
+        information: "bakedDocuments.notfound";
+        body: {
+            notfoundBakedDocumentIds: string[];
+        };
+    } | {
+        code: 200;
+        information: "bakedDocumentTitle.findMany";
+        body: Record<string, string>;
+    };
 });
 
 export { CodegenRoutes };

@@ -20,6 +20,12 @@ export interface BakedDocumentTranslationReportingRepository extends RepositoryB
 	findMany(params: FindManyParams): Promise<
 		BakedDocumentTranslationReportingEntity[]
 	>;
+
+	deleteMany(bakedDocumentId: BakedDocumentId): Promise<void>;
+
+	countTotalByBakedDocumentId(
+		bakedDocumentId: BakedDocumentId
+	): Promise<Int>;
 }
 
 export const bakedDocumentTranslationReportingRepository = createRepositoryHandler<

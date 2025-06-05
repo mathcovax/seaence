@@ -16,12 +16,15 @@
 - je click sur le bouton pour proposé une nouvel traduction
 - je vois cote a cote dans un dialog la nouvel proposition de traduction et le document actuel.
 - je peu valider la nouvel traduction ou fermer le dialog
+	* si je valide, cela supprime tout les signalment lier au document cuit
 
 ### Beacon user story
 
 - récupérer une liste d'aggregat de signalement regrouper pars document cuit
 
 - je récupére la liste de signalment lier a un document cuit
+
+- je supprimme la liste de signalment lier a un document cuit
 
 ### Abys user story
 
