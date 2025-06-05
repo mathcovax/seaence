@@ -19,3 +19,7 @@ export const endpointPostsDetails = zod.object({
 export const endpointCreatePost = zod.object({
 	id: zod.string(),
 });
+
+export const entrypointPatchPostStatus = zod.object({
+	status: zod.enum(["compliant", "notCompliant"]),
+});

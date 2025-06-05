@@ -17,6 +17,11 @@ export const userUsernameObjecter = zod
 	.max(userRules.username.maxLength)
 	.createValueObjecter("userUsername");
 
+export const userBannedObjecter = zod
+	.boolean()
+	.createValueObjecter("userBanned");
+
+export type UserBanned = GetValueObject<typeof userBannedObjecter>;
 export type UserEmail = GetValueObject<typeof userEmailObjecter>;
 export type UserUsername = GetValueObject<typeof userUsernameObjecter>;
 export type UserId = GetValueObject<typeof userIdObjecter>;
@@ -32,6 +37,7 @@ export class UserEntity extends EntityHandler.create({
 	email: userEmailObjecter,
 	username: userUsernameObjecter,
 	lastUpdate: commonDateObjecter,
+	banned: userBannedObjecter,
 }) {
 	public static create(params: InputCreateUserEntity) {
 		return new UserEntity({

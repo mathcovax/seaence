@@ -18,6 +18,10 @@ export class BottleAPI {
 		throw new Error("Method not implemented.");
 	}
 
+	public static createBanNotification() {
+		throw new Error("Method not implemented.");
+	}
+
 	public static enableNotification(input: InputEnableNotification) {
 		return this.httpClient
 			.post(

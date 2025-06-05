@@ -4,13 +4,13 @@ import { PrismaClient } from "@prisma/output";
 
 export const prismaClient = new PrismaClient();
 
-interface PostWarning {
+export interface PostReference {
 	type: "post";
 	postId: string;
 }
 declare global {
 	namespace PrismaJson {
-		type WarningValue = | PostWarning;
+		type WarningReference = | PostReference;
 	}
 }
 

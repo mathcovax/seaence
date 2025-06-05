@@ -1,13 +1,12 @@
-import { type WarningEntity, type WarningId } from "@business/domains/entities/warning";
-import { type PostWarningEntity } from "@business/domains/entities/warning/postWarning";
+import { type BaseUserWarningId } from "@business/domains/entities/warning/base";
+import { type PostUserWarningEntity } from "@business/domains/entities/warning/post";
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
 export type Warning =
-	| WarningEntity
-	| PostWarningEntity;
+	| PostUserWarningEntity;
 
-export interface WarningRepository extends RepositoryBase<Warning> {
-	generateWarningId(): WarningId;
+export interface UserWarningRepository extends RepositoryBase<Warning> {
+	generateUserWarningId(): BaseUserWarningId;
 }
 
-export const warningRepository = createRepositoryHandler<WarningRepository>();
+export const userWarningRepository = createRepositoryHandler<UserWarningRepository>();

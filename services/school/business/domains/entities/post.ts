@@ -25,9 +25,9 @@ export const nodeSameRawDocumentIdObjecter = zod.string().createValueObjecter("n
 export type NodeSameRawDocumentId = GetValueObject<typeof nodeSameRawDocumentIdObjecter>;
 
 export const postStatusEnum = createEnum([
-	"verified",
+	"compliant",
 	"unprocessed",
-	"not_compliant",
+	"notCompliant",
 ]);
 
 export const postStatusObjecter = zod.enum(postStatusEnum.toTuple()).createValueObjecter("postStatus");
@@ -72,5 +72,17 @@ export class PostEntity extends EntityHandler.create({
 		return this.update({
 			author: userObjecter.unsafeCreate(updatedAuthor),
 		});
+	}
+
+	public updateStatus(status: PostStatus["value"]) {
+		return this.update(
+			{
+				status: postStatusObjecter.unsafeCreate(status),
+			},
+		);
+	}
+
+	public isUnprocessed() {
+		return this.status.value === "unprocessed";
 	}
 }

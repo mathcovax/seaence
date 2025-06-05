@@ -47,7 +47,7 @@ postRepository.default = {
 					answerCount: -1,
 				},
 			)
-			.filter({ status: { $ne: "non_compliant" } })
+			.filter({ status: { $ne: "notCompliant" } })
 			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.map(
