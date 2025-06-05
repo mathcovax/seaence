@@ -1,4 +1,4 @@
-import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
+import { createRepositoryHandler, type RepositoryError, type RepositoryBase } from "@vendors/clean";
 import { type BakedDocumentId, type BakedDocumentEntity, type BakedDocumentTitle, type BakedDocumentAbstract, type BakedDocumentKeyword, type BakedDocumentAbstractPart, type BakedDocumentRessource } from "@business/domains/entities/bakedDocument";
 import { type RawAbstractPart, type RawAbstract, type RawTitle, type RawKeyword } from "@business/domains/common/rawDocument";
 import { type NodeSameRawDocumentWrapper } from "./rawDocument";
@@ -23,7 +23,13 @@ export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEnt
 	): BakedDocumentRessource[];
 	findUpdatedDocuments(): AsyncGenerator<BakedDocumentEntity>;
 	findOneById(id: BakedDocumentId): Promise<BakedDocumentEntity | null>;
-	findManyById(ids: BakedDocumentId[]): Promise<BakedDocumentEntity[]>;
+	findManyById(ids: BakedDocumentId[]): Promise<
+		| BakedDocumentEntity[]
+		| RepositoryError<
+			"notfound-baked-document",
+			{ bakedDocumentIds: BakedDocumentId[] }
+		>
+	>;
 
 }
 

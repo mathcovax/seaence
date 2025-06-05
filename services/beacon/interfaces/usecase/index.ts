@@ -1,10 +1,20 @@
+import { DeleteManyBakedDocumentTranslationReportingUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/deleteManyBakedDocumentTranslationReporting";
 import "../repositories";
+import { CountTotalBakedDocumentTranslationReportingAggregateUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/countTotalBakedDocumentTranslationReportingAggregate";
 import { FindManyBakedDocumentTranslationReportingUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/findManyBakedDocumentTranslationReporting";
 import { FindManyBakedDocumentTranslationReportingAggregateUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/findManyBakedDocumentTranslationReportingAggregate";
 import { UpsertBakedDocumentTranslationReportingUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/upsertBakedDocumentTranslationReporting";
+import { CountTotalBakedDocumentTranslationReportingByBakedDocumentIdUsecase } from "@business/applications/usecases/bakedDocumentTranslationReporting/countTotalBakedDocumentTranslationReportingByBakedDocumentId";
 
 export const upsertBakedDocumentTranslationReportingUsecase = new UpsertBakedDocumentTranslationReportingUsecase();
 export const findManyBakedDocumentTranslationReportingUsecase = new FindManyBakedDocumentTranslationReportingUsecase();
+export const deleteManyBakedDocumentTranslationReportingUsecase
+	= new DeleteManyBakedDocumentTranslationReportingUsecase();
+export const countTotalBakedDocumentTranslationReportingByBakedDocumentIdUsecase
+	= new CountTotalBakedDocumentTranslationReportingByBakedDocumentIdUsecase();
 
 export const findManyBakedDocumentTranslationReportingAggregateUsecase
 	= new FindManyBakedDocumentTranslationReportingAggregateUsecase();
+export const countTotalBakedDocumentTranslationReportingAggregateUsecase
+	= new CountTotalBakedDocumentTranslationReportingAggregateUsecase();
+

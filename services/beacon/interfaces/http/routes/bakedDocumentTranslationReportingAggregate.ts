@@ -1,6 +1,6 @@
 import { intObjecter } from "@vendors/clean";
-import { endpointFindManyBakedDocumentTranslationReportingAggregateSchema } from "../schemas/bakedDocumentTranslationReportingAggregate";
-import { findManyBakedDocumentTranslationReportingAggregateUsecase } from "@interfaces/usecase";
+import { endpointFindManyBakedDocumentTranslationReportingAggregateDetailsSchema, endpointFindManyBakedDocumentTranslationReportingAggregateSchema } from "../schemas/bakedDocumentTranslationReportingAggregate";
+import { countTotalBakedDocumentTranslationReportingAggregateUsecase, findManyBakedDocumentTranslationReportingAggregateUsecase } from "@interfaces/usecase";
 
 useBuilder()
 	.createRoute("POST", "/find-many-baked-document-translation-reporting-aggregate")
@@ -31,7 +31,30 @@ useBuilder()
 						),
 				);
 
-			return new OkHttpResponse("bakedDocumentTranslationReporting.findMany", result);
+			return new OkHttpResponse("bakedDocumentTranslationReportingAggregate.findMany", result);
 		},
-		makeResponseContract(OkHttpResponse, "bakedDocumentTranslationReporting.findMany", endpointFindManyBakedDocumentTranslationReportingAggregateSchema),
+		makeResponseContract(
+			OkHttpResponse,
+			"bakedDocumentTranslationReportingAggregate.findMany",
+			endpointFindManyBakedDocumentTranslationReportingAggregateSchema,
+		),
+	);
+
+useBuilder()
+	.createRoute("POST", "/find-many-baked-document-translation-reporting-aggregate-details")
+	.handler(
+		async() => {
+			const countTotal = await countTotalBakedDocumentTranslationReportingAggregateUsecase
+				.execute({});
+
+			return new OkHttpResponse(
+				"bakedDocumentTranslationReportingAggregate.findManyDetails",
+				{ countTotal: countTotal.value },
+			);
+		},
+		makeResponseContract(
+			OkHttpResponse,
+			"bakedDocumentTranslationReportingAggregate.findManyDetails",
+			endpointFindManyBakedDocumentTranslationReportingAggregateDetailsSchema,
+		),
 	);

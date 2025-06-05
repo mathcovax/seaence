@@ -1,7 +1,7 @@
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, bakedDocumentAbstractPartObjecter, bakedDocumentRessourceObjecter, type BakedDocumentRessource } from "@business/domains/entities/bakedDocument";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler } from "@vendors/clean";
+import { EntityHandler, RepositoryError, toSimpleObject } from "@vendors/clean";
 import { RosettaAPI, type SupportedLanguage } from "@interfaces/providers/rosetta";
 import { KeyDate } from "@interfaces/providers/keyDate";
 import { match, P } from "ts-pattern";
@@ -207,18 +207,36 @@ bakedDocumentRepository.default = {
 		);
 	},
 	async findManyById(ids) {
-		return mongo.bakedDocumentCollection
+		const mongoBakedDocuments = await mongo.bakedDocumentCollection
 			.find({
 				id: { $in: ids.map((id) => id.value) },
 			})
-			.toArray()
-			.then(
-				(mongoEntities) => mongoEntities.map(
-					(mongoEntity) => EntityHandler.unsafeMapper(
-						BakedDocumentEntity,
-						mongoEntity,
-					),
-				),
+			.toArray();
+
+		const missingBakedDocumentIds
+				= ids.map(
+					(id) => mongoBakedDocuments.find(
+						(mongoBakedDocument) => mongoBakedDocument.id === id.value,
+					)
+						? null
+						: id,
+				)
+					.filter((mybeyId) => !!mybeyId);
+
+		if (missingBakedDocumentIds.length) {
+			return new RepositoryError(
+				"notfound-baked-document",
+				{
+					bakedDocumentIds: missingBakedDocumentIds,
+				},
 			);
+		}
+
+		return mongoBakedDocuments.map(
+			(mongoEntity) => EntityHandler.unsafeMapper(
+				BakedDocumentEntity,
+				mongoEntity,
+			),
+		);
 	},
 };

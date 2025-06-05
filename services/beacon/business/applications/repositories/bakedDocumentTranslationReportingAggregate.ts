@@ -10,6 +10,7 @@ export interface BakedDocumentTranslationReportingAggregateRepository extends Re
 	findMany(params: FindManyParams): Promise<
 		BakedDocumentTranslationReportingAggregateEntity[]
 	>;
+	countTotal(): Promise<Int>;
 }
 
 export const bakedDocumentTranslationReportingAggregateRepository = createRepositoryHandler<

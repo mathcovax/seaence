@@ -1,7 +1,8 @@
 import { flexibleDateObjecter } from "@vendors/clean";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentRessourceObjecter, bakedDocumentAuthorObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentRessourceObjecter, bakedDocumentAuthorObjecter, bakedDocumentTitleObjecter } from "@business/domains/entities/bakedDocument";
 import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
+import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/nodeSameRawDocument";
 
 export const endpointBakedDocumentSchema = zod.object({
 	id: zod.string(),
@@ -21,4 +22,11 @@ export const endpointBakedDocumentSchema = zod.object({
 	journalPublishDate: flexibleDateObjecter.zodSchema.nullable(),
 });
 
-export const endpointFindManyBakedDocumentTitleSchema = zod.string().array();
+export const endpointFindManyBakedDocumentNotfoundSchema = zod.object({
+	notfoundBakedDocumentIds: zod.string().array(),
+});
+
+export const endpointFindManyBakedDocumentTitleSchema = zod.record(
+	nodeSameRawDocumentIdObjecter.zodSchema,
+	bakedDocumentTitleObjecter.zodSchema,
+);

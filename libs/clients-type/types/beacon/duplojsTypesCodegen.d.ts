@@ -20,11 +20,13 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/find-many-baked-document-translation-reporting";
+    path: "/find-many-baked-document-translation-reporting/{bakedDocumentId}";
     body: {
-        bakedDocumentId: string;
         quantityPerPage: number;
         page: number;
+    };
+    params: {
+        bakedDocumentId: string;
     };
     response: {
         code: 200;
@@ -38,6 +40,30 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/find-many-baked-document-translation-reporting-details/{bakedDocumentId}";
+    params: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 200;
+        information: "bakedDocumentTranslationReporting.findManyDetails";
+        body: {
+            countTotal: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/delete-many-baked-document-translation-reporting/{bakedDocumentId}";
+    params: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 204;
+        information: "bakedDocumentTranslationReporting.deleteMany";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/find-many-baked-document-translation-reporting-aggregate";
     body: {
         quantityPerPage: number;
@@ -45,11 +71,21 @@ type CodegenRoutes = ({
     };
     response: {
         code: 200;
-        information: "bakedDocumentTranslationReporting.findMany";
+        information: "bakedDocumentTranslationReportingAggregate.findMany";
         body: {
             bakedDocumentId: string;
             reportingQuantity: number;
         }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/find-many-baked-document-translation-reporting-aggregate-details";
+    response: {
+        code: 200;
+        information: "bakedDocumentTranslationReportingAggregate.findManyDetails";
+        body: {
+            countTotal: number;
+        };
     };
 });
 

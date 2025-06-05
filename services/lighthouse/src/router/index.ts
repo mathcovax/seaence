@@ -1,8 +1,17 @@
 import { createWebHistory, createRouter } from "vue-router";
+import {
+	reportingBakedDocumentTranslationListPage,
+} from "@/domains/reporting/reportingBakedDocumentTranslationList/router";
+import {
+	reportingBakedDocumentTranslationPage,
+} from "@/domains/reporting/reportingBakedDocumentTranslation/router";
 
 export const router = createRouter({
 	history: createWebHistory(),
-	routes: [],
+	routes: [
+		reportingBakedDocumentTranslationListPage.recordRaw,
+		reportingBakedDocumentTranslationPage.recordRaw,
+	],
 	scrollBehavior(_to, _from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;

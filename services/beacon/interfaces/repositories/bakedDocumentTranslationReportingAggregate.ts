@@ -1,11 +1,15 @@
 import { bakedDocumentTranslationReportingAggregateRepository } from "@business/applications/repositories/bakedDocumentTranslationReportingAggregate";
 import { BakedDocumentTranslationReportingAggregateEntity } from "@business/domains/entities/bakedDocumentTranslationReportingAggregate";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler, RepositoryError } from "@vendors/clean";
+import { EntityHandler, intObjecter, RepositoryError } from "@vendors/clean";
 
 interface FindManyRawResult {
 	_id: string;
 	reportingQuantity: number;
+}
+
+interface CountTotalRawResult {
+	total: number;
 }
 
 bakedDocumentTranslationReportingAggregateRepository.default = {
@@ -38,6 +42,29 @@ bakedDocumentTranslationReportingAggregateRepository.default = {
 							},
 						),
 					),
+			);
+	},
+	countTotal() {
+		const defaultCountValue = 0;
+
+		return mongo.bakedDocumentTranslationReportingCollection
+			.aggregate<CountTotalRawResult>([
+				{
+					$group: {
+						_id: "$bakedDocumentId",
+					},
+				},
+				{ $count: "total" },
+			])
+			.toArray()
+			.then(
+				(mongoEntitys) => {
+					const mongoEntity = mongoEntitys.shift();
+
+					return intObjecter.unsafeCreate(
+						mongoEntity?.total ?? defaultCountValue,
+					);
+				},
 			);
 	},
 };
