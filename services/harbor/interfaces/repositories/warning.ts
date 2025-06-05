@@ -1,32 +1,48 @@
-import { warningRepository } from "@business/applications/repositories/warning";
-import { warningIdObjecter } from "@business/domains/entities/warning";
-import { prismaClient } from "@interfaces/providers/prisma";
+import { userWarningRepository, type Warning } from "@business/applications/repositories/warning";
+import { baseUserWarningIdObjecter } from "@business/domains/entities/warning/base";
+import { PostUserWarningEntity } from "@business/domains/entities/warning/post";
+import { type PostReference, prismaClient } from "@interfaces/providers/prisma";
+import { match, P } from "ts-pattern";
 import { uuidv7 } from "uuidv7";
 
-warningRepository.default = {
+userWarningRepository.default = {
 	async save(entity) {
-		const simpleEntity = entity.toSimpleObject();
+		await match({ entity: entity as Warning })
+			.with(
+				{ entity: P.instanceOf(PostUserWarningEntity) },
+				({ entity }) => {
+					const simpleEntity = entity.toSimpleObject();
 
-		await prismaClient.warning.upsert({
-			where: {
-				id: simpleEntity.id,
-			},
-			create: {
-				id: simpleEntity.id,
-				makeUserBan: simpleEntity.makeUserBan,
-				reason: simpleEntity.reason,
-				value: JSON.stringify(simpleEntity),
-			},
-			update: {
-				makeUserBan: simpleEntity.makeUserBan,
-				reason: simpleEntity.reason,
-				value: JSON.stringify(simpleEntity),
-			},
-		});
+					const entityReference: PostReference = {
+						type: simpleEntity.type,
+						postId: simpleEntity.postId,
+					};
+
+					return prismaClient.warning.upsert({
+						where: {
+							id: simpleEntity.id,
+						},
+						create: {
+							id: simpleEntity.id,
+							makeUserBan: simpleEntity.makeUserBan,
+							reason: simpleEntity.reason,
+							userId: simpleEntity.userId,
+							reference: JSON.stringify(entityReference),
+						},
+						update: {
+							makeUserBan: simpleEntity.makeUserBan,
+							reason: simpleEntity.reason,
+							userId: simpleEntity.userId,
+							reference: JSON.stringify(entityReference),
+						},
+					});
+				},
+			)
+			.exhaustive();
 
 		return entity;
 	},
-	generateWarningId() {
-		return warningIdObjecter.unsafeCreate(uuidv7());
+	generateUserWarningId() {
+		return baseUserWarningIdObjecter.unsafeCreate(uuidv7());
 	},
 };

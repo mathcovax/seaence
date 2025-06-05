@@ -1,14 +1,13 @@
-import { warningMakeUserBanObjecter, warningReasonObjecter } from "@business/domains/entities/warning";
-import { postWarningPostIdObjecter } from "@business/domains/entities/warning/postWarning";
+import { userIdObjecter } from "@business/domains/entities/user";
+import { userWarningBaseMakeUserBanObjecter, userWarningBaseReasonObjecter } from "@business/domains/entities/warning/base";
+import { postUserWarningPostIdObjecter } from "@business/domains/entities/warning/post";
 
-export const createPostWarning = zod.object({
-	type: zod.literal("post"),
-	makeUserBan: warningMakeUserBanObjecter.toZodSchema(),
-	reason: warningReasonObjecter.toZodSchema(),
-	postId: postWarningPostIdObjecter.toZodSchema(),
+const createUserWarning = zod.object({
+	makeUserBan: userWarningBaseMakeUserBanObjecter.toZodSchema(),
+	reason: userWarningBaseReasonObjecter.toZodSchema(),
+	authorId: userIdObjecter.toZodSchema(),
 });
 
-export const entrypointCreateWarning = zod.union([
-	createPostWarning,
-	zod.never(),
-]);
+export const entrypointCreatePostUserWarning = createUserWarning.extend({
+	postId: postUserWarningPostIdObjecter.toZodSchema(),
+});

@@ -1,30 +1,31 @@
-import { match } from "ts-pattern";
-import { entrypointCreateWarning } from "../schemas/warning";
-import { createPostWarning } from "@interfaces/usecases";
+import { entrypointCreatePostUserWarning } from "../schemas/warning";
+import { createPostUserWarning } from "@interfaces/usecases";
+import { IWantUserExistsById } from "../checkers/user";
 
 useBuilder()
-	.createRoute("POST", "/create-warning")
+	.createRoute("POST", "/create-post-user-warning")
 	.extract({
-		body: entrypointCreateWarning,
+		body: entrypointCreatePostUserWarning,
 	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").authorId,
+	)
 	.cut(
 		async({ pickup, dropper }) => {
-			const { body } = pickup(["body"]);
+			const { body, user } = pickup(["body", "user"]);
+			const { postId, reason, makeUserBan } = body;
 
-			return match(body)
-				.with(
-					{ type: "post" },
-					async(matchedBody) => dropper(
-						{
-							warning: await createPostWarning.execute({
-								makeUserBan: matchedBody.makeUserBan,
-								reason: matchedBody.reason,
-								postId: matchedBody.postId,
-							}),
-						},
-					),
-				)
-				.exhaustive();
+			const warning = await createPostUserWarning.execute({
+				postId,
+				reason,
+				makeUserBan,
+				user,
+			});
+
+			return dropper({
+				warning,
+			});
 		},
 		["warning"],
 	)

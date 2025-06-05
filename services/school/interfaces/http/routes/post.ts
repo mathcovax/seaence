@@ -1,20 +1,21 @@
-import { userObjecter } from "@business/domains/common/user";
 import {
 	nodeSameRawDocumentIdObjecter,
 	postContentObjecter,
-	PostEntity,
 	postIdObjecter,
 	postTopicObjecter,
 } from "@business/domains/entities/post";
 import {
 	createPostUsecase,
 	findPostsFromNodeSameRawDocumentIdUsecase,
-	getOldestUnprocessedPostUsecase,
+	findOldestUnprocessedPostUsecase,
 	getPostTotalCountFromNodeSameRawDocumentIdUsecase,
+	indicatePostIsNotCompliantUsecase,
+	indicatePostIsCompliantUsecase,
 } from "@interfaces/usecase";
-import { intObjecter } from "@vendors/clean";
-import { endpointCreatePost, endpointPostSchema, endpointPostsDetails } from "../schemas/post";
+import { intObjecter, UsecaseError } from "@vendors/clean";
+import { endpointCreatePost, endpointPostSchema, endpointPostsDetails, entrypointPatchPostStatus } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
+import { userObjecter } from "@business/domains/common/user";
 
 useBuilder()
 	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/posts")
@@ -127,12 +128,12 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("GET", "/get-oldest-unprocessed-post")
+	.createRoute("GET", "/find-oldest-unprocessed-post")
 	.handler(
 		async() => {
-			const post = await getOldestUnprocessedPostUsecase.execute();
+			const post = await findOldestUnprocessedPostUsecase.execute();
 
-			const simplePost = post instanceof PostEntity ? post.toSimpleObject() : null;
+			const simplePost = post?.toSimpleObject() ?? null;
 
 			return new OkHttpResponse(
 				"oldestUnprocessedPost.found",
@@ -140,4 +141,53 @@ useBuilder()
 			);
 		},
 		makeResponseContract(OkHttpResponse, "oldestUnprocessedPost.found", endpointPostSchema.nullable()),
+	);
+
+useBuilder()
+	.createRoute("PATCH", "/posts/{postId}/status")
+	.extract({
+		params: {
+			postId: postIdObjecter.toZodSchema(),
+		},
+		body: entrypointPatchPostStatus,
+	})
+	.presetCheck(
+		iWantPostExistById,
+		(pickup) => pickup("postId"),
+	)
+	.cut(
+		async({ pickup, dropper }) => {
+			const post = pickup("post");
+			const { status } = pickup("body");
+			let updatedPost = null;
+
+			if (status === "compliant") {
+				updatedPost = await indicatePostIsCompliantUsecase.execute({
+					post,
+				});
+			} else {
+				updatedPost = await indicatePostIsNotCompliantUsecase.execute({
+					post,
+				});
+			}
+
+			if (updatedPost instanceof UsecaseError) {
+				return new ForbiddenHttpResponse("post.wrongStatus");
+			}
+
+			return dropper({ updatedPost });
+		},
+		["updatedPost"],
+		makeResponseContract(ForbiddenHttpResponse, "post.wrongStatus"),
+	)
+	.handler(
+		(pickup) => {
+			const post = pickup("updatedPost");
+
+			return new OkHttpResponse(
+				"post.updated",
+				post.toSimpleObject(),
+			);
+		},
+		makeResponseContract(OkHttpResponse, "post.updated", endpointPostSchema),
 	);
