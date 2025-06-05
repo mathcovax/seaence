@@ -6,7 +6,9 @@ import { ReplyToPostUsecase } from "@business/applications/usecases/replyToPost"
 import { GetPostTotalCountFromNodeSameRawDocumentIdUsecase } from "@business/applications/usecases/getPostTotalCountFromNodeSameRawDocumentId";
 import { FindPostByIdUsecase } from "@business/applications/usecases/findPostById";
 import { RenameAuthorUsecase } from "@business/applications/usecases/renameAuthor";
-import { GetOldestUnprocessedPostUsecase } from "@business/applications/usecases/getOldestUnprocessedPost";
+import { FindOldestUnprocessedPostUsecase } from "@business/applications/usecases/findOldestUnprocessedPost";
+import { IndicatePostIsCompliantUsecase } from "@business/applications/usecases/indicatePostIsCompliant";
+import { IndicatePostIsNotCompliantUsecase } from "@business/applications/usecases/indicatePostIsNotCompliant";
 
 export const createPostUsecase = new CreatePostUsecase();
 export const findPostsFromNodeSameRawDocumentIdUsecase = new FindPostsFromNodeSameRawDocumentIdUsecase();
@@ -16,4 +18,6 @@ export const getPostTotalCountFromNodeSameRawDocumentIdUsecase
 	= new GetPostTotalCountFromNodeSameRawDocumentIdUsecase();
 export const replyToPostUsecase = new ReplyToPostUsecase();
 export const renameAuthor = new RenameAuthorUsecase();
-export const getOldestUnprocessedPostUsecase = new GetOldestUnprocessedPostUsecase();
+export const findOldestUnprocessedPostUsecase = new FindOldestUnprocessedPostUsecase();
+export const indicatePostIsCompliantUsecase = new IndicatePostIsCompliantUsecase();
+export const indicatePostIsNotCompliantUsecase = new IndicatePostIsNotCompliantUsecase();
