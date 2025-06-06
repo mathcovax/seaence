@@ -44,7 +44,7 @@ const limitedTotal = computed(
 		show-edges
 		:page="currentPage"
 		@update:page="update"
-		class="flex justify-center my-8 scale-75 sm:scale-100"
+		class="flex justify-center scale-75 sm:scale-100"
 	>
 		<PaginationList
 			v-slot="{ items }"

@@ -5,7 +5,149 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type CodegenRoutes = never;
+type ReportingBakedDocumentTranslationListPage = {
+    countTotal: number;
+    quantityPerPage: number;
+};
+
+export { ReportingBakedDocumentTranslationListPage };
+
+type ReportingBakedDocumentTranslationAggregateListRow = {
+    bakedDocumentTitle: string;
+    bakedDocumentId: string;
+    reportingQuantity: number;
+};
+
+export { ReportingBakedDocumentTranslationAggregateListRow };
+
+type ReportingBakedDocumentTranslationPage = {
+    bakedDocument: {
+        id: string;
+        nodeSameRawDocumentId: string;
+        language: BakedDocumentLanguage;
+        title: string;
+        abstract: string | null;
+        abstractDetails: {
+            name: string;
+            label: string;
+            content: string;
+        }[] | null;
+        keywords: string[];
+    };
+    reporting: {
+        countTotal: number;
+        quantityPerPage: number;
+    };
+};
+
+export { ReportingBakedDocumentTranslationPage };
+
+type BakedDocumentLanguage = "fr-FR" | "en-US";
+
+export { BakedDocumentLanguage };
+
+type ReportingBakedDocumentTranslationListRow = {
+    id: string;
+    userId: string;
+    bakedDocumentId: string;
+    details: string;
+};
+
+export { ReportingBakedDocumentTranslationListRow };
+
+type BakedDocumentNewTranslation = {
+    title: string;
+    abstract: string | null;
+    abstractDetails: {
+        name: string;
+        label: string;
+        content: string;
+    }[] | null;
+    keywords: string[];
+};
+
+export { BakedDocumentNewTranslation };
+
+type CodegenRoutes = ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-aggregate-list-page";
+    response: {
+        code: 200;
+        information: "reportingBakedDocumentTranslationAggregateListPage.found";
+        body: ReportingBakedDocumentTranslationListPage;
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-aggregate-list";
+    body: {
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "reportingBakeDocumentTranslationAggregateList.found";
+        body: ReportingBakedDocumentTranslationAggregateListRow[];
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-page";
+    body: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 404;
+        information: "bakedDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "reportingBakedDocumentTranslationPage.found";
+        body: ReportingBakedDocumentTranslationPage;
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-list";
+    body: {
+        bakedDocumentId: string;
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "reportingDakedDocumentTranslationList.found";
+        body: ReportingBakedDocumentTranslationListRow[];
+    };
+}) | ({
+    method: "POST";
+    path: "/get-new-baked-document-translation";
+    body: {
+        nodeSameRawDocumentId: string;
+        bakedDocumentLanguage: BakedDocumentLanguage;
+    };
+    response: {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "bakedDocument.getNewTranslation";
+        body: BakedDocumentNewTranslation;
+    };
+}) | ({
+    method: "POST";
+    path: "/make-new-baked-document-translation";
+    body: {
+        bakedDocumentId: string;
+        nodeSameRawDocumentId: string;
+        bakedDocumentLanguage: BakedDocumentLanguage;
+    };
+    response: {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "bakedDocument.makeNewTranslation";
+        body?: undefined;
+    };
+});
 
 export { CodegenRoutes };
 /* v8 ignore stop */

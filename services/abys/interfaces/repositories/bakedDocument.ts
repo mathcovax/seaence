@@ -1,11 +1,13 @@
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
-import { bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentIdObjecter, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, type BakedDocumentLanguage, bakedDocumentAbstractPartObjecter, bakedDocumentRessourceObjecter } from "@business/domains/entities/bakedDocument";
+import { bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, bakedDocumentAbstractPartObjecter, bakedDocumentRessourceObjecter, type BakedDocumentRessource } from "@business/domains/entities/bakedDocument";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler } from "@vendors/clean";
+import { EntityHandler, RepositoryError, toSimpleObject } from "@vendors/clean";
 import { RosettaAPI, type SupportedLanguage } from "@interfaces/providers/rosetta";
 import { KeyDate } from "@interfaces/providers/keyDate";
 import { match, P } from "ts-pattern";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
+import { getTypedEntries } from "@duplojs/utils";
+import { type BakedDocumentLanguage } from "@business/domains/common/bakedDocumentLanguage";
 
 const languageMapper: Record<BakedDocumentLanguage["value"], SupportedLanguage> = {
 	"fr-FR": "fr",
@@ -15,9 +17,6 @@ const languageMapper: Record<BakedDocumentLanguage["value"], SupportedLanguage> 
 const DOIFoundationBaseUrl = "https://www.doi.org";
 
 bakedDocumentRepository.default = {
-	makeBakedDocumentId(language, nodeSameRawDocumentId) {
-		return bakedDocumentIdObjecter.unsafeCreate(`${nodeSameRawDocumentId.value}_${language.value}`);
-	},
 	async save(bakedDocument) {
 		const simpleBakedDocument = bakedDocument.toSimpleObject();
 
@@ -142,36 +141,55 @@ bakedDocumentRepository.default = {
 
 		await KeyDate.set("lastSendBakedDocument", newLastSend);
 	},
-	findDOIFoundationResourcesInRawDocument(rawDocuments) {
-		for (const rawDocument of rawDocuments) {
-			const resource = match({ rawDocument })
-				.with(
-					{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
-					({ rawDocument }) => {
-						const articleId = rawDocument.articleIds.find(
-							({ value: { name } }) => name === "doi",
-						);
+	makeBakedResourcesWithRawDocumentWrapper(rawDocumentWrapper) {
+		const resources = getTypedEntries(rawDocumentWrapper)
+			.map(
+				([provider, rawDocument]) => match({
+					provider,
+					rawDocument,
+				})
+					.with(
+						{ provider: "pubmed" },
+						({ provider, rawDocument }) => bakedDocumentRessourceObjecter.unsafeCreate({
+							resourceProvider: provider,
+							url: rawDocument.resourceUrl.value,
+						}),
+					)
+					.exhaustive(),
+			);
 
-						if (!articleId) {
-							return null;
-						}
+		const findedDOIFoundationResources = Object.values({ ...rawDocumentWrapper })
+			.reduce<null | BakedDocumentRessource>(
+				(acc, rawDocument) => acc
+					? acc
+					: match({ rawDocument })
+						.with(
+							{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
+							({ rawDocument }) => {
+								const articleId = rawDocument.articleIds.find(
+									({ value: { name } }) => name === "doi",
+								);
 
-						return bakedDocumentRessourceObjecter.unsafeCreate({
-							resourceProvider: "DOIFoundation",
-							url: `${DOIFoundationBaseUrl}/${articleId.value.value}`,
-						});
-					},
-				)
-				.exhaustive();
+								if (!articleId) {
+									return null;
+								}
 
-			if (resource) {
-				return resource;
-			}
+								return bakedDocumentRessourceObjecter.unsafeCreate({
+									resourceProvider: "DOIFoundation",
+									url: `${DOIFoundationBaseUrl}/${articleId.value.value}`,
+								});
+							},
+						)
+						.exhaustive(),
+				null,
+			);
+
+		if (findedDOIFoundationResources) {
+			resources.push(findedDOIFoundationResources);
 		}
 
-		return null;
+		return resources;
 	},
-
 	async findOneById(id) {
 		const bakedDocumentMongo = await mongo.bakedDocumentCollection.findOne(
 			{
@@ -186,6 +204,39 @@ bakedDocumentRepository.default = {
 		return EntityHandler.unsafeMapper(
 			BakedDocumentEntity,
 			{ ...bakedDocumentMongo },
+		);
+	},
+	async findManyById(ids) {
+		const mongoBakedDocuments = await mongo.bakedDocumentCollection
+			.find({
+				id: { $in: ids.map((id) => id.value) },
+			})
+			.toArray();
+
+		const missingBakedDocumentIds
+				= ids.map(
+					(id) => mongoBakedDocuments.find(
+						(mongoBakedDocument) => mongoBakedDocument.id === id.value,
+					)
+						? null
+						: id,
+				)
+					.filter((mybeyId) => !!mybeyId);
+
+		if (missingBakedDocumentIds.length) {
+			return new RepositoryError(
+				"notfound-baked-document",
+				{
+					bakedDocumentIds: missingBakedDocumentIds,
+				},
+			);
+		}
+
+		return mongoBakedDocuments.map(
+			(mongoEntity) => EntityHandler.unsafeMapper(
+				BakedDocumentEntity,
+				mongoEntity,
+			),
 		);
 	},
 };

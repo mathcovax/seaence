@@ -1,14 +1,10 @@
-import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
-import { type BakedDocumentId, type BakedDocumentEntity, type BakedDocumentTitle, type BakedDocumentLanguage, type BakedDocumentAbstract, type BakedDocumentKeyword, type BakedDocumentAbstractPart, type BakedDocumentRessource } from "@business/domains/entities/bakedDocument";
+import { createRepositoryHandler, type RepositoryError, type RepositoryBase } from "@vendors/clean";
+import { type BakedDocumentId, type BakedDocumentEntity, type BakedDocumentTitle, type BakedDocumentAbstract, type BakedDocumentKeyword, type BakedDocumentAbstractPart, type BakedDocumentRessource } from "@business/domains/entities/bakedDocument";
 import { type RawAbstractPart, type RawAbstract, type RawTitle, type RawKeyword } from "@business/domains/common/rawDocument";
-import { type NodeSameRawDocumentId } from "@business/domains/entities/nodeSameRawDocument";
-import { type RawDocument } from "./rawDocument";
+import { type NodeSameRawDocumentWrapper } from "./rawDocument";
+import { type BakedDocumentLanguage } from "@business/domains/common/bakedDocumentLanguage";
 
 export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEntity> {
-	makeBakedDocumentId(
-		language: BakedDocumentLanguage,
-		nodeSameRawDocumentId: NodeSameRawDocumentId
-	): BakedDocumentId;
 	makeBakedTitleWithRawTitle(rawTitle: RawTitle, language: BakedDocumentLanguage): Promise<BakedDocumentTitle>;
 	makeBakedAbstractWithRawAbstract(
 		rawAbstract: RawAbstract,
@@ -22,9 +18,19 @@ export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEnt
 		rawAbstractDetails: RawAbstractPart[],
 		language: BakedDocumentLanguage,
 	): Promise<BakedDocumentAbstractPart[]>;
+	makeBakedResourcesWithRawDocumentWrapper(
+		rawDocumentWrapper: NodeSameRawDocumentWrapper
+	): BakedDocumentRessource[];
 	findUpdatedDocuments(): AsyncGenerator<BakedDocumentEntity>;
-	findDOIFoundationResourcesInRawDocument(rawDocuments: RawDocument[]): BakedDocumentRessource | null;
 	findOneById(id: BakedDocumentId): Promise<BakedDocumentEntity | null>;
+	findManyById(ids: BakedDocumentId[]): Promise<
+		| BakedDocumentEntity[]
+		| RepositoryError<
+			"notfound-baked-document",
+			{ bakedDocumentIds: BakedDocumentId[] }
+		>
+	>;
+
 }
 
 export const bakedDocumentRepository = createRepositoryHandler<BakedDocumentRepository>();

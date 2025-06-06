@@ -1,3 +1,4 @@
+import "@duplojs/types-codegen";
 import { bakedDocumentLanguageObjecter, bakedDocumentObjecter } from "@business/entities/bakedDocument";
 import { bakedDocumentSearchResultObjecter } from "@business/entities/bakedDocumentSearchResult";
 import { articleTypeObjecter } from "@business/entities/common/articleType";

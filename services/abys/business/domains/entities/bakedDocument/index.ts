@@ -2,15 +2,7 @@ import { providerEnum } from "@business/domains/common/provider";
 import { commonDateObjecter, createEnum, EntityHandler, flexibleDateObjecter, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { nodeSameRawDocumentIdObjecter } from "../nodeSameRawDocument";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-
-export const bakedDocumentLanguageEnum = createEnum([
-	"fr-FR",
-	"en-US",
-]);
-
-export const bakedDocumentLanguageObjecter = zod
-	.enum(bakedDocumentLanguageEnum.toTuple())
-	.createValueObjecter("bakedDocumentLanguage");
+import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 
 export const bakedDocumentIdObjecter = zod
 	.string()
@@ -56,11 +48,11 @@ export const bakedDocumentKeywordObjecter = zod
 
 export type BakedDocumentKeyword = GetValueObject<typeof bakedDocumentKeywordObjecter>;
 
-export type BakedDocumentLanguage = GetValueObject<typeof bakedDocumentLanguageObjecter>;
-
 export const bakedDocumentTitleObjecter = zod
 	.string()
 	.createValueObjecter("bakedDocumentTitle");
+
+export type BakedDocumentTitle = GetValueObject<typeof bakedDocumentTitleObjecter>;
 
 export const bakedDocumentAuthorObjecter = zod
 	.object({
@@ -69,7 +61,7 @@ export const bakedDocumentAuthorObjecter = zod
 	})
 	.createValueObjecter("bakedDocumentAuthor");
 
-export type BakedDocumentTitle = GetValueObject<typeof bakedDocumentTitleObjecter>;
+export type BakedDocumentAuthor = GetValueObject<typeof bakedDocumentAuthorObjecter>;
 
 export class BakedDocumentEntity extends EntityHandler.create({
 	id: bakedDocumentIdObjecter,
@@ -88,10 +80,13 @@ export class BakedDocumentEntity extends EntityHandler.create({
 	lastExportOnSea: commonDateObjecter.nullable(),
 }) {
 	public static create(
-		params: Omit<GetEntityProperties<typeof BakedDocumentEntity>, "lastUpdate" | "lastExportOnSea">,
+		params: Omit<GetEntityProperties<typeof BakedDocumentEntity>, "id" | "lastUpdate" | "lastExportOnSea">,
 	) {
 		return new BakedDocumentEntity({
 			...params,
+			id: bakedDocumentIdObjecter.unsafeCreate(
+				`${params.nodeSameRawDocumentId.value}_${params.language.value}`,
+			),
 			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
 			lastExportOnSea: null,
 		});

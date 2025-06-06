@@ -9,6 +9,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const baseLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']
   const booleanFormField: typeof import('./vendors/design-system/utils/formFields')['booleanFormField']
+  const bridgeClient: typeof import('./src/libs/bridge/index')['bridgeClient']
   const checkLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -55,6 +56,8 @@ declare global {
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
+  const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
   const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
@@ -85,12 +88,16 @@ declare global {
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
   const watchSyncEffect: typeof import('vue')['watchSyncEffect']
+  const zod: typeof import('./src/libs/zod/index')['zod']
 }
 // for type re-export
 declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { BridgeClientRoute } from './src/libs/bridge/index'
+  import('./src/libs/bridge/index')
   // @ts-ignore
   export type { PageParams, PageGoParams, PageUse, Page } from './vendors/design-system/utils/createPage'
   import('./vendors/design-system/utils/createPage')
@@ -104,6 +111,7 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly baseLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']>
     readonly booleanFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['booleanFormField']>
+    readonly bridgeClient: UnwrapRef<typeof import('./src/libs/bridge/index')['bridgeClient']>
     readonly checkLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -150,6 +158,8 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly textLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']>
+    readonly textareaFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textareaFormField']>
     readonly textformField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textformField']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
@@ -180,5 +190,6 @@ declare module 'vue' {
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>
     readonly watchSyncEffect: UnwrapRef<typeof import('vue')['watchSyncEffect']>
+    readonly zod: UnwrapRef<typeof import('./src/libs/zod/index')['zod']>
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { type SimplifyTypeForce } from "@duplojs/utils";
+import { simpleClone, type SimplifyTypeForce } from "@duplojs/utils";
 import { type FunctionalComponent, h, ref, type Ref } from "vue";
 import { type FormField, type GetGenericFormField } from "./formField";
 import { type FormTemplateRender } from "./templates/form";
@@ -28,7 +28,9 @@ export function useFormBuilder<
 ) {
 	const formValue = ref<
 		SimplifyTypeForce<GetGenericFormField<GenericFormField>["GenericValueType"]>
-	>(formField.defaultValue);
+	>(
+		simpleClone(formField.defaultValue),
+	);
 
 	const formFieldComponent = formField({
 		modelValue: formValue,
@@ -47,6 +49,11 @@ export function useFormBuilder<
 		}
 
 		return result;
+	}
+
+	function reset() {
+		formFieldComponent.exposed.reset();
+		formValue.value = simpleClone(formField.defaultValue);
 	}
 
 	const {
@@ -99,6 +106,7 @@ export function useFormBuilder<
 		Form: Form as FunctionalComponent<unknown, { submit: [] }>,
 		formValue,
 		check,
+		reset,
 	};
 }
 

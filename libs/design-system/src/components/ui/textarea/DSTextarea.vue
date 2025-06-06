@@ -7,6 +7,7 @@ const props = defineProps<{
 	class?: HTMLAttributes["class"];
 	defaultValue?: string | number;
 	modelValue?: string | number;
+	maxLength?: number;
 }>();
 
 const emits = defineEmits<(e: "update:modelValue", payload: string | number) => void>();
@@ -29,5 +30,6 @@ const modelValue = useVModel(props, "modelValue", emits, {
 			'disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
 			props.class
 		)"
+		:maxlength="maxLength"
 	/>
 </template>

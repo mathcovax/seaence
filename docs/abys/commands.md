@@ -3,9 +3,9 @@
 npm run docker:abys
 ```
 
-### cook document
+### transforme document
 ```bash
-npm run docker:abys:cookNodeSameRawDocument
+npm run docker:abys:transformeUpdatedNodeSameRawDocumentsToBakedDocuments
 ```
 
 ### export baked document to sea

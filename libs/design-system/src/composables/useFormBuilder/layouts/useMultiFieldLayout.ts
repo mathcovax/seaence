@@ -113,9 +113,16 @@ export function useMultiFieldLayout<
 				) as never;
 		}
 
+		function reset() {
+			Object
+				.values(exposed)
+				.map((exposedProperties) => exposedProperties?.reset());
+		}
+
 		return {
 			exposed: {
 				check,
+				reset,
 			},
 			getVNode: () => {
 				if (template) {

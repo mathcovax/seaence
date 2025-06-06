@@ -1,5 +1,6 @@
 import { type FindHttpClientRoute, HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
+import { TechnicalError } from "@vendors/clean";
 import { type CodegenRoutes } from "@vendors/clients-type/abys/duplojsTypesCodegen";
 
 type AbysHttpRoute = TransformCodegenRouteToHttpClientRoute<
@@ -23,7 +24,8 @@ export class AbysAPI {
 					body: rawDocument,
 				},
 			)
-			.iWantInformation("rawDocument.upsert");
+			.iWantInformation("rawDocument.upsert")
+			.catch(() => new TechnicalError("Error when PUT raw document"));
 	}
 
 	static {

@@ -8,13 +8,13 @@ import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 export type RawDocument =
 	| PubmedRawDocumentEntity;
 
-export interface ResultOfFindByNodeSameRawDocument {
+export interface NodeSameRawDocumentWrapper {
 	pubmed?: PubmedRawDocumentEntity;
 }
 
 type _AssertResultOfFindByNodeSameRawDocument = ExpectType<
 	Provider["value"],
-	keyof ResultOfFindByNodeSameRawDocument,
+	keyof NodeSameRawDocumentWrapper,
 	"strict"
 >;
 
@@ -22,7 +22,7 @@ export interface RawDocumentRepository extends RepositoryBase<RawDocument> {
 	findByResourceUrl(resourceUrl: RawResourceUrl): Promise<RawDocument | null>;
 	findByNodeSameRawDocument(
 		NodeSameRawDocumentEntity: NodeSameRawDocumentEntity
-	): Promise<ResultOfFindByNodeSameRawDocument>;
+	): Promise<NodeSameRawDocumentWrapper>;
 }
 
 export const rawDocumentRepository = createRepositoryHandler<RawDocumentRepository>();

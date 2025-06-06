@@ -91,6 +91,8 @@ declare global {
   const sheetVariants: typeof import('./vendors/design-system/components/ui/sheet/index')['sheetVariants']
   const simpleSearchPage: typeof import('./src/domains/search/router')['simpleSearchPage']
   const testPage: typeof import('./src/domains/search/router')['testPage']
+  const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
+  const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
   const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toArrayZodSchema: typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']
   const toRaw: typeof import('vue')['toRaw']
@@ -121,6 +123,7 @@ declare global {
   const useSmoothEnabled: typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']
   const useSonner: typeof import('./vendors/design-system/composables/useSonner')['useSonner']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
+  const useTextLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']
   const useWindow: typeof import('./vendors/design-system/composables/useWindow')['useWindow']
   const valueUpdater: typeof import('./vendors/design-system/lib/utils')['valueUpdater']
   const watch: typeof import('vue')['watch']
@@ -147,14 +150,17 @@ declare global {
   export type { CheckLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout'
   import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')
   // @ts-ignore
+  export type { MultiLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')
+  // @ts-ignore
   export type { MaybeRef, FormContext, FormOptions } from './vendors/design-system/composables/useFormBuilder/index'
   import('./vendors/design-system/composables/useFormBuilder/index')
   // @ts-ignore
   export type { BaseLayoutOptions, MaybeCheckedType, ChouseDefaultValue } from './vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout'
   import('./vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout')
   // @ts-ignore
-  export type { MultiLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout'
-  import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')
+  export type { TextLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useTextLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')
   // @ts-ignore
   export type { BaseLayoutTemplateProps, BaseLayoutTemplateItem, BaseLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/baseLayout'
   import('./vendors/design-system/composables/useFormBuilder/templates/baseLayout')
@@ -170,6 +176,9 @@ declare global {
   // @ts-ignore
   export type { MultiLayoutTemplateProps, MultiLayoutTemplateItem, MultiLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/multiLayout'
   import('./vendors/design-system/composables/useFormBuilder/templates/multiLayout')
+  // @ts-ignore
+  export type { TextLayoutTemplateProps, TextLayoutTemplateItem, TextLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/textLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/textLayout')
   // @ts-ignore
   export type { PageParams, PageGoParams, PageUse, Page } from './vendors/design-system/utils/createPage'
   import('./vendors/design-system/utils/createPage')
@@ -243,6 +252,8 @@ declare module 'vue' {
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly simpleSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['simpleSearchPage']>
+    readonly textLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']>
+    readonly textareaFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textareaFormField']>
     readonly textformField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textformField']>
     readonly toArrayZodSchema: UnwrapRef<typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
@@ -273,6 +284,7 @@ declare module 'vue' {
     readonly useSmoothEnabled: UnwrapRef<typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']>
     readonly useSonner: UnwrapRef<typeof import('./vendors/design-system/composables/useSonner')['useSonner']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
+    readonly useTextLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']>
     readonly useWindow: UnwrapRef<typeof import('./vendors/design-system/composables/useWindow')['useWindow']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>

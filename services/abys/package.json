@@ -10,7 +10,7 @@
     "test:lint": "eslint",
     "test:types": "tsc",
 
-    "cookNodeSameRawDocument": "tsx interfaces/commands/cookNodeSameRawDocument.ts",
+    "transformeUpdatedNodeSameRawDocumentsToBakedDocuments": "tsx interfaces/commands/transformeUpdatedNodeSameRawDocumentsToBakedDocuments.ts",
     "exportBakedDocument": "tsx interfaces/commands/exportBakedDocument.ts",
     "fixtures": "tsx interfaces/fixtures/index.ts",
 

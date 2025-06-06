@@ -60,7 +60,7 @@ export function createFormField<
 	function formField(params: FormFieldParams): FormFieldInstance {
 		const { modelValue, props, key } = params;
 		const componentRef = ref<
-			{ check?: ExposedProperties["check"] } | null
+			ExposedProperties | null
 		>(null);
 
 		function check() {
@@ -71,9 +71,16 @@ export function createFormField<
 			return modelValue.value;
 		}
 
+		function reset() {
+			if (componentRef.value?.reset) {
+				componentRef.value.reset();
+			}
+		}
+
 		return {
 			exposed: {
 				check,
+				reset,
 			},
 			getVNode: () => h(
 				input,

@@ -150,6 +150,103 @@ type CodegenRoutes = ({
             }) | null;
         };
     };
+}) | ({
+    method: "POST";
+    path: "/find-many-baked-document-title";
+    body: {
+        bakedDocumentIds: string[];
+    };
+    response: {
+        code: 404;
+        information: "bakedDocuments.notfound";
+        body: {
+            notfoundBakedDocumentIds: string[];
+        };
+    } | {
+        code: 200;
+        information: "bakedDocumentTitle.findMany";
+        body: Record<string, string>;
+    };
+}) | ({
+    method: "POST";
+    path: "/cook-node-same-raw-document";
+    body: {
+        nodeSameRawDocumentId: string;
+        bakedDocumentLanguage: Language;
+    };
+    response: {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "cookedNodeSameRawDocument.cook";
+        body: {
+            nodeSameRawDocumentId: string;
+            title: string;
+            language: Language;
+            abstract: string | null;
+            abstractDetails: {
+                name: string;
+                label: string;
+                content: string;
+            }[] | null;
+            resources: {
+                resourceProvider: "DOIFoundation" | "pubmed";
+                url: string;
+            }[];
+            keywords: {
+                value: string;
+            }[];
+            articleTypes: ArticleType[];
+            authors: {
+                name: string;
+                affiliations: string[] | null;
+            }[];
+            webPublishDate: ({
+                day: null;
+                month: null;
+                year: number;
+            } | {
+                day: null;
+                month: number;
+                year: number;
+            } | {
+                day: number;
+                month: number;
+                year: number;
+            }) | null;
+            journalPublishDate: ({
+                day: null;
+                month: null;
+                year: number;
+            } | {
+                day: null;
+                month: number;
+                year: number;
+            } | {
+                day: number;
+                month: number;
+                year: number;
+            }) | null;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/transforme-node-same-raw-document-to-baked-document";
+    body: {
+        nodeSameRawDocumentId: string;
+        bakedDocumentLanguage: Language;
+    };
+    response: {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "nodeSameRawDocument.transformeBakedDocument";
+        body?: undefined;
+    };
 });
 
 export { CodegenRoutes };
