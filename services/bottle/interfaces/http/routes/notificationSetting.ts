@@ -1,6 +1,6 @@
 import { postIdObjecter } from "@business/domains/common/post";
 import { userIdObjecter } from "@business/domains/entities/user";
-import { disableReplyToPostNotificationSettingToPostUsecase, enableReplyToPostNotificationSettingsToPostUsecase } from "@interfaces/usecases";
+import { disableReplyToPostNotificationSettingToPostUsecase, enableReplyToPostNotificationSettingToPostUsecase } from "@interfaces/usecases";
 import { IWantUserExistsById } from "../checkers/user";
 import { endpointFindReplyToPostNotificationSetting } from "../schemas/notificationSetting";
 import { iWantReplyToPostNotificationSettingExist } from "../checkers/notificationSetting/replyToPost";
@@ -21,7 +21,7 @@ useBuilder()
 		async(pickup) => {
 			const { body: { postId }, user } = pickup(["body", "user"]);
 
-			await enableReplyToPostNotificationSettingsToPostUsecase
+			await enableReplyToPostNotificationSettingToPostUsecase
 				.execute(
 					{
 						user,

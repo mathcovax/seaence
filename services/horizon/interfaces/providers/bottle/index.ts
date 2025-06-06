@@ -58,7 +58,10 @@ export class BottleAPI {
 					body: input,
 				},
 			)
-			.iWantExpectedResponse();
+			.iWantInformation([
+				"replyPostNotificationSetting.found",
+				"replyToPostNotificationSetting.notfound",
+			]);
 	}
 
 	public static enableNotificationToPost(input: InputEnableNotificationToPost) {
@@ -69,7 +72,7 @@ export class BottleAPI {
 					body: input,
 				},
 			)
-			.iWantExpectedResponse();
+			.iWantInformation("replyPostNotification.enable");
 	}
 
 	public static disableNotificationToPost(input: InputDisableNotificationToPost) {
@@ -80,7 +83,10 @@ export class BottleAPI {
 					body: input,
 				},
 			)
-			.iWantExpectedResponse();
+			.iWantInformation([
+				"replyPostNotification.disable",
+				"replyToPostNotificationSetting.notfound",
+			]);
 	}
 
 	public static countNotifications(input: InputCountNotifications) {

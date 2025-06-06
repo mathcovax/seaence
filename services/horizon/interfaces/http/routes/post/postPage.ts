@@ -55,7 +55,7 @@ useOptionalAuthenticationBuilder()
 							"replyToPostNotificationSetting.notfound",
 							() => false,
 						)
-						.otherwise(() => false),
+						.exhaustive(),
 				);
 
 			return dropper({ notificationOfPostIsActivate });

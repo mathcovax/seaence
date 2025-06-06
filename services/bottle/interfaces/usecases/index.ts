@@ -1,6 +1,6 @@
 import "../repositories";
 import { CreateUserUsecase } from "@business/applications/usecases/createUser";
-import { EnableReplyToPostNotificationSettingsToPostUsecase } from "@business/applications/usecases/enableReplyToPostNotificationSettingToPost";
+import { EnableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/enableReplyToPostNotificationSettingToPost";
 import { CreateReplyToPostNotificationsUsecase } from "@business/applications/usecases/createReplyToPostNotification";
 import { FindManyNotificationToUserUsecase } from "@business/applications/usecases/findManyNotificationToUser";
 import { FindOneUserByIdUsecase } from "@business/applications/usecases/findUserById";
@@ -9,8 +9,8 @@ import { FindOneReplyToPostNotificationSettingToUserByPostIdUsecase } from "@bus
 import { DisableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/disableReplyToPostNotificationSettingToPost";
 
 export const createUserUsecase = new CreateUserUsecase();
-export const enableReplyToPostNotificationSettingsToPostUsecase
-= new EnableReplyToPostNotificationSettingsToPostUsecase();
+export const enableReplyToPostNotificationSettingToPostUsecase
+= new EnableReplyToPostNotificationSettingToPostUsecase();
 export const createReplyToPostNotificationsUsecase = new CreateReplyToPostNotificationsUsecase();
 export const findManyNotificationToUserUsecase = new FindManyNotificationToUserUsecase();
 export const findOneUserByIdUsecase = new FindOneUserByIdUsecase();

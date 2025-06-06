@@ -10,7 +10,7 @@ interface Input {
 	postId: PostId;
 }
 
-export class EnableReplyToPostNotificationSettingsToPostUsecase extends UsecaseHandler.create({
+export class EnableReplyToPostNotificationSettingToPostUsecase extends UsecaseHandler.create({
 	notificationSettingRepository,
 }) {
 	public async execute({ user, postId }: Input) {

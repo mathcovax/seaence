@@ -1,5 +1,5 @@
 import { EntityHandler, type GetValueObject, type GetEntityProperties } from "@vendors/clean";
-import { BaseNotificationSettingsEntity } from "./base";
+import { BaseNotificationSettingEntity } from "./base";
 import { postIdObjecter } from "@business/domains/common/post";
 import { createNotificationTypeObjecter } from "../notification/base";
 
@@ -11,7 +11,7 @@ export class ReplyToPostNotificationSettingEntity extends EntityHandler.create(
 		type: replyToPostNotificationSettingTypeObjecter,
 		postId: postIdObjecter,
 	},
-	BaseNotificationSettingsEntity,
+	BaseNotificationSettingEntity,
 ) {
 	public static create(
 		params: Omit<
