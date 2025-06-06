@@ -8,51 +8,7 @@ replyToPostNotificationRepository.default = {
 	save() {
 		throw new RepositoryError("unsupported-method");
 	},
-	async *findUnprocessedReplyToPostNotifications() {
-		const quantityPerPage = 10;
-
-		while (true) {
-			const mongoNotifications = await mongo.notificationCollection
-				.find(
-					{
-						processed: false,
-						type: "replyToPostNotificationType",
-					},
-				)
-				.limit(quantityPerPage)
-				.toArray();
-
-			if (!mongoNotifications.length) {
-				break;
-			}
-
-			yield mongoNotifications.map(
-				(notification) => {
-					if (notification.type !== "replyToPostNotificationType") {
-						throw new RepositoryError(
-							"wrong-notification-type",
-							{
-								notification,
-								expectType: "registerNotificationType",
-							},
-						);
-					}
-
-					return EntityHandler.unsafeMapper(
-						ReplyToPostNotificationEntity,
-						{
-							...notification,
-							user: EntityHandler.unsafeMapper(
-								UserEntity,
-								notification.user,
-							),
-						},
-					);
-				},
-			);
-		}
-	},
-	async findReplyToPostNotificationByPostId(user, postId) {
+	async findOneReplyToPostNotificationByPostId(user, postId) {
 		const mongoReplyToPostNotification = await mongo.notificationCollection
 			.findOne(
 				{
@@ -71,7 +27,7 @@ replyToPostNotificationRepository.default = {
 				"wrong-notification-type",
 				{
 					mongoReplyToPostNotification,
-					expectType: "replyToPost",
+					expectType: "replyToPostNotificationType",
 				},
 			);
 		}

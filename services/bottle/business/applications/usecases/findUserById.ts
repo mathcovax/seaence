@@ -6,10 +6,10 @@ interface Input {
 	userId: UserId;
 }
 
-export class FindUserByIdUsecase extends UsecaseHandler.create({
+export class FindOneUserByIdUsecase extends UsecaseHandler.create({
 	userRepository,
 }) {
 	public execute({ userId }: Input) {
-		return this.userRepository.findUserById(userId);
+		return this.userRepository.findOneUserById(userId);
 	}
 }

@@ -1,5 +1,5 @@
 import { userIdObjecter } from "@business/domains/entities/user";
-import { countNotificationToUserUsecase, findNotificationToUserUsecase } from "@interfaces/usecases";
+import { countNotificationToUserUsecase, findManyNotificationToUserUsecase } from "@interfaces/usecases";
 import { intObjecter, positiveIntObjecter } from "@vendors/clean";
 import { endpointCountNotification, endpointFindNotification } from "../schemas/notification";
 import { IWantUserExistsById } from "../checkers/user";
@@ -21,7 +21,7 @@ useBuilder()
 		async(pickup) => {
 			const { body: { page, quantityPerPage }, user } = pickup(["body", "user"]);
 
-			const notifications = await findNotificationToUserUsecase.execute({
+			const notifications = await findManyNotificationToUserUsecase.execute({
 				user,
 				page,
 				quantityPerPage,

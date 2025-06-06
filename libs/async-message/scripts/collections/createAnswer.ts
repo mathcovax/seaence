@@ -1,7 +1,7 @@
 import { type AsyncMessage } from "../asyncMessage";
 import { MessageCollection } from "../messageCollection";
 
-export interface CreateReplyToPostMessageValue {
+export interface CreateAnswerMessageValue {
 	id: string;
 	postId: string;
 	content: string;
@@ -12,7 +12,7 @@ export interface CreateReplyToPostMessageValue {
 	createdAt: Date;
 }
 
-export class CreateReplyToPostMessageCollection extends MessageCollection<CreateReplyToPostMessageValue> {
+export class CreateAnswerMessageCollection extends MessageCollection<CreateAnswerMessageValue> {
 	public static readonly oneWeekInSecond = 604800;
 
 	public constructor(asyncMessage: AsyncMessage) {
@@ -20,7 +20,7 @@ export class CreateReplyToPostMessageCollection extends MessageCollection<Create
 			asyncMessage,
 			{
 				name: "createReplyToPost",
-				expireIn: CreateReplyToPostMessageCollection.oneWeekInSecond,
+				expireIn: CreateAnswerMessageCollection.oneWeekInSecond,
 			},
 		);
 	}

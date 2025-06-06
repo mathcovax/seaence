@@ -22,11 +22,4 @@ export class UserEntity extends EntityHandler.create({
 	public static create(params: GetEntityProperties<typeof UserEntity>) {
 		return new UserEntity(params);
 	}
-
-	public updateInfo(params: Omit<
-		GetEntityProperties<typeof UserEntity>,
-		"id"
-	>) {
-		return this.update(params);
-	}
 }

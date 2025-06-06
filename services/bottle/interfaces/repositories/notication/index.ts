@@ -70,7 +70,7 @@ notificationRepository.default = {
 			)
 			.exhaustive();
 	},
-	async findNotificationToUser(user, params) {
+	async findManyNotificationToUser(user, params) {
 		const mongoNotifications = await mongo.notificationCollection
 			.find({
 				"user.id": user.id.value,

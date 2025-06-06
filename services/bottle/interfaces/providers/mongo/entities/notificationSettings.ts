@@ -1,10 +1,10 @@
 import { type EntityToSimpleObject } from "@vendors/clean";
-import { type ReplyToPostNotificationSettingsEntity } from "@business/domains/entities/settings/replyToPost";
+import { type ReplyToPostNotificationSettingEntity } from "@business/domains/entities/setting/replyToPost";
 
-export interface MongoReplyToPostNotificationSettings extends EntityToSimpleObject<
-	typeof ReplyToPostNotificationSettingsEntity
+export interface MongoReplyToPostNotificationSetting extends EntityToSimpleObject<
+	typeof ReplyToPostNotificationSettingEntity
 > {}
 
-export type MongoNotificationSettings =
-	| MongoReplyToPostNotificationSettings;
+export type MongoNotificationSetting =
+	| MongoReplyToPostNotificationSetting;
 

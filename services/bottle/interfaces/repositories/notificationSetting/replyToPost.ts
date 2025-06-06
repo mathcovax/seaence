@@ -1,44 +1,44 @@
-import { replyToPostNotificationSettingsRepository } from "@business/applications/repositories/notificationSettings/replyToPost";
-import { ReplyToPostNotificationSettingsEntity } from "@business/domains/entities/settings/replyToPost";
+import { replyToPostNotificationSettingRepository } from "@business/applications/repositories/notificationSetting/replyToPost";
+import { ReplyToPostNotificationSettingEntity } from "@business/domains/entities/setting/replyToPost";
 import { UserEntity } from "@business/domains/entities/user";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, RepositoryError } from "@vendors/clean";
 
-replyToPostNotificationSettingsRepository.default = {
+replyToPostNotificationSettingRepository.default = {
 	save() {
 		throw new RepositoryError("unsupported-method");
 	},
-	async findReplyToPostNotificationSettings(user, postId) {
-		const mongoReplyToPostNotificationSettings = await mongo
-			.notificationSettingsCollection
+	async findOneReplyToPostNotificationSetting(user, postId) {
+		const mongoReplyToPostNotificationSetting = await mongo
+			.notificationSettingCollection
 			.findOne(
 				{
 					"user.id": user.id.value,
 					postId: postId.value,
-					type: "replyToPostNotificationSettingsType",
+					type: "replyToPostNotificationSettingType",
 				},
 			);
 
-		if (!mongoReplyToPostNotificationSettings) {
+		if (!mongoReplyToPostNotificationSetting) {
 			return null;
 		}
 
 		return EntityHandler.unsafeMapper(
-			ReplyToPostNotificationSettingsEntity,
+			ReplyToPostNotificationSettingEntity,
 			{
-				...mongoReplyToPostNotificationSettings,
+				...mongoReplyToPostNotificationSetting,
 				user: EntityHandler.unsafeMapper(
 					UserEntity,
-					mongoReplyToPostNotificationSettings.user,
+					mongoReplyToPostNotificationSetting.user,
 				),
 			},
 		);
 	},
-	async *findReplyToPostNotificationsSettings(postId) {
+	async *findManyReplyToPostNotificationSetting(postId) {
 		const quantityPerPage = 10;
 
 		for (let page = 0; true; page++) {
-			const mongoNotificationSettings = await mongo.notificationSettingsCollection
+			const mongoNotificationSettings = await mongo.notificationSettingCollection
 				.find({ postId: postId.value })
 				.skip(page * quantityPerPage)
 				.limit(quantityPerPage)
@@ -49,13 +49,13 @@ replyToPostNotificationSettingsRepository.default = {
 			}
 
 			const notificationSettings = mongoNotificationSettings.map(
-				(settings) => EntityHandler.unsafeMapper(
-					ReplyToPostNotificationSettingsEntity,
+				(setting) => EntityHandler.unsafeMapper(
+					ReplyToPostNotificationSettingEntity,
 					{
-						...settings,
+						...setting,
 						user: EntityHandler.unsafeMapper(
 							UserEntity,
-							settings.user,
+							setting.user,
 						),
 					},
 				),
@@ -65,7 +65,7 @@ replyToPostNotificationSettingsRepository.default = {
 		}
 	},
 	async delete(entity) {
-		await mongo.notificationSettingsCollection.deleteOne({
+		await mongo.notificationSettingCollection.deleteOne({
 			"user.id": entity.user.value.id.value,
 			postId: entity.postId.value,
 		});

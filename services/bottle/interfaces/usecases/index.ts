@@ -1,21 +1,21 @@
 import "../repositories";
 import { CreateUserUsecase } from "@business/applications/usecases/createUser";
-import { EnableReplyToPostNotificationSettingsToPostUsecase } from "@business/applications/usecases/enableReplyToPostNotificationSettingsToPost";
+import { EnableReplyToPostNotificationSettingsToPostUsecase } from "@business/applications/usecases/enableReplyToPostNotificationSettingToPost";
 import { CreateReplyToPostNotificationsUsecase } from "@business/applications/usecases/createReplyToPostNotification";
-import { FindNotificationToUserUsecase } from "@business/applications/usecases/findNotificationToUser";
-import { FindUserByIdUsecase } from "@business/applications/usecases/findUserById";
+import { FindManyNotificationToUserUsecase } from "@business/applications/usecases/findManyNotificationToUser";
+import { FindOneUserByIdUsecase } from "@business/applications/usecases/findUserById";
 import { CountNotificationToUserUsecase } from "@business/applications/usecases/countNotitificationToUser";
-import { FindReplyToPostNotificationSettingsToUserByPostIdUsecase } from "@business/applications/usecases/findReplyToPostNotificationSettingsToUserByPostId";
-import { DisableReplyToPostNotificationSettingsToPostUsecase } from "@business/applications/usecases/disableReplyToPostNotificationSettingsToPost";
+import { FindOneReplyToPostNotificationSettingToUserByPostIdUsecase } from "@business/applications/usecases/findOneReplyToPostNotificationSettingToUserByPostId";
+import { DisableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/disableReplyToPostNotificationSettingToPost";
 
 export const createUserUsecase = new CreateUserUsecase();
 export const enableReplyToPostNotificationSettingsToPostUsecase
 = new EnableReplyToPostNotificationSettingsToPostUsecase();
 export const createReplyToPostNotificationsUsecase = new CreateReplyToPostNotificationsUsecase();
-export const findNotificationToUserUsecase = new FindNotificationToUserUsecase();
-export const findUserByIdUsecase = new FindUserByIdUsecase();
+export const findManyNotificationToUserUsecase = new FindManyNotificationToUserUsecase();
+export const findOneUserByIdUsecase = new FindOneUserByIdUsecase();
 export const countNotificationToUserUsecase = new CountNotificationToUserUsecase();
-export const findReplyToPostNotificationSettingsToUserByPostIdUsecase
-= new FindReplyToPostNotificationSettingsToUserByPostIdUsecase();
-export const disableReplyToPostNotificationSettingsToPostUsecase
-= new DisableReplyToPostNotificationSettingsToPostUsecase();
+export const findOneReplyToPostNotificationSettingToUserByPostIdUsecase
+= new FindOneReplyToPostNotificationSettingToUserByPostIdUsecase();
+export const disableReplyToPostNotificationSettingToPostUsecase
+= new DisableReplyToPostNotificationSettingToPostUsecase();

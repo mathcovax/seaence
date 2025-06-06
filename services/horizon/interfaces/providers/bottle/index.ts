@@ -12,22 +12,22 @@ type InputFindNotifications = FindHttpClientRoute<
 	"/find-notifications"
 >["body"];
 
-type InputFindNotificationSettingsToPost = FindHttpClientRoute<
+type InputFindNotificationSettingToPost = FindHttpClientRoute<
 	BottleClientRoute,
 	"POST",
-	"/find-reply-to-post-notification-settings"
+	"/find-reply-to-post-notification-setting"
 >["body"];
 
 type InputEnableNotificationToPost = FindHttpClientRoute<
 	BottleClientRoute,
 	"POST",
-	"/enable-reply-post-notification-settings"
+	"/enable-reply-post-notification-setting"
 >["body"];
 
 type InputDisableNotificationToPost = FindHttpClientRoute<
 	BottleClientRoute,
 	"POST",
-	"/disable-reply-post-notification-settings"
+	"/disable-reply-post-notification-setting"
 >["body"];
 
 type InputCountNotifications = FindHttpClientRoute<
@@ -50,10 +50,10 @@ export class BottleAPI {
 			.iWantInformation("notications.found");
 	}
 
-	public static findNotificationSettingsToPost(input: InputFindNotificationSettingsToPost) {
+	public static findNotificationSettingToPost(input: InputFindNotificationSettingToPost) {
 		return this.httpClient
 			.post(
-				"/find-reply-to-post-notification-settings",
+				"/find-reply-to-post-notification-setting",
 				{
 					body: input,
 				},
@@ -64,23 +64,23 @@ export class BottleAPI {
 	public static enableNotificationToPost(input: InputEnableNotificationToPost) {
 		return this.httpClient
 			.post(
-				"/enable-reply-post-notification-settings",
+				"/enable-reply-post-notification-setting",
 				{
 					body: input,
 				},
 			)
-			.iWantInformation("replyPostNotification.enable");
+			.iWantExpectedResponse();
 	}
 
 	public static disableNotificationToPost(input: InputDisableNotificationToPost) {
 		return this.httpClient
 			.post(
-				"/disable-reply-post-notification-settings",
+				"/disable-reply-post-notification-setting",
 				{
 					body: input,
 				},
 			)
-			.iWantInformation("replyPostNotification.disable");
+			.iWantExpectedResponse();
 	}
 
 	public static countNotifications(input: InputCountNotifications) {

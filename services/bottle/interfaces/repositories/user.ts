@@ -19,7 +19,7 @@ userRepository.default = {
 
 		return userEntity;
 	},
-	async findUserById(userId) {
+	async findOneUserById(userId) {
 		const mongoUser = await mongo.userCollection.findOne(
 			{
 				id: userId.value,

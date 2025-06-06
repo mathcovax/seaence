@@ -2,6 +2,7 @@ import { UsecaseHandler } from "@vendors/clean";
 import { postRepository } from "../repositories/post";
 import { type NodeSameRawDocumentId, PostEntity, type PostContent, type PostTopic } from "@business/domains/entities/post";
 import { type User } from "@business/domains/common/user";
+import { notificationRepository } from "../repositories/notification";
 
 interface Input {
 	topic: PostTopic;
@@ -12,8 +13,9 @@ interface Input {
 
 export class CreatePostUsecase extends UsecaseHandler.create({
 	postRepository,
+	notificationRepository,
 }) {
-	public execute({ topic, content, nodeSameRawDocumentId, author }: Input) {
+	public async execute({ topic, content, nodeSameRawDocumentId, author }: Input) {
 		const post = PostEntity.create({
 			id: this.postRepository.generatePostId(),
 			topic,
@@ -22,6 +24,10 @@ export class CreatePostUsecase extends UsecaseHandler.create({
 			author,
 		});
 
-		return this.postRepository.save(post);
+		await this.postRepository.save(post);
+
+		await this.notificationRepository.enableNotification(post, author.value);
+
+		return post;
 	}
 }

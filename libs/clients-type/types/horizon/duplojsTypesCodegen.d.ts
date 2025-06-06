@@ -206,6 +206,45 @@ type FlexibleDate = {
 
 export { FlexibleDate };
 
+type Notification = RegisterNotification | ReplyToPostNotification;
+
+export { Notification };
+
+type RegisterNotification = {
+    id: string;
+    user: {
+        id: string;
+        username: string;
+        email: string;
+        language: "fr-FR" | "en-US";
+    };
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "registerNotificationType";
+};
+
+export { RegisterNotification };
+
+type ReplyToPostNotification = {
+    id: string;
+    user: {
+        id: string;
+        username: string;
+        email: string;
+        language: "fr-FR" | "en-US";
+    };
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    postId: string;
+    type: "replyToPostNotificationType";
+    usernameOfReplyPost: string;
+    summaryOfReplyPost: string;
+};
+
+export { ReplyToPostNotification };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/login";
@@ -473,34 +512,7 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "notificationList.found";
-        body: ({
-            id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
-            processed: boolean;
-            createdAt: string;
-            deleteAt: string;
-            type: "registerNotificationType";
-        } | {
-            id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
-            processed: boolean;
-            createdAt: string;
-            deleteAt: string;
-            postId: string;
-            type: "replyToPostNotificationType";
-            usernameOfReplyPost: string;
-            summaryOfReplyPost: string;
-        })[];
+        body: Notification[];
     };
 }) | ({
     method: "POST";
@@ -516,10 +528,6 @@ type CodegenRoutes = ({
     } | {
         code: 404;
         information: "post.notfound";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "togglePostNotification.noChange";
         body?: undefined;
     } | {
         code: 200;

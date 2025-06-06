@@ -2,7 +2,7 @@ import { type UserId, type UserEntity } from "@business/domains/entities/user";
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
 export interface UserRepository extends RepositoryBase<UserEntity> {
-	findUserById(userId: UserId): Promise<UserEntity | null>;
+	findOneUserById(userId: UserId): Promise<UserEntity | null>;
 }
 
 export const userRepository = createRepositoryHandler<UserRepository>();

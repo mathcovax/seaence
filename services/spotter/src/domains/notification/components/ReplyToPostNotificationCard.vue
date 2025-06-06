@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import type { ReplyToPostNotification } from "@/lib/horizon/types/notification";
+import type { ReplyToPostNotification } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 interface Props {
 	replyToPostNotification: ReplyToPostNotification;

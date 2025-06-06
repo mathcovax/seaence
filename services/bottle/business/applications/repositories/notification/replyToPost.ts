@@ -4,8 +4,7 @@ import { type UserEntity } from "@business/domains/entities/user";
 import { createRepositoryHandler, type RepositoryBase } from "@vendors/clean";
 
 export interface ReplyToPostNotificationRepository extends RepositoryBase<ReplyToPostNotificationEntity> {
-	findUnprocessedReplyToPostNotifications(): AsyncGenerator<ReplyToPostNotificationEntity[]>;
-	findReplyToPostNotificationByPostId(
+	findOneReplyToPostNotificationByPostId(
 		user: UserEntity,
 		postId: PostId
 	): Promise<ReplyToPostNotificationEntity | null>;

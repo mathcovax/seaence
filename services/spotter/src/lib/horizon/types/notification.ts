@@ -6,18 +6,6 @@ export type NotificationList = FindHttpClientRouteResponse<
 	"notificationList.found"
 >["body"];
 
-export type Notification = NotificationList[number];
-
-export type RegisterNotification = Extract<
-	Notification,
-	{ type: "registerNotificationType" }
->;
-
-export type ReplyToPostNotification = Extract<
-	Notification,
-	{ type: "replyToPostNotificationType" }
->;
-
 export type NotificationListPage = FindHttpClientRouteResponse<
 	FindHttpClientRoute<HorizonClientRoute, "POST", "/notification-list-page">,
 	"information",

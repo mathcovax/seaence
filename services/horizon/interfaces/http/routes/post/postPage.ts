@@ -41,21 +41,21 @@ useOptionalAuthenticationBuilder()
 			}
 
 			const notificationOfPostIsActivate = await BottleAPI
-				.findNotificationSettingsToPost({
+				.findNotificationSettingToPost({
 					userId: user.id,
 					postId: post.id,
 				})
 				.then(
 					({ information }) => match(information)
 						.with(
-							"replyPostNotificationSettings.found",
+							"replyPostNotificationSetting.found",
 							() => true,
 						)
 						.with(
-							"replyToPostNotificationSettings.notfound",
+							"replyToPostNotificationSetting.notfound",
 							() => false,
 						)
-						.exhaustive(),
+						.otherwise(() => false),
 				);
 
 			return dropper({ notificationOfPostIsActivate });

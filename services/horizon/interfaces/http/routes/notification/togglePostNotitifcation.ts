@@ -1,7 +1,6 @@
 import { iWantPostExistById } from "@interfaces/http/checkers/post";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
 import { BottleAPI } from "@interfaces/providers/bottle";
-import { match } from "ts-pattern";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/toggle-post-notification")
@@ -14,37 +13,6 @@ useMustBeConnectedBuilder()
 	.presetCheck(
 		iWantPostExistById,
 		(pickup) => pickup("postId"),
-	)
-	.cut(
-		async({ pickup, dropper }) => {
-			const { user, post, enable } = pickup(["user", "post", "enable"]);
-
-			const notificationOfPostStatus = await BottleAPI
-				.findNotificationSettingsToPost({
-					userId: user.id,
-					postId: post.id,
-				})
-				.then(
-					({ information }) => match(information)
-						.with(
-							"replyPostNotificationSettings.found",
-							() => true,
-						)
-						.with(
-							"replyToPostNotificationSettings.notfound",
-							() => false,
-						)
-						.exhaustive(),
-				);
-
-			if (enable === notificationOfPostStatus) {
-				return new OkHttpResponse("togglePostNotification.noChange");
-			}
-
-			return dropper(null);
-		},
-		[],
-		makeResponseContract(OkHttpResponse, "togglePostNotification.noChange"),
 	)
 	.handler(
 		async(pickup) => {

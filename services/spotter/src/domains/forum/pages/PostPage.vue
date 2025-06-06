@@ -108,12 +108,6 @@ function handleReplyPostNotification() {
 				},
 			},
 		)
-		.whenInformation(
-			"togglePostNotification.noChange",
-			() => {
-				replyPostNotificationIsEnable.value = !replyPostNotificationIsEnable.value;
-			},
-		)
 		.catch(() => {
 			replyPostNotificationIsEnable.value = !replyPostNotificationIsEnable.value;
 		});

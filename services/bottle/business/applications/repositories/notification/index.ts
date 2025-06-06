@@ -16,7 +16,7 @@ interface FindProcessedNotificationToUserParams {
 export interface NotificationRepository extends RepositoryBase<Notification> {
 	generateNotificationId(): NotificationId;
 	sendNotification(notification: Notification): Promise<void>;
-	findNotificationToUser(
+	findManyNotificationToUser(
 		user: UserEntity,
 		params: FindProcessedNotificationToUserParams
 	): Promise<Notification[]>;

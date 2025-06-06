@@ -35,6 +35,8 @@ export class CreateUserUsecase extends UsecaseHandler.create({
 
 		await this.notificationRepository.sendNotification(registerNotification);
 
-		return this.notificationRepository.save(registerNotification.process());
+		await this.notificationRepository.save(registerNotification.process());
+
+		return user;
 	}
 }

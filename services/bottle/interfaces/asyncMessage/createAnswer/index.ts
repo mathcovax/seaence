@@ -5,16 +5,16 @@ import { asyncMessage } from "@interfaces/providers/asyncMessage";
 import { createReplyToPostNotificationsUsecase } from "@interfaces/usecases";
 import { summarizeText } from "@interfaces/utils/summarizeText";
 
-asyncMessage.collections.createReplyToPost.on(
-	async(createReplyToPostValue) => {
-		const postId = postIdObjecter.unsafeCreate(createReplyToPostValue.value.postId);
+asyncMessage.collections.createAnswer.on(
+	async(createdAnswer) => {
+		const postId = postIdObjecter.unsafeCreate(createdAnswer.value.postId);
 		const usernameOfReplyPost = usernameObjecter.unsafeCreate(
-			createReplyToPostValue.value.author.username,
+			createdAnswer.value.author.username,
 		);
 		const summaryOfReplyPost = summaryOfReplyPostObjecter.unsafeCreate(
-			summarizeText(createReplyToPostValue.value.content),
+			summarizeText(createdAnswer.value.content),
 		);
-		const userIdOfReplyPost = userIdObjecter.unsafeCreate(createReplyToPostValue.value.author.id);
+		const userIdOfReplyPost = userIdObjecter.unsafeCreate(createdAnswer.value.author.id);
 
 		await createReplyToPostNotificationsUsecase.execute({
 			postId,
@@ -27,5 +27,5 @@ asyncMessage.collections.createReplyToPost.on(
 
 await asyncMessage
 	.collections
-	.createReplyToPost
+	.createAnswer
 	.start(true);

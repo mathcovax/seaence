@@ -2,9 +2,9 @@ import { UsecaseHandler } from "@vendors/clean";
 import { notificationRepository } from "../repositories/notification";
 import { ReplyToPostNotificationEntity, type SummaryOfReplyPost } from "@business/domains/entities/notification/replyToPost";
 import { type PostId } from "@business/domains/common/post";
-import { notificationSettingsRepository } from "../repositories/notificationSettings";
+import { notificationSettingRepository } from "../repositories/notificationSetting";
 import { type UserId, type Username } from "@business/domains/entities/user";
-import { replyToPostNotificationSettingsRepository } from "../repositories/notificationSettings/replyToPost";
+import { replyToPostNotificationSettingRepository } from "../repositories/notificationSetting/replyToPost";
 
 interface Input {
 	postId: PostId;
@@ -15,13 +15,13 @@ interface Input {
 
 export class CreateReplyToPostNotificationsUsecase extends UsecaseHandler.create({
 	notificationRepository,
-	notificationSettingsRepository,
-	replyToPostNotificationSettingsRepository,
+	notificationSettingRepository,
+	replyToPostNotificationSettingRepository,
 }) {
 	public async execute({ usernameOfReplyPost, summaryOfReplyPost, postId, userIdOfReplyPost }: Input) {
 		for await (
-			const settings of this.replyToPostNotificationSettingsRepository
-				.findReplyToPostNotificationsSettings(
+			const settings of this.replyToPostNotificationSettingRepository
+				.findManyReplyToPostNotificationSetting(
 					postId,
 				)
 		) {

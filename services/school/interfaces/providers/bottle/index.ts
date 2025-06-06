@@ -6,7 +6,7 @@ export type BottleClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-interface InputActivateReplyPostNotification {
+interface InputEnableNotification {
 	postId: string;
 	userId: string;
 }
@@ -14,10 +14,10 @@ interface InputActivateReplyPostNotification {
 export class BottleAPI {
 	private static httpClient: HttpClient<BottleClientRoute>;
 
-	public static enableReplyPostNotification(input: InputActivateReplyPostNotification) {
+	public static enableNotification(input: InputEnableNotification) {
 		return this.httpClient
 			.post(
-				"/enable-reply-post-notification-settings",
+				"/enable-reply-post-notification-setting",
 				{
 					body: input,
 				},

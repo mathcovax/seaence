@@ -8,11 +8,11 @@ interface Input {
 	quantityPerPage: PositiveInt;
 }
 
-export class FindNotificationToUserUsecase extends UsecaseHandler.create({
+export class FindManyNotificationToUserUsecase extends UsecaseHandler.create({
 	notificationRepository,
 }) {
 	public async execute({ user, page, quantityPerPage }: Input) {
-		return this.notificationRepository.findNotificationToUser(
+		return this.notificationRepository.findManyNotificationToUser(
 			user,
 			{
 				page,

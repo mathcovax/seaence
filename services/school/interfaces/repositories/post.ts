@@ -1,7 +1,6 @@
 import { postRepository } from "@business/applications/repositories/post";
 import { PostEntity, postIdObjecter } from "@business/domains/entities/post";
 import { UserEntity } from "@business/domains/entities/user";
-import { BottleAPI } from "@interfaces/providers/bottle";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
@@ -67,12 +66,6 @@ postRepository.default = {
 	async save(entity) {
 		const simplePost = entity.toSimpleObject();
 
-		const mongoPost = await mongo.postCollection.findOne(
-			{
-				id: simplePost.id,
-			},
-		);
-
 		await mongo.postCollection.updateOne(
 			{
 				id: simplePost.id,
@@ -80,13 +73,6 @@ postRepository.default = {
 			{ $set: simplePost },
 			{ upsert: true },
 		);
-
-		if (!mongoPost) {
-			await BottleAPI.enableReplyPostNotification({
-				postId: simplePost.id,
-				userId: simplePost.author.id,
-			});
-		}
 
 		return entity;
 	},

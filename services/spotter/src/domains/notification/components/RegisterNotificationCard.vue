@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import type { RegisterNotification } from "@/lib/horizon/types/notification";
+import type { RegisterNotification } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 interface Props {
 	registerNotification: RegisterNotification;

@@ -50,7 +50,7 @@ answerRepository.default = {
 		});
 
 		if (!mongoAnswer) {
-			await asyncMessage.collections.createReplyToPost.emit(simpleEntity);
+			await asyncMessage.collections.createAnswer.emit(simpleEntity);
 		}
 
 		await mongo.answerCollection.updateOne(

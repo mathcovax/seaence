@@ -3,5 +3,5 @@ import "./user";
 import "./notication";
 import "./notication/replyToPost";
 
-import "./notificationSettings";
-import "./notificationSettings/replyToPost";
+import "./notificationSetting";
+import "./notificationSetting/replyToPost";
