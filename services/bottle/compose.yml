@@ -3,10 +3,11 @@ services:
     extends:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
-    command: npm -w services/bottle run duplo:dev
+    command: npm -w services/bottle run dev
     depends_on:
       - bottle-mongo
       - maildev
+      - async-message-mongo
   bottle-mongo:
     extends:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}

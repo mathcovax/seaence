@@ -1,5 +1,5 @@
 import { baseTemplate } from "./baseTemplate";
-import { emailConfig } from "@interfaces/configs/email";
+import { emailConfig } from "@interfaces/providers/email/configs/email";
 
 export function registerTemplate(username: string) {
 	return baseTemplate(/* html */

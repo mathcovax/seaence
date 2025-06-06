@@ -206,6 +206,45 @@ type FlexibleDate = {
 
 export { FlexibleDate };
 
+type Notification = RegisterNotification | ReplyToPostNotification;
+
+export { Notification };
+
+type RegisterNotification = {
+    id: string;
+    user: {
+        id: string;
+        username: string;
+        email: string;
+        language: "fr-FR" | "en-US";
+    };
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "registerNotificationType";
+};
+
+export { RegisterNotification };
+
+type ReplyToPostNotification = {
+    id: string;
+    user: {
+        id: string;
+        username: string;
+        email: string;
+        language: "fr-FR" | "en-US";
+    };
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    postId: string;
+    type: "replyToPostNotificationType";
+    usernameOfReplyPost: string;
+    summaryOfReplyPost: string;
+};
+
+export { ReplyToPostNotification };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/login";
@@ -287,29 +326,6 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/create-post";
-    body: {
-        topic: string;
-        content: string;
-        documentId: string;
-    };
-    response: {
-        code: 403;
-        information: "accessToken.invalid";
-        body?: undefined;
-    } | {
-        code: 404;
-        information: "document.notfound";
-        body?: undefined;
-    } | {
-        code: 201;
-        information: "post.created";
-        body: {
-            id: string;
-        };
-    };
-}) | ({
-    method: "POST";
     path: "/post-list";
     body: {
         documentId: string;
@@ -323,6 +339,29 @@ type CodegenRoutes = ({
         code: 200;
         information: "postList.found";
         body: Post[];
+    };
+}) | ({
+    method: "POST";
+    path: "/post-list-page";
+    body: {
+        documentId: string;
+    };
+    response: {
+        code: 404;
+        information: "document.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "postListPage.found";
+        body: {
+            document: {
+                id: string;
+                title: string;
+                language: BakedDocumentLanguage;
+            };
+            totalPostCount: number;
+            quantityPostPerPage: number;
+        };
     };
 }) | ({
     method: "POST";
@@ -350,29 +389,30 @@ type CodegenRoutes = ({
                 language: BakedDocumentLanguage;
             };
             quantityAnswerPerPage: number;
+            notificationOfPostIsActivate: boolean;
         };
     };
 }) | ({
     method: "POST";
-    path: "/post-list-page";
+    path: "/create-post";
     body: {
+        topic: string;
+        content: string;
         documentId: string;
     };
     response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
         code: 404;
         information: "document.notfound";
         body?: undefined;
     } | {
-        code: 200;
-        information: "postListPage.found";
+        code: 201;
+        information: "post.created";
         body: {
-            document: {
-                id: string;
-                title: string;
-                language: BakedDocumentLanguage;
-            };
-            totalPostCount: number;
-            quantityPostPerPage: number;
+            id: string;
         };
     };
 }) | ({
@@ -457,6 +497,60 @@ type CodegenRoutes = ({
         body: {
             document: BakedDocument;
             posts: Post[];
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/notification-list";
+    body: {
+        page: number;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notificationList.found";
+        body: Notification[];
+    };
+}) | ({
+    method: "POST";
+    path: "/toggle-post-notification";
+    body: {
+        postId: string;
+        enable: boolean;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "togglePostNotification.enabled";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "togglePostNotification.disabled";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/notification-list-page";
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notificationListPage.found";
+        body: {
+            totalNoticationCount: number;
+            quantityNotificationPerPage: number;
         };
     };
 });

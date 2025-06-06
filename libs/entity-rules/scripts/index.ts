@@ -4,3 +4,4 @@ export * from "./post";
 export * from "./favoriEquation";
 export * from "./documentInFolder";
 export * from "./documentFolder";
+export * from "./notification/replyToPost";

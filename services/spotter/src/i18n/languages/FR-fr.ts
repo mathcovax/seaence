@@ -141,6 +141,10 @@ export const FRfr = {
 			},
 
 		},
+		[notificationListPage.name]: {
+			title: "Notifications",
+			noNotification: "Aucune notification trouvé.",
+		},
 	},
 	authDialog: {
 		title: "Authtification",
@@ -164,6 +168,7 @@ export const FRfr = {
 					title: "Mon compte",
 					profile: "Mon profil",
 					disconnect: "Se déconnecter",
+					notification: "Notifications",
 				},
 			},
 			footer: {
@@ -405,5 +410,14 @@ export const FRfr = {
 			created: "Réponse créée avec succès.",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
+	},
+	notification: {
+		register: {
+			content: "Bienvenue sur Seance !",
+		},
+		replyToPost: {
+			repliedToYourPostMessage: "a répondu à votre publication",
+		},
+		status: "Nouveau",
 	},
 };

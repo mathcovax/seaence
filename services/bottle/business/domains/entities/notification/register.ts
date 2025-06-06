@@ -1,25 +1,30 @@
-import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
-import { BaseNotificationEntity, processedObjecter } from "./base";
-import { userIdObjecter } from "../user";
+import { commonDateObjecter, EntityHandler, type GetValueObject, type GetEntityProperties } from "@vendors/clean";
+import { BaseNotificationEntity, createNotificationTypeObjecter, processedObjecter } from "./base";
 
-export const emailContentObjecter = zod.string().createValueObjecter("emailContent");
-export type EmailContent = GetValueObject<typeof emailContentObjecter>;
+export const registerNotificationTypeObjecter = createNotificationTypeObjecter("registerNotificationType");
+export type RegisterNotificationType = GetValueObject<typeof registerNotificationTypeObjecter>;
+
+// 7 days
+const timeToLive = 604800;
 
 export class RegisterNotificationEntity extends EntityHandler.create(
 	{
-		userId: userIdObjecter,
+		type: registerNotificationTypeObjecter,
 	},
 	BaseNotificationEntity,
 ) {
 	public static create(
 		params: Omit<
 			GetEntityProperties<typeof RegisterNotificationEntity>,
-			"processed" | "createdAt"
+			"processed" | "createdAt" | "deleteAt" | "type"
 		>,
 	) {
 		return new RegisterNotificationEntity({
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
+			createdAt: commonDateObjecter.unsafeCreate(new Date()),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			type: registerNotificationTypeObjecter.unsafeCreate("registerNotificationType"),
 		});
 	}
 }

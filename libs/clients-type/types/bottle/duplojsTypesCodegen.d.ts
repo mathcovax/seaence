@@ -7,16 +7,129 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/create-register-notification";
+    path: "/enable-reply-post-notification-setting";
     body: {
         userId: string;
-        userEmail: string;
-        username: string;
+        postId: string;
     };
     response: {
-        code: 200;
-        information: "notification.sent";
+        code: 404;
+        information: "user.notfound";
         body?: undefined;
+    } | {
+        code: 200;
+        information: "replyPostNotification.enable";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/disable-reply-post-notification-setting";
+    body: {
+        userId: string;
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "replyToPostNotificationSetting.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "replyPostNotification.disable";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/find-reply-to-post-notification-setting";
+    body: {
+        userId: string;
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "replyToPostNotificationSetting.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "replyPostNotificationSetting.found";
+        body: {
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            postId: string;
+            type: "replyToPostNotificationSettingType";
+        } | null;
+    };
+}) | ({
+    method: "POST";
+    path: "/find-notifications";
+    body: {
+        userId: string;
+        page: number;
+        quantityPerPage: number;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notications.found";
+        body: ({
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+            type: "registerNotificationType";
+        } | {
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+            postId: string;
+            usernameOfReplyPost: string;
+            summaryOfReplyPost: string;
+            type: "replyToPostNotificationType";
+        })[];
+    };
+}) | ({
+    method: "POST";
+    path: "/count-notification";
+    body: {
+        userId: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notications.count";
+        body: {
+            count: number;
+        };
     };
 });
 

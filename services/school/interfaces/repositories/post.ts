@@ -63,18 +63,18 @@ postRepository.default = {
 			},
 		);
 	},
-	async save(post) {
-		const mongoPost = post.toSimpleObject();
+	async save(entity) {
+		const simplePost = entity.toSimpleObject();
 
 		await mongo.postCollection.updateOne(
 			{
-				id: mongoPost.id,
+				id: simplePost.id,
 			},
-			{ $set: mongoPost },
+			{ $set: simplePost },
 			{ upsert: true },
 		);
 
-		return post;
+		return entity;
 	},
 	async *findByAuthorId(userId) {
 		const startPage = 0;

@@ -1,7 +1,6 @@
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { userRepository } from "../repositories/user";
 import { UserEntity, type UserUsername, type UserEmail } from "@business/domains/entities/user";
-import { CreateRegisterNotificationUsecase } from "./createRegisterNotification";
 import { FindUserByEmailUsecase } from "./findUserByEmail";
 
 interface Input {
@@ -12,7 +11,6 @@ interface Input {
 export class CreateUserUsecase extends UsecaseHandler.create({
 	userRepository,
 	findUserByEmail: FindUserByEmailUsecase,
-	createRegisterNotification: CreateRegisterNotificationUsecase,
 }) {
 	public async execute({ email, username }: Input) {
 		const findedUser = await this.findUserByEmail({ email });
@@ -31,8 +29,6 @@ export class CreateUserUsecase extends UsecaseHandler.create({
 				username,
 			}),
 		);
-
-		await this.createRegisterNotification({ user });
 
 		return user;
 	}

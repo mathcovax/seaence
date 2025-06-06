@@ -1,5 +1,5 @@
-import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
-import { userIdObjecter } from "../user";
+import { commonDateObjecter, EntityHandler, type GetValueObject, zod } from "@vendors/clean";
+import { userObjecter } from "@business/domains/common/user";
 
 export const notificationIdObjecter = zod.string().createValueObjecter("notificationId");
 export type NotificationId = GetValueObject<typeof notificationIdObjecter>;
@@ -7,23 +7,20 @@ export type NotificationId = GetValueObject<typeof notificationIdObjecter>;
 export const processedObjecter = zod.boolean().createValueObjecter("processed");
 export type Processed = GetValueObject<typeof processedObjecter>;
 
+export function createNotificationTypeObjecter<
+	GenericNotificationType extends string,
+>(type: GenericNotificationType) {
+	return zod.literal(type)
+		.createValueObjecter(type);
+}
+
 export class BaseNotificationEntity extends EntityHandler.create({
 	id: notificationIdObjecter,
-	userId: userIdObjecter,
+	user: userObjecter,
 	processed: processedObjecter,
+	createdAt: commonDateObjecter,
+	deleteAt: commonDateObjecter,
 }) {
-	public static create(
-		params: Omit<
-			GetEntityProperties<typeof BaseNotificationEntity>,
-			"processed" | "createdAt"
-		>,
-	) {
-		return new BaseNotificationEntity({
-			...params,
-			processed: processedObjecter.unsafeCreate(false),
-		});
-	}
-
 	public process() {
 		return this.update({
 			processed: processedObjecter.unsafeCreate(true),

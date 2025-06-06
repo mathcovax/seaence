@@ -2,6 +2,7 @@ import { answerRepository } from "@business/applications/repositories/answer";
 import { AnswerEntity, answerIdObjecter } from "@business/domains/entities/answer";
 import { postAnswerCountObjecter } from "@business/domains/entities/post";
 import { UserEntity } from "@business/domains/entities/user";
+import { asyncMessage } from "@interfaces/providers/asyncMessage";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
@@ -41,20 +42,28 @@ answerRepository.default = {
 		});
 		return postAnswerCountObjecter.unsafeCreate(mongoAnswerCount);
 	},
-	async save(answer) {
-		const mongoAnswer = answer.toSimpleObject();
+	async save(entity) {
+		const simpleEntity = entity.toSimpleObject();
+
+		const mongoAnswer = await mongo.answerCollection.findOne({
+			id: simpleEntity.id,
+		});
+
+		if (!mongoAnswer) {
+			await asyncMessage.collections.createAnswer.emit(simpleEntity);
+		}
 
 		await mongo.answerCollection.updateOne(
 			{
-				id: mongoAnswer.id,
+				id: simpleEntity.id,
 			},
 			{
-				$set: mongoAnswer,
+				$set: simpleEntity,
 			},
 			{ upsert: true },
 		);
 
-		return answer;
+		return entity;
 	},
 	async *findByAuthorId(userId) {
 		const startPage = 0;

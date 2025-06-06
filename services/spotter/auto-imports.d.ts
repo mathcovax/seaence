@@ -59,6 +59,7 @@ declare global {
   const multiLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']
   const nextTick: typeof import('vue')['nextTick']
   const notFoundPage: typeof import('./src/domains/edito/router')['notFoundPage']
+  const notificationListPage: typeof import('./src/domains/notification/router')['notificationListPage']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
   const onBeforeRouteLeave: typeof import('vue-router')['onBeforeRouteLeave']
@@ -213,6 +214,7 @@ declare module 'vue' {
     readonly multiLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly notFoundPage: UnwrapRef<typeof import('./src/domains/edito/router')['notFoundPage']>
+    readonly notificationListPage: UnwrapRef<typeof import('./src/domains/notification/router')['notificationListPage']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>

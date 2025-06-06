@@ -1,1 +1,2 @@
-import "./register";
+import "./notificationSetting";
+import "./notification";
