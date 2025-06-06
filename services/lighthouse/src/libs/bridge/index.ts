@@ -39,7 +39,10 @@ export const bridgeClient = new HttpClient<BridgeClientRoute>({
 				requestDefinition.paramsRequest.loaderId = enableLoader();
 			}
 
-			if (requestDefinition.paramsRequest.requestTimeout !== false) {
+			if (
+				!requestDefinition.paramsRequest.signal
+				&& requestDefinition.paramsRequest.requestTimeout !== false
+			) {
 				const requestTimeout = requestDefinition.paramsRequest.requestTimeout;
 
 				const controller = new AbortController();

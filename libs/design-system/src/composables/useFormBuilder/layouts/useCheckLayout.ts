@@ -47,7 +47,7 @@ export function useCheckLayout<
 		const formFieldComponent = useBaseLayout(
 			formField,
 			{
-				obligate: true,
+				mandatory: true,
 				label,
 				defaultValue,
 				props: propsFromOptions,

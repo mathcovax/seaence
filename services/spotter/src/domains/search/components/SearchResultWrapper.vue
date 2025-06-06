@@ -32,6 +32,7 @@ const maxPage = 100;
 			class="bg-background flex flex-col items-stretch rounded-b-xl"
 		>
 			<DSPagination
+				class="my-8"
 				:max-page="maxPage"
 				:total="result.total"
 				:current-page="currentPage"
@@ -48,6 +49,7 @@ const maxPage = 100;
 			</div>
 
 			<DSPagination
+				class="my-8"
 				:max-page="maxPage"
 				:total="result.total"
 				:current-page="currentPage"

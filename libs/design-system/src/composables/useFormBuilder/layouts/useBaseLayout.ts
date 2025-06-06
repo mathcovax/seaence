@@ -11,7 +11,7 @@ import { type AnyFunction, type IsEqual } from "@duplojs/utils";
 import { type BaseLayoutTemplateRender } from "../templates/baseLayout";
 
 interface BaseOptions {
-	obligate: true;
+	mandatory: true;
 }
 
 export interface BaseLayoutOptions<
@@ -44,7 +44,7 @@ export function useBaseLayout<
 	GenericBaseLayoutOptions extends BaseLayoutOptions<
 		GenericFormField,
 		BaseLayoutTemplateRender
-	> = { obligate: true },
+	> = { mandatory: true },
 >(
 	formField: GenericFormField,
 	options?: GenericBaseLayoutOptions,

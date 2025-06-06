@@ -8,7 +8,7 @@ export function useRegisterForm() {
 			username: useCheckLayout(
 				textformField,
 				{
-					obligate: true,
+					mandatory: true,
 					label: t("authDialog.registerForm.usernameLabel"),
 					schema: zod.string()
 						.min(
@@ -24,7 +24,7 @@ export function useRegisterForm() {
 			generalConditionsOfUse: useCheckLayout(
 				booleanFormField,
 				{
-					obligate: true,
+					mandatory: true,
 					schema: zod.custom<true>(
 						(value) => value === true,
 						t("authDialog.registerForm.requireCGU"),

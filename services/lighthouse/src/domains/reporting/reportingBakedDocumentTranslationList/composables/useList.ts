@@ -1,4 +1,6 @@
-import type { ReportingBakedDocumentTranslationRow } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
+import type {
+	ReportingBakedDocumentTranslationAggregateListRow,
+} from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 import { reportingBakedDocumentTranslationListPage } from "../router";
 
 export function useList() {
@@ -17,18 +19,18 @@ export function useList() {
 			);
 		},
 	});
-	const list = ref<ReportingBakedDocumentTranslationRow[] | null>(null);
+	const list = ref<ReportingBakedDocumentTranslationAggregateListRow[] | null>(null);
 
 	watch(
 		pageOfList,
 		(page) => {
 			void bridgeClient
 				.post(
-					"/reporting-baked-document-translation-list",
+					"/reporting-baked-document-translation-aggregate-list",
 					{ body: { page } },
 				)
 				.whenInformation(
-					"reportingBakeDocumentTranslationList.found",
+					"reportingBakeDocumentTranslationAggregateList.found",
 					({ body }) => {
 						list.value = body;
 					},

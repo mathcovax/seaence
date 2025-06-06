@@ -1,3 +1,5 @@
+const defaultPage = 1;
+
 export const reportingBakedDocumentTranslationPage = createPage(
 	"reportingBakedDocumentTranslation",
 	{
@@ -5,6 +7,9 @@ export const reportingBakedDocumentTranslationPage = createPage(
 		component: () => import("./ThePage.vue"),
 		params: {
 			bakedDocumentId: zod.string(),
+		},
+		query: {
+			page: zod.coerce.number().default(defaultPage),
 		},
 	},
 );

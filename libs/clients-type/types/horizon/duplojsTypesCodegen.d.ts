@@ -499,6 +499,80 @@ type CodegenRoutes = ({
             posts: Post[];
         };
     };
+}) | ({
+    method: "POST";
+    path: "/notification-list";
+    body: {
+        page: number;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notificationList.found";
+        body: Notification[];
+    };
+}) | ({
+    method: "POST";
+    path: "/toggle-post-notification";
+    body: {
+        postId: string;
+        enable: boolean;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "togglePostNotification.enabled";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "togglePostNotification.disabled";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/notification-list-page";
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notificationListPage.found";
+        body: {
+            totalNoticationCount: number;
+            quantityNotificationPerPage: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/upsert-baked-document-translation-reporting";
+    body: {
+        bakedDocumentId: string;
+        reportingDetails: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "document.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "bakedDocumentTranslationReporting.upsert";
+        body?: undefined;
+    };
 });
 
 export { CodegenRoutes };

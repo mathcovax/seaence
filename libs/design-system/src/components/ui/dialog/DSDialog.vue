@@ -6,7 +6,11 @@ import DSDialogDescription from "./DSDialogDescription.vue";
 import DSDialogHeader from "./DSDialogHeader.vue";
 import DSDialogTrigger from "./DSDialogTrigger.vue";
 
-const props = defineProps<DialogRootProps>();
+interface Props extends DialogRootProps {
+	size?: "small" | "normal" | "full";
+}
+
+const props = defineProps<Props>();
 const emits = defineEmits<DialogRootEmits>();
 
 const forwarded = useForwardPropsEmits(props, emits);
@@ -17,13 +21,13 @@ const slot = defineSlots<{
 	description?: never;
 	trigger?: never;
 }>();
-
 </script>
 
 <template>
 	<DialogRoot
 		data-slot="dialog"
 		v-bind="forwarded"
+		class="py-2"
 	>
 		<DSDialogTrigger
 			as-child
@@ -32,7 +36,7 @@ const slot = defineSlots<{
 			<slot name="trigger" />
 		</DSDialogTrigger>
 
-		<DSDialogContent>
+		<DSDialogContent :size="size ?? 'small'">
 			<DSDialogHeader>
 				<DSDialogTitle>
 					<slot name="title" />

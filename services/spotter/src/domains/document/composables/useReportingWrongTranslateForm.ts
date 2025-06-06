@@ -9,7 +9,7 @@ export function useReportingWrongTranslateForm() {
 			reportingDetails: useCheckLayout(
 				textareaFormField,
 				{
-					obligate: true,
+					mandatory: true,
 					label: $pt("reportingWrongTranslate.form.textareaLabel"),
 					schema: zod.string()
 						.min(

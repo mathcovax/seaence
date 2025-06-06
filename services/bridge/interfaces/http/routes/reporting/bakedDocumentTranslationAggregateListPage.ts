@@ -3,14 +3,14 @@ import { reportingBakedDocumentTranslationConfig } from "@interfaces/configs/rep
 import { BeaconAPI } from "@interfaces/providers/beacon";
 
 useBuilder()
-	.createRoute("POST", "/reporting-baked-document-translation-list-page")
+	.createRoute("POST", "/reporting-baked-document-translation-aggregate-list-page")
 	.handler(
 		async() => {
 			const { body: { countTotal } } = await BeaconAPI
 				.findManyBakedDocumentTranslationReportingAggregateDetails();
 
 			return new OkHttpResponse(
-				"reportingBakedDocumentTranslationListPage.found",
+				"reportingBakedDocumentTranslationAggregateListPage.found",
 				{
 					countTotal,
 					quantityPerPage: reportingBakedDocumentTranslationConfig.findManyAggregate.quantityPerPage,
@@ -19,7 +19,7 @@ useBuilder()
 		},
 		makeResponseContract(
 			OkHttpResponse,
-			"reportingBakedDocumentTranslationListPage.found",
+			"reportingBakedDocumentTranslationAggregateListPage.found",
 			ReportingBakedDocumentTranslation.listPage,
 		),
 	);

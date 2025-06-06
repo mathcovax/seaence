@@ -1,45 +1,35 @@
 import { ReportingBakedDocumentTranslation } from "@business/entities/reporting/bakedDocumentTranslation";
 import { reportingBakedDocumentTranslationConfig } from "@interfaces/configs/reportingBakedDocumentTranslation";
-import { AbysAPI } from "@interfaces/providers/abys";
 import { BeaconAPI } from "@interfaces/providers/beacon";
 
 useBuilder()
 	.createRoute("POST", "/reporting-baked-document-translation-list")
 	.extract({
-		body: {
+		body: zod.object({
+			bakedDocumentId: zod.string(),
 			page: zod.number().min(
-				reportingBakedDocumentTranslationConfig.findManyAggregate.offsetPage,
+				reportingBakedDocumentTranslationConfig.findMany.offsetPage,
 			),
-		},
+		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { page } = pickup(["page"]);
+			const { bakedDocumentId, page } = pickup("body");
 
-			const { body: reportingAggregateList } = await BeaconAPI.findManyBakedDocumentTranslationReportingAggregate(
-				page - reportingBakedDocumentTranslationConfig.findManyAggregate.offsetPage,
-				reportingBakedDocumentTranslationConfig.findManyAggregate.quantityPerPage,
-			);
-
-			const { body: backedTitleWrapper } = await AbysAPI.findManyBakedDocumentTitle(
-				reportingAggregateList.map(({ bakedDocumentId }) => bakedDocumentId),
-			);
-
-			const list = reportingAggregateList.map(
-				(reportingAggregate) => ({
-					...reportingAggregate,
-					bakedDocumentTitle: backedTitleWrapper[reportingAggregate.bakedDocumentId],
-				}),
+			const { body: rawList } = await BeaconAPI.findManyBakedDocumentTranslationReporting(
+				bakedDocumentId,
+				page - reportingBakedDocumentTranslationConfig.findMany.offsetPage,
+				reportingBakedDocumentTranslationConfig.findMany.quantityPerPage,
 			);
 
 			return new OkHttpResponse(
-				"reportingBakeDocumentTranslationList.found",
-				list,
+				"reportingDakedDocumentTranslationList.found",
+				rawList,
 			);
 		},
 		makeResponseContract(
 			OkHttpResponse,
-			"reportingBakeDocumentTranslationList.found",
+			"reportingDakedDocumentTranslationList.found",
 			ReportingBakedDocumentTranslation.list,
 		),
 	);

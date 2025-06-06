@@ -87,6 +87,6 @@ useBuilder()
 		},
 	)
 	.handler(
-		() => new OkHttpResponse("nodeSameRawDocument.transformeBakedDocument"),
-		makeResponseContract(OkHttpResponse, "nodeSameRawDocument.transformeBakedDocument"),
+		() => new NoContentHttpResponse("nodeSameRawDocument.transformeBakedDocument"),
+		makeResponseContract(NoContentHttpResponse, "nodeSameRawDocument.transformeBakedDocument"),
 	);
