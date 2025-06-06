@@ -52,13 +52,12 @@ bakedDocumentTranslationReportingRepository.default = {
 			.bakedDocumentTranslationReportingCollection
 			.deleteMany({ bakedDocumentId: bakedDocumentId.value });
 	},
-
 	countTotalByBakedDocumentId(bakedDocumentId) {
 		return mongo
 			.bakedDocumentTranslationReportingCollection
 			.countDocuments({
 				bakedDocumentId: bakedDocumentId.value,
 			})
-			.then(intObjecter.unsafeCreate);
+			.then((value) => intObjecter.unsafeCreate(value));
 	},
 };

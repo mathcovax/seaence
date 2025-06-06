@@ -1,21 +1,18 @@
-interface Page {
-	countTotal: number;
-	quantityPerPage: number;
-}
+import type { ReportingBakedDocumentTranslationListPage } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 
 export function usePage() {
-	const pageInformation = ref<Page | null>(null);
+	const pageContent = ref<ReportingBakedDocumentTranslationListPage | null>(null);
 
 	void bridgeClient
-		.post("/reporting-baked-document-translation-list-page")
+		.post("/reporting-baked-document-translation-aggregate-list-page")
 		.whenInformation(
-			"reportingBakedDocumentTranslationListPage.found",
+			"reportingBakedDocumentTranslationAggregateListPage.found",
 			({ body }) => {
-				pageInformation.value = body;
+				pageContent.value = body;
 			},
 		);
 
 	return {
-		pageInformation,
+		pageContent,
 	};
 }

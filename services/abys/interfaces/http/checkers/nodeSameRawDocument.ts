@@ -29,8 +29,8 @@ export const iWantNodeSameRawDocumentExist = createPresetChecker(
 	nodeSameRawDocumentExistCheck,
 	{
 		result: "nodeSameRawDocument.exist",
-		catch: () => new ConflictHttpResponse("nodeSameRawDocument.alreadyExists"),
+		catch: () => new NotFoundHttpResponse("nodeSameRawDocument.notfound"),
 		transformInput: inputNodeSameRawDocumentExist.id,
 	},
-	makeResponseContract(ConflictHttpResponse, "nodeSameRawDocument.alreadyExists"),
+	makeResponseContract(NotFoundHttpResponse, "nodeSameRawDocument.notfound"),
 );

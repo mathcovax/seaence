@@ -13,11 +13,19 @@ export namespace BakedDocument {
 		abstract: zod.string().nullable(),
 		abstractDetails: zod
 			.object({
+				name: zod.string(),
 				label: zod.string(),
 				content: zod.string(),
 			})
 			.array()
 			.nullable(),
 		keywords: zod.string().array(),
+	});
+
+	export const newTranslation = index.pick({
+		title: true,
+		abstract: true,
+		abstractDetails: true,
+		keywords: true,
 	});
 }

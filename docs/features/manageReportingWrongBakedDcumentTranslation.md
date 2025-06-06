@@ -14,7 +14,7 @@
 	2. le document cuit complet
 	3. un boutton pour proposé une nouvel traduction
 - je click sur le bouton pour proposé une nouvel traduction
-- je vois cote a cote dans un dialog la nouvel proposition de traduction et le document actuel.
+- je vois un dialog avec la nouvel proposition de traduction.
 - je peu valider la nouvel traduction ou fermer le dialog
 	* si je valide, cela supprime tout les signalment lier au document cuit
 
