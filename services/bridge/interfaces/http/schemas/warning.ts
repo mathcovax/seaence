@@ -1,14 +1,9 @@
-export const createWarningSchema = zod.object({
+const createUserWarning = zod.object({
 	makeUserBan: zod.boolean(),
 	reason: zod.string(),
+	authorId: zod.string(),
 });
 
-export const createPostWarningSchema = createWarningSchema.extend({
-	type: zod.literal("post"),
+export const entrypointCreatePostWarning = createUserWarning.extend({
 	postId: zod.string(),
 });
-
-export const entrypointCreateWarning = zod.union([
-	createPostWarningSchema,
-	zod.never(),
-]);

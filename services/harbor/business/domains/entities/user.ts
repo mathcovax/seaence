@@ -26,10 +26,13 @@ export type UserEmail = GetValueObject<typeof userEmailObjecter>;
 export type UserUsername = GetValueObject<typeof userUsernameObjecter>;
 export type UserId = GetValueObject<typeof userIdObjecter>;
 
-type InputCreateUserEntity = Omit<GetEntityProperties<typeof UserEntity>, "lastUpdate">;
+type InputCreateUserEntity = Omit<
+	GetEntityProperties<typeof UserEntity>,
+	"lastUpdate" | "banned"
+>;
 
 type UpdatePropsUserEntity = Partial<
-	Pick<GetEntityProperties<typeof UserEntity>, "username">
+	Pick<GetEntityProperties<typeof UserEntity>, "username" | "banned">
 >;
 
 export class UserEntity extends EntityHandler.create({
@@ -42,6 +45,7 @@ export class UserEntity extends EntityHandler.create({
 	public static create(params: InputCreateUserEntity) {
 		return new UserEntity({
 			...params,
+			banned: userBannedObjecter.unsafeCreate(false),
 			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
@@ -50,6 +54,12 @@ export class UserEntity extends EntityHandler.create({
 		return this.update({
 			...values,
 			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
+		});
+	}
+
+	public makeBan() {
+		return this.updateProps({
+			banned: userBannedObjecter.unsafeCreate(true),
 		});
 	}
 

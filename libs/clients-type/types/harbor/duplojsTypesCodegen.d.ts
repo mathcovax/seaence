@@ -7,49 +7,21 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
-    path: "/create-warning";
+    path: "/create-post-user-warning";
     body: {
-        type: "post";
         makeUserBan: boolean;
         reason: string;
+        authorId: string;
         postId: string;
-    } | never;
-    response: {
-        code: 200;
-        information: "warning.created";
-        body: {
-            id: string;
-            makeUserBan: boolean;
-            reason: string;
-        } | {
-            id: string;
-            makeUserBan: boolean;
-            reason: string;
-            postId: string;
-        };
     };
-}) | ({
-    method: "POST";
-    path: "/create-warning";
-    body: {
-        type: "post";
-        makeUserBan: boolean;
-        reason: string;
-        postId: string;
-    } | never;
     response: {
-        code: 200;
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
         information: "warning.created";
-        body: {
-            id: string;
-            makeUserBan: boolean;
-            reason: string;
-        } | {
-            id: string;
-            makeUserBan: boolean;
-            reason: string;
-            postId: string;
-        };
+        body?: undefined;
     };
 }) | ({
     method: "POST";
