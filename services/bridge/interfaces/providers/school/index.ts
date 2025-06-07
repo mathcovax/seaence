@@ -10,7 +10,7 @@ export class SchoolAPI {
 	private static httpClient: HttpClient<SchoolClientRoute>;
 
 	public static getOldestUnprocessedPost() {
-		return this.httpClient.get("/get-oldest-unprocessed-post")
+		return this.httpClient.get("/find-oldest-unprocessed-post")
 			.iWantExpectedResponse();
 	}
 
