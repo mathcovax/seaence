@@ -148,6 +148,44 @@ type CodegenRoutes = ({
         body?: undefined;
     };
 });
+type CodegenRoutes = ({
+    method: "GET";
+    path: "/get-oldest-unprocessed-post";
+    response: {
+        code: 200;
+        information: "oldestUnprocessedPost.found";
+        body: {
+            id: string;
+            nodeSameRawDocumentId: string;
+            topic: string;
+            content: string;
+            author: {
+                id: string;
+                username: string;
+            };
+            answerCount: number;
+            createdAt: string;
+        } | null;
+    };
+}) | ({
+    method: "POST";
+    path: "/create-post-warning";
+    body: {
+        makeUserBan: boolean;
+        reason: string;
+        authorId: string;
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "warning.created";
+        body?: undefined;
+    };
+});
 
 export { CodegenRoutes };
 /* v8 ignore stop */
