@@ -1,5 +1,5 @@
-import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
-import { BaseNotificationEntity, processedObjecter } from "./base";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { BaseNotificationEntity, createNotificationTypeObjecter, processedObjecter } from "./base";
 
 export const userPostBanPostIdObjecter = zod
 	.string()
@@ -7,8 +7,14 @@ export const userPostBanPostIdObjecter = zod
 
 export type UserPostBanPostId = GetValueObject<typeof userPostBanPostIdObjecter>;
 
+export const userPostBanNotificationTypeObjecter = createNotificationTypeObjecter("userPostBanNotificationType");
+export type UserPostBanNotificationType = GetValueObject<typeof userPostBanNotificationTypeObjecter>;
+
+const timeToLive = 604800;
+
 export class UserPostBanNotificationEntity extends EntityHandler.create(
 	{
+		type: userPostBanNotificationTypeObjecter,
 		postId: userPostBanPostIdObjecter,
 	},
 	BaseNotificationEntity,
@@ -16,12 +22,15 @@ export class UserPostBanNotificationEntity extends EntityHandler.create(
 	public static create(
 		params: Omit<
 			GetEntityProperties<typeof UserPostBanNotificationEntity>,
-			"processed" | "createdAt"
+			"processed" | "createdAt" | "deleteAt" | "type"
 		>,
 	) {
 		return new UserPostBanNotificationEntity({
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
+			createdAt: commonDateObjecter.unsafeCreate(new Date()),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			type: userPostBanNotificationTypeObjecter.unsafeCreate("userPostBanNotificationType"),
 		});
 	}
 }

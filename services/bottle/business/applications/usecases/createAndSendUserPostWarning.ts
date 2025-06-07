@@ -1,4 +1,4 @@
-import { UserPostWarningNotificationEntity, type UserPostWarningPostId } from "@business/domains/entities/notification/userPostWarning";
+import { type UserPostWarningPostId } from "@business/domains/entities/notification/userPostWarning";
 import { UsecaseHandler } from "@vendors/clean";
 import { notificationRepository } from "../repositories/notification";
 import { type UserId } from "@business/domains/entities/user";
@@ -13,16 +13,5 @@ export class CreateAndSendUserPostWarningUsecase extends UsecaseHandler.create({
 }) {
 	public async execute({ postId, userId }: Input) {
 		//TODO: finish it when @ZeRiix finished rework of notification system
-		const userPostWarningNotification = UserPostWarningNotificationEntity.create({
-			id: this.notificationRepository.generateNotificationId(),
-			userId,
-			postId,
-		});
-
-		await this.notificationRepository.save(userPostWarningNotification);
-
-		await this.notificationRepository.sendNotification(userPostWarningNotification);
-
-		await this.notificationRepository.save(userPostWarningNotification.process());
 	}
 }
