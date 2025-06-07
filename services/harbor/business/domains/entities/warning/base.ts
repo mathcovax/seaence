@@ -1,5 +1,6 @@
 import { EntityHandler, type GetValueObject, zod } from "@vendors/clean";
 import { userIdObjecter } from "../user";
+import { baseWarningRules } from "@vendors/entity-rules";
 
 export const baseUserWarningIdObjecter = zod
 	.string()
@@ -9,15 +10,10 @@ export const baseUserWarningMakeUserBanObjecter = zod
 	.boolean()
 	.createValueObjecter("baseUserWarningMakeUserBan");
 
-const reasonRule = {
-	min: 5,
-	max: 250,
-};
-
 export const baseUserWarningReasonObjecter = zod
 	.string()
-	.min(reasonRule.min)
-	.max(reasonRule.max)
+	.min(baseWarningRules.reason.min)
+	.max(baseWarningRules.reason.max)
 	.createValueObjecter("baseUserWarningReason");
 
 export type BaseUserWarningId = GetValueObject<typeof baseUserWarningIdObjecter>;

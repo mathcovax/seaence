@@ -6,15 +6,15 @@ export type HarborClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-type InputCreateWarning = FindHttpClientRoute<HarborClientRoute, "POST", "/create-warning">["body"];
+type InputCreateWarning = FindHttpClientRoute<HarborClientRoute, "POST", "/create-post-user-warning">["body"];
 
 export class HarborAPI {
 	private static httpClient: HttpClient<HarborClientRoute>;
 
-	public static async createWarning(warning: InputCreateWarning) {
+	public static async createPostUserWarning(warning: InputCreateWarning) {
 		return this.httpClient
 			.post(
-				"/create-warning",
+				"/create-post-user-warning",
 				{
 					body: warning,
 				},

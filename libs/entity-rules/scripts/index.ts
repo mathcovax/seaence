@@ -6,3 +6,4 @@ export * from "./documentInFolder";
 export * from "./documentFolder";
 export * from "./notification/replyToPost";
 export * from "./reporting";
+export * from "./warning/base";

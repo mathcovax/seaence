@@ -1,33 +1,30 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
-import { entrypointCreateWarning } from "../schemas/warning";
-import { match } from "ts-pattern";
+import { entrypointCreatePostWarning } from "../schemas/warning";
 import { SchoolAPI } from "@interfaces/providers/school";
 
 useBuilder()
-	.createRoute("POST", "/create-warning")
+	.createRoute("POST", "/create-post-warning")
 	.extract({
-		body: entrypointCreateWarning,
+		body: entrypointCreatePostWarning,
 	})
 	.cut(
 		async({ pickup, dropper }) => {
-			const warning = pickup("body");
+			const { makeUserBan, postId, authorId, reason } = pickup("body");
 
-			return match(warning)
-				.with(
-					{ type: "post" },
-					async(matchedWarning) => {
-						const schoolResponse = await SchoolAPI.findPost(matchedWarning.postId);
+			const schoolResponse = await SchoolAPI.findPost(postId);
 
-						if (schoolResponse.information === "post.notfound") {
-							return new NotFoundHttpResponse("post.notfound");
-						}
+			if (schoolResponse.information === "post.notfound") {
+				return new NotFoundHttpResponse("post.notfound");
+			}
 
-						await HarborAPI.createWarning(matchedWarning);
+			await HarborAPI.createPostUserWarning({
+				postId,
+				authorId,
+				reason,
+				makeUserBan,
+			});
 
-						return dropper(null);
-					},
-				)
-				.exhaustive();
+			return dropper(null);
 		},
 		undefined,
 		makeResponseContract(NotFoundHttpResponse, "post.notfound"),
