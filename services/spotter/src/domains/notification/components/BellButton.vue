@@ -14,7 +14,7 @@ function onClick() {
 <template>
 	<DSButton
 		variant="ghost"
-		size="icon"
+		square
 		@click="onClick"
 	>
 		<DSIcon

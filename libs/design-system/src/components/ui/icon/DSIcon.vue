@@ -1,73 +1,11 @@
 <script setup lang="ts">
 import SvgIcon from "@jamescoyle/vue-icon";
-import {
-	mdiMenu,
-	mdiClose,
-	mdiViewGrid,
-	mdiFormatListBulletedSquare,
-	mdiPlus,
-	mdiAccount,
-	mdiCalendarMonth,
-	mdiFileDocument,
-	mdiTag,
-	mdiStarOutline,
-	mdiStar,
-	mdiMessageText,
-	mdiMagnify,
-	mdiMagnifyPlus,
-	mdiWeb,
-	mdiLogin,
-	mdiForum,
-	mdiArrowLeft,
-	mdiSend,
-	mdiLinkVariant,
-	mdiBellOutline,
-	mdiBell,
-	mdiMessageOutline,
-	mdiCheck,
-	mdiClock,
-	mdiPost,
-} from "@mdi/js";
 import { computed } from "vue";
-
-const iconsMapper = {
-	close: mdiClose,
-	menu: mdiMenu,
-	viewGrid: mdiViewGrid,
-	formatListBulletedSquare: mdiFormatListBulletedSquare,
-	plus: mdiPlus,
-	calendar: mdiCalendarMonth,
-	document: mdiFileDocument,
-	tag: mdiTag,
-	account: mdiAccount,
-	starOutline: mdiStarOutline,
-	star: mdiStar,
-	messageText: mdiMessageText,
-	magnify: mdiMagnify,
-	magnifyPlus: mdiMagnifyPlus,
-	web: mdiWeb,
-	login: mdiLogin,
-	forum: mdiForum,
-	arrowLeft: mdiArrowLeft,
-	send: mdiSend,
-	linkVariant: mdiLinkVariant,
-	bell: mdiBell,
-	bellOutline: mdiBellOutline,
-	messageOutline: mdiMessageOutline,
-	check: mdiCheck,
-	clock: mdiClock,
-	post: mdiPost,
-};
-
-const sizeMapper = {
-	small: 14,
-	normal: 24,
-	large: 36,
-};
+import { iconsMapper, iconSizeMapper } from ".";
 
 interface Props {
 	name: keyof typeof iconsMapper;
-	size?: keyof typeof sizeMapper;
+	size?: keyof typeof iconSizeMapper;
 }
 
 const props = defineProps<Props>();
@@ -75,12 +13,12 @@ const props = defineProps<Props>();
 const iconStyle = computed(
 	() => props.size
 		? ({
-			height: `${sizeMapper[props.size]}px`,
-			width: `${sizeMapper[props.size]}px`,
+			height: `${iconSizeMapper[props.size]}px`,
+			width: `${iconSizeMapper[props.size]}px`,
 		})
 		: ({
-			height: `${sizeMapper.normal}px`,
-			width: `${sizeMapper.normal}px`,
+			height: `${iconSizeMapper.default}px`,
+			width: `${iconSizeMapper.default}px`,
 		}),
 );
 

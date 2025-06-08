@@ -101,25 +101,23 @@ watch(
 
 		<template #content>
 			<div v-if="!firebaseTokenToRegister">
-				<DSButton
-					variant="outline"
+				<DSOutlineButton
 					size="full"
 					@click="googleSign"
 				>
 					<DSGoogleLogo />
 					Google
-				</DSButton>
+				</DSOutlineButton>
 			</div>
 
 			<div v-else>
 				<RegisterForm @submit="register">
-					<DSButton
-						variant="primary"
+					<DSPrimaryButton
 						size="full"
 						type="submit"
 					>
 						{{ $t("cta.register") }}
-					</DSButton>
+					</DSPrimaryButton>
 				</RegisterForm>
 			</div>
 		</template>

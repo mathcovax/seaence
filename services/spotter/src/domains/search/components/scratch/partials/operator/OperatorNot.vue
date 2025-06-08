@@ -51,7 +51,7 @@ const { hintMessage } = useHintMessage(
 
 			<DSButton
 				variant="ghost"
-				size="icon"
+				square
 				class="text-white"
 				@click="emit('remove')"
 			>

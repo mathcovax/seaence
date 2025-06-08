@@ -95,50 +95,45 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					value="operator"
 					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
 				>
-					<DSButton
-						variant="primary"
+					<DSPrimaryButton
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('and')"
 					>
 						{{ $t("search.scratch.operator.and.label") }}
-					</DSButton>
+					</DSPrimaryButton>
 
-					<DSButton
-						variant="primary"
+					<DSPrimaryButton
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('or')"
 					>
 						{{ $t("search.scratch.operator.or.label") }}
-					</DSButton>
+					</DSPrimaryButton>
 
-					<DSButton
-						variant="primary"
+					<DSPrimaryButton
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('not')"
 					>
 						{{ $t("search.scratch.operator.not.label") }}
-					</DSButton>
+					</DSPrimaryButton>
 				</DSTabsContent>
 
 				<DSTabsContent
 					value="comparator"
 					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
 				>
-					<DSButton
-						variant="primary"
+					<DSPrimaryButton
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('text')"
 					>
 						{{ $t("search.scratch.comparator.text.label") }}
-					</DSButton>
+					</DSPrimaryButton>
 
-					<DSButton
-						variant="primary"
+					<DSPrimaryButton
 						class="w-full sm:w-auto"
 						@click="selectOperatorContent('year')"
 					>
 						{{ $t("search.scratch.comparator.year.label") }}
-					</DSButton>
+					</DSPrimaryButton>
 				</DSTabsContent>
 			</DSTabs>
 		</template>

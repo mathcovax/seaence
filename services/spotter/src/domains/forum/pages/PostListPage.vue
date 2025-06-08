@@ -32,29 +32,30 @@ watch(
 			class="flex flex-col gap-6"
 		>
 			<div class="mb-6 flex gap-4 items-start">
-				<DSButton
-					variant="outline"
-					size="icon"
+				<DSOutlineButton
+					square
 					class="shrink-0"
 					@click="router.back()"
 				>
 					<DSIcon name="arrowLeft" />
-				</DSButton>
+				</DSOutlineButton>
 
 				<h1 class="text-3xl font-semibold text-blue-seaence">
 					{{ $pt("titleLinkPost", { title: postListPageInforamtion.document.title }) }}
 				</h1>
 			</div>
 
-			<DSButton
-				variant="primary"
-				size="full"
-				as-child
+			<RouterLink
+				:to="postCreatePage.createTo({ params: { documentId: params.documentId } })"
 			>
-				<RouterLink :to="postCreatePage.createTo({params: { documentId: params.documentId }})">
+				<DSPrimaryButton
+					size="full"
+					icon="plus"
+					class="w-full"
+				>
 					{{ $pt("createPost") }}
-				</RouterLink>
-			</DSButton>
+				</DSPrimaryButton>
+			</RouterLink>
 
 			<div v-if="postList && postList.length > 0">
 				<div class="space-y-6">

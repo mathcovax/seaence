@@ -53,20 +53,18 @@ function resetFiltersValues() {
 		</div>
 
 		<div class="flex flex-col-reverse md:flex-row gap-2 md:items-center justify-between pt-3 border-t border-gray-200">
-			<DSButton
-				variant="primary"
+			<DSPrimaryButton
 				:disabled="!filtersValuesHasChange"
 				@click="commitFiltersValues"
 			>
 				{{ $t("search.filters.apply") }}
-			</DSButton>
+			</DSPrimaryButton>
 
-			<DSButton
-				variant="outline"
+			<DSOutlineButton
 				@click="resetFiltersValues"
 			>
 				{{ $t("search.filters.reset") }}
-			</DSButton>
+			</DSOutlineButton>
 		</div>
 	</div>
 </template>

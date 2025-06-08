@@ -22,7 +22,9 @@ defineProps<Props>();
 			query: { language }
 		})"
 	>
-		{{ post.content }}
+		<p class="text-ellipsis overflow-hidden">
+			{{ post.content }}
+		</p>
 
 		<template #footer>
 			<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">

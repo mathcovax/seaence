@@ -59,8 +59,7 @@ function updateActionType(value: string) {
 			v-if="!showRejectForm"
 			class="flex gap-4 items-center"
 		>
-			<DSButton
-				variant="primary"
+			<DSPrimaryButton
 				:disabled="isProcessing"
 				@click="handleApprove"
 			>
@@ -69,10 +68,9 @@ function updateActionType(value: string) {
 					size="small"
 				/>
 				{{ t("cta.approuve") }}
-			</DSButton>
+			</DSPrimaryButton>
 
-			<DSButton
-				variant="destructive"
+			<DSDestructiveButton
 				:disabled="isProcessing"
 				@click="handleReject"
 			>
@@ -81,7 +79,7 @@ function updateActionType(value: string) {
 					size="small"
 				/>
 				{{ t("cta.reject") }}
-			</DSButton>
+			</DSDestructiveButton>
 
 			<div
 				v-if="isProcessing"
@@ -157,8 +155,7 @@ function updateActionType(value: string) {
 			</div>
 
 			<div class="pt-4 flex gap-3 items-center">
-				<DSButton
-					variant="destructive"
+				<DSDestructiveButton
 					:disabled="!rejectReason || isProcessing"
 					@click="handleConfirmReject"
 				>
@@ -167,15 +164,14 @@ function updateActionType(value: string) {
 						size="small"
 					/>
 					{{ $pt("rejectModal.confirm") }}
-				</DSButton>
+				</DSDestructiveButton>
 
-				<DSButton
-					variant="outline"
+				<DSOutlineButton
 					:disabled="isProcessing"
 					@click="handleCancelReject"
 				>
 					{{ t("cta.cancel") }}
-				</DSButton>
+				</DSOutlineButton>
 			</div>
 		</div>
 	</div>

@@ -128,15 +128,14 @@ watch(
 			<header class="border-b pb-4">
 				<div class="mb-6 flex justify-between items-center">
 					<div class="flex gap-4 items-start">
-						<DSButton
-							variant="outline"
-							size="icon"
+						<DSOutlineButton
+							square
 							class="shrink-0"
 							:aria-label="$pt('backToDocument')"
 							@click="router.back()"
 						>
 							<DSIcon name="arrowLeft" />
-						</DSButton>
+						</DSOutlineButton>
 
 						<h1 class="text-3xl font-semibold text-blue-seaence">
 							{{ postPageInformation.post.topic }}
@@ -190,13 +189,12 @@ watch(
 					{{ $pt("countResponse", { count: answers.length, totalCount: postPageInformation.post.answerCount }) }}
 				</h2>
 
-				<DSButton
+				<DSOutlineButton
 					v-if="answers.length > 0 && answers.length < postPageInformation.post.answerCount"
-					variant="outline"
 					@click="seeMoreAnswers"
 				>
 					{{ $t("cta.seeMore") }}
-				</DSButton>
+				</DSOutlineButton>
 			</div>
 
 			<div
@@ -218,7 +216,6 @@ watch(
 			</div>
 
 			<DSCard
-				v-if="isConnected"
 				:title="$pt('writeAnAnswer')"
 				class="mt-6 flex flex-col gap-4"
 			>
@@ -231,15 +228,14 @@ watch(
 				<DSHintError :message="errorMessage" />
 
 				<template #footer>
-					<DSButton
-						variant="primary"
+					<DSPrimaryButton
 						class="self-start"
 						:disabled="!newAnswer.trim()"
 						@click="handleCreateAnswer"
 					>
 						<DSIcon name="send" />
 						{{ $t("cta.send") }}
-					</DSButton>
+					</DSPrimaryButton>
 				</template>
 			</DSCard>
 		</div>

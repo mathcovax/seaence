@@ -4,7 +4,7 @@ import { ref, defineModel } from "vue";
 import DSPopover from "./ui/popover/DSPopover.vue";
 import DSPopoverTrigger from "./ui/popover/DSPopoverTrigger.vue";
 import DSPopoverContent from "./ui/popover/DSPopoverContent.vue";
-import DSButton from "./ui/button/DSButton.vue";
+import DSGhostButton from "./ui/button/DSGhostButton.vue";
 import DSClosingTag from "./DSClosingTag.vue";
 import DSIcon from "./ui/icon/DSIcon.vue";
 import DSCommand from "./ui/command/DSCommand.vue";
@@ -104,16 +104,11 @@ function onSelect(selectedItem: GenericItem) {
 
 				<span class="h-6 w-px bg-neutral-100 mx-1" />
 
-				<DSButton
-					variant="ghost"
-					size="icon"
-					class="rounded-full hover:bg-primary/10"
-				>
-					<DSIcon
-						name="plus"
-						class="text-primary"
-					/>
-				</DSButton>
+				<DSGhostButton
+					square
+					rounded
+					icon="plus"
+				/>
 			</div>
 		</DSPopoverTrigger>
 

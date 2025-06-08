@@ -8,13 +8,12 @@ const { disconect } = useUserInformation();
 <template>
 	<DSDropdownMenu>
 		<DSDropdownMenuTrigger>
-			<DSButton
-				variant="outline"
-				size="icon"
-				class="rounded-full"
+			<DSOutlineButton
+				square
+				rounded
 			>
 				<DSIcon name="account" />
-			</DSButton>
+			</DSOutlineButton>
 		</DSDropdownMenuTrigger>
 
 		<DSDropdownMenuContent align="end">

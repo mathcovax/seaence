@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-	<div :class="cn('text-ellipsis overflow-hidden', props.class)">
+	<div :class="cn('', props.class)">
 		<slot />
 	</div>
 </template>
