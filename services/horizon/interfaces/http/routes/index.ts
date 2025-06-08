@@ -5,3 +5,4 @@ import "./user";
 import "./search";
 import "./document";
 import "./notification";
+import "./reporting";

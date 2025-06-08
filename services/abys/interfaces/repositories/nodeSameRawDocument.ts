@@ -106,4 +106,16 @@ nodeSameRawDocumentRepository.default = {
 
 		await KeyDate.set("lastCookNodeSameRawDocument", newLastCook);
 	},
+	findOneById(nodeSameRawDocumentId) {
+		return mongo.nodeNameRawDocumentCollection
+			.findOne({
+				id: nodeSameRawDocumentId.value,
+			})
+			.then(
+				(mongoEntity) => mongoEntity && EntityHandler.unsafeMapper(
+					NodeSameRawDocumentEntity,
+					mongoEntity,
+				),
+			);
+	},
 };

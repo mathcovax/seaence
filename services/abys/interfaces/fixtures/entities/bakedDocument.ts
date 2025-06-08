@@ -1,10 +1,11 @@
 import { faker } from "@vendors/fixture";
 import { EntityHandler, type ToSimpleObject } from "@vendors/clean";
-import { BakedDocumentEntity, bakedDocumentLanguageEnum } from "@business/domains/entities/bakedDocument";
+import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { makePartialSplitDate } from "../utils/splitDate";
 import { articleTypeEnum } from "@business/domains/common/articleType";
 import { uuidv7 } from "uuidv7";
+import { bakedDocumentLanguageEnum } from "@business/domains/common/bakedDocumentLanguage";
 
 export async function makeBakedDocument(
 	bakedDocument?: Partial<Omit<

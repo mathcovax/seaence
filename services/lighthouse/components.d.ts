@@ -11,6 +11,7 @@ declare module 'vue' {
     BaseLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseLayoutTemplate.vue')['default']
     CheckboxTemplate: typeof import('./vendors/design-system/components/form/CheckboxTemplate.vue')['default']
     CheckLayoutTemplate: typeof import('./vendors/design-system/components/form/CheckLayoutTemplate.vue')['default']
+    copy: typeof import('./vendors/design-system/components/form/BaseLayoutTemplate copy.vue')['default']
     DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/DSAccordion.vue')['default']
     DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
     DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
@@ -27,6 +28,7 @@ declare module 'vue' {
     DSCardHeader: typeof import('./vendors/design-system/components/ui/card/DSCardHeader.vue')['default']
     DSCardTitle: typeof import('./vendors/design-system/components/ui/card/DSCardTitle.vue')['default']
     DSCheckbox: typeof import('./vendors/design-system/components/ui/checkbox/DSCheckbox.vue')['default']
+    DSClickableText: typeof import('./vendors/design-system/components/DSClickableText.vue')['default']
     DSClosingTag: typeof import('./vendors/design-system/components/DSClosingTag.vue')['default']
     DSCombobox: typeof import('./vendors/design-system/components/ui/combobox/DSCombobox.vue')['default']
     DSComboboxAnchor: typeof import('./vendors/design-system/components/ui/combobox/DSComboboxAnchor.vue')['default']
@@ -117,10 +119,12 @@ declare module 'vue' {
     DSTabsList: typeof import('./vendors/design-system/components/ui/tabs/DSTabsList.vue')['default']
     DSTabsTrigger: typeof import('./vendors/design-system/components/ui/tabs/DSTabsTrigger.vue')['default']
     DSTextarea: typeof import('./vendors/design-system/components/ui/textarea/DSTextarea.vue')['default']
+    DSTextClickable: typeof import('./vendors/design-system/components/DSTextClickable.vue')['default']
     FormTemplate: typeof import('./vendors/design-system/components/form/FormTemplate.vue')['default']
     MultiLayoutTemplate: typeof import('./vendors/design-system/components/form/MultiLayoutTemplate.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TextLayoutTemplate: typeof import('./vendors/design-system/components/form/TextLayoutTemplate.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
   }
 }

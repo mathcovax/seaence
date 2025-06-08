@@ -4,8 +4,6 @@ services:
       file: ${TEMPLATE_COMPOSE_NODE_DEV}
       service: template-node
     command: npm -w services/school run dev
-    ports:
-      - "1506:1506"
     depends_on:
       - school-mongo
       - async-message-mongo
@@ -28,5 +26,6 @@ services:
     depends_on:
       - school-mongo
     attach: false
+    
 volumes:
   school-mongo-data:

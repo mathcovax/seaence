@@ -13,4 +13,5 @@ npx concurrently --kill-others-on-fail \
 	"npm -w services/school run test:lint" \
 	"npm -w services/sea run test:lint" \
 	"npm -w services/coral run test:lint" \
-	"npm -w services/spotter run test:lint"
+	"npm -w services/spotter run test:lint" \
+	"npm -w services/beacon run test:lint"

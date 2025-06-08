@@ -9,7 +9,7 @@ export function useEditProfileForm() {
 			username: useCheckLayout(
 				textformField,
 				{
-					obligate: true,
+					mandatory: true,
 					label: $pt("personalInfo.label.username"),
 					schema: zod.string()
 						.min(
@@ -25,7 +25,7 @@ export function useEditProfileForm() {
 			email: useBaseLayout(
 				textformField,
 				{
-					obligate: true,
+					mandatory: true,
 					label: $pt("personalInfo.label.email"),
 					props: {
 						disabled: true,

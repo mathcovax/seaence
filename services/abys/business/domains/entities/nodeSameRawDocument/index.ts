@@ -1,3 +1,4 @@
+import { type BakedDocumentLanguage, bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 import { type Provider, providerObjecter } from "@business/domains/common/provider";
 import { type RawResourceUrl } from "@business/domains/common/rawDocument";
 import { uniqueFieldObjecter } from "@business/domains/common/uniqueField";
@@ -5,7 +6,7 @@ import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetVa
 
 export const nodeSameRawDocumentIdObjecter = zod
 	.string()
-	.createValueObjecter("NodeSameRawDocumentId");
+	.createValueObjecter("nodeSameRawDocumentId");
 
 export type NodeSameRawDocumentId = GetValueObject<typeof nodeSameRawDocumentIdObjecter>;
 
@@ -18,19 +19,26 @@ export const rawDocumentWrapperObjecter = zod
 
 export type RawDocumentWrapper = GetValueObject<typeof rawDocumentWrapperObjecter>;
 
+export const lastCookingDatesObjecter = zod
+	.record(
+		bakedDocumentLanguageObjecter.zodSchema,
+		zod.date(),
+	)
+	.createValueObjecter("lastCookingDates");
+
 export class NodeSameRawDocumentEntity extends EntityHandler.create({
 	id: nodeSameRawDocumentIdObjecter,
 	rawDocumentWrapper: rawDocumentWrapperObjecter,
 	uniqueField: uniqueFieldObjecter,
-	lastCooked: commonDateObjecter.nullable(),
+	lastCookingDates: lastCookingDatesObjecter,
 	lastUpdate: commonDateObjecter,
 }) {
 	public static create(
-		params: Omit<GetEntityProperties<typeof NodeSameRawDocumentEntity>, "lastCooked" | "lastUpdate">,
+		params: Omit<GetEntityProperties<typeof NodeSameRawDocumentEntity>, "lastCookingDates" | "lastUpdate">,
 	) {
 		return new NodeSameRawDocumentEntity({
 			...params,
-			lastCooked: null,
+			lastCookingDates: lastCookingDatesObjecter.unsafeCreate({}),
 			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
@@ -47,9 +55,12 @@ export class NodeSameRawDocumentEntity extends EntityHandler.create({
 		});
 	}
 
-	public cook() {
+	public cook(language: BakedDocumentLanguage) {
 		return this.update({
-			lastCooked: commonDateObjecter.unsafeCreate(new Date()),
+			lastCookingDates: lastCookingDatesObjecter.unsafeCreate({
+				...this.lastCookingDates.value,
+				[language.value]: new Date(),
+			}),
 		});
 	}
 }

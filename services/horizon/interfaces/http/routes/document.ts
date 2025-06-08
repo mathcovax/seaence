@@ -21,7 +21,7 @@ useBuilder()
 			const { body: posts } = await SchoolAPI.findPosts(
 				document.nodeSameRawDocumentId,
 				documentConfig.findPosts.quantityPerPage,
-				documentConfig.findPosts.page,
+				documentConfig.findPosts.defaultPage,
 			);
 
 			return new OkHttpResponse("documentPage.found", {

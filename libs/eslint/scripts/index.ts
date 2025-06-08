@@ -12,6 +12,7 @@ export const eslintConfig = [
 		rules: {
 			...duplojsEslintBase.rules,
 			"@typescript-eslint/no-empty-object-type": "off",
+			"@typescript-eslint/no-namespace": "off",
 		},
 	},
 ];

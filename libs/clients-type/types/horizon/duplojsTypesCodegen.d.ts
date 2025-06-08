@@ -553,6 +553,26 @@ type CodegenRoutes = ({
             quantityNotificationPerPage: number;
         };
     };
+}) | ({
+    method: "POST";
+    path: "/upsert-baked-document-translation-reporting";
+    body: {
+        bakedDocumentId: string;
+        reportingDetails: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "document.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "bakedDocumentTranslationReporting.upsert";
+        body?: undefined;
+    };
 });
 
 export { CodegenRoutes };

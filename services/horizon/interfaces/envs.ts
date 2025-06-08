@@ -13,12 +13,14 @@ export const envs = zod
 		PORT: zod.coerce.number(),
 		HOST: zod.enum(["0.0.0.0"]),
 		ENVIROMENT: zod.enum(["DEV", "PROD"]),
+		CORS_ALLOW_ORIGIN: zod.string(),
+		GLITCHTIP_DSN: zod.string(),
+
 		HARBOR_BASE_URL: zod.string().url(),
 		SCHOOL_BASE_URL: zod.string().url(),
 		ABYS_BASE_URL: zod.string().url(),
 		SEA_BASE_URL: zod.string().url(),
-		CORS_ALLOW_ORIGIN: zod.string(),
-		GLITCHTIP_DSN: zod.string(),
 		BOTLLE_BASE_URL: zod.string().url(),
+		BEACON_BASE_URL: zod.string().url(),
 	})
 	.parse(process.env);

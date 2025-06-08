@@ -35,8 +35,12 @@ include:
   # bottle service (notification)
   - path:
       - ${INCLUDE_PATH}/bottle/compose.yml
+  # coral service
   - path:
       - ${INCLUDE_PATH}/coral/compose.yml
+  # beacon service
+  - path:
+      - ${INCLUDE_PATH}/beacon/compose.yml
 
 services:
   async-message-mongo:

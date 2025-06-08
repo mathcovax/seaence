@@ -48,6 +48,9 @@ lighthouse:
 
 coral:
   - "services/coral/**/*"
+  
+beacon:
+  - "services/beacon/**/*"
 
 docker:
   - ".docker/**/*"

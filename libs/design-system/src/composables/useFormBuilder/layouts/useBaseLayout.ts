@@ -11,7 +11,7 @@ import { type AnyFunction, type IsEqual } from "@duplojs/utils";
 import { type BaseLayoutTemplateRender } from "../templates/baseLayout";
 
 interface BaseOptions {
-	obligate: true;
+	mandatory: true;
 }
 
 export interface BaseLayoutOptions<
@@ -44,7 +44,7 @@ export function useBaseLayout<
 	GenericBaseLayoutOptions extends BaseLayoutOptions<
 		GenericFormField,
 		BaseLayoutTemplateRender
-	> = { obligate: true },
+	> = { mandatory: true },
 >(
 	formField: GenericFormField,
 	options?: GenericBaseLayoutOptions,
@@ -89,9 +89,14 @@ export function useBaseLayout<
 			return formFieldComponent.exposed.check();
 		}
 
+		function reset() {
+			formFieldComponent.exposed.check();
+		}
+
 		return {
 			exposed: {
 				check,
+				reset,
 			},
 			getVNode: () => {
 				if (disable.value) {
