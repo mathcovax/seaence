@@ -22,6 +22,3 @@ Créer ou mettre à jour un signalement de problème de traduction pour un docum
 
 * L’opération doit être réalisée via un *upsert*, lié au `backedDocumentId` et au `userId`.
 
----
-
-Souhaite-tu une version plus formelle ou plus technique (par exemple pour un changelog ou une PR) ?

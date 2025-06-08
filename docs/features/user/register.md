@@ -10,8 +10,8 @@
 - Je reviens dans la modal
 - Je vois un formulaire ou je doit indiquer mon pseudo et valider les condition d'utilisation
 - Je valide le fomulaire
-- Le dialog ce ferme et je suis connecter.
-- Je recois notification de bienvenue.
+- Le dialog ce ferme et je suis connecter
+- Je recois notification de bienvenue
 
 ### Harbor user story
 
@@ -33,8 +33,8 @@ PS:
 
 ### Bottle implémentation
 
-Je créer un user de manière desynchronisé.
+Je créer un user de manière desynchronisé
 
 PS:
 - La création d'un user ce fait via l'écoute de l'async message `createUser`
-- Je créer la notification de bienvenue après avoir la création du user.
+- Je créer la notification de bienvenue après avoir la création du user

@@ -52,13 +52,3 @@
 
 * Les signalements sont regroupés par l’identifiant du document CUIT.
 * L’agrégat peut être représenté par une entité spécifique (ex. : `TranslationReportAggregate`).
-
----
-
-### Implémentation côté **Abys**
-
-> *(à compléter selon le besoin technique spécifique)*
-
----
-
-Souhaite-tu aussi une version prête à intégrer dans une documentation ou un ticket Jira ?
