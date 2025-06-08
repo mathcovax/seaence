@@ -17,29 +17,26 @@ function onClick() {
 </script>
 
 <template>
-	<DSCard
-		class="w-full hover:bg-gray-50 cursor-pointer"
-		@click="onClick()"
-	>
-		<div class="p-4 flex items-center gap-3">
-			<div class="bg-green-100 p-2 rounded-full">
+	<DSCard @click="onClick()">
+		<div class="flex gap-3 items-center">
+			<div class="p-2 bg-blue-seaence/20 rounded-full">
 				<DSIcon
 					name="messageOutline"
-					class="text-green-600 h-5 w-5"
+					class="text-blue-seaence"
 				/>
 			</div>
 
-			<div class="flex-1">
+			<div class="flex-1 space-y-2">
 				<p class="font-medium">
 					<span class="text-blue-seaence">{{ replyToPostNotification.usernameOfReplyPost }}</span>
 					{{ $t("notification.replyToPost.repliedToYourPostMessage") }}
 				</p>
 
-				<p class="text-sm text-gray-600 line-clamp-2 mt-1">
+				<p class="text-sm text-muted-foreground line-clamp-2">
 					"{{ replyToPostNotification.summaryOfReplyPost }}"
 				</p>
 
-				<p class="text-sm text-gray-500 mt-1">
+				<p class="text-sm text-muted-foreground/60">
 					{{ new Date(replyToPostNotification.createdAt).toLocaleDateString() }}
 				</p>
 			</div>
@@ -47,7 +44,6 @@ function onClick() {
 			<DSBadge
 				v-if="!replyToPostNotification.processed"
 				variant="outline"
-				class="bg-green-50"
 			>
 				{{ $t("notification.status") }}
 			</DSBadge>

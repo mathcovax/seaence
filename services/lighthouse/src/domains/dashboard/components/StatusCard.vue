@@ -10,13 +10,15 @@ const { $pt } = dashboardPage.use();
 </script>
 
 <template>
-	<DSCard class="p-4 flex items-center justify-between">
-		<h3 class="font-medium">
-			{{ serviceName }}
-		</h3>
+	<DSCard>
+		<div class="flex items-center justify-between">
+			<h3 class="font-medium">
+				{{ serviceName }}
+			</h3>
 
-		<DSBadge :variant="status === 'up' ? 'success' : 'destructive'">
-			{{ status === 'up' ? $pt("status.up") : $pt("status.down") }}
-		</DSBadge>
+			<DSBadge :variant="status === 'up' ? 'success' : 'destructive'">
+				{{ status === 'up' ? $pt("status.up") : $pt("status.down") }}
+			</DSBadge>
+		</div>
 	</DSCard>
 </template>

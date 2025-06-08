@@ -126,20 +126,27 @@ watch(
 	<section v-if="postPageInformation">
 		<article class="stick z-5 mb-4 p-6 bg-background rounded-lg rounded-b-lg shadow-md">
 			<header class="border-b pb-4">
-				<div class="mb-6 flex gap-4 items-start">
-					<DSButton
-						variant="outline"
-						size="icon"
-						class="shrink-0"
-						:aria-label="$pt('backToDocument')"
-						@click="router.back()"
-					>
-						<DSIcon name="arrowLeft" />
-					</DSButton>
+				<div class="mb-6 flex justify-between items-center">
+					<div class="flex gap-4 items-start">
+						<DSButton
+							variant="outline"
+							size="icon"
+							class="shrink-0"
+							:aria-label="$pt('backToDocument')"
+							@click="router.back()"
+						>
+							<DSIcon name="arrowLeft" />
+						</DSButton>
 
-					<h1 class="text-3xl font-semibold text-blue-seaence">
-						{{ postPageInformation.post.topic }}
-					</h1>
+						<h1 class="text-3xl font-semibold text-blue-seaence">
+							{{ postPageInformation.post.topic }}
+						</h1>
+					</div>
+
+					<BellButton
+						v-model="replyPostNotificationIsEnable"
+						@click="handleReplyPostNotification"
+					/>
 				</div>
 
 				<RouterLink :to="documentPage.createTo({ params: { id: postPageInformation.document.id } })">
@@ -149,11 +156,6 @@ watch(
 				</RouterLink>
 
 				<div class="flex flex-wrap items-center text-sm gap-4">
-					<BellButton
-						v-model="replyPostNotificationIsEnable"
-						@click="handleReplyPostNotification"
-					/>
-
 					<div class="flex items-center gap-2 text-muted-foreground">
 						<DSIcon
 							name="account"
@@ -217,12 +219,9 @@ watch(
 
 			<DSCard
 				v-if="isConnected"
-				class="border border-gray-200 rounded-lg p-6 bg-background mt-6 flex flex-col gap-4"
+				:title="$pt('writeAnAnswer')"
+				class="mt-6 flex flex-col gap-4"
 			>
-				<h3 class="text-lg font-medium mb-4">
-					{{ $pt("writeAnAnswer") }}
-				</h3>
-
 				<DSTextarea
 					class="h-40 resize-none focus:border-blue-seaence focus:ring-2 focus:outline-none"
 					:placeholder="$pt('writeYourAnswer')"
@@ -231,15 +230,17 @@ watch(
 
 				<DSHintError :message="errorMessage" />
 
-				<DSButton
-					variant="primary"
-					class="self-start"
-					:disabled="!newAnswer.trim()"
-					@click="handleCreateAnswer"
-				>
-					<DSIcon name="send" />
-					{{ $t("cta.send") }}
-				</DSButton>
+				<template #footer>
+					<DSButton
+						variant="primary"
+						class="self-start"
+						:disabled="!newAnswer.trim()"
+						@click="handleCreateAnswer"
+					>
+						<DSIcon name="send" />
+						{{ $t("cta.send") }}
+					</DSButton>
+				</template>
 			</DSCard>
 		</div>
 	</section>

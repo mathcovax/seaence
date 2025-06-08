@@ -12,11 +12,13 @@ function onClick() {
 </script>
 
 <template>
-	<DSButtonIcon
+	<DSButton
+		variant="ghost"
+		size="icon"
 		@click="onClick"
 	>
 		<DSIcon
 			:name="model ? 'bell' : 'bellOutline'"
 		/>
-	</DSButtonIcon>
+	</DSButton>
 </template>
