@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { dashboardPage } from "@/domains/dashboard/router";
+
 interface Props {
 	serviceName: string;
 	status: "up" | "down";
