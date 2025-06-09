@@ -11,7 +11,7 @@ type CodegenRoutes = ({
     body: {
         makeUserBan: boolean;
         reason: string;
-        authorId: string;
+        userId: string;
         postId: string;
     };
     response: {

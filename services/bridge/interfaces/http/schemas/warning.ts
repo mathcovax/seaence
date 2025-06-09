@@ -1,7 +1,7 @@
 const createUserWarning = zod.object({
 	makeUserBan: zod.boolean(),
 	reason: zod.string(),
-	authorId: zod.string(),
+	userId: zod.string(),
 });
 
 export const entrypointCreatePostWarning = createUserWarning.extend({

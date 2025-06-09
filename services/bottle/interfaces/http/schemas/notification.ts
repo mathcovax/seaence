@@ -1,7 +1,10 @@
 import { postIdObjecter } from "@business/domains/common/post";
+import { warningIdObjecter, warningReasonObjecter } from "@business/domains/common/warning";
 import { notificationIdObjecter, processedObjecter } from "@business/domains/entities/notification/base";
 import { registerNotificationTypeObjecter } from "@business/domains/entities/notification/register";
 import { replyToPostNotificationTypeObjecter, summaryOfReplyPostObjecter } from "@business/domains/entities/notification/replyToPost";
+import { userPostBanNotificationTypeObjecter } from "@business/domains/entities/notification/userPostBan";
+import { userPostWarningNotificationTypeObjecter } from "@business/domains/entities/notification/userPostWarning";
 import { userEmailObjecter, userIdObjecter, userLanguageObjecter, usernameObjecter } from "@business/domains/entities/user";
 import { commonDateObjecter } from "@vendors/clean";
 
@@ -29,9 +32,32 @@ const replyToPostNotificationSchema = baseNotificatinSchema.extend({
 	type: replyToPostNotificationTypeObjecter.zodSchema,
 });
 
+const userPostBanNotificationSchema = baseNotificatinSchema.extend({
+	type: userPostBanNotificationTypeObjecter.zodSchema,
+	postId: postIdObjecter.zodSchema,
+	reason: warningReasonObjecter.zodSchema,
+	warningId: warningIdObjecter.zodSchema,
+});
+
+const userPostWarningNotificationSchema = baseNotificatinSchema.extend({
+	type: userPostWarningNotificationTypeObjecter.zodSchema,
+	postId: postIdObjecter.zodSchema,
+	reason: warningReasonObjecter.zodSchema,
+	warningId: warningIdObjecter.zodSchema,
+});
+
+export const entrypointPostNotification = zod.object({
+	userId: userIdObjecter.toZodSchema(),
+	warningId: warningIdObjecter.toZodSchema(),
+	postId: postIdObjecter.toZodSchema(),
+	reason: warningReasonObjecter.toZodSchema(),
+});
+
 export const endpointFindNotification = zod.union([
 	registerNotificationSchema,
 	replyToPostNotificationSchema,
+	userPostBanNotificationSchema,
+	userPostWarningNotificationSchema,
 ]).array();
 
 export const endpointCountNotification = zod.object({

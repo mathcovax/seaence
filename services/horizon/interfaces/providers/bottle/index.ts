@@ -33,7 +33,7 @@ type InputDisableNotificationToPost = FindHttpClientRoute<
 type InputCountNotifications = FindHttpClientRoute<
 	BottleClientRoute,
 	"POST",
-	"/count-notification"
+	"/count-notifications"
 >["body"];
 
 export class BottleAPI {
@@ -47,7 +47,7 @@ export class BottleAPI {
 					body: input,
 				},
 			)
-			.iWantInformation("notications.found");
+			.iWantInformation("notifications.found");
 	}
 
 	public static findNotificationSettingToPost(input: InputFindNotificationSettingToPost) {
@@ -92,12 +92,12 @@ export class BottleAPI {
 	public static countNotifications(input: InputCountNotifications) {
 		return this.httpClient
 			.post(
-				"/count-notification",
+				"/count-notifications",
 				{
 					body: input,
 				},
 			)
-			.iWantInformation("notications.count");
+			.iWantInformation("notifications.count");
 	}
 
 	static {

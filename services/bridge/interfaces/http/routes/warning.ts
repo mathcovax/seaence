@@ -1,33 +1,48 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
 import { entrypointCreatePostWarning } from "../schemas/warning";
-import { SchoolAPI } from "@interfaces/providers/school";
+import { iWantPostExistById } from "../checkers/post";
+import { match } from "ts-pattern";
 
 useBuilder()
 	.createRoute("POST", "/create-post-warning")
 	.extract({
 		body: entrypointCreatePostWarning,
 	})
+	.presetCheck(
+		iWantPostExistById,
+		(pickup) => pickup("body").postId,
+	)
 	.cut(
 		async({ pickup, dropper }) => {
-			const { makeUserBan, postId, authorId, reason } = pickup("body");
+			const {
+				body: {
+					makeUserBan,
+					userId,
+					reason,
+				},
+				post,
+			} = pickup(["body", "post"]);
 
-			const schoolResponse = await SchoolAPI.findPost(postId);
-
-			if (schoolResponse.information === "post.notfound") {
-				return new NotFoundHttpResponse("post.notfound");
-			}
-
-			await HarborAPI.createPostUserWarning({
-				postId,
-				authorId,
+			const harborReponse = await HarborAPI.createPostUserWarning({
+				postId: post.id,
+				userId,
 				reason,
 				makeUserBan,
 			});
 
-			return dropper(null);
+			return match(harborReponse)
+				.with(
+					{ information: "user.notfound" },
+					() => new NotFoundHttpResponse("user.notfound"),
+				)
+				.with(
+					{ information: "warning.created" },
+					() => dropper(null),
+				)
+				.exhaustive();
 		},
 		undefined,
-		makeResponseContract(NotFoundHttpResponse, "post.notfound"),
+		makeResponseContract(NotFoundHttpResponse, "user.notfound"),
 	)
 	.handler(
 		() => new CreatedHttpResponse(

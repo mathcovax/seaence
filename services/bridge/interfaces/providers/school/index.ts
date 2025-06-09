@@ -9,12 +9,15 @@ export type SchoolClientRoute = TransformCodegenRouteToHttpClientRoute<
 export class SchoolAPI {
 	private static httpClient: HttpClient<SchoolClientRoute>;
 
-	public static getOldestUnprocessedPost() {
-		return this.httpClient.get("/find-oldest-unprocessed-post")
+	public static findOldestUnprocessedPost() {
+		return this.httpClient
+			.get(
+				"/find-oldest-unprocessed-post",
+			)
 			.iWantExpectedResponse();
 	}
 
-	public static findPost(postId: string) {
+	public static findPostById(postId: string) {
 		return this.httpClient
 			.get(
 				"/posts/{postId}",

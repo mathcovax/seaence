@@ -2,27 +2,27 @@ import { EntityHandler, type GetValueObject, zod } from "@vendors/clean";
 import { userIdObjecter } from "../user";
 import { baseWarningRules } from "@vendors/entity-rules";
 
-export const baseUserWarningIdObjecter = zod
+export const userWarningIdObjecter = zod
 	.string()
-	.createValueObjecter("baseUserWarningId");
+	.createValueObjecter("userWarningId");
 
-export const baseUserWarningMakeUserBanObjecter = zod
+export const userWarningMakeUserBanObjecter = zod
 	.boolean()
-	.createValueObjecter("baseUserWarningMakeUserBan");
+	.createValueObjecter("userWarningMakeUserBan");
 
-export const baseUserWarningReasonObjecter = zod
+export const userWarningReasonObjecter = zod
 	.string()
 	.min(baseWarningRules.reason.min)
 	.max(baseWarningRules.reason.max)
-	.createValueObjecter("baseUserWarningReason");
+	.createValueObjecter("userWarningReason");
 
-export type BaseUserWarningId = GetValueObject<typeof baseUserWarningIdObjecter>;
-export type BaseUserWarningMakeUserBan = GetValueObject<typeof baseUserWarningMakeUserBanObjecter>;
-export type BaseUserWarningReason = GetValueObject<typeof baseUserWarningReasonObjecter>;
+export type UserWarningId = GetValueObject<typeof userWarningIdObjecter>;
+export type UserWarningMakeUserBan = GetValueObject<typeof userWarningMakeUserBanObjecter>;
+export type UserWarningReason = GetValueObject<typeof userWarningReasonObjecter>;
 
-export class BaseUserWarningEntity extends EntityHandler.create({
-	id: baseUserWarningIdObjecter,
-	makeUserBan: baseUserWarningMakeUserBanObjecter,
-	reason: baseUserWarningReasonObjecter,
+export class UserWarningEntity extends EntityHandler.create({
+	id: userWarningIdObjecter,
+	makeUserBan: userWarningMakeUserBanObjecter,
+	reason: userWarningReasonObjecter,
 	userId: userIdObjecter,
 }) {}
