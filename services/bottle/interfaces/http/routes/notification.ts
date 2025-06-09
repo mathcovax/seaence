@@ -1,7 +1,7 @@
 import { userIdObjecter } from "@business/domains/entities/user";
-import { countNotificationToUserUsecase, findManyNotificationToUserUsecase } from "@interfaces/usecases";
+import { countNotificationToUserUsecase, createUserPostBanNotificationUsecase, createUserPostWarningNotificationUsecase, findManyNotificationToUserUsecase } from "@interfaces/usecases";
 import { intObjecter, positiveIntObjecter } from "@vendors/clean";
-import { endpointCountNotification, endpointFindNotification } from "../schemas/notification";
+import { endpointCountNotification, endpointFindNotification, entrypointPostNotification } from "../schemas/notification";
 import { IWantUserExistsById } from "../checkers/user";
 
 useBuilder()
@@ -32,13 +32,13 @@ useBuilder()
 					(processedNotification) => processedNotification.toSimpleObject(),
 				);
 
-			return new OkHttpResponse("notications.found", simpleNotifications);
+			return new OkHttpResponse("notifications.found", simpleNotifications);
 		},
-		makeResponseContract(OkHttpResponse, "notications.found", endpointFindNotification),
+		makeResponseContract(OkHttpResponse, "notifications.found", endpointFindNotification),
 	);
 
 useBuilder()
-	.createRoute("POST", "/count-notification")
+	.createRoute("POST", "/count-notifications")
 	.extract({
 		body: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -54,7 +54,75 @@ useBuilder()
 
 			const countNotification = await countNotificationToUserUsecase.execute({ user });
 
-			return new OkHttpResponse("notications.count", { count: countNotification.value });
+			return new OkHttpResponse("notifications.count", { count: countNotification.value });
 		},
-		makeResponseContract(OkHttpResponse, "notications.count", endpointCountNotification),
+		makeResponseContract(OkHttpResponse, "notifications.count", endpointCountNotification),
+	);
+
+useBuilder()
+	.createRoute("POST", "/create-post-warning-notification")
+	.extract({
+		body: entrypointPostNotification,
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const {
+				body: {
+					warningId,
+					postId,
+					reason,
+				},
+				user,
+			} = pickup(["body", "user"]);
+
+			await createUserPostWarningNotificationUsecase.execute({
+				user,
+				warningId,
+				postId,
+				reason,
+			});
+
+			return new CreatedHttpResponse(
+				"notification.postWarning.created",
+			);
+		},
+		makeResponseContract(CreatedHttpResponse, "notification.postWarning.created"),
+	);
+
+useBuilder()
+	.createRoute("POST", "/create-post-ban-notification")
+	.extract({
+		body: entrypointPostNotification,
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const {
+				body: {
+					warningId,
+					postId,
+					reason,
+				},
+				user,
+			} = pickup(["body", "user"]);
+
+			await createUserPostBanNotificationUsecase.execute({
+				user,
+				warningId,
+				postId,
+				reason,
+			});
+
+			return new CreatedHttpResponse(
+				"notification.postBan.created",
+			);
+		},
+		makeResponseContract(CreatedHttpResponse, "notification.postBan.created"),
 	);

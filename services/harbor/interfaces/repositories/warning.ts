@@ -1,5 +1,5 @@
 import { userWarningRepository, type Warning } from "@business/applications/repositories/warning";
-import { baseUserWarningIdObjecter } from "@business/domains/entities/warning/base";
+import { userWarningIdObjecter } from "@business/domains/entities/warning/base";
 import { PostUserWarningEntity } from "@business/domains/entities/warning/post";
 import { type PostReference, prismaClient } from "@interfaces/providers/prisma";
 import { match, P } from "ts-pattern";
@@ -43,6 +43,6 @@ userWarningRepository.default = {
 		return entity;
 	},
 	generateUserWarningId() {
-		return baseUserWarningIdObjecter.unsafeCreate(uuidv7());
+		return userWarningIdObjecter.unsafeCreate(uuidv7());
 	},
 };

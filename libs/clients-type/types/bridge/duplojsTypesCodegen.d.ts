@@ -147,10 +147,9 @@ type CodegenRoutes = ({
         information: "bakedDocument.makeNewTranslation";
         body?: undefined;
     };
-});
-type CodegenRoutes = ({
+}) | ({
     method: "GET";
-    path: "/get-oldest-unprocessed-post";
+    path: "/find-oldest-unprocessed-post";
     response: {
         code: 200;
         information: "oldestUnprocessedPost.found";
@@ -173,12 +172,16 @@ type CodegenRoutes = ({
     body: {
         makeUserBan: boolean;
         reason: string;
-        authorId: string;
+        userId: string;
         postId: string;
     };
     response: {
         code: 404;
         information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
         body?: undefined;
     } | {
         code: 201;

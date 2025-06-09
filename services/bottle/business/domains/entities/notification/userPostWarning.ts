@@ -1,11 +1,7 @@
-import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject } from "@vendors/clean";
 import { BaseNotificationEntity, createNotificationTypeObjecter, processedObjecter } from "./base";
-
-export const userPostWarningPostIdObjecter = zod
-	.string()
-	.createValueObjecter("userPostWarningPostId");
-
-export type UserPostWarningPostId = GetValueObject<typeof userPostWarningPostIdObjecter>;
+import { warningIdObjecter, warningReasonObjecter } from "@business/domains/common/warning";
+import { postIdObjecter } from "@business/domains/common/post";
 
 export const userPostWarningNotificationTypeObjecter = createNotificationTypeObjecter("userPostWarningNotificationType");
 export type UserPostWarningNotificationType = GetValueObject<typeof userPostWarningNotificationTypeObjecter>;
@@ -15,7 +11,9 @@ const timeToLive = 604800;
 export class UserPostWarningNotificationEntity extends EntityHandler.create(
 	{
 		type: userPostWarningNotificationTypeObjecter,
-		postId: userPostWarningPostIdObjecter,
+		postId: postIdObjecter,
+		reason: warningReasonObjecter,
+		warningId: warningIdObjecter,
 	},
 	BaseNotificationEntity,
 ) {

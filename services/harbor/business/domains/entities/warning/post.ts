@@ -1,5 +1,5 @@
 import { EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
-import { BaseUserWarningEntity } from "./base";
+import { UserWarningEntity } from "./base";
 
 export const postUserWarningTypeObjecter = zod
 	.literal("post")
@@ -22,7 +22,7 @@ export class PostUserWarningEntity extends EntityHandler.create(
 		type: postUserWarningTypeObjecter,
 		postId: postUserWarningPostIdObjecter,
 	},
-	BaseUserWarningEntity,
+	UserWarningEntity,
 ) {
 	public static create(params: InputCreatePostUserWarningEntity) {
 		return new PostUserWarningEntity({

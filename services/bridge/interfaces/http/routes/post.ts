@@ -2,10 +2,10 @@ import { SchoolAPI } from "@interfaces/providers/school";
 import { endpointPostSchema } from "../schemas/post";
 
 useBuilder()
-	.createRoute("GET", "get-oldest-unprocessed-post")
+	.createRoute("GET", "find-oldest-unprocessed-post")
 	.handler(
 		async() => {
-			const schoolResponse = await SchoolAPI.getOldestUnprocessedPost();
+			const schoolResponse = await SchoolAPI.findOldestUnprocessedPost();
 
 			return new OkHttpResponse(
 				"oldestUnprocessedPost.found",
