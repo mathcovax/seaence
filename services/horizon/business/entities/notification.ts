@@ -27,7 +27,23 @@ export const replyToPostNotificationObjecter = baseNotificatinSchema.extend({
 	summaryOfReplyPost: summaryOfReplyPostObjecter.zodSchema,
 }).createValueObjecter("replyToPostNotification");
 
+export const userPostBanNotificationObjecter = baseNotificatinSchema.extend({
+	type: zod.literal("userPostBanNotificationType"),
+	postId: zod.string(),
+	reason: zod.string(),
+	warningId: zod.string(),
+}).createValueObjecter("userPostBanNotification");
+
+export const userPostWarningNotificationObjecter = baseNotificatinSchema.extend({
+	type: zod.literal("userPostWarningNotificationType"),
+	postId: zod.string(),
+	reason: zod.string(),
+	warningId: zod.string(),
+}).createValueObjecter("userPostWarningNotification");
+
 export const notificationObjecter = zod.union([
 	registerNotificationObjecter.zodSchema,
 	replyToPostNotificationObjecter.zodSchema,
+	userPostBanNotificationObjecter.zodSchema,
+	userPostWarningNotificationObjecter.zodSchema,
 ]).createValueObjecter("notification");
