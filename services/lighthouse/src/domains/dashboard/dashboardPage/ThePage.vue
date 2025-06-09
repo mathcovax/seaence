@@ -14,25 +14,6 @@ const adminModule = [
 		link: postPage,
 	},
 ];
-
-const services = [
-	{
-		name: "database",
-		status: "up" as const,
-	},
-	{
-		name: "cache",
-		status: "down" as const,
-	},
-	{
-		name: "queue",
-		status: "down" as const,
-	},
-	{
-		name: "api",
-		status: "up" as const,
-	},
-];
 </script>
 
 <template>
@@ -46,7 +27,7 @@ const services = [
 		</p>
 	</section>
 
-	<section class="mt-6">
+	<!-- <section class="mt-6">
 		<h2 class="text-xl font-semibold mb-4">
 			{{ $pt("status.title") }}
 		</h2>
@@ -59,7 +40,7 @@ const services = [
 				:status="service.status"
 			/>
 		</div>
-	</section>
+	</section> -->
 
 	<section class="mt-6">
 		<h2 class="text-xl font-semibold mb-4">
