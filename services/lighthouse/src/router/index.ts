@@ -1,5 +1,5 @@
-import { dashboardPage } from "@/domains/dashboard/router";
-import { postPage } from "@/domains/post/router";
+import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
+import { postPage } from "@/domains/post/postModeration/router";
 import { createWebHistory, createRouter } from "vue-router";
 import {
 	reportingBakedDocumentTranslationListPage,

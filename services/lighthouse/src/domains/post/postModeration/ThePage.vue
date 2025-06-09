@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { postPage } from "@/domains/post/router";
+import { postPage } from "@/domains/post/postModeration/router";
 import { ref } from "vue";
-import PostStats from "../components/PostStats.vue";
-import PostContent from "../components/PostContent.vue";
-import PostModerationActions from "../components/PostModeration.vue";
+import PostStats from "./components/PostStats.vue";
+import PostContent from "./components/PostContent.vue";
+import PostModerationActions from "./components/PostModeration.vue";
 
 const { $pt } = postPage.use();
 

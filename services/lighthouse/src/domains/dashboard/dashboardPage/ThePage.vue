@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { dashboardPage } from "@/domains/dashboard/router";
-import { postPage } from "@/domains/post/router";
-import ModuleCard from "../components/ModuleCard.vue";
-import StatusCard from "../components/StatusCard.vue";
+import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
+import { postPage } from "@/domains/post/postModeration/router";
+import ModuleCard from "./components/ModuleCard.vue";
+import StatusCard from "./components/StatusCard.vue";
 
 const { $pt } = dashboardPage.use();
 

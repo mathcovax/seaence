@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { postPage } from "@/domains/post/router";
+import { postPage } from "@/domains/post/postModeration/router";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
 
 interface Post {

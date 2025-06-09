@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { dashboardPage } from "@/domains/dashboard/router";
+import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
 </script>
 
 <template>
