@@ -4,8 +4,10 @@
 <template>
 	<TheHeader />
 
-	<main class="min-h-screen-nh container py-8">
-		<RouterView />
+	<main class="container py-8">
+		<div class="min-h-screen-nh ">
+			<RouterView />
+		</div>
 	</main>
 
 	<TheFooter />

@@ -217,6 +217,7 @@ watch(
 
 			<DSCard
 				:title="$pt('writeAnAnswer')"
+				:description="$pt('writeAnAnswerDescription')"
 				class="mt-6 flex flex-col gap-4"
 			>
 				<DSTextarea

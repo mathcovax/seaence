@@ -32,9 +32,11 @@ function onClick() {
 					{{ $t("notification.replyToPost.repliedToYourPostMessage") }}
 				</p>
 
-				<p class="text-sm text-muted-foreground line-clamp-2">
-					"{{ replyToPostNotification.summaryOfReplyPost }}"
-				</p>
+				<blockquote class="border-l-4 border-blue-seaence/30 pl-4 py-2 bg-blue-seaence/5 rounded-r-md">
+					<p class="text-sm text-muted-foreground italic line-clamp-2">
+						"{{ replyToPostNotification.summaryOfReplyPost }}"
+					</p>
+				</blockquote>
 
 				<p class="text-sm text-muted-foreground/60">
 					{{ new Date(replyToPostNotification.createdAt).toLocaleDateString() }}
@@ -44,6 +46,7 @@ function onClick() {
 			<DSBadge
 				v-if="!replyToPostNotification.processed"
 				variant="outline"
+				class="self-start"
 			>
 				{{ $t("notification.status") }}
 			</DSBadge>

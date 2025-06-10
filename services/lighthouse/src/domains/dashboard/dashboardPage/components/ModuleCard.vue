@@ -9,7 +9,7 @@ defineProps<Props>();
 </script>
 
 <template>
-	<DSCard class="transition-all hover:shadow-md hover:border-primary/20">
+	<DSCard class="group hover:shadow-md transition-shadow">
 		<div class="flex items-start gap-4">
 			<div
 				class="p-3 rounded-lg bg-primary/10"

@@ -26,7 +26,7 @@ defineProps<Props>();
 					{{ $t("notification.register.content") }}
 				</p>
 
-				<p class="text-sm text-muted-foreground/60">
+				<p class="text-sm text-muted-foreground">
 					{{ new Date(registerNotification.createdAt).toLocaleDateString() }}
 				</p>
 			</div>
@@ -34,6 +34,7 @@ defineProps<Props>();
 			<DSBadge
 				v-if="!registerNotification.processed"
 				variant="outline"
+				class="self-start"
 			>
 				{{ $t("notification.status") }}
 			</DSBadge>

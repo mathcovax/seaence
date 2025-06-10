@@ -34,16 +34,22 @@ const titleProps = computed(() => {
 		class: "text-blue-seaence hover:underline",
 	};
 });
+
+const hasHeader = computed(() => slot.header || props.title || props.description);
+const hasFooter = computed(() => slot.footer);
 </script>
 
 <template>
 	<div
 		:class="cn(
-			'p-6 flex flex-col gap-6 rounded-lg border bg-card text-card-foreground shadow-sm',
+			'flex flex-col gap-6 rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden',
 			props.class,
+			{
+				'p-6': !hasHeader && !hasFooter,
+			}
 		)"
 	>
-		<DSCardHeader v-if="title || description || slot.header">
+		<DSCardHeader v-if="slot.header || title || description">
 			<slot name="header">
 				<DSCardTitle v-if="title">
 					<component
@@ -62,7 +68,13 @@ const titleProps = computed(() => {
 			</slot>
 		</DSCardHeader>
 
-		<DSCardContent>
+		<DSCardContent
+			:class="{
+				'pb-6': hasHeader && !hasFooter,
+				'px-6': hasHeader || hasFooter,
+				'pt-6': !hasHeader && hasFooter,
+			}"
+		>
 			<slot />
 		</DSCardContent>
 

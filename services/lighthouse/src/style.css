@@ -4,7 +4,7 @@
 
 :root {
 	--header-height: 4rem;
-	--py-page: 1rem;
+	--py-page: 2rem;
 }
 
 body {
@@ -13,5 +13,5 @@ body {
 
 /* screen - header - padding y */
 @utility min-h-screen-nh {
-	min-height: calc(100vh - var(--header-height));
+    min-height: calc(100vh - var(--header-height) - (2 * var(--py-page)));
 }

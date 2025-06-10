@@ -26,6 +26,8 @@ export const FRfr = {
 		[postPage.name]: {
 			title: "Modération des Posts",
 			description: "Examinez et modérez les posts en attente de validation.",
+			emptyTitle: "Aucun post en attente",
+			emptyDescription: "Il n'y a actuellement aucun post en attente de modération.",
 			postStatus: "En attente",
 			isProssessing: "Traitement en cours...",
 			rejectModal: {

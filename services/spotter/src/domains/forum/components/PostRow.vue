@@ -15,7 +15,7 @@ defineProps<Props>();
 
 <template>
 	<DSCard
-		:title="post.topic "
+		:title="post.topic"
 		class="hover:shadow-md transition"
 		:link="postPage.createTo({
 			params: { postId: post.id },

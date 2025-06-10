@@ -12,7 +12,7 @@ const { $pt } = postPage.use();
 </script>
 
 <template>
-	<DSCard class="bg-gray-50">
+	<DSCard>
 		<p class="whitespace-pre-line">
 			{{ answer.content }}
 		</p>

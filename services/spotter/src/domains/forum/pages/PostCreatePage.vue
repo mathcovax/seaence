@@ -41,6 +41,7 @@ function submit() {
 	<section class="min-h-screen-nh flex justify-center items-center">
 		<DSCard
 			:title="$pt('title')"
+			:description="$pt('description')"
 			class="w-full max-w-2xl"
 		>
 			<form
@@ -48,12 +49,9 @@ function submit() {
 				class="space-y-6"
 			>
 				<div>
-					<DSLabel
-						for="topic"
-						class="block font-medium text-gray-700 mb-1"
-					>
+					<DSLabel>
 						{{ $pt("form.topic.label.value") }}
-						<span class="text-gray-500 text-sm">
+						<span class="text-muted-foreground">
 							{{ $pt("form.topic.label.infos") }}
 						</span>
 					</DSLabel>
@@ -66,21 +64,17 @@ function submit() {
 
 					<DSHintError :message="formErrors.topic" />
 
-					<p class="text-xs text-gray-500 mt-1">
+					<small class="text-muted-foreground mt-1">
 						{{ $pt("form.topic.writingHelp") }}
-					</p>
+					</small>
 				</div>
 
 				<div>
-					<DSLabel
-						for="content"
-						class="block font-medium text-gray-700 mb-1"
-					>
+					<DSLabel>
 						{{ $pt("form.content.label") }}
 					</DSLabel>
 
 					<DSTextarea
-						class="maw-w-full"
 						v-model="formInputs.content"
 						:maxlength="postRules.content.maxLength"
 						:minlength="postRules.content.minLength"
@@ -89,7 +83,7 @@ function submit() {
 
 					<DSHintError :message="formErrors.content" />
 
-					<ul class="text-xs text-gray-500 mt-2 list-disc list-inside space-y-1">
+					<ul class="text-xs text-muted-foreground mt-1 list-disc list-inside space-y-0.5">
 						<li>
 							{{ $pt("form.content.writingHelps.one") }}
 						</li>

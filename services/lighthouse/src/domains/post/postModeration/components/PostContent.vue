@@ -25,9 +25,9 @@ const { $pt } = postPage.use();
 </script>
 
 <template>
-	<div class="bg-background border border-border rounded-lg shadow-md">
-		<div class="p-6 border-b border-border">
-			<div class="mb-4 flex justify-between items-start">
+	<DSCard class="bg-background border border-border rounded-lg shadow-md">
+		<template #header>
+			<div class="flex justify-between items-start">
 				<div>
 					<h2 class="mb-2 text-xl text-blue-seaence font-semibold">
 						{{ post.topic }}
@@ -61,16 +61,16 @@ const { $pt } = postPage.use();
 					{{ $pt("postStatus") }}
 				</DSBadge>
 			</div>
+		</template>
+
+		<div class="prose max-w-none">
+			<p class="leading-relaxed whitespace-pre-line">
+				{{ post.content }}
+			</p>
 		</div>
 
-		<div class="p-6">
-			<div class="prose max-w-none">
-				<p class="leading-relaxed whitespace-pre-line">
-					{{ post.content }}
-				</p>
-			</div>
-		</div>
-
-		<slot />
-	</div>
+		<template #footer>
+			<slot />
+		</template>
+	</DSCard>
 </template>
