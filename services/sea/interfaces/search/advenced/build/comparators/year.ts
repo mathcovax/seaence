@@ -16,7 +16,7 @@ const allFieldValue = Object
 			: [],
 	);
 
-export function buildYearOperator(comparatorYear: ComparatorYear): estypes.QueryDslQueryContainer {
+export function buildYearComparator(comparatorYear: ComparatorYear): estypes.QueryDslQueryContainer {
 	const fields = fieldsMapper[comparatorYear.field] ?? allFieldValue;
 
 	return {

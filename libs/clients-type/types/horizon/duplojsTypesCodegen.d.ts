@@ -45,7 +45,7 @@ type User = {
 
 export { User };
 
-type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
+type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear | ComparatorStrictText | ComparatorAuthor | ComparatorYearInterval | ComparatorArticleType | ComparatorProvider;
 
 export { OperatorContent };
 
@@ -76,7 +76,7 @@ export { OperatorNot };
 type ComparatorText = {
     type: "comparator";
     name: "text";
-    field: "allField" | "title" | "abstract";
+    field: "allField" | "title" | "abstract" | "keywords";
     value: string;
 };
 
@@ -90,6 +90,51 @@ type ComparatorYear = {
 };
 
 export { ComparatorYear };
+
+type ComparatorStrictText = {
+    type: "comparator";
+    name: "strictText";
+    field: "allField" | "title" | "abstract" | "keywords";
+    value: string;
+};
+
+export { ComparatorStrictText };
+
+type ComparatorAuthor = {
+    type: "comparator";
+    name: "author";
+    value: string;
+};
+
+export { ComparatorAuthor };
+
+type ComparatorYearInterval = {
+    type: "comparator";
+    name: "yearInterval";
+    field: "allDate" | "webDate" | "journalDate";
+    value: {
+        from: number;
+        to: number;
+    };
+};
+
+export { ComparatorYearInterval };
+
+type ComparatorArticleType = {
+    type: "comparator";
+    name: "articleType";
+    value: ("metaAnalysis")[];
+};
+
+export { ComparatorArticleType };
+
+type ComparatorProvider = {
+    type: "comparator";
+    name: "provider";
+    value: ("pubmed")[];
+};
+
+export { ComparatorProvider };
 
 type FiltersValues = {
     articleType?: ArticleType[] | undefined;

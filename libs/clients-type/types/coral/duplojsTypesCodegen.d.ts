@@ -5,7 +5,32 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
+type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear | {
+    type: "comparator";
+    name: "strictText";
+    field: "allField" | "title" | "abstract" | "keywords";
+    value: string;
+} | {
+    type: "comparator";
+    name: "author";
+    value: string;
+} | {
+    type: "comparator";
+    name: "yearInterval";
+    field: "allDate" | "webDate" | "journalDate";
+    value: {
+        from: number;
+        to: number;
+    };
+} | {
+    type: "comparator";
+    name: "articleType";
+    value: ("metaAnalysis")[];
+} | {
+    type: "comparator";
+    name: "provider";
+    value: ("pubmed")[];
+};
 
 export { OperatorContent };
 
@@ -36,7 +61,7 @@ export { OperatorNot };
 type ComparatorText = {
     type: "comparator";
     name: "text";
-    field: "allField" | "title" | "abstract";
+    field: "allField" | "title" | "abstract" | "keywords";
     value: string;
 };
 

@@ -1,6 +1,10 @@
 {
   "name": "@lib/types-advanced-query",
   "type": "module",
+  "scripts": {
+    "test:lint": "eslint",
+    "test:types": "tsc"
+  },
   "dependencies": {
     "zod": "3.24.2"
   }

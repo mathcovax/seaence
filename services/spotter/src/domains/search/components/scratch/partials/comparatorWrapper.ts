@@ -3,6 +3,9 @@ import ComparatorText from "./comparator/ComparatorText.vue";
 import ComparatorYear from "./comparator/ComparatorYear.vue";
 import type { OperatorContentEvent } from "./operatorContentWrapper";
 import type { Comparator } from "@vendors/types-advanced-query";
+import ComparatorStrictText from "./comparator/ComparatorStrictText.vue";
+import ComparatorAuthor from "./comparator/ComparatorAuthor.vue";
+import ComparatorArticleType from "./comparator/ComparatorArticleType.vue";
 
 export function comparatorWrapper(
 	comparator: Comparator,
@@ -24,6 +27,39 @@ export function comparatorWrapper(
 			{ name: "year" },
 			(comparator) => h(
 				ComparatorYear,
+				{
+					modelValue: comparator,
+					"onUpdate:modelValue": events.onUpdate,
+					onRemove: events.remove,
+				},
+			),
+		)
+		.with(
+			{ name: "strictText" },
+			(comparator) => h(
+				ComparatorStrictText,
+				{
+					modelValue: comparator,
+					"onUpdate:modelValue": events.onUpdate,
+					onRemove: events.remove,
+				},
+			),
+		)
+		.with(
+			{ name: "author" },
+			(comparator) => h(
+				ComparatorAuthor,
+				{
+					modelValue: comparator,
+					"onUpdate:modelValue": events.onUpdate,
+					onRemove: events.remove,
+				},
+			),
+		)
+		.with(
+			{ name: "articleType" },
+			(comparator) => h(
+				ComparatorArticleType,
 				{
 					modelValue: comparator,
 					"onUpdate:modelValue": events.onUpdate,

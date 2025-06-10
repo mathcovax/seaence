@@ -18,10 +18,10 @@ export function buildYearAggregation(query: BuildedQuery) {
 		.with(
 			{ __id: "simpleSearchQuery" },
 			(query) => ({
-				...query.bool,
-				must: query.bool.must
-					? query.bool.must.filter(
-						(value) => value.__id !== "yearFilter",
+				...query.function_score.query.bool,
+				must: query.function_score.query.bool.must
+					? query.function_score.query.bool.must.filter(
+						(value) => !("__id" in value) || value.__id !== "yearFilter",
 					)
 					: undefined,
 			}),

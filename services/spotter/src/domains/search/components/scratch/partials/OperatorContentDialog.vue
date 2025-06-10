@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { match } from "ts-pattern";
 import type {
+	ComparatorArticleType,
+	ComparatorAuthor,
+	ComparatorStrictText,
 	ComparatorText,
 	ComparatorYear,
 	OperatorAnd,
@@ -60,6 +63,22 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 				field: "allDate",
 				value: new Date().getFullYear(),
 			}))
+			.with("strictText", (): ComparatorStrictText => ({
+				type: "comparator",
+				name: "strictText",
+				field: "allField",
+				value: "",
+			}))
+			.with("author", (): ComparatorAuthor => ({
+				type: "comparator",
+				name: "author",
+				value: "",
+			}))
+			.with("articleType", (): ComparatorArticleType => ({
+				type: "comparator",
+				name: "articleType",
+				value: [],
+			}))
 			.exhaustive(),
 	);
 
@@ -93,7 +112,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 
 				<DSTabsContent
 					value="operator"
-					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
+					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center"
 				>
 					<DSPrimaryButton
 						class="w-full sm:w-auto"
@@ -119,7 +138,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 
 				<DSTabsContent
 					value="comparator"
-					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
+					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center"
 				>
 					<DSPrimaryButton
 						class="w-full sm:w-auto"

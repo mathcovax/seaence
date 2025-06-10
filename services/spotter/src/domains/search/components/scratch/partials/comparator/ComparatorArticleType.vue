@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { comparatorTextConfig, type ComparatorText, textFieldEnum } from "@vendors/types-advanced-query";
+import { comparatorTextConfig, articleTypeEnum, type ComparatorArticleType } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
 
 const emit = defineEmits<{ remove: [] }>();
-const model = defineModel<ComparatorText>({ required: true });
+const model = defineModel<ComparatorArticleType>({ required: true });
 const { t } = useI18n();
 
 const textFieldSchema = zod
@@ -40,30 +40,26 @@ const { hintMessage } = useHintMessage(
 		@deplace="emit('remove')"
 	>
 		<div class="mb-2 flex justify-between items-center">
-			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.text.label') }}</span>
+			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.articleType.label') }}</span>
 
-			<DSGhostButton
-				square
+			<DSButtonIcon
+				variant="ghost"
+				size="sm"
 				@click="emit('remove')"
+				class="text-slate-500 hover:text-slate-700 hover:bg-slate-100"
 			>
 				<DSIcon name="close" />
-			</DSGhostButton>
+			</DSButtonIcon>
 		</div>
 
-		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
-			<DSSelect
-				:items="textFieldEnum.toTuple()"
-				:label="(item) => $t(`search.scratch.comparator.text.fields.${item}`) || item"
-				:placeholder="$t('search.scratch.comparator.text.selectPlaceholder')"
-				v-model="model.field"
-				class="text-sm"
-			/>
-
-			<DSInput
-				draggable="false"
+		<div class="grid grid-cols-1">
+			<DSMultiComboBox
+				:empty-label="$t('search.scratch.comparator.articleType.emptyLabel')"
+				:items="articleTypeEnum.toTuple()"
+				:label="(item) => $t(`articleType.${item}`) || item"
+				:placeholder="$t('search.scratch.comparator.articleType.selectPlaceholder')"
 				v-model="model.value"
-				:placeholder="$t('search.scratch.comparator.text.inputPlaceholder')"
-				class="text-sm"
+				class="text-sm w-full"
 			/>
 		</div>
 

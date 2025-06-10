@@ -4,7 +4,7 @@ import type {
 	GenderFacetValue,
 	SpeciesFacetValue,
 } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
-import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/types-advanced-query";
+import type { Comparator, TextFieldEnumValue, YearFieldEnumValue } from "@vendors/types-advanced-query";
 
 export const FRfr = {
 	page: {
@@ -258,6 +258,18 @@ export const FRfr = {
 						allField: "Tous les champs",
 						abstract: "Abstract",
 						title: "Titre",
+						keywords: "Mots clef",
+					} satisfies Record<TextFieldEnumValue, string>,
+				},
+				strictText: {
+					selectPlaceholder: "Sélectionner un champ",
+					inputPlaceholder: "Entrer une valeur",
+					label: "Comparaison textuelle strict",
+					fields: {
+						allField: "Tous les champs",
+						abstract: "Abstract",
+						title: "Titre",
+						keywords: "Mots clef",
 					} satisfies Record<TextFieldEnumValue, string>,
 				},
 				year: {
@@ -269,7 +281,16 @@ export const FRfr = {
 						webDate: "publication web",
 					} satisfies Record<YearFieldEnumValue, string>,
 				},
-			},
+				author: {
+					inputPlaceholder: "Entrer une valeur",
+					label: "Comparaison d'auteur",
+				},
+				articleType: {
+					label: "Comparaison de type d'article",
+					selectPlaceholder: "Sélectionner un type d'article",
+					emptyLabel: "Type d'article non trouvé",
+				},
+			} satisfies Record<Comparator["name"], object>,
 			operator: {
 				and: {
 					label: "ET",
@@ -284,6 +305,9 @@ export const FRfr = {
 		},
 		foundResults: "{count} résultat(s) trouvé(s)",
 		noResult: "Aucun résultat trouvé",
+	},
+	documentRowResult: {
+		searchScore: "Score de recherche: {0}",
 	},
 	post: {
 		authorIs: "",

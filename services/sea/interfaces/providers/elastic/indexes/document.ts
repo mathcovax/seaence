@@ -18,6 +18,10 @@ export const elasticDocumentMappingSchema = {
 				type: "text",
 				analyzer: "stemmer_analyzer",
 			},
+			strict: {
+				type: "text",
+				analyzer: "strict_analyzer",
+			},
 		},
 	},
 	articleTypes: {
@@ -45,6 +49,10 @@ export const elasticDocumentMappingSchema = {
 				type: "text",
 				analyzer: "stemmer_analyzer",
 			},
+			strict: {
+				type: "text",
+				analyzer: "strict_analyzer",
+			},
 		},
 	},
 	providers: {
@@ -55,6 +63,10 @@ export const elasticDocumentMappingSchema = {
 		fields: {
 			keyword: {
 				type: "keyword",
+			},
+			strict: {
+				type: "text",
+				analyzer: "strict_analyzer",
 			},
 		},
 	},
@@ -162,7 +174,6 @@ export const enUsDocument = new ElasticDocument<Document>(
 					filter: [
 						"lowercase",
 						"asciifolding",
-						"stop_filter",
 					],
 				},
 			},
@@ -221,7 +232,6 @@ export const frFrDocument = new ElasticDocument<Document>(
 					filter: [
 						"lowercase",
 						"asciifolding",
-						"stop_filter",
 					],
 				},
 			},
@@ -241,7 +251,10 @@ export type AvailableField =
 	| "title.stemmed"
 	| "abstract.stemmed"
 	| "authors.strict"
-	| "keywords.keyword";
+	| "keywords.keyword"
+	| "keywords.strict"
+	| "abstract.strict"
+	| "title.strict";
 
 export const availableFieldEnum = createEnum([
 	"bakedDocumentId",
@@ -262,6 +275,9 @@ export const availableFieldEnum = createEnum([
 	"abstract.stemmed",
 	"authors.strict",
 	"keywords.keyword",
+	"abstract.strict",
+	"title.strict",
+	"keywords.strict",
 ] as const satisfies AvailableField[]);
 
 type _ExpectAvailableFieldEnumHasAllKey = ExpectType<

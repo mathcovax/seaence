@@ -1,6 +1,7 @@
 import { type ZodType } from "zod";
 import { zod } from "@vendors/clean";
 import { comparatorSchema, type Comparator } from "./comparator";
+import { type ExpectType } from "@duplojs/utils";
 
 export type OperatorContent =
 	| Comparator
@@ -39,10 +40,16 @@ export const operatorContentSchema = zod.lazy(
 	]),
 );
 
+type _CheckOperatorContent = ExpectType<
+	typeof operatorContentSchema["_output"],
+	OperatorContent,
+	"strict"
+>;
+
 export const operatorConfig = {
 	maxContent: 10,
-	minContent: 1
-}
+	minContent: 1,
+};
 
 export const operatorAndSchema: ZodType<OperatorAnd> = zod.object({
 	type: zod.literal("operator"),
@@ -67,5 +74,3 @@ export const operatorNotSchema: ZodType<OperatorNot> = zod.object({
 	name: zod.literal("not"),
 	content: operatorContentSchema.nullable(),
 });
-
-

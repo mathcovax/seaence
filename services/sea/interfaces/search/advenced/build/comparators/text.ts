@@ -5,6 +5,7 @@ import { type TextFieldEnumValue, type ComparatorText } from "@vendors/types-adv
 const fieldsMapper: Record<TextFieldEnumValue, AvailableField[] | undefined> = {
 	abstract: [availableFieldEnum["abstract.stemmed"], availableFieldEnum.abstract],
 	title: [availableFieldEnum["title.stemmed"], availableFieldEnum.title],
+	keywords: [availableFieldEnum.keywords],
 	allField: undefined,
 };
 
@@ -16,13 +17,13 @@ const allFieldValue = Object
 			: [],
 	);
 
-export function buildTextOperator(comparatorText: ComparatorText): estypes.QueryDslQueryContainer {
+export function buildTextComparator(comparatorText: ComparatorText): estypes.QueryDslQueryContainer {
 	const fields = fieldsMapper[comparatorText.field] ?? allFieldValue;
 
 	return {
 		multi_match: {
 			query: comparatorText.value,
-			fields: fields,
+			fields,
 		},
 	};
 }
