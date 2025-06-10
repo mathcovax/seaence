@@ -136,61 +136,59 @@ function loadNextPost() {
 
 <template>
 	<section class="min-h-screen-nh">
-		<div class="max-w-4xl mx-auto">
-			<header class="mb-8">
-				<h1 class="mb-2 text-3xl font-bold">
-					{{ $pt("title") }}
-				</h1>
+		<header class="mb-8">
+			<h1 class="mb-2 text-3xl font-bold">
+				{{ $pt("title") }}
+			</h1>
 
-				<p>
-					{{ $pt("description") }}
-				</p>
-			</header>
+			<p class="text-muted-foreground">
+				{{ $pt("description") }}
+			</p>
+		</header>
 
-			<PostStats
-				:pending-count="stats.pending"
-				class="mb-6"
+		<PostStats
+			:pending-count="stats.pending"
+			class="mb-6"
+		/>
+
+		<PostContent
+			v-if="hasPostsRemaining"
+			:post="currentPost"
+		>
+			<PostModerationActions
+				:is-processing="isProcessing"
+				:show-reject-form="showRejectForm"
+				:reject-reason="rejectReason"
+				:action-type="actionType"
+				:reject-reasons="rejectReasons"
+				@approve="handleApprove"
+				@reject="handleReject"
+				@confirm-reject="confirmReject"
+				@cancel-reject="cancelReject"
+				@update:reject-reason="rejectReason = $event"
+				@update:action-type="actionType = $event"
 			/>
+		</PostContent>
 
-			<PostContent
-				v-if="hasPostsRemaining"
-				:post="currentPost"
-			>
-				<PostModerationActions
-					:is-processing="isProcessing"
-					:show-reject-form="showRejectForm"
-					:reject-reason="rejectReason"
-					:action-type="actionType"
-					:reject-reasons="rejectReasons"
-					@approve="handleApprove"
-					@reject="handleReject"
-					@confirm-reject="confirmReject"
-					@cancel-reject="cancelReject"
-					@update:reject-reason="rejectReason = $event"
-					@update:action-type="actionType = $event"
+		<div
+			v-else
+			class="text-center py-12"
+		>
+			<div class="mb-4">
+				<DSIcon
+					name="check"
+					class="mx-auto text-green-seaence"
+					size="large"
 				/>
-			</PostContent>
-
-			<div
-				v-else
-				class="text-center py-12"
-			>
-				<div class="mb-4">
-					<DSIcon
-						name="check"
-						class="mx-auto text-green-seaence"
-						size="large"
-					/>
-				</div>
-
-				<h2 class="mb-2 text-xl font-semibold">
-					{{ $pt("emptyTitle") }}
-				</h2>
-
-				<p class="text-muted-foreground">
-					{{ $pt("emptyDescription") }}
-				</p>
 			</div>
+
+			<h2 class="mb-2 text-xl font-semibold">
+				{{ $pt("emptyTitle") }}
+			</h2>
+
+			<p class="text-muted-foreground">
+				{{ $pt("emptyDescription") }}
+			</p>
 		</div>
 	</section>
 </template>

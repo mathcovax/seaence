@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
 import { postPage } from "@/domains/post/postModeration/router";
+import {
+	reportingBakedDocumentTranslationListPage,
+} from "@/domains/reporting/reportingBakedDocumentTranslationList/router";
 import ModuleCard from "./components/ModuleCard.vue";
 // import StatusCard from "./components/StatusCard.vue";
 
@@ -12,13 +15,21 @@ const adminModule = [
 		title: $pt("modules.post.title"),
 		description: $pt("modules.post.description"),
 		link: postPage,
+		icon: "post" as const,
+	},
+	{
+		name: "reportingBakedDocumentTranslation",
+		title: $pt("modules.reportingBakedDocumentTranslation.title"),
+		description: $pt("modules.reportingBakedDocumentTranslation.description"),
+		link: reportingBakedDocumentTranslationListPage,
+		icon: "reporting" as const,
 	},
 ];
 </script>
 
 <template>
-	<section class="mb-6">
-		<h1 class="text-3xl font-bold">
+	<section class="mb-8">
+		<h1 class="mb-2 text-3xl font-bold">
 			{{ $pt("title") }}
 		</h1>
 
@@ -51,12 +62,13 @@ const adminModule = [
 			<RouterLink
 				v-for="module in adminModule"
 				:key="module.name"
-				:to="postPage"
+				:to="module.link"
 				class="group"
 			>
 				<ModuleCard
 					:title="module.title"
 					:description="module.description"
+					:icon="module.icon"
 				/>
 			</RouterLink>
 		</div>

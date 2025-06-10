@@ -21,6 +21,10 @@ export const FRfr = {
 					title: "Modération des Posts",
 					description: "Examinez et modérez les posts en attente de validation.",
 				},
+				reportingBakedDocumentTranslation: {
+					title: "Signalements de Traduction",
+					description: "Gérez les signalements de documents traduits et leurs corrections.",
+				},
 			},
 		},
 		[postPage.name]: {
@@ -61,10 +65,11 @@ export const FRfr = {
 			},
 		},
 		[reportingBakedDocumentTranslationListPage.name]: {
-			bakedDocumentId: "Id du document cuit:",
-			title: "Titre du document cuit:",
-			reporting: "Quantités de signalment:",
-			reportingDocument: "Quantités de document signalé: {0}",
+			title: "Liste des documents cuits",
+			reportingDocument: "Nombre de document(s) signalé(s) : {0}",
+			emptyTitle: "Aucun document signalé",
+			emptyDescription: "Il n'y a actuellement aucun document avec des signalements de traduction.",
+			reporting: "Nombre de signalment(s) :",
 		},
 		[reportingBakedDocumentTranslationPage.name]: {
 			bakedDocument: {

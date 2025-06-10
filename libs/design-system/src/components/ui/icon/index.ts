@@ -26,6 +26,9 @@ import {
 	mdiClock,
 	mdiPost,
 	mdiHome,
+	mdiIdentifier,
+	mdiAlert,
+	mdiAlertCircle,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -56,6 +59,9 @@ export const iconsMapper = {
 	clock: mdiClock,
 	post: mdiPost,
 	home: mdiHome,
+	identifier: mdiIdentifier,
+	alert: mdiAlert,
+	reporting: mdiAlertCircle,
 };
 
 export const iconSizeMapper = {
