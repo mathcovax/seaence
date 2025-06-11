@@ -1,4 +1,4 @@
-## Feat : chnager son nom d'utilisateur
+## Feat : changer son nom d'utilisateur
 
 ### Global user story
 
