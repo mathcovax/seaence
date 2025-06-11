@@ -7,7 +7,7 @@ export function buildProviderComparator(
 ): estypes.QueryDslQueryContainer {
 	return {
 		terms: {
-			[availableFieldEnum.articleTypes]: comparatorProvider.value,
+			[availableFieldEnum.providers]: comparatorProvider.value,
 		},
 	};
 }
