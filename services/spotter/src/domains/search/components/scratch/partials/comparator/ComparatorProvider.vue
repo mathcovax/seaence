@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import {
-	articleTypeEnum,
-	type ComparatorArticleType,
-	comparatorArticleTypeConfig,
+	providerEnum,
+	comparatorProviderConfig,
+	type ComparatorProvider,
 } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
 
 const emit = defineEmits<{ remove: [] }>();
-const model = defineModel<ComparatorArticleType>({ required: true });
+const model = defineModel<ComparatorProvider>({ required: true });
 const { t } = useI18n();
 
 const textFieldSchema = zod
 	.any()
 	.array()
 	.min(
-		comparatorArticleTypeConfig.minContent,
-		{ message: t("formMessage.minItems", { value: comparatorArticleTypeConfig.minContent }) },
+		comparatorProviderConfig.minContent,
+		{ message: t("formMessage.minItems", { value: comparatorProviderConfig.minContent }) },
 	);
 
 const { hintMessage } = useHintMessage(
@@ -38,7 +38,7 @@ const { hintMessage } = useHintMessage(
 		@deplace="emit('remove')"
 	>
 		<div class="mb-2 flex justify-between items-center">
-			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.articleType.label') }}</span>
+			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.provider.label') }}</span>
 
 			<DSButtonIcon
 				variant="ghost"
@@ -52,10 +52,10 @@ const { hintMessage } = useHintMessage(
 
 		<div class="grid grid-cols-1">
 			<DSMultiComboBox
-				:empty-label="$t('search.scratch.comparator.articleType.emptyLabel')"
-				:items="articleTypeEnum.toTuple()"
-				:label="(item) => $t(`articleType.${item}`) || item"
-				:placeholder="$t('search.scratch.comparator.articleType.selectPlaceholder')"
+				:empty-label="$t('search.scratch.comparator.provider.emptyLabel')"
+				:items="providerEnum.toTuple()"
+				:label="(item) => $t(`search.scratch.comparator.provider.value.${item}`) || item"
+				:placeholder="$t('search.scratch.comparator.provider.selectPlaceholder')"
 				v-model="model.value"
 				class="text-sm w-full"
 			/>

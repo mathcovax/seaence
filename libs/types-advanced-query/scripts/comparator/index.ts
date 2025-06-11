@@ -4,9 +4,10 @@ import { comparatorStrictTextSchema, type ComparatorStrictText } from "./strictT
 import { comparatorYearSchema, type ComparatorYear } from "./year";
 import { type ComparatorAuthor, comparatorAuthorSchema } from "./author";
 import { type ExpectType } from "@duplojs/utils";
-import { ComparatorYearInterval, comparatorYearIntervalSchema } from "./yearInterval";
-import { ComparatorArticleType, comparatorArticleTypeSchema } from "./articleType";
-import { ComparatorProvider, comparatorProviderSchema } from "./provider";
+import { type ComparatorYearInterval, comparatorYearIntervalSchema } from "./yearInterval";
+import { type ComparatorArticleType, comparatorArticleTypeSchema } from "./articleType";
+import { type ComparatorProvider, comparatorProviderSchema } from "./provider";
+import { type ComparatorNameEnumValue } from "./nameEnum";
 
 export interface BaseComparator<
 	GenericName extends string,
@@ -24,6 +25,12 @@ export type Comparator =
 	| ComparatorArticleType
 	| ComparatorYearInterval;
 
+type _CheckComparatorName = ExpectType<
+	ComparatorNameEnumValue,
+	Comparator["name"],
+	"strict"
+>;
+
 export const comparatorSchema = zod.union([
 	comparatorTextSchema,
 	comparatorYearSchema,
@@ -34,7 +41,7 @@ export const comparatorSchema = zod.union([
 	comparatorProviderSchema,
 ]);
 
-type _CheckOperatorContent = ExpectType<
+type _CheckComparatorSchema = ExpectType<
 	typeof comparatorSchema["_output"],
 	Comparator,
 	"strict"

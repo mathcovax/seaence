@@ -10,8 +10,15 @@ export interface ComparatorArticleType extends BaseComparator<"articleType"> {
 	value: ArticleTypeEnumValue[];
 }
 
+export const comparatorArticleTypeConfig = {
+	minContent: 1,
+};
+
 export const comparatorArticleTypeSchema: ZodType<ComparatorArticleType> = zod.object({
 	type: zod.literal("comparator"),
 	name: zod.literal("articleType"),
-	value: zod.enum(articleTypeEnum.toTuple()).array(),
+	value: zod
+		.enum(articleTypeEnum.toTuple())
+		.array()
+		.min(comparatorArticleTypeConfig.minContent),
 });

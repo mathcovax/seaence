@@ -6,6 +6,8 @@ import type { Comparator } from "@vendors/types-advanced-query";
 import ComparatorStrictText from "./comparator/ComparatorStrictText.vue";
 import ComparatorAuthor from "./comparator/ComparatorAuthor.vue";
 import ComparatorArticleType from "./comparator/ComparatorArticleType.vue";
+import ComparatorProvider from "./comparator/ComparatorProvider.vue";
+import ComparatorYearInterval from "./comparator/ComparatorYearInterval.vue";
 
 export function comparatorWrapper(
 	comparator: Comparator,
@@ -60,6 +62,28 @@ export function comparatorWrapper(
 			{ name: "articleType" },
 			(comparator) => h(
 				ComparatorArticleType,
+				{
+					modelValue: comparator,
+					"onUpdate:modelValue": events.onUpdate,
+					onRemove: events.remove,
+				},
+			),
+		)
+		.with(
+			{ name: "provider" },
+			(comparator) => h(
+				ComparatorProvider,
+				{
+					modelValue: comparator,
+					"onUpdate:modelValue": events.onUpdate,
+					onRemove: events.remove,
+				},
+			),
+		)
+		.with(
+			{ name: "yearInterval" },
+			(comparator) => h(
+				ComparatorYearInterval,
 				{
 					modelValue: comparator,
 					"onUpdate:modelValue": events.onUpdate,

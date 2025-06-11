@@ -10,8 +10,15 @@ export interface ComparatorProvider extends BaseComparator<"provider"> {
 	value: ProviderEnumValue[];
 }
 
+export const comparatorProviderConfig = {
+	minContent: 1,
+};
+
 export const comparatorProviderSchema: ZodType<ComparatorProvider> = zod.object({
 	type: zod.literal("comparator"),
 	name: zod.literal("provider"),
-	value: zod.enum(providerEnum.toTuple()).array(),
+	value: zod
+		.enum(providerEnum.toTuple())
+		.array()
+		.min(comparatorProviderConfig.minContent),
 });

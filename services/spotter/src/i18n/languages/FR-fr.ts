@@ -4,7 +4,12 @@ import type {
 	GenderFacetValue,
 	SpeciesFacetValue,
 } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
-import type { Comparator, TextFieldEnumValue, YearFieldEnumValue } from "@vendors/types-advanced-query";
+import type {
+	Comparator,
+	ProviderEnumValue,
+	TextFieldEnumValue,
+	YearFieldEnumValue,
+} from "@vendors/types-advanced-query";
 
 export const FRfr = {
 	page: {
@@ -289,6 +294,24 @@ export const FRfr = {
 					label: "Comparaison de type d'article",
 					selectPlaceholder: "Sélectionner un type d'article",
 					emptyLabel: "Type d'article non trouvé",
+				},
+				provider: {
+					label: "Comparaison de platforme",
+					selectPlaceholder: "Sélectionner une platforme",
+					emptyLabel: "Platforme non trouvé",
+					value: {
+						pubmed: "PubMed",
+					} satisfies Record<ProviderEnumValue, string>,
+				},
+				yearInterval: {
+					selectPlaceholder: "Sélectionner un champ",
+					label: "Comparaison d'années avec interval",
+					refineMessage: "La veleur du premier champ doit étre supérieur au deuxiéme.",
+					fields: {
+						allDate: "Toutes Dates",
+						journalDate: "publication journal",
+						webDate: "publication web",
+					} satisfies Record<YearFieldEnumValue, string>,
 				},
 			} satisfies Record<Comparator["name"], object>,
 			operator: {

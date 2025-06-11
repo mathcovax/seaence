@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { comparatorYearConfig, yearFieldEnum, type ComparatorYear } from "@vendors/types-advanced-query";
+import {
+	comparatorYearConfig,
+	yearFieldEnum,
+	type ComparatorYearInterval,
+} from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
 
 const emit = defineEmits<{ remove: [] }>();
-const model = defineModel<ComparatorYear>({ required: true });
+const model = defineModel<ComparatorYearInterval>({ required: true });
 const { t } = useI18n();
 
-const yearFieldSchema = zod
+const yearSchema = zod
 	.number({ message: t("formMessage.required") })
 	.int({ message: t("formMessage.int") })
 	.max(
@@ -20,8 +24,18 @@ const yearFieldSchema = zod
 		{ message: t("formMessage.min", { value: comparatorYearConfig.min }) },
 	);
 
+const yearIntervalFieldSchema = zod
+	.object({
+		from: yearSchema,
+		to: yearSchema,
+	})
+	.refine(
+		({ from, to }) => to >= from,
+		t("search.scratch.comparator.yearInterval.refineMessage"),
+	);
+
 const { hintMessage } = useHintMessage(
-	yearFieldSchema,
+	yearIntervalFieldSchema,
 	computed({
 		get() {
 			return model.value.value;
@@ -41,22 +55,24 @@ const { hintMessage } = useHintMessage(
 	>
 		<div class="mb-2 flex justify-between items-center">
 			<div class="flex gap-2 items-center">
-				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.year.label') }}</span>
+				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.yearInterval.label') }}</span>
 			</div>
 
-			<DSGhostButton
-				square
+			<DSButtonIcon
+				variant="ghost"
+				size="sm"
 				@click="emit('remove')"
+				class="text-slate-500 hover:bg-slate-100 hover:text-slate-700"
 			>
 				<DSIcon name="close" />
-			</DSGhostButton>
+			</DSButtonIcon>
 		</div>
 
-		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
+		<div class="grid grid-cols-1 @sm:grid-cols-3 gap-2">
 			<DSSelect
 				:items="yearFieldEnum.toTuple()"
-				:label="(item) => $t(`search.scratch.comparator.year.fields.${item}`) || item"
-				:placeholder="$t('search.scratch.comparator.year.selectPlaceholder')"
+				:label="(item) => $t(`search.scratch.comparator.yearInterval.fields.${item}`) || item"
+				:placeholder="$t('search.scratch.comparator.yearInterval.selectPlaceholder')"
 				v-model="model.field"
 				class="text-sm"
 			/>
@@ -65,7 +81,16 @@ const { hintMessage } = useHintMessage(
 				@dragstart.prevent
 				type="number"
 				mode="numeric"
-				v-model.number="model.value"
+				v-model.number="model.value.from"
+				placeholder="1999"
+				class="text-sm"
+			/>
+
+			<DSInput
+				@dragstart.prevent
+				type="number"
+				mode="numeric"
+				v-model.number="model.value.to"
 				placeholder="1999"
 				class="text-sm"
 			/>

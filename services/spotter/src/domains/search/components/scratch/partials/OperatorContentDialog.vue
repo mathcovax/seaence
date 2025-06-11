@@ -3,14 +3,17 @@ import { match } from "ts-pattern";
 import type {
 	ComparatorArticleType,
 	ComparatorAuthor,
+	ComparatorProvider,
 	ComparatorStrictText,
 	ComparatorText,
 	ComparatorYear,
+	ComparatorYearInterval,
 	OperatorAnd,
 	OperatorContent,
 	OperatorNot,
 	OperatorOr,
 } from "@vendors/types-advanced-query";
+import { comparatorNameEnum } from "@vendors/types-advanced-query/comparator/nameEnum";
 
 type Resolve = (value: OperatorContent | null) => void;
 
@@ -22,16 +25,6 @@ function onUpdateOpen(value: boolean) {
 		currentResolve.value = null;
 	}
 }
-
-defineExpose({
-	async openDialog() {
-		return new Promise<OperatorContent | null>(
-			(resolve) => {
-				currentResolve.value = resolve;
-			},
-		);
-	},
-});
 
 function selectOperatorContent(name: OperatorContent["name"]) {
 	currentResolve.value!(
@@ -79,12 +72,35 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 				name: "articleType",
 				value: [],
 			}))
+			.with("provider", (): ComparatorProvider => ({
+				type: "comparator",
+				name: "provider",
+				value: [],
+			}))
+			.with("yearInterval", (): ComparatorYearInterval => ({
+				type: "comparator",
+				name: "yearInterval",
+				field: "allDate",
+				value: {
+					from: new Date().getFullYear(),
+					to: new Date().getFullYear(),
+				},
+			}))
 			.exhaustive(),
 	);
 
 	currentResolve.value = null;
 }
 
+defineExpose({
+	async openDialog() {
+		return new Promise<OperatorContent | null>(
+			(resolve) => {
+				currentResolve.value = resolve;
+			},
+		);
+	},
+});
 </script>
 
 <template>
@@ -141,17 +157,12 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center"
 				>
 					<DSPrimaryButton
-						class="w-full sm:w-auto"
-						@click="selectOperatorContent('text')"
+						v-for="comparatorName of comparatorNameEnum.toTuple()"
+						:key="comparatorName"
+						class="w-full"
+						@click="selectOperatorContent(comparatorName)"
 					>
-						{{ $t("search.scratch.comparator.text.label") }}
-					</DSPrimaryButton>
-
-					<DSPrimaryButton
-						class="w-full sm:w-auto"
-						@click="selectOperatorContent('year')"
-					>
-						{{ $t("search.scratch.comparator.year.label") }}
+						{{ $t(`search.scratch.comparator.${comparatorName}.label`) }}
 					</DSPrimaryButton>
 				</DSTabsContent>
 			</DSTabs>
