@@ -31,21 +31,31 @@ watch(
 			v-if="postListPageInforamtion"
 			class="flex flex-col gap-6"
 		>
-			<div class="mb-6 flex gap-4 items-center">
-				<DSButtonIcon @click="router.back()">
+			<div class="mb-6 flex gap-4 items-start">
+				<DSOutlineButton
+					square
+					class="shrink-0"
+					@click="router.back()"
+				>
 					<DSIcon name="arrowLeft" />
-				</DSButtonIcon>
+				</DSOutlineButton>
 
 				<h1 class="text-3xl font-semibold text-blue-seaence">
 					{{ $pt("titleLinkPost", { title: postListPageInforamtion.document.title }) }}
 				</h1>
 			</div>
 
-			<DSButtonPrimary>
-				<RouterLink :to="postCreatePage.createTo({params: { documentId: params.documentId }})">
+			<RouterLink
+				:to="postCreatePage.createTo({ params: { documentId: params.documentId } })"
+			>
+				<DSPrimaryButton
+					size="full"
+					icon="plus"
+					class="w-full"
+				>
 					{{ $pt("createPost") }}
-				</RouterLink>
-			</DSButtonPrimary>
+				</DSPrimaryButton>
+			</RouterLink>
 
 			<div v-if="postList && postList.length > 0">
 				<div class="space-y-6">

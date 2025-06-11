@@ -51,9 +51,9 @@ function onSubmit() {
 		@update:open="onUpdateOpen"
 	>
 		<template #trigger>
-			<DSButtonPrimary @click="getNewBakedDocumentTranslation(props)">
+			<DSPrimaryButton @click="getNewBakedDocumentTranslation(props)">
 				{{ $pt("dialog.ctaTrigger") }}
-			</DSButtonPrimary>
+			</DSPrimaryButton>
 		</template>
 
 		<template #content>
@@ -65,9 +65,9 @@ function onSubmit() {
 					:baked-document="newBakedDocumentTranslation"
 				/>
 
-				<DSButtonPrimary @click="onSubmit">
+				<DSPrimaryButton @click="onSubmit">
 					{{ $pt("dialog.ctaSubmit") }}
-				</DSButtonPrimary>
+				</DSPrimaryButton>
 			</div>
 
 			<div

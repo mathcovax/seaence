@@ -66,9 +66,9 @@ watch(
 
 		<template #content>
 			<ReportingWrongTranslateForm @submit="submit">
-				<DSButtonPrimary type="submit">
+				<DSPrimaryButton type="submit">
 					{{ $t("cta.send") }}
-				</DSButtonPrimary>
+				</DSPrimaryButton>
 			</ReportingWrongTranslateForm>
 		</template>
 

@@ -7,57 +7,111 @@ import { reportingBakedDocumentTranslationListPage } from "./router";
 const { $pt } = reportingBakedDocumentTranslationListPage.use();
 const { pageContent } = usePage();
 const { list, pageOfList } = useList();
-
 </script>
 
 <template>
-	<div
-		v-if="pageContent && list"
-		class="flex flex-col gap-2 p-2"
-	>
-		<DSPagination
-			v-model:current-page="pageOfList"
-			:quantity-per-page="pageContent.quantityPerPage"
-			:total="pageContent.countTotal"
-		/>
+	<section class="min-h-screen-nh">
+		<div v-if="pageContent && list">
+			<header class="mb-8">
+				<h1 class="mb-2 text-3xl font-bold">
+					{{ $pt("title") }}
+				</h1>
 
-		<p>{{ $pt("reportingDocument", [pageContent.countTotal]) }}</p>
+				<p class="text-muted-foreground">
+					{{ $pt("reportingDocument", [pageContent.countTotal]) }}
+				</p>
+			</header>
 
-		<div class="flex flex-col gap-3">
-			<RouterLink
-				v-for="row of list"
-				:key="row.bakedDocumentId"
-				:to="
-					reportingBakedDocumentTranslationPage
-						.createTo({
-							params: {bakedDocumentId: row.bakedDocumentId},
-							query: {}
-						})
-				"
+			<div class="mb-6 flex justify-center">
+				<DSPagination
+					v-model:current-page="pageOfList"
+					:quantity-per-page="pageContent.quantityPerPage"
+					:total="pageContent.countTotal"
+				/>
+			</div>
+
+			<div class="mb-8 flex flex-col gap-4">
+				<RouterLink
+					v-for="row of list"
+					:key="row.bakedDocumentId"
+					:to="
+						reportingBakedDocumentTranslationPage
+							.createTo({
+								params: { bakedDocumentId: row.bakedDocumentId },
+								query: {}
+							})
+					"
+					class="group"
+				>
+					<DSCard class="h-full hover:shadow-md transition-shadow">
+						<div class="space-y-3">
+							<h3 class="text-primary font-semibold line-clamp-2 group-hover:underline transition-colors">
+								{{ row.bakedDocumentTitle }}
+							</h3>
+
+							<div class="space-y-2 text-sm text-muted-foreground">
+								<div class="flex gap-2 items-center">
+									<DSIcon
+										name="identifier"
+										size="small"
+									/>
+
+									<span class="font-mono text-xs truncate">
+										{{ row.bakedDocumentId }}
+									</span>
+								</div>
+
+								<div class="flex gap-2 items-center text-pink-seaence">
+									<DSIcon
+										name="alert"
+										size="small"
+									/>
+
+									<span>
+										{{ $pt("reporting") }} {{ row.reportingQuantity }}
+									</span>
+								</div>
+							</div>
+						</div>
+					</DSCard>
+				</RouterLink>
+			</div>
+
+			<div
+				v-if="list.length === 0"
+				class="px-4 py-16 text-center"
 			>
-				<DSCard class="flex flex-col gap-2 p-2">
-					<p>
-						<strong>{{ $pt("bakedDocumentId") }}</strong>
-						{{ row.bakedDocumentId }}
-					</p>
+				<div class="mb-4">
+					<DSIcon
+						name="document"
+						class="mx-auto text-muted-foreground"
+						size="large"
+					/>
+				</div>
 
-					<p>
-						<strong>{{ $pt("title") }}</strong>
-						{{ row.bakedDocumentTitle }}
-					</p>
+				<h2 class="mb-2 text-xl font-semibold">
+					{{ $pt("emptyTitle") }}
+				</h2>
 
-					<p>
-						<strong>{{ $pt("reporting") }}</strong>
-						{{ row.reportingQuantity }}
-					</p>
-				</DSCard>
-			</RouterLink>
+				<p class="text-muted-foreground">
+					{{ $pt("emptyDescription") }}
+				</p>
+			</div>
+
+			<div class="flex justify-center">
+				<DSPagination
+					v-model:current-page="pageOfList"
+					:quantity-per-page="pageContent.quantityPerPage"
+					:total="pageContent.countTotal"
+				/>
+			</div>
 		</div>
 
-		<DSPagination
-			v-model:current-page="pageOfList"
-			:quantity-per-page="pageContent.quantityPerPage"
-			:total="pageContent.countTotal"
-		/>
-	</div>
+		<div
+			v-else
+			class="py-16 flex justify-center items-center"
+		>
+			<DSLoadingLogo />
+		</div>
+	</section>
 </template>

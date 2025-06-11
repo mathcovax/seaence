@@ -31,10 +31,10 @@ function onDropComparatorElement() {
 <template>
 	<OperatorContentDialog ref="refOperatorContentDialog" />
 
-	<DSButtonIcon
-		class="w-full p-1 flex justify-center bg-gray-100 rounded-sm hover:bg-gray-200 hover:cursor-pointer"
+	<DSOutlineButton
+		size="full"
 		:class="{
-			'bg-gray-300': isDragHover
+			'bg-accent-foreground/20': isDragHover
 		}"
 		@click="addOperatorContent"
 		@dragover.prevent="isDragHover = true"
@@ -42,8 +42,6 @@ function onDropComparatorElement() {
 		@dragenter.prevent
 		@drop="onDropComparatorElement"
 	>
-		<DSIcon
-			name="plus"
-		/>
-	</DSButtonIcon>
+		<DSIcon name="plus" />
+	</DSOutlineButton>
 </template>

@@ -3,7 +3,7 @@ import { cn } from "../../../lib/utils";
 import { ChevronsRight } from "lucide-vue-next";
 import { PaginationLast, type PaginationLastProps } from "reka-ui";
 import { computed, type HTMLAttributes } from "vue";
-import DSButton from "../button/DSButton.vue";
+import DSOutlineButton from "../button/DSOutlineButton.vue";
 
 const props = withDefaults(defineProps<PaginationLastProps & { class?: HTMLAttributes["class"] }>(), {
 	asChild: true,
@@ -18,13 +18,13 @@ const delegatedProps = computed(() => {
 
 <template>
 	<PaginationLast v-bind="delegatedProps">
-		<DSButton
-			:class="cn('w-10 h-10 p-0', props.class)"
-			variant="outline"
+		<DSOutlineButton
+			square
+			:class="cn('', props.class)"
 		>
 			<slot>
 				<ChevronsRight class="h-4 w-4" />
 			</slot>
-		</DSButton>
+		</DSOutlineButton>
 	</PaginationLast>
 </template>

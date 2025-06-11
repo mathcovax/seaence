@@ -94,6 +94,7 @@ export const FRfr = {
 			authorIs: "Posté par {author}",
 			noResponse: "Aucune réponse(s) pour ce post.",
 			writeAnAnswer: "Écrivez un commentaire",
+			writeAnAnswerDescription: "Partagez votre avis ou répondez à la question posée.",
 			writeYourAnswer: "Un super commentaire...",
 		},
 		[profilePage.name]: {
@@ -122,7 +123,8 @@ export const FRfr = {
 			subtitle: "Désolé, la page que vous recherchez n'existe pas.",
 		},
 		[postCreatePage.name]: {
-			title: "Posez une question",
+			title: "Créer un post",
+			description: "Posez une question ou partagez votre avis sur un document.",
 			connexionRequire: "Il est obligatoire d'être connecté avant de créer un post.",
 			form: {
 				topic: {
@@ -311,7 +313,7 @@ export const FRfr = {
 		send: "Envoyer",
 		seeMore: "Voir plus",
 		save: "Enregistrer",
-		register: "Créée un compte",
+		register: "Créer un compte",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",

@@ -10,7 +10,7 @@ defineProps<Props>();
 <template>
 	<small
 		v-if="message"
-		class="text-red-500 text-xs mt-1"
+		class="text-destructive text-xs mt-1"
 	>
 		{{ message }}
 	</small>

@@ -32,7 +32,7 @@
 | Backend de contenue | Abys | Contient les documents originaux | MongoDB, Duplo | @mathcovax, @ZeRiix |
 | Service de scrapping | MarineSnow | Scrapping de donnée | Duplo, WokerThread, SQLLite | @mathcovax, @ZeRiix |
 | Gateway BackOffice | Bridge | API Gateway pour le BackOffice | Duplo | @Vitaalx |
-| Frontend admin (BO) | Lighthouse | Backoffice | Vue, Vite | @Vitaalx |
+| Frontend admin (BO) | Lighthouse | Backoffice | Vue, Vite | @Vitaalx, @Maubry94 |
 | Service de forum | School | Service de gestion de forum | Duplo, MongoDB | @Vitaalx |
 | Service de notification | Bottle | | Duplo, MongoDB | @ZeRiix |
 | Service de traduction | Rosetta | | Duplo, MongoDB | @ZeRiix |

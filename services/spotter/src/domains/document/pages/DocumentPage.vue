@@ -248,14 +248,14 @@ function formatedDate(date: FlexibleDate) {
 				<template v-else>
 					<i>{{ $pt("noPost") }}</i>
 
-					<DSButtonPrimary
+					<DSPrimaryButton
 						class="self-start"
 						as-child
 					>
 						<RouterLink :to="postCreatePage.createTo({params: {documentId: document.id}})">
 							{{ $pt("createPost") }}
 						</RouterLink>
-					</DSButtonPrimary>
+					</DSPrimaryButton>
 				</template>
 			</div>
 		</article>

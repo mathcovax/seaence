@@ -6,7 +6,7 @@ import DSDialogDescription from "./DSDialogDescription.vue";
 import DSDialogHeader from "./DSDialogHeader.vue";
 import DSDialogTrigger from "./DSDialogTrigger.vue";
 
-interface Props extends DialogRootProps {
+export interface Props extends DialogRootProps {
 	size?: "small" | "normal" | "full";
 }
 

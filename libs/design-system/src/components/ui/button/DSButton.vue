@@ -1,29 +1,43 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed } from "vue";
 import { cn } from "../../../lib/utils";
-import { Primitive, type PrimitiveProps } from "reka-ui";
-import { type ButtonVariants, buttonVariants } from ".";
+import { Primitive } from "reka-ui";
+import { buttonIconSizeMapper, buttonVariants, type DSButtonProps } from ".";
+import DSIcon from "../icon/DSIcon.vue";
 
-interface Props extends PrimitiveProps {
-	variant?: ButtonVariants["variant"];
-	size?: ButtonVariants["size"];
-	class?: HTMLAttributes["class"];
-	type?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DSButtonProps>(), {
 	as: "button",
 	type: "button",
 });
+
+const className = computed(
+	() => cn(
+		buttonVariants({
+			variant: props.variant,
+			size: props.size,
+		}),
+		props.class,
+	),
+);
 </script>
 
 <template>
 	<Primitive
 		:as="as"
 		:as-child="asChild"
-		:class="cn(buttonVariants({ variant, size }), props.class)"
+		:class="{
+			[className]: true,
+			'aspect-square overflow-hidden': square,
+			'!rounded-full': rounded,
+		}"
 		:type
 	>
+		<DSIcon
+			v-if="icon"
+			:name="icon"
+			:size="size ? buttonIconSizeMapper[size] : buttonIconSizeMapper.default"
+		/>
+
 		<slot />
 	</Primitive>
 </template>

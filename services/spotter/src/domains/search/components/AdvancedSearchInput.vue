@@ -41,11 +41,9 @@ function onSubmit() {
 		@submit.prevent="onSubmit"
 	>
 		<div class="flex gap-4">
-			<DSButtonPrimary
-				type="submit"
-			>
+			<DSPrimaryButton type="submit">
 				{{ $t("cta.search") }}
-			</DSButtonPrimary>
+			</DSPrimaryButton>
 
 			<DSSelect
 				v-model="modelLanguage"

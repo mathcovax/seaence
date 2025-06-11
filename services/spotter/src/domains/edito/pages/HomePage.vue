@@ -19,11 +19,11 @@ const { $pt } = homePage.use();
 				{{ $pt("hero.subtitle") }}
 			</p>
 
-			<DSButtonPrimary as-child>
-				<RouterLink :to="simpleSearchPage">
+			<RouterLink :to="simpleSearchPage">
+				<DSPrimaryButton icon="magnify">
 					{{ $t("cta.explore") }}
-				</RouterLink>
-			</DSButtonPrimary>
+				</DSPrimaryButton>
+			</RouterLink>
 		</div>
 
 		<DSImage

@@ -90,14 +90,13 @@ function comparatorTakefullWidth(index: number) {
 				v-model="model.name"
 			/>
 
-			<DSButtonIcon
-				variant="ghost"
-				size="xs"
+			<DSGhostButton
+				square
+				class="text-white"
 				@click="emit('remove')"
-				class="text-white hover:bg-background hover:bg-opacity-20"
 			>
 				<DSIcon name="close" />
-			</DSButtonIcon>
+			</DSGhostButton>
 		</div>
 
 		<div class="@container p-2 space-y-2">

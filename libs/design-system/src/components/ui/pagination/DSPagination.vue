@@ -62,8 +62,8 @@ const limitedTotal = computed(
 					as-child
 				>
 					<DSButton
-						class="w-10 h-10 p-0 cursor-pointer"
-						:variant="item.value === page ? 'seaence' : 'outline'"
+						square
+						:variant="item.value === page ? 'primary' : 'outline'"
 					>
 						{{ item.value }}
 					</DSButton>

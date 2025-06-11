@@ -1,3 +1,5 @@
+import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
+import { postPage } from "@/domains/post/postModeration/router";
 import { reportingBakedDocumentTranslationPage } from "@/domains/reporting/reportingBakedDocumentTranslation/router";
 import {
 	reportingBakedDocumentTranslationListPage,
@@ -5,11 +7,69 @@ import {
 
 export const FRfr = {
 	page: {
+		[dashboardPage.name]: {
+			title: "Tableau de bord",
+			description: "Bienvenue sur votre tableau de bord.",
+			status: {
+				title: "État des services",
+				up: "En ligne",
+				down: "Hors ligne",
+			},
+			modules: {
+				title: "Modules d'administration",
+				post: {
+					title: "Modération des Posts",
+					description: "Examinez et modérez les posts en attente de validation.",
+				},
+				reportingBakedDocumentTranslation: {
+					title: "Signalements de Traduction",
+					description: "Gérez les signalements de documents traduits et leurs corrections.",
+				},
+			},
+		},
+		[postPage.name]: {
+			title: "Modération des Posts",
+			description: "Examinez et modérez les posts en attente de validation.",
+			emptyTitle: "Aucun post en attente",
+			emptyDescription: "Il n'y a actuellement aucun post en attente de modération.",
+			postStatus: "En attente",
+			isProssessing: "Traitement en cours...",
+			rejectModal: {
+				title: "Motif de rejet",
+				reason: {
+					title: "Raison du rejet",
+					placeholder: "Sélectionnez une raison",
+					choices: {
+						spam: "Contenu spam ou publicitaire",
+						inappropriate: "Contenu inapproprié",
+						offTopic: "Hors sujet",
+						duplicate: "Contenu dupliqué",
+						lowQuality: "Qualité insuffisante",
+						other: "Autre raison",
+					},
+				},
+				action: {
+					title: "Action à effectuer",
+					type: {
+						warning: "Avertissement simple",
+						block: "Bloquer l'accès aux posts",
+					},
+				},
+
+				confirm: "Confirmer le rejet",
+			},
+			postStats: {
+				pending: "Posts en attente",
+				approved: "Posts approuvés",
+				rejected: "Posts rejetés",
+			},
+		},
 		[reportingBakedDocumentTranslationListPage.name]: {
-			bakedDocumentId: "Id du document cuit:",
-			title: "Titre du document cuit:",
-			reporting: "Quantités de signalment:",
-			reportingDocument: "Quantités de document signalé: {0}",
+			title: "Liste des documents cuits",
+			reportingDocument: "Nombre de document(s) signalé(s) : {0}",
+			emptyTitle: "Aucun document signalé",
+			emptyDescription: "Il n'y a actuellement aucun document avec des signalements de traduction.",
+			reporting: "Nombre de signalment(s) :",
 		},
 		[reportingBakedDocumentTranslationPage.name]: {
 			bakedDocument: {
@@ -35,6 +95,16 @@ export const FRfr = {
 			},
 		},
 	},
+	layout: {
+		loader: {
+			title: "Chargement en cours...",
+		},
+		footer: {
+			nav: {
+				dashboard: "Tableau de bord",
+			},
+		},
+	},
 	formMessage: {
 		required: "Champ obligatoire.",
 		positive: "Doit être un nombre positif.",
@@ -57,6 +127,9 @@ export const FRfr = {
 		explore: "Explorer",
 		search: "Rechercher",
 		send: "Envoyer",
+		cancel: "Annuler",
+		approuve: "Approuver",
+		reject: "Rejeter",
 		seeMore: "Voir plus",
 	},
 	responses: {

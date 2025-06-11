@@ -39,25 +39,22 @@ function submit() {
 </script>
 <template>
 	<section class="min-h-screen-nh flex justify-center items-center">
-		<div class="w-full max-w-2xl mx-auto p-6 bg-background rounded-2xl shadow-md">
-			<h1 class="text-2xl font-bold mb-6 text-gray-800">
-				{{ $pt("title") }}
-			</h1>
-
+		<DSCard
+			:title="$pt('title')"
+			:description="$pt('description')"
+			class="w-full max-w-2xl"
+		>
 			<form
 				@submit.prevent="submit"
 				class="space-y-6"
 			>
 				<div>
-					<label
-						for="topic"
-						class="block font-medium text-gray-700 mb-1"
-					>
+					<DSLabel>
 						{{ $pt("form.topic.label.value") }}
-						<span class="text-gray-500 text-sm">
+						<span class="text-muted-foreground">
 							{{ $pt("form.topic.label.infos") }}
 						</span>
-					</label>
+					</DSLabel>
 
 					<DSInput
 						v-model="formInputs.topic"
@@ -67,21 +64,17 @@ function submit() {
 
 					<DSHintError :message="formErrors.topic" />
 
-					<p class="text-xs text-gray-500 mt-1">
+					<small class="text-muted-foreground mt-1">
 						{{ $pt("form.topic.writingHelp") }}
-					</p>
+					</small>
 				</div>
 
 				<div>
-					<label
-						for="content"
-						class="block font-medium text-gray-700 mb-1"
-					>
+					<DSLabel>
 						{{ $pt("form.content.label") }}
-					</label>
+					</DSLabel>
 
 					<DSTextarea
-						class="maw-w-full"
 						v-model="formInputs.content"
 						:maxlength="postRules.content.maxLength"
 						:minlength="postRules.content.minLength"
@@ -90,7 +83,7 @@ function submit() {
 
 					<DSHintError :message="formErrors.content" />
 
-					<ul class="text-xs text-gray-500 mt-2 list-disc list-inside space-y-1">
+					<ul class="text-xs text-muted-foreground mt-1 list-disc list-inside space-y-0.5">
 						<li>
 							{{ $pt("form.content.writingHelps.one") }}
 						</li>
@@ -105,13 +98,13 @@ function submit() {
 					</ul>
 				</div>
 
-				<DSButtonPrimary
+				<DSPrimaryButton
+					size="full"
 					type="submit"
-					class="w-full"
 				>
 					{{ $pt("form.submitBtn") }}
-				</DSButtonPrimary>
+				</DSPrimaryButton>
 			</form>
-		</div>
+		</DSCard>
 	</section>
 </template>

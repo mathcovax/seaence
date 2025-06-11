@@ -15,51 +15,46 @@ defineProps<Props>();
 
 <template>
 	<DSCard
-		class="bg-background p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition"
+		:title="post.topic"
+		class="hover:shadow-md transition"
+		:link="postPage.createTo({
+			params: { postId: post.id },
+			query: { language }
+		})"
 	>
-		<div class="mb-4 flex flex-col gap-2">
-			<RouterLink
-				:to="postPage.createTo({
-					params: {postId: post.id},
-					query: {language}
-				})"
-				class="text-2xl font-semibold text-blue-seaence hover:underline"
-			>
-				{{ post.topic }}
-			</RouterLink>
+		<p class="text-ellipsis overflow-hidden">
+			{{ post.content }}
+		</p>
 
-			<p class="text-gray-700 w-full text-ellipsis overflow-hidden">
-				{{ post.content }}
-			</p>
-		</div>
+		<template #footer>
+			<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
+				<div class="flex items-center gap-2">
+					<DSIcon
+						name="account"
+						size="small"
+					/>
 
-		<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
-			<div class="flex items-center gap-2">
-				<DSIcon
-					name="account"
-					size="small"
-				/>
+					<span>{{ $pt("authorIs", { author: post.author.username }) }}</span>
+				</div>
 
-				<span>{{ $pt("authorIs", { author: post.author.username }) }}</span>
+				<div class="flex items-center gap-2">
+					<DSIcon
+						name="calendar"
+						size="small"
+					/>
+
+					<span>{{ getRelativeTime(post.createdAt) }}</span>
+				</div>
+
+				<div class="flex items-center gap-2">
+					<DSIcon
+						name="forum"
+						size="small"
+					/>
+
+					<span>{{ $pt("responseCount", {count: post.answerCount}) }}</span>
+				</div>
 			</div>
-
-			<div class="flex items-center gap-2">
-				<DSIcon
-					name="calendar"
-					size="small"
-				/>
-
-				<span>{{ getRelativeTime(post.createdAt) }}</span>
-			</div>
-
-			<div class="flex items-center gap-2">
-				<DSIcon
-					name="forum"
-					size="small"
-				/>
-
-				<span>{{ $pt("responseCount", {count: post.answerCount}) }}</span>
-			</div>
-		</div>
+		</template>
 	</DSCard>
 </template>

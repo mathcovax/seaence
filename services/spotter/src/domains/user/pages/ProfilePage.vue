@@ -73,12 +73,13 @@ const hasChange = computed(
 
 				<div class="grid gap-4">
 					<EditProfileForm @submit="editUser">
-						<DSButtonPrimary
+						<DSPrimaryButton
 							type="submit"
 							:disabled="!hasChange"
+							class="mt-6"
 						>
 							{{ $t("cta.save") }}
-						</DSButtonPrimary>
+						</DSPrimaryButton>
 					</EditProfileForm>
 				</div>
 			</div>
