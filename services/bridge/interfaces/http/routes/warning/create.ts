@@ -1,6 +1,6 @@
+import { iWantPostExistById } from "@interfaces/http/checkers/post";
+import { entrypointCreatePostWarning } from "@interfaces/http/schemas/warning";
 import { HarborAPI } from "@interfaces/providers/harbor";
-import { entrypointCreatePostWarning } from "../schemas/warning";
-import { iWantPostExistById } from "../checkers/post";
 import { match } from "ts-pattern";
 
 useBuilder()

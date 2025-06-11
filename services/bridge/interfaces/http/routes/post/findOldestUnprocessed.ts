@@ -1,5 +1,5 @@
+import { endpointPostSchema } from "@interfaces/http/schemas/post";
 import { SchoolAPI } from "@interfaces/providers/school";
-import { endpointPostSchema } from "../schemas/post";
 
 useBuilder()
 	.createRoute("GET", "find-oldest-unprocessed-post")
