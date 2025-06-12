@@ -24,6 +24,7 @@ régle:
 - le text comparateur permet de faire une recherche full text fléxible. 
 - l'ordre des terme ne compte pas
 - pas senssible a la case et au acens
+- soumi aussi au régle de troncature de la [recherche simple](../simple.md)
 
 #### year
 champ concerné :
