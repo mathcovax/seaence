@@ -1,5 +1,5 @@
 import { type ZodType } from "zod";
-import { type BaseComparator } from ".";
+import { createBaseComparator, type BaseComparator } from "./base";
 import { comparatorYearFieldSchema, comparatorYearValueSchema, type YearFieldEnumValue } from "./year";
 import { zod } from "@vendors/clean";
 
@@ -11,14 +11,13 @@ export interface ComparatorYearInterval extends BaseComparator<"yearInterval"> {
 	};
 }
 
-export const comparatorYearIntervalSchema: ZodType<ComparatorYearInterval> = zod.object({
-	type: zod.literal("comparator"),
-	name: zod.literal("yearInterval"),
-	field: comparatorYearFieldSchema,
-	value: zod
-		.object({
-			from: comparatorYearValueSchema,
-			to: comparatorYearValueSchema,
-		})
-		.refine(({ from, to }) => to >= from),
-});
+export const comparatorYearIntervalSchema: ZodType<ComparatorYearInterval>
+	= createBaseComparator("yearInterval")
+		.extend({
+			field: comparatorYearFieldSchema,
+			value: zod
+				.object({
+					from: comparatorYearValueSchema,
+					to: comparatorYearValueSchema,
+				}),
+		});

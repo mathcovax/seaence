@@ -1,5 +1,5 @@
 import { createEnum, type GetEnumValue, zod } from "@vendors/clean";
-import { type BaseComparator } from ".";
+import { createBaseComparator, type BaseComparator } from "./base";
 import { type ZodType } from "zod";
 
 export const yearFieldEnum = createEnum([
@@ -28,9 +28,9 @@ export const comparatorYearValueSchema = zod
 	.max(comparatorYearConfig.max)
 	.min(comparatorYearConfig.min);
 
-export const comparatorYearSchema: ZodType<ComparatorYear> = zod.object({
-	type: zod.literal("comparator"),
-	name: zod.literal("year"),
-	field: zod.enum(yearFieldEnum.toTuple()),
-	value: comparatorYearValueSchema,
-});
+export const comparatorYearSchema: ZodType<ComparatorYear>
+= createBaseComparator("year")
+	.extend({
+		field: zod.enum(yearFieldEnum.toTuple()),
+		value: comparatorYearValueSchema,
+	});

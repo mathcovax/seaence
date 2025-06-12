@@ -7,14 +7,8 @@ import { type ExpectType } from "@duplojs/utils";
 import { type ComparatorYearInterval, comparatorYearIntervalSchema } from "./yearInterval";
 import { type ComparatorArticleType, comparatorArticleTypeSchema } from "./articleType";
 import { type ComparatorProvider, comparatorProviderSchema } from "./provider";
-import { type ComparatorNameEnumValue } from "./nameEnum";
 
-export interface BaseComparator<
-	GenericName extends string,
-> {
-	type: "comparator";
-	name: GenericName;
-}
+export * from "./base";
 
 export type Comparator =
 	| ComparatorText
@@ -24,12 +18,6 @@ export type Comparator =
 	| ComparatorProvider
 	| ComparatorArticleType
 	| ComparatorYearInterval;
-
-type _CheckComparatorName = ExpectType<
-	ComparatorNameEnumValue,
-	Comparator["name"],
-	"strict"
->;
 
 export const comparatorSchema = zod.union([
 	comparatorTextSchema,

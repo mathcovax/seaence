@@ -1,5 +1,5 @@
 import { createEnum, zod, type GetEnumValue } from "@vendors/clean";
-import { type BaseComparator } from ".";
+import { createBaseComparator, type BaseComparator } from "./base";
 import { type ZodType } from "zod";
 
 export const providerEnum = createEnum(["pubmed"]);
@@ -14,11 +14,11 @@ export const comparatorProviderConfig = {
 	minContent: 1,
 };
 
-export const comparatorProviderSchema: ZodType<ComparatorProvider> = zod.object({
-	type: zod.literal("comparator"),
-	name: zod.literal("provider"),
-	value: zod
-		.enum(providerEnum.toTuple())
-		.array()
-		.min(comparatorProviderConfig.minContent),
-});
+export const comparatorProviderSchema: ZodType<ComparatorProvider>
+	= createBaseComparator("provider")
+		.extend({
+			value: zod
+				.enum(providerEnum.toTuple())
+				.array()
+				.min(comparatorProviderConfig.minContent),
+		});

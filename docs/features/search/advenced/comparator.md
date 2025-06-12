@@ -1,17 +1,18 @@
-## Feat : Faire une recherche avencée
+## Feat : utilisais un comparateur
 
-### Global user Story
-- Je suis sur la page de recherche avancée
-- je vois:
-	* un bouton pour valider ma recherche
-	* un select pour choisir la ma langue de recherche
-	* le moteur d'équation avec comme valeur pars défaut un opérateur `ET` avec un comparateur textuel
-- J'écrie dans "meta" dans le comparateur textuel
-- Je selection l'anglais
-- je valide ma recherche
-- je vois les resulta avec mie en avant le term de ma recherche
+### global User story
+- je suis sur le page de recherche avancé
+- je vois un bouton pour ajouter un comparateur
+- je clique dessus
+- un dialog s'ouvre avec un onglet `comparator`
+- je vois une liste avec tout les comparateur disponible
+- je click sur celui que je veux
+- le dialog ce ferme
+- je vois mon comparateur dans l'équation
 
-### Comparateur
+### Details
+Les comparateur doivent tous avoir un moyen de gér le niveau de boost de leur comparaison recherche.
+
 #### text
 champ concerné :
 - titre
@@ -77,13 +78,3 @@ champ concerné :
 régle:
 - compare entre 2 annés en inclusion
 - le champ `tout les champ date` compare en priorité le champ `date de publication journal` et si il n'éxiste pas, il compare le champ `date de publication web`;
-
-### Opérateur
-#### AND
-Permet de composé une recherche avec plusieur comparateur et opérateur. les resulta seront coforme a toute les comparaison contribuer.
-
-#### OR
-Permet de composé une recherche avec plusieur comparateur et opérateur. les resulta seront coforme a une ou plusieur comparaison contribuer.
-
-#### NOT
-Inverse un comparateur ou opérateur. lees resulta seront pas coforme comparaison contribuer.

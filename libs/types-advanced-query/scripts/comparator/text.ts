@@ -1,5 +1,5 @@
 import { createEnum, zod, type GetEnumValue } from "@vendors/clean";
-import { type BaseComparator } from ".";
+import { createBaseComparator, type BaseComparator } from "./base";
 import { type ZodType } from "zod";
 
 export const textFieldEnum = createEnum([
@@ -29,9 +29,9 @@ export const comparatorTextValueSchema = zod
 	.min(comparatorTextConfig.minLength)
 	.max(comparatorTextConfig.maxLength);
 
-export const comparatorTextSchema: ZodType<ComparatorText> = zod.object({
-	type: zod.literal("comparator"),
-	name: zod.literal("text"),
-	field: comparatorTextFieldSchema,
-	value: comparatorTextValueSchema,
-});
+export const comparatorTextSchema: ZodType<ComparatorText>
+	= createBaseComparator("text")
+		.extend({
+			field: comparatorTextFieldSchema,
+			value: comparatorTextValueSchema,
+		});

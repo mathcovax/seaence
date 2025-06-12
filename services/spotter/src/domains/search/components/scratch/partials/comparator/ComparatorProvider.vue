@@ -7,6 +7,7 @@ import {
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
+import BoostButton from "../BoostButton.vue";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorProvider>({ required: true });
@@ -38,16 +39,17 @@ const { hintMessage } = useHintMessage(
 		@deplace="emit('remove')"
 	>
 		<div class="mb-2 flex justify-between items-center">
-			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.provider.label') }}</span>
+			<div class="flex gap-2 items-center">
+				<BoostButton v-model="model.boost" />
 
-			<DSButtonIcon
-				variant="ghost"
-				size="sm"
+				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.provider.label') }}</span>
+			</div>
+
+			<DSGhostButton
+				square
 				@click="emit('remove')"
-				class="text-slate-500 hover:text-slate-700 hover:bg-slate-100"
-			>
-				<DSIcon name="close" />
-			</DSButtonIcon>
+				icon="close"
+			/>
 		</div>
 
 		<div class="grid grid-cols-1">

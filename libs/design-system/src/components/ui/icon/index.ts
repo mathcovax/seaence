@@ -29,6 +29,7 @@ import {
 	mdiIdentifier,
 	mdiAlert,
 	mdiAlertCircle,
+	mdiWeight,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -62,6 +63,7 @@ export const iconsMapper = {
 	identifier: mdiIdentifier,
 	alert: mdiAlert,
 	reporting: mdiAlertCircle,
+	weight: mdiWeight,
 };
 
 export const iconSizeMapper = {

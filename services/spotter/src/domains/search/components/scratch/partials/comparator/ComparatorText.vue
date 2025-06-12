@@ -3,6 +3,7 @@ import { comparatorTextConfig, type ComparatorText, textFieldEnum } from "@vendo
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
+import BoostButton from "../BoostButton.vue";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorText>({ required: true });
@@ -40,14 +41,17 @@ const { hintMessage } = useHintMessage(
 		@deplace="emit('remove')"
 	>
 		<div class="mb-2 flex justify-between items-center">
-			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.text.label') }}</span>
+			<div class="flex gap-2 items-center">
+				<BoostButton v-model="model.boost" />
+
+				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.text.label') }}</span>
+			</div>
 
 			<DSGhostButton
 				square
 				@click="emit('remove')"
-			>
-				<DSIcon name="close" />
-			</DSGhostButton>
+				icon="close"
+			/>
 		</div>
 
 		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">

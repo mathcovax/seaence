@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { match } from "ts-pattern";
-import type {
-	ComparatorArticleType,
-	ComparatorAuthor,
-	ComparatorProvider,
-	ComparatorStrictText,
-	ComparatorText,
-	ComparatorYear,
-	ComparatorYearInterval,
-	OperatorAnd,
-	OperatorContent,
-	OperatorNot,
-	OperatorOr,
+import {
+	comparatorNameEnum,
+	type ComparatorArticleType,
+	type ComparatorAuthor,
+	type ComparatorProvider,
+	type ComparatorStrictText,
+	type ComparatorText,
+	type ComparatorYear,
+	type ComparatorYearInterval,
+	type OperatorAnd,
+	type OperatorContent,
+	type OperatorNot,
+	type OperatorOr,
 } from "@vendors/types-advanced-query";
-import { comparatorNameEnum } from "@vendors/types-advanced-query/comparator/nameEnum";
 
 type Resolve = (value: OperatorContent | null) => void;
 
@@ -49,33 +49,39 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 				name: "text",
 				field: "allField",
 				value: "",
+				boost: "1",
 			}))
 			.with("year", (): ComparatorYear => ({
 				type: "comparator",
 				name: "year",
 				field: "allDate",
 				value: new Date().getFullYear(),
+				boost: "1",
 			}))
 			.with("strictText", (): ComparatorStrictText => ({
 				type: "comparator",
 				name: "strictText",
 				field: "allField",
 				value: "",
+				boost: "1",
 			}))
 			.with("author", (): ComparatorAuthor => ({
 				type: "comparator",
 				name: "author",
 				value: "",
+				boost: "1",
 			}))
 			.with("articleType", (): ComparatorArticleType => ({
 				type: "comparator",
 				name: "articleType",
 				value: [],
+				boost: "1",
 			}))
 			.with("provider", (): ComparatorProvider => ({
 				type: "comparator",
 				name: "provider",
 				value: [],
+				boost: "1",
 			}))
 			.with("yearInterval", (): ComparatorYearInterval => ({
 				type: "comparator",
@@ -85,6 +91,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 					from: new Date().getFullYear(),
 					to: new Date().getFullYear(),
 				},
+				boost: "1",
 			}))
 			.exhaustive(),
 	);

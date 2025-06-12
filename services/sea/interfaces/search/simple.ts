@@ -10,6 +10,8 @@ interface BuildSimpleSearchQueryParams {
 const minimumShouldMatch = 1;
 
 const strictWordRegex = /"([^"]+)"/g;
+const truncationWordRegex = /[a-z]+\*/gi;
+const minTruncationLength = 3;
 
 export function buildSimpleSearchQuery(
 	{
@@ -17,14 +19,64 @@ export function buildSimpleSearchQuery(
 		buildedFilters,
 	}: BuildSimpleSearchQueryParams,
 ) {
-	const strictWord = Array.from(
+	const strictWords = Array.from(
 		term.matchAll(strictWordRegex),
 	);
 
-	const refinedTerm = strictWord.reduce(
+	const truncationWords = Array.from(
+		term.matchAll(truncationWordRegex),
+	);
+
+	const refinedTerm = [...strictWords, ...truncationWords].reduce(
 		(acc, [match]) => acc.replace(match, ""),
 		term,
 	);
+
+	const should: estypes.QueryDslQueryContainer[] = [];
+
+	if (refinedTerm) {
+		should.push(
+			{
+				multi_match: {
+					query: refinedTerm,
+					type: "phrase",
+					fields: [
+						`${availableFieldEnum["title.stemmed"]}^30`,
+						`${availableFieldEnum["abstract.stemmed"]}^15`,
+					],
+					slop: 2,
+				},
+			},
+			{
+				multi_match: {
+					query: refinedTerm,
+					fields: [
+						`${availableFieldEnum["title.stemmed"]}^10`,
+						availableFieldEnum["abstract.stemmed"],
+						`${availableFieldEnum.keywords}^50`,
+					],
+				},
+			},
+		);
+	}
+
+	if (truncationWords.length) {
+		should.push(
+			...truncationWords.flatMap(
+				([match]) => match.length > minTruncationLength
+					? {
+						query_string: {
+							query: match,
+							fields: [
+								`${availableFieldEnum["title.stemmed"]}^30`,
+								`${availableFieldEnum["abstract.stemmed"]}^15`,
+							],
+						},
+					}
+					: [],
+			),
+		);
+	}
 
 	return {
 		__id: "simpleSearchQuery",
@@ -34,8 +86,8 @@ export function buildSimpleSearchQuery(
 					must: [
 						...(buildedFilters?.must ?? []),
 						...(
-							strictWord.length
-								? strictWord.map(
+							strictWords.length
+								? strictWords.map(
 									([_match, value]) => ({
 										multi_match: {
 											query: value,
@@ -52,36 +104,12 @@ export function buildSimpleSearchQuery(
 								: []
 						),
 					],
-					should: refinedTerm
-						? [
-							{
-								multi_match: {
-									query: refinedTerm,
-									type: "phrase",
-									fields: [
-										`${availableFieldEnum["title.stemmed"]}^30`,
-										`${availableFieldEnum["abstract.stemmed"]}^15`,
-										`${availableFieldEnum.title}^30`,
-										`${availableFieldEnum.abstract}^15`,
-									],
-									slop: 3,
-								},
-							},
-							{
-								multi_match: {
-									query: refinedTerm,
-									fields: [
-										`${availableFieldEnum["title.stemmed"]}^10`,
-										availableFieldEnum["abstract.stemmed"],
-										`${availableFieldEnum.title}^10`,
-										availableFieldEnum.abstract,
-										`${availableFieldEnum.keywords}^50`,
-									],
-								},
-							},
-						]
+					should: should.length
+						? should
 						: undefined,
-					minimum_should_match: refinedTerm ? minimumShouldMatch : undefined,
+					minimum_should_match: should.length
+						? minimumShouldMatch
+						: undefined,
 				},
 			},
 			functions: [

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DSPrimaryButton from "@vendors/design-system/components/ui/button/DSPrimaryButton.vue";
 import RegisterNotificationCard from "../components/RegisterNotificationCard.vue";
 import ReplyToPostNotificationCard from "../components/ReplyToPostNotificationCard.vue";
 import { useNotificationListPage } from "../composables/useNotificationListPage";
@@ -43,9 +44,10 @@ watch(
 			class="flex flex-col gap-6"
 		>
 			<div class="mb-6 flex gap-4 items-center">
-				<DSButtonIcon @click="router.back()">
-					<DSIcon name="arrowLeft" />
-				</DSButtonIcon>
+				<DSPrimaryButton
+					icon="arrowLeft"
+					@click="router.back()"
+				/>
 
 				<h1 class="text-3xl font-semibold text-blue-seaence">
 					{{ $pt("title") }}

@@ -8,15 +8,18 @@
 type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear | {
     type: "comparator";
     name: "strictText";
+    boost: "1" | "2" | "3";
     field: "allField" | "title" | "abstract" | "keywords";
     value: string;
 } | {
     type: "comparator";
     name: "author";
+    boost: "1" | "2" | "3";
     value: string;
 } | {
     type: "comparator";
     name: "yearInterval";
+    boost: "1" | "2" | "3";
     field: "allDate" | "webDate" | "journalDate";
     value: {
         from: number;
@@ -25,10 +28,12 @@ type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText |
 } | {
     type: "comparator";
     name: "articleType";
+    boost: "1" | "2" | "3";
     value: ("metaAnalysis")[];
 } | {
     type: "comparator";
     name: "provider";
+    boost: "1" | "2" | "3";
     value: ("pubmed")[];
 };
 
@@ -61,6 +66,7 @@ export { OperatorNot };
 type ComparatorText = {
     type: "comparator";
     name: "text";
+    boost: "1" | "2" | "3";
     field: "allField" | "title" | "abstract" | "keywords";
     value: string;
 };
@@ -70,6 +76,7 @@ export { ComparatorText };
 type ComparatorYear = {
     type: "comparator";
     name: "year";
+    boost: "1" | "2" | "3";
     field: "allDate" | "webDate" | "journalDate";
     value: number;
 };

@@ -1,5 +1,4 @@
-import { zod } from "@vendors/clean";
-import { type BaseComparator } from ".";
+import { createBaseComparator, type BaseComparator } from "./base";
 import { comparatorTextFieldSchema, comparatorTextValueSchema, type TextFieldEnumValue } from "./text";
 import { type ZodType } from "zod";
 
@@ -8,9 +7,9 @@ export interface ComparatorStrictText extends BaseComparator<"strictText"> {
 	value: string;
 }
 
-export const comparatorStrictTextSchema: ZodType<ComparatorStrictText> = zod.object({
-	type: zod.literal("comparator"),
-	name: zod.literal("strictText"),
-	field: comparatorTextFieldSchema,
-	value: comparatorTextValueSchema,
-});
+export const comparatorStrictTextSchema: ZodType<ComparatorStrictText>
+	= createBaseComparator("strictText")
+		.extend({
+			field: comparatorTextFieldSchema,
+			value: comparatorTextValueSchema,
+		});
