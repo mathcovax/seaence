@@ -11,7 +11,7 @@ import "./documentInFolder/remove";
 import "./documentInFolder/searchPerPage";
 
 // favoriEquation
-import "./favoriteEquation/create";
-import "./favoriteEquation/get";
+import "./favoriteEquation/upsert";
+import "./favoriteEquation/findOne";
 import "./favoriteEquation/remove";
-import "./favoriteEquation/searchPerPage";
+import "./favoriteEquation/findMany";

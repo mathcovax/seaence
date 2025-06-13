@@ -12,12 +12,12 @@ interface InputFindFavoriteEquations {
 export interface FavoriteEquationRepository extends RepositoryBase<FavoriteEquationEntity> {
 	generateFavoriteEquationId(): FavoriteEquationId;
 	delete(favoriteEquation: FavoriteEquationEntity): Promise<void>;
-	findFavoriteEquationById(favoriteEquationId: FavoriteEquationId): Promise<FavoriteEquationEntity | null>;
-	findFavoriteEquation(
+	findOneFavoriteEquationById(favoriteEquationId: FavoriteEquationId): Promise<FavoriteEquationEntity | null>;
+	findOneFavoriteEquation(
 		userId: UserId,
 		favoriteEquationName: FavoriteEquationName
 	): Promise<FavoriteEquationEntity | null>;
-	searchFavoriteEquations(
+	findManyFavoriteEquation(
 		input: InputFindFavoriteEquations,
 	): Promise<FavoriteEquationEntity[]>;
 	countResultOfSearchFavoriteEquation(
