@@ -245,6 +245,16 @@ type ReplyToPostNotification = {
 
 export { ReplyToPostNotification };
 
+type DocumentFolder = {
+    id: string;
+    userId: string;
+    name: string;
+    numberOfDocument: number;
+    createdAt: string;
+};
+
+export { DocumentFolder };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/login";
@@ -572,6 +582,63 @@ type CodegenRoutes = ({
         code: 204;
         information: "bakedDocumentTranslationReporting.upsert";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/create-document-folder";
+    body: {
+        documentFolderName: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "documentFolder.maxQuantity";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "documentFolder.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/find-many-document-folders";
+    body: {
+        partialDocumentFolderName: string;
+        page: number;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolders.found";
+        body: {
+            list: DocumentFolder[];
+            total: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/document-folder-page";
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolderPage.found";
+        body: {
+            total: number;
+            quantityPerPage: number;
+        };
     };
 });
 

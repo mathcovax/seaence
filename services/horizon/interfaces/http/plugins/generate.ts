@@ -10,6 +10,7 @@ import { postObjecter } from "@business/entities/post";
 import { answerObjecter } from "@business/entities/answer";
 import { userObjecter } from "@business/entities/user";
 import { notificationObjecter, replyToPostNotificationObjecter, registerNotificationObjecter } from "@business/entities/notification";
+import { DocumentFolder } from "@business/entities/documentFolder";
 
 articleTypeObjecter.zodSchema._zttIdentifier = "ArticleType";
 
@@ -46,3 +47,5 @@ notificationObjecter.zodSchema._zttIdentifier = "Notification";
 replyToPostNotificationObjecter.zodSchema._zttIdentifier = "ReplyToPostNotification";
 
 registerNotificationObjecter.zodSchema._zttIdentifier = "RegisterNotification";
+
+DocumentFolder.index._zttIdentifier = "DocumentFolder";
