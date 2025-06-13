@@ -3,8 +3,10 @@ import { FindUserByIdUsecase } from "@business/applications/usecases/findUserByI
 import { UpdateUserUsecase } from "@business/applications/usecases/updateUser";
 import { FindUserByEmailUsecase } from "@business/applications/usecases/findUserByEmail";
 import { CreateUserUsecase } from "@business/applications/usecases/createUser";
+import { CreatePostUserWarningUsecase } from "@business/applications/usecases/createPostUserWarning";
 
 export const findUserById = new FindUserByIdUsecase();
 export const findUserByEmail = new FindUserByEmailUsecase();
 export const updateUser = new UpdateUserUsecase();
 export const createUser = new CreateUserUsecase();
+export const createPostUserWarning = new CreatePostUserWarningUsecase();

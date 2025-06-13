@@ -7,6 +7,8 @@ import { FindOneUserByIdUsecase } from "@business/applications/usecases/findUser
 import { CountNotificationToUserUsecase } from "@business/applications/usecases/countNotitificationToUser";
 import { FindOneReplyToPostNotificationSettingToUserByPostIdUsecase } from "@business/applications/usecases/findOneReplyToPostNotificationSettingToUserByPostId";
 import { DisableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/disableReplyToPostNotificationSettingToPost";
+import { CreateUserPostBanNotificationUsecase } from "@business/applications/usecases/createUserPostBanNotification";
+import { CreateUserPostWarningNotificationUsecase } from "@business/applications/usecases/createUserPostWarningNotification";
 
 export const createUserUsecase = new CreateUserUsecase();
 export const enableReplyToPostNotificationSettingToPostUsecase
@@ -19,3 +21,5 @@ export const findOneReplyToPostNotificationSettingToUserByPostIdUsecase
 = new FindOneReplyToPostNotificationSettingToUserByPostIdUsecase();
 export const disableReplyToPostNotificationSettingToPostUsecase
 = new DisableReplyToPostNotificationSettingToPostUsecase();
+export const createUserPostBanNotificationUsecase = new CreateUserPostBanNotificationUsecase();
+export const createUserPostWarningNotificationUsecase = new CreateUserPostWarningNotificationUsecase();

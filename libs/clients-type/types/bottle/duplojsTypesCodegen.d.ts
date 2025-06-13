@@ -84,7 +84,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "notications.found";
+        information: "notifications.found";
         body: ({
             id: string;
             user: {
@@ -112,11 +112,41 @@ type CodegenRoutes = ({
             usernameOfReplyPost: string;
             summaryOfReplyPost: string;
             type: "replyToPostNotificationType";
+        } | {
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+            type: "userPostBanNotificationType";
+            postId: string;
+            reason: string;
+            warningId: string;
+        } | {
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+            type: "userPostWarningNotificationType";
+            postId: string;
+            reason: string;
+            warningId: string;
         })[];
     };
 }) | ({
     method: "POST";
-    path: "/count-notification";
+    path: "/count-notifications";
     body: {
         userId: string;
     };
@@ -126,10 +156,46 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "notications.count";
+        information: "notifications.count";
         body: {
             count: number;
         };
+    };
+}) | ({
+    method: "POST";
+    path: "/create-post-warning-notification";
+    body: {
+        userId: string;
+        warningId: string;
+        postId: string;
+        reason: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "notification.postWarning.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/create-post-ban-notification";
+    body: {
+        userId: string;
+        warningId: string;
+        postId: string;
+        reason: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "notification.postBan.created";
+        body?: undefined;
     };
 });
 
