@@ -62,10 +62,17 @@ function removeTag(removedItem: GenericItem) {
 }
 
 function onSelect(selectedItem: GenericItem) {
-	if (modelValue.value.find((item) => getValue(item) === getValue(selectedItem))) {
-		return;
+	const notfoundIndex = -1;
+	const deleteQuantity = 1;
+
+	const index = modelValue.value.findIndex((item) => getValue(item) === getValue(selectedItem));
+	if (index === notfoundIndex) {
+		modelValue.value = [...modelValue.value, selectedItem];
+	} else {
+		const newModelValue = [...modelValue.value];
+		newModelValue.splice(index, deleteQuantity);
+		modelValue.value = newModelValue;
 	}
-	modelValue.value = [...modelValue.value, selectedItem];
 	open.value = false;
 }
 </script>
@@ -112,8 +119,10 @@ function onSelect(selectedItem: GenericItem) {
 			</div>
 		</DSPopoverTrigger>
 
-		<DSPopoverContent class="w-full max-w-xs p-0">
-			<DSCommand v-model:search-term="searchTerm">
+		<DSPopoverContent class="p-0">
+			<DSCommand
+				v-model:search-term="searchTerm"
+			>
 				<DSCommandInput
 					class="h-9"
 					:placeholder="placeholder"

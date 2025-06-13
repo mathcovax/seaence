@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { comparatorConfig, type ComparatorText, textFieldEnum } from "@vendors/types-advanced-query";
+import { comparatorTextConfig, type ComparatorText, textFieldEnum } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
+import BoostButton from "../BoostButton.vue";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorText>({ required: true });
@@ -12,12 +13,12 @@ const textFieldSchema = zod
 	.string({ message: t("formMessage.required") })
 	.trim()
 	.max(
-		comparatorConfig.text.maxLength,
-		{ message: t("formMessage.maxLength", { value: comparatorConfig.text.maxLength }) },
+		comparatorTextConfig.maxLength,
+		{ message: t("formMessage.maxLength", { value: comparatorTextConfig.maxLength }) },
 	)
 	.min(
-		comparatorConfig.text.minLength,
-		{ message: t("formMessage.minLength", { value: comparatorConfig.text.minLength }) },
+		comparatorTextConfig.minLength,
+		{ message: t("formMessage.minLength", { value: comparatorTextConfig.minLength }) },
 	);
 
 const { hintMessage } = useHintMessage(
@@ -40,14 +41,17 @@ const { hintMessage } = useHintMessage(
 		@deplace="emit('remove')"
 	>
 		<div class="mb-2 flex justify-between items-center">
-			<span class="font-medium text-sm">{{ $t('search.scratch.comparator.text.label') }}</span>
+			<div class="flex gap-2 items-center">
+				<BoostButton v-model="model.boost" />
+
+				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.text.label') }}</span>
+			</div>
 
 			<DSGhostButton
 				square
 				@click="emit('remove')"
-			>
-				<DSIcon name="close" />
-			</DSGhostButton>
+				icon="close"
+			/>
 		</div>
 
 		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
@@ -60,7 +64,6 @@ const { hintMessage } = useHintMessage(
 			/>
 
 			<DSInput
-				@dragstart="console.log('test')"
 				draggable="false"
 				v-model="model.value"
 				:placeholder="$t('search.scratch.comparator.text.inputPlaceholder')"

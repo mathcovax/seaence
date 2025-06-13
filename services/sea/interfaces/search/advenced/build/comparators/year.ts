@@ -1,12 +1,13 @@
 import { type estypes } from "@elastic/elasticsearch";
 import { type AvailableField, availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
 import { type ComparatorYear, type YearFieldEnumValue } from "@vendors/types-advanced-query";
+import { formatFieldWithBoost } from "../boost";
 
-const fieldsMapper: Record<YearFieldEnumValue, AvailableField[] | undefined> = {
+const fieldsMapper = {
 	webDate: [availableFieldEnum["webPublishSplitDate.year"]],
 	journalDate: [availableFieldEnum["journalPublishSplitDate.year"]],
 	allDate: undefined,
-};
+} as const satisfies Record<YearFieldEnumValue, AvailableField[] | undefined>;
 
 const allFieldValue = Object
 	.values(fieldsMapper)
@@ -16,8 +17,14 @@ const allFieldValue = Object
 			: [],
 	);
 
-export function buildYearOperator(comparatorYear: ComparatorYear): estypes.QueryDslQueryContainer {
-	const fields = fieldsMapper[comparatorYear.field] ?? allFieldValue;
+export function buildYearComparator(
+	comparatorYear: ComparatorYear,
+): estypes.QueryDslQueryContainer {
+	const fields = (fieldsMapper[comparatorYear.field] ?? allFieldValue)
+		.map((field) => formatFieldWithBoost(
+			field,
+			comparatorYear.boost,
+		));
 
 	return {
 		bool: {

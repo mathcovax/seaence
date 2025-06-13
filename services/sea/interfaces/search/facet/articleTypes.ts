@@ -49,7 +49,7 @@ export function buildArticleTypeFilter(
 			{
 				__id: "articleTypeFilter",
 				terms: {
-					articleTypes: articleTypeFilterValues,
+					[availableFieldEnum.articleTypes]: articleTypeFilterValues,
 				},
 			},
 		] satisfies (estypes.QueryDslQueryContainer & { __id: "articleTypeFilter" })[];

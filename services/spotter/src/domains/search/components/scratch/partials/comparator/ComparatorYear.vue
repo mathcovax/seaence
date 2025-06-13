@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { comparatorConfig, yearFieldEnum, type ComparatorYear } from "@vendors/types-advanced-query";
+import { comparatorYearConfig, yearFieldEnum, type ComparatorYear } from "@vendors/types-advanced-query";
 import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
+import BoostButton from "../BoostButton.vue";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorYear>({ required: true });
@@ -12,12 +13,12 @@ const yearFieldSchema = zod
 	.number({ message: t("formMessage.required") })
 	.int({ message: t("formMessage.int") })
 	.max(
-		comparatorConfig.year.max,
-		{ message: t("formMessage.max", { value: comparatorConfig.year.max }) },
+		comparatorYearConfig.max,
+		{ message: t("formMessage.max", { value: comparatorYearConfig.max }) },
 	)
 	.min(
-		comparatorConfig.year.min,
-		{ message: t("formMessage.min", { value: comparatorConfig.year.min }) },
+		comparatorYearConfig.min,
+		{ message: t("formMessage.min", { value: comparatorYearConfig.min }) },
 	);
 
 const { hintMessage } = useHintMessage(
@@ -41,15 +42,16 @@ const { hintMessage } = useHintMessage(
 	>
 		<div class="mb-2 flex justify-between items-center">
 			<div class="flex gap-2 items-center">
+				<BoostButton v-model="model.boost" />
+
 				<span class="font-medium text-sm">{{ $t('search.scratch.comparator.year.label') }}</span>
 			</div>
 
 			<DSGhostButton
 				square
 				@click="emit('remove')"
-			>
-				<DSIcon name="close" />
-			</DSGhostButton>
+				icon="close"
+			/>
 		</div>
 
 		<div class="grid grid-cols-1 @sm:grid-cols-2 gap-2">
@@ -65,7 +67,7 @@ const { hintMessage } = useHintMessage(
 				@dragstart.prevent
 				type="number"
 				mode="numeric"
-				v-model="model.value"
+				v-model.number="model.value"
 				placeholder="1999"
 				class="text-sm"
 			/>

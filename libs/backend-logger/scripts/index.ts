@@ -1,4 +1,4 @@
-import { logger } from "./logger";
+import { forwardLogger, logger } from "./logger";
 export * from "./logger";
 
 process.on(
@@ -7,3 +7,11 @@ process.on(
 		logger(error, origine);
 	},
 );
+
+declare global {
+	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+	const forwardLogger: typeof import("./logger").forwardLogger;
+}
+
+// @ts-expect-error global error
+global.forwardLogger = forwardLogger;

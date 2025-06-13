@@ -7,8 +7,9 @@ import { match } from "ts-pattern";
 import { elastic } from "@interfaces/providers/elastic";
 import { buildSimpleSearchQuery } from "./simple";
 import { buildAdvencedSearchQuery } from "./advenced";
-import { type ExpectType, type UnionToTuple } from "@duplojs/utils";
+import { type ExpectType } from "@duplojs/utils";
 import { removeElasticRequestFields } from "@interfaces/utils/removeElasticRequestFields";
+import { highlightTitle } from "./highlight/title";
 
 interface SearchResponse {
 	hits: {
@@ -37,6 +38,9 @@ interface Hit {
 			| "abstract.stemmed"
 			| "keywords"
 			| "authors.strict"
+			| "keywords.strict"
+			| "abstract.strict"
+			| "title.strict"
 		>]?: string[]
 	};
 }
@@ -93,24 +97,76 @@ export function search(
 
 	removeElasticRequestFields(query);
 
-	return elasticIndex.find<SearchResponse>({
-		from: page * quantityPerPage,
-		size: quantityPerPage,
-		track_total_hits: false,
-		_source: source,
-		query,
-		highlight: {
-			pre_tags: ["<strong class=\"matching-result\">"],
-			post_tags: ["</strong>"],
-			fields: {
-				"title.stemmed": {},
-				"abstract.stemmed": {
-					fragment_size: 50,
-				},
-				keywords: {},
-				"authors.strict": {},
+	return elasticIndex
+		.find<SearchResponse>({
+			from: page * quantityPerPage,
+			size: quantityPerPage,
+			track_total_hits: false,
+			_source: source,
+			query,
+			highlight: {
+				type: "unified",
+				pre_tags: ["<strong class=\"matching-result\">"],
+				post_tags: ["</strong>"],
+				fields: {
+					"title.stemmed": {
+						fragment_size: 1,
+						pre_tags: [""],
+						post_tags: [""],
+					},
+					"title.strict": {
+						fragment_size: 1,
+						pre_tags: [""],
+						post_tags: [""],
+					},
+					"abstract.stemmed": {
+						fragment_size: 50,
+					},
+					"abstract.strict": {
+						fragment_size: 50,
+						pre_tags: ["<strong class=\"matching-result-strict\">"],
+						post_tags: ["</strong>"],
+					},
+					keywords: {},
+					"keywords.strict": {
+						pre_tags: ["<strong class=\"matching-result-strict\">"],
+						post_tags: ["</strong>"],
+					},
+					"authors.strict": {
+						pre_tags: ["<strong class=\"matching-result-strict\">"],
+						post_tags: ["</strong>"],
+					},
 
-			} satisfies Record<keyof Exclude<Hit["highlight"], undefined>, estypes.SearchHighlightField>,
-		},
-	});
+				} satisfies Record<keyof Exclude<Hit["highlight"], undefined>, estypes.SearchHighlightField>,
+			},
+		})
+		.then(
+			(result) => ({
+				...result,
+				hits: {
+					...result.hits,
+					hits: result.hits.hits.map(
+						({ highlight, ...rest }) => ({
+							highlight: {
+								title: highlightTitle({
+									strict: highlight?.["title.strict"],
+									stamed: highlight?.["title.stemmed"],
+									source: rest._source.title,
+								}),
+								abstract: [
+									...(highlight?.["abstract.strict"] ?? []),
+									...(highlight?.["abstract.stemmed"] ?? []),
+								],
+								keywords: [
+									...(highlight?.["keywords.strict"] ?? []),
+									...(highlight?.keywords ?? []),
+								],
+								authors: highlight?.["authors.strict"],
+							},
+							...rest,
+						}),
+					),
+				},
+			}),
+		);
 }

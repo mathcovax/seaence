@@ -9,3 +9,12 @@ export function logger(...args: any[]) {
 		},
 	);
 }
+
+export function forwardLogger<
+	GenericValue extends unknown,
+>(
+	value: GenericValue,
+): GenericValue {
+	logger(value);
+	return value;
+}

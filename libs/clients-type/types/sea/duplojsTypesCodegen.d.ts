@@ -13,7 +13,7 @@ type Language = "fr-FR" | "en-US";
 
 export { Language };
 
-type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear;
+type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText | ComparatorYear | ComparatorStrictText | ComparatorAuthor | ComparatorYearInterval | ComparatorArticleType | ComparatorProvider;
 
 export { OperatorContent };
 
@@ -44,7 +44,8 @@ export { OperatorNot };
 type ComparatorText = {
     type: "comparator";
     name: "text";
-    field: "allField" | "title" | "abstract";
+    boost: "1" | "2" | "3";
+    field: "allField" | "title" | "abstract" | "keywords";
     value: string;
 };
 
@@ -53,11 +54,62 @@ export { ComparatorText };
 type ComparatorYear = {
     type: "comparator";
     name: "year";
+    boost: "1" | "2" | "3";
     field: "allDate" | "webDate" | "journalDate";
     value: number;
 };
 
 export { ComparatorYear };
+
+type ComparatorStrictText = {
+    type: "comparator";
+    name: "strictText";
+    boost: "1" | "2" | "3";
+    field: "allField" | "title" | "abstract" | "keywords";
+    value: string;
+};
+
+export { ComparatorStrictText };
+
+type ComparatorAuthor = {
+    type: "comparator";
+    name: "author";
+    boost: "1" | "2" | "3";
+    value: string;
+};
+
+export { ComparatorAuthor };
+
+type ComparatorYearInterval = {
+    type: "comparator";
+    name: "yearInterval";
+    boost: "1" | "2" | "3";
+    field: "allDate" | "webDate" | "journalDate";
+    value: {
+        from: number;
+        to: number;
+    };
+};
+
+export { ComparatorYearInterval };
+
+type ComparatorArticleType = {
+    type: "comparator";
+    name: "articleType";
+    boost: "1" | "2" | "3";
+    value: ("metaAnalysis")[];
+};
+
+export { ComparatorArticleType };
+
+type ComparatorProvider = {
+    type: "comparator";
+    name: "provider";
+    boost: "1" | "2" | "3";
+    value: ("pubmed")[];
+};
+
+export { ComparatorProvider };
 
 type CodegenRoutes = ({
     method: "PUT";

@@ -3,6 +3,7 @@ import { languageSchema } from "../schemas/common";
 import { filtersValuesSchema } from "../schemas/filter";
 import { search } from "@interfaces/search";
 import { operatorContentSchema } from "@vendors/types-advanced-query";
+import { resultConfig } from "@interfaces/configs/result";
 
 useBuilder()
 	.createRoute("POST", "/search-results")
@@ -28,11 +29,6 @@ useBuilder()
 				filtersValues,
 			} = pickup("body");
 
-			const summaryTronc = {
-				from: 0,
-				to: 300,
-			};
-
 			const results = await search({
 				language,
 				term,
@@ -45,17 +41,29 @@ useBuilder()
 						({ _source, highlight, _score }) => ({
 							score: _score,
 							bakedDocumentId: _source.bakedDocumentId,
-							title: highlight?.["title.stemmed"]?.shift() ?? _source.title,
+							title: highlight.title,
 							articleTypes: _source.articleTypes,
 							authors: [
-								...(highlight?.["authors.strict"] ? highlight["authors.strict"] : []),
+								...(highlight?.authors?.length ? highlight.authors : []),
 								..._source.authors,
 							],
 							keywords: highlight?.keywords ?? null,
 							webPublishDate: _source.webPublishDate,
 							journalPublishDate: _source.journalPublishDate,
-							summary: highlight?.["abstract.stemmed"]?.length
-								? `${highlight["abstract.stemmed"].join(".. ").substring(summaryTronc.from, summaryTronc.to)}..`
+							summary: highlight?.abstract?.length
+								? highlight.abstract
+									.join(".. ")
+									.concat(
+										...(_source.summary
+											? [" ", _source.summary]
+											: []
+										),
+									)
+									.substring(
+										resultConfig.summary.tronc.from,
+										resultConfig.summary.tronc.to,
+									)
+									.concat("..")
 								: _source.summary,
 						}),
 					),

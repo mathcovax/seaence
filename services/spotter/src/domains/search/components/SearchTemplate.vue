@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { watchPausable } from "@vueuse/core";
 import { useSearchPage } from "../composables/useSearchPage";
-import SimpleSearchInput from "./SimpleSearchInput.vue";
 import SearchResultWrapper from "./SearchResultWrapper.vue";
 import SearchContainer from "./SearchContainer.vue";
 import { convertQueryToSearchParams, convertSearchParamsToQuery } from "../utils/convertQuery";
 import type { SearchParams } from "@/lib/horizon/types/search";
+import SimpleSearchInput from "./SimpleSearchInput.vue";
 import AdvancedSearchInput from "./AdvancedSearchInput.vue";
 
 const router = useRouter();
@@ -47,15 +47,17 @@ const searchContainerRef = ref<InstanceType<typeof SearchContainer> | null>(null
 const advancedSearchInput = ref<InstanceType<typeof AdvancedSearchInput> | null>(null);
 const maxBytesLength = 15000;
 
-function submit(
+async function submit(
 	reactiveSearchParams: ReactiveSearchParams,
 	searchDetails = true,
 ) {
+	await nextTick();
+
 	if (
 		!reactiveSearchParams.term
 		|| (searchMode === "advanced" && !advancedSearchInput.value?.checkFields())
 	) {
-		return;
+		return <const>"wrongField";
 	}
 
 	const searchParams = {
@@ -67,7 +69,7 @@ function submit(
 		const bytesLength = new Blob([JSON.stringify(searchParams)]).size;
 		if (bytesLength > maxBytesLength) {
 			sonner.sonnerError($pt("maxSizeRequest"));
-			return;
+			return <const>"tooLargeField";
 		}
 	}
 
@@ -96,12 +98,30 @@ function submit(
 
 function commitSearchParams() {
 	searchParams.page = defaultPage;
-	submit(searchParams);
+	void submit(searchParams);
 }
 
 function setPage(page: number) {
 	searchParams.page = page;
-	submit(searchParams, false);
+	void submit(searchParams, false);
+}
+
+async function submitWithHandleWrongField(
+	reactiveSearchParams: ReactiveSearchParams,
+	searchDetails = true,
+) {
+	const result = await submit(reactiveSearchParams, searchDetails);
+
+	if (result === "wrongField") {
+		void router.push(
+			currentSearcghPage.createTo({
+				query: {},
+			}),
+		);
+
+		searchContainerRef.value?.toggleFilters(false);
+		searchContainerRef.value?.toggleSearch(true);
+	}
 }
 
 const queryWatcher = watchPausable(
@@ -112,7 +132,7 @@ const queryWatcher = watchPausable(
 		searchParams.language = newSearchParams.language;
 		searchParams.page = newSearchParams.page;
 		searchParams.term = newSearchParams.term;
-		void submit(searchParams);
+		void submitWithHandleWrongField(searchParams);
 	},
 );
 
@@ -124,7 +144,7 @@ onMounted(() => {
 	scrollToTop();
 
 	if (route.query.term) {
-		submit(searchParams);
+		void submitWithHandleWrongField(searchParams);
 	}
 });
 </script>

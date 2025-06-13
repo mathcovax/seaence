@@ -35,7 +35,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 <template>
 	<div class="flex flex-col items-start p-4 sm:p-6 border-b border-muted hover:bg-muted/5 transition-colors">
 		<div class="w-full flex flex-wrap items-center gap-2 mb-1">
-			<span class="text-xs text-muted-foreground shrink-0">Score: {{ score }}</span>
+			<span class="text-xs text-muted-foreground shrink-0">{{ $t("documentRowResult.searchScore", [score]) }}</span>
 
 			<div class="w-full flex gap-1 flex-wrap">
 				<DSBadge
@@ -57,7 +57,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 			class="group block"
 		>
 			<h3
-				class="text-base first-letter:capitalize sm:text-lg font-semibold text-primary group-hover:underline transition-colors break-words *:text-pink-seaence"
+				class="text-base first-letter:capitalize sm:text-lg font-semibold text-primary group-hover:underline transition-colors break-words"
 				v-html="document.title"
 			/>
 		</RouterLink>
@@ -123,5 +123,16 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 <style>
 .matching-result {
 	font-weight: 900;
+	color: var(--pink-seaence);
+}
+
+.matching-result-strict {
+	font-weight: 900;
+	color: var(--purple-seaence);
+}
+
+.matching-result-strict .matching-result {
+	font-weight: 900;
+	color: var(--purple-seaence);
 }
 </style>

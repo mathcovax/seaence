@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { match } from "ts-pattern";
-import type {
-	ComparatorText,
-	ComparatorYear,
-	OperatorAnd,
-	OperatorContent,
-	OperatorNot,
-	OperatorOr,
+import {
+	comparatorNameEnum,
+	type ComparatorArticleType,
+	type ComparatorAuthor,
+	type ComparatorProvider,
+	type ComparatorStrictText,
+	type ComparatorText,
+	type ComparatorYear,
+	type ComparatorYearInterval,
+	type OperatorAnd,
+	type OperatorContent,
+	type OperatorNot,
+	type OperatorOr,
 } from "@vendors/types-advanced-query";
 
 type Resolve = (value: OperatorContent | null) => void;
@@ -19,16 +25,6 @@ function onUpdateOpen(value: boolean) {
 		currentResolve.value = null;
 	}
 }
-
-defineExpose({
-	async openDialog() {
-		return new Promise<OperatorContent | null>(
-			(resolve) => {
-				currentResolve.value = resolve;
-			},
-		);
-	},
-});
 
 function selectOperatorContent(name: OperatorContent["name"]) {
 	currentResolve.value!(
@@ -53,12 +49,49 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 				name: "text",
 				field: "allField",
 				value: "",
+				boost: "1",
 			}))
 			.with("year", (): ComparatorYear => ({
 				type: "comparator",
 				name: "year",
 				field: "allDate",
 				value: new Date().getFullYear(),
+				boost: "1",
+			}))
+			.with("strictText", (): ComparatorStrictText => ({
+				type: "comparator",
+				name: "strictText",
+				field: "allField",
+				value: "",
+				boost: "1",
+			}))
+			.with("author", (): ComparatorAuthor => ({
+				type: "comparator",
+				name: "author",
+				value: "",
+				boost: "1",
+			}))
+			.with("articleType", (): ComparatorArticleType => ({
+				type: "comparator",
+				name: "articleType",
+				value: [],
+				boost: "1",
+			}))
+			.with("provider", (): ComparatorProvider => ({
+				type: "comparator",
+				name: "provider",
+				value: [],
+				boost: "1",
+			}))
+			.with("yearInterval", (): ComparatorYearInterval => ({
+				type: "comparator",
+				name: "yearInterval",
+				field: "allDate",
+				value: {
+					from: new Date().getFullYear(),
+					to: new Date().getFullYear(),
+				},
+				boost: "1",
 			}))
 			.exhaustive(),
 	);
@@ -66,6 +99,15 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 	currentResolve.value = null;
 }
 
+defineExpose({
+	async openDialog() {
+		return new Promise<OperatorContent | null>(
+			(resolve) => {
+				currentResolve.value = resolve;
+			},
+		);
+	},
+});
 </script>
 
 <template>
@@ -93,7 +135,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 
 				<DSTabsContent
 					value="operator"
-					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
+					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center"
 				>
 					<DSPrimaryButton
 						class="w-full sm:w-auto"
@@ -119,20 +161,15 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 
 				<DSTabsContent
 					value="comparator"
-					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center sm:flex-row"
+					class="min-h-42 sm:min-h-auto flex flex-col gap-2 justify-center"
 				>
 					<DSPrimaryButton
-						class="w-full sm:w-auto"
-						@click="selectOperatorContent('text')"
+						v-for="comparatorName of comparatorNameEnum.toTuple()"
+						:key="comparatorName"
+						class="w-full"
+						@click="selectOperatorContent(comparatorName)"
 					>
-						{{ $t("search.scratch.comparator.text.label") }}
-					</DSPrimaryButton>
-
-					<DSPrimaryButton
-						class="w-full sm:w-auto"
-						@click="selectOperatorContent('year')"
-					>
-						{{ $t("search.scratch.comparator.year.label") }}
+						{{ $t(`search.scratch.comparator.${comparatorName}.label`) }}
 					</DSPrimaryButton>
 				</DSTabsContent>
 			</DSTabs>

@@ -48,6 +48,7 @@ export function getAdvencedDefaultValue(): OperatorContent {
 				name: "text",
 				field: "allField",
 				value: "",
+				boost: "1",
 			},
 		],
 	};

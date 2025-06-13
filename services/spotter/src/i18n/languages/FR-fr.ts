@@ -4,7 +4,12 @@ import type {
 	GenderFacetValue,
 	SpeciesFacetValue,
 } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
-import type { TextFieldEnumValue, YearFieldEnumValue } from "@vendors/types-advanced-query";
+import type {
+	Comparator,
+	ProviderEnumValue,
+	TextFieldEnumValue,
+	YearFieldEnumValue,
+} from "@vendors/types-advanced-query";
 
 export const FRfr = {
 	page: {
@@ -258,6 +263,18 @@ export const FRfr = {
 						allField: "Tous les champs",
 						abstract: "Abstract",
 						title: "Titre",
+						keywords: "Mots clef",
+					} satisfies Record<TextFieldEnumValue, string>,
+				},
+				strictText: {
+					selectPlaceholder: "Sélectionner un champ",
+					inputPlaceholder: "Entrer une valeur",
+					label: "Comparaison textuelle strict",
+					fields: {
+						allField: "Tous les champs",
+						abstract: "Abstract",
+						title: "Titre",
+						keywords: "Mots clef",
 					} satisfies Record<TextFieldEnumValue, string>,
 				},
 				year: {
@@ -269,7 +286,34 @@ export const FRfr = {
 						webDate: "publication web",
 					} satisfies Record<YearFieldEnumValue, string>,
 				},
-			},
+				author: {
+					inputPlaceholder: "Entrer une valeur",
+					label: "Comparaison d'auteur",
+				},
+				articleType: {
+					label: "Comparaison de type d'article",
+					selectPlaceholder: "Sélectionner un type d'article",
+					emptyLabel: "Type d'article non trouvé",
+				},
+				provider: {
+					label: "Comparaison de platforme",
+					selectPlaceholder: "Sélectionner une platforme",
+					emptyLabel: "Platforme non trouvé",
+					value: {
+						pubmed: "PubMed",
+					} satisfies Record<ProviderEnumValue, string>,
+				},
+				yearInterval: {
+					selectPlaceholder: "Sélectionner un champ",
+					label: "Comparaison d'années avec interval",
+					refineMessage: "La veleur du premier champ doit étre supérieur au deuxiéme.",
+					fields: {
+						allDate: "Toutes Dates",
+						journalDate: "publication journal",
+						webDate: "publication web",
+					} satisfies Record<YearFieldEnumValue, string>,
+				},
+			} satisfies Record<Comparator["name"], object>,
 			operator: {
 				and: {
 					label: "ET",
@@ -284,6 +328,9 @@ export const FRfr = {
 		},
 		foundResults: "{count} résultat(s) trouvé(s)",
 		noResult: "Aucun résultat trouvé",
+	},
+	documentRowResult: {
+		searchScore: "Score de recherche: {0}",
 	},
 	post: {
 		authorIs: "",

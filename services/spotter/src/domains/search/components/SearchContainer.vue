@@ -58,7 +58,13 @@ function toggleScratch() {
 
 defineExpose({
 	toggle(state: boolean) {
+		this.toggleFilters(state);
+		this.toggleSearch(state);
+	},
+	toggleFilters(state: boolean) {
 		isFiltersVisible.value = state;
+	},
+	toggleSearch(state: boolean) {
 		if (props.searchMode === "advanced") {
 			isScratchVisible.value = state;
 		}
