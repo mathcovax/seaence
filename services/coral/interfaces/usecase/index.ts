@@ -9,11 +9,11 @@ import { UserCreateDocumentInFolderUsecase } from "@business/applications/usecas
 import { UserFindDocumentInFolderByUniqueCombinationUsecase } from "@business/applications/usecases/documentInFolder/userFindDocumentInFolderByUniqueCombination";
 import { UserRemoveDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userRemoveDocumentInFolder";
 import { UserSearchDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userSearchDocumentInFolder";
-import { UserCountResultOfSearchFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userCountResultOfSearchFavoriteEquation";
-import { UserCreateFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userCreateFavoriteEquation";
+import { UserCountResultOfFindManyFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userCountResultOfSearchFavoriteEquation";
+import { UserUpsertFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userUpsertFavoriteEquation";
 import { UserFindFavoriteEquationByIdUsecase } from "@business/applications/usecases/favoriteEquation/userFindFavoriteEquationById";
 import { UserRemoveFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userRemoveFavoriteEquation";
-import { UserSearchFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userSearchFavoriteEquation";
+import { UserFindManyFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userSearchFavoriteEquation";
 
 export const userCreateDocumentFolderUsecase = new UserCreateDocumentFolderUsecase();
 export const userFindDocumentFolderByIdUsecase = new UserFindDocumentFolderByIdUsecase();
@@ -28,9 +28,9 @@ export const userRemoveDocumentInFolderUsecase = new UserRemoveDocumentInFolderU
 export const userSearchDocumentInFolderUsecase = new UserSearchDocumentInFolderUsecase();
 export const userCountResultOfSearchDocumentInFolderUsecase = new UserCountResultOfSearchDocumentInFolderUsecase();
 
-export const userCreateFavoriteEquationUsecase = new UserCreateFavoriteEquationUsecase();
+export const userUpsertFavoriteEquationUsecase = new UserUpsertFavoriteEquationUsecase();
 export const userFindFavoriteEquationByIdUsecase = new UserFindFavoriteEquationByIdUsecase();
 export const userRemoveFavoriteEquationUsecase = new UserRemoveFavoriteEquationUsecase();
-export const userSearchFavoriteEquationUsecase = new UserSearchFavoriteEquationUsecase();
-export const userCountResultOfSearchFavoriteEquationUsecase = new UserCountResultOfSearchFavoriteEquationUsecase();
+export const userFindManyFavoriteEquationUsecase = new UserFindManyFavoriteEquationUsecase();
+export const userCountResultOfFindManyFavoriteEquationUsecase = new UserCountResultOfFindManyFavoriteEquationUsecase();
 

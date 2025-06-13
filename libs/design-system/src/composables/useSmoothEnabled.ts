@@ -53,9 +53,14 @@ export function useSmoothEnabled(smoothTime = defaultSmoothTime) {
 		() => enabled.value,
 	);
 
+	const hasRequestInQueue = computed(
+		() => !!activationRequestQueue.length,
+	);
+
 	return {
 		enable,
 		disable,
 		isEnabled,
+		hasRequestInQueue,
 	};
 }

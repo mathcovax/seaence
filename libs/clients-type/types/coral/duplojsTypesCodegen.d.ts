@@ -326,24 +326,20 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/create-favorite-equation";
+    path: "/upsert-favorite-equation";
     body: {
         userId: string;
         equation: OperatorContent;
         favoriteEquationName: string;
     };
     response: {
-        code: 409;
-        information: "favoriEquation.nameAlreadyUse";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "favoriEqaution.created";
+        code: 204;
+        information: "favoriteEquation.upsert";
         body?: undefined;
     };
 }) | ({
     method: "POST";
-    path: "/get-favorite-equation";
+    path: "/find-one-favorite-equation";
     body: {
         userId: string;
         favoriteEquationId: string;
@@ -358,7 +354,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "favoriEquation.found";
+        information: "favoriEquation.findOne";
         body: {
             id: string;
             name: string;
@@ -369,7 +365,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/remove-equation-from-favorite";
+    path: "/remove-favorite-equation";
     body: {
         userId: string;
         favoriteEquationId: string;
@@ -389,7 +385,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/search-favorite-equations";
+    path: "/find-many-favorite-equation-name";
     body: {
         userId: string;
         partialFavoriteEquationName: string;
@@ -398,25 +394,19 @@ type CodegenRoutes = ({
     };
     response: {
         code: 200;
-        information: "favoriEquations.found";
-        body: {
-            id: string;
-            name: string;
-            userId: string;
-            equation: OperatorContent;
-            addedAt: Date;
-        }[];
+        information: "favoriteEquation.name.findMany";
+        body: string[];
     };
 }) | ({
     method: "POST";
-    path: "/get-search-favorite-equations-count";
+    path: "/find-many-favorite-equation-details";
     body: {
         userId: string;
         partialFavoriteEquationName: string;
     };
     response: {
         code: 200;
-        information: "favoriEquations.searchDetails";
+        information: "favoriEquation.findMany.details";
         body: {
             total: number;
         };
