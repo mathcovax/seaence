@@ -35,6 +35,7 @@ declare global {
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
   const markRaw: typeof import('vue')['markRaw']
+  const multiComboBoxFormField: typeof import('./vendors/design-system/utils/formFields')['multiComboBoxFormField']
   const multiLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']

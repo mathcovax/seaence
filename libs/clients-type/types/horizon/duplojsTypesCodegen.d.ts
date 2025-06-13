@@ -305,22 +305,15 @@ type ReplyToPostNotification = {
 
 export { ReplyToPostNotification };
 
-type FavoriteEquationListDetails = {
-    total: number;
-    quantityPerPage: number;
-};
-
-export { FavoriteEquationListDetails };
-
-type FavoriteEquation = {
+type DocumentFolder = {
     id: string;
-    name: string;
     userId: string;
-    addedAt: string;
-    equation: OperatorContent;
+    name: string;
+    numberOfDocument: number;
+    createdAt: string;
 };
 
-export { FavoriteEquation };
+export { DocumentFolder };
 
 type CodegenRoutes = ({
     method: "POST";
@@ -690,119 +683,60 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/favorite-equation-name-list";
+    path: "/create-document-folder";
     body: {
-        partialFavoriteEquationName: string;
+        documentFolderName: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "documentFolder.maxQuantity";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "documentFolder.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/find-many-document-folders";
+    body: {
+        partialDocumentFolderName: string;
         page: number;
     };
     response: {
-        code: 401;
-        information: "user.banned";
-        body?: undefined;
-    } | {
         code: 403;
-        information: "authentication.required";
+        information: "accessToken.invalid";
         body?: undefined;
     } | {
         code: 200;
-        information: "favoriteEquationNameList.found";
+        information: "documentFolders.found";
         body: {
-            id: string;
-            name: string;
-        }[];
+            list: DocumentFolder[];
+            total: number;
+        };
     };
 }) | ({
     method: "POST";
-    path: "/favorite-equation-list-details";
-    body: {
-        partialFavoriteEquationName: string;
-    };
+    path: "/document-folder-page";
     response: {
-        code: 401;
-        information: "user.banned";
-        body?: undefined;
-    } | {
         code: 403;
-        information: "authentication.required";
+        information: "accessToken.invalid";
         body?: undefined;
     } | {
         code: 200;
-        information: "favoriteEquationListDetails.found";
-        body: FavoriteEquationListDetails;
-    };
-}) | ({
-    method: "POST";
-    path: "/find-one-favorite-equation/{favoriteEquationId}";
-    params: {
-        favoriteEquationId: string;
-    };
-    response: {
-        code: 401;
-        information: "user.banned";
-        body?: undefined;
-    } | {
-        code: 403;
-        information: "authentication.required";
-        body?: undefined;
-    } | {
-        code: 404;
-        information: "favoriteEquation.notfound";
-        body?: undefined;
-    } | {
-        code: 401;
-        information: "favoriteEquation.wrongProprietary";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "favoriteEquation.found";
-        body: FavoriteEquation;
-    };
-}) | ({
-    method: "POST";
-    path: "/upsert-favorite-equation";
-    body: {
-        favoriteEquationName: string;
-        equation: OperatorContent;
-    };
-    response: {
-        code: 401;
-        information: "user.banned";
-        body?: undefined;
-    } | {
-        code: 403;
-        information: "authentication.required";
-        body?: undefined;
-    } | {
-        code: 204;
-        information: "favoriteEquation.upsert";
-        body?: undefined;
-    };
-}) | ({
-    method: "POST";
-    path: "/remove-favorite-equation/{favoriteEquationId}";
-    params: {
-        favoriteEquationId: string;
-    };
-    response: {
-        code: 401;
-        information: "user.banned";
-        body?: undefined;
-    } | {
-        code: 403;
-        information: "authentication.required";
-        body?: undefined;
-    } | {
-        code: 404;
-        information: "favoriteEquation.notfound";
-        body?: undefined;
-    } | {
-        code: 401;
-        information: "favoriteEquation.wrongProprietary";
-        body?: undefined;
-    } | {
-        code: 204;
-        information: "favoriteEquation.remove";
-        body?: undefined;
+        information: "documentFolderPage.found";
+        body: {
+            total: number;
+            quantityPerPage: number;
+        };
     };
 });
 
