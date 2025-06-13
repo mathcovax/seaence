@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { notificationListPage } from "@/domains/notification/router";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { disconect } = useUserInformation();
@@ -32,6 +31,12 @@ const { disconect } = useUserInformation();
 			<DSDropdownMenuItem>
 				<RouterLink :to="notificationListPage.createTo()">
 					{{ $t("layout.base.header.accountDropdown.notification") }}
+				</RouterLink>
+			</DSDropdownMenuItem>
+
+			<DSDropdownMenuItem>
+				<RouterLink :to="documentFolderPage.createTo()">
+					{{ $t("layout.base.header.accountDropdown.documentFolder") }}
 				</RouterLink>
 			</DSDropdownMenuItem>
 

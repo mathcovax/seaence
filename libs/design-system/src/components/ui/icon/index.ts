@@ -30,6 +30,16 @@ import {
 	mdiAlert,
 	mdiAlertCircle,
 	mdiWeight,
+	mdiFolder,
+	mdiFolderOutline,
+	mdiDotsHorizontal,
+	mdiDotsVertical,
+	mdiDotsHorizontalCircle,
+	mdiDotsHorizontalCircleOutline,
+	mdiDeleteOutline,
+	mdiDelete,
+	mdiFileOutline,
+	mdiFile,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -64,6 +74,16 @@ export const iconsMapper = {
 	alert: mdiAlert,
 	reporting: mdiAlertCircle,
 	weight: mdiWeight,
+	folder: mdiFolder,
+	folderOutline: mdiFolderOutline,
+	dotsHorizontal: mdiDotsHorizontal,
+	dotsVertical: mdiDotsVertical,
+	dotsHorizontalCircle: mdiDotsHorizontalCircle,
+	dotsHorizontalCircleOutline: mdiDotsHorizontalCircleOutline,
+	delete: mdiDelete,
+	deleteOutline: mdiDeleteOutline,
+	file: mdiFile,
+	fileOutline: mdiFileOutline,
 };
 
 export const iconSizeMapper = {

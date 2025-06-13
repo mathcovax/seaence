@@ -164,6 +164,13 @@ export const FRfr = {
 			title: "Notifications",
 			noNotification: "Aucune notification trouvé.",
 		},
+		[documentFolderPage.name]: {
+			title: "Dossiers",
+			counter: {
+				label: "dossiers",
+				filtered: "{filtered} sur {total}",
+			},
+		},
 	},
 	authDialog: {
 		title: "Authtification",
@@ -188,6 +195,7 @@ export const FRfr = {
 					profile: "Mon profil",
 					disconnect: "Se déconnecter",
 					notification: "Notifications",
+					documentFolder: "Dossiers",
 				},
 			},
 			footer: {
