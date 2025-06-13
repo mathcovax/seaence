@@ -332,6 +332,10 @@ export const FRfr = {
 	documentRowResult: {
 		searchScore: "Score de recherche: {0}",
 	},
+	favoritEquations: {
+		connexionRequire: "Voud devez étre connecter pour ajouter des équation en favorit.",
+		emptySearch: "Aucune equation favorite trouver.",
+	},
 	post: {
 		authorIs: "",
 		responseCount: "",
@@ -472,6 +476,9 @@ export const FRfr = {
 		},
 		bakedDocumentTranslationReporting: {
 			upsert: "Le signalement a corectement étais pris en compte, merci de votre contribution.",
+		},
+		favoriteEquation: {
+			upsert: "L'équation a bien étais mise dans les favorit.",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},

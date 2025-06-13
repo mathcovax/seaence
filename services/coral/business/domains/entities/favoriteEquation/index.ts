@@ -1,6 +1,6 @@
 import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { userIdObjecter } from "../../common/user";
-import { equationObjecter } from "../../common/equation";
+import { type Equation, equationObjecter } from "../../common/equation";
 import { favoriteEquationRules } from "@vendors/entity-rules";
 
 export const favoriteEquationIdObjecter = zod.string().createValueObjecter("favoriteEquationId");
@@ -30,6 +30,12 @@ export class FavoriteEquationEntity extends EntityHandler.create({
 		return new FavoriteEquationEntity({
 			...params,
 			addedAt: commonDateObjecter.unsafeCreate(new Date()),
+		});
+	}
+
+	public updateEquation(equation: Equation) {
+		return this.update({
+			equation,
 		});
 	}
 }

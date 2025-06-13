@@ -78,71 +78,71 @@ function onSelect(selectedItem: GenericItem) {
 
 <template>
 	<DSPopover v-model:open="open">
-		<DSPopoverTrigger as-child>
+		<div
+			role="combobox"
+			:aria-expanded="open"
+			:class="[
+				'h-12 px-3 py-2 flex gap-2 items-center bg-background border rounded-lg',
+				props.class,
+				open ? 'ring-2 ring-primary' : '',
+			]"
+		>
 			<div
-				role="combobox"
-				:aria-expanded="open"
-				:class="[
-					'h-12 px-3 py-2 flex gap-2 items-center bg-background border rounded-lg',
-					props.class,
-					open ? 'ring-2 ring-primary' : '',
-				]"
+				class="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide"
 			>
-				<div
-					class="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide"
-				>
-					<template v-if="modelValue.length">
-						<DSClosingTag
-							v-for="(item, index) of modelValue"
-							:key="getKey(item) ?? index"
-							@close="removeTag(item)"
-							@click="$event.stopPropagation()"
-							class="px-1 py-0.5 text-xs text-primary bg-primary/20"
-						>
-							{{ getLabel(item) }}
-						</DSClosingTag>
-					</template>
+				<template v-if="modelValue.length">
+					<DSClosingTag
+						v-for="(item, index) of modelValue"
+						:key="getKey(item) ?? index"
+						@close="removeTag(item)"
+						@click="$event.stopPropagation()"
+						class="px-1 py-0.5 text-xs text-primary bg-primary/20"
+					>
+						{{ getLabel(item) }}
+					</DSClosingTag>
+				</template>
 
-					<template v-else>
-						<span class="text-sm text-neutral-400 select-none">{{ placeholder }}</span>
-					</template>
-				</div>
-
-				<span class="h-6 w-px bg-neutral-100 mx-1" />
-
-				<DSGhostButton
-					square
-					rounded
-					icon="plus"
-				/>
+				<template v-else>
+					<span class="text-sm text-neutral-400 select-none">{{ placeholder }}</span>
+				</template>
 			</div>
-		</DSPopoverTrigger>
 
-		<DSPopoverContent class="p-0">
-			<DSCommand
-				v-model:search-term="searchTerm"
-			>
-				<DSCommandInput
-					class="h-9"
-					:placeholder="placeholder"
-				/>
+			<span class="h-6 w-px bg-neutral-100 mx-1" />
 
-				<DSCommandList>
-					<DSCommandEmpty>{{ emptyLabel }}</DSCommandEmpty>
+			<DSGhostButton
+				square
+				rounded
+				icon="plus"
+			/>
+		</div>
 
-					<DSCommandGroup>
-						<DSCommandItem
-							v-for="(item, index) in items"
-							:key="getKey(item) ?? index"
-							:value="getValue(item)"
-							@select="onSelect(item)"
-						>
-							{{ getLabel(item) }}
-						</DSCommandItem>
-					</DSCommandGroup>
-				</DSCommandList>
-			</DSCommand>
-		</DSPopoverContent>
+		<template #content>
+			<div class="-m-4">
+				<DSCommand
+					v-model:search-term="searchTerm"
+				>
+					<DSCommandInput
+						class="h-9"
+						:placeholder="placeholder"
+					/>
+
+					<DSCommandList>
+						<DSCommandEmpty>{{ emptyLabel }}</DSCommandEmpty>
+
+						<DSCommandGroup>
+							<DSCommandItem
+								v-for="(item, index) in items"
+								:key="getKey(item) ?? index"
+								:value="getValue(item)"
+								@select="onSelect(item)"
+							>
+								{{ getLabel(item) }}
+							</DSCommandItem>
+						</DSCommandGroup>
+					</DSCommandList>
+				</DSCommand>
+			</div>
+		</template>
 	</DSPopover>
 </template>
 

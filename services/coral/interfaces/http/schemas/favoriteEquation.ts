@@ -11,10 +11,10 @@ const favoriteEquationSchema = zod.object({
 	addedAt: commonDateObjecter.zodSchema,
 });
 
-export const endpointGetFavoriteEquationRouteSchema = favoriteEquationSchema;
+export const endpointFindOneFavoriteEquationSchema = favoriteEquationSchema;
 
-export const endpointSearchFavoriteEquationRouteSchema = favoriteEquationSchema.array();
+export const endpointFindManyFavoriteEquationNameSchema = zod.string().array();
 
-export const endpointGetCountOfSearchFavoriteEquationRouteSchema = zod.object({
+export const endpointFindManyFavoriteEquationDetailsSchema = zod.object({
 	total: zod.number(),
 });

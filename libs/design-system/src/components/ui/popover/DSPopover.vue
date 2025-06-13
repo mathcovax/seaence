@@ -5,11 +5,18 @@ import {
 	PopoverRoot,
 	useForwardPropsEmits,
 } from "reka-ui";
+import DSPopoverTrigger from "./DSPopoverTrigger.vue";
+import DSPopoverContent from "./DSPopoverContent.vue";
 
 const props = defineProps<PopoverRootProps>();
 const emits = defineEmits<PopoverRootEmits>();
 
 const forwarded = useForwardPropsEmits(props, emits);
+
+defineSlots<{
+	default: never;
+	content: never;
+}>();
 </script>
 
 <template>
@@ -17,6 +24,12 @@ const forwarded = useForwardPropsEmits(props, emits);
 		data-slot="popover"
 		v-bind="forwarded"
 	>
-		<slot />
+		<DSPopoverTrigger as-child>
+			<slot name="default" />
+		</DSPopoverTrigger>
+
+		<DSPopoverContent>
+			<slot name="content" />
+		</DSPopoverContent>
 	</PopoverRoot>
 </template>

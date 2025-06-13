@@ -5,8 +5,6 @@ import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { escapeRegExp } from "@duplojs/utils";
 
-const one = 1;
-
 favoriteEquationRepository.default = {
 	generateFavoriteEquationId() {
 		return favoriteEquationIdObjecter.unsafeCreate(uuidv7());
@@ -27,7 +25,7 @@ favoriteEquationRepository.default = {
 			id: favoriteEquationEntity.id.value,
 		});
 	},
-	async findFavoriteEquationById(favoriteEquationId) {
+	async findOneFavoriteEquationById(favoriteEquationId) {
 		const favoriteEquation = await mongo.favoriteEquation.findOne({
 			id: favoriteEquationId.value,
 		});
@@ -41,7 +39,7 @@ favoriteEquationRepository.default = {
 			favoriteEquation,
 		);
 	},
-	async findFavoriteEquation(userId, favoriteEquationName) {
+	async findOneFavoriteEquation(userId, favoriteEquationName) {
 		const favoriteEquation = await mongo.favoriteEquation.findOne({
 			userId: userId.value,
 			name: favoriteEquationName.value,
@@ -56,7 +54,7 @@ favoriteEquationRepository.default = {
 			favoriteEquation,
 		);
 	},
-	async searchFavoriteEquations(input) {
+	async findManyFavoriteEquation(input) {
 		const { userId, partialFavoriteEquationName, page, quantityPerPage } = input;
 
 		const mongoFavoriEquations = await mongo.favoriteEquation
@@ -64,13 +62,12 @@ favoriteEquationRepository.default = {
 				{
 					userId: userId.value,
 					name: {
-						$regex: escapeRegExp(partialFavoriteEquationName.value),
-						options: "i",
+						$regex: new RegExp(escapeRegExp(partialFavoriteEquationName.value), "i"),
 					},
 				},
 			)
 			.sort({ addedAt: -1 })
-			.skip((page.value - one) * quantityPerPage.value)
+			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
 
@@ -83,14 +80,13 @@ favoriteEquationRepository.default = {
 
 		return favoriEquations;
 	},
-	async countResultOfSearchFavoriteEquation(userId, favoriEquationName) {
+	async countResultOfSearchFavoriteEquation(userId, partialFavoriteEquationName) {
 		const numberOfFavoriEquation = await mongo.favoriteEquation
 			.countDocuments(
 				{
 					userId: userId.value,
 					name: {
-						$regex: escapeRegExp(favoriEquationName.value),
-						options: "i",
+						$regex: new RegExp(escapeRegExp(partialFavoriteEquationName.value), "i"),
 					},
 				},
 			)

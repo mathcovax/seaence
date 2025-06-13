@@ -32,7 +32,9 @@ declare global {
   const computed: typeof import('vue')['computed']
   const connectionPage: typeof import('./src/domains/auth/router')['connectionPage']
   const createApp: typeof import('vue')['createApp']
+  const createDebounce: typeof import('./vendors/design-system/utils/debounce')['createDebounce']
   const createExternalPromise: typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']
+  const createFetchDebounce: typeof import('./vendors/design-system/utils/debounce')['createFetchDebounce']
   const createFormField: typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']
   const createLayoutTemplate: typeof import('./vendors/design-system/composables/useFormBuilder/templates/createLayoutTemplate')['createLayoutTemplate']
   const createPage: typeof import('./vendors/design-system/utils/createPage')['createPage']
@@ -50,6 +52,7 @@ declare global {
   const horizonClient: typeof import('./src/lib/horizon/index')['horizonClient']
   const i18n: typeof import('./src/i18n/index')['i18n']
   const inject: typeof import('vue')['inject']
+  const inlineFormTemplate: typeof import('./vendors/design-system/utils/layoutTemplate')['inlineFormTemplate']
   const isEven: typeof import('./src/utils/isEven')['isEven']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
@@ -207,6 +210,7 @@ declare module 'vue' {
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createExternalPromise: UnwrapRef<typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']>
+    readonly createFetchDebounce: UnwrapRef<typeof import('./vendors/design-system/utils/debounce')['createFetchDebounce']>
     readonly createFormField: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']>
     readonly createLayoutTemplate: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/templates/createLayoutTemplate')['createLayoutTemplate']>
     readonly createPage: UnwrapRef<typeof import('./vendors/design-system/utils/createPage')['createPage']>
@@ -223,6 +227,7 @@ declare module 'vue' {
     readonly horizonClient: UnwrapRef<typeof import('./src/lib/horizon/index')['horizonClient']>
     readonly i18n: UnwrapRef<typeof import('./src/i18n/index')['i18n']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
+    readonly inlineFormTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['inlineFormTemplate']>
     readonly isEven: UnwrapRef<typeof import('./src/utils/isEven')['isEven']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>

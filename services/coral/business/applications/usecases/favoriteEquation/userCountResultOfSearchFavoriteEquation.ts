@@ -7,7 +7,7 @@ interface Input {
 	partialFavoriteEquationName: Text;
 }
 
-export class UserCountResultOfSearchFavoriteEquationUsecase extends UsecaseHandler.create({
+export class UserCountResultOfFindManyFavoriteEquationUsecase extends UsecaseHandler.create({
 	favoriteEquationRepository,
 }) {
 	public execute({ partialFavoriteEquationName, userId }: Input) {

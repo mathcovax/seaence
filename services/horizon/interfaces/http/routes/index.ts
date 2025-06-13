@@ -6,3 +6,6 @@ import "./search";
 import "./document";
 import "./notification";
 import "./reporting";
+import "./favoriteEquation/list";
+import "./favoriteEquation/findOne";
+import "./favoriteEquation/upsert";
