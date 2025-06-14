@@ -11,7 +11,7 @@ export class IndicatePostIsCompliantUsecase extends UsecaseHandler.create({
 }) {
 	public execute({ post }: Input) {
 		if (!post.isUnprocessed()) {
-			return new UsecaseError("wrong-status");
+			return new UsecaseError("wrong-status", { post });
 		}
 
 		const updatedPost = post.updateStatus("compliant");

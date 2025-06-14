@@ -16,10 +16,10 @@ export const endpointPostsDetails = zod.object({
 	totalCount: zod.number(),
 });
 
-export const endpointCreatePost = zod.object({
-	id: zod.string(),
+export const endpointUnprocessedPostDetails = zod.object({
+	totalCount: zod.number(),
 });
 
-export const entrypointPatchPostStatus = zod.object({
-	status: zod.enum(["compliant", "notCompliant"]),
+export const endpointCreatePost = zod.object({
+	id: zod.string(),
 });

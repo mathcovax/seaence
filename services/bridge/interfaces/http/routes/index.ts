@@ -6,6 +6,6 @@ import "./reporting/bakedDocumentTranslationList";
 import "./bakedDocument/getNewTranslation";
 import "./bakedDocument/makeNewTranslation";
 
-import "./warning/create";
-
-import "./post/findOldestUnprocessed";
+import "./post/postModerationPage";
+import "./post/indicatePostIsCompliant";
+import "./post/indicatePostIsNotCompliantAndCreateWarning";

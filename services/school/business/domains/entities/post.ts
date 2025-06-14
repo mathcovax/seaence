@@ -1,6 +1,6 @@
 import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { userObjecter } from "../common/user";
-import { type Username } from "./user";
+import { UserEntity, type Username } from "./user";
 import { postRules } from "@vendors/entity-rules";
 
 export const postTopicObjecter = zod.string()
@@ -33,6 +33,12 @@ export const postStatusEnum = createEnum([
 export const postStatusObjecter = zod.enum(postStatusEnum.toTuple()).createValueObjecter("postStatus");
 export type PostStatus = GetValueObject<typeof postStatusObjecter>;
 
+export const postAuthorObjecter = EntityHandler.createEntityObjecter(
+	"postAuthor",
+	UserEntity,
+);
+export type PostAuthor = GetValueObject<typeof postAuthorObjecter>;
+
 const defaultAnswerCount = 0;
 
 type InputCreatePostEntity = Omit<GetEntityProperties<typeof PostEntity>, "answerCount" | "createdAt" | "status">;
@@ -43,7 +49,7 @@ export class PostEntity extends EntityHandler.create({
 	content: postContentObjecter,
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
 	answerCount: postAnswerCountObjecter,
-	author: userObjecter,
+	author: postAuthorObjecter,
 	status: postStatusObjecter,
 	createdAt: commonDateObjecter,
 }) {
@@ -70,7 +76,7 @@ export class PostEntity extends EntityHandler.create({
 		});
 
 		return this.update({
-			author: userObjecter.unsafeCreate(updatedAuthor),
+			author: postAuthorObjecter.unsafeCreate(updatedAuthor),
 		});
 	}
 

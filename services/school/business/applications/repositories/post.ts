@@ -15,6 +15,7 @@ export interface PostRepository extends RepositoryBase<PostEntity> {
 	findOneById(postId: PostId): Promise<PostEntity | null>;
 	findOldestUnprocessedPost(): Promise<PostEntity | null>;
 	getTotalCountByNodeSameRawDocumentId(documentId: NodeSameRawDocumentId): Promise<Int>;
+	getTotalCountOfUnprocessedPosts(): Promise<Int>;
 	findByAuthorId(userId: UserId): AsyncGenerator<PostEntity>;
 }
 

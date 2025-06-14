@@ -93,6 +93,10 @@ type CodegenRoutes = ({
     method: "GET";
     path: "/find-oldest-unprocessed-post";
     response: {
+        code: 404;
+        information: "oldestUnprocessedPost.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "oldestUnprocessedPost.found";
         body: {
@@ -106,13 +110,54 @@ type CodegenRoutes = ({
             };
             answerCount: number;
             createdAt: Date;
-        } | null;
+        };
+    };
+}) | ({
+    method: "GET";
+    path: "/unprocessed-post-details";
+    response: {
+        code: 200;
+        information: "unprocessedPost.details";
+        body: {
+            totalCount: number;
+        };
     };
 }) | ({
     method: "PATCH";
-    path: "/posts/{postId}/status";
+    path: "/posts/{postId}/is-compliant";
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "post.wrongStatus";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "post.updated";
+        body: {
+            id: string;
+            nodeSameRawDocumentId: string;
+            topic: string;
+            content: string;
+            author: {
+                id: string;
+                username: string;
+            };
+            answerCount: number;
+            createdAt: Date;
+        };
+    };
+}) | ({
+    method: "PATCH";
+    path: "/posts/{postId}/is-not-compliant";
     body: {
-        status: "compliant" | "notCompliant";
+        makeUserBan: boolean;
+        reason: string;
     };
     params: {
         postId: string;

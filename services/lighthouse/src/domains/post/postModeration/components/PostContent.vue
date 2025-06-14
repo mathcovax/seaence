@@ -1,19 +1,7 @@
 <script setup lang="ts">
 import { postPage } from "@/domains/post/postModeration/router";
+import type { Post } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
-
-interface Post {
-	id: string;
-	topic: string;
-	content: string;
-	nodeSameRawDocumentId: string;
-	answerCount: number;
-	author: {
-		id: string;
-		username: string;
-	};
-	createdAt: string;
-}
 
 interface Props {
 	post: Post;

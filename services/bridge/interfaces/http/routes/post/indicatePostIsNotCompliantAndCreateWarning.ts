@@ -1,0 +1,57 @@
+import { SchoolAPI } from "@interfaces/providers/school";
+import { match } from "ts-pattern";
+
+useBuilder()
+	.createRoute("POST", "/posts/{postId}/is-not-compliant-and-create-warning")
+	.extract({
+		params: {
+			postId: zod.string(),
+		},
+		body: zod.object({
+			makeUserBan: zod.boolean(),
+			reason: zod.string(),
+		}),
+	})
+	.cut(
+		async({ pickup, dropper }) => {
+			const {
+				body: {
+					makeUserBan,
+					reason,
+				},
+				postId,
+			} = pickup(["body", "postId"]);
+
+			const schoolReponse = await SchoolAPI.indicatePostIsNotCompliantAndCreateWarning({
+				postId,
+				makeUserBan,
+				reason,
+			});
+
+			return match(schoolReponse)
+				.with(
+					{ information: "post.wrongStatus" },
+					() => new ForbiddenHttpResponse("post.wrongStatus"),
+				)
+				.with(
+					{ information: "post.notfound" },
+					() => new NotFoundHttpResponse("post.notfound"),
+				)
+				.with(
+					{ information: "post.updated" },
+					({ body }) => dropper({
+						post: body,
+					}),
+				)
+				.exhaustive();
+		},
+		["post"],
+		[
+			...makeResponseContract(ForbiddenHttpResponse, "post.wrongStatus"),
+			...makeResponseContract(NotFoundHttpResponse, "post.notfound"),
+		],
+	)
+	.handler(
+		() => new OkHttpResponse("post.updated"),
+		makeResponseContract(OkHttpResponse, "post.updated"),
+	);

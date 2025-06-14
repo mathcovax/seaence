@@ -64,6 +64,13 @@ postRepository.default = {
 			)
 			.toArray();
 	},
+	async getTotalCountOfUnprocessedPosts() {
+		const mongoPostCount = await mongo.postCollection.countDocuments({
+			status: "unprocessed",
+		});
+
+		return intObjecter.unsafeCreate(mongoPostCount);
+	},
 	async getTotalCountByNodeSameRawDocumentId(nodeSameRawDocumentId) {
 		const mongoPostCount = await mongo.postCollection.countDocuments({
 			nodeSameRawDocumentId: nodeSameRawDocumentId.value,

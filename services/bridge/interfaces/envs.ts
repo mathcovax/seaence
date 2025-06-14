@@ -15,9 +15,7 @@ export const envs = zod
 		ENVIROMENT: zod.enum(["DEV", "PROD"]),
 		CORS_ALLOW_ORIGIN: zod.string(),
 		SCHOOL_BASE_URL: zod.string().url(),
-		HARBOR_BASE_URL: zod.string().url(),
 		GLITCHTIP_DSN: zod.string(),
-
 		BEACON_BASE_URL: zod.string().url(),
 		ABYS_BASE_URL: zod.string().url(),
 	})

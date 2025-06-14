@@ -140,5 +140,9 @@ export const FRfr = {
 		nodeSameRawDocument: {
 			notfound: "Le neux na pas étais trouvais.",
 		},
+		post: {
+			notfound: "Le post n'a pas été trouvé.",
+			wrongStatus: "Le post n'est pas en attente de modération.",
+		},
 	},
 };

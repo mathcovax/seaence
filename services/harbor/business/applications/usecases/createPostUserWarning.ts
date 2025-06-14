@@ -2,7 +2,6 @@ import { type UserWarningReason, type UserWarningMakeUserBan } from "@business/d
 import { PostUserWarningEntity, type PostUserWarningPostId } from "@business/domains/entities/warning/post";
 import { UsecaseHandler } from "@vendors/clean";
 import { userWarningRepository } from "../repositories/warning";
-import { userRepository } from "../repositories/user";
 import { MakeUserBanUsecase } from "./makeUserBan";
 import { type UserEntity } from "@business/domains/entities/user";
 import { notificationRepository } from "../repositories/notification";
@@ -16,7 +15,6 @@ interface Input {
 
 export class CreatePostUserWarningUsecase extends UsecaseHandler.create({
 	userWarningRepository,
-	userRepository,
 	makeUserBanUsecase: MakeUserBanUsecase,
 	notificationRepository,
 }) {
@@ -31,7 +29,7 @@ export class CreatePostUserWarningUsecase extends UsecaseHandler.create({
 
 		await this.userWarningRepository.save(warning);
 
-		if (makeUserBan) {
+		if (makeUserBan.value) {
 			await Promise.all([
 				this.makeUserBanUsecase({ user }),
 				this.notificationRepository.createUserPostBanNotification({
