@@ -1,5 +1,6 @@
 import {
 	nodeSameRawDocumentIdObjecter,
+	postAuthorObjecter,
 	postContentObjecter,
 	PostEntity,
 	postIdObjecter,
@@ -18,7 +19,6 @@ import { intObjecter, UsecaseError } from "@vendors/clean";
 import { endpointCreatePost, endpointPostSchema, endpointPostsDetails, endpointUnprocessedPostDetails } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
 import { userObjecter } from "@business/domains/common/user";
-import { userIdObjecter } from "@business/domains/entities/user";
 import { warningMakeUserBanObjecter, warningReasonObjecter } from "@business/domains/entities/warning";
 import { match, P } from "ts-pattern";
 
@@ -85,7 +85,7 @@ useBuilder()
 			topic: postTopicObjecter.toZodSchema(),
 			content: postContentObjecter.toZodSchema(),
 			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
-			author: userObjecter.toZodSchema(),
+			author: postAuthorObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
