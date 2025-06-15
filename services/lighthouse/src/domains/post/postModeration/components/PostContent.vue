@@ -13,7 +13,7 @@ const { $pt } = postPage.use();
 </script>
 
 <template>
-	<DSCard class="bg-background border border-border rounded-lg shadow-md">
+	<DSCard>
 		<template #header>
 			<div class="flex justify-between items-start">
 				<div>

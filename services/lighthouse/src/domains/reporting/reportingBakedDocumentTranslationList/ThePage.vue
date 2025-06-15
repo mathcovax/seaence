@@ -7,6 +7,12 @@ import { reportingBakedDocumentTranslationListPage } from "./router";
 const { $pt } = reportingBakedDocumentTranslationListPage.use();
 const { pageContent } = usePage();
 const { list, pageOfList } = useList();
+
+const maxPage = 100;
+
+function setPage(page: number) {
+	pageOfList.value = page;
+}
 </script>
 
 <template>
@@ -24,9 +30,11 @@ const { list, pageOfList } = useList();
 
 			<div class="mb-6 flex justify-center">
 				<DSPagination
-					v-model:current-page="pageOfList"
-					:quantity-per-page="pageContent.quantityPerPage"
+					:max-page="maxPage"
 					:total="pageContent.countTotal"
+					:current-page="pageOfList"
+					:quantity-per-page="pageContent.quantityPerPage"
+					@update="setPage"
 				/>
 			</div>
 
@@ -100,9 +108,11 @@ const { list, pageOfList } = useList();
 
 			<div class="flex justify-center">
 				<DSPagination
-					v-model:current-page="pageOfList"
-					:quantity-per-page="pageContent.quantityPerPage"
+					:max-page="maxPage"
 					:total="pageContent.countTotal"
+					:current-page="pageOfList"
+					:quantity-per-page="pageContent.quantityPerPage"
+					@update="setPage"
 				/>
 			</div>
 		</div>
@@ -111,7 +121,7 @@ const { list, pageOfList } = useList();
 			v-else
 			class="py-16 flex justify-center items-center"
 		>
-			<DSLoadingLogo />
+			<DSAdminLoadingLogo />
 		</div>
 	</section>
 </template>

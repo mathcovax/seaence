@@ -110,7 +110,7 @@ function updateActionType(value: string) {
 		>
 			<div class="size-4 border-b-2 border-blue-seaence rounded-full animate-spin" />
 
-			<span>{{ $pt("isProssessing") }}</span>
+			<span>{{ $pt("isProcessing") }}</span>
 		</div>
 	</div>
 

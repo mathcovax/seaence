@@ -2,6 +2,11 @@
 import { type HTMLAttributes, computed } from "vue";
 import { RouterLink, type RouteLocationRaw } from "vue-router";
 import { cn } from "../../../lib/utils";
+import DSCardHeader from "./DSCardHeader.vue";
+import DSCardContent from "./DSCardContent.vue";
+import DSCardFooter from "./DSCardFooter.vue";
+import DSCardTitle from "./DSCardTitle.vue";
+import DSCardDescription from "./DSCardDescription.vue";
 
 const props = defineProps<{
 	class?: HTMLAttributes["class"];
@@ -70,6 +75,7 @@ const hasFooter = computed(() => slot.footer);
 
 		<DSCardContent
 			:class="{
+				'space-y-6': !hasHeader && !hasFooter,
 				'pb-6': hasHeader && !hasFooter,
 				'px-6': hasHeader || hasFooter,
 				'pt-6': !hasHeader && hasFooter,

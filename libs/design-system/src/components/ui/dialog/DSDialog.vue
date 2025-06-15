@@ -37,7 +37,7 @@ const slot = defineSlots<{
 		</DSDialogTrigger>
 
 		<DSDialogContent :size="size ?? 'small'">
-			<DSDialogHeader>
+			<DSDialogHeader v-if="slot.title || slot.description">
 				<DSDialogTitle>
 					<slot name="title" />
 				</DSDialogTitle>
