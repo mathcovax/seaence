@@ -3,7 +3,7 @@ import { postPage } from "@/domains/post/postModeration/router";
 import { ref } from "vue";
 import PostStats from "./components/PostStats.vue";
 import PostContent from "./components/PostContent.vue";
-import PostModerationActions from "./components/PostModeration.vue";
+import PostModerationActions, { type RejectAction } from "./components/PostModeration.vue";
 import { usePostModerationPage } from "./composables/usePostModerationPage";
 
 const { $pt } = postPage.use();
@@ -13,14 +13,8 @@ const {
 	findOldestUnprocessedPost,
 } = usePostModerationPage();
 
-const {
-	sonnerMessage,
-} = useSonner();
-
-const isProcessing = ref(false);
-const showRejectForm = ref(false);
 const rejectReason = ref("");
-const actionType = ref<"warning" | "block">("warning");
+const chosenAction = ref<RejectAction>("warning");
 const rejectReasons = [
 	$pt("rejectModal.reason.choices.spam"),
 	$pt("rejectModal.reason.choices.inappropriate"),
@@ -30,85 +24,58 @@ const rejectReasons = [
 	$pt("rejectModal.reason.choices.other"),
 ];
 
-function handleApprove() {
-	const timeout = 1000;
-	isProcessing.value = true;
-
-	setTimeout(async() => {
-		if (!postModerationPage.value) {
-			return;
-		}
-
-		await bridgeClient
-			.post(
-				"/posts/{postId}/is-compliant",
-				{
-					params: {
-						postId: postModerationPage.value.post.id,
-					},
-				},
-			)
-			.whenInformation(
-				"post.updated",
-				() => {
-					sonnerMessage("Post approuvé avec succès !");
-					loadNextPost();
-				},
-			);
-		isProcessing.value = false;
-	}, timeout);
-}
-
-function handleReject() {
-	showRejectForm.value = true;
-}
-
-function confirmReject() {
-	if (!rejectReason.value) {
+async function handleApprove() {
+	if (!postModerationPage.value) {
 		return;
 	}
 
-	const timeout = 1000;
-	isProcessing.value = true;
-
-	setTimeout(async() => {
-		if (!postModerationPage.value) {
-			return;
-		}
-
-		await bridgeClient
-			.post(
-				"/posts/{postId}/is-not-compliant-and-create-warning",
-				{
-					params: {
-						postId: postModerationPage.value.post.id,
-					},
-					body: {
-						reason: rejectReason.value,
-						makeUserBan: actionType.value === "block",
-					},
+	await bridgeClient
+		.post(
+			"/posts/{postId}/is-compliant",
+			{
+				params: {
+					postId: postModerationPage.value.post.id,
 				},
-			)
-			.whenInformation(
-				"post.updated",
-				() => {
-					rejectReason.value = "";
-					actionType.value = "warning";
-					showRejectForm.value = false;
-					isProcessing.value = false;
-
-					loadNextPost();
-
-					sonnerMessage("Post rejeté avec succès !");
-				},
-			);
-	}, timeout);
+			},
+		)
+		.whenInformation(
+			"post.updated",
+			() => {
+				loadNextPost();
+			},
+		);
 }
 
-function cancelReject() {
-	showRejectForm.value = false;
+async function confirmReject() {
+	if (!rejectReason.value || !postModerationPage.value) {
+		return;
+	}
+
+	await bridgeClient
+		.post(
+			"/posts/{postId}/is-not-compliant-and-create-warning",
+			{
+				params: {
+					postId: postModerationPage.value.post.id,
+				},
+				body: {
+					reason: rejectReason.value,
+					makeUserBan: chosenAction.value === "block",
+				},
+			},
+		)
+		.whenInformation(
+			"post.updated",
+			() => {
+				resetRejectForm();
+				loadNextPost();
+			},
+		);
+}
+
+function resetRejectForm() {
 	rejectReason.value = "";
-	actionType.value = "warning";
+	chosenAction.value = "warning";
 }
 
 function loadNextPost() {
@@ -140,17 +107,14 @@ function loadNextPost() {
 				:post="postModerationPage.post"
 			>
 				<PostModerationActions
-					:is-processing="isProcessing"
 					:reject-reasons="rejectReasons"
-					:show-reject-form="showRejectForm"
 					:reject-reason="rejectReason"
-					:action-type="actionType"
+					:action="chosenAction"
 					@approve="handleApprove"
-					@reject="handleReject"
 					@confirm-reject="confirmReject"
-					@cancel-reject="cancelReject"
+					@cancel-reject="resetRejectForm"
 					@update:reject-reason="rejectReason = $event"
-					@update:action-type="actionType = $event"
+					@update:action-type="chosenAction = $event"
 				/>
 			</PostContent>
 		</div>

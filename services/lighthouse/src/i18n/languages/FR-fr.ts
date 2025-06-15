@@ -134,15 +134,16 @@ export const FRfr = {
 	},
 	responses: {
 		bakedDocument: {
-			notfound: "Le document cuit na pas étais trouver.",
-			makeNewTranslation: "La traduction a Correctement étais mit a jours.",
+			notfound: "Le document cuit n'a pas été trouvé.",
+			makeNewTranslation: "La traduction a correctement été mis à jour.",
 		},
 		nodeSameRawDocument: {
-			notfound: "Le neux na pas étais trouvais.",
+			notfound: "Le neud n'a pas été trouvé.",
 		},
 		post: {
 			notfound: "Le post n'a pas été trouvé.",
 			wrongStatus: "Le post n'est pas en attente de modération.",
+			updated: "Le post a été mis à jour avec succès.",
 		},
 	},
 };

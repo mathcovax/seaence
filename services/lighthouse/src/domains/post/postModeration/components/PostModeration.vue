@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { postPage } from "@/domains/post/postModeration/router";
 
+export type RejectAction =
+	| "warning"
+	| "block";
+
 interface Props {
-	isProcessing: boolean;
-	showRejectForm: boolean;
 	rejectReason: string;
-	actionType: "warning" | "block";
+	action: RejectAction;
 	rejectReasons: string[];
 }
 
@@ -15,28 +17,50 @@ interface Emits {
 	confirmReject: [];
 	cancelReject: [];
 	"update:rejectReason": [value: string];
-	"update:actionType": [value: "warning" | "block"];
+	"update:actionType": [value: RejectAction];
 }
 
 defineProps<Props>();
 const emit = defineEmits<Emits>();
+const isProcessing = ref(false);
+const showRejectForm = ref(false);
 
 const { t } = useI18n();
 const { $pt } = postPage.use();
 
 function handleApprove() {
-	emit("approve");
+	const timeout = 1000;
+	isProcessing.value = true;
+
+	setTimeout(
+		() => {
+			emit("approve");
+			isProcessing.value = false;
+		},
+		timeout,
+	);
 }
 
-function handleReject() {
-	emit("reject");
+function handleShowReject() {
+	showRejectForm.value = true;
 }
 
 function handleConfirmReject() {
-	emit("confirmReject");
+	const timeout = 1000;
+	isProcessing.value = true;
+
+	setTimeout(
+		() => {
+			emit("confirmReject");
+			isProcessing.value = false;
+			showRejectForm.value = false;
+		},
+		timeout,
+	);
 }
 
 function handleCancelReject() {
+	showRejectForm.value = false;
 	emit("cancelReject");
 }
 
@@ -71,7 +95,7 @@ function updateActionType(value: string) {
 
 		<DSDestructiveButton
 			:disabled="isProcessing"
-			@click="handleReject"
+			@click="handleShowReject"
 		>
 			<DSIcon
 				name="close"
@@ -119,7 +143,7 @@ function updateActionType(value: string) {
 			</DSLabel>
 
 			<RadioGroup
-				:model-value="actionType"
+				:model-value="action"
 				@update:model-value="updateActionType"
 				class="space-y-2"
 			>
@@ -171,6 +195,15 @@ function updateActionType(value: string) {
 			>
 				{{ t("cta.cancel") }}
 			</DSOutlineButton>
+
+			<div
+				v-if="isProcessing"
+				class="flex gap-2 items-center text-muted-foreground"
+			>
+				<div class="size-4 border-b-2 border-blue-seaence rounded-full animate-spin" />
+
+				<span>{{ $pt("isProssessing") }}</span>
+			</div>
 		</div>
 	</div>
 </template>
