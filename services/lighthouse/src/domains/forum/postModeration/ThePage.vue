@@ -94,7 +94,7 @@ function confirmReject() {
 			/>
 
 			<PostContent :post="postModerationPage.post">
-				<PostModerationForm class="w-[300px]">
+				<PostModerationForm class="w-full">
 					<template v-if="formMode === 'approve'">
 						<DSPrimaryButton
 							icon="check"

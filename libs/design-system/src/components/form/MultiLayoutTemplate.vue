@@ -9,7 +9,7 @@ defineProps<Props>();
 
 <template>
 	<div
-		class="grid gap-2"
+		class="grid gap-4"
 		:style="{
 			'gridTemplateColumns': `repeat(${cols}, minmax(0, 1fr))`
 		}"
