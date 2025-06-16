@@ -35,8 +35,8 @@ export const FRfr = {
 			postStatus: "En attente",
 			isProcessing: "Traitement en cours...",
 			rejectModal: {
-				title: "Information du rejet.",
-				checkboxBanUser: "Banir l'utilisateur.",
+				title: "Information du rejet :",
+				checkboxBanUser: "Bannir l'utilisateur ?",
 				reasonLabel: "Raison du rejet",
 				confirm: "Confirmer le rejet",
 			},
