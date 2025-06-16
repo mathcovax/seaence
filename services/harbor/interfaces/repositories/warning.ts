@@ -27,13 +27,13 @@ userWarningRepository.default = {
 							makeUserBan: simpleEntity.makeUserBan,
 							reason: simpleEntity.reason,
 							userId: simpleEntity.userId,
-							reference: JSON.stringify(entityReference),
+							reference: entityReference,
 						},
 						update: {
 							makeUserBan: simpleEntity.makeUserBan,
 							reason: simpleEntity.reason,
 							userId: simpleEntity.userId,
-							reference: JSON.stringify(entityReference),
+							reference: entityReference,
 						},
 					});
 				},
