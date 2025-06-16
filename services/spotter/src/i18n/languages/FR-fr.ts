@@ -164,6 +164,24 @@ export const FRfr = {
 			title: "Notifications",
 			noNotification: "Aucune notification trouvé.",
 		},
+		[documentFolderPage.name]: {
+			title: "Dossiers",
+			form: {
+				label: {
+					name: "Nom du dossier",
+				},
+			},
+			dialog: {
+				createDocumentFolder: {
+					title: "Créer un dossier",
+				},
+			},
+			counter: {
+				label: "dossiers",
+				filtered: "{filtered} sur {total}",
+			},
+			noDocumentFolder: "Aucun dossier trouvé.",
+		},
 	},
 	authDialog: {
 		title: "Authtification",
@@ -174,6 +192,10 @@ export const FRfr = {
 			CGULabel: "Accepter les contion général d'utilisation.",
 			requireCGU: "L'acceptation des condition général d'utilisation est obligatoire.",
 		},
+	},
+	removeDocumentFolderDialog: {
+		title: "Supprimer un dossier",
+		description: "Êtes-vous sur de vouloir supprimer ce dossier ? La suppression dossier supprimera également son contenu",
 	},
 	layout: {
 		base: {
@@ -188,6 +210,7 @@ export const FRfr = {
 					profile: "Mon profil",
 					disconnect: "Se déconnecter",
 					notification: "Notifications",
+					documentFolder: "Dossiers",
 				},
 			},
 			footer: {
@@ -361,6 +384,10 @@ export const FRfr = {
 		seeMore: "Voir plus",
 		save: "Enregistrer",
 		register: "Créer un compte",
+		delete: "Supprimer",
+		create: "Créer",
+		validate: "Valider",
+		refuse: "Refuser",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",

@@ -297,6 +297,25 @@ type ReplyToPostNotification = {
 
 export { ReplyToPostNotification };
 
+type DocumentFolder = {
+    id: string;
+    userId: string;
+    name: string;
+    numberOfDocument: number;
+    createdAt: string;
+};
+
+export { DocumentFolder };
+
+type DocumentInFoloder = {
+    documentFolderId: string;
+    nodeSameRawDocumentId: string;
+    name: string;
+    addedAt: string;
+};
+
+export { DocumentInFoloder };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/login";
@@ -624,6 +643,129 @@ type CodegenRoutes = ({
         code: 204;
         information: "bakedDocumentTranslationReporting.upsert";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/create-document-folder";
+    body: {
+        documentFolderName: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "documentFolder.maxQuantity";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "documentFolder.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/find-many-document-folders";
+    body: {
+        partialDocumentFolderName: string;
+        page: number;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolders.found";
+        body: {
+            list: DocumentFolder[];
+            total: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/document-folder-page";
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolderPage.found";
+        body: {
+            total: number;
+            quantityPerPage: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/remove-document-folder";
+    body: {
+        documentFolderId: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "documentFolder.removed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/document-in-folder-page";
+    body: {
+        documentFolderId: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolderPage.found";
+        body: {
+            total: number;
+            quantityPerPage: number;
+            maxInFolder: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/document-in-folder-list";
+    body: {
+        page: number;
+        documentFolderId: string;
+        partialDocumentInFolderName: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolderList.found";
+        body: {
+            list: DocumentInFoloder[];
+            total: number;
+        };
     };
 });
 

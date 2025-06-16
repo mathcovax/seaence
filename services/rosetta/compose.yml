@@ -7,6 +7,6 @@ services:
       - 5001:5000 # delete this line if you want to use only in docker network
     volumes:
       - ${INCLUDE_PATH}/rosetta/languages:/home/libretranslate/.local/share/argos-translate/packages/
-    post_start:
-      - command: ["sh", "-c", "chown 1032 /home/libretranslate/.local/share/argos-translate/packages/"]
-        user: root
+    #post_start:
+    #  - command: ["sh", "-c", "chown 1032 /home/libretranslate/.local/share/argos-translate/packages/"]
+    #    user: root
