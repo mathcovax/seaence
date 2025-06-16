@@ -738,6 +738,25 @@ type CodegenRoutes = ({
             quantityPerPage: number;
         };
     };
+}) | ({
+    method: "POST";
+    path: "/remove-document-folder";
+    body: {
+        documentFolderId: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "documentFolder.removed";
+        body?: undefined;
+    };
 });
 
 export { CodegenRoutes };

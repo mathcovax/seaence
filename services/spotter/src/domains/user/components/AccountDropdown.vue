@@ -22,8 +22,6 @@ const { disconect } = useUserInformation();
 				</RouterLink>
 			</DSDropdownMenuItem>
 
-			<DSDropdownMenuSeparator />
-
 			<DSDropdownMenuItem>
 				<RouterLink :to="notificationListPage.createTo()">
 					{{ $t("layout.base.header.accountDropdown.notification") }}

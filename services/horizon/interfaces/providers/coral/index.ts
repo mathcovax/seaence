@@ -24,6 +24,12 @@ type InputGetfindManyDocumentFolderCount = FindHttpClientRoute<
 	"POST",
 	"/get-search-document-folders-count"
 >["body"];
+
+type InputRemoveDocumentFolder = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/remove-document-folder"
+>["body"];
 export class CoralAPI {
 	private static httpClient: HttpClient<CoralClientRoute>;
 
@@ -124,6 +130,17 @@ export class CoralAPI {
 				},
 			)
 			.iWantInformation("documentFolders.searchDetails");
+	}
+
+	public static removeDocumentFolder(input: InputRemoveDocumentFolder) {
+		return this.httpClient
+			.post(
+				"/remove-document-folder",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation(["documentFolder.removed", "documentFolder.notfound"]);
 	}
 
 	static {

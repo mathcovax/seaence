@@ -6,13 +6,13 @@ export function useDocumentFolderPage(
 ) {
 	const { t: $t } = useI18n();
 
-	const documentFolderPageInformation = ref<DocumentFolderPage | null>(null);
-	const documentFolderList = ref<DocumentFolderList | null>(null);
+	const pageInformation = ref<DocumentFolderPage | null>(null);
+	const list = ref<DocumentFolderList | null>(null);
 
 	const defaultPage = 1;
 	const pageOfList = ref(defaultPage);
 
-	const { Form, check } = useFormBuilder(
+	const { Form, check, formValue } = useFormBuilder(
 		useMultiFieldLayout({
 			name: useBaseLayout(
 				textformField,
@@ -29,7 +29,29 @@ export function useDocumentFolderPage(
 		}),
 	);
 
-	function findDocumentFolder() {
+	function findMany() {
+		return horizonClient
+			.post(
+				"/find-many-document-folders",
+				{
+					body: {
+						page: pageOfList.value,
+						partialDocumentFolderName: formValue.value.name,
+					},
+				},
+			)
+			.whenInformation(
+				"documentFolders.found",
+				({ body }) => {
+					list.value = body;
+				},
+			)
+			.whenRequestError(
+				whenFindError,
+			);
+	}
+
+	function handleSearchDocumentFolderByName() {
 		const result = check();
 
 		if (!result) {
@@ -38,30 +60,12 @@ export function useDocumentFolderPage(
 
 		pageOfList.value = defaultPage;
 
-		return horizonClient
-			.post(
-				"/find-many-document-folders",
-				{
-					body: {
-						page: pageOfList.value,
-						partialDocumentFolderName: result.name,
-					},
-				},
-			)
-			.whenInformation(
-				"documentFolders.found",
-				({ body }) => {
-					documentFolderList.value = body;
-				},
-			)
-			.whenRequestError(
-				whenFindError,
-			);
+		return findMany();
 	}
 
 	watch(
 		pageOfList,
-		findDocumentFolder,
+		findMany,
 	);
 
 	function setPage(value: number) {
@@ -73,19 +77,22 @@ export function useDocumentFolderPage(
 		.whenInformation(
 			"documentFolderPage.found",
 			({ body }) => {
-				documentFolderPageInformation.value = body;
+				pageInformation.value = body;
 			},
 		)
 		.whenRequestError(
 			whenFindError,
 		);
 
+	void findMany();
+
 	return {
-		documentFolderList,
-		documentFolderPageInformation,
-		pageOfList,
-		setPage,
-		findDocumentFolder,
+		documentFolderList: list,
+		documentFolderPageInformation: pageInformation,
+		documentFolderPageOfList: pageOfList,
+		documentFolderSetPage: setPage,
+		handleSearchDocumentFolderByName,
+		findManyDocumentFolder: findMany,
 		SearchDocumentFolderForm: Form,
 	};
 }

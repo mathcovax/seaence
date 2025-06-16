@@ -1,6 +1,6 @@
 const isOpen = ref(false);
 
-export function useCreateDocumentFolderDialog() {
+export function useRemoveDocumentFolderDialog() {
 	function open() {
 		isOpen.value = true;
 	}
@@ -18,11 +18,11 @@ export function useCreateDocumentFolderDialog() {
 	}
 
 	return {
-		setStateCreateDocumentFolderDialog: setState,
-		openCreateDocumentFolderDialog: open,
-		closeCreateDocumentFolderDialog: close,
-		toggleCreateDocumentFolderDialog: toggle,
-		isOpenCreateDocumentFolderDialog: computed(
+		setStateRemoveDocumentFolderDialog: setState,
+		openRemoveDocumentFolderDialog: open,
+		closeRemoveDocumentFolderDialog: close,
+		toggleRemoveDocumentFolderDialog: toggle,
+		isOpenRemoveDocumentFolderDialog: computed(
 			() => isOpen.value,
 		),
 	};

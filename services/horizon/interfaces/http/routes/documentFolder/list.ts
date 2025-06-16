@@ -27,7 +27,7 @@ useMustBeConnectedBuilder()
 				userId: user.id,
 				quantityPerPage: documentFolderConfig.findMany.quantityPerPage,
 				partialDocumentFolderName,
-				page,
+				page: page - documentFolderConfig.findMany.pageOffset,
 			});
 
 			const { body: { total } } = await CoralAPI.getfindManyDocumentFolderCount({
