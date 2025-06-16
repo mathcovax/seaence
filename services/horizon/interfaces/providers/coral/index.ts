@@ -1,34 +1,11 @@
 import { type FindHttpClientRoute, HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/coral/duplojsTypesCodegen";
+import { type InputRemoveFavoritEquation, type InputFindManyFavoritEquationDetails, type InputFindManyFavoritEquationName, type InputFindOneFavoritEquation, type InputUpsertFavoritEquation } from "./types";
 
 export type CoralClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
-
-type InputFindManyFavoritEquationName = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/find-many-favorite-equation-name"
->["body"];
-
-type InputFindManyFavoritEquationDetails = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/find-many-favorite-equation-details"
->["body"];
-
-type InputFindOneFavoritEquation = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/find-one-favorite-equation"
->["body"];
-
-type InputUpsertFavoritEquation = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/upsert-favorite-equation"
->["body"];
 
 export class CoralAPI {
 	private static httpClient: HttpClient<CoralClientRoute>;
@@ -83,6 +60,19 @@ export class CoralAPI {
 				},
 			)
 			.iWantInformation("favoriteEquation.upsert");
+	}
+
+	public static removeFavoriteEquation(
+		body: InputRemoveFavoritEquation,
+	) {
+		return this.httpClient
+			.post(
+				"/remove-favorite-equation",
+				{
+					body,
+				},
+			)
+			.iWantExpectedResponse();
 	}
 
 	static {

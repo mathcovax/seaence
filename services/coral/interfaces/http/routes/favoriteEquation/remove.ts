@@ -15,8 +15,8 @@ useBuilder()
 				userFavoriteEquation,
 			});
 
-			return new OkHttpResponse("favoriequation.removed");
+			return new OkHttpResponse("favoriteEquation.removed");
 		},
-		makeResponseContract(OkHttpResponse, "favoriequation.removed"),
+		makeResponseContract(OkHttpResponse, "favoriteEquation.removed"),
 	);
 

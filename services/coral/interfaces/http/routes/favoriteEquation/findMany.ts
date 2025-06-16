@@ -25,7 +25,10 @@ useBuilder()
 			});
 
 			const favoriEquationNames = favoriEquations.map(
-				(favoriEquation) => favoriEquation.name.value,
+				(favoriEquation) => ({
+					id: favoriEquation.id.value,
+					name: favoriEquation.name.value,
+				}),
 			);
 
 			return new OkHttpResponse("favoriteEquation.name.findMany", favoriEquationNames);

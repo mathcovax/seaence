@@ -9,3 +9,4 @@ import "./reporting";
 import "./favoriteEquation/list";
 import "./favoriteEquation/findOne";
 import "./favoriteEquation/upsert";
+import "./favoriteEquation/remove";

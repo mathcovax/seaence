@@ -11,7 +11,7 @@ useBuilder()
 		(pickup) => {
 			const { userFavoriteEquation } = pickup(["userFavoriteEquation"]);
 
-			return new OkHttpResponse("favoriEquation.findOne", userFavoriteEquation.value.toSimpleObject());
+			return new OkHttpResponse("favoriteEquation.findOne", userFavoriteEquation.value.toSimpleObject());
 		},
-		makeResponseContract(OkHttpResponse, "favoriEquation.findOne", endpointFindOneFavoriteEquationSchema),
+		makeResponseContract(OkHttpResponse, "favoriteEquation.findOne", endpointFindOneFavoriteEquationSchema),
 	);

@@ -686,7 +686,10 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "favoriteEquationNameList.found";
-        body: string[];
+        body: {
+            id: string;
+            name: string;
+        }[];
     };
 }) | ({
     method: "POST";
@@ -740,6 +743,29 @@ type CodegenRoutes = ({
     } | {
         code: 204;
         information: "favoriteEquation.upsert";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/remove-favorite-equation/{favoriteEquationId}";
+    params: {
+        favoriteEquationId: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "favoriteEquation.notfound";
+        body?: undefined;
+    } | {
+        code: 401;
+        information: "favoriteEquation.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "favoriteEquation.remove";
         body?: undefined;
     };
 });

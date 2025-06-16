@@ -354,7 +354,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "favoriEquation.findOne";
+        information: "favoriteEquation.findOne";
         body: {
             id: string;
             name: string;
@@ -380,7 +380,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "favoriequation.removed";
+        information: "favoriteEquation.removed";
         body?: undefined;
     };
 }) | ({
@@ -395,7 +395,10 @@ type CodegenRoutes = ({
     response: {
         code: 200;
         information: "favoriteEquation.name.findMany";
-        body: string[];
+        body: {
+            id: string;
+            name: string;
+        }[];
     };
 }) | ({
     method: "POST";

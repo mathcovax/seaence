@@ -4,7 +4,8 @@ const emit = defineEmits<{
 }>();
 
 interface Props {
-	align: "auto" | "center" | "end";
+	align?: "auto" | "center" | "end";
+	reverse?: boolean;
 }
 
 defineProps<Props>();
@@ -24,6 +25,9 @@ defineSlots<{
 	<form
 		@submit="submit"
 		class="flex flex-col gap-2"
+		:class="{
+			'flex-col-reverse': reverse
+		}"
 	>
 		<slot name="formField" />
 

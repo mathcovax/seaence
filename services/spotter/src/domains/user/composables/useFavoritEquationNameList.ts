@@ -1,3 +1,5 @@
+import type { HorizonClientRoute } from "@/lib/horizon";
+import type { FindHttpClientRoute, FindHttpClientRouteResponse } from "@duplojs/http-client";
 import type { FavoriteEquationListDetails } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { favoriteEquationRules } from "@vendors/entity-rules";
 import { watchPausable } from "@vueuse/core";
@@ -5,6 +7,16 @@ import { watchPausable } from "@vueuse/core";
 const defaultPage = 1;
 const debunceTime = 500;
 const debounce = createFetchDebounce(debunceTime);
+
+type NameList = FindHttpClientRouteResponse<
+	FindHttpClientRoute<
+		HorizonClientRoute,
+		"POST",
+		"/favorite-equation-name-list"
+	>,
+	"information",
+	"favoriteEquationNameList.found"
+>["body"];
 
 export function useFavoritEquationNameList() {
 	const {
@@ -21,6 +33,7 @@ export function useFavoritEquationNameList() {
 			textformField,
 			{
 				mandatory: true,
+				label: t("favoriteEquation.inputLabel"),
 				schema: zod.string()
 					.min(
 						favoriteEquationRules.name.minLength,
@@ -35,10 +48,10 @@ export function useFavoritEquationNameList() {
 				},
 			},
 		),
-		{ template: inlineFormTemplate({}) },
+		{ template: formTemplate({ reverse: true }) },
 	);
 
-	const list = ref<string[] | null>(null);
+	const list = ref<NameList | null>(null);
 	const details = ref<FavoriteEquationListDetails | null>(null);
 
 	const pageOfList = ref(defaultPage);

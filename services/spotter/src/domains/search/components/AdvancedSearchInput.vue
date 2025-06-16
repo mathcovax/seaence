@@ -39,7 +39,7 @@ function onSubmit() {
 
 <template>
 	<form
-		class="flex flex-col gap-4"
+		class="flex flex-col gap-4 pt-1"
 		@submit.prevent="onSubmit"
 	>
 		<div class="flex gap-4">
@@ -56,7 +56,6 @@ function onSubmit() {
 			/>
 
 			<AddToFavoriteEquation
-				v-if="modelValue"
 				v-model="modelValue"
 			/>
 		</div>

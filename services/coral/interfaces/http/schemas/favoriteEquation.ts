@@ -13,7 +13,11 @@ const favoriteEquationSchema = zod.object({
 
 export const endpointFindOneFavoriteEquationSchema = favoriteEquationSchema;
 
-export const endpointFindManyFavoriteEquationNameSchema = zod.string().array();
+export const endpointFindManyFavoriteEquationNameSchema
+	= favoriteEquationSchema.pick({
+		id: true,
+		name: true,
+	}).array();
 
 export const endpointFindManyFavoriteEquationDetailsSchema = zod.object({
 	total: zod.number(),

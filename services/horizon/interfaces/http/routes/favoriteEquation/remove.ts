@@ -1,10 +1,9 @@
-import { FavoriteEquation } from "@business/entities/favoriteEquation";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
 import { CoralAPI } from "@interfaces/providers/coral";
 import { match } from "ts-pattern";
 
 useMustBeConnectedBuilder()
-	.createRoute("POST", "/find-one-favorite-equation/{favoriteEquationId}")
+	.createRoute("POST", "/remove-favorite-equation/{favoriteEquationId}")
 	.extract({
 		params: {
 			favoriteEquationId: zod.string(),
@@ -14,7 +13,7 @@ useMustBeConnectedBuilder()
 		async({ pickup, dropper }) => {
 			const { user, favoriteEquationId } = pickup(["user", "favoriteEquationId"]);
 
-			const result = await CoralAPI.findOneFavoriteEquation({
+			const result = await CoralAPI.removeFavoriteEquation({
 				userId: user.id,
 				favoriteEquationId,
 			});
@@ -29,22 +28,18 @@ useMustBeConnectedBuilder()
 					() => new UnauthorizedHttpResponse("favoriteEquation.wrongProprietary"),
 				)
 				.with(
-					{ information: "favoriteEquation.findOne" },
-					({ body }) => dropper({ favoriteEquation: body }),
+					{ information: "favoriteEquation.removed" },
+					() => dropper(null),
 				)
 				.exhaustive();
 		},
-		["favoriteEquation"],
+		[],
 		[
 			...makeResponseContract(NotFoundHttpResponse, "favoriteEquation.notfound"),
 			...makeResponseContract(UnauthorizedHttpResponse, "favoriteEquation.wrongProprietary"),
 		],
 	)
 	.handler(
-		(pickup) => {
-			const { favoriteEquation } = pickup(["favoriteEquation"]);
-
-			return new OkHttpResponse("favoriteEquation.found", favoriteEquation);
-		},
-		makeResponseContract(OkHttpResponse, "favoriteEquation.found", FavoriteEquation.index),
+		() => new NoContentHttpResponse("favoriteEquation.remove"),
+		makeResponseContract(NoContentHttpResponse, "favoriteEquation.remove"),
 	);

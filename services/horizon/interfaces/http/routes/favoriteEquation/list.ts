@@ -28,7 +28,11 @@ useMustBeConnectedBuilder()
 				favoriteEquationNames,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "favoriteEquationNameList.found", FavoriteEquation.nameList),
+		makeResponseContract(
+			OkHttpResponse,
+			"favoriteEquationNameList.found",
+			FavoriteEquation.nameList,
+		),
 	);
 
 useMustBeConnectedBuilder()

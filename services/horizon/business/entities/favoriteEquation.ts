@@ -2,8 +2,6 @@ import { zod } from "@vendors/clean";
 import { operatorContentSchema } from "@vendors/types-advanced-query";
 
 export namespace FavoriteEquation {
-	export const nameList = zod.string().array();
-
 	export const listDetails = zod.object({
 		total: zod.number(),
 		quantityPerPage: zod.number(),
@@ -16,4 +14,11 @@ export namespace FavoriteEquation {
 		addedAt: zod.string(),
 		equation: operatorContentSchema,
 	});
+
+	export const nameList = index
+		.pick({
+			id: true,
+			name: true,
+		}).array();
+
 }

@@ -131,6 +131,7 @@ declare global {
   const useTemplateRef: typeof import('vue')['useTemplateRef']
   const useTextLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']
   const useUnionLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']
+  const useValidationDialog: typeof import('./vendors/design-system/composables/useValidationDialog')['useValidationDialog']
   const useWindow: typeof import('./vendors/design-system/composables/useWindow')['useWindow']
   const valueUpdater: typeof import('./vendors/design-system/lib/utils')['valueUpdater']
   const watch: typeof import('vue')['watch']
@@ -304,6 +305,7 @@ declare module 'vue' {
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly useTextLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']>
     readonly useUnionLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']>
+    readonly useValidationDialog: UnwrapRef<typeof import('./vendors/design-system/composables/useValidationDialog')['useValidationDialog']>
     readonly useWindow: UnwrapRef<typeof import('./vendors/design-system/composables/useWindow')['useWindow']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>

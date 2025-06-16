@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { OperatorContent } from "@vendors/types-advanced-query";
+import { operatorContentSchema, type OperatorContent } from "@vendors/types-advanced-query";
 import { useFavoritEquationNameList } from "../composables/useFavoritEquationNameList";
 import { useUserInformation } from "../composables/useUserInformation";
+import DSGhostButton from "@vendors/design-system/components/ui/button/DSGhostButton.vue";
+import DSValidationDialog from "@vendors/design-system/components/DSValidationDialog.vue";
 
 const modelValue = defineModel<
-	OperatorContent
+	OperatorContent | null
 >(
 	{ required: true },
 );
@@ -22,6 +24,12 @@ const {
 	FavoriteEquationForm,
 	favoriteEquationFormCheck,
 } = useFavoritEquationNameList();
+const { ValidationDialog: ReplaceValidationDialog, getValidation: getReplaceValidation } = useValidationDialog({
+	title: t("favoriteEquation.replace"),
+	acceptLabel: t("cta.replace"),
+	rejectLabel: t("cta.no"),
+	destructive: true,
+});
 const opened = ref(false);
 
 function onTrigger(event: Event) {
@@ -33,7 +41,7 @@ function onTrigger(event: Event) {
 	event.stopImmediatePropagation();
 	event.preventDefault();
 
-	sonner.sonnerError(t("favoritEquations.connexionRequire"));
+	sonner.sonnerError(t("favoriteEquation.connexionRequire"));
 }
 
 watch(
@@ -47,12 +55,31 @@ watch(
 	},
 );
 
-function upsertFavoriteEquation() {
+async function upsertFavoriteEquation() {
 	if (fetchFavoriteEquationNameListInProgess.value) {
 		return;
 	}
+
+	if (!modelValue.value) {
+		sonner.sonnerError(t("favoriteEquation.needEquation"));
+		return;
+	}
+
+	if (!operatorContentSchema.safeParse(modelValue.value).success) {
+		sonner.sonnerError(t("favoriteEquation.invalidEquation"));
+		return;
+	}
+
 	const result = favoriteEquationFormCheck();
 	if (!result) {
+		return;
+	}
+
+	const findedName = favoriteEquationNameList.value?.list.find(
+		({ name }) => name === result,
+	);
+
+	if (findedName && !(await getReplaceValidation())) {
 		return;
 	}
 
@@ -70,15 +97,43 @@ function upsertFavoriteEquation() {
 	opened.value = false;
 }
 
-function useFavoriteEquation() {
+function useFavoriteEquation(
+	favoriteEquationId: string,
+) {
 	void horizonClient
 		.post(
 			"/find-one-favorite-equation/{favoriteEquationId}",
 			{
 				params: {
-					//todo replace by name
-					favoriteEquationId: "",
+					favoriteEquationId,
 				},
+			},
+		)
+		.whenInformation(
+			"favoriteEquation.found",
+			({ body: { equation } }) => {
+				modelValue.value = equation;
+				opened.value = false;
+			},
+		);
+}
+
+function removeFavoriteEquation(
+	favoriteEquationId: string,
+) {
+	void horizonClient
+		.post(
+			"/remove-favorite-equation/{favoriteEquationId}",
+			{
+				params: {
+					favoriteEquationId,
+				},
+			},
+		)
+		.whenInformation(
+			"favoriteEquation.remove",
+			() => {
+				opened.value = false;
 			},
 		);
 }
@@ -95,25 +150,45 @@ function useFavoriteEquation() {
 
 		<template #content>
 			<div class="flex flex-col gap-2">
-				<FavoriteEquationForm @submit="upsertFavoriteEquation">
+				<FavoriteEquationForm>
 					<DSPrimaryButton
+						@click="upsertFavoriteEquation"
 						:disabled="favoriteEquationNameListIsLoading"
-						type="submit"
 						icon="contentSaveCheck"
-						square
-					/>
+						class="w-full"
+					>
+						{{ $t("cta.save") }}
+					</DSPrimaryButton>
 				</FavoriteEquationForm>
 
 				<div
 					v-if="favoriteEquationNameList && favoriteEquationNameList.list.length"
-					class="flex flex-col items-center gap-2"
+					class="flex flex-col gap-2"
 				>
-					<DSClickableText
+					<div
 						v-for="row of favoriteEquationNameList.list"
-						:key="row"
-						:content="row"
-						@click="useFavoriteEquation"
-					/>
+						:key="row.id"
+						class="flex justify-between overflow-hidden"
+					>
+						<DSClickableText
+							:content="row.name"
+							@click="useFavoriteEquation(row.id)"
+							class="text-ellipsis"
+						/>
+
+						<DSValidationDialog
+							@accept="removeFavoriteEquation(row.id)"
+							:title="$t('favoriteEquation.remove')"
+							:accept-label="$t('cta.remove')"
+							:reject-label="$t('cta.no')"
+							destructive
+						>
+							<DSGhostButton
+								square
+								icon="close"
+							/>
+						</DSValidationDialog>
+					</div>
 
 					<DSPagination
 						:total="favoriteEquationNameList.details.total"
@@ -123,9 +198,11 @@ function useFavoriteEquation() {
 				</div>
 
 				<div v-else-if="favoriteEquationNameList && !favoriteEquationNameList.list.length">
-					{{ $t("favoritEquations.emptySearch") }}
+					{{ $t("favoriteEquation.emptySearch") }}
 				</div>
 			</div>
 		</template>
 	</DSPopover>
+
+	<ReplaceValidationDialog />
 </template>

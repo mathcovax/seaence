@@ -176,6 +176,7 @@ declare module 'vue' {
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createExternalPromise: UnwrapRef<typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']>
+    readonly createFetchDebounce: UnwrapRef<typeof import('./vendors/design-system/utils/debounce')['createFetchDebounce']>
     readonly createFormField: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']>
     readonly createLayoutTemplate: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/templates/createLayoutTemplate')['createLayoutTemplate']>
     readonly createPage: UnwrapRef<typeof import('./vendors/design-system/utils/createPage')['createPage']>
@@ -189,6 +190,7 @@ declare module 'vue' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly i18n: UnwrapRef<typeof import('./src/i18n/index')['i18n']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
+    readonly inlineFormTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['inlineFormTemplate']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -255,6 +257,7 @@ declare module 'vue' {
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly useTextLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']>
     readonly useUnionLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']>
+    readonly useValidationDialog: UnwrapRef<typeof import('./vendors/design-system/composables/useValidationDialog')['useValidationDialog']>
     readonly useWindow: UnwrapRef<typeof import('./vendors/design-system/composables/useWindow')['useWindow']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
