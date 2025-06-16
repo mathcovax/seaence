@@ -23,8 +23,9 @@ export default defineConfig({
 				"src/i18n",
 				"src/libs/zod/index.ts",
 				"src/libs/bridge/index.ts",
-				"vendors/design-system/composables",
+				"vendors/design-system/composables/**",
 				"vendors/design-system/utils",
+				"src/utils",
 			],
 			imports: [
 				"vue",

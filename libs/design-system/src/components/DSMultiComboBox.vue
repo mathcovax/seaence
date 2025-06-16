@@ -6,7 +6,6 @@ import DSPopoverTrigger from "./ui/popover/DSPopoverTrigger.vue";
 import DSPopoverContent from "./ui/popover/DSPopoverContent.vue";
 import DSGhostButton from "./ui/button/DSGhostButton.vue";
 import DSClosingTag from "./DSClosingTag.vue";
-import DSIcon from "./ui/icon/DSIcon.vue";
 import DSCommand from "./ui/command/DSCommand.vue";
 import DSCommandInput from "./ui/command/DSCommandInput.vue";
 import DSCommandEmpty from "./ui/command/DSCommandEmpty.vue";

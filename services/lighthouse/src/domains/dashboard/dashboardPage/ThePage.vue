@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
-import { postPage } from "@/domains/post/postModeration/router";
+import { postPage } from "@/domains/forum/postModeration/router";
 import {
 	reportingBakedDocumentTranslationListPage,
 } from "@/domains/reporting/reportingBakedDocumentTranslationList/router";

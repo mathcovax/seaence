@@ -44,7 +44,7 @@ export class SchoolAPI {
 	public static indicatePostIsNotCompliantAndCreateWarning(params: InputIndicatePostIsNotCompliantAndCreateWarning) {
 		return this.httpClient
 			.patch(
-				"/posts/{postId}/is-not-compliant",
+				"/posts/{postId}/is-not-compliant-and-create-warning",
 				{
 					params: {
 						postId: params.postId,

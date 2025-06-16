@@ -154,7 +154,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "PATCH";
-    path: "/posts/{postId}/is-not-compliant";
+    path: "/posts/{postId}/is-not-compliant-and-create-warning";
     body: {
         makeUserBan: boolean;
         reason: string;

@@ -1,5 +1,5 @@
 import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
-import { postPage } from "@/domains/post/postModeration/router";
+import { postPage } from "@/domains/forum/postModeration/router";
 import { reportingBakedDocumentTranslationPage } from "@/domains/reporting/reportingBakedDocumentTranslation/router";
 import {
 	reportingBakedDocumentTranslationListPage,
@@ -35,27 +35,9 @@ export const FRfr = {
 			postStatus: "En attente",
 			isProcessing: "Traitement en cours...",
 			rejectModal: {
-				title: "Motif de rejet",
-				reason: {
-					title: "Raison du rejet",
-					placeholder: "Sélectionnez une raison",
-					choices: {
-						spam: "Contenu spam ou publicitaire",
-						inappropriate: "Contenu inapproprié",
-						offTopic: "Hors sujet",
-						duplicate: "Contenu dupliqué",
-						lowQuality: "Qualité insuffisante",
-						other: "Autre raison",
-					},
-				},
-				action: {
-					title: "Action à effectuer",
-					type: {
-						warning: "Avertissement simple",
-						block: "Bloquer l'accès aux posts",
-					},
-				},
-
+				title: "Information du rejet.",
+				checkboxBanUser: "Banir l'utilisateur.",
+				reasonLabel: "Raison du rejet",
 				confirm: "Confirmer le rejet",
 			},
 			postStats: {

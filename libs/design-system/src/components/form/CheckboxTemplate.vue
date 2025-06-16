@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DSCheckbox from "../ui/checkbox/DSCheckbox.vue";
+import DSLabel from "../ui/label/DSLabel.vue";
 
 interface Props {
 	label: string;
@@ -14,8 +15,8 @@ const modelValue = defineModel<boolean>({ required: true });
 	<div class="flex gap-2 items-center">
 		<DSCheckbox v-model="modelValue" />
 
-		<label>
+		<DSLabel>
 			{{ label }}
-		</label>
+		</DSLabel>
 	</div>
 </template>

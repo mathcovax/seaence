@@ -1,4 +1,5 @@
 import { SchoolAPI } from "@interfaces/providers/school";
+import { baseWarningRules } from "@vendors/entity-rules";
 import { match } from "ts-pattern";
 
 useBuilder()
@@ -9,7 +10,9 @@ useBuilder()
 		},
 		body: zod.object({
 			makeUserBan: zod.boolean(),
-			reason: zod.string(),
+			reason: zod.string()
+				.min(baseWarningRules.reason.min)
+				.max(baseWarningRules.reason.max),
 		}),
 	})
 	.cut(

@@ -14,6 +14,9 @@ declare global {
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const createExternalPromise: typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']
+  const createFetchDebounce: typeof import('./vendors/design-system/utils/debounce')['createFetchDebounce']
+  const createFormField: typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']
+  const createLayoutTemplate: typeof import('./vendors/design-system/composables/useFormBuilder/templates/createLayoutTemplate')['createLayoutTemplate']
   const createPage: typeof import('./vendors/design-system/utils/createPage')['createPage']
   const customRef: typeof import('vue')['customRef']
   const dashboardPage: typeof import('./src/domains/dashboard/dashboardPage/router')['dashboardPage']
@@ -26,6 +29,7 @@ declare global {
   const h: typeof import('vue')['h']
   const i18n: typeof import('./src/i18n/index')['i18n']
   const inject: typeof import('vue')['inject']
+  const inlineFormTemplate: typeof import('./vendors/design-system/utils/layoutTemplate')['inlineFormTemplate']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
@@ -49,7 +53,7 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const onWatcherCleanup: typeof import('vue')['onWatcherCleanup']
-  const postPage: typeof import('./src/domains/post/postModeration/router')['postPage']
+  const postPage: typeof import('./src/domains/forum/postModeration/router')['postPage']
   const provide: typeof import('vue')['provide']
   const reactive: typeof import('vue')['reactive']
   const readonly: typeof import('vue')['readonly']
@@ -66,16 +70,22 @@ declare global {
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
   const triggerRef: typeof import('vue')['triggerRef']
+  const unionSelectLessLayoutTemplate: typeof import('./vendors/design-system/utils/layoutTemplate')['unionSelectLessLayoutTemplate']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
+  const useBaseLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout')['useBaseLayout']
+  const useCheckLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')['useCheckLayout']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
+  const useEmptyLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']
+  const useFormBuilder: typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']
   const useI18n: typeof import('vue-i18n')['useI18n']
   const useId: typeof import('vue')['useId']
   const useLink: typeof import('vue-router')['useLink']
   const useLoader: typeof import('./src/composables/useLoader')['useLoader']
   const useLocalStorageItem: typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']
   const useModel: typeof import('vue')['useModel']
+  const useMultiFieldLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')['useMultiFieldLayout']
   const useProvide: typeof import('./vendors/design-system/composables/useProvide')['useProvide']
   const useRefHasChange: typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']
   const useRoute: typeof import('vue-router')['useRoute']
@@ -85,6 +95,9 @@ declare global {
   const useSmoothEnabled: typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']
   const useSonner: typeof import('./vendors/design-system/composables/useSonner')['useSonner']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
+  const useTextLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']
+  const useUnionLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']
+  const useValidationDialog: typeof import('./vendors/design-system/composables/useValidationDialog')['useValidationDialog']
   const useWindow: typeof import('./vendors/design-system/composables/useWindow')['useWindow']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
@@ -95,11 +108,56 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
   export type { BridgeClientRoute } from './src/libs/bridge/index'
   import('./src/libs/bridge/index')
+  // @ts-ignore
+  export type { FormFieldOptions } from './vendors/design-system/composables/useFormBuilder/createFormField'
+  import('./vendors/design-system/composables/useFormBuilder/createFormField')
+  // @ts-ignore
+  export type { BaseProps, ExposedProperties, FormFieldParams, FormFieldInstance, FormField, GetGenericFormField } from './vendors/design-system/composables/useFormBuilder/formField'
+  import('./vendors/design-system/composables/useFormBuilder/formField')
+  // @ts-ignore
+  export type { CheckLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')
+  // @ts-ignore
+  export type { MultiLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')
+  // @ts-ignore
+  export type { MaybeRef, FormContext, FormOptions } from './vendors/design-system/composables/useFormBuilder/index'
+  import('./vendors/design-system/composables/useFormBuilder/index')
+  // @ts-ignore
+  export type { BaseLayoutOptions, MaybeCheckedType, ChouseDefaultValue } from './vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout')
+  // @ts-ignore
+  export type { TextLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useTextLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')
+  // @ts-ignore
+  export type { UnionLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')
+  // @ts-ignore
+  export type { BaseLayoutTemplateProps, BaseLayoutTemplateItem, BaseLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/baseLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/baseLayout')
+  // @ts-ignore
+  export type { CheckLayoutTemplateProps, CheckLayoutTemplateItem, CheckLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/checkLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/checkLayout')
+  // @ts-ignore
+  export type { LayoutTemplateItem, MaybeArray, TemplateSlotNode, TemplateRender, LayoutTemplateItems, FindLayoutTemplateItem } from './vendors/design-system/composables/useFormBuilder/templates/createLayoutTemplate'
+  import('./vendors/design-system/composables/useFormBuilder/templates/createLayoutTemplate')
+  // @ts-ignore
+  export type { FormTemplateProps, FormTemplateRender, FormTemplateItem } from './vendors/design-system/composables/useFormBuilder/templates/form'
+  import('./vendors/design-system/composables/useFormBuilder/templates/form')
+  // @ts-ignore
+  export type { MultiLayoutTemplateProps, MultiLayoutTemplateItem, MultiLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/multiLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/multiLayout')
+  // @ts-ignore
+  export type { TextLayoutTemplateProps, TextLayoutTemplateItem, TextLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/textLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/textLayout')
+  // @ts-ignore
+  export type { UnionLayoutTemplateProps, UnionLayoutTemplateItem, UnionLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/unionLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/unionLayout')
   // @ts-ignore
   export type { PageParams, PageGoParams, PageUse, Page } from './vendors/design-system/utils/createPage'
   import('./vendors/design-system/utils/createPage')
@@ -118,6 +176,8 @@ declare module 'vue' {
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createExternalPromise: UnwrapRef<typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']>
+    readonly createFormField: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']>
+    readonly createLayoutTemplate: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/templates/createLayoutTemplate')['createLayoutTemplate']>
     readonly createPage: UnwrapRef<typeof import('./vendors/design-system/utils/createPage')['createPage']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
@@ -168,16 +228,22 @@ declare module 'vue' {
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
+    readonly unionSelectLessLayoutTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['unionSelectLessLayoutTemplate']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useBaseLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout')['useBaseLayout']>
+    readonly useCheckLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')['useCheckLayout']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
+    readonly useEmptyLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']>
+    readonly useFormBuilder: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useLoader: UnwrapRef<typeof import('./src/composables/useLoader')['useLoader']>
     readonly useLocalStorageItem: UnwrapRef<typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
+    readonly useMultiFieldLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')['useMultiFieldLayout']>
     readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
     readonly useRefHasChange: UnwrapRef<typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
@@ -187,6 +253,8 @@ declare module 'vue' {
     readonly useSmoothEnabled: UnwrapRef<typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']>
     readonly useSonner: UnwrapRef<typeof import('./vendors/design-system/composables/useSonner')['useSonner']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
+    readonly useTextLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']>
+    readonly useUnionLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']>
     readonly useWindow: UnwrapRef<typeof import('./vendors/design-system/composables/useWindow')['useWindow']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>

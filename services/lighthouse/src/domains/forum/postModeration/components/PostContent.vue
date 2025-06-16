@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { postPage } from "@/domains/post/postModeration/router";
+import { postPage } from "@/domains/forum/postModeration/router";
 import type { Post } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
 

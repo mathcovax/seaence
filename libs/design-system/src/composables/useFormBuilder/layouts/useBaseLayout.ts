@@ -90,7 +90,7 @@ export function useBaseLayout<
 		}
 
 		function reset() {
-			formFieldComponent.exposed.check();
+			formFieldComponent.exposed.reset();
 		}
 
 		return {

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { postPage } from "@/domains/post/postModeration/router";
-import { ref } from "vue";
+import { postPage } from "./router";
 import PostStats from "./components/PostStats.vue";
 import PostContent from "./components/PostContent.vue";
-import PostModerationActions, { type RejectAction } from "./components/PostModeration.vue";
 import { usePostModerationPage } from "./composables/usePostModerationPage";
+import { usePostModerationForm } from "./composables/usePostModerationForm";
 
 const { $pt } = postPage.use();
 
@@ -12,24 +11,21 @@ const {
 	postModerationPage,
 	findOldestUnprocessedPost,
 } = usePostModerationPage();
+const {
+	PostModerationForm,
+	passeToApproveForm,
+	passeToRejectForm,
+	formMode,
+	checkForm,
+	resetForm,
+} = usePostModerationForm();
 
-const rejectReason = ref("");
-const chosenAction = ref<RejectAction>("warning");
-const rejectReasons = [
-	$pt("rejectModal.reason.choices.spam"),
-	$pt("rejectModal.reason.choices.inappropriate"),
-	$pt("rejectModal.reason.choices.offTopic"),
-	$pt("rejectModal.reason.choices.duplicate"),
-	$pt("rejectModal.reason.choices.lowQuality"),
-	$pt("rejectModal.reason.choices.other"),
-];
-
-async function handleApprove() {
+function handleApprove() {
 	if (!postModerationPage.value) {
 		return;
 	}
 
-	await bridgeClient
+	void bridgeClient
 		.post(
 			"/posts/{postId}/is-compliant",
 			{
@@ -41,17 +37,20 @@ async function handleApprove() {
 		.whenInformation(
 			"post.updated",
 			() => {
-				loadNextPost();
+				resetForm();
+				void findOldestUnprocessedPost();
 			},
 		);
 }
 
-async function confirmReject() {
-	if (!rejectReason.value || !postModerationPage.value) {
+function confirmReject() {
+	const result = checkForm();
+
+	if (!result || result.type !== "reject" || !postModerationPage.value) {
 		return;
 	}
 
-	await bridgeClient
+	void bridgeClient
 		.post(
 			"/posts/{postId}/is-not-compliant-and-create-warning",
 			{
@@ -59,27 +58,18 @@ async function confirmReject() {
 					postId: postModerationPage.value.post.id,
 				},
 				body: {
-					reason: rejectReason.value,
-					makeUserBan: chosenAction.value === "block",
+					reason: result.value.reason,
+					makeUserBan: result.value.makeUserBan,
 				},
 			},
 		)
 		.whenInformation(
 			"post.updated",
 			() => {
-				resetRejectForm();
-				loadNextPost();
+				resetForm();
+				void findOldestUnprocessedPost();
 			},
 		);
-}
-
-function resetRejectForm() {
-	rejectReason.value = "";
-	chosenAction.value = "warning";
-}
-
-function loadNextPost() {
-	void findOldestUnprocessedPost();
 }
 </script>
 
@@ -103,19 +93,39 @@ function loadNextPost() {
 				class="mb-6"
 			/>
 
-			<PostContent
-				:post="postModerationPage.post"
-			>
-				<PostModerationActions
-					:reject-reasons="rejectReasons"
-					:reject-reason="rejectReason"
-					:action="chosenAction"
-					@approve="handleApprove"
-					@confirm-reject="confirmReject"
-					@cancel-reject="resetRejectForm"
-					@update:reject-reason="rejectReason = $event"
-					@update:action-type="chosenAction = $event"
-				/>
+			<PostContent :post="postModerationPage.post">
+				<PostModerationForm class="w-[300px]">
+					<template v-if="formMode === 'approve'">
+						<DSPrimaryButton
+							icon="check"
+							class="mr-4"
+							@click="handleApprove"
+						>
+							{{ $t("cta.approuve") }}
+						</DSPrimaryButton>
+
+						<DSDestructiveButton
+							icon="close"
+							@click="passeToRejectForm"
+						>
+							{{ $t("cta.reject") }}
+						</DSDestructiveButton>
+					</template>
+
+					<template v-else>
+						<DSDestructiveButton
+							@click="confirmReject"
+							icon="send"
+							class="mr-4"
+						>
+							{{ $pt("rejectModal.confirm") }}
+						</DSDestructiveButton>
+
+						<DSOutlineButton @click="passeToApproveForm">
+							{{ $t("cta.cancel") }}
+						</DSOutlineButton>
+					</template>
+				</PostModerationForm>
 			</PostContent>
 		</div>
 

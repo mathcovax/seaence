@@ -17,7 +17,7 @@ export type Warning =
 	| InputPostWarning;
 
 export interface WarningRepository extends RepositoryBase {
-	createWarning(warning: Warning): Promise<unknown>;
+	createWarning(warning: Warning): Promise<void>;
 }
 
 export const warningRepository = createRepositoryHandler<

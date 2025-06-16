@@ -18,7 +18,6 @@ import {
 import { intObjecter, UsecaseError } from "@vendors/clean";
 import { endpointCreatePost, endpointPostSchema, endpointPostsDetails, endpointUnprocessedPostDetails } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
-import { userObjecter } from "@business/domains/common/user";
 import { warningMakeUserBanObjecter, warningReasonObjecter } from "@business/domains/entities/warning";
 import { match, P } from "ts-pattern";
 
@@ -219,7 +218,7 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("PATCH", "/posts/{postId}/is-not-compliant")
+	.createRoute("PATCH", "/posts/{postId}/is-not-compliant-and-create-warning")
 	.extract({
 		params: {
 			postId: postIdObjecter.toZodSchema(),
