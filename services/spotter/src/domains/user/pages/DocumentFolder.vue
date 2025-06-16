@@ -87,7 +87,7 @@ function handleDeleteDocumentFolder(documentFolder: DocumentFolder) {
 }
 
 function handleClickDocumentFolder(documentFolder: DocumentFolder) {
-	return router.push(documentInFolderListPage.createTo(
+	return router.push(documentInFolderPage.createTo(
 		{
 			params: {
 				documentFolderId: documentFolder.id,
@@ -187,11 +187,10 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 					class="flex flex-col items-center w-full"
 					v-if="documentFolderList && documentFolderList.list && documentFolderList.list.length > 0"
 				>
-					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-8">
+					<div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-8 lg:grid-cols-4 lg:gap-10">
 						<div
 							v-for="folder in documentFolderList.list"
 							:key="folder.id"
-							class="h-full"
 						>
 							<DocumentFolderCard
 								:document-folder="folder"

@@ -315,6 +315,15 @@ type DocumentFolder = {
 
 export { DocumentFolder };
 
+type DocumentInFoloder = {
+    documentFolderId: string;
+    nodeSameRawDocumentId: string;
+    name: string;
+    addedAt: string;
+};
+
+export { DocumentInFoloder };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/login";
@@ -756,6 +765,53 @@ type CodegenRoutes = ({
         code: 204;
         information: "documentFolder.removed";
         body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/document-in-folder-page";
+    body: {
+        documentFolderId: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolderPage.found";
+        body: {
+            total: number;
+            quantityPerPage: number;
+            maxInFolder: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/document-in-folder-list";
+    body: {
+        page: number;
+        documentFolderId: string;
+        partialDocumentInFolderName: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolderList.found";
+        body: {
+            list: DocumentInFoloder[];
+            total: number;
+        };
     };
 });
 

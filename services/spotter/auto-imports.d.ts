@@ -42,7 +42,7 @@ declare global {
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const documentFolderPage: typeof import('./src/domains/user/router')['documentFolderPage']
-  const documentInFolderListPage: typeof import('./src/domains/user/router')['documentInFolderListPage']
+  const documentInFolderPage: typeof import('./src/domains/user/router')['documentInFolderPage']
   const documentPage: typeof import('./src/domains/document/router')['documentPage']
   const effectScope: typeof import('vue')['effectScope']
   const formField: typeof import('./vendors/design-system/utils/formFields')['formField']
@@ -224,7 +224,7 @@ declare module 'vue' {
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly documentFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentFolderPage']>
-    readonly documentInFolderListPage: UnwrapRef<typeof import('./src/domains/user/router')['documentInFolderListPage']>
+    readonly documentInFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentInFolderPage']>
     readonly documentPage: UnwrapRef<typeof import('./src/domains/document/router')['documentPage']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly formTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['formTemplate']>
