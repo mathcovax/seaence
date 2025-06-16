@@ -19,7 +19,7 @@ export const router = createRouter({
 				notificationListPage.recordRaw,
 				notFoundPage.recordRaw,
 				documentFolderPage.recordRaw,
-				documentInFolderListPage.recordRaw,
+				documentInFolderPage.recordRaw,
 			],
 		},
 	],

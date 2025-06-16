@@ -7,3 +7,4 @@ import "./document";
 import "./notification";
 import "./reporting";
 import "./documentFolder";
+import "./documentInFolder";

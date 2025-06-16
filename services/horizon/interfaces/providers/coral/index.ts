@@ -1,34 +1,6 @@
-import { type FindHttpClientRoute, HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
-import { type CodegenRoutes } from "@vendors/clients-type/coral/duplojsTypesCodegen";
-
-export type CoralClientRoute = TransformCodegenRouteToHttpClientRoute<
-	CodegenRoutes
->;
-
-type InputCreateDocumentFolder = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/create-document-folder"
->["body"];
-
-type InputFindManyDocumentFolder = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/search-document-folders"
->["body"];
-
-type InputGetfindManyDocumentFolderCount = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/get-search-document-folders-count"
->["body"];
-
-type InputRemoveDocumentFolder = FindHttpClientRoute<
-	CoralClientRoute,
-	"POST",
-	"/remove-document-folder"
->["body"];
+import type { CoralClientRoute, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputGetfindManyDocumentFolderCount, InputGetfindManyDocumentInFolderCount, InputRemoveDocumentFolder } from "./types";
+import { HttpClient } from "@duplojs/http-client";
 
 export class CoralAPI {
 	private static httpClient: HttpClient<CoralClientRoute>;
@@ -75,6 +47,39 @@ export class CoralAPI {
 				},
 			)
 			.iWantInformation(["documentFolder.removed", "documentFolder.notfound"]);
+	}
+
+	public static findOneDocumentFolder(input: InputFindOneDocumentFolder) {
+		return this.httpClient
+			.post(
+				"/get-document-folder",
+				{
+					body: input,
+				},
+			)
+			.iWantExpectedResponse();
+	}
+
+	public static findManyDocumentInFolder(input: InputFindManyDocumentInFolder) {
+		return this.httpClient
+			.post(
+				"/search-documents-in-folder",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation("documentsInFolder.found");
+	}
+
+	public static getfindManyDocumentInFolderCount(input: InputGetfindManyDocumentInFolderCount) {
+		return this.httpClient
+			.post(
+				"/get-search-documents-in-folder-count",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation("documentsInFolder.searchDetails");
 	}
 
 	static {
