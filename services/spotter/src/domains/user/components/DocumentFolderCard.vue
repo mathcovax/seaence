@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import { useRemoveDocumentFolderDialog } from "../composables/useRemoveDocumentFolderDialog";
 
 interface Props {
 	documentFolder: DocumentFolder;
 	size?: "small" | "default" | "large";
 }
+
+const {
+	isOpenRemoveDocumentFolderDialog,
+	setStateRemoveDocumentFolderDialog,
+} = useRemoveDocumentFolderDialog();
 
 const props = withDefaults(defineProps<Props>(), {
 	size: "default",
@@ -62,6 +68,16 @@ function onDelete() {
 </script>
 
 <template>
+	<DSValidationDialog
+		:open="isOpenRemoveDocumentFolderDialog"
+		@update:open="setStateRemoveDocumentFolderDialog"
+		:title="$t('removeDocumentFolderDialog.title')"
+		:description="$t('removeDocumentFolderDialog.description')"
+		:accept-label="$t('cta.validate')"
+		:reject-label="$t('cta.refuse')"
+		@accept="onDelete"
+	/>
+
 	<div
 		class="group cursor-pointer"
 		@click="onClick"
@@ -95,12 +111,12 @@ function onDelete() {
 					</DSDropdownMenuTrigger>
 
 					<DSDropdownMenuContent @click.stop>
-						<DSDropdownMenuItem @click.stop="onDelete()">
+						<DSDropdownMenuItem @click.stop="setStateRemoveDocumentFolderDialog(true)">
 							<DSIcon
 								name="delete"
-								class="mr-2 h-4 w-4"
+								class="h-4 w-4"
 							/>
-							{{ $t("documentFolderCard.button.delete.text") }}
+							{{ $t("cta.delete") }}
 						</DSDropdownMenuItem>
 					</DSDropdownMenuContent>
 				</DSDropdownMenu>

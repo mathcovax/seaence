@@ -11,7 +11,7 @@ export function useCreateDocumentFolder() {
 				textformField,
 				{
 					mandatory: true,
-					label: $pt("documentFolder.label.name"),
+					label: $pt("form.label.name"),
 					schema: zod.string()
 						.min(
 							documentFolderRules.name.minLength,

@@ -80,14 +80,13 @@ documentFolderRepository.default = {
 			.find(
 				{
 					userId: userId.value,
-					title: {
+					name: {
 						$regex: escapeRegExp(partialDocumentFolderName.value),
-						$options: "i",
 					},
 				},
 			)
 			.sort({ createdAt: -1 })
-			.skip(page.value * quantityPerPage.value)
+			.skip((page.value) * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
 
@@ -108,7 +107,6 @@ documentFolderRepository.default = {
 					name: documentFolderName
 						? {
 							$regex: escapeRegExp(documentFolderName.value),
-							$options: "i",
 						}
 						: undefined,
 				},

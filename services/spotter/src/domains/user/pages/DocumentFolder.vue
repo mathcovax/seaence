@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import DialogCreateDocumentFolder from "../components/DialogCreateDocumentFolder.vue";
 import DocumentFolderCard from "../components/DocumentFolderCard.vue";
 import { useCreateDocumentFolderDialog } from "../composables/useCreateDocumentFolderDialog";
@@ -7,21 +8,28 @@ import { useDocumentFolderPage } from "../composables/useDocumentFolderPage";
 
 const router = useRouter();
 const { $pt } = documentFolderPage.use();
-const { isOpen, close, setState } = useCreateDocumentFolderDialog();
+const {
+	isOpenCreateDocumentFolderDialog,
+	closeCreateDocumentFolderDialog,
+	setStateCreateDocumentFolderDialog,
+} = useCreateDocumentFolderDialog();
 const { CreateDocumentFolderForm, createDocumentFolderCheck } = useCreateDocumentFolder();
 const { sonnerWarning, sonnerMessage } = useSonner();
 const {
 	SearchDocumentFolderForm,
 	documentFolderList,
 	documentFolderPageInformation,
-	findDocumentFolder,
+	handleSearchDocumentFolderByName,
+	documentFolderSetPage,
+	findManyDocumentFolder,
+	documentFolderPageOfList,
 } = useDocumentFolderPage(
 	() => {
-		router.back();
+		void router.push(homePage.createTo());
 	},
 );
 
-function createDocumentFolder() {
+function handleCreateDocumentFolder() {
 	const result = createDocumentFolderCheck();
 
 	if (!result) {
@@ -48,20 +56,55 @@ function createDocumentFolder() {
 		.whenInformation(
 			"documentFolder.created",
 			() => {
-				close();
+				closeCreateDocumentFolderDialog();
+				void findManyDocumentFolder();
 				sonnerMessage($pt("form.errors.documentFolder.created"));
 			},
 		);
+}
+
+function handleDeleteDocumentFolder(documentFolder: DocumentFolder) {
+	return horizonClient
+		.post(
+			"/remove-document-folder",
+			{
+				body: {
+					documentFolderId: documentFolder.id,
+				},
+			},
+		)
+		.whenInformation(
+			"documentFolder.notfound",
+			() => sonnerWarning($pt("form.errors.documentFolder.notfound")),
+		)
+		.whenInformation(
+			"documentFolder.removed",
+			() => {
+				void findManyDocumentFolder();
+				sonnerMessage($pt("form.errors.documentFolder.removed"));
+			},
+		);
+}
+
+function handleClickDocumentFolder(documentFolder: DocumentFolder) {
+	return router.push(documentInFolderListPage.createTo(
+		{
+			params: {
+				documentFolderId: documentFolder.id,
+			},
+		},
+	));
 }
 
 </script>
 
 <template>
 	<DialogCreateDocumentFolder
-		:open="isOpen"
-		@update:open="setState"
+		:title="$pt('dialog.createDocumentFolder.title')"
+		:open="isOpenCreateDocumentFolderDialog"
+		@update:open="setStateCreateDocumentFolderDialog"
 	>
-		<CreateDocumentFolderForm @submit="createDocumentFolder">
+		<CreateDocumentFolderForm @submit="handleCreateDocumentFolder">
 			<DSPrimaryButton
 				size="full"
 				type="submit"
@@ -86,7 +129,7 @@ function createDocumentFolder() {
 				</div>
 
 				<div class="gap-4 flex flex-row">
-					<SearchDocumentFolderForm @submit="findDocumentFolder">
+					<SearchDocumentFolderForm @submit="handleSearchDocumentFolderByName">
 						<DSPrimaryButton
 							size="small"
 							type="submit"
@@ -97,12 +140,13 @@ function createDocumentFolder() {
 
 					<DSOutlineButton
 						icon="plus"
-						@click="setState(true)"
+						@click="setStateCreateDocumentFolderDialog(true)"
 					/>
 				</div>
 			</div>
 
 			<div>
+				<!-- faire un composant -->
 				<div class="bg-gradient-to-r from-blue-50 to-gray-100 rounded-lg p-5 mb-6 border border-gray-200 shadow-sm">
 					<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
 						<div class="flex items-center gap-3">
@@ -139,20 +183,42 @@ function createDocumentFolder() {
 					</div>
 				</div>
 
-				<div class="space-y-6">
-					<div>
-						<DocumentFolderCard
-							:document-folder="{
-								id: 'z',
-								userId: 'rerer',
-								numberOfDocument: 10,
-								name:'test',
-								createdAt: '1995-12-17T03:24:00'
-							}"
-							@click="console.log('click')"
-							@delete="console.log('delete')"
+				<div
+					class="flex flex-col items-center w-full"
+					v-if="documentFolderList && documentFolderList.list && documentFolderList.list.length > 0"
+				>
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-8">
+						<div
+							v-for="folder in documentFolderList.list"
+							:key="folder.id"
+							class="h-full"
+						>
+							<DocumentFolderCard
+								:document-folder="folder"
+								@click="handleClickDocumentFolder"
+								@delete="handleDeleteDocumentFolder"
+							/>
+						</div>
+					</div>
+
+					<div class="mt-10 flex justify-center">
+						<DSPagination
+							v-if="documentFolderPageInformation"
+							:total="documentFolderPageInformation.total"
+							:current-page="documentFolderPageOfList"
+							:quantity-per-page="documentFolderPageInformation.quantityPerPage"
+							@update="documentFolderSetPage"
 						/>
 					</div>
+				</div>
+
+				<div
+					v-else
+					class="text-center text-gray-500 mt-10"
+				>
+					<p class="italic">
+						{{ $pt("noDocumentFolder") }}
+					</p>
 				</div>
 			</div>
 		</div>

@@ -13,3 +13,14 @@ export const documentFolderPage = createPage(
 		component: () => import("./pages/DocumentFolder.vue"),
 	},
 );
+
+export const documentInFolderListPage = createPage(
+	"documentInFolderList",
+	{
+		path: "/document-folder/:documentFolderId/documents",
+		component: () => import("./pages/DocumentInFolderList.vue"),
+		params: {
+			documentFolderId: zod.string(),
+		},
+	},
+);

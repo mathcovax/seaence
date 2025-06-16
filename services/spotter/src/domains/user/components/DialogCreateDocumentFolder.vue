@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 interface Props {
+	title?: string;
 	open: boolean;
 }
 
@@ -17,8 +18,11 @@ const emit = defineEmits<{
 		:open="open"
 		@update:open="(value) => emit('update:open', value)"
 	>
-		<template #title>
-			{{ $t("CreateDocumentFolder.title") }}
+		<template
+			#title
+			v-if="title"
+		>
+			{{ title }}
 		</template>
 
 		<template #content>
