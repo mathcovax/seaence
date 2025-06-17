@@ -332,6 +332,17 @@ export const FRfr = {
 	documentRowResult: {
 		searchScore: "Score de recherche: {0}",
 	},
+	favoriteEquation: {
+		connexionRequire: "Voud devez étre connecter pour ajouter des équation en favorit.",
+		needEquation: "Il n'est pas possible d'enregister une équation vide.",
+		emptySearch: "Aucune equation favorite trouver.",
+		inputLabel: "Rechercher ou nommer",
+		remove: "Supprimer l'equation des favorit ?",
+		replace: "Une équation avec ce nom éxiste déjà, voulez vous la remplacer ?",
+		invalidEquation: "L'equation que vous voulez utilisé a un ou plusieur champ "
+		+ "invalide, ésiter pas a faire une recherche avec pour s'assuré qu'elle fonctionne correctement.",
+
+	},
 	post: {
 		authorIs: "",
 		responseCount: "",
@@ -354,13 +365,16 @@ export const FRfr = {
 	},
 	cta: {
 		backHome: "Retour à l'accueil",
-		connection: "Inscription / Connexion",
 		explore: "Explorer",
 		search: "Rechercher",
 		send: "Envoyer",
 		seeMore: "Voir plus",
 		save: "Enregistrer",
+		remove: "Supprimer",
+		no: "Non",
+		replace: "Remplacer",
 		register: "Créer un compte",
+		connection: "Inscription / Connexion",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
@@ -472,6 +486,10 @@ export const FRfr = {
 		},
 		bakedDocumentTranslationReporting: {
 			upsert: "Le signalement a corectement étais pris en compte, merci de votre contribution.",
+		},
+		favoriteEquation: {
+			upsert: "L'équation a bien étais mise dans les favorit.",
+			remove: "l'équation a bien étais supprimer.",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},

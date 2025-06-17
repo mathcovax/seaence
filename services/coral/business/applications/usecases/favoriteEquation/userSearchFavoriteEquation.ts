@@ -9,11 +9,11 @@ interface Input {
 	quantityPerPage: PositiveInt;
 }
 
-export class UserSearchFavoriteEquationUsecase extends UsecaseHandler.create({
+export class UserFindManyFavoriteEquationUsecase extends UsecaseHandler.create({
 	favoriEquationRepository: favoriteEquationRepository,
 }) {
 	public execute({ partialFavoriteEquationName, page, quantityPerPage, userId }: Input) {
-		return this.favoriEquationRepository.searchFavoriteEquations({
+		return this.favoriEquationRepository.findManyFavoriteEquation({
 			userId,
 			partialFavoriteEquationName,
 			quantityPerPage,

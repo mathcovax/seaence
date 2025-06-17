@@ -34,6 +34,8 @@ import {
 	mdiTranslate,
 	mdiTextBox,
 	mdiListBox,
+	mdiHeart,
+	mdiContentSaveCheck,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -72,6 +74,8 @@ export const iconsMapper = {
 	translate: mdiTranslate,
 	textBox: mdiTextBox,
 	listBox: mdiListBox,
+	heart: mdiHeart,
+	contentSaveCheck: mdiContentSaveCheck,
 };
 
 export const iconSizeMapper = {

@@ -10,6 +10,7 @@ import { postObjecter } from "@business/entities/post";
 import { answerObjecter } from "@business/entities/answer";
 import { userObjecter } from "@business/entities/user";
 import { notificationObjecter, replyToPostNotificationObjecter, registerNotificationObjecter } from "@business/entities/notification";
+import { FavoriteEquation } from "@business/entities/favoriteEquation";
 
 articleTypeObjecter.zodSchema._zttIdentifier = "ArticleType";
 
@@ -39,3 +40,6 @@ notificationObjecter.zodSchema._zttIdentifier = "Notification";
 replyToPostNotificationObjecter.zodSchema._zttIdentifier = "ReplyToPostNotification";
 
 registerNotificationObjecter.zodSchema._zttIdentifier = "RegisterNotification";
+
+FavoriteEquation.index._zttIdentifier = "FavoriteEquation";
+FavoriteEquation.listDetails._zttIdentifier = "FavoriteEquationListDetails";

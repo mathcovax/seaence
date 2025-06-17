@@ -22,5 +22,6 @@ export const envs = zod
 		SEA_BASE_URL: zod.string().url(),
 		BOTLLE_BASE_URL: zod.string().url(),
 		BEACON_BASE_URL: zod.string().url(),
+		CORAL_BASE_URL: zod.string().url(),
 	})
 	.parse(process.env);

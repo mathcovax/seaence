@@ -2,7 +2,7 @@ import { mustBeUserFavoriteEquationExistProcess } from "@interfaces/http/process
 import { userRemoveFavoriteEquationUsecase } from "@interfaces/usecase";
 
 useBuilder()
-	.createRoute("POST", "/remove-equation-from-favorite")
+	.createRoute("POST", "/remove-favorite-equation")
 	.execute(
 		mustBeUserFavoriteEquationExistProcess,
 		{ pickup: ["userFavoriteEquation"] },
@@ -15,8 +15,8 @@ useBuilder()
 				userFavoriteEquation,
 			});
 
-			return new OkHttpResponse("favoriequation.removed");
+			return new OkHttpResponse("favoriteEquation.removed");
 		},
-		makeResponseContract(OkHttpResponse, "favoriequation.removed"),
+		makeResponseContract(OkHttpResponse, "favoriteEquation.removed"),
 	);
 

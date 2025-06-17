@@ -20,7 +20,7 @@ export class UserFindFavoriteEquationByIdUsecase extends UsecaseHandler.create({
 }) {
 	public async execute({ userId, favoriteEquationId }: Input) {
 		const findedFavoriteEquation = await this.favoriteEquationRepository
-			.findFavoriteEquationById(favoriteEquationId);
+			.findOneFavoriteEquationById(favoriteEquationId);
 
 		if (!findedFavoriteEquation) {
 			return null;

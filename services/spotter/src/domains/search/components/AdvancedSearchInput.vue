@@ -3,12 +3,14 @@ import type { OperatorContent } from "@vendors/types-advanced-query";
 import TheScratch from "./scratch/TheScratch.vue";
 import type { BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { bakedDocumentLanguageEnum } from "@/lib/horizon/types/bakedDocument";
+import AddToFavoriteEquation from "@/domains/user/components/AddToFavoriteEquation.vue";
 
 const modelValue = defineModel<
 	OperatorContent | null
 >(
 	{ required: true },
 );
+
 const modelLanguage = defineModel<BakedDocumentLanguage>(
 	"language",
 	{
@@ -37,7 +39,7 @@ function onSubmit() {
 
 <template>
 	<form
-		class="flex flex-col gap-4"
+		class="flex flex-col gap-4 pt-1"
 		@submit.prevent="onSubmit"
 	>
 		<div class="flex gap-4">
@@ -51,6 +53,10 @@ function onSubmit() {
 				:items="bakedDocumentLanguageEnum.toTuple()"
 				class="w-23"
 				@click="$event.stopPropagation()"
+			/>
+
+			<AddToFavoriteEquation
+				v-model="modelValue"
 			/>
 		</div>
 

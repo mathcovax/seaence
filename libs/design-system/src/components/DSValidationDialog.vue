@@ -27,7 +27,7 @@ const emits = defineEmits<DialogRootEmits & {
 const forwarded = useForwardPropsEmits(props, emits);
 
 const slots = defineSlots<{
-	trigger?: never;
+	default?: never;
 	content?: never;
 }>();
 
@@ -45,8 +45,11 @@ function handleReject() {
 		v-bind="forwarded"
 		:size="size"
 	>
-		<template #trigger>
-			<slot name="trigger" />
+		<template
+			v-if="slots.default"
+			#trigger
+		>
+			<slot />
 		</template>
 
 		<template #title>
@@ -61,9 +64,9 @@ function handleReject() {
 		</template>
 
 		<template #content>
-			<div v-if="slots.content">
+			<template v-if="slots.content">
 				<slot name="content" />
-			</div>
+			</template>
 
 			<DSDialogFooter>
 				<DSDialogClose as-child>
