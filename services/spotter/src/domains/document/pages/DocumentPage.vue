@@ -228,7 +228,7 @@ function formatedDate(date: FlexibleDate) {
 
 			<div class="flex flex-col gap-4">
 				<RouterLink
-					:to="postListPage.createTo({params: {documentId: document.id}})"
+					:to="postListPage.createTo({ params: { documentId: document.id } })"
 					class="flex gap-2 self-start hover:underline"
 				>
 					<h2 class="text-xl md:text-2xl font-bold hover:underline">
@@ -256,7 +256,7 @@ function formatedDate(date: FlexibleDate) {
 						class="self-start"
 						as-child
 					>
-						<RouterLink :to="postCreatePage.createTo({params: {documentId: document.id}})">
+						<RouterLink :to="postCreatePage.createTo({ params: { documentId: document.id } })">
 							{{ $pt("createPost") }}
 						</RouterLink>
 					</DSPrimaryButton>

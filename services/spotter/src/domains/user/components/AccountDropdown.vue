@@ -19,7 +19,7 @@ const { disconect } = useUserInformation();
 		<DSDropdownMenuContent align="end">
 			<DSDropdownMenuItem>
 				<RouterLink
-					:to="profilePage.createTo()"
+					:to="profilePage"
 					class="w-full"
 				>
 					{{ $t("layout.base.header.accountDropdown.profile") }}
@@ -30,7 +30,7 @@ const { disconect } = useUserInformation();
 
 			<DSDropdownMenuItem>
 				<RouterLink
-					:to="notificationListPage.createTo()"
+					:to="notificationListPage"
 					class="w-full"
 				>
 					{{ $t("layout.base.header.accountDropdown.notification") }}
