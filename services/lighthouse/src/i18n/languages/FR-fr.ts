@@ -34,10 +34,10 @@ export const FRfr = {
 			emptyDescription: "Il n'y a actuellement aucun post en attente de modération.",
 			postStatus: "En attente",
 			isProcessing: "Traitement en cours...",
-			rejectModal: {
-				title: "Information du rejet :",
+			warningModal: {
+				title: "Avertisement utilisateur :",
 				checkboxBanUser: "Bannir l'utilisateur ?",
-				reasonLabel: "Raison du rejet",
+				reasonLabel: "Raison de l'avertisement",
 				confirm: "Confirmer le rejet",
 			},
 			postStats: {

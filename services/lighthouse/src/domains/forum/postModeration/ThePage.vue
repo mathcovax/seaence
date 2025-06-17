@@ -118,7 +118,7 @@ function confirmReject() {
 							icon="send"
 							class="mr-4"
 						>
-							{{ $pt("rejectModal.confirm") }}
+							{{ $pt("warningModal.confirm") }}
 						</DSDestructiveButton>
 
 						<DSOutlineButton @click="passeToApproveForm">

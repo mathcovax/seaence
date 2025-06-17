@@ -15,12 +15,12 @@ export function usePostModerationForm() {
 					"reject",
 					useMultiFieldLayout(
 						{
-							title: useTextLayout($pt("rejectModal.title")),
+							title: useTextLayout($pt("warningModal.title")),
 							makeUserBan: useBaseLayout(
 								booleanFormField,
 								{
 									mandatory: true,
-									props: { label: $pt("rejectModal.checkboxBanUser") },
+									props: { label: $pt("warningModal.checkboxBanUser") },
 								},
 							),
 							reason: useCheckLayout(
@@ -36,7 +36,7 @@ export function usePostModerationForm() {
 											baseWarningRules.reason.max,
 											{ message: t("formMessage.maxLength", { value: baseWarningRules.reason.max }) },
 										),
-									label: $pt("rejectModal.reasonLabel"),
+									label: $pt("warningModal.reasonLabel"),
 								},
 							),
 						},
