@@ -27,6 +27,7 @@ declare global {
   const baseLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']
   const booleanFormField: typeof import('./vendors/design-system/utils/formFields')['booleanFormField']
   const buttonVariants: typeof import('./vendors/design-system/components/ui/button/index')['buttonVariants']
+  const cguPage: typeof import('./src/domains/edito/router')['cguPage']
   const checkLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']
   const cn: typeof import('./vendors/design-system/lib/utils')['cn']
   const computed: typeof import('vue')['computed']
@@ -207,6 +208,7 @@ declare module 'vue' {
     readonly advancedSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['advancedSearchPage']>
     readonly baseLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']>
     readonly booleanFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['booleanFormField']>
+    readonly cguPage: UnwrapRef<typeof import('./src/domains/edito/router')['cguPage']>
     readonly checkLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>

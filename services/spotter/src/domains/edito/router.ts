@@ -6,6 +6,14 @@ export const homePage = createPage(
 	},
 );
 
+export const cguPage = createPage(
+	"cgu",
+	{
+		path: "/cgu",
+		component: () => import("./pages/CguPage.vue"),
+	},
+);
+
 export const notFoundPage = createPage(
 	"notFound",
 	{

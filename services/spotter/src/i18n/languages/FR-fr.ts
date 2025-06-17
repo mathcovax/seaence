@@ -10,6 +10,7 @@ import type {
 	TextFieldEnumValue,
 	YearFieldEnumValue,
 } from "@vendors/types-advanced-query";
+import { cguFRfr } from "./cgu/FR-fr";
 
 export const FRfr = {
 	page: {
@@ -163,6 +164,7 @@ export const FRfr = {
 			title: "Notifications",
 			noNotification: "Aucune notification trouvée.",
 		},
+		...cguFRfr,
 	},
 	authDialog: {
 		title: "Authentification",

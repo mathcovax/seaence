@@ -16,7 +16,7 @@ const { toggle } = useAuthDialog();
 		:class="{ 'shadow-md': isScrolled }"
 	>
 		<div class="container h-[var(--header-height)] flex items-center justify-between">
-			<RouterLink :to="homePage.createTo()">
+			<RouterLink :to="homePage">
 				<DSImage
 					src="/images/logos/logo-text.svg"
 					alt="Seaence"
