@@ -26,21 +26,42 @@ const iconSize: Record<
 	3: "large",
 };
 
+const boostLabels: Record<ComparatorBoostEnumValue, string> = {
+	1: "Boost faible",
+	2: "Boost moyen",
+	3: "Boost élevé",
+};
+
+const boostColors: Record<ComparatorBoostEnumValue, string> = {
+	1: "text-gray-600",
+	2: "text-orange-600",
+	3: "text-red-600",
+};
+
 </script>
 
 <template>
-	<DSOutlineButton
-		@click="changeBoost"
-		square
-		size="small"
-		class="relative"
-	>
-		<DSIcon
-			name="weight"
-			class="absolute"
-			:size="iconSize[modelValue]"
-		/>
+	<div class="relative">
+		<DSOutlineButton
+			@click="changeBoost"
+			:title="boostLabels[modelValue]"
+			square
+			size="small"
+			class="transition-all"
+		>
+			<DSIcon
+				name="weight"
+				class="absolute transition-all"
+				:class="boostColors[modelValue]"
+				:size="iconSize[modelValue]"
+			/>
+		</DSOutlineButton>
 
-		<span class="top-[-2px] right-0 absolute">{{ modelValue }}</span>
-	</DSOutlineButton>
+		<span
+			class="absolute top-[-4px] right-[-4px] size-4 flex items-center justify-center text-xs font-bold bg-background border border-border rounded-full shadow-sm transition-colors"
+			:class="boostColors[modelValue]"
+		>
+			{{ modelValue }}
+		</span>
+	</div>
 </template>
