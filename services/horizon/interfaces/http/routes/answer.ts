@@ -1,11 +1,11 @@
 import { SchoolAPI } from "@interfaces/providers/school";
-import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "../security/authentication";
 import { match } from "ts-pattern";
 import { endpointAnswerSchema } from "../schemas/answer";
 import { answerConfig } from "@interfaces/configs/answer";
 import { answerRules } from "@vendors/entity-rules";
 
-useMustBeConnectedBuilder()
+useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 	.createRoute("POST", "/create-answer")
 	.extract({
 		body: {

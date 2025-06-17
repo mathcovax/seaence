@@ -1,5 +1,5 @@
 import { FavoriteEquation } from "@business/entities/favoriteEquation";
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { CoralAPI } from "@interfaces/providers/coral";
 import { match } from "ts-pattern";
 

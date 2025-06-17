@@ -3,12 +3,16 @@ import { answerConfig } from "@interfaces/configs/answer";
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
 import { iWantPostExistById } from "@interfaces/http/checkers/post";
 import { endpointPostPageSchema } from "@interfaces/http/schemas/post";
-import { useOptionalAuthenticationBuilder } from "@interfaces/http/security/optionalAuthentication";
+import { tryAuthenticationProcess } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 import { match } from "ts-pattern";
 
-useOptionalAuthenticationBuilder()
+useBuilder()
 	.createRoute("POST", "/post-page")
+	.execute(
+		tryAuthenticationProcess,
+		{ pickup: ["user"] },
+	)
 	.extract({
 		body: {
 			postId: zod.string(),

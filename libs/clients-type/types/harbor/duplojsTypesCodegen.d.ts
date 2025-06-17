@@ -45,6 +45,7 @@ type CodegenRoutes = ({
             email: string;
             username: string;
             lastUpdate: Date;
+            banned: boolean;
         };
     };
 }) | ({

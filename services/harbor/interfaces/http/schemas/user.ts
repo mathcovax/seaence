@@ -3,4 +3,5 @@ export const endpointUserSchema = zod.object({
 	email: zod.string().email(),
 	username: zod.string(),
 	lastUpdate: zod.date(),
+	banned: zod.boolean(),
 });

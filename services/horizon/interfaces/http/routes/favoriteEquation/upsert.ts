@@ -1,4 +1,4 @@
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { CoralAPI } from "@interfaces/providers/coral";
 import { favoriteEquationRules } from "@vendors/entity-rules";
 import { operatorContentSchema } from "@vendors/types-advanced-query";

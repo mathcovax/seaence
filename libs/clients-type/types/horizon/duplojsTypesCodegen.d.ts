@@ -395,8 +395,12 @@ type CodegenRoutes = ({
         content: string;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 404;
@@ -470,6 +474,10 @@ type CodegenRoutes = ({
         language: BakedDocumentLanguage;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 404;
         information: "post.notfound";
         body?: undefined;
@@ -500,8 +508,12 @@ type CodegenRoutes = ({
         documentId: string;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 404;
@@ -518,8 +530,12 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/self-user";
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 200;
@@ -533,8 +549,12 @@ type CodegenRoutes = ({
         username?: string | undefined;
     } | undefined;
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 403;
@@ -605,8 +625,12 @@ type CodegenRoutes = ({
         page: number;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 200;
@@ -621,8 +645,12 @@ type CodegenRoutes = ({
         enable: boolean;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 404;
@@ -641,8 +669,12 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/notification-list-page";
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 200;
@@ -660,8 +692,12 @@ type CodegenRoutes = ({
         reportingDetails: string;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 404;
@@ -680,8 +716,12 @@ type CodegenRoutes = ({
         page: number;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 200;
@@ -698,8 +738,12 @@ type CodegenRoutes = ({
         partialFavoriteEquationName: string;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 200;
@@ -713,8 +757,12 @@ type CodegenRoutes = ({
         favoriteEquationId: string;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 404;
@@ -737,8 +785,12 @@ type CodegenRoutes = ({
         equation: OperatorContent;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 204;
@@ -752,8 +804,12 @@ type CodegenRoutes = ({
         favoriteEquationId: string;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 403;
-        information: "accessToken.invalid";
+        information: "authentication.required";
         body?: undefined;
     } | {
         code: 404;

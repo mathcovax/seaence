@@ -1,9 +1,9 @@
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
 import { endpointCreatePostPage, entrypointCreatePost } from "@interfaces/http/schemas/post";
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { SchoolAPI } from "@interfaces/providers/school";
 
-useMustBeConnectedBuilder()
+useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 	.createRoute("POST", "/create-post")
 	.extract({
 		body: entrypointCreatePost,

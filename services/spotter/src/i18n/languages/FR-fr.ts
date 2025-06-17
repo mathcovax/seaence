@@ -467,6 +467,7 @@ export const FRfr = {
 			notfound: "Utilisateur introuvable.",
 			shortUpdatedDelay: "Vous devez attendre avant de pouvoir modifier à nouveau ces informations.",
 			alreadyExist: "Un utilisateur avec cette address eùail éxiste déjà.",
+			banned: "L'action que vous southais faire vous est interdit a cause d'un banisement.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",

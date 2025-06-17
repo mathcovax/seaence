@@ -1,6 +1,6 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
 import { endpointUserSchema } from "../schemas/user";
-import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "../security/authentication";
 import { match } from "ts-pattern";
 
 useMustBeConnectedBuilder()

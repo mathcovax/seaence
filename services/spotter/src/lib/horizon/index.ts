@@ -21,6 +21,7 @@ declare module "@duplojs/http-client" {
 		timeoutId?: number;
 		requestTimeout?: number | boolean;
 		disabledSonner?: boolean | string[];
+		disableAuthenticationRequiredManagement?: boolean;
 	}
 }
 
@@ -117,9 +118,9 @@ horizonClient.hooks.add({
 
 horizonClient.hooks.add({
 	type: "information",
-	value: "accessToken.invalid",
+	value: "authentication.required",
 	callback(response) {
-		if (response.requestDefinition.path === "/self-user") {
+		if (response.requestDefinition.paramsRequest.disableAuthenticationRequiredManagement) {
 			return;
 		}
 

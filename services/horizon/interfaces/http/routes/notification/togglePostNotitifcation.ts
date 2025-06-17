@@ -1,5 +1,5 @@
 import { iWantPostExistById } from "@interfaces/http/checkers/post";
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 
 useMustBeConnectedBuilder()

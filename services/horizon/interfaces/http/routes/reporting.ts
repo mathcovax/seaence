@@ -1,10 +1,10 @@
 import { reportingDetailsObjecter } from "@business/entities/reporing";
 import { iWantDocumentExistById } from "../checkers/document";
-import { useMustBeConnectedBuilder } from "../security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "../security/authentication";
 import { BeaconAPI } from "@interfaces/providers/beacon";
 import { match } from "ts-pattern";
 
-useMustBeConnectedBuilder()
+useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 	.createRoute("POST", "/upsert-baked-document-translation-reporting")
 	.extract({
 		body: zod.object({

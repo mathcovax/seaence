@@ -1,6 +1,6 @@
 import { notificationConfig } from "@interfaces/configs/notification";
 import { endpointNotificationListSchema } from "@interfaces/http/schemas/notification";
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 
 useMustBeConnectedBuilder()

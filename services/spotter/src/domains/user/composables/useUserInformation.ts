@@ -32,7 +32,10 @@ export function useUserInformation() {
 		externalPromisedRequestInformation.value = externalPromise;
 
 		const result = window.horizonClient
-			.post("/self-user")
+			.post(
+				"/self-user",
+				{ disableAuthenticationRequiredManagement: true },
+			)
 			.whenInformation(
 				"user.self",
 				({ body }) => {
