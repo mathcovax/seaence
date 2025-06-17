@@ -76,3 +76,9 @@ export type InputGetfindManyDocumentInFolderCount = FindHttpClientRoute<
 	"POST",
 	"/get-search-documents-in-folder-count"
 >["body"];
+
+export type InputRemoveDocumentInFolder = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/remove-document-in-folder"
+>["body"];

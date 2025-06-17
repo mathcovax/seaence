@@ -768,6 +768,25 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/find-one-document-folder";
+    body: {
+        documentFolderId: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolder.found";
+        body: DocumentFolder;
+    };
+}) | ({
+    method: "POST";
     path: "/document-in-folder-page";
     body: {
         documentFolderId: string;
@@ -787,11 +806,12 @@ type CodegenRoutes = ({
             total: number;
             quantityPerPage: number;
             maxInFolder: number;
+            documentFolderName: string;
         };
     };
 }) | ({
     method: "POST";
-    path: "/document-in-folder-list";
+    path: "/find-many-document-in-folder";
     body: {
         page: number;
         documentFolderId: string;
@@ -812,6 +832,26 @@ type CodegenRoutes = ({
             list: DocumentInFoloder[];
             total: number;
         };
+    };
+}) | ({
+    method: "POST";
+    path: "/remove-document-in-folder";
+    body: {
+        documentFolderId: string;
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "documentInFolder.removed";
+        body?: undefined;
     };
 });
 

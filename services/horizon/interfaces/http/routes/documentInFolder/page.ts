@@ -27,6 +27,7 @@ useMustBeConnectedBuilder()
 					total: documentFolder.numberOfDocument,
 					quantityPerPage: documentInFolderConfig.findMany.quantityPerPage,
 					maxInFolder: documentInFolderConfig.maxInFolder,
+					documentFolderName: documentFolder.name,
 				},
 			);
 		},
