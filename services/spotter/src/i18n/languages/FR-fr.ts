@@ -11,6 +11,7 @@ import type {
 	TextFieldEnumValue,
 	YearFieldEnumValue,
 } from "@vendors/types-advanced-query";
+import { cguFRfr } from "./cgu/FR-fr";
 
 export const FRfr = {
 	page: {
@@ -193,6 +194,7 @@ export const FRfr = {
 			},
 			noDocumentInFolder: "Aucun document trouvé.",
 		},
+		...cguFRfr,
 	},
 	authDialog: {
 		title: "Authentification",
