@@ -62,7 +62,7 @@ const maxPage = 100;
 			v-else
 			class="mt-20 flex items-center justify-center"
 		>
-			<p class="p-3 text-2xl text-gray-700 rounded-xl bg-background/60 backdrop-blur-sm">
+			<p class="p-3 text-2xl italic text-muted-foreground rounded-xl bg-background/60 backdrop-blur-sm">
 				{{ $t("search.noResult") }}
 			</p>
 		</div>
