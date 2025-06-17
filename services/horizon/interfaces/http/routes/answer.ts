@@ -19,14 +19,14 @@ useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 		async({ pickup, dropper }) => {
 			const { postId, content, user } = pickup(["postId", "content", "user"]);
 
-			const schoolResponse = await SchoolAPI.replyToPost({
+			const schoolResponse = await SchoolAPI.replyToPost(
 				postId,
-				content,
-				author: {
-					id: user.id,
-					username: user.username,
+				{
+					content,
+					authorId: user.id,
+					authorName: user.username,
 				},
-			});
+			);
 
 			return match(schoolResponse)
 				.with(

@@ -59,9 +59,12 @@ declare global {
   const readonly: typeof import('vue')['readonly']
   const ref: typeof import('vue')['ref']
   const resolveComponent: typeof import('vue')['resolveComponent']
+  const selectFormField: typeof import('./vendors/design-system/utils/formFields')['selectFormField']
+  const selectStringFormField: typeof import('./vendors/design-system/utils/formFields')['selectStringFormField']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const textFormField: typeof import('./vendors/design-system/utils/formFields')['textFormField']
   const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
   const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
   const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
@@ -219,12 +222,14 @@ declare module 'vue' {
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
+    readonly selectFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['selectFormField']>
+    readonly selectStringFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['selectStringFormField']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly textFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textFormField']>
     readonly textLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']>
     readonly textareaFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textareaFormField']>
-    readonly textformField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textformField']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>

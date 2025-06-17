@@ -1,5 +1,5 @@
+import { type UserId } from "@business/domains/common/user";
 import { type PostId, type PostEntity, type NodeSameRawDocumentId } from "@business/domains/entities/post";
-import { type UserId } from "@business/domains/entities/user";
 import { createRepositoryHandler, type Int, type RepositoryBase } from "@vendors/clean";
 
 interface FindByDocumentIdParams {

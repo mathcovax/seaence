@@ -25,7 +25,7 @@ const { $pt } = postPage.use();
 						size="small"
 					/>
 
-					<span>{{ $pt("authorIs", { author: answer.author.username }) }}</span>
+					<span>{{ $pt("authorIs", { author: answer.authorName }) }}</span>
 				</div>
 
 				<div class="flex items-center gap-2">

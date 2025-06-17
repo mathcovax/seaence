@@ -21,10 +21,8 @@ useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 				topic,
 				content,
 				nodeSameRawDocumentId: document.nodeSameRawDocumentId,
-				author: {
-					id: user.id,
-					username: user.username,
-				},
+				authorId: user.id,
+				authorName: user.username,
 			});
 
 			return new CreatedHttpResponse(

@@ -18,13 +18,19 @@ datasource db {
     url      = env("POSTGRES_DATABASE_URL")
 }
 
+enum UserLanguage {
+    fr_FR
+    en_US
+}
+
 model User {
-    id         String    @id
-    username   String    @unique
-    email      String    @unique
+    id         String       @id
+    username   String       @unique
+    email      String       @unique
     banned     Boolean
     warnings   Warning[]
-    lastUpdate DateTime  @default(now())
+    language   UserLanguage
+    lastUpdate DateTime     @default(now())
 }
 
 model Warning {

@@ -6,16 +6,16 @@ import { getRelativeTime } from "@vendors/design-system/lib/utils";
 import PostAnswer from "../components/PostAnswer.vue";
 import BellButton from "@/domains/notification/components/BellButton.vue";
 
-const { params, query, $pt } = postPage.use();
+const { params, $pt } = postPage.use();
 const router = useRouter();
-const { user, isConnected } = useUserInformation();
+const { user, userNavigatorLanguage } = useUserInformation();
 const sonner = useSonner();
 const { t } = useI18n();
 const replyPostNotificationIsEnable = ref(false);
 
 const { postPageInformation, answers, seeMoreAnswers } = usePostPage(
 	computed(() => params.value.postId),
-	computed(() => query.value.language),
+	computed(() => userNavigatorLanguage.value),
 	() => {
 		router.back();
 	},
@@ -68,10 +68,8 @@ function handleCreateAnswer() {
 					{
 						id: "temp",
 						content: newAnswer.value,
-						author: {
-							id: userId,
-							username,
-						},
+						authorName: username,
+						authorId: userId,
 						postId: params.value.postId,
 						createdAt: new Date().toJSON(),
 					},
@@ -161,7 +159,7 @@ watch(
 							size="small"
 						/>
 
-						<span>{{ $pt("authorIs", { author: postPageInformation.post.author.username }) }}</span>
+						<span>{{ $pt("authorIs", { author: postPageInformation.post.authorName }) }}</span>
 					</div>
 
 					<div class="flex items-center gap-2 text-muted-foreground">

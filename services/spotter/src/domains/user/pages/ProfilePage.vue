@@ -38,6 +38,9 @@ function editUser() {
 					username: result.username !== user.value.username
 						? result.username
 						: undefined,
+					language: result.language !== user.value.language
+						? result.language
+						: undefined,
 				},
 			},
 		)
@@ -56,7 +59,8 @@ function editUser() {
 }
 
 const hasChange = computed(
-	() => editProfileformValue.value.username !== user.value?.username,
+	() => editProfileformValue.value.username !== user.value?.username
+		|| editProfileformValue.value.language !== user.value?.language,
 );
 </script>
 

@@ -1,4 +1,4 @@
-import type { PostModerationPage } from "@/libs/bridge/types/post";
+import type { PostModerationPage } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 
 export function usePostModerationPage() {
 	const postModerationPage = ref<PostModerationPage | null>(null);

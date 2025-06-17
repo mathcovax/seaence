@@ -45,6 +45,7 @@ type CodegenRoutes = ({
             email: string;
             username: string;
             lastUpdate: Date;
+            language: "fr-FR" | "en-US";
             banned: boolean;
         };
     };
@@ -54,6 +55,7 @@ type CodegenRoutes = ({
     body: {
         userId: string;
         username?: string | undefined;
+        language?: ("fr-FR" | "en-US") | undefined;
     };
     response: {
         code: 404;
@@ -95,6 +97,7 @@ type CodegenRoutes = ({
     body: {
         firebaseToken: string;
         username: string;
+        language: "fr-FR" | "en-US";
     };
     response: {
         code: 401;

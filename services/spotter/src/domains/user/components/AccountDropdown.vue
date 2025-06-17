@@ -17,10 +17,6 @@ const { disconect } = useUserInformation();
 		</DSDropdownMenuTrigger>
 
 		<DSDropdownMenuContent align="end">
-			<DSDropdownMenuLabel>{{ $t("layout.base.header.accountDropdown.title") }}</DSDropdownMenuLabel>
-
-			<DSDropdownMenuSeparator />
-
 			<DSDropdownMenuItem>
 				<RouterLink :to="profilePage.createTo()">
 					{{ $t("layout.base.header.accountDropdown.profile") }}

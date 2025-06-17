@@ -1,5 +1,5 @@
 
-import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { userRules } from "@vendors/entity-rules";
 
 export const userIdObjecter = zod
@@ -21,6 +21,10 @@ export const userBannedObjecter = zod
 	.boolean()
 	.createValueObjecter("userBanned");
 
+export const userLanguageEnum = createEnum(["fr-FR", "en-US"]);
+export const userLanguageObjecter = zod.enum(userLanguageEnum.toTuple()).createValueObjecter("userLanguage");
+export type UserLanguage = GetValueObject<typeof userLanguageObjecter>;
+
 export type UserBanned = GetValueObject<typeof userBannedObjecter>;
 export type UserEmail = GetValueObject<typeof userEmailObjecter>;
 export type UserUsername = GetValueObject<typeof userUsernameObjecter>;
@@ -32,7 +36,7 @@ type InputCreateUserEntity = Omit<
 >;
 
 type UpdatePropsUserEntity = Partial<
-	Pick<GetEntityProperties<typeof UserEntity>, "username" | "banned">
+	Pick<GetEntityProperties<typeof UserEntity>, "username" | "language">
 >;
 
 export class UserEntity extends EntityHandler.create({
@@ -40,6 +44,7 @@ export class UserEntity extends EntityHandler.create({
 	email: userEmailObjecter,
 	username: userUsernameObjecter,
 	lastUpdate: commonDateObjecter,
+	language: userLanguageObjecter,
 	banned: userBannedObjecter,
 }) {
 	public static create(params: InputCreateUserEntity) {
@@ -58,7 +63,7 @@ export class UserEntity extends EntityHandler.create({
 	}
 
 	public makeBan() {
-		return this.updateProps({
+		return this.update({
 			banned: userBannedObjecter.unsafeCreate(true),
 		});
 	}

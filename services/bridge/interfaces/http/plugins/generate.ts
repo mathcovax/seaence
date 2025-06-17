@@ -1,4 +1,5 @@
 import { BakedDocument } from "@business/entities/bakedDocument";
+import { Post } from "@business/entities/post";
 import { ReportingBakedDocumentTranslation } from "@business/entities/reporting/bakedDocumentTranslation";
 import "@duplojs/types-codegen";
 
@@ -9,3 +10,5 @@ ReportingBakedDocumentTranslation.page._zttIdentifier = "ReportingBakedDocumentT
 
 BakedDocument.language._zttIdentifier = "BakedDocumentLanguage";
 BakedDocument.newTranslation._zttIdentifier = "BakedDocumentNewTranslation";
+
+Post.moderationPage._zttIdentifier = "PostModerationPage";

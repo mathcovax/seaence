@@ -22,4 +22,8 @@ export class UserEntity extends EntityHandler.create({
 	public static create(params: GetEntityProperties<typeof UserEntity>) {
 		return new UserEntity(params);
 	}
+
+	public updateValues(values: Partial<Omit<GetEntityProperties<typeof UserEntity>, "id">>) {
+		return this.update(values);
+	}
 }

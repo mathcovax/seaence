@@ -5,14 +5,16 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
+type UserLanguage = "fr-FR" | "en-US";
+
+export { UserLanguage };
+
 type Answer = {
     id: string;
     postId: string;
     content: string;
-    author: {
-        id: string;
-        username: string;
-    };
+    authorId: string;
+    authorName: string;
     createdAt: string;
 };
 
@@ -22,10 +24,8 @@ type Post = {
     id: string;
     topic: string;
     content: string;
-    author: {
-        id: string;
-        username: string;
-    };
+    authorId: string;
+    authorName: string;
     createdAt: string;
     answerCount: number;
 };
@@ -40,6 +40,7 @@ type User = {
     id: string;
     username: string;
     email: string;
+    language: UserLanguage;
     lastUpdate: string;
 };
 
@@ -371,6 +372,7 @@ type CodegenRoutes = ({
     body: {
         firebaseToken: string;
         username: string;
+        language: UserLanguage;
     };
     response: {
         code: 401;
@@ -547,6 +549,7 @@ type CodegenRoutes = ({
     path: "/update-self-user";
     body?: {
         username?: string | undefined;
+        language?: UserLanguage | undefined;
     } | undefined;
     response: {
         code: 401;

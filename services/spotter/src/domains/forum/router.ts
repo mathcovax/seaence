@@ -1,5 +1,3 @@
-import { bakedDocumentLanguageSchema } from "@/lib/horizon/types/bakedDocument";
-
 export const postPage = createPage(
 	"post",
 	{
@@ -7,9 +5,6 @@ export const postPage = createPage(
 		component: () => import("./pages/PostPage.vue"),
 		params: {
 			postId: zod.string(),
-		},
-		query: {
-			language: bakedDocumentLanguageSchema.default("en-US"),
 		},
 	},
 );

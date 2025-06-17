@@ -89,12 +89,15 @@ declare global {
   const ref: typeof import('vue')['ref']
   const resolveComponent: typeof import('vue')['resolveComponent']
   const searchPageQuery: typeof import('./src/domains/search/router')['searchPageQuery']
+  const selectFormField: typeof import('./vendors/design-system/utils/formFields')['selectFormField']
+  const selectStringFormField: typeof import('./vendors/design-system/utils/formFields')['selectStringFormField']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
   const sheetVariants: typeof import('./vendors/design-system/components/ui/sheet/index')['sheetVariants']
   const simpleSearchPage: typeof import('./src/domains/search/router')['simpleSearchPage']
   const testPage: typeof import('./src/domains/search/router')['testPage']
+  const textFormField: typeof import('./vendors/design-system/utils/formFields')['textFormField']
   const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
   const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
   const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
@@ -265,13 +268,15 @@ declare module 'vue' {
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly searchPageQuery: UnwrapRef<typeof import('./src/domains/search/router')['searchPageQuery']>
+    readonly selectFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['selectFormField']>
+    readonly selectStringFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['selectStringFormField']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly simpleSearchPage: UnwrapRef<typeof import('./src/domains/search/router')['simpleSearchPage']>
+    readonly textFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textFormField']>
     readonly textLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']>
     readonly textareaFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textareaFormField']>
-    readonly textformField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['textformField']>
     readonly toArrayZodSchema: UnwrapRef<typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>

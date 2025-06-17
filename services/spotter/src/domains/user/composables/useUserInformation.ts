@@ -1,8 +1,21 @@
 import type { FindHttpClientRoute } from "@duplojs/http-client";
-import type { User } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { User, UserLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 const accessTokenLocalStorageKey = "accessToken";
 const user = ref<User | null>(null);
+
+const userNavigatorLanguageMapper: Partial<Record<string, UserLanguage>> = {
+	fr: "fr-FR",
+	"fr-FR": "fr-FR",
+	"fr-CA": "fr-FR",
+	"fr-BE": "fr-FR",
+	"fr-CH": "fr-FR",
+};
+
+const userNavigatorLanguage = useLocalStorageItem<UserLanguage>(
+	"userNavigatorLanguage",
+	userNavigatorLanguageMapper[navigator.language] ?? "en-US",
+);
 
 type RequestInformation = FindHttpClientRoute<HorizonClientRoute, "POST", "/self-user">["response"];
 const externalPromisedRequestInformation = ref(createExternalPromise<RequestInformation>());
@@ -40,6 +53,7 @@ export function useUserInformation() {
 				"user.self",
 				({ body }) => {
 					user.value = body;
+					userNavigatorLanguage.value = body.language;
 				},
 			)
 			.whenRequestError(
@@ -54,6 +68,7 @@ export function useUserInformation() {
 	}
 
 	return {
+		userNavigatorLanguage,
 		setAccessToken,
 		disconect,
 		fetchInformation,

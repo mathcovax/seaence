@@ -1,6 +1,6 @@
+import { type UserId } from "@business/domains/common/user";
 import { type AnswerId, type AnswerEntity } from "@business/domains/entities/answer";
 import { type PostAnswerCount, type PostId } from "@business/domains/entities/post";
-import { type UserId } from "@business/domains/entities/user";
 import { createRepositoryHandler, type Int, type RepositoryBase } from "@vendors/clean";
 
 interface FindByPostIdParams {

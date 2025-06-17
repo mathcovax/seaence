@@ -68,6 +68,22 @@ type BakedDocumentNewTranslation = {
 
 export { BakedDocumentNewTranslation };
 
+type PostModerationPage = {
+    post: {
+        id: string;
+        nodeSameRawDocumentId: string;
+        topic: string;
+        content: string;
+        authorId: string;
+        authorName: string;
+        answerCount: number;
+        createdAt: string;
+    };
+    unprocessedTotalCount: number;
+};
+
+export { PostModerationPage };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/reporting-baked-document-translation-aggregate-list-page";
@@ -157,21 +173,7 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "postModerationPage.found";
-        body: {
-            post: {
-                id: string;
-                nodeSameRawDocumentId: string;
-                topic: string;
-                content: string;
-                author: {
-                    id: string;
-                    username: string;
-                };
-                answerCount: number;
-                createdAt: string;
-            };
-            unprocessedTotalCount: number;
-        };
+        body: PostModerationPage;
     };
 }) | ({
     method: "POST";

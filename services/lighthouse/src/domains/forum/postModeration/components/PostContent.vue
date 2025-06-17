@@ -28,7 +28,7 @@ const { $pt } = postPage.use();
 								size="small"
 							/>
 
-							<span>{{ post.author.username }}</span>
+							<span>{{ post.authorId }}</span>
 						</div>
 
 						<div class="flex gap-2 items-center">

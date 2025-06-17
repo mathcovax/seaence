@@ -1,9 +1,22 @@
+/* eslint-disable camelcase */
 import { userRepository } from "@business/applications/repositories/user";
-import { UserEntity, userIdObjecter } from "@business/domains/entities/user";
+import { UserEntity, userIdObjecter, type UserLanguage, userLanguageEnum } from "@business/domains/entities/user";
 import { asyncMessage } from "@interfaces/providers/asyncMessage";
 import { prismaClient } from "@interfaces/providers/prisma";
 import { EntityHandler } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
+import { type $Enums } from "@prisma/output";
+
+const userLanguageMapper: Record<$Enums.UserLanguage, UserLanguage["value"]> = {
+	en_US: userLanguageEnum["en-US"],
+	fr_FR: userLanguageEnum["fr-FR"],
+};
+
+const userLanguageReverseMapper = Object.fromEntries(
+	Object
+		.entries(userLanguageMapper)
+		.map(([key, value]) => [value, key] as const),
+) as Record<UserLanguage["value"], $Enums.UserLanguage>;
 
 userRepository.default = {
 	generateUserId() {
@@ -22,7 +35,10 @@ userRepository.default = {
 
 		return EntityHandler.unsafeMapper(
 			UserEntity,
-			user,
+			{
+				...user,
+				language: userLanguageMapper[user.language],
+			},
 		);
 	},
 	async findOneById(id) {
@@ -38,7 +54,10 @@ userRepository.default = {
 
 		return EntityHandler.unsafeMapper(
 			UserEntity,
-			user,
+			{
+				...user,
+				language: userLanguageMapper[user.language],
+			},
 		);
 	},
 	async save(entity) {
@@ -52,10 +71,9 @@ userRepository.default = {
 
 		if (prismaUser) {
 			if (prismaUser.username !== simpleEntity.username) {
-				await asyncMessage.collections.renameUser.emit({
-					userId: simpleEntity.id,
-					newName: simpleEntity.username,
-					oldName: prismaUser.username,
+				await asyncMessage.collections.updateUser.emit({
+					...simpleEntity,
+					updatedFields: ["username"],
 				});
 			}
 
@@ -63,18 +81,24 @@ userRepository.default = {
 				where: {
 					id: simpleEntity.id,
 				},
-				data: simpleEntity,
+				data: {
+					...simpleEntity,
+					language: userLanguageReverseMapper[simpleEntity.language],
+				},
 			});
 		} else {
 			await asyncMessage.collections.createUser.emit({
 				userId: simpleEntity.id,
 				email: simpleEntity.email,
 				username: simpleEntity.username,
-				language: "en-US",
+				language: simpleEntity.language,
 			});
 
 			await prismaClient.user.create({
-				data: simpleEntity,
+				data: {
+					...simpleEntity,
+					language: userLanguageReverseMapper[simpleEntity.language],
+				},
 			});
 		}
 

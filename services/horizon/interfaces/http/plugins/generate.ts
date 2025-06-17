@@ -8,7 +8,7 @@ import { filtersValuesSchema } from "../schemas/search/filter";
 import { flexibleDateObjecter } from "@vendors/clean";
 import { postObjecter } from "@business/entities/post";
 import { answerObjecter } from "@business/entities/answer";
-import { userObjecter } from "@business/entities/user";
+import { userLanguageObjecter, userObjecter } from "@business/entities/user";
 import { notificationObjecter, replyToPostNotificationObjecter, registerNotificationObjecter } from "@business/entities/notification";
 import { FavoriteEquation } from "@business/entities/favoriteEquation";
 
@@ -34,6 +34,7 @@ postObjecter.zodSchema._zttIdentifier = "Post";
 answerObjecter.zodSchema._zttIdentifier = "Answer";
 
 userObjecter.zodSchema._zttIdentifier = "User";
+userLanguageObjecter.zodSchema._zttIdentifier = "UserLanguage";
 
 notificationObjecter.zodSchema._zttIdentifier = "Notification";
 

@@ -30,7 +30,7 @@ export function useFavoritEquationNameList() {
 
 	const { Form, formValue, check, reset } = useFormBuilder(
 		useCheckLayout(
-			textformField,
+			textFormField,
 			{
 				mandatory: true,
 				label: t("favoriteEquation.inputLabel"),

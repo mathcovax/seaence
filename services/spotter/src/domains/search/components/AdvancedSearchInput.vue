@@ -49,6 +49,7 @@ function onSubmit() {
 
 			<DSSelect
 				v-model="modelLanguage"
+				placeholder=""
 				:label="item => item"
 				:items="bakedDocumentLanguageEnum.toTuple()"
 				class="w-23"

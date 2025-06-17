@@ -2,7 +2,7 @@ import { type PostEntity } from "@business/domains/entities/post";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { postRepository } from "../repositories/post";
 import { warningRepository } from "../repositories/warning";
-import { type WarningMakeUserBan, type WarningReason } from "@business/domains/entities/warning";
+import { type WarningMakeUserBan, type WarningReason } from "@business/domains/common/warning";
 
 interface Input {
 	post: PostEntity;
@@ -19,17 +19,14 @@ export class IndicatePostIsNotCompliantAndCreateWarningUsecase extends UsecaseHa
 			return new UsecaseError("wrong-status", { post });
 		}
 
-		const { author } = post;
-
 		const updatedPost = post.updateStatus("notCompliant");
 
 		await this.postRepository.save(updatedPost);
 
-		await this.warningRepository.createWarning({
+		await this.warningRepository.createPostWarning({
 			makeUserBan,
 			reason,
-			contentCreatorId: author.value.id,
-			postId: updatedPost.id,
+			post,
 		});
 
 		return updatedPost;

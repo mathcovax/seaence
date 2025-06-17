@@ -9,6 +9,7 @@ import { FindOneReplyToPostNotificationSettingToUserByPostIdUsecase } from "@bus
 import { DisableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/disableReplyToPostNotificationSettingToPost";
 import { CreateUserPostBanNotificationUsecase } from "@business/applications/usecases/createUserPostBanNotification";
 import { CreateUserPostWarningNotificationUsecase } from "@business/applications/usecases/createUserPostWarningNotification";
+import { UpdateUserUsecase } from "@business/applications/usecases/updateUser";
 
 export const createUserUsecase = new CreateUserUsecase();
 export const enableReplyToPostNotificationSettingToPostUsecase
@@ -23,3 +24,4 @@ export const disableReplyToPostNotificationSettingToPostUsecase
 = new DisableReplyToPostNotificationSettingToPostUsecase();
 export const createUserPostBanNotificationUsecase = new CreateUserPostBanNotificationUsecase();
 export const createUserPostWarningNotificationUsecase = new CreateUserPostWarningNotificationUsecase();
+export const updateUserUsecase = new UpdateUserUsecase();
