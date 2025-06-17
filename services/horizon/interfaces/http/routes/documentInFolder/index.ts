@@ -1,2 +1,3 @@
 import "./page";
-import "./list";
+import "./findMany";
+import "./remove";

@@ -5,7 +5,7 @@ import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConne
 import { CoralAPI } from "@interfaces/providers/coral";
 
 useMustBeConnectedBuilder()
-	.createRoute("POST", "/document-in-folder-list")
+	.createRoute("POST", "/find-many-document-in-folder")
 	.extract({
 		body: zod.object({
 			page: zod

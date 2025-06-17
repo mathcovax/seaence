@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
-import DialogCreateDocumentFolder from "../components/DialogCreateDocumentFolder.vue";
 import DocumentFolderCard from "../components/DocumentFolderCard.vue";
 import { useCreateDocumentFolderDialog } from "../composables/useCreateDocumentFolderDialog";
 import { useCreateDocumentFolder } from "../composables/useCreateDocumentFolderForm";
 import { useDocumentFolderPage } from "../composables/useDocumentFolderPage";
+import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
 
 const router = useRouter();
 const { $pt } = documentFolderPage.use();
@@ -63,7 +63,7 @@ function handleCreateDocumentFolder() {
 		);
 }
 
-function handleDeleteDocumentFolder(documentFolder: DocumentFolder) {
+function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
 	return horizonClient
 		.post(
 			"/remove-document-folder",
@@ -99,127 +99,100 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 </script>
 
 <template>
-	<DialogCreateDocumentFolder
-		:title="$pt('dialog.createDocumentFolder.title')"
+	<DSDialog
 		:open="isOpenCreateDocumentFolderDialog"
 		@update:open="setStateCreateDocumentFolderDialog"
 	>
-		<CreateDocumentFolderForm @submit="handleCreateDocumentFolder">
-			<DSPrimaryButton
-				size="full"
-				type="submit"
-			>
-				{{ $t("cta.create") }}
-			</DSPrimaryButton>
-		</CreateDocumentFolderForm>
-	</DialogCreateDocumentFolder>
+		<template #title>
+			{{ $pt("dialog.createDocumentFolder.title") }}
+		</template>
 
-	<section class="max-w-5xl mx-auto px-4 py-8">
-		<div class="flex flex-col gap-6">
-			<div class="mb-6 flex justify-between items-center">
-				<div class="flex gap-4 items-center">
+		<template #content>
+			<CreateDocumentFolderForm @submit="handleCreateDocumentFolder">
+				<DSPrimaryButton
+					size="full"
+					type="submit"
+				>
+					{{ $t("cta.create") }}
+				</DSPrimaryButton>
+			</CreateDocumentFolderForm>
+		</template>
+	</DSDialog>
+
+	<main class="max-w-5xl mx-auto p-8">
+		<header class="mb-6 flex justify-between items-center">
+			<div class="flex gap-4 items-center">
+				<DSPrimaryButton
+					icon="arrowLeft"
+					@click="router.back()"
+				/>
+
+				<h1 class="text-3xl font-semibold text-blue-seaence">
+					{{ $pt("title") }}
+				</h1>
+			</div>
+
+			<div class="flex gap-4">
+				<DSOutlineButton
+					icon="plus"
+					@click="setStateCreateDocumentFolderDialog(true)"
+				/>
+
+				<SearchDocumentFolderForm @submit="handleSearchDocumentFolderByName">
 					<DSPrimaryButton
-						icon="arrowLeft"
-						@click="router.back()"
-					/>
-
-					<h1 class="text-3xl font-semibold text-blue-seaence">
-						{{ $pt("title") }}
-					</h1>
-				</div>
-
-				<div class="gap-4 flex flex-row">
-					<SearchDocumentFolderForm @submit="handleSearchDocumentFolderByName">
-						<DSPrimaryButton
-							size="small"
-							type="submit"
-						>
-							{{ $t("cta.search") }}
-						</DSPrimaryButton>
-					</SearchDocumentFolderForm>
-
-					<DSOutlineButton
-						icon="plus"
-						@click="setStateCreateDocumentFolderDialog(true)"
-					/>
-				</div>
+						size="small"
+						type="submit"
+					>
+						{{ $t("cta.search") }}
+					</DSPrimaryButton>
+				</SearchDocumentFolderForm>
 			</div>
+		</header>
 
-			<div>
-				<!-- faire un composant -->
-				<div class="bg-gradient-to-r from-blue-50 to-gray-100 rounded-lg p-5 mb-6 border border-gray-200 shadow-sm">
-					<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-						<div class="flex items-center gap-3">
-							<div class="bg-blue-seaence rounded-full p-2.5 shadow-sm">
-								<DSIcon
-									name="folder"
-									class="w-6 h-6 text-white"
-								/>
-							</div>
+		<section>
+			<DocumentFolderHeader
+				:label="$pt('header.label')"
+				icon="folder"
+				:count-total-item="documentFolderPageInformation?.total || 0"
+				:count-filtered-item="documentFolderList?.total || 0"
+			/>
 
-							<div class="flex flex-row items-center justify-center gap-2">
-								<span class="text-2xl font-semibold text-gray-800">
-									{{ documentFolderList ?
-										documentFolderList.total :
-										documentFolderPageInformation?.total || 0
-									}}
-								</span>
-
-								<span class="text-md text-gray-600">
-									{{ $pt('counter.label') }}
-								</span>
-							</div>
-						</div>
-
-						<div
-							v-if="documentFolderList && documentFolderPageInformation"
-							class="bg-white px-4 py-2 rounded-full text-sm font-medium text-blue-seaence border border-blue-100 shadow-sm flex items-center gap-2"
-						>
-							<span>{{ $pt('counter.filtered', {
-								filtered: documentFolderList.total,
-								total: documentFolderPageInformation.total
-							}) }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div
-					class="flex flex-col items-center w-full"
-					v-if="documentFolderList && documentFolderList.list && documentFolderList.list.length > 0"
-				>
-					<div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-8 lg:grid-cols-4 lg:gap-10">
-						<div
-							v-for="folder in documentFolderList.list"
-							:key="folder.id"
-						>
-							<DocumentFolderCard
-								:document-folder="folder"
-								@click="handleClickDocumentFolder"
-								@delete="handleDeleteDocumentFolder"
-							/>
-						</div>
-					</div>
-
-					<div class="mt-10 flex justify-center">
-						<DSPagination
-							v-if="documentFolderPageInformation"
-							:total="documentFolderPageInformation.total"
-							:current-page="documentFolderPageOfList"
-							:quantity-per-page="documentFolderPageInformation.quantityPerPage"
-							@update="documentFolderSetPage"
+			<div
+				v-if="documentFolderList?.list?.length"
+				class="mt-6"
+			>
+				<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+					<li
+						v-for="folder in documentFolderList.list"
+						:key="folder.id"
+					>
+						<DocumentFolderCard
+							:document-folder="folder"
+							@click="handleClickDocumentFolder"
+							@delete="handleRemoveDocumentFolder"
 						/>
-					</div>
-				</div>
+					</li>
+				</ul>
 
-				<div
-					v-else
-					class="text-center text-gray-500 mt-10"
+				<nav
+					v-if="documentFolderPageInformation"
+					class="mt-10 flex justify-center"
 				>
-					<p class="italic">
-						{{ $pt("noDocumentFolder") }}
-					</p>
-				</div>
+					<DSPagination
+						:total="documentFolderPageInformation.total"
+						:current-page="documentFolderPageOfList"
+						:quantity-per-page="documentFolderPageInformation.quantityPerPage"
+						@update="documentFolderSetPage"
+					/>
+				</nav>
 			</div>
-		</div>
-	</section>
+
+			<p
+				v-else
+				class="text-center text-gray-500 mt-10 italic"
+			>
+				{{ $pt("noDocumentFolder") }}
+			</p>
+		</section>
+	</main>
 </template>

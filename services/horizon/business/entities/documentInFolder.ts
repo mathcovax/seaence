@@ -18,5 +18,6 @@ export namespace DocumentInFolder {
 		total: zod.number(),
 		quantityPerPage: zod.number(),
 		maxInFolder: zod.number(),
+		documentFolderName: zod.string(),
 	});
 }

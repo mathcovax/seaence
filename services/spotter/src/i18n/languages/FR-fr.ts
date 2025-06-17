@@ -176,11 +176,16 @@ export const FRfr = {
 					title: "Créer un dossier",
 				},
 			},
-			counter: {
+			header: {
 				label: "dossiers",
-				filtered: "{filtered} sur {total}",
 			},
 			noDocumentFolder: "Aucun dossier trouvé.",
+		},
+		[documentInFolderPage.name]: {
+			title: "Dossier",
+			header: {
+				label: "fichiers",
+			},
 		},
 	},
 	authDialog: {
@@ -196,6 +201,9 @@ export const FRfr = {
 	removeDocumentFolderDialog: {
 		title: "Supprimer un dossier",
 		description: "Êtes-vous sur de vouloir supprimer ce dossier ? La suppression dossier supprimera également son contenu",
+	},
+	documentFolderHeader: {
+		filtered: "{filtered} sur {total}",
 	},
 	layout: {
 		base: {

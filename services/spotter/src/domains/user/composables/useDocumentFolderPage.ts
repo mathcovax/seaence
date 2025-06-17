@@ -5,10 +5,8 @@ export function useDocumentFolderPage(
 	whenFindError: () => void,
 ) {
 	const { t: $t } = useI18n();
-
 	const pageInformation = ref<DocumentFolderPage | null>(null);
 	const list = ref<DocumentFolderList | null>(null);
-
 	const defaultPage = 1;
 	const pageOfList = ref(defaultPage);
 
