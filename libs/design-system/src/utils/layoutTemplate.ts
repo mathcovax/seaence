@@ -8,6 +8,8 @@ import MultiLayoutTemplate from "../components/form/MultiLayoutTemplate.vue";
 import FormTemplate from "../components/form/FormTemplate.vue";
 import { useTextLayout } from "../composables/useFormBuilder/layouts/useTextLayout";
 import TextLayoutTemplate from "../components/form/TextLayoutTemplate.vue";
+import { useUnionLayout } from "../composables/useFormBuilder/layouts/useUnionLayout";
+import UnionSelectLessLayoutTemplate from "../components/form/UnionSelectLessLayoutTemplate.vue";
 
 export const baseLayoutTemplateGridCols = createLayoutTemplate(
 	useBaseLayout,
@@ -38,3 +40,8 @@ export const textLayoutTemplateGridCols = createLayoutTemplate(
 	TextLayoutTemplate,
 );
 useTextLayout.defaultTemplate = textLayoutTemplateGridCols({ cols: 12 });
+
+export const unionSelectLessLayoutTemplate = createLayoutTemplate(
+	useUnionLayout,
+	UnionSelectLessLayoutTemplate,
+);

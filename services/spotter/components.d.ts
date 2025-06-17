@@ -105,6 +105,7 @@ declare module 'vue' {
     DSSelectSeparator: typeof import('./vendors/design-system/components/ui/select/DSSelectSeparator.vue')['default']
     DSSelectTrigger: typeof import('./vendors/design-system/components/ui/select/DSSelectTrigger.vue')['default']
     DSSelectValue: typeof import('./vendors/design-system/components/ui/select/DSSelectValue.vue')['default']
+    DSSeparator: typeof import('./vendors/design-system/components/ui/separator/DSSeparator.vue')['default']
     DSSkeleton: typeof import('./vendors/design-system/components/ui/skeleton/DSSkeleton.vue')['default']
     DSSonner: typeof import('./vendors/design-system/components/ui/sonner/DSSonner.vue')['default']
     DSTabs: typeof import('./vendors/design-system/components/ui/tabs/DSTabs.vue')['default']
@@ -119,9 +120,12 @@ declare module 'vue' {
     RadioGroupItem: typeof import('./vendors/design-system/components/ui/radio-group/RadioGroupItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Separator: typeof import('./vendors/design-system/components/ui/separator/Separator.vue')['default']
     TextLayoutTemplate: typeof import('./vendors/design-system/components/form/TextLayoutTemplate.vue')['default']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
+    UnionLayoutTemplate: typeof import('./vendors/design-system/components/form/UnionLayoutTemplate.vue')['default']
+    UnionSelectLessLayoutTemplate: typeof import('./vendors/design-system/components/form/UnionSelectLessLayoutTemplate.vue')['default']
   }
 }

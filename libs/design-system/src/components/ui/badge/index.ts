@@ -14,7 +14,7 @@ export const badgeVariants = cva(
 				default:
 					"border-transparent bg-primary text-primary-foreground",
 				secondary:
-					"border-transparent bg-secondary text-secondary-foreground",
+					"border-transparent bg-secondary text-white",
 				success:
 					"border-transparent bg-success text-primary-foreground",
 				warning:

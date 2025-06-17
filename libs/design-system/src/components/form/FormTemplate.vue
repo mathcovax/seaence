@@ -4,7 +4,7 @@ const emit = defineEmits<{
 }>();
 
 interface Props {
-	align: "auto" | "center";
+	align: "auto" | "center" | "end";
 }
 
 defineProps<Props>();
@@ -29,7 +29,10 @@ defineSlots<{
 
 		<div
 			class="flex"
-			:class="{'justify-center': align === 'center'}"
+			:class="{
+				'justify-center': align === 'center',
+				'justify-end': align === 'end',
+			}"
 		>
 			<slot />
 		</div>

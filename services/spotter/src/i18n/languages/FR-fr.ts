@@ -471,7 +471,7 @@ export const FRfr = {
 			created: "Réponse créée avec succès.",
 		},
 		bakedDocumentTranslationReporting: {
-			upsert: "Le signalment a corectement étais pris en compte, merci de votre contribution.",
+			upsert: "Le signalement a corectement étais pris en compte, merci de votre contribution.",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},

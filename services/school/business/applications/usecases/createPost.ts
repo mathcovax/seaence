@@ -1,14 +1,13 @@
 import { UsecaseHandler } from "@vendors/clean";
 import { postRepository } from "../repositories/post";
-import { type NodeSameRawDocumentId, PostEntity, type PostContent, type PostTopic } from "@business/domains/entities/post";
-import { type User } from "@business/domains/common/user";
+import { type NodeSameRawDocumentId, PostEntity, type PostContent, type PostTopic, type PostAuthor } from "@business/domains/entities/post";
 import { notificationRepository } from "../repositories/notification";
 
 interface Input {
 	topic: PostTopic;
 	content: PostContent;
 	nodeSameRawDocumentId: NodeSameRawDocumentId;
-	author: User;
+	author: PostAuthor;
 }
 
 export class CreatePostUsecase extends UsecaseHandler.create({

@@ -5,3 +5,7 @@ import "./reporting/bakedDocumentTranslationList";
 
 import "./bakedDocument/getNewTranslation";
 import "./bakedDocument/makeNewTranslation";
+
+import "./post/postModerationPage";
+import "./post/indicatePostIsCompliant";
+import "./post/indicatePostIsNotCompliantAndCreateWarning";

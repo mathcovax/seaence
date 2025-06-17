@@ -41,12 +41,11 @@ function onSubmit() {
 			},
 		);
 }
-
 </script>
 
 <template>
 	<DSDialog
-		size="full"
+		size="normal"
 		v-model:open="openModel"
 		@update:open="onUpdateOpen"
 	>
@@ -74,7 +73,7 @@ function onSubmit() {
 				v-else
 				class="flex justify-center items-center flex-col gap-4"
 			>
-				<DSLoadingLogo />
+				<DSAdminLoadingLogo />
 
 				{{ $pt("dialog.loading") }}
 			</div>

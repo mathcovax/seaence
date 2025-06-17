@@ -30,6 +30,10 @@ import {
 	mdiAlert,
 	mdiAlertCircle,
 	mdiWeight,
+	mdiSitemap,
+	mdiTranslate,
+	mdiTextBox,
+	mdiListBox,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -64,6 +68,10 @@ export const iconsMapper = {
 	alert: mdiAlert,
 	reporting: mdiAlertCircle,
 	weight: mdiWeight,
+	sitemap: mdiSitemap,
+	translate: mdiTranslate,
+	textBox: mdiTextBox,
+	listBox: mdiListBox,
 };
 
 export const iconSizeMapper = {

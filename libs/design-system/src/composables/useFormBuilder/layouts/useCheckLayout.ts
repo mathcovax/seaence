@@ -81,7 +81,7 @@ export function useCheckLayout<
 		}
 
 		function reset() {
-			formFieldComponent.exposed.check();
+			formFieldComponent.exposed.reset();
 			errorMessage.value = "";
 		}
 

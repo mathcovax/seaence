@@ -258,7 +258,37 @@ type FlexibleDate = {
 
 export { FlexibleDate };
 
-type Notification = RegisterNotification | ReplyToPostNotification;
+type Notification = RegisterNotification | ReplyToPostNotification | {
+    id: string;
+    user: {
+        id: string;
+        username: string;
+        email: string;
+        language: "fr-FR" | "en-US";
+    };
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userPostBanNotificationType";
+    postId: string;
+    reason: string;
+    warningId: string;
+} | {
+    id: string;
+    user: {
+        id: string;
+        username: string;
+        email: string;
+        language: "fr-FR" | "en-US";
+    };
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userPostWarningNotificationType";
+    postId: string;
+    reason: string;
+    warningId: string;
+};
 
 export { Notification };
 

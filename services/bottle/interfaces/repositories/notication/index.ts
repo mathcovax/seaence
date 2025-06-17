@@ -11,6 +11,8 @@ import { ReplyToPostNotificationEntity } from "@business/domains/entities/notifi
 import { type MongoNotification } from "@interfaces/providers/mongo/entities/notification";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { UserEntity } from "@business/domains/entities/user";
+import { UserPostBanNotificationEntity } from "@business/domains/entities/notification/userPostBan";
+import { UserPostWarningNotificationEntity } from "@business/domains/entities/notification/userPostWarning";
 
 notificationRepository.default = {
 	generateNotificationId() {
@@ -31,6 +33,20 @@ notificationRepository.default = {
 				({ entity }) => ({
 					...entity.toSimpleObject(),
 					type: "replyToPostNotificationType",
+				}),
+			)
+			.with(
+				{ entity: P.instanceOf(UserPostBanNotificationEntity) },
+				({ entity }) => ({
+					...entity.toSimpleObject(),
+					type: "userPostBanNotificationType",
+				}),
+			)
+			.with(
+				{ entity: P.instanceOf(UserPostWarningNotificationEntity) },
+				({ entity }) => ({
+					...entity.toSimpleObject(),
+					type: "userPostWarningNotificationType",
 				}),
 			)
 			.exhaustive();
@@ -68,6 +84,18 @@ notificationRepository.default = {
 					//
 				},
 			)
+			.with(
+				{ notification: P.instanceOf(UserPostBanNotificationEntity) },
+				() => {
+					//
+				},
+			)
+			.with(
+				{ notification: P.instanceOf(UserPostWarningNotificationEntity) },
+				() => {
+					//
+				},
+			)
 			.exhaustive();
 	},
 	async findManyNotificationToUser(user, params) {
@@ -97,6 +125,32 @@ notificationRepository.default = {
 				{ type: "replyToPostNotificationType" },
 				(notification) => EntityHandler.unsafeMapper(
 					ReplyToPostNotificationEntity,
+					{
+						...notification,
+						user: EntityHandler.unsafeMapper(
+							UserEntity,
+							notification.user,
+						),
+					},
+				),
+			)
+			.with(
+				{ type: "userPostBanNotificationType" },
+				(notification) => EntityHandler.unsafeMapper(
+					UserPostBanNotificationEntity,
+					{
+						...notification,
+						user: EntityHandler.unsafeMapper(
+							UserEntity,
+							notification.user,
+						),
+					},
+				),
+			)
+			.with(
+				{ type: "userPostWarningNotificationType" },
+				(notification) => EntityHandler.unsafeMapper(
+					UserPostWarningNotificationEntity,
 					{
 						...notification,
 						user: EntityHandler.unsafeMapper(

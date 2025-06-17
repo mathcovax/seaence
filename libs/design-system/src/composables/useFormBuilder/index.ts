@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { simpleClone, type SimplifyTypeForce } from "@duplojs/utils";
-import { type FunctionalComponent, h, ref, type Ref } from "vue";
+import { type FunctionalComponent, h, type HTMLAttributes, ref, type Ref } from "vue";
 import { type FormField, type GetGenericFormField } from "./formField";
 import { type FormTemplateRender } from "./templates/form";
 
@@ -103,7 +103,7 @@ export function useFormBuilder<
 	}
 
 	return {
-		Form: Form as FunctionalComponent<unknown, { submit: [] }>,
+		Form: Form as FunctionalComponent<HTMLAttributes, { submit: [] }>,
 		formValue,
 		check,
 		reset,

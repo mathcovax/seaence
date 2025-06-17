@@ -101,12 +101,14 @@ declare global {
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
   const triggerRef: typeof import('vue')['triggerRef']
+  const unionSelectLessLayoutTemplate: typeof import('./vendors/design-system/utils/layoutTemplate')['unionSelectLessLayoutTemplate']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
   const useBaseLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout')['useBaseLayout']
   const useCheckLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')['useCheckLayout']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
+  const useEmptyLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']
   const useFormBuilder: typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']
   const useI18n: typeof import('vue-i18n')['useI18n']
   const useId: typeof import('vue')['useId']
@@ -125,6 +127,7 @@ declare global {
   const useSonner: typeof import('./vendors/design-system/composables/useSonner')['useSonner']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
   const useTextLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']
+  const useUnionLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']
   const useWindow: typeof import('./vendors/design-system/composables/useWindow')['useWindow']
   const valueUpdater: typeof import('./vendors/design-system/lib/utils')['valueUpdater']
   const watch: typeof import('vue')['watch']
@@ -163,6 +166,9 @@ declare global {
   export type { TextLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useTextLayout'
   import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')
   // @ts-ignore
+  export type { UnionLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout'
+  import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')
+  // @ts-ignore
   export type { BaseLayoutTemplateProps, BaseLayoutTemplateItem, BaseLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/baseLayout'
   import('./vendors/design-system/composables/useFormBuilder/templates/baseLayout')
   // @ts-ignore
@@ -180,6 +186,9 @@ declare global {
   // @ts-ignore
   export type { TextLayoutTemplateProps, TextLayoutTemplateItem, TextLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/textLayout'
   import('./vendors/design-system/composables/useFormBuilder/templates/textLayout')
+  // @ts-ignore
+  export type { UnionLayoutTemplateProps, UnionLayoutTemplateItem, UnionLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/unionLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/unionLayout')
   // @ts-ignore
   export type { PageParams, PageGoParams, PageUse, Page } from './vendors/design-system/utils/createPage'
   import('./vendors/design-system/utils/createPage')
@@ -263,12 +272,14 @@ declare module 'vue' {
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
+    readonly unionSelectLessLayoutTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['unionSelectLessLayoutTemplate']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useBaseLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useBaseLayout')['useBaseLayout']>
     readonly useCheckLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')['useCheckLayout']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
+    readonly useEmptyLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']>
     readonly useFormBuilder: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
@@ -287,6 +298,7 @@ declare module 'vue' {
     readonly useSonner: UnwrapRef<typeof import('./vendors/design-system/composables/useSonner')['useSonner']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly useTextLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useTextLayout')['useTextLayout']>
+    readonly useUnionLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']>
     readonly useWindow: UnwrapRef<typeof import('./vendors/design-system/composables/useWindow')['useWindow']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>

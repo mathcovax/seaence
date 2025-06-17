@@ -147,6 +147,74 @@ type CodegenRoutes = ({
         information: "bakedDocument.makeNewTranslation";
         body?: undefined;
     };
+}) | ({
+    method: "POST";
+    path: "/post-moderation-page";
+    response: {
+        code: 404;
+        information: "postModerationPage.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "postModerationPage.found";
+        body: {
+            post: {
+                id: string;
+                nodeSameRawDocumentId: string;
+                topic: string;
+                content: string;
+                author: {
+                    id: string;
+                    username: string;
+                };
+                answerCount: number;
+                createdAt: string;
+            };
+            unprocessedTotalCount: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/posts/{postId}/is-compliant";
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "post.wrongStatus";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "post.updated";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/posts/{postId}/is-not-compliant-and-create-warning";
+    body: {
+        makeUserBan: boolean;
+        reason: string;
+    };
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 403;
+        information: "post.wrongStatus";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "post.updated";
+        body?: undefined;
+    };
 });
 
 export { CodegenRoutes };

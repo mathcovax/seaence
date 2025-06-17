@@ -1,5 +1,5 @@
 import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
-import { postPage } from "@/domains/post/postModeration/router";
+import { postPage } from "@/domains/forum/postModeration/router";
 import { reportingBakedDocumentTranslationPage } from "@/domains/reporting/reportingBakedDocumentTranslation/router";
 import {
 	reportingBakedDocumentTranslationListPage,
@@ -33,29 +33,11 @@ export const FRfr = {
 			emptyTitle: "Aucun post en attente",
 			emptyDescription: "Il n'y a actuellement aucun post en attente de modération.",
 			postStatus: "En attente",
-			isProssessing: "Traitement en cours...",
-			rejectModal: {
-				title: "Motif de rejet",
-				reason: {
-					title: "Raison du rejet",
-					placeholder: "Sélectionnez une raison",
-					choices: {
-						spam: "Contenu spam ou publicitaire",
-						inappropriate: "Contenu inapproprié",
-						offTopic: "Hors sujet",
-						duplicate: "Contenu dupliqué",
-						lowQuality: "Qualité insuffisante",
-						other: "Autre raison",
-					},
-				},
-				action: {
-					title: "Action à effectuer",
-					type: {
-						warning: "Avertissement simple",
-						block: "Bloquer l'accès aux posts",
-					},
-				},
-
+			isProcessing: "Traitement en cours...",
+			warningModal: {
+				title: "Avertisement utilisateur :",
+				checkboxBanUser: "Bannir l'utilisateur ?",
+				reasonLabel: "Raison de l'avertisement",
 				confirm: "Confirmer le rejet",
 			},
 			postStats: {
@@ -65,33 +47,37 @@ export const FRfr = {
 			},
 		},
 		[reportingBakedDocumentTranslationListPage.name]: {
-			title: "Liste des documents cuits",
+			title: "Liste des documents traduits",
 			reportingDocument: "Nombre de document(s) signalé(s) : {0}",
 			emptyTitle: "Aucun document signalé",
 			emptyDescription: "Il n'y a actuellement aucun document avec des signalements de traduction.",
-			reporting: "Nombre de signalment(s) :",
+			reporting: "Nombre de signalement(s) :",
 		},
 		[reportingBakedDocumentTranslationPage.name]: {
+			title: "Signalements de traduction",
+			description: "Gérez les signalements de documents traduits et leurs corrections.",
 			bakedDocument: {
-				id: "Id:",
-				title: "Titre:",
-				nodeId: "Id du neux:",
-				language: "Langue:",
-				keyword: "Mots cléfs:",
-				abstract: "Abstract:",
-				abstractDetails: "Abstract détailés:",
+				title: "Document traduit",
+				id: "Identifiant",
+				nodeId: "ID du nœud",
+				language: "Langue",
+				keyword: "Mots-clés",
+				abstract: "Résumé",
+				abstractDetails: "Détails du résumé",
 				abstractPart: "{0}: {1}",
 			},
 			reporting: {
-				id: "Id:",
-				userId: "Id du user:",
-				details: "Détails:",
-				quantity: "Quantités de signalment: {0}",
+				title: "Signalements",
+				id: "Identifiant",
+				userId: "ID de l'utilisateur",
+				details: "Détails",
+				quantity: "{0} signalement(s)",
+				empty: "Aucun signalement trouvé",
 			},
 			dialog: {
-				ctaTrigger: "Faire une re-traduction",
-				loading: "Chargement de la traduction en cours.",
-				ctaSubmit: "Valider la nouvel traduction",
+				ctaTrigger: "Retraduire le document",
+				loading: "Génération de la nouvelle traduction en cours...",
+				ctaSubmit: "Valider la nouvelle traduction",
 			},
 		},
 	},
@@ -134,11 +120,16 @@ export const FRfr = {
 	},
 	responses: {
 		bakedDocument: {
-			notfound: "Le document cuit na pas étais trouver.",
-			makeNewTranslation: "La traduction a Correctement étais mit a jours.",
+			notfound: "Le document traduit n'a pas été trouvé.",
+			makeNewTranslation: "La traduction a été correctement mise à jour.",
 		},
 		nodeSameRawDocument: {
-			notfound: "Le neux na pas étais trouvais.",
+			notfound: "Le nœud n'a pas été trouvé.",
+		},
+		post: {
+			notfound: "Le post n'a pas été trouvé.",
+			wrongStatus: "Le post n'est pas en attente de modération.",
+			updated: "Le post a été mis à jour avec succès.",
 		},
 	},
 };

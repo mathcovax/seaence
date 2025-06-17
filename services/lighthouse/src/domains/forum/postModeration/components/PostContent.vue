@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { postPage } from "@/domains/post/postModeration/router";
+import { postPage } from "@/domains/forum/postModeration/router";
+import type { Post } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
-
-interface Post {
-	id: string;
-	topic: string;
-	content: string;
-	nodeSameRawDocumentId: string;
-	answerCount: number;
-	author: {
-		id: string;
-		username: string;
-	};
-	createdAt: string;
-}
 
 interface Props {
 	post: Post;
@@ -25,7 +13,7 @@ const { $pt } = postPage.use();
 </script>
 
 <template>
-	<DSCard class="bg-background border border-border rounded-lg shadow-md">
+	<DSCard>
 		<template #header>
 			<div class="flex justify-between items-start">
 				<div>

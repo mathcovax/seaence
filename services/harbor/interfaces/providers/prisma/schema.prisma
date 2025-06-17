@@ -9,14 +9,30 @@ generator client {
     output   = "../../../node_modules/@prisma/output"
 }
 
+generator json {
+    provider = "prisma-json-types-generator"
+}
+
 datasource db {
     provider = "postgresql"
     url      = env("POSTGRES_DATABASE_URL")
 }
 
 model User {
-    id         String   @id
-    username   String   @unique
-    email      String   @unique
-    lastUpdate DateTime @default(now())
+    id         String    @id
+    username   String    @unique
+    email      String    @unique
+    banned     Boolean
+    warnings   Warning[]
+    lastUpdate DateTime  @default(now())
+}
+
+model Warning {
+    id          String  @id
+    makeUserBan Boolean
+    reason      String
+    userId      String
+    User        User    @relation(fields: [userId], references: [id])
+    /// [WarningReference]
+    reference   Json
 }

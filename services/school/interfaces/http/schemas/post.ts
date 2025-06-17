@@ -16,6 +16,10 @@ export const endpointPostsDetails = zod.object({
 	totalCount: zod.number(),
 });
 
+export const endpointUnprocessedPostDetails = zod.object({
+	totalCount: zod.number(),
+});
+
 export const endpointCreatePost = zod.object({
 	id: zod.string(),
 });

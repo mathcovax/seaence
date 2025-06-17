@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { postPage } from "@/domains/post/postModeration/router";
+import { postPage } from "@/domains/forum/postModeration/router";
 import DSCard from "@vendors/design-system/components/ui/card/DSCard.vue";
 
 interface Props {
 	pendingCount: number;
-	// approvedCount: number;
-	// rejectedCount: number;
 }
 
 defineProps<Props>();

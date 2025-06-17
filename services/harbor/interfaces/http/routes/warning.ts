@@ -1,0 +1,37 @@
+import { entrypointCreatePostUserWarning } from "../schemas/warning";
+import { createPostUserWarning } from "@interfaces/usecases";
+import { IWantUserExistsById } from "../checkers/user";
+
+useBuilder()
+	.createRoute("POST", "/create-post-user-warning")
+	.extract({
+		body: entrypointCreatePostUserWarning,
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const {
+				body: {
+					postId,
+					reason,
+					makeUserBan,
+				},
+				user,
+			} = pickup(["body", "user"]);
+
+			await createPostUserWarning.execute({
+				postId,
+				reason,
+				makeUserBan,
+				user,
+			});
+
+			return new CreatedHttpResponse(
+				"warning.created",
+			);
+		},
+		makeResponseContract(CreatedHttpResponse, "warning.created"),
+	);
