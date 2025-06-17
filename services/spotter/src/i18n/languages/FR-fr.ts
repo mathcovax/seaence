@@ -74,15 +74,15 @@ export const FRfr = {
 			createPost: "Créer un poste",
 			noPost: "Aucun post(s) trouvé pour ce document.",
 			reportingWrongTranslate: {
-				connexionRequire: "Il est obligatoire d'être connecté avant d'écrire un message.",
-				cta: "Signaler un problème de traduction du document.",
+				connexionRequire: "Vous devez être connecté pour signaler un problème de traduction.",
+				cta: "Signaler un problème de traduction du document",
 				information: [
-					"La tarduction est faite pars un model machine learning généric, cela",
-					"implique que certain mots n'arrive pas a étre traduit. Signaler une mauvaise traduction",
-					"nous permer d'amélioré le model et donc d'amélioré votre expérience utilisateur de seance.",
+					"La traduction est effectuée par un modèle de machine learning générique, cela",
+					"implique que certains mots peuvent être traduits. Signaler une mauvaise traduction",
+					"nous permet d'améliorer le modèle et donc d'améliorer votre expérience utilisateur sur Seaence.",
 				].join(" "),
 				form: {
-					textareaLabel: "Détails du probléme de traduction.",
+					textareaLabel: "Détails du problème de traduction.",
 				},
 			},
 			createManyDocumentInFolderDialog: {
@@ -99,7 +99,7 @@ export const FRfr = {
 			createPost: "Créer un poste",
 		},
 		[postPage.name]: {
-			connexionRequire: "Il est obligatoire d'être connecté avant d'écrire un message.",
+			connexionRequire: "Vous devez être connecté pour répondre à ce post.",
 			backToPostList: "Retour à la liste des posts",
 			countResponse: "{count}/{totalCount} Réponse(s)",
 			authorIs: "Posté par {author}",
@@ -136,7 +136,7 @@ export const FRfr = {
 		[postCreatePage.name]: {
 			title: "Créer un post",
 			description: "Posez une question ou partagez votre avis sur un document.",
-			connexionRequire: "Il est obligatoire d'être connecté avant de créer un post.",
+			connexionRequire: "Vous devez être connecté pour créer un post.",
 			form: {
 				topic: {
 					label: {
@@ -145,7 +145,7 @@ export const FRfr = {
 					},
 					placeholder: "Exemple : Comment interpréter les données du graphique page 5 ?",
 					writingHelp: `Résumez le problème de manière concise.
-					Soyez spécifique pour augmenter les chances d’obtenir une réponse utile.`,
+					Plus vous serez précis, plus vous aurez de chances d'obtenir une réponse pertinente.`,
 				},
 				content: {
 					label: "Détaillez votre question",
@@ -164,11 +164,10 @@ export const FRfr = {
 				},
 				submitBtn: "Publier ma question",
 			},
-
 		},
 		[notificationListPage.name]: {
 			title: "Notifications",
-			noNotification: "Aucune notification trouvé.",
+			noNotification: "Aucune notification trouvée.",
 		},
 		[documentFolderPage.name]: {
 			title: "Dossiers",
@@ -196,13 +195,13 @@ export const FRfr = {
 		},
 	},
 	authDialog: {
-		title: "Authtification",
+		title: "Authentification",
 		subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
-		googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
+		googleSignError: "Une erreur s'est produite lors de la connexion avec Google.",
 		registerForm: {
-			usernameLabel: "Nom utilisateur",
-			CGULabel: "Accepter les contion général d'utilisation.",
-			requireCGU: "L'acceptation des condition général d'utilisation est obligatoire.",
+			usernameLabel: "Nom d'utilisateur",
+			CGULabel: "Accepter les conditions générales d'utilisation.",
+			requireCGU: "Vous devez accepter conditions générales d'utilisation.",
 		},
 	},
 	removeDocumentFolderDialog: {
@@ -320,29 +319,29 @@ export const FRfr = {
 					label: "Comparaison textuelle",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Abstract",
+						abstract: "Résumé",
 						title: "Titre",
-						keywords: "Mots clef",
+						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
 				},
 				strictText: {
 					selectPlaceholder: "Sélectionner un champ",
 					inputPlaceholder: "Entrer une valeur",
-					label: "Comparaison textuelle strict",
+					label: "Comparaison textuelle stricte",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Abstract",
+						abstract: "Résumé",
 						title: "Titre",
-						keywords: "Mots clef",
+						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
 				},
 				year: {
 					selectPlaceholder: "Sélectionner un champ",
 					label: "Comparaison d'années",
 					fields: {
-						allDate: "Toutes Dates",
-						journalDate: "publication journal",
-						webDate: "publication web",
+						allDate: "Toutes les dates",
+						journalDate: "Publication journal",
+						webDate: "Publication web",
 					} satisfies Record<YearFieldEnumValue, string>,
 				},
 				author: {
@@ -355,21 +354,21 @@ export const FRfr = {
 					emptyLabel: "Type d'article non trouvé",
 				},
 				provider: {
-					label: "Comparaison de platforme",
-					selectPlaceholder: "Sélectionner une platforme",
-					emptyLabel: "Platforme non trouvé",
+					label: "Comparaison de plateforme",
+					selectPlaceholder: "Sélectionner une plateforme",
+					emptyLabel: "Plateforme non trouvée",
 					value: {
 						pubmed: "PubMed",
 					} satisfies Record<ProviderEnumValue, string>,
 				},
 				yearInterval: {
 					selectPlaceholder: "Sélectionner un champ",
-					label: "Comparaison d'années avec interval",
-					refineMessage: "La veleur du premier champ doit étre supérieur au deuxiéme.",
+					label: "Comparaison d'années avec intervalle",
+					refineMessage: "La valeur du premier champ doit être supérieure à celle du deuxième.",
 					fields: {
-						allDate: "Toutes Dates",
-						journalDate: "publication journal",
-						webDate: "publication web",
+						allDate: "Toutes les dates",
+						journalDate: "Publication journal",
+						webDate: "Publication web",
 					} satisfies Record<YearFieldEnumValue, string>,
 				},
 			} satisfies Record<Comparator["name"], object>,
@@ -392,15 +391,21 @@ export const FRfr = {
 		searchScore: "Score de recherche: {0}",
 	},
 	favoriteEquation: {
-		connexionRequire: "Voud devez étre connecter pour ajouter des équation en favorit.",
-		needEquation: "Il n'est pas possible d'enregister une équation vide.",
-		emptySearch: "Aucune equation favorite trouver.",
+		connexionRequire: "Vous devez être connecté pour ajouter des équations en favoris.",
+		needEquation: "Il n'est pas possible d'enregistrer une équation vide.",
+		emptySearch: "Aucune équation favorite trouvée.",
+		saveEquation: "Enregistrer l'équation",
+		savedEquations: "Équations enregistrées",
 		inputLabel: "Rechercher ou nommer",
-		remove: "Supprimer l'equation des favorit ?",
-		replace: "Une équation avec ce nom éxiste déjà, voulez vous la remplacer ?",
-		invalidEquation: "L'equation que vous voulez utilisé a un ou plusieur champ "
-		+ "invalide, ésiter pas a faire une recherche avec pour s'assuré qu'elle fonctionne correctement.",
-
+		remove: "Supprimer l'équation des favoris ?",
+		replace: "Une équation avec ce nom existe déjà, voulez-vous la remplacer ?",
+		invalidEquation: "L'équation que vous voulez utiliser possède un ou plusieurs champs"
+		+ "invalides, n'hésitez pas à faire une recherche avec pour vous assurer qu'elle fonctionne correctement.",
+		found: "Équation trouvée",
+		addToFavorites: "Ajouter aux favoris",
+		confirmRemove: "Supprimer '{name}' des favoris ?",
+		noSavedEquations: "Aucune équation sauvegardée",
+		saveFirstEquation: "Sauvegardez votre première équation de recherche",
 	},
 	post: {
 		authorIs: "",
@@ -539,8 +544,8 @@ export const FRfr = {
 			registered: "Création de compte réalisée avec succès.",
 			notfound: "Utilisateur introuvable.",
 			shortUpdatedDelay: "Vous devez attendre avant de pouvoir modifier à nouveau ces informations.",
-			alreadyExist: "Un utilisateur avec cette address eùail éxiste déjà.",
-			banned: "L'action que vous southais faire vous est interdit a cause d'un banisement.",
+			alreadyExist: "Un utilisateur avec cette adresse email existe déjà.",
+			banned: "L'action que vous souhaitez faire vous est interdite à cause d'un bannissement.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",
@@ -562,8 +567,8 @@ export const FRfr = {
 			upsert: "Le signalement a corectement étais pris en compte, merci de votre contribution.",
 		},
 		favoriteEquation: {
-			upsert: "L'équation a bien étais mise dans les favorit.",
-			remove: "l'équation a bien étais supprimer.",
+			upsert: "L'équation a bien été mise en favoris.",
+			remove: "L'équation a bien été supprimée.",
 		},
 		documentFolder: {
 			alreadyExists: "Le dossier existe déjà",

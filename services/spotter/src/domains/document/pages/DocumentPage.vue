@@ -59,9 +59,13 @@ function formatedDate(date: FlexibleDate) {
 		>
 			<header class="flex flex-col gap-8 lg:gap-12">
 				<div class="flex flex-col gap-2">
-					<h1 class="mb-4 text-xl md:text-3xl font-bold text-blue-seaence first-letter:uppercase">
-						{{ document.title }}
-					</h1>
+					<div class="flex gap-4 items-start">
+						<BackButton />
+
+						<h1 class="mb-4 text-xl md:text-3xl font-bold text-blue-seaence first-letter:uppercase">
+							{{ document.title }}
+						</h1>
+					</div>
 
 					<div
 						class="flex items-center gap-2"

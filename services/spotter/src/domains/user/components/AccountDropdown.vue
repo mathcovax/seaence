@@ -17,13 +17,19 @@ const { disconect } = useUserInformation();
 
 		<DSDropdownMenuContent align="end">
 			<DSDropdownMenuItem>
-				<RouterLink :to="profilePage.createTo()">
+				<RouterLink
+					:to="profilePage.createTo()"
+					class="w-full"
+				>
 					{{ $t("layout.base.header.accountDropdown.profile") }}
 				</RouterLink>
 			</DSDropdownMenuItem>
 
 			<DSDropdownMenuItem>
-				<RouterLink :to="notificationListPage.createTo()">
+				<RouterLink
+					:to="notificationListPage.createTo()"
+					class="w-full"
+				>
 					{{ $t("layout.base.header.accountDropdown.notification") }}
 				</RouterLink>
 			</DSDropdownMenuItem>
@@ -37,7 +43,7 @@ const { disconect } = useUserInformation();
 			<DSDropdownMenuSeparator />
 
 			<DSDropdownMenuItem @click="disconect">
-				<span class="cursor-pointer">{{ $t("layout.base.header.accountDropdown.disconnect") }}</span>
+				<span class="w-full cursor-pointer">{{ $t("layout.base.header.accountDropdown.disconnect") }}</span>
 			</DSDropdownMenuItem>
 		</DSDropdownMenuContent>
 	</DSDropdownMenu>

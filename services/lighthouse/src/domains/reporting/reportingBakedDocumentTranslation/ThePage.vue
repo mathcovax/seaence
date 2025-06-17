@@ -30,6 +30,8 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 	<section class="min-h-screen-nh">
 		<div v-if="pageContent && list && selectedCookingMode">
 			<header class="mb-8">
+				<BackButton />
+
 				<h1 class="mb-2 text-3xl font-bold">
 					{{ $pt("title") }}
 				</h1>

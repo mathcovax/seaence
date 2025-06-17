@@ -126,14 +126,7 @@ watch(
 			<header class="border-b pb-4">
 				<div class="mb-6 flex justify-between items-center">
 					<div class="flex gap-4 items-start">
-						<DSOutlineButton
-							square
-							class="shrink-0"
-							:aria-label="$pt('backToDocument')"
-							@click="router.back()"
-						>
-							<DSIcon name="arrowLeft" />
-						</DSOutlineButton>
+						<BackButton />
 
 						<h1 class="text-3xl font-semibold text-blue-seaence">
 							{{ postPageInformation.post.topic }}

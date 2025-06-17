@@ -149,58 +149,75 @@ function removeFavoriteEquation(
 		/>
 
 		<template #content>
-			<div class="flex flex-col gap-2">
-				<FavoriteEquationForm>
-					<DSPrimaryButton
-						@click="upsertFavoriteEquation"
-						:disabled="favoriteEquationNameListIsLoading"
-						icon="contentSaveCheck"
-						class="w-full"
-					>
-						{{ $t("cta.save") }}
-					</DSPrimaryButton>
-				</FavoriteEquationForm>
+			<div class="space-y-4">
+				<div>
+					<h3 class="mb-2 text-sm font-medium">
+						{{ $t("favoriteEquation.saveEquation") }}
+					</h3>
 
-				<div
-					v-if="favoriteEquationNameList && favoriteEquationNameList.list.length"
-					class="flex flex-col gap-2"
-				>
-					<div
-						v-for="row of favoriteEquationNameList.list"
-						:key="row.id"
-						class="flex justify-between overflow-hidden"
-					>
-						<DSClickableText
-							:content="row.name"
-							@click="useFavoriteEquation(row.id)"
-							class="text-ellipsis"
-						/>
-
-						<DSValidationDialog
-							@accept="removeFavoriteEquation(row.id)"
-							:title="$t('favoriteEquation.remove')"
-							:accept-label="$t('cta.remove')"
-							:reject-label="$t('cta.no')"
-							destructive
+					<FavoriteEquationForm>
+						<DSPrimaryButton
+							@click="upsertFavoriteEquation"
+							:disabled="favoriteEquationNameListIsLoading"
+							icon="contentSaveCheck"
+							class="w-full"
 						>
-							<DSGhostButton
-								square
-								icon="close"
-							/>
-						</DSValidationDialog>
-					</div>
-
-					<DSPagination
-						class="self-center"
-						size="small"
-						:total="favoriteEquationNameList.details.total"
-						:quantity-per-page="favoriteEquationNameList.details.quantityPerPage"
-						v-model:current-page="pageOfFavoriteEquationNameList"
-					/>
+							{{ $t("cta.save") }}
+						</DSPrimaryButton>
+					</FavoriteEquationForm>
 				</div>
 
-				<div v-else-if="favoriteEquationNameList && !favoriteEquationNameList.list.length">
-					{{ $t("favoriteEquation.emptySearch") }}
+				<DSSeparator />
+
+				<div>
+					<h3 class="mb-2 text-sm font-medium">
+						{{ $t("favoriteEquation.savedEquations") }}
+					</h3>
+
+					<div
+						v-if="favoriteEquationNameList?.list.length"
+						class="flex flex-col items-center gap-2"
+					>
+						<div
+							v-for="row of favoriteEquationNameList.list"
+							:key="row.id"
+							class="group w-full p-2 flex items-center hover:bg-muted"
+						>
+							<DSClickableText
+								:content="row.name"
+								@click="useFavoriteEquation(row.id)"
+								class="w-full truncate"
+							/>
+
+							<DSValidationDialog
+								@accept="removeFavoriteEquation(row.id)"
+								:title="$t('favoriteEquation.remove')"
+								:accept-label="$t('cta.remove')"
+								:reject-label="$t('cta.no')"
+								destructive
+							>
+								<DSGhostButton
+									square
+									size="small"
+									icon="close"
+								/>
+							</DSValidationDialog>
+						</div>
+
+						<DSPagination
+							size="small"
+							:total="favoriteEquationNameList.details.total"
+							:quantity-per-page="favoriteEquationNameList.details.quantityPerPage"
+							v-model:current-page="pageOfFavoriteEquationNameList"
+						/>
+					</div>
+
+					<div
+						v-else
+						class="text-sm text-muted-foreground text-center py-4"
+					>
+						{{ $t("favoriteEquation.emptySearch") }}
+					</div>
 				</div>
 			</div>
 		</template>
