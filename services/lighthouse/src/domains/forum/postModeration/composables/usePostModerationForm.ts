@@ -13,32 +13,40 @@ export function usePostModerationForm() {
 				],
 				[
 					"reject",
-					useMultiFieldLayout({
-						title: useTextLayout($pt("rejectModal.title")),
-						makeUserBan: useBaseLayout(
-							booleanFormField,
-							{
-								mandatory: true,
-								props: { label: $pt("rejectModal.checkboxBanUser") },
-							},
-						),
-						reason: useCheckLayout(
-							textareaFormField,
-							{
-								mandatory: true,
-								schema: zod.string()
-									.min(
-										baseWarningRules.reason.min,
-										{ message: t("formMessage.minLength", { value: baseWarningRules.reason.min }) },
-									)
-									.max(
-										baseWarningRules.reason.max,
-										{ message: t("formMessage.maxLength", { value: baseWarningRules.reason.max }) },
-									),
-								label: $pt("rejectModal.reasonLabel"),
-							},
-						),
-					}),
+					useMultiFieldLayout(
+						{
+							title: useTextLayout($pt("rejectModal.title")),
+							makeUserBan: useBaseLayout(
+								booleanFormField,
+								{
+									mandatory: true,
+									props: { label: $pt("rejectModal.checkboxBanUser") },
+								},
+							),
+							reason: useCheckLayout(
+								textareaFormField,
+								{
+									mandatory: true,
+									schema: zod.string()
+										.min(
+											baseWarningRules.reason.min,
+											{ message: t("formMessage.minLength", { value: baseWarningRules.reason.min }) },
+										)
+										.max(
+											baseWarningRules.reason.max,
+											{ message: t("formMessage.maxLength", { value: baseWarningRules.reason.max }) },
+										),
+									label: $pt("rejectModal.reasonLabel"),
+								},
+							),
+						},
+						{
+							template: multiLayoutTemplateGridCols({
+								cols: 1,
+								space: "large",
+							}),
+						},
+					),
 				],
 			],
 			{ template: unionSelectLessLayoutTemplate({}) },
