@@ -5,11 +5,9 @@ import {
 	PaginationListItem,
 } from "reka-ui";
 import DSPaginationPrev from "./DSPaginationPrev.vue";
-import DSPaginationFirst from "./DSPaginationFirst.vue";
 import DSButton from "../button/DSButton.vue";
 import DSPaginationEllipsis from "./DSPaginationEllipsis.vue";
 import DSPaginationNext from "./DSPaginationNext.vue";
-import DSPaginationLast from "./DSPaginationLast.vue";
 import { computed } from "vue";
 
 const emit = defineEmits<{
@@ -18,12 +16,15 @@ const emit = defineEmits<{
 
 const props = defineProps<{
 	total: number;
-	currentPage: number;
 	quantityPerPage: number;
 	maxPage?: number;
+	size?: "small" | "default";
 }>();
 
+const currentPageModel = defineModel<number>("currentPage");
+
 function update(page: number) {
+	currentPageModel.value = page;
 	emit("update", page);
 }
 
@@ -39,20 +40,21 @@ const limitedTotal = computed(
 	<PaginationRoot
 		v-slot="{ page }"
 		:items-per-page="quantityPerPage"
-		:total="limitedTotal"
+		:total="limitedTotal*1000"
 		:sibling-count="1"
 		show-edges
-		:page="currentPage"
+		:page="currentPageModel"
 		@update:page="update"
-		class="flex justify-center scale-75 sm:scale-100"
 	>
 		<PaginationList
 			v-slot="{ items }"
-			class="flex items-center gap-1"
+			class="flex items-center gap-1 *:shrink-0"
 		>
-			<DSPaginationFirst />
-
-			<DSPaginationPrev />
+			<DSPaginationPrev
+				:class="{
+					'hidden': size !== 'small'
+				}"
+			/>
 
 			<template v-for="(item, index) in items">
 				<PaginationListItem
@@ -64,6 +66,9 @@ const limitedTotal = computed(
 					<DSButton
 						square
 						:variant="item.value === page ? 'primary' : 'outline'"
+						:class="{
+							'hidden': size === 'small' && item.value !== page
+						}"
 					>
 						{{ item.value }}
 					</DSButton>
@@ -71,14 +76,19 @@ const limitedTotal = computed(
 
 				<DSPaginationEllipsis
 					v-else
+					:class="{
+						'hidden': size === 'small'
+					}"
 					:key="item.type"
 					:index="index"
 				/>
 			</template>
 
-			<DSPaginationNext />
-
-			<DSPaginationLast />
+			<DSPaginationNext
+				:class="{
+					'hidden': size !== 'small'
+				}"
+			/>
 		</PaginationList>
 	</PaginationRoot>
 </template>

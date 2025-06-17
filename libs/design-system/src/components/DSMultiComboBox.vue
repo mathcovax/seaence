@@ -2,8 +2,6 @@
 import { type AcceptableValue } from "reka-ui";
 import { ref, defineModel } from "vue";
 import DSPopover from "./ui/popover/DSPopover.vue";
-import DSPopoverTrigger from "./ui/popover/DSPopoverTrigger.vue";
-import DSPopoverContent from "./ui/popover/DSPopoverContent.vue";
 import DSGhostButton from "./ui/button/DSGhostButton.vue";
 import DSClosingTag from "./DSClosingTag.vue";
 import DSCommand from "./ui/command/DSCommand.vue";

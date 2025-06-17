@@ -191,6 +191,8 @@ function removeFavoriteEquation(
 					</div>
 
 					<DSPagination
+						class="self-center"
+						size="small"
 						:total="favoriteEquationNameList.details.total"
 						:quantity-per-page="favoriteEquationNameList.details.quantityPerPage"
 						v-model:current-page="pageOfFavoriteEquationNameList"

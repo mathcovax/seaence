@@ -1,6 +1,6 @@
 export const favoritEquationConfig = {
 	findMany: {
-		quantityPerPage: 20,
+		quantityPerPage: 5,
 		offsetPage: 1,
 	},
 };

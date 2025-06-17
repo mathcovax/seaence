@@ -29,7 +29,7 @@ const maxPage = 100;
 	>
 		<div
 			v-if="result && result.searchResult.length > 0"
-			class="bg-background flex flex-col items-stretch rounded-b-xl"
+			class="bg-background flex flex-col items-center rounded-b-xl"
 		>
 			<DSPagination
 				class="my-8"
