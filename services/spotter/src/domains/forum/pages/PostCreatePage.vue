@@ -30,7 +30,6 @@ function submit() {
 					params: {
 						postId: body.id,
 					},
-					query: {},
 				}),
 			);
 		});

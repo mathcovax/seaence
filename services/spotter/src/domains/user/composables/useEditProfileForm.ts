@@ -1,13 +1,16 @@
+import { userLanguageEnum, userLanguageSchema } from "@/lib/horizon/types/user";
 import { userRules } from "@vendors/entity-rules";
+import { useUserInformation } from "./useUserInformation";
 
 export function useEditProfileForm() {
 	const { t: $t } = useI18n();
 	const { $pt } = profilePage.use();
+	const { userNavigatorLanguage } = useUserInformation();
 
 	const { Form, formValue, check } = useFormBuilder(
 		useMultiFieldLayout({
 			username: useCheckLayout(
-				textformField,
+				textFormField,
 				{
 					mandatory: true,
 					label: $pt("personalInfo.label.username"),
@@ -22,8 +25,20 @@ export function useEditProfileForm() {
 						),
 				},
 			),
+			language: useCheckLayout(
+				selectStringFormField,
+				{
+					mandatory: true,
+					defaultValue: userNavigatorLanguage.value,
+					schema: userLanguageSchema,
+					props: {
+						items: userLanguageEnum.toTuple(),
+						placeholder: "",
+					},
+				},
+			),
 			email: useBaseLayout(
-				textformField,
+				textFormField,
 				{
 					mandatory: true,
 					label: $pt("personalInfo.label.email"),

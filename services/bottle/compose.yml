@@ -15,6 +15,16 @@ services:
     env_file: ${INCLUDE_PATH}/bottle/.env
     volumes:
       - "bottle-mongo-data:/data/db"
+  bottle-mongo-viewer:
+    image: mongo-express
+    ports:
+      - 55555:1506
+    env_file: ${INCLUDE_PATH}/bottle/.env
+    environment:
+      ME_CONFIG_MONGODB_URL: ${MONGO_DATABASE_URL}
+    depends_on:
+      - bottle-mongo
+    attach: false
   maildev:
     image: maildev/maildev
     ports:

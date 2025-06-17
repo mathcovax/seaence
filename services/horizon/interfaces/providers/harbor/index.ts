@@ -1,16 +1,11 @@
-import { type FindHttpClientRoute, HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
+import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/harbor/duplojsTypesCodegen";
+import { type InputUserPayload, type InputRegisterUser } from "./types";
 
 export type HarborClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
-
-type UpdateUserPayload = FindHttpClientRoute<
-	HarborClientRoute,
-	"POST",
-	"/update-user"
->["body"];
 
 export class HarborAPI {
 	private static httpClient: HttpClient<HarborClientRoute>;
@@ -26,15 +21,12 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static register(firebaseToken: string, username: string) {
+	public static register(body: InputRegisterUser) {
 		return this.httpClient
 			.post(
 				"/register",
 				{
-					body: {
-						firebaseToken,
-						username,
-					},
+					body,
 				},
 			)
 			.iWantExpectedResponse();
@@ -51,18 +43,12 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static updateUser(
-		userId: string,
-		payload: Omit<UpdateUserPayload, "userId">,
-	) {
+	public static updateUser(body: InputUserPayload) {
 		return this.httpClient
 			.post(
 				"/update-user",
 				{
-					body: {
-						userId,
-						...payload,
-					},
+					body,
 				},
 			)
 			.iWantExpectedResponse();

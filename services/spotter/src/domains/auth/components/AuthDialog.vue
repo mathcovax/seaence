@@ -63,6 +63,7 @@ function register() {
 				body: {
 					firebaseToken: firebaseTokenToRegister.value,
 					username: result.username,
+					language: result.language,
 				},
 			},
 		)

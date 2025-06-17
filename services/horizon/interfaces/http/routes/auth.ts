@@ -1,7 +1,7 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
 import { match } from "ts-pattern";
 import { endpointAuthSchema } from "../schemas/auth";
-import { userUsernameObjecter } from "@business/entities/user";
+import { userLanguageObjecter, userUsernameObjecter } from "@business/entities/user";
 
 useBuilder()
 	.createRoute("POST", "/login")
@@ -49,19 +49,21 @@ useBuilder()
 useBuilder()
 	.createRoute("POST", "/register")
 	.extract({
-		body: {
+		body: zod.object({
 			firebaseToken: zod.string(),
 			username: userUsernameObjecter.zodSchema,
-		},
+			language: userLanguageObjecter.zodSchema,
+		}),
 	})
 	.cut(
 		async({ pickup, dropper }) => {
-			const { firebaseToken, username } = pickup(["firebaseToken", "username"]);
+			const { firebaseToken, username, language } = pickup("body");
 
-			const result = await HarborAPI.register(
+			const result = await HarborAPI.register({
 				firebaseToken,
 				username,
-			);
+				language,
+			});
 
 			return match(result)
 				.with(

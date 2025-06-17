@@ -40,7 +40,7 @@ const limitedTotal = computed(
 	<PaginationRoot
 		v-slot="{ page }"
 		:items-per-page="quantityPerPage"
-		:total="limitedTotal*1000"
+		:total="limitedTotal"
 		:sibling-count="1"
 		show-edges
 		:page="currentPageModel"

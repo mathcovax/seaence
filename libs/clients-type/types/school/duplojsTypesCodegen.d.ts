@@ -23,10 +23,8 @@ type CodegenRoutes = ({
             nodeSameRawDocumentId: string;
             topic: string;
             content: string;
-            author: {
-                id: string;
-                username: string;
-            };
+            authorId: string;
+            authorName: string;
             answerCount: number;
             createdAt: Date;
         }[];
@@ -51,10 +49,8 @@ type CodegenRoutes = ({
         topic: string;
         content: string;
         nodeSameRawDocumentId: string;
-        author: {
-            id: string;
-            username: string;
-        };
+        authorId: string;
+        authorName: string;
     };
     response: {
         code: 201;
@@ -81,10 +77,8 @@ type CodegenRoutes = ({
             nodeSameRawDocumentId: string;
             topic: string;
             content: string;
-            author: {
-                id: string;
-                username: string;
-            };
+            authorId: string;
+            authorName: string;
             answerCount: number;
             createdAt: Date;
         };
@@ -104,10 +98,8 @@ type CodegenRoutes = ({
             nodeSameRawDocumentId: string;
             topic: string;
             content: string;
-            author: {
-                id: string;
-                username: string;
-            };
+            authorId: string;
+            authorName: string;
             answerCount: number;
             createdAt: Date;
         };
@@ -144,10 +136,8 @@ type CodegenRoutes = ({
             nodeSameRawDocumentId: string;
             topic: string;
             content: string;
-            author: {
-                id: string;
-                username: string;
-            };
+            authorId: string;
+            authorName: string;
             answerCount: number;
             createdAt: Date;
         };
@@ -178,10 +168,8 @@ type CodegenRoutes = ({
             nodeSameRawDocumentId: string;
             topic: string;
             content: string;
-            author: {
-                id: string;
-                username: string;
-            };
+            authorId: string;
+            authorName: string;
             answerCount: number;
             createdAt: Date;
         };
@@ -191,10 +179,8 @@ type CodegenRoutes = ({
     path: "/posts/{postId}/answers";
     body: {
         content: string;
-        author: {
-            id: string;
-            username: string;
-        };
+        authorId: string;
+        authorName: string;
     };
     params: {
         postId: string;
@@ -229,10 +215,8 @@ type CodegenRoutes = ({
             id: string;
             postId: string;
             content: string;
-            author: {
-                id: string;
-                username: string;
-            };
+            authorId: string;
+            authorName: string;
             createdAt: Date;
         }[];
     };

@@ -1,28 +1,11 @@
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/school/duplojsTypesCodegen";
+import { type InputCreateAnswer, type InputCreatePost } from "./types";
 
 export type SchoolClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
-
-interface User {
-	id: string;
-	username: string;
-}
-
-interface InputCreatePost {
-	topic: string;
-	content: string;
-	nodeSameRawDocumentId: string;
-	author: User;
-}
-
-interface InputReplyToPost {
-	postId: string;
-	content: string;
-	author: User;
-}
 
 export class SchoolAPI {
 	private static httpClient: HttpClient<SchoolClientRoute>;
@@ -48,19 +31,12 @@ export class SchoolAPI {
 			.iWantInformation("posts.found");
 	}
 
-	public static createPost(params: InputCreatePost) {
-		const { topic, content, nodeSameRawDocumentId, author } = params;
-
+	public static createPost(body: InputCreatePost) {
 		return this.httpClient
 			.post(
 				"/posts",
 				{
-					body: {
-						topic,
-						content,
-						nodeSameRawDocumentId,
-						author,
-					},
+					body,
 				},
 			)
 			.iWantInformation("post.created");
@@ -87,9 +63,7 @@ export class SchoolAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static replyToPost(params: InputReplyToPost) {
-		const { postId, content, author } = params;
-
+	public static replyToPost(postId: string, body: InputCreateAnswer) {
 		return this.httpClient
 			.post(
 				"/posts/{postId}/answers",
@@ -97,10 +71,7 @@ export class SchoolAPI {
 					params: {
 						postId,
 					},
-					body: {
-						content,
-						author,
-					},
+					body,
 				},
 			)
 			.iWantExpectedResponse();

@@ -86,7 +86,7 @@ export async function mission(mission: SupportedSearchResultMission) {
 								missionName: "searchResult",
 								step,
 								error: new TechnicalError(
-									"unexpected-response",
+									"pubmed-unexpected-response",
 									{
 										mission,
 										page,

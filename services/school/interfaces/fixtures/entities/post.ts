@@ -3,7 +3,6 @@ import { faker } from "@vendors/fixture";
 import { EntityHandler, type ToSimpleObject } from "@vendors/clean";
 import { PostEntity } from "@business/domains/entities/post";
 import { postRepository } from "@business/applications/repositories/post";
-import { UserEntity } from "@business/domains/entities/user";
 
 const answerDefaultCount = 0;
 
@@ -25,13 +24,8 @@ export async function makePost(
 					max: 4,
 				}),
 				answerCount: post?.answerCount || answerDefaultCount,
-				author: EntityHandler.unsafeMapper(
-					UserEntity,
-					{
-						id: post?.author?.id || uuidv7(),
-						username: post?.author?.username || faker.internet.displayName(),
-					},
-				),
+				authorId: post?.authorId || uuidv7(),
+				authorName: post?.authorName || faker.internet.displayName(),
 				status: post?.status || "unprocessed",
 				createdAt: post?.createdAt || faker.date.past({
 					years: 1,

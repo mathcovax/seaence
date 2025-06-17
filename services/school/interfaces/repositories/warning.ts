@@ -6,14 +6,14 @@ warningRepository.default = {
 	save() {
 		throw new RepositoryError("unsupported-method");
 	},
-	async createWarning(warning) {
-		const { makeUserBan, reason, postId, contentCreatorId } = warning;
+	async createPostWarning(warning) {
+		const { makeUserBan, reason, post } = warning;
 
 		await HarborAPI.createPostUserWarning({
 			makeUserBan: makeUserBan.value,
 			reason: reason.value,
-			userId: contentCreatorId.value,
-			postId: postId.value,
+			userId: post.authorId.value,
+			postId: post.id.value,
 		});
 	},
 };

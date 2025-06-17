@@ -2,7 +2,7 @@ import { AccessToken } from "@interfaces/providers/token";
 import { IWantFirebaseTokenIsValid } from "../checkers/token";
 import { IWantUserExistsByEmail } from "../checkers/user";
 import { endpointAuthSchema } from "../schemas/auth";
-import { userUsernameObjecter } from "@business/domains/entities/user";
+import { userLanguageObjecter, userUsernameObjecter } from "@business/domains/entities/user";
 import { createUser } from "@interfaces/usecases";
 
 useBuilder()
@@ -40,6 +40,7 @@ useBuilder()
 		body: {
 			firebaseToken: zod.string(),
 			username: userUsernameObjecter.toZodSchema(),
+			language: userLanguageObjecter.toZodSchema(),
 		},
 	})
 	.presetCheck(
@@ -48,10 +49,11 @@ useBuilder()
 	)
 	.cut(
 		async({ pickup, dropper }) => {
-			const { username, firebaseTokenContent } = pickup(["firebaseTokenContent", "username"]);
+			const { username, firebaseTokenContent, language } = pickup(["firebaseTokenContent", "username", "language"]);
 			const result = await createUser.execute({
 				username,
 				email: firebaseTokenContent.email,
+				language,
 			});
 
 			if (result instanceof Error) {

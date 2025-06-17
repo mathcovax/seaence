@@ -2,6 +2,7 @@ import { HarborAPI } from "@interfaces/providers/harbor";
 import { endpointUserSchema } from "../schemas/user";
 import { useMustBeConnectedBuilder } from "../security/authentication";
 import { match } from "ts-pattern";
+import { userLanguageObjecter, userUsernameObjecter } from "@business/entities/user";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/self-user")
@@ -18,17 +19,19 @@ useMustBeConnectedBuilder()
 	.createRoute("POST", "/update-self-user")
 	.extract({
 		body: {
-			username: zod.string().optional(),
+			username: userUsernameObjecter.zodSchema.optional(),
+			language: userLanguageObjecter.zodSchema.optional(),
 		},
 	})
 	.cut(
 		async({ pickup, dropper }) => {
-			const { user, username } = pickup(["user", "username"]);
+			const { user, username, language } = pickup(["user", "username", "language"]);
 
-			const result = await HarborAPI.updateUser(
-				user.id,
-				{ username },
-			);
+			const result = await HarborAPI.updateUser({
+				userId: user.id,
+				username,
+				language,
+			});
 
 			return match(result)
 				.with(

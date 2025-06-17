@@ -1,6 +1,5 @@
 import { postRepository } from "@business/applications/repositories/post";
 import { PostEntity, postIdObjecter } from "@business/domains/entities/post";
-import { UserEntity } from "@business/domains/entities/user";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
@@ -29,10 +28,6 @@ postRepository.default = {
 			PostEntity,
 			{
 				...unprocessedOldestMongoPost,
-				author: EntityHandler.unsafeMapper(
-					UserEntity,
-					unprocessedOldestMongoPost.author,
-				),
 			},
 		);
 	},
@@ -55,10 +50,6 @@ postRepository.default = {
 					PostEntity,
 					{
 						...mongoPost,
-						author: EntityHandler.unsafeMapper(
-							UserEntity,
-							mongoPost.author,
-						),
 					},
 				),
 			)
@@ -91,10 +82,6 @@ postRepository.default = {
 			PostEntity,
 			{
 				...mongoPost,
-				author: EntityHandler.unsafeMapper(
-					UserEntity,
-					mongoPost.author,
-				),
 			},
 		);
 	},
@@ -126,10 +113,6 @@ postRepository.default = {
 						PostEntity,
 						{
 							...mongoPost,
-							author: EntityHandler.unsafeMapper(
-								UserEntity,
-								mongoPost.author,
-							),
 						},
 					),
 				)

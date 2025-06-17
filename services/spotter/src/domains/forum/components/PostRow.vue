@@ -19,7 +19,6 @@ defineProps<Props>();
 		class="hover:shadow-md transition"
 		:link="postPage.createTo({
 			params: { postId: post.id },
-			query: { language }
 		})"
 	>
 		<p class="text-ellipsis overflow-hidden">
@@ -34,7 +33,7 @@ defineProps<Props>();
 						size="small"
 					/>
 
-					<span>{{ $pt("authorIs", { author: post.author.username }) }}</span>
+					<span>{{ $pt("authorIs", { author: post.authorName }) }}</span>
 				</div>
 
 				<div class="flex items-center gap-2">

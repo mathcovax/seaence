@@ -1,7 +1,6 @@
 import { answerRepository } from "@business/applications/repositories/answer";
 import { AnswerEntity, answerIdObjecter } from "@business/domains/entities/answer";
 import { postAnswerCountObjecter } from "@business/domains/entities/post";
-import { UserEntity } from "@business/domains/entities/user";
 import { asyncMessage } from "@interfaces/providers/asyncMessage";
 import { mongo } from "@interfaces/providers/mongo";
 import { EntityHandler } from "@vendors/clean";
@@ -27,10 +26,6 @@ answerRepository.default = {
 					AnswerEntity,
 					{
 						...mongoAnswer,
-						author: EntityHandler.unsafeMapper(
-							UserEntity,
-							mongoAnswer.author,
-						),
 					},
 				),
 			)
@@ -80,10 +75,6 @@ answerRepository.default = {
 						AnswerEntity,
 						{
 							...mongoAnswer,
-							author: EntityHandler.unsafeMapper(
-								UserEntity,
-								mongoAnswer.author,
-							),
 						},
 					),
 				)

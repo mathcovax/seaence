@@ -1,6 +1,5 @@
 import {
 	nodeSameRawDocumentIdObjecter,
-	postAuthorObjecter,
 	postContentObjecter,
 	PostEntity,
 	postIdObjecter,
@@ -18,8 +17,9 @@ import {
 import { intObjecter, UsecaseError } from "@vendors/clean";
 import { endpointCreatePost, endpointPostSchema, endpointPostsDetails, endpointUnprocessedPostDetails } from "../schemas/post";
 import { iWantPostExistById } from "../checkers/post";
-import { warningMakeUserBanObjecter, warningReasonObjecter } from "@business/domains/entities/warning";
+import { warningMakeUserBanObjecter, warningReasonObjecter } from "@business/domains/common/warning";
 import { match, P } from "ts-pattern";
+import { userIdObjecter, usernameObjecter } from "@business/domains/common/user";
 
 useBuilder()
 	.createRoute("GET", "/documents/{nodeSameRawDocumentId}/posts")
@@ -84,18 +84,20 @@ useBuilder()
 			topic: postTopicObjecter.toZodSchema(),
 			content: postContentObjecter.toZodSchema(),
 			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
-			author: postAuthorObjecter.toZodSchema(),
+			authorId: userIdObjecter.toZodSchema(),
+			authorName: usernameObjecter.toZodSchema(),
 		}),
 	})
 	.handler(
 		async(pickup) => {
-			const { topic, content, nodeSameRawDocumentId, author } = pickup("body");
+			const { topic, content, nodeSameRawDocumentId, authorName, authorId } = pickup("body");
 
 			const createdPost = await createPostUsecase.execute({
 				topic,
 				content,
 				nodeSameRawDocumentId,
-				author,
+				authorName,
+				authorId,
 			});
 
 			return new CreatedHttpResponse(

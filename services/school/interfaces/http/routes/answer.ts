@@ -1,10 +1,10 @@
-import { userObjecter } from "@business/domains/common/user";
 import { answerContentObjecter } from "@business/domains/entities/answer";
 import { postIdObjecter } from "@business/domains/entities/post";
 import { findAnswersFromPostUsecase, replyToPostUsecase } from "@interfaces/usecase";
 import { iWantPostExistById } from "../checkers/post";
 import { endpointAnswerSchema } from "../schemas/answer";
 import { intObjecter, toSimpleObject } from "@vendors/clean";
+import { userIdObjecter, usernameObjecter } from "@business/domains/common/user";
 
 useBuilder()
 	.createRoute("POST", "/posts/{postId}/answers")
@@ -12,10 +12,11 @@ useBuilder()
 		params: {
 			postId: postIdObjecter.toZodSchema(),
 		},
-		body: {
+		body: zod.object({
 			content: answerContentObjecter.toZodSchema(),
-			author: userObjecter.toZodSchema(),
-		},
+			authorId: userIdObjecter.toZodSchema(),
+			authorName: usernameObjecter.toZodSchema(),
+		}),
 	})
 	.presetCheck(
 		iWantPostExistById,
@@ -23,13 +24,15 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const { post, content, author } = pickup(["post", "content", "author"]);
+			const { post } = pickup(["post"]);
+			const { content, authorId, authorName } = pickup("body");
 
 			await replyToPostUsecase
 				.execute({
 					post,
 					content,
-					author,
+					authorId,
+					authorName,
 				});
 
 			return new CreatedHttpResponse(

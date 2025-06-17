@@ -5,10 +5,8 @@ export interface CreateAnswerMessageValue {
 	id: string;
 	postId: string;
 	content: string;
-	author: {
-		id: string;
-		username: string;
-	};
+	authorId: string;
+	authorName: string;
 	createdAt: Date;
 }
 

@@ -1,8 +1,7 @@
 import { commonDateObjecter, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
 import { postIdObjecter } from "./post";
-import { userObjecter } from "../common/user";
-import { type Username } from "./user";
 import { answerRules } from "@vendors/entity-rules";
+import { userIdObjecter, type Username, usernameObjecter } from "../common/user";
 
 export const answerContentObjecter = zod.string()
 	.min(answerRules.content.minLength)
@@ -19,7 +18,8 @@ export class AnswerEntity extends EntityHandler.create({
 	id: answerIdObjecter,
 	postId: postIdObjecter,
 	content: answerContentObjecter,
-	author: userObjecter,
+	authorId: userIdObjecter,
+	authorName: usernameObjecter,
 	createdAt: commonDateObjecter,
 }) {
 	public static create(params: InputCreateAnswerEntity) {
@@ -29,13 +29,9 @@ export class AnswerEntity extends EntityHandler.create({
 		});
 	}
 
-	public renameAuthor(newAuthorName: Username) {
-		const updatedAuthor = this.author.value.update({
-			username: newAuthorName,
-		});
-
+	public updateAuthorName(authorName: Username) {
 		return this.update({
-			author: userObjecter.unsafeCreate(updatedAuthor),
+			authorName,
 		});
 	}
 }

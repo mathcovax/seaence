@@ -24,7 +24,6 @@ function onClikReplyPostNotification(postId: string) {
 			params: {
 				postId,
 			},
-			query: {},
 		}),
 	);
 }

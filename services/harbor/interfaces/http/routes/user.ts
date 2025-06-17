@@ -1,6 +1,6 @@
 import { updateUser } from "@interfaces/usecases";
 import { endpointUserSchema } from "../schemas/user";
-import { UserEntity, userIdObjecter, userUsernameObjecter } from "@business/domains/entities/user";
+import { UserEntity, userIdObjecter, userLanguageObjecter, userUsernameObjecter } from "@business/domains/entities/user";
 import { findUserWithAccessTokenProcess } from "../processes/findUserWithAccessToken";
 import { IWantUserExistsById } from "../checkers/user";
 import { match, P } from "ts-pattern";
@@ -29,6 +29,7 @@ useBuilder()
 		body: {
 			userId: userIdObjecter.toZodSchema(),
 			username: userUsernameObjecter.toZodSchema().optional(),
+			language: userLanguageObjecter.toZodSchema().optional(),
 		},
 	})
 	.presetCheck(

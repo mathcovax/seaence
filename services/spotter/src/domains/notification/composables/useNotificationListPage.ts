@@ -18,6 +18,7 @@ export function useNotificationListPage(
 					body: {
 						page: pageOfNotificationList.value,
 					},
+					disableAuthenticationRequiredManagement: true,
 				},
 			)
 			.whenInformation(

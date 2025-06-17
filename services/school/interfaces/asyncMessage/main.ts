@@ -1,2 +1,2 @@
 import "@vendors/backend-logger";
-import "./renameUser";
+import "./updateUser";

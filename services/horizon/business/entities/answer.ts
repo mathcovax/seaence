@@ -1,5 +1,4 @@
 import { zod } from "@vendors/clean";
-import { userObjecter } from "./user";
 import { answerRules } from "@vendors/entity-rules";
 
 const answerContentObjecter = zod
@@ -13,10 +12,8 @@ export const answerObjecter = zod
 		id: zod.string(),
 		postId: zod.string(),
 		content: answerContentObjecter.zodSchema,
-		author: userObjecter.zodSchema.pick({
-			id: true,
-			username: true,
-		}),
+		authorId: zod.string(),
+		authorName: zod.string(),
 		createdAt: zod.string(),
 	})
 	.createValueObjecter("answer");

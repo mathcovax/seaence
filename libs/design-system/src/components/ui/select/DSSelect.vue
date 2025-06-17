@@ -9,7 +9,7 @@ import { type HTMLAttributes } from "vue";
 
 interface Props extends SelectRootProps {
 	items: GenericItem[];
-	placeholder?: string;
+	placeholder: string;
 	label?(item: GenericItem): string;
 	class?: HTMLAttributes["class"];
 	size?: "default" | "sm";
@@ -17,7 +17,7 @@ interface Props extends SelectRootProps {
 const props = defineProps<Props>();
 const emits = defineEmits<SelectRootEmits>();
 
-const model = defineModel<GenericItem>({ required: true });
+const model = defineModel<GenericItem | null>({ required: true });
 
 const forwarded = useForwardPropsEmits(props, emits);
 

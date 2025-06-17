@@ -1,5 +1,4 @@
 import { zod } from "@vendors/clean";
-import { userSchema } from "./user";
 import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/post";
 
 export const endpointPostSchema = zod.object({
@@ -7,7 +6,8 @@ export const endpointPostSchema = zod.object({
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.zodSchema,
 	topic: zod.string(),
 	content: zod.string(),
-	author: userSchema,
+	authorId: zod.string(),
+	authorName: zod.string(),
 	answerCount: zod.number(),
 	createdAt: zod.date(),
 });

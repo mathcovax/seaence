@@ -1,7 +1,6 @@
 import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
-import { userObjecter } from "../common/user";
-import { UserEntity, type Username } from "./user";
 import { postRules } from "@vendors/entity-rules";
+import { userIdObjecter, type Username, usernameObjecter } from "../common/user";
 
 export const postTopicObjecter = zod.string()
 	.min(postRules.topic.minLength)
@@ -33,12 +32,6 @@ export const postStatusEnum = createEnum([
 export const postStatusObjecter = zod.enum(postStatusEnum.toTuple()).createValueObjecter("postStatus");
 export type PostStatus = GetValueObject<typeof postStatusObjecter>;
 
-export const postAuthorObjecter = EntityHandler.createEntityObjecter(
-	"postAuthor",
-	UserEntity,
-);
-export type PostAuthor = GetValueObject<typeof postAuthorObjecter>;
-
 const defaultAnswerCount = 0;
 
 type InputCreatePostEntity = Omit<GetEntityProperties<typeof PostEntity>, "answerCount" | "createdAt" | "status">;
@@ -49,7 +42,8 @@ export class PostEntity extends EntityHandler.create({
 	content: postContentObjecter,
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
 	answerCount: postAnswerCountObjecter,
-	author: postAuthorObjecter,
+	authorId: userIdObjecter,
+	authorName: usernameObjecter,
 	status: postStatusObjecter,
 	createdAt: commonDateObjecter,
 }) {
@@ -63,29 +57,21 @@ export class PostEntity extends EntityHandler.create({
 	}
 
 	public updateAnswerCount(answerCount: PostAnswerCount) {
-		return this.update(
-			{
-				answerCount,
-			},
-		);
+		return this.update({
+			answerCount,
+		});
 	}
 
-	public renameAuthor(newAuthorName: Username) {
-		const updatedAuthor = this.author.value.update({
-			username: newAuthorName,
-		});
-
+	public updateAuthorName(authorName: Username) {
 		return this.update({
-			author: postAuthorObjecter.unsafeCreate(updatedAuthor),
+			authorName,
 		});
 	}
 
 	public updateStatus(status: PostStatus["value"]) {
-		return this.update(
-			{
-				status: postStatusObjecter.unsafeCreate(status),
-			},
-		);
+		return this.update({
+			status: postStatusObjecter.unsafeCreate(status),
+		});
 	}
 
 	public isUnprocessed() {

@@ -9,12 +9,12 @@ asyncMessage.collections.createAnswer.on(
 	async(createdAnswer) => {
 		const postId = postIdObjecter.unsafeCreate(createdAnswer.value.postId);
 		const usernameOfReplyPost = usernameObjecter.unsafeCreate(
-			createdAnswer.value.author.username,
+			createdAnswer.value.authorName,
 		);
 		const summaryOfReplyPost = summaryOfReplyPostObjecter.unsafeCreate(
 			summarizeText(createdAnswer.value.content),
 		);
-		const userIdOfReplyPost = userIdObjecter.unsafeCreate(createdAnswer.value.author.id);
+		const userIdOfReplyPost = userIdObjecter.unsafeCreate(createdAnswer.value.id);
 
 		await createReplyToPostNotificationsUsecase.execute({
 			postId,

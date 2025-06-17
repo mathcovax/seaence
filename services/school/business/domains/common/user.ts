@@ -1,6 +1,7 @@
-import { EntityHandler, type GetValueObject } from "@vendors/clean";
-import { UserEntity } from "../entities/user";
+import { zod, type GetValueObject } from "@vendors/clean";
 
-export const userObjecter = EntityHandler.createEntityObjecter("user", UserEntity);
+export const userIdObjecter = zod.string().createValueObjecter("userId");
+export const usernameObjecter = zod.string().createValueObjecter("username");
 
-export type User = GetValueObject<typeof userObjecter>;
+export type UserId = GetValueObject<typeof userIdObjecter>;
+export type Username = GetValueObject<typeof usernameObjecter>;
