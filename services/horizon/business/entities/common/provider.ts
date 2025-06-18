@@ -1,7 +1,8 @@
 import { createEnum, zod } from "@vendors/clean";
 
-export const providerEnum = createEnum(["pubmed"]);
+export namespace Provider {
+	export const indexEnum = createEnum(["pubmed"]);
 
-export const providerObjecter = zod
-	.enum(providerEnum.toTuple())
-	.createValueObjecter("provider");
+	export const index = zod
+		.enum(indexEnum.toTuple());
+}

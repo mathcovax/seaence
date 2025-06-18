@@ -1,6 +1,7 @@
+import { BackedDocument } from "@business/entities/bakedDocument";
+import { Page } from "@business/entities/page";
 import { postConfig } from "@interfaces/configs/post";
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
-import { endpointPostListPageSchema } from "@interfaces/http/schemas/post";
 import { SchoolAPI } from "@interfaces/providers/school";
 import { match } from "ts-pattern";
 
@@ -8,7 +9,7 @@ useBuilder()
 	.createRoute("POST", "/post-list-page")
 	.extract({
 		body: {
-			documentId: zod.string(),
+			documentId: BackedDocument.id,
 		},
 	})
 	.presetCheck(
@@ -46,5 +47,5 @@ useBuilder()
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "postListPage.found", endpointPostListPageSchema),
+		makeResponseContract(OkHttpResponse, "postListPage.found", Page.postList),
 	);

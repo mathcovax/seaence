@@ -22,7 +22,6 @@ defineProps<Props>();
 
 			<div class="flex-1">
 				<p class="font-medium">
-					<span class="text-blue-seaence">{{ registerNotification.user.username }}</span>
 					{{ $t("notification.register.content") }}
 				</p>
 

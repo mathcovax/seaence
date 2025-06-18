@@ -1,49 +1,42 @@
 import { zod } from "@vendors/clean";
-import { userObjecter, userUsernameObjecter } from "./user";
-import { languageObjecter } from "./common/language";
 
-const baseNotificatinSchema = zod.object({
-	id: zod.string(),
-	user: userObjecter.zodSchema.omit({
-		lastUpdate: true,
-	}).extend({
-		language: languageObjecter.zodSchema,
-	}),
-	processed: zod.boolean(),
-	createdAt: zod.string(),
-	deleteAt: zod.string(),
-});
+export namespace Notification {
+	export const base = zod.object({
+		id: zod.string(),
+		processed: zod.boolean(),
+		createdAt: zod.string(),
+		deleteAt: zod.string(),
+	});
 
-export const registerNotificationObjecter = baseNotificatinSchema.extend({
-	type: zod.literal("registerNotificationType"),
-}).createValueObjecter("registerNotification");
+	export const register = base.extend({
+		type: zod.literal("registerNotificationType"),
+	});
 
-export const summaryOfReplyPostObjecter = zod.string().createValueObjecter("summaryOfReplyPost");
+	export const replyToPost = base.extend({
+		type: zod.literal("replyToPostNotificationType"),
+		postId: zod.string(),
+		usernameOfReplyPost: zod.string(),
+		summaryOfReplyPost: zod.string(),
+	});
 
-export const replyToPostNotificationObjecter = baseNotificatinSchema.extend({
-	postId: zod.string(),
-	type: zod.literal("replyToPostNotificationType"),
-	usernameOfReplyPost: userUsernameObjecter.zodSchema,
-	summaryOfReplyPost: summaryOfReplyPostObjecter.zodSchema,
-}).createValueObjecter("replyToPostNotification");
+	export const postBan = base.extend({
+		type: zod.literal("userPostBanNotificationType"),
+		postId: zod.string(),
+		reason: zod.string(),
+		warningId: zod.string(),
+	});
 
-export const userPostBanNotificationObjecter = baseNotificatinSchema.extend({
-	type: zod.literal("userPostBanNotificationType"),
-	postId: zod.string(),
-	reason: zod.string(),
-	warningId: zod.string(),
-}).createValueObjecter("userPostBanNotification");
+	export const postWarning = base.extend({
+		type: zod.literal("userPostWarningNotificationType"),
+		postId: zod.string(),
+		reason: zod.string(),
+		warningId: zod.string(),
+	});
 
-export const userPostWarningNotificationObjecter = baseNotificatinSchema.extend({
-	type: zod.literal("userPostWarningNotificationType"),
-	postId: zod.string(),
-	reason: zod.string(),
-	warningId: zod.string(),
-}).createValueObjecter("userPostWarningNotification");
-
-export const notificationObjecter = zod.union([
-	registerNotificationObjecter.zodSchema,
-	replyToPostNotificationObjecter.zodSchema,
-	userPostBanNotificationObjecter.zodSchema,
-	userPostWarningNotificationObjecter.zodSchema,
-]).createValueObjecter("notification");
+	export const index = zod.union([
+		register,
+		replyToPost,
+		postBan,
+		postWarning,
+	]);
+}

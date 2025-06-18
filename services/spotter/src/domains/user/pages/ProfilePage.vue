@@ -45,7 +45,7 @@ function editUser() {
 			},
 		)
 		.whenInformation(
-			"user.rename",
+			"user.updated",
 			() => {
 				void fetchInformation()
 					.whenInformation(

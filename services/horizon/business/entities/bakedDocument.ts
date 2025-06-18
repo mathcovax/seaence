@@ -1,62 +1,73 @@
 import { createEnum, zod, flexibleDateObjecter } from "@vendors/clean";
-import { articleTypeObjecter } from "./common/articleType";
-import { providerEnum } from "./common/provider";
+import { ArticleType } from "./common/articleType";
+import { Provider } from "./common/provider";
+import { Post } from "./forum/post";
 
-export const bakedDocumentLanguageEnum = createEnum([
-	"fr-FR",
-	"en-US",
-]);
+export namespace BackedDocument {
+	export const languageEnum = createEnum([
+		"fr-FR",
+		"en-US",
+	]);
 
-export const bakedDocumentLanguageObjecter = zod
-	.enum(bakedDocumentLanguageEnum.toTuple())
-	.createValueObjecter("backedDocumentLanguage");
+	export const language = zod
+		.enum(languageEnum.toTuple());
 
-export const bakedDocumentAuthorObjecter = zod
-	.object({
-		name: zod.string(),
-		affiliations: zod.string().array().nullable(),
-	})
-	.createValueObjecter("bakedDocumentAuthor");
+	export const resourceProviderEnum = createEnum([
+		"DOIFoundation",
+		...Provider.indexEnum.toTuple(),
+	]);
 
-export const bakedDocumentAbstractPartObjecter = zod
-	.object({
-		name: zod.string(),
-		label: zod.string(),
-		content: zod.string(),
-	})
-	.createValueObjecter("bakedDocumentAbstractPart");
+	export const resourceProvider = zod.enum(resourceProviderEnum.toTuple());
 
-export const resourceProviderEnum = createEnum([
-	"DOIFoundation",
-	...providerEnum.toTuple(),
-]);
+	export const id = zod.string();
 
-export const bakedDocumentRessourceObjecter = zod
-	.object({
-		resourceProvider: zod.enum(resourceProviderEnum.toTuple()),
-		url: zod.string(),
-	})
-	.createValueObjecter("bakedDocumentRessource");
+	export const index = zod
+		.object({
+			id,
+			nodeSameRawDocumentId: zod.string(),
+			articleTypes: ArticleType.index.array(),
+			title: zod.string(),
+			language,
+			abstract: zod.string().nullable(),
+			authors: zod
+				.object({
+					name: zod.string(),
+					affiliations: zod.string().array().nullable(),
+				})
+				.array(),
+			abstractDetails: zod
+				.object({
+					name: zod.string(),
+					label: zod.string(),
+					content: zod.string(),
+				})
+				.array()
+				.nullable(),
+			resources: zod
+				.object({
+					resourceProvider: resourceProvider,
+					url: zod.string(),
+				})
+				.array(),
+			keywords: zod
+				.object({
+					value: zod.string(),
+				})
+				.array(),
+			webPublishDate: flexibleDateObjecter.zodSchema.nullable(),
+			journalPublishDate: flexibleDateObjecter.zodSchema.nullable(),
+		});
 
-export const bakedDocumentKeywordObjecter = zod
-	.object({
-		value: zod.string(),
-	})
-	.createValueObjecter("bakedDocumentKeyword");
-
-export const bakedDocumentObjecter = zod
-	.object({
-		id: zod.string(),
-		nodeSameRawDocumentId: zod.string(),
-		articleTypes: articleTypeObjecter.zodSchema.array(),
-		title: zod.string(),
-		language: bakedDocumentLanguageObjecter.zodSchema,
-		abstract: zod.string().nullable(),
-		authors: bakedDocumentAuthorObjecter.zodSchema.array(),
-		abstractDetails: bakedDocumentAbstractPartObjecter.zodSchema.array().nullable(),
-		resources: bakedDocumentRessourceObjecter.zodSchema.array(),
-		keywords: bakedDocumentKeywordObjecter.zodSchema.array(),
-		webPublishDate: flexibleDateObjecter.zodSchema.nullable(),
-		journalPublishDate: flexibleDateObjecter.zodSchema.nullable(),
-	})
-	.createValueObjecter("backedDocument");
+	export const searchResult = zod
+		.object({
+			score: zod.number(),
+			bakedDocumentId: zod.string(),
+			title: zod.string(),
+			articleTypes: ArticleType.index.array(),
+			authors: zod.string().array(),
+			webPublishDate: zod.string().nullable(),
+			journalPublishDate: zod.string().nullable(),
+			summary: zod.string().nullable(),
+			keywords: zod.string().array().nullable(),
+		});
+}

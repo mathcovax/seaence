@@ -1,11 +1,8 @@
-import { bakedDocumentLanguageObjecter } from "@business/entities/bakedDocument";
-import { filtersValuesSchema } from "../schemas/search/filter";
+import { BackedDocument } from "@business/entities/bakedDocument";
 import { SeaAPI } from "@interfaces/providers/sea";
 import { searchConfig } from "@interfaces/configs/search";
-import { endpointSimpleSearchResultSchema, simpleSearchTermSchema } from "../schemas/search/search";
-import { endpointSearchDetailsSchema } from "../schemas/search/facet";
 import { match } from "ts-pattern";
-import { type Facet } from "@business/entities/facets";
+import { Facet } from "@business/entities/facets";
 import { operatorContentSchema } from "@vendors/types-advanced-query";
 import { BodyLimitDescription } from "../plugins/bodyLimit";
 
@@ -14,12 +11,14 @@ useBuilder()
 	.extract(
 		{
 			body: zod.object({
-				language: bakedDocumentLanguageObjecter.zodSchema,
+				language: BackedDocument.language,
 				term: zod.union([
-					simpleSearchTermSchema,
+					zod.string()
+						.max(searchConfig.simple.maxLength)
+						.min(searchConfig.simple.minLength),
 					operatorContentSchema,
 				]),
-				filtersValues: filtersValuesSchema.optional(),
+				filtersValues: Facet.filters.optional(),
 			}),
 		},
 		undefined,
@@ -33,7 +32,7 @@ useBuilder()
 
 			const facets = results.facets.map(
 				(facet) => match(facet)
-					.returnType<Facet>()
+					.returnType<Facet.Index>()
 					.with(
 						{ name: "articleType" },
 						(facet) => ({
@@ -74,7 +73,7 @@ useBuilder()
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "search.details", endpointSearchDetailsSchema),
+		makeResponseContract(OkHttpResponse, "search.details", Facet.searchDetails),
 	);
 
 useBuilder()
@@ -82,13 +81,15 @@ useBuilder()
 	.extract(
 		{
 			body: zod.object({
-				language: bakedDocumentLanguageObjecter.zodSchema,
+				language: BackedDocument.language,
 				page: zod.number().max(searchConfig.maxPage),
 				term: zod.union([
-					simpleSearchTermSchema,
+					zod.string()
+						.max(searchConfig.simple.maxLength)
+						.min(searchConfig.simple.minLength),
 					operatorContentSchema,
 				]),
-				filtersValues: filtersValuesSchema.optional(),
+				filtersValues: Facet.filters.optional(),
 			}),
 		},
 		undefined,
@@ -109,5 +110,5 @@ useBuilder()
 				results,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "simpleSearch.results", endpointSimpleSearchResultSchema.array()),
+		makeResponseContract(OkHttpResponse, "simpleSearch.results", BackedDocument.searchResult.array()),
 	);

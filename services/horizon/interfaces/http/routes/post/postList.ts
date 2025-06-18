@@ -1,14 +1,16 @@
+import { BackedDocument } from "@business/entities/bakedDocument";
+import { Post } from "@business/entities/forum/post";
 import { postConfig } from "@interfaces/configs/post";
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
-import { endpointPostSchema } from "@interfaces/http/schemas/post";
 import { SchoolAPI } from "@interfaces/providers/school";
 
 useBuilder()
 	.createRoute("POST", "/post-list")
 	.extract({
 		body: {
-			documentId: zod.string(),
-			page: zod.number(),
+			documentId: BackedDocument.id,
+			page: zod.number()
+				.min(postConfig.findPosts.pageOffset),
 		},
 	})
 	.presetCheck(
@@ -30,5 +32,5 @@ useBuilder()
 				posts,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "postList.found", endpointPostSchema.array()),
+		makeResponseContract(OkHttpResponse, "postList.found", Post.index.array()),
 	);

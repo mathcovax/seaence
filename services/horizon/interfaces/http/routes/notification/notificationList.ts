@@ -1,5 +1,5 @@
+import { Notification } from "@business/entities/notification";
 import { notificationConfig } from "@interfaces/configs/notification";
-import { endpointNotificationListSchema } from "@interfaces/http/schemas/notification";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 
@@ -7,7 +7,8 @@ useMustBeConnectedBuilder()
 	.createRoute("POST", "/notification-list")
 	.extract({
 		body: {
-			page: zod.number(),
+			page: zod.number()
+				.min(notificationConfig.findNotifications.pageOffset),
 		},
 	})
 	.handler(
@@ -20,7 +21,12 @@ useMustBeConnectedBuilder()
 				page: page - notificationConfig.findNotifications.pageOffset,
 			});
 
-			return new OkHttpResponse("notificationList.found", notications);
+			return new OkHttpResponse(
+				"notificationList.found",
+				notications.map(
+					({ user, ...notification }) => notification,
+				),
+			);
 		},
-		makeResponseContract(OkHttpResponse, "notificationList.found", endpointNotificationListSchema),
+		makeResponseContract(OkHttpResponse, "notificationList.found", Notification.index.array()),
 	);

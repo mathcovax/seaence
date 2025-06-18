@@ -1,3 +1,4 @@
+import { Post } from "@business/entities/forum/post";
 import { iWantPostExistById } from "@interfaces/http/checkers/post";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
@@ -6,7 +7,7 @@ useMustBeConnectedBuilder()
 	.createRoute("POST", "/toggle-post-notification")
 	.extract({
 		body: {
-			postId: zod.string(),
+			postId: Post.id,
 			enable: zod.boolean(),
 		},
 	})

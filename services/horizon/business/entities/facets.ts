@@ -1,84 +1,88 @@
-import { createEnum, type GetValueObject, zod, type GetEnumValue } from "@vendors/clean";
-import { articleTypeObjecter } from "./common/articleType";
+import { createEnum, zod } from "@vendors/clean";
+import { ArticleType } from "./common/articleType";
 
-export const facetTypeEnum = createEnum([
-	"checkbox",
-	"multiSelect",
-	"range",
-]);
+export namespace Facet {
+	export const typeEnum = createEnum([
+		"checkbox",
+		"multiSelect",
+		"range",
+	]);
 
-export const genderFacetValueEnum = createEnum(["male", "female"]);
+	export const gendeValueEnum = createEnum(["male", "female"]);
 
-export type GenderFacetValue = GetEnumValue<typeof genderFacetValueEnum>;
+	export const genderValue = zod
+		.enum(gendeValueEnum.toTuple());
 
-export const genderFacetValueObjecter = zod
-	.enum(genderFacetValueEnum.toTuple())
-	.createValueObjecter("genderFacetValue");
+	export const gender = zod
+		.object({
+			type: zod.literal(typeEnum.checkbox),
+			name: zod.literal("gender"),
+			values: zod.object({
+				value: genderValue,
+				quantity: zod.number(),
+			}).array(),
+		});
 
-export const genderFacetObjecter = zod
-	.object({
-		type: zod.literal(facetTypeEnum.checkbox),
-		name: zod.literal("gender"),
-		values: zod.object({
-			value: genderFacetValueObjecter.zodSchema,
-			quantity: zod.number(),
-		}).array(),
-	})
-	.createValueObjecter("genderFacet");
+	export const speciesValueEnum = createEnum(["human", "otherAnimal"]);
 
-export const speciesFacetValueEnum = createEnum(["human", "otherAnimal"]);
+	export const speciesValue = zod
+		.enum(speciesValueEnum.toTuple());
 
-export type SpeciesFacetValue = GetEnumValue<typeof speciesFacetValueEnum>;
+	export const species = zod
+		.object({
+			type: zod.literal(typeEnum.checkbox),
+			name: zod.literal("species"),
+			values: zod.object({
+				value: speciesValue,
+				quantity: zod.number(),
+			}).array(),
+		});
 
-export const speciesFacetValueObjecter = zod
-	.enum(speciesFacetValueEnum.toTuple())
-	.createValueObjecter("speciesFacetValue");
+	export const articleType = zod
+		.object({
+			type: zod.literal(typeEnum.multiSelect),
+			name: zod.literal("articleType"),
+			values: zod.object({
+				value: ArticleType.index,
+				quantity: zod.number(),
+			}).array(),
+		});
 
-export const speciesFacetObjecter = zod
-	.object({
-		type: zod.literal(facetTypeEnum.checkbox),
-		name: zod.literal("species"),
-		values: zod.object({
-			value: speciesFacetValueObjecter.zodSchema,
-			quantity: zod.number(),
-		}).array(),
-	})
-	.createValueObjecter("speciesFacet");
+	export const yearValue = zod.number();
 
-export const articleTypeFacetObjecter = zod
-	.object({
-		type: zod.literal(facetTypeEnum.multiSelect),
-		name: zod.literal("articleType"),
-		values: zod.object({
-			value: articleTypeObjecter.zodSchema,
-			quantity: zod.number(),
-		}).array(),
-	})
-	.createValueObjecter("articleTypeFacet");
+	export const year = zod
+		.object({
+			type: zod.literal(typeEnum.range),
+			name: zod.literal("year"),
+			values: zod.object({
+				value: yearValue,
+				quantity: zod.number(),
+			}).array(),
+		});
 
-export const yearFacetValueObjecter = zod
-	.number()
-	.createValueObjecter("yearFacetValue");
+	export const index = zod
+		.union([
+			articleType,
+			gender,
+			species,
+			year,
+		]);
 
-export const yearFacetObjecter = zod
-	.object({
-		type: zod.literal(facetTypeEnum.range),
-		name: zod.literal("year"),
-		values: zod.object({
-			value: yearFacetValueObjecter.zodSchema,
-			quantity: zod.number(),
-		}).array(),
-	})
-	.createValueObjecter("yearFacet");
+	export type Index = typeof index["_output"];
 
-export const facetObjecter = zod
-	.union([
-		articleTypeFacetObjecter.zodSchema,
-		genderFacetObjecter.zodSchema,
-		speciesFacetObjecter.zodSchema,
-		yearFacetObjecter.zodSchema,
-	])
-	.createValueObjecter("facet");
+	export const filters = zod.object({
+		articleType: ArticleType.index.array().optional(),
+		gender: genderValue.array().optional(),
+		species: speciesValue.array().optional(),
+		year: zod.object({
+			from: yearValue,
+			to: yearValue,
+		}).optional(),
+	});
 
-export type Facet = GetValueObject<typeof facetObjecter>["value"];
-
+	export const searchDetails = zod.object({
+		total: zod.number(),
+		facets: index.array(),
+		quantityPerPage: zod.number(),
+	});
+}

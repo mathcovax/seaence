@@ -42,6 +42,7 @@ type User = {
     email: string;
     language: UserLanguage;
     lastUpdate: string;
+    banned: boolean;
 };
 
 export { User };
@@ -261,12 +262,6 @@ export { FlexibleDate };
 
 type Notification = RegisterNotification | ReplyToPostNotification | {
     id: string;
-    user: {
-        id: string;
-        username: string;
-        email: string;
-        language: "fr-FR" | "en-US";
-    };
     processed: boolean;
     createdAt: string;
     deleteAt: string;
@@ -276,12 +271,6 @@ type Notification = RegisterNotification | ReplyToPostNotification | {
     warningId: string;
 } | {
     id: string;
-    user: {
-        id: string;
-        username: string;
-        email: string;
-        language: "fr-FR" | "en-US";
-    };
     processed: boolean;
     createdAt: string;
     deleteAt: string;
@@ -295,12 +284,6 @@ export { Notification };
 
 type RegisterNotification = {
     id: string;
-    user: {
-        id: string;
-        username: string;
-        email: string;
-        language: "fr-FR" | "en-US";
-    };
     processed: boolean;
     createdAt: string;
     deleteAt: string;
@@ -311,17 +294,11 @@ export { RegisterNotification };
 
 type ReplyToPostNotification = {
     id: string;
-    user: {
-        id: string;
-        username: string;
-        email: string;
-        language: "fr-FR" | "en-US";
-    };
     processed: boolean;
     createdAt: string;
     deleteAt: string;
-    postId: string;
     type: "replyToPostNotificationType";
+    postId: string;
     usernameOfReplyPost: string;
     summaryOfReplyPost: string;
 };
@@ -569,7 +546,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 204;
-        information: "user.rename";
+        information: "user.updated";
         body?: undefined;
     };
 }) | ({

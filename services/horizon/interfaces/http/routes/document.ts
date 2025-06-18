@@ -1,18 +1,19 @@
 import { documentConfig } from "@interfaces/configs/document";
 import { iWantDocumentExistById } from "../checkers/document";
-import { endpointDocumentPage } from "../schemas/document";
 import { SchoolAPI } from "@interfaces/providers/school";
+import { BackedDocument } from "@business/entities/bakedDocument";
+import { Page } from "@business/entities/page";
 
 useBuilder()
 	.createRoute("POST", "/document-page")
 	.extract({
-		body: zod.object({
-			bakedDocumentId: zod.string(),
-		}),
+		body: {
+			bakedDocumentId: BackedDocument.id,
+		},
 	})
 	.presetCheck(
 		iWantDocumentExistById,
-		(pickup) => pickup("body").bakedDocumentId,
+		(pickup) => pickup("bakedDocumentId"),
 	)
 	.handler(
 		async(pickup) => {
@@ -29,5 +30,5 @@ useBuilder()
 				posts,
 			});
 		},
-		makeResponseContract(OkHttpResponse, "documentPage.found", endpointDocumentPage),
+		makeResponseContract(OkHttpResponse, "documentPage.found", Page.document),
 	);

@@ -1,4 +1,4 @@
-import { Post } from "@business/entities/post";
+import { Page } from "@business/entities/page";
 import { SchoolAPI } from "@interfaces/providers/school";
 import { match } from "ts-pattern";
 
@@ -54,6 +54,6 @@ useBuilder()
 		makeResponseContract(
 			OkHttpResponse,
 			"postModerationPage.found",
-			Post.moderationPage,
+			Page.moderationPost,
 		),
 	);

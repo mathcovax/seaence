@@ -1,7 +1,6 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
 import { match } from "ts-pattern";
-import { endpointAuthSchema } from "../schemas/auth";
-import { userLanguageObjecter, userUsernameObjecter } from "@business/entities/user";
+import { User } from "@business/entities/user";
 
 useBuilder()
 	.createRoute("POST", "/login")
@@ -43,7 +42,7 @@ useBuilder()
 
 			return new OkHttpResponse("user.logged", { accessToken });
 		},
-		makeResponseContract(OkHttpResponse, "user.logged", endpointAuthSchema),
+		makeResponseContract(OkHttpResponse, "user.logged", User.login),
 	);
 
 useBuilder()
@@ -51,8 +50,8 @@ useBuilder()
 	.extract({
 		body: zod.object({
 			firebaseToken: zod.string(),
-			username: userUsernameObjecter.zodSchema,
-			language: userLanguageObjecter.zodSchema,
+			username: User.username,
+			language: User.language,
 		}),
 	})
 	.cut(
@@ -92,5 +91,5 @@ useBuilder()
 
 			return new OkHttpResponse("user.registered", { accessToken });
 		},
-		makeResponseContract(OkHttpResponse, "user.registered", endpointAuthSchema),
+		makeResponseContract(OkHttpResponse, "user.registered", User.login),
 	);

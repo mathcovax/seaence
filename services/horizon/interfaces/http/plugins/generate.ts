@@ -1,46 +1,44 @@
 import "@duplojs/types-codegen";
 import "@vendors/types-advanced-query/generate";
-import { bakedDocumentLanguageObjecter, bakedDocumentObjecter } from "@business/entities/bakedDocument";
-import { bakedDocumentSearchResultObjecter } from "@business/entities/bakedDocumentSearchResult";
-import { articleTypeObjecter } from "@business/entities/common/articleType";
-import { facetObjecter, genderFacetValueObjecter, speciesFacetValueObjecter } from "@business/entities/facets";
-import { filtersValuesSchema } from "../schemas/search/filter";
+import { BackedDocument } from "@business/entities/bakedDocument";
+import { ArticleType } from "@business/entities/common/articleType";
+import { Facet } from "@business/entities/facets";
 import { flexibleDateObjecter } from "@vendors/clean";
-import { postObjecter } from "@business/entities/post";
-import { answerObjecter } from "@business/entities/answer";
-import { userLanguageObjecter, userObjecter } from "@business/entities/user";
-import { notificationObjecter, replyToPostNotificationObjecter, registerNotificationObjecter } from "@business/entities/notification";
+import { User } from "@business/entities/user";
+import { Notification } from "@business/entities/notification";
 import { FavoriteEquation } from "@business/entities/favoriteEquation";
+import { Post } from "@business/entities/forum/post";
+import { Answer } from "@business/entities/forum/answer";
 
-articleTypeObjecter.zodSchema._zttIdentifier = "ArticleType";
+ArticleType.index._zttIdentifier = "ArticleType";
 
-bakedDocumentObjecter.zodSchema._zttIdentifier = "BakedDocument";
+BackedDocument.index._zttIdentifier = "BakedDocument";
 
-bakedDocumentLanguageObjecter.zodSchema._zttIdentifier = "BakedDocumentLanguage";
+BackedDocument.language._zttIdentifier = "BakedDocumentLanguage";
 
-bakedDocumentSearchResultObjecter.zodSchema._zttIdentifier = "BakedDocumentSearchResult";
+BackedDocument.searchResult._zttIdentifier = "BakedDocumentSearchResult";
 
-facetObjecter.zodSchema._zttIdentifier = "Facet";
+Facet.index._zttIdentifier = "Facet";
 
-filtersValuesSchema._zttIdentifier = "FiltersValues";
+Facet.filters._zttIdentifier = "FiltersValues";
 
-genderFacetValueObjecter.zodSchema._zttIdentifier = "GenderFacetValue";
+Facet.genderValue._zttIdentifier = "GenderFacetValue";
 
-speciesFacetValueObjecter.zodSchema._zttIdentifier = "SpeciesFacetValue";
+Facet.speciesValue._zttIdentifier = "SpeciesFacetValue";
 
 flexibleDateObjecter.zodSchema._zttIdentifier = "FlexibleDate";
 
-postObjecter.zodSchema._zttIdentifier = "Post";
-answerObjecter.zodSchema._zttIdentifier = "Answer";
+Post.index._zttIdentifier = "Post";
+Answer.index._zttIdentifier = "Answer";
 
-userObjecter.zodSchema._zttIdentifier = "User";
-userLanguageObjecter.zodSchema._zttIdentifier = "UserLanguage";
+User.index._zttIdentifier = "User";
+User.language._zttIdentifier = "UserLanguage";
 
-notificationObjecter.zodSchema._zttIdentifier = "Notification";
+Notification.index._zttIdentifier = "Notification";
 
-replyToPostNotificationObjecter.zodSchema._zttIdentifier = "ReplyToPostNotification";
+Notification.replyToPost._zttIdentifier = "ReplyToPostNotification";
 
-registerNotificationObjecter.zodSchema._zttIdentifier = "RegisterNotification";
+Notification.register._zttIdentifier = "RegisterNotification";
 
 FavoriteEquation.index._zttIdentifier = "FavoriteEquation";
 FavoriteEquation.listDetails._zttIdentifier = "FavoriteEquationListDetails";

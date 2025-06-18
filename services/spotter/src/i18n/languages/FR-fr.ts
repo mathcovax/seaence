@@ -347,6 +347,15 @@ export const FRfr = {
 		authorIs: "",
 		responseCount: "",
 	},
+	notification: {
+		register: {
+			content: "Bienvenue sur Seance !",
+		},
+		replyToPost: {
+			repliedToYourPostMessage: "a répondu à votre publication",
+		},
+		status: "Nouveau",
+	},
 	formMessage: {
 		required: "Champ obligatoire.",
 		positive: "Doit être un nombre positif.",
@@ -493,14 +502,5 @@ export const FRfr = {
 			remove: "l'équation a bien étais supprimer.",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
-	},
-	notification: {
-		register: {
-			content: "Bienvenue sur Seance !",
-		},
-		replyToPost: {
-			repliedToYourPostMessage: "a répondu à votre publication",
-		},
-		status: "Nouveau",
 	},
 };

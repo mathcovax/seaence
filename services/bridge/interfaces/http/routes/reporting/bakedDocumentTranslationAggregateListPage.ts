@@ -1,4 +1,4 @@
-import { ReportingBakedDocumentTranslation } from "@business/entities/reporting/bakedDocumentTranslation";
+import { Page } from "@business/entities/page";
 import { reportingBakedDocumentTranslationConfig } from "@interfaces/configs/reportingBakedDocumentTranslation";
 import { BeaconAPI } from "@interfaces/providers/beacon";
 
@@ -20,6 +20,6 @@ useBuilder()
 		makeResponseContract(
 			OkHttpResponse,
 			"reportingBakedDocumentTranslationAggregateListPage.found",
-			ReportingBakedDocumentTranslation.listPage,
+			Page.reportingBakedDocumentTranslationList,
 		),
 	);

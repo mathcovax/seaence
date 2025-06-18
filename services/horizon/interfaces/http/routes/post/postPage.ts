@@ -1,8 +1,9 @@
-import { bakedDocumentLanguageObjecter } from "@business/entities/bakedDocument";
+import { BackedDocument } from "@business/entities/bakedDocument";
+import { Post } from "@business/entities/forum/post";
+import { Page } from "@business/entities/page";
 import { answerConfig } from "@interfaces/configs/answer";
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
 import { iWantPostExistById } from "@interfaces/http/checkers/post";
-import { endpointPostPageSchema } from "@interfaces/http/schemas/post";
 import { tryAuthenticationProcess } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 import { match } from "ts-pattern";
@@ -15,8 +16,8 @@ useBuilder()
 	)
 	.extract({
 		body: {
-			postId: zod.string(),
-			language: bakedDocumentLanguageObjecter.zodSchema,
+			postId: Post.id,
+			language: BackedDocument.language,
 		},
 	})
 	.presetCheck(
@@ -84,5 +85,5 @@ useBuilder()
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "postPage.found", endpointPostPageSchema),
+		makeResponseContract(OkHttpResponse, "postPage.found", Page.post),
 	);

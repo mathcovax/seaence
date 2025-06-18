@@ -11,9 +11,4 @@ export namespace Post {
 		answerCount: zod.number(),
 		createdAt: zod.string(),
 	});
-
-	export const moderationPage = zod.object({
-		post: index,
-		unprocessedTotalCount: zod.number(),
-	});
 }

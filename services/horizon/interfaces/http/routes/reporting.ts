@@ -1,15 +1,16 @@
-import { reportingDetailsObjecter } from "@business/entities/reporing";
+import { Reporting } from "@business/entities/reporing";
 import { iWantDocumentExistById } from "../checkers/document";
 import { useMustBeConnectedBuilder } from "../security/authentication";
 import { BeaconAPI } from "@interfaces/providers/beacon";
 import { match } from "ts-pattern";
+import { BackedDocument } from "@business/entities/bakedDocument";
 
 useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 	.createRoute("POST", "/upsert-baked-document-translation-reporting")
 	.extract({
 		body: zod.object({
-			bakedDocumentId: zod.string(),
-			reportingDetails: reportingDetailsObjecter.zodSchema,
+			bakedDocumentId: BackedDocument.id,
+			reportingDetails: Reporting.details,
 		}),
 	})
 	.presetCheck(

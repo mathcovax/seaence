@@ -1,4 +1,4 @@
-import { ReportingBakedDocumentTranslation } from "@business/entities/reporting/bakedDocumentTranslation";
+import { Page } from "@business/entities/page";
 import { reportingBakedDocumentTranslationConfig } from "@interfaces/configs/reportingBakedDocumentTranslation";
 import { iWantBakedDocumentExistById } from "@interfaces/http/checkers/bakedDocument";
 import { BeaconAPI } from "@interfaces/providers/beacon";
@@ -50,6 +50,6 @@ useBuilder()
 		makeResponseContract(
 			OkHttpResponse,
 			"reportingBakedDocumentTranslationPage.found",
-			ReportingBakedDocumentTranslation.page,
+			Page.reportingBakedDocumentTranslation,
 		),
 	);

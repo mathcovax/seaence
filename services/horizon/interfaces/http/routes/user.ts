@@ -1,8 +1,7 @@
 import { HarborAPI } from "@interfaces/providers/harbor";
-import { endpointUserSchema } from "../schemas/user";
 import { useMustBeConnectedBuilder } from "../security/authentication";
 import { match } from "ts-pattern";
-import { userLanguageObjecter, userUsernameObjecter } from "@business/entities/user";
+import { User } from "@business/entities/user";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/self-user")
@@ -12,15 +11,15 @@ useMustBeConnectedBuilder()
 
 			return new OkHttpResponse("user.self", user);
 		},
-		makeResponseContract(OkHttpResponse, "user.self", endpointUserSchema),
+		makeResponseContract(OkHttpResponse, "user.self", User.index),
 	);
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/update-self-user")
 	.extract({
 		body: {
-			username: userUsernameObjecter.zodSchema.optional(),
-			language: userLanguageObjecter.zodSchema.optional(),
+			username: User.username.optional(),
+			language: User.language.optional(),
 		},
 	})
 	.cut(
@@ -55,6 +54,6 @@ useMustBeConnectedBuilder()
 		],
 	)
 	.handler(
-		() => new NoContentHttpResponse("user.rename"),
-		makeResponseContract(NoContentHttpResponse, "user.rename"),
+		() => new NoContentHttpResponse("user.updated"),
+		makeResponseContract(NoContentHttpResponse, "user.updated"),
 	);

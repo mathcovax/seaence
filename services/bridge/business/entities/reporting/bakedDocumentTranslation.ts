@@ -1,5 +1,4 @@
 import { zod } from "@vendors/clean";
-import { BakedDocument } from "../bakedDocument";
 
 export namespace ReportingBakedDocumentTranslation {
 	export const aggregateListRow = zod
@@ -11,12 +10,6 @@ export namespace ReportingBakedDocumentTranslation {
 
 	export const aggregateList = aggregateListRow.array();
 
-	export const listPage = zod
-		.object({
-			countTotal: zod.number(),
-			quantityPerPage: zod.number(),
-		});
-
 	export const listRow = zod.object({
 		id: zod.string(),
 		userId: zod.string(),
@@ -25,12 +18,4 @@ export namespace ReportingBakedDocumentTranslation {
 	});
 
 	export const list = listRow.array();
-
-	export const page = zod.object({
-		bakedDocument: BakedDocument.index,
-		reporting: zod.object({
-			countTotal: zod.number(),
-			quantityPerPage: zod.number(),
-		}),
-	});
 }

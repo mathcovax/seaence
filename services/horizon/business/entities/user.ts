@@ -1,22 +1,26 @@
 import { createEnum, zod } from "@vendors/clean";
 import { userRules } from "@vendors/entity-rules";
 
-export const userUsernameObjecter = zod
-	.string()
-	.min(userRules.username.minLength)
-	.max(userRules.username.maxLength)
-	.createValueObjecter("userUsername");
+export namespace User {
+	export const username = zod
+		.string()
+		.min(userRules.username.minLength)
+		.max(userRules.username.maxLength);
 
-export const userLanguageEnum = createEnum(["fr-FR", "en-US"]);
-export const userLanguageObjecter = zod.enum(userLanguageEnum.toTuple())
-	.createValueObjecter("userLanguage");
+	export const languageEnum = createEnum(["fr-FR", "en-US"]);
+	export const language = zod.enum(languageEnum.toTuple());
 
-export const userObjecter = zod
-	.object({
-		id: zod.string(),
-		username: userUsernameObjecter.zodSchema,
-		email: zod.string(),
-		language: userLanguageObjecter.zodSchema,
-		lastUpdate: zod.string(),
-	})
-	.createValueObjecter("user");
+	export const index = zod
+		.object({
+			id: zod.string(),
+			username,
+			email: zod.string(),
+			language,
+			lastUpdate: zod.string(),
+			banned: zod.boolean(),
+		});
+
+	export const login = zod.object({
+		accessToken: zod.string(),
+	});
+}

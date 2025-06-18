@@ -1,18 +1,16 @@
 import { SchoolAPI } from "@interfaces/providers/school";
 import { useMustBeConnectedBuilder } from "../security/authentication";
 import { match } from "ts-pattern";
-import { endpointAnswerSchema } from "../schemas/answer";
 import { answerConfig } from "@interfaces/configs/answer";
-import { answerRules } from "@vendors/entity-rules";
+import { Answer } from "@business/entities/forum/answer";
+import { Post } from "@business/entities/forum/post";
 
 useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 	.createRoute("POST", "/create-answer")
 	.extract({
 		body: {
-			postId: zod.string(),
-			content: zod.string()
-				.max(answerRules.content.maxLength)
-				.min(answerRules.content.minLength),
+			postId: Post.id,
+			content: Answer.content,
 		},
 	})
 	.cut(
@@ -53,8 +51,8 @@ useBuilder()
 	.createRoute("POST", "/answer-list")
 	.extract({
 		body: {
-			postId: zod.string(),
-			page: zod.coerce.number(),
+			postId: Post.id,
+			page: zod.number(),
 		},
 	})
 	.cut(
@@ -90,5 +88,5 @@ useBuilder()
 				answers,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "answerList.found", endpointAnswerSchema.array()),
+		makeResponseContract(OkHttpResponse, "answerList.found", Answer.index.array()),
 	);

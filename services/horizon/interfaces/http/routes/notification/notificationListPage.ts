@@ -1,5 +1,5 @@
+import { Page } from "@business/entities/page";
 import { notificationConfig } from "@interfaces/configs/notification";
-import { endpointNotificationListPageSchema } from "@interfaces/http/schemas/notification";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 
@@ -23,6 +23,6 @@ useMustBeConnectedBuilder()
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "notificationListPage.found", endpointNotificationListPageSchema),
+		makeResponseContract(OkHttpResponse, "notificationListPage.found", Page.notificationList),
 	);
 
