@@ -252,7 +252,7 @@ export const FRfr = {
 			},
 			footer: {
 				nav: {
-					conditions: "Conditions d'utilisation",
+					conditions: "Conditions générales d'utilisation",
 					about: "À propos",
 					support: "Support",
 				},
