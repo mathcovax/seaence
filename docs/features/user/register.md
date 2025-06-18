@@ -8,21 +8,14 @@
 - Je click sur le boutont de connexion google
 - J'utilise le SSO
 - Je reviens dans la modal
-- Je vois un formulaire ou je doit indiquer mon pseudo et valider les condition d'utilisation
+- Je vois un formulaire avec:
+	* un champ avec mon pseudo
+	* langue que je veut utilisais
+	* une checkbox pour valider les condition d'utilisation
+- Je remplie tout les champ.
 - Je valide le fomulaire
 - Le dialog ce ferme et je suis connecter
 - Je recois notification de bienvenue
-
-### Harbor user story
-
-- Je reçois une nouvel email avec un pseudo
-- Je créer un nouvel utilisateur
-
-### Bottle user story
-
-- Je recois un utilisateur qui vient d'étre créer,
-- Je le créée de mon coté 
-- Je créer une notification de bienvenue
 
 ### Harbor implémentation
 
