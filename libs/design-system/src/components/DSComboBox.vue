@@ -1,11 +1,10 @@
 <script setup lang="ts" generic="GenericItem extends AcceptableValue">
 import { type AcceptableValue } from "reka-ui";
-import { ref, defineModel } from "vue";
+import { ref, defineModel, type HTMLAttributes } from "vue";
 import DSPopover from "./ui/popover/DSPopover.vue";
 import DSPopoverTrigger from "./ui/popover/DSPopoverTrigger.vue";
 import DSPopoverContent from "./ui/popover/DSPopoverContent.vue";
 import DSGhostButton from "./ui/button/DSGhostButton.vue";
-import DSClosingTag from "./DSClosingTag.vue";
 import DSCommand from "./ui/command/DSCommand.vue";
 import DSCommandInput from "./ui/command/DSCommandInput.vue";
 import DSCommandEmpty from "./ui/command/DSCommandEmpty.vue";
@@ -19,13 +18,15 @@ interface Props {
 	value?(item: GenericItem): AcceptableValue;
 	placeholder: string;
 	emptyLabel: string;
-	class?: string;
+	class?: HTMLAttributes["class"];
 }
 
 const props = defineProps<Props>();
 
-const modelValue = defineModel<GenericItem[]>(
-	{ required: true },
+const modelValue = defineModel<GenericItem>(
+	{
+		required: true,
+	},
 );
 
 const searchTerm = defineModel<string>(
@@ -56,22 +57,8 @@ function getValue(item: GenericItem) {
 	return item;
 }
 
-function removeTag(removedItem: GenericItem) {
-	modelValue.value = modelValue.value.filter((item) => item !== removedItem);
-}
-
 function onSelect(selectedItem: GenericItem) {
-	const notfoundIndex = -1;
-	const deleteQuantity = 1;
-
-	const index = modelValue.value.findIndex((item) => getValue(item) === getValue(selectedItem));
-	if (index === notfoundIndex) {
-		modelValue.value = [...modelValue.value, selectedItem];
-	} else {
-		const newModelValue = [...modelValue.value];
-		newModelValue.splice(index, deleteQuantity);
-		modelValue.value = newModelValue;
-	}
+	modelValue.value = selectedItem;
 	open.value = false;
 }
 </script>
@@ -91,16 +78,8 @@ function onSelect(selectedItem: GenericItem) {
 				<div
 					class="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide"
 				>
-					<template v-if="modelValue.length">
-						<DSClosingTag
-							v-for="(item, index) of modelValue"
-							:key="getKey(item) ?? index"
-							@close="removeTag(item)"
-							@click="$event.stopPropagation()"
-							class="px-1 py-0.5 text-xs text-primary bg-primary/20"
-						>
-							{{ getLabel(item) }}
-						</DSClosingTag>
+					<template v-if="modelValue">
+						<span class="text-sm">{{ getLabel(modelValue) }}</span>
 					</template>
 
 					<template v-else>
@@ -111,9 +90,9 @@ function onSelect(selectedItem: GenericItem) {
 				<span class="h-6 w-px bg-neutral-100 mx-1" />
 
 				<DSGhostButton
+					icon="chevronDown"
 					square
 					rounded
-					icon="plus"
 				/>
 			</div>
 		</DSPopoverTrigger>
@@ -148,11 +127,11 @@ function onSelect(selectedItem: GenericItem) {
 
 <style scoped>
 .scrollbar-hide::-webkit-scrollbar {
-	display: none;
+    display: none;
 }
 
 .scrollbar-hide {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 </style>

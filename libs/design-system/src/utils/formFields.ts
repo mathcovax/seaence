@@ -3,6 +3,7 @@ import DSInput from "../components/ui/input/DSInput.vue";
 import { createFormField } from "../composables/useFormBuilder";
 import CheckboxTemplate from "../components/form/CheckboxTemplate.vue";
 import DSTextarea from "../components/ui/textarea/DSTextarea.vue";
+import MultiComboboxTemplate, { type MultiComboboxItem } from "../components/form/MultiComboboxTemplate.vue";
 
 export const textformField = createFormField(DSInput, {
 	defaultValue: "",
@@ -17,4 +18,13 @@ export const booleanFormField = createFormField(CheckboxTemplate, {
 export const textareaFormField = createFormField(DSTextarea, {
 	defaultValue: "",
 	props: {},
+});
+
+export const multiComboBoxFormField = createFormField(MultiComboboxTemplate, {
+	defaultValue: [] as MultiComboboxItem[],
+	props: {
+		placeholder: "",
+		emptyLabel: "",
+		items: [],
+	},
 });

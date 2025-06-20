@@ -52,3 +52,9 @@ export type InputRemoveDocumentInFolder = FindHttpClientRoute<
 	"POST",
 	"/remove-document-in-folder"
 >["body"];
+
+export type InputAddDocumentInFolder = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/create-document-in-folder"
+>["body"];

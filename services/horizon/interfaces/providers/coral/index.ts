@@ -1,5 +1,5 @@
 import { envs } from "@interfaces/envs";
-import type { CoralClientRoute, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputGetfindManyDocumentFolderCount, InputGetfindManyDocumentInFolderCount, InputRemoveDocumentFolder, InputRemoveDocumentInFolder } from "./types";
+import type { CoralClientRoute, InputAddDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputGetfindManyDocumentFolderCount, InputGetfindManyDocumentInFolderCount, InputRemoveDocumentFolder, InputRemoveDocumentInFolder } from "./types";
 import { HttpClient } from "@duplojs/http-client";
 
 export class CoralAPI {
@@ -91,6 +91,23 @@ export class CoralAPI {
 				},
 			)
 			.iWantInformation("documentInFolder.removed");
+	}
+
+	public static addDocumentInFolder(input: InputAddDocumentInFolder) {
+		return this.httpClient
+			.post(
+				"/create-document-in-folder",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation(
+				[
+					"documentInFolder.created",
+					"documentInFolder.maxQuantity",
+					"documentInFolder.alreadyExists",
+				],
+			);
 	}
 
 	static {
