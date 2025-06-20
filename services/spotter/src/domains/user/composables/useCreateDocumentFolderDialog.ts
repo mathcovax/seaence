@@ -1,6 +1,6 @@
-const isOpen = ref(false);
-
 export function useCreateDocumentFolderDialog() {
+	const isOpen = ref(false);
+
 	function open() {
 		isOpen.value = true;
 	}

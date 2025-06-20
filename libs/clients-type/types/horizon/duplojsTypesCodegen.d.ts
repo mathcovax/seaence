@@ -853,6 +853,35 @@ type CodegenRoutes = ({
         information: "documentInFolder.removed";
         body?: undefined;
     };
+}) | ({
+    method: "POST";
+    path: "/add-document-in-folder";
+    body: {
+        documentFolderId: string;
+        nodeSameRawDocumentId: string;
+        documentInFolderName: string;
+    };
+    response: {
+        code: 403;
+        information: "accessToken.invalid";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentInFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 422;
+        information: "documentInFolder.maxQuantity";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolder.created";
+        body?: undefined;
+    };
 });
 
 export { CodegenRoutes };

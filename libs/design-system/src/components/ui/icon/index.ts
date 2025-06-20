@@ -46,6 +46,7 @@ import {
 	mdiDelete,
 	mdiFileOutline,
 	mdiFile,
+	mdiChevronDown,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -96,6 +97,7 @@ export const iconsMapper = {
 	deleteOutline: mdiDeleteOutline,
 	file: mdiFile,
 	fileOutline: mdiFileOutline,
+	chevronDown: mdiChevronDown,
 };
 
 export const iconSizeMapper = {

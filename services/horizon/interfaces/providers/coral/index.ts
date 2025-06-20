@@ -1,5 +1,5 @@
 import { envs } from "@interfaces/envs";
-import type { CoralClientRoute, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindManyFavoritEquationDetails, InputFindManyFavoritEquationName, InputFindOneDocumentFolder, InputFindOneFavoritEquation, InputGetfindManyDocumentFolderCount, InputGetfindManyDocumentInFolderCount, InputRemoveDocumentFolder, InputRemoveDocumentInFolder, InputRemoveFavoritEquation, InputUpsertFavoritEquation } from "./types";
+import type { CoralClientRoute, InputAddDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindManyFavoritEquationDetails, InputFindManyFavoritEquationName, InputFindOneDocumentFolder, InputFindOneFavoritEquation, InputGetfindManyDocumentFolderCount, InputGetfindManyDocumentInFolderCount, InputRemoveDocumentFolder, InputRemoveDocumentInFolder, InputRemoveFavoritEquation, InputUpsertFavoritEquation } from "./types";
 import { HttpClient } from "@duplojs/http-client";
 export class CoralAPI {
 	private static httpClient: HttpClient<CoralClientRoute>;
@@ -156,6 +156,23 @@ export class CoralAPI {
 				},
 			)
 			.iWantInformation("documentInFolder.removed");
+	}
+
+	public static addDocumentInFolder(input: InputAddDocumentInFolder) {
+		return this.httpClient
+			.post(
+				"/create-document-in-folder",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation(
+				[
+					"documentInFolder.created",
+					"documentInFolder.maxQuantity",
+					"documentInFolder.alreadyExists",
+				],
+			);
 	}
 
 	static {

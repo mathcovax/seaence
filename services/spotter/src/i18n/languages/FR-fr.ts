@@ -84,6 +84,11 @@ export const FRfr = {
 					textareaLabel: "Détails du probléme de traduction.",
 				},
 			},
+			addDocumentInFolderDialog: {
+				button: {
+					content: "Ajouter dans un dossier",
+				},
+			},
 		},
 		[postListPage.name]: {
 			titleLinkPost: "Post(s) lié(s) au document : {title}",
@@ -184,8 +189,9 @@ export const FRfr = {
 		[documentInFolderPage.name]: {
 			title: "Dossier",
 			header: {
-				label: "fichiers",
+				label: "documents",
 			},
+			noDocumentInFolder: "Aucun document trouvé.",
 		},
 	},
 	authDialog: {
@@ -204,6 +210,15 @@ export const FRfr = {
 	},
 	documentFolderHeader: {
 		filtered: "{filtered} sur {total}",
+	},
+	addDocumentInFolderDialog: {
+		title: "Ajouter le document",
+		form: {
+			label: {
+				name: "libellé",
+				folder: "dossiers",
+			},
+		},
 	},
 	layout: {
 		base: {
@@ -419,6 +434,7 @@ export const FRfr = {
 		create: "Créer",
 		validate: "Valider",
 		refuse: "Refuser",
+		add: "Ajouter",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
