@@ -84,7 +84,7 @@ export const FRfr = {
 					textareaLabel: "Détails du probléme de traduction.",
 				},
 			},
-			addDocumentInFolderDialog: {
+			createManyDocumentInFolderDialog: {
 				button: {
 					content: "Ajouter dans un dossier",
 				},
@@ -211,12 +211,19 @@ export const FRfr = {
 	documentFolderHeader: {
 		filtered: "{filtered} sur {total}",
 	},
-	addDocumentInFolderDialog: {
+	createManyDocumentInFolderDialog: {
 		title: "Ajouter le document",
 		form: {
 			label: {
 				name: "libellé",
 				folder: "dossiers",
+			},
+			placeholder: {
+				name: "Entrer un nom de document",
+				folder: "Sélectionner des dossiers",
+			},
+			emptyLabel: {
+				folder: "Aucun dossier trouvé.",
 			},
 		},
 	},

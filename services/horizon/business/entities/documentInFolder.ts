@@ -9,8 +9,9 @@ export namespace DocumentInFolder {
 		addedAt: zod.string(),
 	});
 
-	export const list = zod.object({
-		list: index.array(),
+	export const list = index.array();
+
+	export const details = zod.object({
 		total: zod.number(),
 	});
 

@@ -1,4 +1,8 @@
-import type { DocumentInFolderPage, DocumentInFolderList } from "@/lib/horizon/types/documentInFolder";
+import type {
+	DocumentInFolderPage,
+	DocumentInFolderList,
+	DocumentInFolderListDetails,
+} from "@/lib/horizon/types/documentInFolder";
 import { documentInFolderRules } from "@vendors/entity-rules";
 
 export function useDocumentInFolderPage(
@@ -8,6 +12,7 @@ export function useDocumentInFolderPage(
 	const { t: $t } = useI18n();
 	const pageInformation = ref<DocumentInFolderPage | null>(null);
 	const list = ref<DocumentInFolderList | null>(null);
+	const listDetails = ref<DocumentInFolderListDetails | null>(null);
 	const defaultPage = 1;
 	const pageOfList = ref(defaultPage);
 
@@ -44,6 +49,28 @@ export function useDocumentInFolderPage(
 				"documentInFolderList.found",
 				({ body }) => {
 					list.value = body;
+				},
+			)
+			.whenRequestError(
+				whenFindError,
+			);
+	}
+
+	function findManyDetails() {
+		return horizonClient
+			.post(
+				"/find-many-document-in-folder-details",
+				{
+					body: {
+						documentFolderId,
+						partialDocumentInFolderName: formValue.value.name,
+					},
+				},
+			)
+			.whenInformation(
+				"documentInFolderList.foundDetails",
+				({ body }) => {
+					listDetails.value = body;
 				},
 			)
 			.whenRequestError(
@@ -93,13 +120,17 @@ export function useDocumentInFolderPage(
 
 	void findMany();
 
+	void findManyDetails();
+
 	return {
 		documentInFolderList: list,
+		documentInFolderListDetails: listDetails,
 		documentInFolderPageInformation: pageInformation,
 		documentInFolderPageOfList: pageOfList,
 		documentInFolderSetPage: setPage,
 		handleSearchDocumentInFolder: handleSearch,
 		documentInFolderFindMany: findMany,
+		documentInFolderFindManyDetails: findManyDetails,
 		SearchDocumentInFolderForm: Form,
 	};
 }

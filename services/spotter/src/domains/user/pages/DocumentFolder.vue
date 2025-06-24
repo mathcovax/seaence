@@ -18,10 +18,12 @@ const { sonnerWarning, sonnerMessage } = useSonner();
 const {
 	SearchDocumentFolderForm,
 	documentFolderList,
+	documentFolderListDetails,
 	documentFolderPageInformation,
 	handleSearchDocumentFolderByName,
 	documentFolderSetPage,
 	findManyDocumentFolder,
+	findManyDocumentFolderDetails,
 	documentFolderPageOfList,
 } = useDocumentFolderPage(
 	() => {
@@ -57,7 +59,7 @@ function handleCreateDocumentFolder() {
 			"documentFolder.created",
 			() => {
 				closeCreateDocumentFolderDialog();
-				void findManyDocumentFolder();
+				void Promise.all([findManyDocumentFolder(), findManyDocumentFolderDetails()]);
 				sonnerMessage($pt("form.errors.documentFolder.created"));
 			},
 		);
@@ -154,16 +156,16 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 				:label="$pt('header.label')"
 				icon="folder"
 				:count-total-item="documentFolderPageInformation?.total || 0"
-				:count-filtered-item="documentFolderList?.total || 0"
+				:count-filtered-item="documentFolderListDetails?.total || 0"
 			/>
 
 			<div
-				v-if="documentFolderList?.list?.length"
+				v-if="documentFolderList?.length"
 				class="mt-6"
 			>
 				<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
 					<li
-						v-for="folder in documentFolderList.list"
+						v-for="folder in documentFolderList"
 						:key="folder.id"
 					>
 						<DocumentFolderCard
@@ -175,11 +177,12 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 				</ul>
 
 				<nav
-					v-if="documentFolderPageInformation"
+					v-if="documentFolderListDetails && documentFolderPageInformation"
 					class="mt-10 flex justify-center"
 				>
 					<DSPagination
-						:total="documentFolderPageInformation.total"
+
+						:total="documentFolderListDetails.total"
 						:current-page="documentFolderPageOfList"
 						:quantity-per-page="documentFolderPageInformation.quantityPerPage"
 						@update="documentFolderSetPage"

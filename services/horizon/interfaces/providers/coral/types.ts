@@ -44,13 +44,13 @@ export type InputCreateDocumentFolder = FindHttpClientRoute<
 export type InputFindManyDocumentFolder = FindHttpClientRoute<
 	CoralClientRoute,
 	"POST",
-	"/search-document-folders"
+	"/find-many-document-folder"
 >["body"];
 
-export type InputGetfindManyDocumentFolderCount = FindHttpClientRoute<
+export type InputfindManyDocumentFolderDetails = FindHttpClientRoute<
 	CoralClientRoute,
 	"POST",
-	"/get-search-document-folders-count"
+	"/find-many-document-folders-details"
 >["body"];
 
 export type InputRemoveDocumentFolder = FindHttpClientRoute<
@@ -68,13 +68,13 @@ export type InputFindOneDocumentFolder = FindHttpClientRoute<
 export type InputFindManyDocumentInFolder = FindHttpClientRoute<
 	CoralClientRoute,
 	"POST",
-	"/search-documents-in-folder"
+	"/find-many-document-in-folder"
 >["body"];
 
-export type InputGetfindManyDocumentInFolderCount = FindHttpClientRoute<
+export type InputFindManyDocumentInFolderDetails = FindHttpClientRoute<
 	CoralClientRoute,
 	"POST",
-	"/get-search-documents-in-folder-count"
+	"/find-many-document-in-folder-details"
 >["body"];
 
 export type InputRemoveDocumentInFolder = FindHttpClientRoute<
@@ -83,8 +83,20 @@ export type InputRemoveDocumentInFolder = FindHttpClientRoute<
 	"/remove-document-in-folder"
 >["body"];
 
-export type InputAddDocumentInFolder = FindHttpClientRoute<
+export type InputCreateManyDocumentInFolder = FindHttpClientRoute<
 	CoralClientRoute,
 	"POST",
-	"/create-document-in-folder"
+	"/create-many-document-in-folder"
+>["body"];
+
+export type InputFindManyDocumentFoldersInWichDocumentExist = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/find-many-document-folders-in-which-document-exist"
+>["body"];
+
+export type InputFindManyDocumentFoldersInWichDocumentExistDetails = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/find-many-document-folders-in-which-document-exist-details"
 >["body"];

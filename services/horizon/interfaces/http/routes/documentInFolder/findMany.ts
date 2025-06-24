@@ -34,19 +34,45 @@ useMustBeConnectedBuilder()
 				quantityPerPage: documentInFolderConfig.findMany.quantityPerPage,
 			});
 
-			const { body: { total } } = await CoralAPI.getfindManyDocumentInFolderCount({
+			return new OkHttpResponse(
+				"documentInFolderList.found",
+				list,
+			);
+		},
+		makeResponseContract(OkHttpResponse, "documentInFolderList.found", DocumentInFolder.list),
+	);
+
+useMustBeConnectedBuilder()
+	.createRoute("POST", "/find-many-document-in-folder-details")
+	.extract({
+		body: zod.object({
+			documentFolderId: zod.string(),
+			partialDocumentInFolderName: zod.string(),
+		}),
+	})
+	.presetCheck(
+		iWantDocumentFolderExist,
+		(pickup) => ({
+			userId: pickup("user").id,
+			documentFolderId: pickup("body").documentFolderId,
+		}),
+	)
+	.handler(
+		async(pickup) => {
+			const { user, documentFolder, body: { partialDocumentInFolderName } } = pickup(["body", "documentFolder", "user"]);
+
+			const { body: { total } } = await CoralAPI.findManyDocumentInFolderDetails({
 				userId: user.id,
 				documentFolderId: documentFolder.id,
 				partialDocumentInFolderName,
 			});
 
 			return new OkHttpResponse(
-				"documentInFolderList.found",
+				"documentInFolderList.foundDetails",
 				{
 					total,
-					list,
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "documentInFolderList.found", DocumentInFolder.list),
+		makeResponseContract(OkHttpResponse, "documentInFolderList.foundDetails", DocumentInFolder.details),
 	);

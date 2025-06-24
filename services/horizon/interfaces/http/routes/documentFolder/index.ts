@@ -3,3 +3,4 @@ import "./findMany";
 import "./page";
 import "./remove";
 import "./findOne";
+import "./dialog";

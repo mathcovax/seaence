@@ -9,7 +9,7 @@ useMustBeConnectedBuilder()
 		async(pickup) => {
 			const { user } = pickup(["user"]);
 
-			const result = await CoralAPI.getfindManyDocumentFolderCount({
+			const result = await CoralAPI.findManyDocumentFolderDetails({
 				userId: user.id,
 				partialDocumentFolderName: "",
 			});

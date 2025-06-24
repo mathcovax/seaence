@@ -11,6 +11,7 @@ const { $pt, params } = documentInFolderPage.use();
 const {
 	SearchDocumentInFolderForm,
 	documentInFolderList,
+	documentInFolderListDetails,
 	documentInFolderPageInformation,
 	handleSearchDocumentInFolder,
 	documentInFolderPageOfList,
@@ -34,28 +35,6 @@ function navigateToDocumentPage(documentInFolder: DocumentInFoloder) {
 			},
 		},
 	));
-}
-
-function handleKeydown(event: KeyboardEvent) {
-	const one = 1;
-	if (event.key === "ArrowDown") {
-		event.preventDefault();
-		selectedDocumentinFolderIndex.value = Math.min(
-			selectedDocumentinFolderIndex.value + one,
-			documentInFolderList.value!.list.length - one,
-		);
-	} else if (event.key === "ArrowUp") {
-		event.preventDefault();
-		selectedDocumentinFolderIndex.value = Math.max(
-			selectedDocumentinFolderIndex.value - one,
-			defaultdocumentinFolderIndex,
-		);
-	} else if (event.key === "Enter") {
-		const selectedDocumentInFolder = documentInFolderList.value!.list[selectedDocumentinFolderIndex.value];
-		if (selectedDocumentInFolder) {
-			return navigateToDocumentPage(selectedDocumentInFolder);
-		}
-	}
 }
 
 function handleClickDocumentInFolder(documentInFolder: DocumentInFoloder) {
@@ -84,14 +63,6 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 			() => void router.back(),
 		);
 }
-
-onMounted(() => {
-	window.addEventListener("keydown", handleKeydown);
-});
-
-onUnmounted(() => {
-	window.removeEventListener("keydown", handleKeydown);
-});
 
 </script>
 
@@ -128,16 +99,14 @@ onUnmounted(() => {
 					: 0
 			"
 			:count-filtered-item="
-				documentInFolderList
-					? documentInFolderList.total
-					: 0
+				documentInFolderListDetails?.total || 0
 			"
 		/>
 
-		<template v-if="documentInFolderList?.list.length">
+		<template v-if="documentInFolderList?.length">
 			<div class="space-y-1">
 				<template
-					v-for="(item, index) in documentInFolderList.list"
+					v-for="(item, index) in documentInFolderList"
 					:key="item.nodeSameRawDocumentId"
 				>
 					<DocumentInFolderItem
@@ -147,13 +116,15 @@ onUnmounted(() => {
 						@delete="handleRemoveDocumentInFolder"
 					/>
 
-					<DocumentInFolderSeparatorItem v-if="index < documentInFolderList.list.length - 1" />
+					<DocumentInFolderSeparatorItem v-if="index < documentInFolderList.length - 1" />
 				</template>
 
-				<div class="mt-10 flex justify-center">
+				<div
+					v-if="documentInFolderListDetails && documentInFolderPageInformation"
+					class="mt-10 flex justify-center"
+				>
 					<DSPagination
-						v-if="documentInFolderPageInformation"
-						:total="documentInFolderPageInformation.total"
+						:total="documentInFolderListDetails.total"
 						:current-page="documentInFolderPageOfList"
 						:quantity-per-page="documentInFolderPageInformation.quantityPerPage"
 						@update="documentInFolderSetPage"

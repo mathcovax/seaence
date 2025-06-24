@@ -1,5 +1,5 @@
 import { envs } from "@interfaces/envs";
-import type { CoralClientRoute, InputAddDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindManyFavoritEquationDetails, InputFindManyFavoritEquationName, InputFindOneDocumentFolder, InputFindOneFavoritEquation, InputGetfindManyDocumentFolderCount, InputGetfindManyDocumentInFolderCount, InputRemoveDocumentFolder, InputRemoveDocumentInFolder, InputRemoveFavoritEquation, InputUpsertFavoritEquation } from "./types";
+import type { CoralClientRoute, InputCreateManyDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputRemoveDocumentFolder, InputRemoveDocumentInFolder, InputFindManyDocumentFoldersInWichDocumentExist, InputfindManyDocumentFolderDetails, InputFindManyDocumentFoldersInWichDocumentExistDetails, InputFindManyDocumentInFolderDetails, InputFindManyFavoritEquationName, InputFindManyFavoritEquationDetails, InputFindOneFavoritEquation, InputUpsertFavoritEquation, InputRemoveFavoritEquation } from "./types";
 import { HttpClient } from "@duplojs/http-client";
 export class CoralAPI {
 	private static httpClient: HttpClient<CoralClientRoute>;
@@ -84,7 +84,7 @@ export class CoralAPI {
 	public static findManyDocumentFolder(input: InputFindManyDocumentFolder) {
 		return this.httpClient
 			.post(
-				"/search-document-folders",
+				"/find-many-document-folder",
 				{
 					body: input,
 				},
@@ -92,15 +92,15 @@ export class CoralAPI {
 			.iWantInformation("documentFolders.found");
 	}
 
-	public static getfindManyDocumentFolderCount(input: InputGetfindManyDocumentFolderCount) {
+	public static findManyDocumentFolderDetails(input: InputfindManyDocumentFolderDetails) {
 		return this.httpClient
 			.post(
-				"/get-search-document-folders-count",
+				"/find-many-document-folders-details",
 				{
 					body: input,
 				},
 			)
-			.iWantInformation("documentFolders.searchDetails");
+			.iWantInformation("documentFolders.foundDetails");
 	}
 
 	public static removeDocumentFolder(input: InputRemoveDocumentFolder) {
@@ -128,7 +128,7 @@ export class CoralAPI {
 	public static findManyDocumentInFolder(input: InputFindManyDocumentInFolder) {
 		return this.httpClient
 			.post(
-				"/search-documents-in-folder",
+				"/find-many-document-in-folder",
 				{
 					body: input,
 				},
@@ -136,15 +136,15 @@ export class CoralAPI {
 			.iWantInformation("documentsInFolder.found");
 	}
 
-	public static getfindManyDocumentInFolderCount(input: InputGetfindManyDocumentInFolderCount) {
+	public static findManyDocumentInFolderDetails(input: InputFindManyDocumentInFolderDetails) {
 		return this.httpClient
 			.post(
-				"/get-search-documents-in-folder-count",
+				"/find-many-document-in-folder-details",
 				{
 					body: input,
 				},
 			)
-			.iWantInformation("documentsInFolder.searchDetails");
+			.iWantInformation("documentsInFolder.foundDetails");
 	}
 
 	public static removeDocumentInFolder(input: InputRemoveDocumentInFolder) {
@@ -158,21 +158,39 @@ export class CoralAPI {
 			.iWantInformation("documentInFolder.removed");
 	}
 
-	public static addDocumentInFolder(input: InputAddDocumentInFolder) {
+	public static createManyDocumentInFolder(input: InputCreateManyDocumentInFolder) {
 		return this.httpClient
 			.post(
-				"/create-document-in-folder",
+				"/create-many-document-in-folder",
 				{
 					body: input,
 				},
 			)
-			.iWantInformation(
-				[
-					"documentInFolder.created",
-					"documentInFolder.maxQuantity",
-					"documentInFolder.alreadyExists",
-				],
-			);
+			.iWantInformation("documentInFolder.created");
+	}
+
+	public static findManyDocumentFoldersInWichDocumentExist(input: InputFindManyDocumentFoldersInWichDocumentExist) {
+		return this.httpClient
+			.post(
+				"/find-many-document-folders-in-which-document-exist",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation("documentFolders.found");
+	}
+
+	public static findManyDocumentFoldersInWichDocumentExistDetails(
+		input: InputFindManyDocumentFoldersInWichDocumentExistDetails,
+	) {
+		return this.httpClient
+			.post(
+				"/find-many-document-folders-in-which-document-exist-details",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation("documentFolders.foundDetails");
 	}
 
 	static {

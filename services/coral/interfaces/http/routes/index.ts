@@ -2,13 +2,13 @@
 import "./documentFolder/create";
 import "./documentFolder/get";
 import "./documentFolder/remove";
-import "./documentFolder/searchPerPage";
+import "./documentFolder/findMany";
 
 // documentInFolder
-import "./documentInFolder/create";
+import "./documentInFolder/createMany";
 import "./documentInFolder/get";
 import "./documentInFolder/remove";
-import "./documentInFolder/searchPerPage";
+import "./documentInFolder/findMany";
 
 // favoriEquation
 import "./favoriteEquation/upsert";

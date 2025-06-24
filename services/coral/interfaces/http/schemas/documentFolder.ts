@@ -10,10 +10,16 @@ const documentFolderSchema = zod.object({
 	createdAt: commonDateObjecter.zodSchema,
 });
 
-export const endpointGetDocumentFolderRouteSchema = documentFolderSchema;
-
-export const endpointSearchDocumentFolderRouteSchema = documentFolderSchema.array();
-
-export const endpointGetCountSearchDocumentFolderRouteSchema = zod.object({
+const baseDetails = zod.object({
 	total: zod.number(),
 });
+
+export const endpointGetDocumentFolderRouteSchema = documentFolderSchema;
+
+export const endpointFindManyDocumentFolderRouteSchema = documentFolderSchema.array();
+
+export const endpointFindManyDocumentInWichDocumentExistRouteSchema = documentFolderSchema.array();
+
+export const endpointFindManyDocumentFolderDetailsRouteSchema = baseDetails;
+
+export const endpointFindManyDocumentInWichDocumentExistDetailsRouteSchema = baseDetails;

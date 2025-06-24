@@ -1,4 +1,8 @@
-import type { DocumentFolderList, DocumentFolderPage } from "@/lib/horizon/types/documentFolder";
+import type {
+	DocumentFolderList,
+	DocumentFolderListDetails,
+	DocumentFolderPage,
+} from "@/lib/horizon/types/documentFolder";
 import { documentFolderRules } from "@vendors/entity-rules";
 
 export function useDocumentFolderPage(
@@ -7,6 +11,7 @@ export function useDocumentFolderPage(
 	const { t: $t } = useI18n();
 	const pageInformation = ref<DocumentFolderPage | null>(null);
 	const list = ref<DocumentFolderList | null>(null);
+	const listDetails = ref<DocumentFolderListDetails | null>(null);
 	const defaultPage = 1;
 	const pageOfList = ref(defaultPage);
 
@@ -30,7 +35,29 @@ export function useDocumentFolderPage(
 	function findMany() {
 		return horizonClient
 			.post(
-				"/find-many-document-folders",
+				"/find-many-document-folder",
+				{
+					body: {
+						page: pageOfList.value,
+						partialDocumentFolderName: formValue.value.name,
+					},
+				},
+			)
+			.whenInformation(
+				"documentFolders.found",
+				({ body }) => {
+					list.value = body;
+				},
+			)
+			.whenRequestError(
+				whenFindError,
+			);
+	}
+
+	function findManyDetails() {
+		return horizonClient
+			.post(
+				"/find-many-document-folder",
 				{
 					body: {
 						page: pageOfList.value,
@@ -58,13 +85,8 @@ export function useDocumentFolderPage(
 
 		pageOfList.value = defaultPage;
 
-		return findMany();
+		void Promise.all([findMany(), findManyDetails()]);
 	}
-
-	watch(
-		pageOfList,
-		findMany,
-	);
 
 	function setPage(value: number) {
 		pageOfList.value = value;
@@ -82,15 +104,22 @@ export function useDocumentFolderPage(
 			whenFindError,
 		);
 
-	void findMany();
+	void Promise.all([findMany(), findManyDetails()]);
+
+	watch(
+		pageOfList,
+		findMany,
+	);
 
 	return {
 		documentFolderList: list,
+		documentFolderListDetails: listDetails,
 		documentFolderPageInformation: pageInformation,
 		documentFolderPageOfList: pageOfList,
 		documentFolderSetPage: setPage,
 		handleSearchDocumentFolderByName,
 		findManyDocumentFolder: findMany,
+		findManyDocumentFolderDetails: findManyDetails,
 		SearchDocumentFolderForm: Form,
 	};
 }

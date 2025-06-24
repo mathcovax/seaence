@@ -8,7 +8,7 @@ interface Input {
 	documentFolderId: DocumentFolderId;
 }
 
-const userDocumentFolderObjecter = EntityHandler.createEntityObjecter(
+export const userDocumentFolderObjecter = EntityHandler.createEntityObjecter(
 	"userDocumentFolder",
 	DocumentFolderEntity,
 );

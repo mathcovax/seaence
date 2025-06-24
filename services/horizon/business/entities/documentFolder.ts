@@ -10,13 +10,18 @@ export namespace DocumentFolder {
 		createdAt: zod.string(),
 	});
 
-	export const list = zod.object({
-		list: index.array(),
+	export const details = zod.object({
 		total: zod.number(),
 	});
 
+	export const list = index.array();
+
 	export const page = zod.object({
 		total: zod.number(),
+		quantityPerPage: zod.number(),
+	});
+
+	export const dialog = zod.object({
 		quantityPerPage: zod.number(),
 	});
 }

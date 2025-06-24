@@ -11,3 +11,9 @@ export type DocumentInFolderList = FindHttpClientRouteResponse<
 	"information",
 	"documentInFolderList.found"
 >["body"];
+
+export type DocumentInFolderListDetails = FindHttpClientRouteResponse<
+	FindHttpClientRoute<HorizonClientRoute, "POST", "/find-many-document-in-folder-details">,
+	"information",
+	"documentInFolderList.foundDetails"
+>["body"];

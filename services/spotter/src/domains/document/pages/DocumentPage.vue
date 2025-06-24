@@ -4,10 +4,12 @@ import { useDocumentPage } from "../composables/useDocumentPage";
 import PostRow from "@/domains/forum/components/PostRow.vue";
 import { RouterLink } from "vue-router";
 import ReportingWrongTranslateDialog from "../components/ReportingWrongTranslateDialog.vue";
-import AddDocumentInFolderDialog from "@/domains/user/components/AddDocumentInFolderDialog.vue";
+import CreateManyDocumentInFolderDialog from "@/domains/user/components/CreateManyDocumentInFolderDialog.vue";
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { $pt, params } = documentPage.use();
 const router = useRouter();
+const { isConnected } = useUserInformation();
 
 const { document, posts } = useDocumentPage(
 	computed(() => params.value.id),
@@ -106,14 +108,18 @@ function formatedDate(date: FlexibleDate) {
 						</div>
 					</div>
 
-					<ReportingWrongTranslateDialog :baked-document-id="document.id">
+					<ReportingWrongTranslateDialog
+						v-if="isConnected"
+						:baked-document-id="document.id"
+					>
 						<DSClickableText
 							class="self-start"
 							:content="$pt('reportingWrongTranslate.cta')"
 						/>
 					</ReportingWrongTranslateDialog>
 
-					<AddDocumentInFolderDialog
+					<CreateManyDocumentInFolderDialog
+						v-if="isConnected"
 						:node-same-raw-document-id="params.id"
 					>
 						<DSOutlineButton
@@ -121,9 +127,9 @@ function formatedDate(date: FlexibleDate) {
 							size="small"
 							class="self-start"
 						>
-							{{ $pt("addDocumentInFolderDialog.button.content") }}
+							{{ $pt("createManyDocumentInFolderDialog.button.content") }}
 						</DSOutlineButton>
-					</AddDocumentInFolderDialog>
+					</CreateManyDocumentInFolderDialog>
 
 					<div class="flex flex-col md:flex-row gap-6 md:gap-8">
 						<div class="space-y-4">

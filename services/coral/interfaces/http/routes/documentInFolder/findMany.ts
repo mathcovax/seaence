@@ -4,7 +4,7 @@ import { userCountResultOfSearchDocumentInFolderUsecase, userSearchDocumentInFol
 import { intObjecter, positiveIntObjecter, textObjecter } from "@vendors/clean";
 
 useBuilder()
-	.createRoute("POST", "/search-documents-in-folder")
+	.createRoute("POST", "/find-many-document-in-folder")
 	.execute(
 		mustBeUserDocumentFolderExistProcess,
 		{ pickup: ["userDocumentFolder"] },
@@ -38,7 +38,7 @@ useBuilder()
 	);
 
 useBuilder()
-	.createRoute("POST", "/get-search-documents-in-folder-count")
+	.createRoute("POST", "/find-many-document-in-folder-details")
 	.execute(
 		mustBeUserDocumentFolderExistProcess,
 		{ pickup: ["userDocumentFolder"] },
@@ -60,7 +60,7 @@ useBuilder()
 				partialDocumentInFolderName,
 			});
 
-			return new OkHttpResponse("documentsInFolder.searchDetails", { total: numberOfDocumentsInFolder.value });
+			return new OkHttpResponse("documentsInFolder.foundDetails", { total: numberOfDocumentsInFolder.value });
 		},
-		makeResponseContract(OkHttpResponse, "documentsInFolder.searchDetails", endpointGetCountSearchDocumentInFolderRouteSchema),
+		makeResponseContract(OkHttpResponse, "documentsInFolder.foundDetails", endpointGetCountSearchDocumentInFolderRouteSchema),
 	);
