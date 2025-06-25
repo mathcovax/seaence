@@ -9,14 +9,14 @@ interface Props {
 const props = defineProps<Props>();
 const router = useRouter();
 
-function formattedDate(dateInString: string) {
+function formattedDate(value: string | Date) {
 	return new Intl.DateTimeFormat("fr-FR", {
 		day: "2-digit",
 		month: "2-digit",
 		year: "numeric",
 		hour: "2-digit",
 		minute: "2-digit",
-	}).format(new Date(dateInString));
+	}).format(new Date(value));
 }
 
 const {

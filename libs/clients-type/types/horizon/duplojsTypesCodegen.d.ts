@@ -751,7 +751,7 @@ type CodegenRoutes = ({
     path: "/find-many-document-folders-in-which-document-exist";
     body: {
         nodeSameRawDocumentId: string;
-        partialDocumentFolderName: string;
+        partialDocumentFolderName?: string | undefined;
         page: number;
     };
     response: {
@@ -768,7 +768,7 @@ type CodegenRoutes = ({
     path: "/find-many-document-folders-in-which-document-exist-details";
     body: {
         nodeSameRawDocumentId: string;
-        partialDocumentFolderName: string;
+        partialDocumentFolderName?: string | undefined;
     };
     response: {
         code: 403;

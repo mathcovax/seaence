@@ -76,7 +76,8 @@ useMustBeConnectedBuilder()
 			nodeSameRawDocumentId: zod.string(),
 			partialDocumentFolderName: zod
 				.string()
-				.max(documentFolderRules.name.maxLength),
+				.max(documentFolderRules.name.maxLength)
+				.default(""),
 			page: zod.number().min(
 				documentFolderConfig.findManyInWhichDocumentExist.pageOffset,
 			),
@@ -112,7 +113,8 @@ useMustBeConnectedBuilder()
 			nodeSameRawDocumentId: zod.string(),
 			partialDocumentFolderName: zod
 				.string()
-				.max(documentFolderRules.name.maxLength),
+				.max(documentFolderRules.name.maxLength)
+				.default(""),
 		}),
 	})
 	.handler(

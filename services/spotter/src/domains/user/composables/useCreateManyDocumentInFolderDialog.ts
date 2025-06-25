@@ -114,7 +114,6 @@ export function useCreateManyDocumentInFolderDialog(
 					body: {
 						nodeSameRawDocumentId,
 						page: pageOfListDocumentFoldersInWhichDocumentExist.value,
-						partialDocumentFolderName: "",
 					},
 				},
 			)
@@ -133,7 +132,6 @@ export function useCreateManyDocumentInFolderDialog(
 				{
 					body: {
 						nodeSameRawDocumentId,
-						partialDocumentFolderName: "",
 					},
 				},
 			)
