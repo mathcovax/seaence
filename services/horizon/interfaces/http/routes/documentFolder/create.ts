@@ -1,4 +1,4 @@
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { CoralAPI } from "@interfaces/providers/coral";
 import { documentFolderRules } from "@vendors/entity-rules";
 import { match } from "ts-pattern";

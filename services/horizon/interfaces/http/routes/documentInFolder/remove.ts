@@ -1,5 +1,5 @@
 import { iWantDocumentFolderExist } from "@interfaces/http/checkers/documentFolder";
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { CoralAPI } from "@interfaces/providers/coral";
 
 useMustBeConnectedBuilder()

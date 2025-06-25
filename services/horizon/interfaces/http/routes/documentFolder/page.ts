@@ -1,6 +1,6 @@
 import { DocumentFolder } from "@business/entities/documentFolder";
 import { documentFolderConfig } from "@interfaces/configs/documentFolder";
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { CoralAPI } from "@interfaces/providers/coral";
 
 useMustBeConnectedBuilder()

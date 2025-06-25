@@ -1,6 +1,6 @@
 import { DocumentFolder } from "@business/entities/documentFolder";
 import { iWantDocumentFolderExist } from "@interfaces/http/checkers/documentFolder";
-import { useMustBeConnectedBuilder } from "@interfaces/http/security/mustBeConnected";
+import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/find-one-document-folder")
