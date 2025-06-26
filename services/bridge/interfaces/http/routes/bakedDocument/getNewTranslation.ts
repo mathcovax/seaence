@@ -8,6 +8,7 @@ useBuilder()
 		body: zod.object({
 			nodeSameRawDocumentId: zod.string(),
 			bakedDocumentLanguage: BakedDocument.language,
+			cookingMode: BakedDocument.cookingMode,
 		}),
 	})
 	.cut(
@@ -15,13 +16,15 @@ useBuilder()
 			const {
 				nodeSameRawDocumentId,
 				bakedDocumentLanguage,
+				cookingMode,
 			} = pickup("body");
 
 			const result = await AbysAPI
-				.cookNodeSameRawDocument(
+				.cookNodeSameRawDocument({
 					nodeSameRawDocumentId,
 					bakedDocumentLanguage,
-				);
+					cookingMode,
+				});
 
 			return match(result)
 				.with(
@@ -32,6 +35,7 @@ useBuilder()
 					{ information: "cookedNodeSameRawDocument.cook" },
 					({ body }) => dropper({
 						bakedDocument: {
+							cookingMode: body.cookingMode,
 							title: body.title,
 							abstract: body.abstract,
 							abstractDetails: body.abstractDetails,

@@ -1,8 +1,9 @@
 import { providerEnum } from "@business/domains/common/provider";
 import { commonDateObjecter, createEnum, EntityHandler, flexibleDateObjecter, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
-import { nodeSameRawDocumentIdObjecter } from "../nodeSameRawDocument";
+import { type NodeSameRawDocumentId, nodeSameRawDocumentIdObjecter } from "../nodeSameRawDocument";
 import { articleTypeObjecter } from "@business/domains/common/articleType";
-import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
+import { type BakedDocumentLanguage, bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
+import { cookingModeObjecter } from "@business/domains/common/cookingMode";
 
 export const bakedDocumentIdObjecter = zod
 	.string()
@@ -63,8 +64,14 @@ export const bakedDocumentAuthorObjecter = zod
 
 export type BakedDocumentAuthor = GetValueObject<typeof bakedDocumentAuthorObjecter>;
 
+interface CreateIdParams {
+	nodeSameRawDocumentId: NodeSameRawDocumentId;
+	language: BakedDocumentLanguage;
+}
+
 export class BakedDocumentEntity extends EntityHandler.create({
 	id: bakedDocumentIdObjecter,
+	cookingMode: cookingModeObjecter,
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
 	articleTypes: articleTypeObjecter.array(),
 	title: bakedDocumentTitleObjecter,
@@ -77,24 +84,31 @@ export class BakedDocumentEntity extends EntityHandler.create({
 	webPublishDate: flexibleDateObjecter.nullable(),
 	journalPublishDate: flexibleDateObjecter.nullable(),
 	lastUpdate: commonDateObjecter,
-	lastExportOnSea: commonDateObjecter.nullable(),
+	lastIndexation: commonDateObjecter.nullable(),
 }) {
 	public static create(
-		params: Omit<GetEntityProperties<typeof BakedDocumentEntity>, "id" | "lastUpdate" | "lastExportOnSea">,
+		params: Omit<GetEntityProperties<typeof BakedDocumentEntity>, "id" | "lastUpdate" | "lastIndexation">,
 	) {
 		return new BakedDocumentEntity({
 			...params,
-			id: bakedDocumentIdObjecter.unsafeCreate(
-				`${params.nodeSameRawDocumentId.value}_${params.language.value}`,
-			),
+			id: BakedDocumentEntity.makeId(params),
 			lastUpdate: commonDateObjecter.unsafeCreate(new Date()),
-			lastExportOnSea: null,
+			lastIndexation: null,
 		});
 	}
 
-	public exportToSea() {
+	public indexation() {
 		return this.update({
-			lastExportOnSea: commonDateObjecter.unsafeCreate(new Date()),
+			lastIndexation: commonDateObjecter.unsafeCreate(new Date()),
 		});
+	}
+
+	public static makeId({
+		nodeSameRawDocumentId,
+		language,
+	}: CreateIdParams) {
+		return bakedDocumentIdObjecter.unsafeCreate(
+			`${nodeSameRawDocumentId.value}_${language.value}`,
+		);
 	}
 }

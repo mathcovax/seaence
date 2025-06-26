@@ -1,6 +1,6 @@
 import { mongo } from "@interfaces/providers/mongo";
-import { exportBakedDocumentToAbysUsecase } from "@interfaces/usecase";
+import { indexUpdatedBakedDocumentsUsecase } from "@interfaces/usecase";
 
-await exportBakedDocumentToAbysUsecase.execute({});
+await indexUpdatedBakedDocumentsUsecase.execute({});
 
 await mongo.client.close();

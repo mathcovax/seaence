@@ -5,26 +5,30 @@ import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDoc
 import { match, P } from "ts-pattern";
 import { TechnicalError, toSimpleObject } from "@vendors/clean";
 import { endpointCookedNodeSameRawDocumentSchema } from "../schemas/nodeSameRawDocument";
+import { cookingModeObjecter } from "@business/domains/common/cookingMode";
 
 useBuilder()
 	.createRoute("POST", "/cook-node-same-raw-document")
 	.extract({
-		body: {
+		body: zod.object({
 			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
 			bakedDocumentLanguage: bakedDocumentLanguageObjecter.toZodSchema(),
-		},
+			cookingMode: cookingModeObjecter.toZodSchema(),
+		}),
 	})
 	.presetCheck(
 		iWantNodeSameRawDocumentExist.rewriteIndexing("nodeSameRawDocument"),
-		(pickup) => pickup("nodeSameRawDocumentId"),
+		(pickup) => pickup("body").nodeSameRawDocumentId,
 	)
 	.cut(
 		async({ pickup, dropper }) => {
-			const { nodeSameRawDocument, bakedDocumentLanguage } = pickup(["nodeSameRawDocument", "bakedDocumentLanguage"]);
+			const { nodeSameRawDocument } = pickup(["nodeSameRawDocument"]);
+			const { bakedDocumentLanguage, cookingMode } = pickup("body");
 
 			const result = await cookNodeSameRawDocumentUsecase.execute({
 				nodeSameRawDocument,
 				bakedDocumentLanguage,
+				cookingMode,
 			});
 
 			return match({ result })
@@ -54,21 +58,24 @@ useBuilder()
 useBuilder()
 	.createRoute("POST", "/transforme-node-same-raw-document-to-baked-document")
 	.extract({
-		body: {
+		body: zod.object({
 			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
 			bakedDocumentLanguage: bakedDocumentLanguageObjecter.toZodSchema(),
-		},
+			cookingMode: cookingModeObjecter.toZodSchema(),
+		}),
 	})
 	.presetCheck(
 		iWantNodeSameRawDocumentExist.rewriteIndexing("nodeSameRawDocument"),
-		(pickup) => pickup("nodeSameRawDocumentId"),
+		(pickup) => pickup("body").nodeSameRawDocumentId,
 	)
 	.cut(
 		async({ pickup, dropper }) => {
-			const { nodeSameRawDocument, bakedDocumentLanguage } = pickup(["nodeSameRawDocument", "bakedDocumentLanguage"]);
+			const { nodeSameRawDocument } = pickup(["nodeSameRawDocument"]);
+			const { bakedDocumentLanguage, cookingMode } = pickup("body");
 
 			const result = await transformeNodeSameRawDocumentToBakedDocumentUsecase.execute({
 				nodeSameRawDocument,
+				cookingMode,
 				bakedDocumentLanguages: [bakedDocumentLanguage],
 			});
 

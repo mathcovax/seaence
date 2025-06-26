@@ -1,18 +1,12 @@
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { bakedDocumentAbstractObjecter, BakedDocumentEntity, bakedDocumentKeywordObjecter, bakedDocumentTitleObjecter, bakedDocumentAbstractPartObjecter, bakedDocumentRessourceObjecter, type BakedDocumentRessource } from "@business/domains/entities/bakedDocument";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler, RepositoryError, toSimpleObject } from "@vendors/clean";
-import { RosettaAPI, type SupportedLanguage } from "@interfaces/providers/rosetta";
+import { EntityHandler, RepositoryError } from "@vendors/clean";
+import { RosettaAPI } from "@interfaces/providers/rosetta";
 import { KeyDate } from "@interfaces/providers/keyDate";
 import { match, P } from "ts-pattern";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { getTypedEntries } from "@duplojs/utils";
-import { type BakedDocumentLanguage } from "@business/domains/common/bakedDocumentLanguage";
-
-const languageMapper: Record<BakedDocumentLanguage["value"], SupportedLanguage> = {
-	"fr-FR": "fr",
-	"en-US": "en",
-};
 
 const DOIFoundationBaseUrl = "https://www.doi.org";
 
@@ -42,25 +36,27 @@ bakedDocumentRepository.default = {
 
 		return bakedDocument;
 	},
-	async makeBakedTitleWithRawTitle(rawTitle, language) {
-		const title = rawTitle.value && await RosettaAPI.translateText(
-			rawTitle.value,
-			languageMapper[language.value],
-		);
+	async makeBakedTitleWithRawTitle(cookingMode, rawTitle, language) {
+		const title = rawTitle.value && await RosettaAPI.translate({
+			provider: cookingMode.value,
+			language: language.value,
+			text: rawTitle.value,
+		});
 
 		return bakedDocumentTitleObjecter.unsafeCreate(title);
 	},
-	async makeBakedKeywordsWithKeywordPubmed(rawKeywordPubmeds, language) {
+	async makeBakedKeywordsWithKeywordPubmed(cookingMode, rawKeywordPubmeds, language) {
 		const rawKeywordList = rawKeywordPubmeds
 			.map((rawKeywordPubmed) => rawKeywordPubmed.value.value)
 			.join("\n");
 
 		const listKeywordProcesses = rawKeywordList
 			? await RosettaAPI
-				.translateText(
-					rawKeywordList,
-					languageMapper[language.value],
-				)
+				.translate({
+					provider: cookingMode.value,
+					text: rawKeywordList,
+					language: language.value,
+				})
 				.then(
 					(result) => result.split("\n").map((value) => value.trim()),
 				)
@@ -73,19 +69,24 @@ bakedDocumentRepository.default = {
 			value: keyword,
 		}));
 	},
-	async makeBakedAbstractWithRawAbstract(rawAbstract, language) {
-		const abstract = rawAbstract.value && await RosettaAPI.translateText(
-			rawAbstract.value,
-			languageMapper[language.value],
-		);
+	async makeBakedAbstractWithRawAbstract(cookingMode, rawAbstract, language) {
+		const abstract = rawAbstract.value && await RosettaAPI.translate({
+			provider: cookingMode.value,
+			text: rawAbstract.value,
+			language: language.value,
+		});
 
 		return bakedDocumentAbstractObjecter.unsafeCreate(abstract);
 	},
-	makeBakedAbstractDetailsWithRawAbstractDetails(rawAbstractDetails, language) {
+	makeBakedAbstractDetailsWithRawAbstractDetails(cookingMode, rawAbstractDetails, language) {
 		return Promise.all(
 			rawAbstractDetails.map(
 				({ value: { name, content } }) => RosettaAPI
-					.translateText(`${name}\n${content}`, languageMapper[language.value])
+					.translate({
+						provider: cookingMode.value,
+						text: `${name}\n${content}`,
+						language: language.value,
+					})
 					.then(
 						(content) => {
 							const [label, ...contents] = content.split("\n");

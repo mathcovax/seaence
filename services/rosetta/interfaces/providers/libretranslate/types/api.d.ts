@@ -11,6 +11,10 @@ interface CodegenReceiveFormData<GenericValue extends Record<string, string | st
 
 export { CodegenReceiveFormData };
 
+export type SupportedLanguage = "fr" | "en";
+
+export type SupportedFilesFormat = ".txt" | ".odt" | ".odp" | ".docx" | ".pptx" | ".epub" | ".html"
+
 type CodegenRoutes = ({
 	method: "POST";
 	path: "/detect";
@@ -23,7 +27,7 @@ type CodegenRoutes = ({
 		information: undefined;
 		body: {
 			confidence: number;
-			language: "fr" | "en" | "it" | "es" | string;
+			language: SupportedLanguage;
 		}[];
 	} | {
 		code: 400 | 403 | 429 | 500;
@@ -49,8 +53,8 @@ type CodegenRoutes = ({
 	path: "/translate";
 	body: CodegenReceiveFormData<{
 		q: string;
-		source: "auto" | "fr" | "it" | "en" | "es";
-		target: "fr" | "it" | "en" | "es";
+		source: "auto" | SupportedLanguage;
+		target: SupportedLanguage;
 		format: "text" | "html";
 		alternatives?: number;
 		api_key?: string;
@@ -62,7 +66,7 @@ type CodegenRoutes = ({
 			alternatives?: string[];
 			detectedLanguage?: {
 				confidence: number;
-				language: "fr" | "it" | "en" | "es";
+				language: SupportedLanguage;
 			};
 			translatedText: string;
 		};
@@ -87,16 +91,16 @@ type CodegenRoutes = ({
 			keyRequired: boolean;
 			language: {
 				source: {
-					code: "auto" | "fr" | "it" | "en" | "es";
+					code: "auto" | SupportedLanguage;
 					name: string;
 				};
 				target: {
-					code: "fr" | "it" | "en" | "es";
+					code: SupportedLanguage;
 					name: string;
 				};
 			};
 			suggestions: boolean;
-			supportedFilesFormat: (".txt" | ".odt" | ".odp" | ".docx" | ".pptx" | ".epub" | ".html")[];
+			supportedFilesFormat: (SupportedFilesFormat)[];
 		}
 	}
 }) | ({
@@ -105,8 +109,8 @@ type CodegenRoutes = ({
 	body: CodegenReceiveFormData<{
 		q: string;
 		s: string;
-		source: "auto" | "fr" | "it" | "en" | "es";
-		target: "fr" | "it" | "en" | "es";
+		source: "auto" | SupportedLanguage;
+		target: SupportedLanguage;
 	}>;
 	response: {
 		code: 200;
