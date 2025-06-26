@@ -47,6 +47,7 @@ import {
 	mdiFileOutline,
 	mdiFile,
 	mdiChevronDown,
+	mdiChefHat,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -98,6 +99,7 @@ export const iconsMapper = {
 	file: mdiFile,
 	fileOutline: mdiFileOutline,
 	chevronDown: mdiChevronDown,
+	chefHat: mdiChefHat,
 };
 
 export const iconSizeMapper = {

@@ -10,5 +10,6 @@ Page.reportingBakedDocumentTranslation._zttIdentifier = "ReportingBakedDocumentT
 
 BakedDocument.language._zttIdentifier = "BakedDocumentLanguage";
 BakedDocument.newTranslation._zttIdentifier = "BakedDocumentNewTranslation";
+BakedDocument.cookingMode._zttIdentifier = "CookingMode";
 
 Page.moderationPost._zttIdentifier = "PostModerationPage";

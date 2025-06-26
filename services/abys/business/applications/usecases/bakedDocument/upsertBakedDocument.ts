@@ -5,8 +5,10 @@ import type * as BakedDocument from "@business/domains/entities/bakedDocument";
 import { type ArticleType } from "@business/domains/common/articleType";
 import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
 import { type BakedDocumentLanguage } from "@business/domains/common/bakedDocumentLanguage";
+import { type CookingMode } from "@business/domains/common/cookingMode";
 
 interface Input {
+	cookingMode: CookingMode;
 	nodeSameRawDocumentId: NodeSameRawDocumentId;
 	language: BakedDocumentLanguage;
 	articleTypes: ArticleType[];
@@ -36,10 +38,12 @@ export class UpsertBakedDocumentUsecase extends UsecaseHandler.create({
 			keywords,
 			journalPublishDate,
 			webPublishDate,
+			cookingMode,
 		}: Input,
 	) {
 		return this.bakedDocumentRepository.save(
 			BakedDocumentEntity.create({
+				cookingMode,
 				nodeSameRawDocumentId,
 				language,
 				articleTypes,

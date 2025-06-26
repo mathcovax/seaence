@@ -9,12 +9,12 @@ import { type HTMLAttributes } from "vue";
 
 interface Props extends SelectRootProps {
 	items: GenericItem[];
-	placeholder: string;
+	placeholder?: string;
 	label?(item: GenericItem): string;
 	class?: HTMLAttributes["class"];
 	size?: "default" | "sm";
 }
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { placeholder: "" });
 const emits = defineEmits<SelectRootEmits>();
 
 const model = defineModel<GenericItem | null>({ required: true });

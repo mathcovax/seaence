@@ -3,18 +3,26 @@ import { type BakedDocumentId, type BakedDocumentEntity, type BakedDocumentTitle
 import { type RawAbstractPart, type RawAbstract, type RawTitle, type RawKeyword } from "@business/domains/common/rawDocument";
 import { type NodeSameRawDocumentWrapper } from "./rawDocument";
 import { type BakedDocumentLanguage } from "@business/domains/common/bakedDocumentLanguage";
+import { type CookingMode } from "@business/domains/common/cookingMode";
 
 export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEntity> {
-	makeBakedTitleWithRawTitle(rawTitle: RawTitle, language: BakedDocumentLanguage): Promise<BakedDocumentTitle>;
+	makeBakedTitleWithRawTitle(
+		cookingMode: CookingMode,
+		rawTitle: RawTitle,
+		language: BakedDocumentLanguage
+	): Promise<BakedDocumentTitle>;
 	makeBakedAbstractWithRawAbstract(
+		cookingMode: CookingMode,
 		rawAbstract: RawAbstract,
 		language: BakedDocumentLanguage
 	): Promise<BakedDocumentAbstract>;
 	makeBakedKeywordsWithKeywordPubmed(
+		cookingMode: CookingMode,
 		rawKeywordPubmed: RawKeyword[],
 		language: BakedDocumentLanguage
 	): Promise<BakedDocumentKeyword[]>;
 	makeBakedAbstractDetailsWithRawAbstractDetails(
+		cookingMode: CookingMode,
 		rawAbstractDetails: RawAbstractPart[],
 		language: BakedDocumentLanguage,
 	): Promise<BakedDocumentAbstractPart[]>;

@@ -23,6 +23,7 @@ export { ReportingBakedDocumentTranslationAggregateListRow };
 type ReportingBakedDocumentTranslationPage = {
     bakedDocument: {
         id: string;
+        cookingMode: CookingMode;
         nodeSameRawDocumentId: string;
         language: BakedDocumentLanguage;
         title: string;
@@ -42,6 +43,10 @@ type ReportingBakedDocumentTranslationPage = {
 
 export { ReportingBakedDocumentTranslationPage };
 
+type CookingMode = "default" | "libretranslate" | "googleScrape";
+
+export { CookingMode };
+
 type BakedDocumentLanguage = "fr-FR" | "en-US";
 
 export { BakedDocumentLanguage };
@@ -56,6 +61,7 @@ type ReportingBakedDocumentTranslationListRow = {
 export { ReportingBakedDocumentTranslationListRow };
 
 type BakedDocumentNewTranslation = {
+    cookingMode: CookingMode;
     title: string;
     abstract: string | null;
     abstractDetails: {
@@ -136,6 +142,7 @@ type CodegenRoutes = ({
     body: {
         nodeSameRawDocumentId: string;
         bakedDocumentLanguage: BakedDocumentLanguage;
+        cookingMode: CookingMode;
     };
     response: {
         code: 404;
@@ -153,6 +160,7 @@ type CodegenRoutes = ({
         bakedDocumentId: string;
         nodeSameRawDocumentId: string;
         bakedDocumentLanguage: BakedDocumentLanguage;
+        cookingMode: CookingMode;
     };
     response: {
         code: 404;
