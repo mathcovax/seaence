@@ -54,6 +54,7 @@ function updatePage(page: number) {
 
 						<div class="flex justify-center">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"
@@ -140,6 +141,7 @@ function updatePage(page: number) {
 
 						<div class="pt-4 flex justify-center border-t">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"
