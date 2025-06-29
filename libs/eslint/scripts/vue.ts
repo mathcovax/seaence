@@ -68,10 +68,4 @@ export const eslintConfigVue = [
 		files: ["**/*.vue", "**/*.ts"],
 		ignores: ["**/*.test.ts", "vendors/**"],
 	},
-	{
-		files: ["src/i18n/languages/**/*.ts"],
-		rules: {
-			"vue/max-len": "off",
-		},
-	},
 ];

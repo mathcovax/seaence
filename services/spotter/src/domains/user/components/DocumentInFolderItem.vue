@@ -10,10 +10,9 @@ const props = withDefaults(defineProps<Props>(), {
 	isSelected: false,
 });
 
-// eslint-disable-next-line @stylistic/js/function-call-spacing
 const emit = defineEmits<{
-	(event: "click", document: DocumentInFoloder): void;
-	(event: "delete", document: DocumentInFoloder): void;
+	click: [document: DocumentInFoloder];
+	delete: [document: DocumentInFoloder];
 }>();
 
 const formattedDate = computed(() => new Intl.DateTimeFormat("fr-FR", {

@@ -96,7 +96,7 @@ documentFolderRepository.default = {
 				},
 			)
 			.sort({ createdAt: -1 })
-			.skip((page.value) * quantityPerPage.value)
+			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.toArray();
 
@@ -175,8 +175,6 @@ documentFolderRepository.default = {
 					},
 				},
 			]).toArray();
-
-		console.log(mongoDocumentFolders);
 
 		return mongoDocumentFolders.map(
 			(mongoDocumentFolder) => EntityHandler.throwMapper(

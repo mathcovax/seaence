@@ -1,3 +1,4 @@
+/* eslint-disable vue/max-len */
 import type {
 	ArticleType,
 	Facet,

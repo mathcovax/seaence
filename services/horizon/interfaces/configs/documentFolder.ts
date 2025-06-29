@@ -4,7 +4,7 @@ export const documentFolderConfig = {
 		pageOffset: 1,
 	},
 	findManyInWhichDocumentExist: {
-		quantityPerPage: 10,
+		quantityPerPage: 5,
 		pageOffset: 1,
 	},
 };
