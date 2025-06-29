@@ -14,7 +14,6 @@ const {
 	setStateCreateDocumentFolderDialog,
 } = useCreateDocumentFolderDialog();
 const { CreateDocumentFolderForm, createDocumentFolderCheck } = useCreateDocumentFolder();
-const { sonnerWarning, sonnerMessage } = useSonner();
 const {
 	SearchDocumentFolderForm,
 	documentFolderList,
@@ -48,19 +47,10 @@ function handleCreateDocumentFolder() {
 			},
 		)
 		.whenInformation(
-			"documentFolder.alreadyExists",
-			() => sonnerWarning($pt("form.errors.documentFolder.alreadyExists")),
-		)
-		.whenInformation(
-			"documentFolder.maxQuantity",
-			() => sonnerWarning($pt("form.errors.documentFolder.maxQuantity")),
-		)
-		.whenInformation(
 			"documentFolder.created",
 			() => {
 				closeCreateDocumentFolderDialog();
 				void Promise.all([findManyDocumentFolder(), findManyDocumentFolderDetails()]);
-				sonnerMessage($pt("form.errors.documentFolder.created"));
 			},
 		);
 }
@@ -76,15 +66,8 @@ function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
 			},
 		)
 		.whenInformation(
-			"documentFolder.notfound",
-			() => sonnerWarning($pt("form.errors.documentFolder.notfound")),
-		)
-		.whenInformation(
 			"documentFolder.removed",
-			() => {
-				void findManyDocumentFolder();
-				sonnerMessage($pt("form.errors.documentFolder.removed"));
-			},
+			() => void findManyDocumentFolder(),
 		);
 }
 
@@ -151,16 +134,15 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 			</div>
 		</header>
 
-		<section>
+		<section v-if="documentFolderPageInformation && documentFolderListDetails">
 			<DocumentFolderHeader
-				:label="$pt('header.label')"
 				icon="folder"
-				:count-total-item="documentFolderPageInformation?.total || 0"
-				:count-filtered-item="documentFolderListDetails?.total || 0"
+				:count-total-item="documentFolderPageInformation.total"
+				:count-filtered-item="documentFolderListDetails.total"
 			/>
 
 			<div
-				v-if="documentFolderList?.length"
+				v-if="documentFolderList"
 				class="mt-6"
 			>
 				<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
@@ -176,10 +158,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 					</li>
 				</ul>
 
-				<nav
-					v-if="documentFolderListDetails && documentFolderPageInformation"
-					class="mt-10 flex justify-center"
-				>
+				<nav class="mt-10 flex justify-center">
 					<DSPagination
 
 						:total="documentFolderListDetails.total"

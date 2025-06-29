@@ -3,7 +3,6 @@ interface Props {
 	icon: "folder" | "file";
 	countTotalItem: number;
 	countFilteredItem: number;
-	label: string;
 }
 
 defineProps<Props>();
@@ -21,15 +20,9 @@ defineProps<Props>();
 					/>
 				</div>
 
-				<div class="flex flex-row items-center justify-center gap-2">
-					<span class="text-2xl font-semibold text-gray-800">
-						{{ countTotalItem || 0 }}
-					</span>
-
-					<span class="text-md text-gray-600">
-						{{ label }}
-					</span>
-				</div>
+				<span class="text-md text-gray-600">
+					{{ $t("documentFolderHeader.label", { count: countTotalItem }) }}
+				</span>
 			</div>
 
 			<div

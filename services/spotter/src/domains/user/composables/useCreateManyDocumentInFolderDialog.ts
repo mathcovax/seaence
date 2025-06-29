@@ -32,7 +32,7 @@ export function useCreateManyDocumentInFolderDialog(
 	const { Form, check } = useFormBuilder(
 		useMultiFieldLayout({
 			name: useBaseLayout(
-				textformField,
+				textFormField,
 				{
 					mandatory: true,
 					label: $t("createManyDocumentInFolderDialog.form.label.name"),

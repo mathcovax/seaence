@@ -18,7 +18,7 @@ export function useDocumentFolderPage(
 	const { Form, check, formValue } = useFormBuilder(
 		useMultiFieldLayout({
 			name: useBaseLayout(
-				textformField,
+				textFormField,
 				{
 					mandatory: true,
 					defaultValue: "",
@@ -57,18 +57,17 @@ export function useDocumentFolderPage(
 	function findManyDetails() {
 		return horizonClient
 			.post(
-				"/find-many-document-folder",
+				"/find-many-document-folder-details",
 				{
 					body: {
-						page: pageOfList.value,
 						partialDocumentFolderName: formValue.value.name,
 					},
 				},
 			)
 			.whenInformation(
-				"documentFolders.found",
+				"documentFolders.foundDetails",
 				({ body }) => {
-					list.value = body;
+					listDetails.value = body;
 				},
 			)
 			.whenRequestError(

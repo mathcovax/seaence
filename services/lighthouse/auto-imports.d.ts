@@ -68,7 +68,6 @@ declare global {
   const textFormField: typeof import('./vendors/design-system/utils/formFields')['textFormField']
   const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
   const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
-  const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']

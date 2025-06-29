@@ -8,7 +8,7 @@ export function useCreateDocumentFolder() {
 	const { Form, formValue, check } = useFormBuilder(
 		useMultiFieldLayout({
 			name: useBaseLayout(
-				textformField,
+				textFormField,
 				{
 					mandatory: true,
 					label: $pt("form.label.name"),

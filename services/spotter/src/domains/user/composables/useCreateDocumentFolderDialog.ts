@@ -9,10 +9,6 @@ export function useCreateDocumentFolderDialog() {
 		isOpen.value = false;
 	}
 
-	function toggle() {
-		isOpen.value = !isOpen.value;
-	}
-
 	function setState(state: boolean) {
 		isOpen.value = state;
 	}
@@ -21,7 +17,6 @@ export function useCreateDocumentFolderDialog() {
 		setStateCreateDocumentFolderDialog: setState,
 		openCreateDocumentFolderDialog: open,
 		closeCreateDocumentFolderDialog: close,
-		toggleCreateDocumentFolderDialog: toggle,
 		isOpenCreateDocumentFolderDialog: computed(
 			() => isOpen.value,
 		),

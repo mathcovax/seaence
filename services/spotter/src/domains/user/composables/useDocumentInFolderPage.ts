@@ -19,7 +19,7 @@ export function useDocumentInFolderPage(
 	const { Form, check, formValue } = useFormBuilder(
 		useMultiFieldLayout({
 			name: useBaseLayout(
-				textformField,
+				textFormField,
 				{
 					mandatory: true,
 					defaultValue: "",

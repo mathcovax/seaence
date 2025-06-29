@@ -56,6 +56,10 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 				class="space-y-1"
 				v-if="documentFoldersInWhichDocumentExistList && documentFoldersInWhichDocumentExistListDetails"
 			>
+				<DSLabel>
+					{{ $t("createManyDocumentInFolderDialog.sectionLabel") }}
+				</DSLabel>
+
 				<template
 					v-for="(item, index) in documentFoldersInWhichDocumentExistList"
 					:key="item.id"
@@ -79,10 +83,11 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 				</template>
 
 				<div
-					v-if="documentFoldersInWhichDocumentExistListDetails.total > 0 && documentFolderDialogInformation"
+					v-if="documentFoldersInWhichDocumentExistListDetails.total < documentFoldersInWhichDocumentExistList.length && documentFolderDialogInformation"
 					class="mt-10 flex justify-center"
 				>
 					<DSPagination
+						size="small"
 						:total="documentFoldersInWhichDocumentExistListDetails.total"
 						:current-page="pageOfListDocumentFoldersInWhichDocumentExist"
 						:quantity-per-page="documentFolderDialogInformation.quantityPerPage"

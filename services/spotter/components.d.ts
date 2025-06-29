@@ -11,7 +11,6 @@ declare module 'vue' {
     BaseLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseLayoutTemplate.vue')['default']
     CheckboxTemplate: typeof import('./vendors/design-system/components/form/CheckboxTemplate.vue')['default']
     CheckLayoutTemplate: typeof import('./vendors/design-system/components/form/CheckLayoutTemplate.vue')['default']
-    copy: typeof import('./vendors/design-system/components/form/SelectTemplate copy.vue')['default']
     DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/DSAccordion.vue')['default']
     DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
     DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
@@ -126,12 +125,10 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SelectStringTemplate: typeof import('./vendors/design-system/components/form/SelectStringTemplate.vue')['default']
     SelectTemplate: typeof import('./vendors/design-system/components/form/SelectTemplate.vue')['default']
-    Separator: typeof import('./vendors/design-system/components/ui/separator/Separator.vue')['default']
     TextLayoutTemplate: typeof import('./vendors/design-system/components/form/TextLayoutTemplate.vue')['default']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
-    UnionLayoutTemplate: typeof import('./vendors/design-system/components/form/UnionLayoutTemplate.vue')['default']
     UnionSelectLessLayoutTemplate: typeof import('./vendors/design-system/components/form/UnionSelectLessLayoutTemplate.vue')['default']
   }
 }

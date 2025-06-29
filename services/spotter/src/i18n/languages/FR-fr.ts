@@ -182,14 +182,14 @@ export const FRfr = {
 				},
 			},
 			header: {
-				label: "dossiers",
+				label: "{count} dossier(s)",
 			},
 			noDocumentFolder: "Aucun dossier trouvé.",
 		},
 		[documentInFolderPage.name]: {
 			title: "Dossier",
 			header: {
-				label: "documents",
+				label: "{count} document(s)",
 			},
 			noDocumentInFolder: "Aucun document trouvé.",
 		},
@@ -209,14 +209,16 @@ export const FRfr = {
 		description: "Êtes-vous sur de vouloir supprimer ce dossier ? La suppression dossier supprimera également son contenu",
 	},
 	documentFolderHeader: {
+		label: "{count} élément(s)",
 		filtered: "{filtered} sur {total}",
 	},
 	createManyDocumentInFolderDialog: {
 		title: "Ajouter le document",
+		sectionLabel: "Dossier dans le quel il se trouve",
 		form: {
 			label: {
-				name: "libellé",
-				folder: "dossiers",
+				name: "Libellé",
+				folder: "Dossiers",
 			},
 			placeholder: {
 				name: "Entrer un nom de document",
@@ -226,6 +228,9 @@ export const FRfr = {
 				folder: "Aucun dossier trouvé.",
 			},
 		},
+	},
+	documentFolderCard: {
+		items: "{count} document(s)",
 	},
 	layout: {
 		base: {
@@ -558,6 +563,18 @@ export const FRfr = {
 		favoriteEquation: {
 			upsert: "L'équation a bien étais mise dans les favorit.",
 			remove: "l'équation a bien étais supprimer.",
+		},
+		documentFolder: {
+			alreadyExists: "Le dossier existe déjà",
+			maxQuantity: "Le dossier est plein",
+			notfound: "Le dossier n'existe pas",
+			removed: "Le dossier a été supprimé",
+			created: "Le dossier a été créer",
+		},
+		documentInFolder: {
+			notfound: "Le document n'existe pas",
+			removed: "Le document a été supprimé",
+			created: "Le document a été ajouté dans le(s) dossier(s)",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},

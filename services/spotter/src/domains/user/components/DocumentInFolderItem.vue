@@ -58,7 +58,7 @@ function handleDelete() {
 			{{ formattedDate }}
 		</div>
 
-		<div class="flex-shrink-0 ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
+		<div class="flex-shrink-0 ml-4">
 			<DSDropdownMenu>
 				<DSDropdownMenuTrigger as-child>
 					<DSButton

@@ -6,7 +6,6 @@ import { useDocumentInFolderPage } from "../composables/useDocumentInFolderPage"
 import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
 
 const router = useRouter();
-const { sonnerMessage } = useSonner();
 const { $pt, params } = documentInFolderPage.use();
 const {
 	SearchDocumentInFolderForm,
@@ -54,10 +53,7 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 		)
 		.whenInformation(
 			"documentInFolder.removed",
-			() => {
-				void documentInFolderFindMany();
-				sonnerMessage($pt("form.errors.documentInFolder.removed"));
-			},
+			() => void documentInFolderFindMany(),
 		)
 		.whenRequestError(
 			() => void router.back(),
@@ -67,7 +63,10 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 </script>
 
 <template>
-	<section class="max-w-5xl mx-auto p-8">
+	<section
+		v-if="documentInFolderPageInformation && documentInFolderListDetails"
+		class="max-w-5xl mx-auto p-8"
+	>
 		<header class="flex justify-between items-center mb-6">
 			<div class="flex items-center gap-4">
 				<DSPrimaryButton
@@ -91,16 +90,9 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 		</header>
 
 		<DocumentFolderHeader
-			:label="$pt('header.label')"
 			icon="file"
-			:count-total-item="
-				documentInFolderPageInformation
-					? documentInFolderPageInformation.total
-					: 0
-			"
-			:count-filtered-item="
-				documentInFolderListDetails?.total || 0
-			"
+			:count-total-item="documentInFolderPageInformation.total"
+			:count-filtered-item="documentInFolderListDetails.total"
 		/>
 
 		<template v-if="documentInFolderList?.length">
@@ -119,10 +111,7 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 					<DocumentInFolderSeparatorItem v-if="index < documentInFolderList.length - 1" />
 				</template>
 
-				<div
-					v-if="documentInFolderListDetails && documentInFolderPageInformation"
-					class="mt-10 flex justify-center"
-				>
+				<div class="mt-10 flex justify-center">
 					<DSPagination
 						:total="documentInFolderListDetails.total"
 						:current-page="documentInFolderPageOfList"
