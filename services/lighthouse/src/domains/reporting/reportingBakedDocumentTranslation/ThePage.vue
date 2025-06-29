@@ -18,6 +18,8 @@ function updatePage(page: number) {
 	<section class="min-h-screen-nh">
 		<div v-if="pageContent && list">
 			<header class="mb-8">
+				<BackButton />
+
 				<h1 class="mb-2 text-3xl font-bold">
 					{{ $pt("title") }}
 				</h1>
@@ -52,6 +54,7 @@ function updatePage(page: number) {
 
 						<div class="flex justify-center">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"
@@ -138,6 +141,7 @@ function updatePage(page: number) {
 
 						<div class="pt-4 flex justify-center border-t">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"

@@ -30,7 +30,7 @@ export const buttonVariants = cva(
 					"border border-primary bg-background text-primary hover:bg-accent",
 				destructive:
 					"bg-destructive text-primary-foreground hover:bg-destructive/60",
-				ghost: "bg-transparent text-muted-foreground hover:bg-accent/40",
+				ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/60",
 			},
 			size: {
 				default: "h-10 px-4 py-2",

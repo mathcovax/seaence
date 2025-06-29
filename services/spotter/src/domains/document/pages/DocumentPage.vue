@@ -56,9 +56,13 @@ function formatedDate(date: FlexibleDate) {
 		>
 			<header class="flex flex-col gap-8 lg:gap-12">
 				<div class="flex flex-col gap-2">
-					<h1 class="mb-4 text-xl md:text-3xl font-bold text-blue-seaence first-letter:uppercase">
-						{{ document.title }}
-					</h1>
+					<div class="flex gap-4 items-start">
+						<BackButton />
+
+						<h1 class="mb-4 text-xl md:text-3xl font-bold text-blue-seaence first-letter:uppercase">
+							{{ document.title }}
+						</h1>
+					</div>
 
 					<div
 						class="flex items-center gap-2"
@@ -224,7 +228,7 @@ function formatedDate(date: FlexibleDate) {
 
 			<div class="flex flex-col gap-4">
 				<RouterLink
-					:to="postListPage.createTo({params: {documentId: document.id}})"
+					:to="postListPage.createTo({ params: { documentId: document.id } })"
 					class="flex gap-2 self-start hover:underline"
 				>
 					<h2 class="text-xl md:text-2xl font-bold hover:underline">
@@ -252,7 +256,7 @@ function formatedDate(date: FlexibleDate) {
 						class="self-start"
 						as-child
 					>
-						<RouterLink :to="postCreatePage.createTo({params: {documentId: document.id}})">
+						<RouterLink :to="postCreatePage.createTo({ params: { documentId: document.id } })">
 							{{ $pt("createPost") }}
 						</RouterLink>
 					</DSPrimaryButton>
