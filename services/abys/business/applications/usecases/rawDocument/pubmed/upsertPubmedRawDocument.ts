@@ -31,28 +31,19 @@ export class UpsertPubmedRawDocumentUsecase extends UsecaseHandler.create({
 	public async execute(input: Input) {
 		const { resourceUrl } = input;
 
-		const findedRawDocument = await this.rawDocumentRepository.findByResourceUrl(resourceUrl);
-
-		const rawDocument = match({ rawDocument: findedRawDocument })
-			.with(
-				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
-				({ rawDocument }) => rawDocument
-					.update(input),
-			)
-			.with(
-				{ rawDocument: null },
-				() => PubmedRawDocumentEntity
-					.create(input),
-			)
-			.exhaustive();
+		const rawDocument = PubmedRawDocumentEntity.create(input);
 
 		if (rawDocument instanceof Error) {
 			return rawDocument;
 		}
 
+		const findedRawDocument = await this.rawDocumentRepository.findByResourceUrl(resourceUrl);
+
 		await this.rawDocumentRepository.save(rawDocument);
 
-		await this.upsertNodeSameRawDocument({ rawDocument });
+		if (!findedRawDocument || !this.rawDocumentRepository.isEqual(rawDocument, findedRawDocument)) {
+			await this.upsertNodeSameRawDocument({ rawDocument });
+		}
 
 		return rawDocument;
 	}

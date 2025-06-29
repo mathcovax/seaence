@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { CookingMode } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 import PreviewDocument from "./components/PreviewDocument.vue";
 import PreviewTranslationDialog from "./components/PreviewTranslationDialog.vue";
 import { useList } from "./composables/useList";
 import { usePage } from "./composables/usePage";
 import { reportingBakedDocumentTranslationPage } from "./router";
+import { cookingModeEnum } from "@/libs/bridge/types/cookingMode";
 
 const { $pt } = reportingBakedDocumentTranslationPage.use();
 const { pageContent } = usePage();
@@ -12,11 +14,21 @@ const { list, pageOfList } = useList();
 function updatePage(page: number) {
 	pageOfList.value = page;
 }
+watch(
+	pageContent,
+	(content) => {
+		selectedCookingMode.value = content
+			? content.bakedDocument.cookingMode
+			: null;
+	},
+);
+const selectedCookingMode = ref<null | CookingMode>(null);
+
 </script>
 
 <template>
 	<section class="min-h-screen-nh">
-		<div v-if="pageContent && list">
+		<div v-if="pageContent && list && selectedCookingMode">
 			<header class="mb-8">
 				<h1 class="mb-2 text-3xl font-bold">
 					{{ $pt("title") }}
@@ -29,11 +41,20 @@ function updatePage(page: number) {
 
 			<div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
 				<DSCard class="xl:col-span-8">
-					<PreviewTranslationDialog
-						:baked-document-id="pageContent.bakedDocument.id"
-						:node-same-raw-document-id="pageContent.bakedDocument.nodeSameRawDocumentId"
-						:baked-document-language="pageContent.bakedDocument.language"
-					/>
+					<div class="flex gap-2">
+						<PreviewTranslationDialog
+							:cooking-mode="selectedCookingMode"
+							:baked-document-id="pageContent.bakedDocument.id"
+							:node-same-raw-document-id="pageContent.bakedDocument.nodeSameRawDocumentId"
+							:baked-document-language="pageContent.bakedDocument.language"
+						/>
+
+						<DSSelect
+							v-model="selectedCookingMode"
+							:items="cookingModeEnum.toTuple()"
+							class="w-40"
+						/>
+					</div>
 
 					<PreviewDocument :baked-document="pageContent.bakedDocument" />
 				</DSCard>
@@ -147,13 +168,6 @@ function updatePage(page: number) {
 					</div>
 				</DSCard>
 			</div>
-		</div>
-
-		<div
-			v-else
-			class="py-16 flex justify-center items-center"
-		>
-			<DSAdminLoadingLogo />
 		</div>
 	</section>
 </template>

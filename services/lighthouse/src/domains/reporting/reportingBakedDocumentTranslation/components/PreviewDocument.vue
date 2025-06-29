@@ -18,7 +18,7 @@ const { $pt } = reportingBakedDocumentTranslationPage.use();
 
 <template>
 	<div class="space-y-6">
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 			<div
 				v-if="bakedDocument.id"
 				class="space-y-1"
@@ -88,6 +88,29 @@ const { $pt } = reportingBakedDocumentTranslationPage.use();
 					class="text-xs font-mono"
 				>
 					{{ bakedDocument.language }}
+				</DSBadge>
+			</div>
+
+			<div
+				class="space-y-1"
+			>
+				<div class="flex gap-2 items-center">
+					<DSIcon
+						name="chefHat"
+						size="small"
+						class="text-muted-foreground"
+					/>
+
+					<span class="text-sm font-medium text-muted-foreground">
+						{{ $pt("bakedDocument.cookingMode") }}
+					</span>
+				</div>
+
+				<DSBadge
+					variant="default"
+					class="text-xs font-mono"
+				>
+					{{ bakedDocument.cookingMode }}
 				</DSBadge>
 			</div>
 		</div>

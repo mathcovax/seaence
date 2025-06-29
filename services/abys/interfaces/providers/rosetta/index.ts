@@ -1,36 +1,25 @@
-/* eslint-disable id-length */
-import { HttpClient, type TransformCodegenRouteToHttpClientRoute, StrictFormData, type FindHttpClientRoute } from "@duplojs/http-client";
-import { type CodegenRoutes } from "./types/api";
+import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
+import { type CodegenRoutes } from "@vendors/clients-type/rosetta/duplojsTypesCodegen";
+import { type InputTranslate } from "./types";
 
-export type RosettaClientRoute = TransformCodegenRouteToHttpClientRoute<
+export type RosettaHttpRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-export type SupportedLanguage = FindHttpClientRoute<
-	RosettaClientRoute,
-	"POST",
-	"/translate"
->["body"]["data"]["target"];
-
 export class RosettaAPI {
-	private static httpClient: HttpClient<RosettaClientRoute>;
+	private static httpClient: HttpClient<RosettaHttpRoute>;
 
-	public static async translateText(text: string, language: SupportedLanguage) {
-		const result = await this.httpClient.post(
-			"/translate",
-			{
-				body: new StrictFormData({
-					format: "text",
-					source: "auto",
-					target: language,
-					q: text,
-				}),
-			},
-		)
-			.iWantCode("200");
-
-		return result.body.translatedText;
+	public static translate(body: InputTranslate) {
+		return this.httpClient
+			.post(
+				"/translate",
+				{
+					body,
+				},
+			)
+			.iWantInformation("text.translated")
+			.then(({ body }) => body);
 	}
 
 	static {

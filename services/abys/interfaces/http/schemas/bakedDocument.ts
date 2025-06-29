@@ -3,9 +3,11 @@ import { articleTypeObjecter } from "@business/domains/common/articleType";
 import { bakedDocumentAbstractPartObjecter, bakedDocumentKeywordObjecter, bakedDocumentRessourceObjecter, bakedDocumentAuthorObjecter, bakedDocumentTitleObjecter } from "@business/domains/entities/bakedDocument";
 import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/nodeSameRawDocument";
+import { cookingModeObjecter } from "@business/domains/common/cookingMode";
 
 export const endpointBakedDocumentSchema = zod.object({
 	id: zod.string(),
+	cookingMode: cookingModeObjecter.zodSchema,
 	nodeSameRawDocumentId: zod.string(),
 	title: zod.string(),
 	language: bakedDocumentLanguageObjecter.zodSchema,

@@ -1,6 +1,7 @@
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
 import { rawDocumentRepository } from "@business/applications/repositories/rawDocument";
 import { type BakedDocumentLanguage } from "@business/domains/common/bakedDocumentLanguage";
+import { type CookingMode } from "@business/domains/common/cookingMode";
 import { type Provider } from "@business/domains/common/provider";
 import { bakedDocumentAuthorObjecter } from "@business/domains/entities/bakedDocument";
 import { type NodeSameRawDocumentEntity } from "@business/domains/entities/nodeSameRawDocument";
@@ -12,6 +13,7 @@ import { match, P } from "ts-pattern";
 interface Input {
 	nodeSameRawDocument: NodeSameRawDocumentEntity;
 	bakedDocumentLanguage: BakedDocumentLanguage;
+	cookingMode: CookingMode;
 }
 
 const priority = ["pubmed"] as const;
@@ -26,7 +28,7 @@ export class CookNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 	rawDocumentRepository,
 	bakedDocumentRepository,
 }) {
-	public async execute({ nodeSameRawDocument, bakedDocumentLanguage }: Input) {
+	public async execute({ nodeSameRawDocument, bakedDocumentLanguage, cookingMode }: Input) {
 		const rawDocumentWrapper = await this.rawDocumentRepository.findByNodeSameRawDocument(nodeSameRawDocument);
 
 		const rawDocumentKey = priority.find((key) => !!rawDocumentWrapper[key]);
@@ -37,6 +39,7 @@ export class CookNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 			.with(
 				{ rawDocument: P.instanceOf(PubmedRawDocumentEntity) },
 				({ rawDocument }) => promiseObject({
+					cookingMode,
 					nodeSameRawDocumentId: nodeSameRawDocument.id,
 					articleTypes: rawDocument.articleTypes,
 					authors: rawDocument.authors?.map(
@@ -44,11 +47,13 @@ export class CookNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 					) ?? [],
 					language: bakedDocumentLanguage,
 					title: this.bakedDocumentRepository.makeBakedTitleWithRawTitle(
+						cookingMode,
 						rawDocument.title,
 						bakedDocumentLanguage,
 					),
 					abstract: rawDocument.abstract
 						? this.bakedDocumentRepository.makeBakedAbstractWithRawAbstract(
+							cookingMode,
 							rawDocument.abstract,
 							bakedDocumentLanguage,
 						)
@@ -56,11 +61,13 @@ export class CookNodeSameRawDocumentUsecase extends UsecaseHandler.create({
 					resources: this.bakedDocumentRepository
 						.makeBakedResourcesWithRawDocumentWrapper(rawDocumentWrapper),
 					keywords: this.bakedDocumentRepository.makeBakedKeywordsWithKeywordPubmed(
+						cookingMode,
 						rawDocument.keywords,
 						bakedDocumentLanguage,
 					),
 					abstractDetails: rawDocument.abstractDetails
 						? this.bakedDocumentRepository.makeBakedAbstractDetailsWithRawAbstractDetails(
+							cookingMode,
 							rawDocument.abstractDetails,
 							bakedDocumentLanguage,
 						)

@@ -1,3 +1,4 @@
+import { type BakedDocument } from "@business/entities/bakedDocument";
 import { Page } from "@business/entities/page";
 import { reportingBakedDocumentTranslationConfig } from "@interfaces/configs/reportingBakedDocumentTranslation";
 import { iWantBakedDocumentExistById } from "@interfaces/http/checkers/bakedDocument";
@@ -21,8 +22,9 @@ useBuilder()
 			const { body: { countTotal } } = await BeaconAPI
 				.findManyBakedDocumentTranslationReportingDetails(abysBakedDocument.id);
 
-			const bakedDocument = {
+			const bakedDocument: typeof BakedDocument.index["_output"] = {
 				id: abysBakedDocument.id,
+				cookingMode: abysBakedDocument.cookingMode,
 				nodeSameRawDocumentId: abysBakedDocument.nodeSameRawDocumentId,
 				language: abysBakedDocument.language,
 				title: abysBakedDocument.title,

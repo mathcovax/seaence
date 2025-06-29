@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BakedDocumentLanguage } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
+import type { BakedDocumentLanguage, CookingMode } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 import { useGetNewBakedDocumentTranslation } from "../composables/useGetNewBakedDocumentTranslation";
 import { reportingBakedDocumentTranslationPage } from "../router";
 import PreviewDocument from "./PreviewDocument.vue";
@@ -10,6 +10,7 @@ interface Props {
 	bakedDocumentId: string;
 	nodeSameRawDocumentId: string;
 	bakedDocumentLanguage: BakedDocumentLanguage;
+	cookingMode: CookingMode;
 }
 
 const props = defineProps<Props>();

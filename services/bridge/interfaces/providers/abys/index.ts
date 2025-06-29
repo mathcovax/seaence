@@ -1,6 +1,7 @@
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
-import { type Language, type CodegenRoutes } from "@vendors/clients-type/abys/duplojsTypesCodegen";
+import { type CodegenRoutes } from "@vendors/clients-type/abys/duplojsTypesCodegen";
+import { type InputTransformeNodeSameRawDocumentToBakedDocument, type InputCookNodeSameRawDocument } from "./types";
 
 export type AbysClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
@@ -32,34 +33,26 @@ export class AbysAPI {
 	}
 
 	public static cookNodeSameRawDocument(
-		nodeSameRawDocumentId: string,
-		bakedDocumentLanguage: Language,
+		body: InputCookNodeSameRawDocument,
 	) {
 		return this.httpClient
 			.post(
 				"/cook-node-same-raw-document",
 				{
-					body: {
-						nodeSameRawDocumentId,
-						bakedDocumentLanguage,
-					},
+					body,
 				},
 			)
 			.iWantExpectedResponse();
 	}
 
 	public static transformeNodeSameRawDocumentToBakedDocument(
-		nodeSameRawDocumentId: string,
-		bakedDocumentLanguage: Language,
+		body: InputTransformeNodeSameRawDocumentToBakedDocument,
 	) {
 		return this.httpClient
 			.post(
 				"/transforme-node-same-raw-document-to-baked-document",
 				{
-					body: {
-						nodeSameRawDocumentId,
-						bakedDocumentLanguage,
-					},
+					body,
 				},
 			)
 			.iWantExpectedResponse();

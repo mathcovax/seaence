@@ -36,6 +36,7 @@ import {
 	mdiListBox,
 	mdiHeart,
 	mdiContentSaveCheck,
+	mdiChefHat,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -76,6 +77,7 @@ export const iconsMapper = {
 	listBox: mdiListBox,
 	heart: mdiHeart,
 	contentSaveCheck: mdiContentSaveCheck,
+	chefHat: mdiChefHat,
 };
 
 export const iconSizeMapper = {

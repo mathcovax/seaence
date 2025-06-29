@@ -1,14 +1,14 @@
-import { seaRepository } from "@business/applications/repositories/sea";
+import { searchEngineRepository } from "@business/applications/repositories/searchEngine";
 import { type Provider, providerEnum } from "@business/domains/common/provider";
 import { SeaAPI } from "@interfaces/providers/sea";
 import { TechnicalError } from "@vendors/clean/error";
 import { match, P } from "ts-pattern";
 
-seaRepository.default = {
+searchEngineRepository.default = {
 	save() {
 		throw new TechnicalError("Save ar not allow.");
 	},
-	async sendBakedDocument(bakedDocument) {
+	async indexBakedDocument(bakedDocument) {
 		const { language, ...restSimplifyObject } = bakedDocument.toSimpleObject();
 
 		const defaultDay = 15;
