@@ -4,9 +4,12 @@ import { useDocumentPage } from "../composables/useDocumentPage";
 import PostRow from "@/domains/forum/components/PostRow.vue";
 import { RouterLink } from "vue-router";
 import ReportingWrongTranslateDialog from "../components/ReportingWrongTranslateDialog.vue";
+import CreateManyDocumentInFolderDialog from "@/domains/user/components/CreateManyDocumentInFolderDialog.vue";
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { $pt, params } = documentPage.use();
 const router = useRouter();
+const { isConnected } = useUserInformation();
 
 const { document, posts } = useDocumentPage(
 	computed(() => params.value.id),
@@ -105,52 +108,68 @@ function formatedDate(date: FlexibleDate) {
 						</div>
 					</div>
 
-					<ReportingWrongTranslateDialog :baked-document-id="document.id">
+					<ReportingWrongTranslateDialog
+						v-if="isConnected"
+						:baked-document-id="document.id"
+					>
 						<DSClickableText
 							class="self-start"
 							:content="$pt('reportingWrongTranslate.cta')"
 						/>
 					</ReportingWrongTranslateDialog>
-				</div>
 
-				<div class="flex flex-col md:flex-row gap-6 md:gap-8">
-					<div class="space-y-4">
-						<h2 class="text-xl md:text-2xl font-bold">
-							{{ $pt("label.ressources") }}
-						</h2>
+					<CreateManyDocumentInFolderDialog
+						v-if="isConnected"
+						:node-same-raw-document-id="params.id"
+					>
+						<DSOutlineButton
+							icon="plus"
+							size="small"
+							class="self-start"
+						>
+							{{ $pt("createManyDocumentInFolderDialog.button.content") }}
+						</DSOutlineButton>
+					</CreateManyDocumentInFolderDialog>
 
-						<ul class="ml-4 list-disc">
-							<li
-								v-for="(resources, index) in document.resources"
-								:key="index"
-							>
-								<a
-									:href="resources.url"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="text-blue-seaence hover:underline"
+					<div class="flex flex-col md:flex-row gap-6 md:gap-8">
+						<div class="space-y-4">
+							<h2 class="text-xl md:text-2xl font-bold">
+								{{ $pt("label.ressources") }}
+							</h2>
+
+							<ul class="ml-4 list-disc">
+								<li
+									v-for="(resources, index) in document.resources"
+									:key="index"
 								>
-									{{ resources.resourceProvider }}
-								</a>
-							</li>
-						</ul>
-					</div>
+									<a
+										:href="resources.url"
+										target="_blank"
+										rel="noopener noreferrer"
+										class="text-blue-seaence hover:underline"
+									>
+										{{ resources.resourceProvider }}
+									</a>
+								</li>
+							</ul>
+						</div>
 
-					<div class="space-y-4">
-						<h2 class="text-xl md:text-2xl font-bold">
-							{{ $pt("label.articleType") }}
-						</h2>
+						<div class="space-y-4">
+							<h2 class="text-xl md:text-2xl font-bold">
+								{{ $pt("label.articleType") }}
+							</h2>
 
-						<ul class="flex flex-wrap gap-2 list-none">
-							<li
-								v-for="(type, index) in document.articleTypes"
-								:key="index"
-							>
-								<DSBadge class="bg-green-seaence/10 text-green-seaence">
-									{{ type }}
-								</DSBadge>
-							</li>
-						</ul>
+							<ul class="flex flex-wrap gap-2 list-none">
+								<li
+									v-for="(type, index) in document.articleTypes"
+									:key="index"
+								>
+									<DSBadge class="bg-green-seaence/10 text-green-seaence">
+										{{ type }}
+									</DSBadge>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</header>

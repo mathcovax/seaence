@@ -10,3 +10,5 @@ import "./favoriteEquation/list";
 import "./favoriteEquation/findOne";
 import "./favoriteEquation/upsert";
 import "./favoriteEquation/remove";
+import "./documentFolder";
+import "./documentInFolder";

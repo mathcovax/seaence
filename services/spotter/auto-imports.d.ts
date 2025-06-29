@@ -6,33 +6,13 @@
 // biome-ignore lint: disable
 export {}
 declare global {
-  const Button: typeof import('./vendors/design-system/components/ui/button/index')['Button']
-  const DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/index')['DSAccordion']
-  const DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/index')['DSAccordionContent']
-  const DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/index')['DSAccordionItem']
-  const DSAccordionTrigger: typeof import('./vendors/design-system/components/ui/accordion/index')['DSAccordionTrigger']
-  const DSCheckbox: typeof import('./vendors/design-system/components/ui/checkbox/index')['DSCheckbox']
-  const DSLabel: typeof import('./vendors/design-system/components/ui/label/index')['DSLabel']
-  const DSSheet: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheet']
-  const DSSheetClose: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetClose']
-  const DSSheetContent: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetContent']
-  const DSSheetDescription: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetDescription']
-  const DSSheetFooter: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetFooter']
-  const DSSheetHeader: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetHeader']
-  const DSSheetTitle: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetTitle']
-  const DSSheetTrigger: typeof import('./vendors/design-system/components/ui/sheet/index')['DSSheetTrigger']
   const EffectScope: typeof import('vue')['EffectScope']
-  const Input: typeof import('./vendors/design-system/components/ui/input/index')['Input']
   const advancedSearchPage: typeof import('./src/domains/search/router')['advancedSearchPage']
   const baseLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['baseLayoutTemplateGridCols']
   const booleanFormField: typeof import('./vendors/design-system/utils/formFields')['booleanFormField']
-  const buttonVariants: typeof import('./vendors/design-system/components/ui/button/index')['buttonVariants']
   const checkLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']
-  const cn: typeof import('./vendors/design-system/lib/utils')['cn']
   const computed: typeof import('vue')['computed']
-  const connectionPage: typeof import('./src/domains/auth/router')['connectionPage']
   const createApp: typeof import('vue')['createApp']
-  const createDebounce: typeof import('./vendors/design-system/utils/debounce')['createDebounce']
   const createExternalPromise: typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']
   const createFetchDebounce: typeof import('./vendors/design-system/utils/debounce')['createFetchDebounce']
   const createFormField: typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']
@@ -41,9 +21,10 @@ declare global {
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
+  const documentFolderPage: typeof import('./src/domains/user/router')['documentFolderPage']
+  const documentInFolderPage: typeof import('./src/domains/user/router')['documentInFolderPage']
   const documentPage: typeof import('./src/domains/document/router')['documentPage']
   const effectScope: typeof import('vue')['effectScope']
-  const formField: typeof import('./vendors/design-system/utils/formFields')['formField']
   const formTemplate: typeof import('./vendors/design-system/utils/layoutTemplate')['formTemplate']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
@@ -59,6 +40,7 @@ declare global {
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
   const markRaw: typeof import('vue')['markRaw']
+  const multiComboBoxFormField: typeof import('./vendors/design-system/utils/formFields')['multiComboBoxFormField']
   const multiLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']
   const nextTick: typeof import('vue')['nextTick']
   const notFoundPage: typeof import('./src/domains/edito/router')['notFoundPage']
@@ -94,13 +76,10 @@ declare global {
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
-  const sheetVariants: typeof import('./vendors/design-system/components/ui/sheet/index')['sheetVariants']
   const simpleSearchPage: typeof import('./src/domains/search/router')['simpleSearchPage']
-  const testPage: typeof import('./src/domains/search/router')['testPage']
   const textFormField: typeof import('./vendors/design-system/utils/formFields')['textFormField']
   const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
   const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
-  const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toArrayZodSchema: typeof import('./src/utils/toArrayZodSchema')['toArrayZodSchema']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
@@ -136,7 +115,6 @@ declare global {
   const useUnionLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useUnionLayout')['useUnionLayout']
   const useValidationDialog: typeof import('./vendors/design-system/composables/useValidationDialog')['useValidationDialog']
   const useWindow: typeof import('./vendors/design-system/composables/useWindow')['useWindow']
-  const valueUpdater: typeof import('./vendors/design-system/lib/utils')['valueUpdater']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
@@ -221,6 +199,8 @@ declare module 'vue' {
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
+    readonly documentFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentFolderPage']>
+    readonly documentInFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentInFolderPage']>
     readonly documentPage: UnwrapRef<typeof import('./src/domains/document/router')['documentPage']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly formTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['formTemplate']>
@@ -238,6 +218,7 @@ declare module 'vue' {
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly multiComboBoxFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['multiComboBoxFormField']>
     readonly multiLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly notFoundPage: UnwrapRef<typeof import('./src/domains/edito/router')['notFoundPage']>

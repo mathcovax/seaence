@@ -35,6 +35,7 @@ declare global {
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
   const markRaw: typeof import('vue')['markRaw']
+  const multiComboBoxFormField: typeof import('./vendors/design-system/utils/formFields')['multiComboBoxFormField']
   const multiLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
@@ -67,7 +68,6 @@ declare global {
   const textFormField: typeof import('./vendors/design-system/utils/formFields')['textFormField']
   const textLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['textLayoutTemplateGridCols']
   const textareaFormField: typeof import('./vendors/design-system/utils/formFields')['textareaFormField']
-  const textformField: typeof import('./vendors/design-system/utils/formFields')['textformField']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
@@ -199,6 +199,7 @@ declare module 'vue' {
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly multiComboBoxFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['multiComboBoxFormField']>
     readonly multiLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>

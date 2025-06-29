@@ -36,6 +36,17 @@ import {
 	mdiListBox,
 	mdiHeart,
 	mdiContentSaveCheck,
+	mdiFolder,
+	mdiFolderOutline,
+	mdiDotsHorizontal,
+	mdiDotsVertical,
+	mdiDotsHorizontalCircle,
+	mdiDotsHorizontalCircleOutline,
+	mdiDeleteOutline,
+	mdiDelete,
+	mdiFileOutline,
+	mdiFile,
+	mdiChevronDown,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -76,6 +87,17 @@ export const iconsMapper = {
 	listBox: mdiListBox,
 	heart: mdiHeart,
 	contentSaveCheck: mdiContentSaveCheck,
+	folder: mdiFolder,
+	folderOutline: mdiFolderOutline,
+	dotsHorizontal: mdiDotsHorizontal,
+	dotsVertical: mdiDotsVertical,
+	dotsHorizontalCircle: mdiDotsHorizontalCircle,
+	dotsHorizontalCircleOutline: mdiDotsHorizontalCircleOutline,
+	delete: mdiDelete,
+	deleteOutline: mdiDeleteOutline,
+	file: mdiFile,
+	fileOutline: mdiFileOutline,
+	chevronDown: mdiChevronDown,
 };
 
 export const iconSizeMapper = {

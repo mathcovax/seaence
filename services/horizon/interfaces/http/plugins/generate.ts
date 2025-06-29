@@ -9,6 +9,8 @@ import { Notification } from "@business/entities/notification";
 import { FavoriteEquation } from "@business/entities/favoriteEquation";
 import { Post } from "@business/entities/forum/post";
 import { Answer } from "@business/entities/forum/answer";
+import { DocumentFolder } from "@business/entities/documentFolder";
+import { DocumentInFolder } from "@business/entities/documentInFolder";
 
 ArticleType.index._zttIdentifier = "ArticleType";
 
@@ -42,3 +44,7 @@ Notification.register._zttIdentifier = "RegisterNotification";
 
 FavoriteEquation.index._zttIdentifier = "FavoriteEquation";
 FavoriteEquation.listDetails._zttIdentifier = "FavoriteEquationListDetails";
+
+DocumentFolder.index._zttIdentifier = "DocumentFolder";
+
+DocumentInFolder.index._zttIdentifier = "DocumentInFoloder";

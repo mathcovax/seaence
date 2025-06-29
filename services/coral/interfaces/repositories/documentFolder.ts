@@ -1,9 +1,19 @@
 import { documentFolderRepository } from "@business/applications/repositories/documentFolder";
 import { DocumentFolderEntity, documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
+import { ZodAccelerator } from "@duplojs/core";
 import { escapeRegExp } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
+import { type MongoDocumentFolder } from "@interfaces/providers/mongo/entities/documentFolder";
 import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
+
+const defaultCountResult = 0;
+const countResultSchema = zod
+	.object({
+		folder: zod.number(),
+	});
+
+const countResultSchemaAcc = ZodAccelerator.build(countResultSchema);
 
 documentFolderRepository.default = {
 	generateDocumentFolderId() {
@@ -80,9 +90,8 @@ documentFolderRepository.default = {
 			.find(
 				{
 					userId: userId.value,
-					title: {
+					name: {
 						$regex: escapeRegExp(partialDocumentFolderName.value),
-						$options: "i",
 					},
 				},
 			)
@@ -108,7 +117,6 @@ documentFolderRepository.default = {
 					name: documentFolderName
 						? {
 							$regex: escapeRegExp(documentFolderName.value),
-							$options: "i",
 						}
 						: undefined,
 				},
@@ -118,5 +126,105 @@ documentFolderRepository.default = {
 			);
 
 		return numberOfDocumentFolders;
+	},
+	async findManyFolderInWhichDocumentExist(input) {
+		const { userId, page, partialDocumentFolderName, quantityPerPage, nodeSameRawDocumentId } = input;
+
+		const mongoDocumentFolders = await mongo.documentInFolder
+			.aggregate<MongoDocumentFolder>([
+				{
+					$match: {
+						nodeSameRawDocumentId: nodeSameRawDocumentId.value,
+						userId: userId.value,
+					},
+				},
+				{
+					$lookup: {
+						from: "documentFolder",
+						localField: "documentFolderId",
+						foreignField: "id",
+						as: "folder",
+					},
+				},
+				{
+					$unwind: "$folder",
+				},
+				{
+					$match: {
+						"folder.name": {
+							$regex: escapeRegExp(partialDocumentFolderName.value),
+							$options: "i",
+						},
+						"folder.userId": userId.value,
+					},
+				},
+				{
+					$sort: {
+						"folder.addedAt": -1,
+					},
+				},
+				{
+					$skip: page.value * quantityPerPage.value,
+				},
+				{
+					$limit: quantityPerPage.value,
+				},
+				{
+					$replaceRoot: {
+						newRoot: "$folder",
+					},
+				},
+			]).toArray();
+
+		return mongoDocumentFolders.map(
+			(mongoDocumentFolder) => EntityHandler.throwMapper(
+				DocumentFolderEntity,
+				mongoDocumentFolder,
+			),
+		);
+	},
+	async countResultOfFindManyFolderInWhichDocumentExist(input) {
+		const { userId, partialDocumentFolderName, nodeSameRawDocumentId } = input;
+
+		const [result] = await mongo.documentInFolder
+			.aggregate([
+				{
+					$match: {
+						nodeSameRawDocumentId: nodeSameRawDocumentId.value,
+						userId: userId.value,
+					},
+				},
+				{
+					$lookup: {
+						from: "documentFolder",
+						localField: "documentFolderId",
+						foreignField: "id",
+						as: "folder",
+					},
+				},
+				{
+					$unwind: "$folder",
+				},
+				{
+					$match: {
+						"folder.name": {
+							$regex: escapeRegExp(partialDocumentFolderName.value),
+							$options: "i",
+						},
+						"folder.userId": userId.value,
+					},
+				},
+				{
+					$count: "folder",
+				},
+			]).toArray();
+
+		if (!result) {
+			return intObjecter.unsafeCreate(defaultCountResult);
+		}
+
+		const countResult = countResultSchemaAcc.parse(result);
+
+		return intObjecter.throwCreate(countResult.folder);
 	},
 };

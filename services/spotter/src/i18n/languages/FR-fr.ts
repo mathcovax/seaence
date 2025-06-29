@@ -1,3 +1,4 @@
+/* eslint-disable vue/max-len */
 import type {
 	ArticleType,
 	Facet,
@@ -84,6 +85,11 @@ export const FRfr = {
 					textareaLabel: "Détails du probléme de traduction.",
 				},
 			},
+			createManyDocumentInFolderDialog: {
+				button: {
+					content: "Ajouter dans un dossier",
+				},
+			},
 		},
 		[postListPage.name]: {
 			titleLinkPost: "Post(s) lié(s) au document : {title}",
@@ -164,6 +170,30 @@ export const FRfr = {
 			title: "Notifications",
 			noNotification: "Aucune notification trouvé.",
 		},
+		[documentFolderPage.name]: {
+			title: "Dossiers",
+			form: {
+				label: {
+					name: "Nom du dossier",
+				},
+			},
+			dialog: {
+				createDocumentFolder: {
+					title: "Créer un dossier",
+				},
+			},
+			header: {
+				label: "{count} dossier(s)",
+			},
+			noDocumentFolder: "Aucun dossier trouvé.",
+		},
+		[documentInFolderPage.name]: {
+			title: "Dossier",
+			header: {
+				label: "{count} document(s)",
+			},
+			noDocumentInFolder: "Aucun document trouvé.",
+		},
 	},
 	authDialog: {
 		title: "Authtification",
@@ -174,6 +204,34 @@ export const FRfr = {
 			CGULabel: "Accepter les contion général d'utilisation.",
 			requireCGU: "L'acceptation des condition général d'utilisation est obligatoire.",
 		},
+	},
+	removeDocumentFolderDialog: {
+		title: "Supprimer un dossier",
+		description: "Êtes-vous sur de vouloir supprimer ce dossier ? La suppression dossier supprimera également son contenu",
+	},
+	documentFolderHeader: {
+		label: "{count} élément(s)",
+		filtered: "{filtered} sur {total}",
+	},
+	createManyDocumentInFolderDialog: {
+		title: "Ajouter le document",
+		sectionLabel: "Dossier dans le quel il se trouve",
+		form: {
+			label: {
+				name: "Libellé",
+				folder: "Dossiers",
+			},
+			placeholder: {
+				name: "Entrer un nom de document",
+				folder: "Sélectionner des dossiers",
+			},
+			emptyLabel: {
+				folder: "Aucun dossier trouvé.",
+			},
+		},
+	},
+	documentFolderCard: {
+		items: "{count} document(s)",
 	},
 	layout: {
 		base: {
@@ -188,6 +246,7 @@ export const FRfr = {
 					profile: "Mon profil",
 					disconnect: "Se déconnecter",
 					notification: "Notifications",
+					documentFolder: "Dossiers",
 				},
 			},
 			footer: {
@@ -384,6 +443,11 @@ export const FRfr = {
 		replace: "Remplacer",
 		register: "Créer un compte",
 		connection: "Inscription / Connexion",
+		delete: "Supprimer",
+		create: "Créer",
+		validate: "Valider",
+		refuse: "Refuser",
+		add: "Ajouter",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
@@ -500,6 +564,18 @@ export const FRfr = {
 		favoriteEquation: {
 			upsert: "L'équation a bien étais mise dans les favorit.",
 			remove: "l'équation a bien étais supprimer.",
+		},
+		documentFolder: {
+			alreadyExists: "Le dossier existe déjà",
+			maxQuantity: "Le dossier est plein",
+			notfound: "Le dossier n'existe pas",
+			removed: "Le dossier a été supprimé",
+			created: "Le dossier a été créer",
+		},
+		documentInFolder: {
+			notfound: "Le document n'existe pas",
+			removed: "Le document a été supprimé",
+			created: "Le document a été ajouté dans le(s) dossier(s)",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},

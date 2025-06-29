@@ -10,6 +10,7 @@ documentInFolderRepository.default = {
 
 		await mongo.documentInFolder.updateOne(
 			{
+				documentFolderId: simpledocumentInFolder.documentFolderId,
 				nodeSameRawDocumentId: simpledocumentInFolder.nodeSameRawDocumentId,
 			},
 			{

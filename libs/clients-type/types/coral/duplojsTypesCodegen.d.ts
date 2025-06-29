@@ -151,7 +151,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/search-document-folders";
+    path: "/find-many-document-folder";
     body: {
         userId: string;
         partialDocumentFolderName: string;
@@ -171,43 +171,66 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/get-search-document-folders-count";
+    path: "/find-many-document-folders-details";
     body: {
         userId: string;
         partialDocumentFolderName: string;
     };
     response: {
         code: 200;
-        information: "documentFolders.searchDetails";
+        information: "documentFolders.foundDetails";
         body: {
             total: number;
         };
     };
 }) | ({
     method: "POST";
-    path: "/create-document-in-folder";
+    path: "/find-many-document-folders-in-which-document-exist";
     body: {
-        documentFolderId: string;
+        page: number;
+        quantityPerPage: number;
+        partialDocumentFolderName: string;
         userId: string;
-    } & {
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 200;
+        information: "documentFolders.found";
+        body: {
+            id: string;
+            userId: string;
+            name: string;
+            numberOfDocument: number;
+            createdAt: Date;
+        }[];
+    };
+}) | ({
+    method: "POST";
+    path: "/find-many-document-folders-in-which-document-exist-details";
+    body: {
+        partialDocumentFolderName: string;
+        userId: string;
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 200;
+        information: "documentFolders.foundDetails";
+        body: {
+            total: number;
+        };
+    };
+}) | ({
+    method: "POST";
+    path: "/create-many-document-in-folder";
+    body: {
+        documentFolderIds: string[];
+        userId: string;
         nodeSameRawDocumentId: string;
         documentInFolderName: string;
     };
     response: {
-        code: 403;
-        information: "documentFolder.wrongProprietary";
-        body?: undefined;
-    } | {
         code: 404;
-        information: "documentFolder.notfound";
-        body?: undefined;
-    } | {
-        code: 409;
-        information: "documentInFolder.alreadyExists";
-        body?: undefined;
-    } | {
-        code: 409;
-        information: "documentInFolder.maxQuantity";
+        information: "documentFolder.noneFound";
         body?: undefined;
     } | {
         code: 200;
@@ -273,7 +296,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/search-documents-in-folder";
+    path: "/find-many-document-in-folder";
     body: {
         documentFolderId: string;
         userId: string;
@@ -302,7 +325,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/get-search-documents-in-folder-count";
+    path: "/find-many-document-in-folder-details";
     body: {
         documentFolderId: string;
         userId: string;
@@ -319,7 +342,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 200;
-        information: "documentsInFolder.searchDetails";
+        information: "documentsInFolder.foundDetails";
         body: {
             total: number;
         };
