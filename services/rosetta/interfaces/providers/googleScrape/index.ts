@@ -1,4 +1,5 @@
 import { type Translate } from "@business/entites/translate";
+import { envs } from "@interfaces/envs";
 import { resolve } from "path";
 import { Worker } from "worker_threads";
 
@@ -14,9 +15,7 @@ export interface JobsResult {
 }
 
 export class GoogleScrape {
-	private static worker = new Worker(
-		resolve(import.meta.dirname, "worker/main.js"),
-	);
+	public static worker: Worker;
 
 	public static async translate(
 		text: string,
@@ -45,3 +44,27 @@ export class GoogleScrape {
 		return result.text;
 	}
 }
+
+if (envs.DB_CONNECTION) {
+	const timeoutStratWorker = 3000;
+	await new Promise<void>(
+		(promiseResolve, rejectResolve) => {
+			const timeoutId = setTimeout(
+				() => void rejectResolve(new Error("Worker timeout")),
+				timeoutStratWorker,
+			);
+
+			GoogleScrape.worker
+			= new Worker(
+					resolve(import.meta.dirname, "worker/main.js"),
+				)
+					.once("message", (message: string) => {
+						if (message === "started") {
+							clearTimeout(timeoutId);
+							promiseResolve();
+						}
+					});
+		},
+	);
+}
+

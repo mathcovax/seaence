@@ -16,7 +16,7 @@ await queue.add(async() => {
 	await concentButton.click({ timeout: 3000 });
 });
 
-console.log("Rosetta google scrape is ready !");
+parentPort!.postMessage("started");
 
 const languageMapper: Record<Translate.Language, string> = {
 	"fr-FR": "fr",

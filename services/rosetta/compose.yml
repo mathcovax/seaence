@@ -23,3 +23,5 @@ services:
       LT_API_ONLY: true
     ports:
       - 5001:5000
+    volumes:
+      - ${INCLUDE_PATH}/rosetta/languages:/home/libretranslate/.local/share/argos-translate/packages/
