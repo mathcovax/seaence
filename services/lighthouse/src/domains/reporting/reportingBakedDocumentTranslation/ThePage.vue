@@ -75,6 +75,7 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 
 						<div class="flex justify-center">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"
@@ -161,6 +162,7 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 
 						<div class="pt-4 flex justify-center border-t">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"

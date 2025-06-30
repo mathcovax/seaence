@@ -202,6 +202,8 @@ declare module 'vue' {
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
+    readonly documentFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentFolderPage']>
+    readonly documentInFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentInFolderPage']>
     readonly documentPage: UnwrapRef<typeof import('./src/domains/document/router')['documentPage']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly formTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['formTemplate']>
@@ -219,6 +221,7 @@ declare module 'vue' {
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly multiComboBoxFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['multiComboBoxFormField']>
     readonly multiLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['multiLayoutTemplateGridCols']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly notFoundPage: UnwrapRef<typeof import('./src/domains/edito/router')['notFoundPage']>

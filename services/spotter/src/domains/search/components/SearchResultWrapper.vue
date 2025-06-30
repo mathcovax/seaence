@@ -32,6 +32,7 @@ const maxPage = 100;
 			class="bg-background flex flex-col items-center rounded-b-xl"
 		>
 			<DSPagination
+				v-if="result.total > result.quantityPerPage"
 				class="my-8"
 				:max-page="maxPage"
 				:total="result.total"
@@ -49,6 +50,7 @@ const maxPage = 100;
 			</div>
 
 			<DSPagination
+				v-if="result.total > result.quantityPerPage"
 				class="my-8"
 				:max-page="maxPage"
 				:total="result.total"
