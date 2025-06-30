@@ -1,3 +1,3 @@
 export const translateConfig = {
-	max: 5000,
+	min: 1,
 };

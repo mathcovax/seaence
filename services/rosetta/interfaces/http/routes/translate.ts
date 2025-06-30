@@ -10,7 +10,8 @@ useBuilder()
 		body: zod.object({
 			provider: Translate.provider,
 			language: Translate.language,
-			text: zod.string().max(translateConfig.max),
+			text: zod.string()
+				.min(translateConfig.min),
 		}),
 	})
 	.handler(
