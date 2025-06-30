@@ -46,7 +46,7 @@ services:
 
   school:
     image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
-    command: npm -w services/school run duplo:start
+    command: npm -w services/school run start
     deploy:
       replicas: 1
       restart_policy:
@@ -98,7 +98,7 @@ services:
 
   bottle:
     image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
-    command: npm -w services/bottle run duplo:start
+    command: npm -w services/bottle run start
     deploy:
       replicas: 1
       restart_policy:
@@ -108,3 +108,73 @@ services:
             - node.role == worker
     volumes:
       - ./bottle.env.local:/home/node/project/services/bottle/.env.local
+
+  lighthouse:
+    image: ghcr.io/mathcovax/seaence_vue-front:${TAG}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./lighthouse.nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - published: 7002
+        target: 80
+
+  beacon:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/beacon run start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./beacon.env.local:/home/node/project/services/beacon/.env.local
+
+  bridge:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/bridge run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./bridge.env.local:/home/node/project/services/bridge/.env.local
+    ports:
+      - published: 7003
+        target: 80
+
+  coral:
+    image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
+    command: npm -w services/coral run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./coral.env.local:/home/node/project/services/coral/.env.local
+
+  rosetta:
+    image: ghcr.io/mathcovax/seaence_duplo-rosetta-back:${TAG}
+    command: npm -w services/rosetta run duplo:start
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+            - node.role == worker
+    volumes:
+      - ./rosetta.env.local:/home/node/project/services/rosetta/.env.local

@@ -22,7 +22,7 @@ export class SentryLogger {
 	public static init(app: App) {
 		Sentry.init({
 			app,
-			dsn: envs.VITE_GLITCHTIP_DSN,
+			dsn: envs.VITE_SPOTTER_GLITCHTIP_DSN,
 			sendDefaultPii: true,
 			integrations: [Sentry.browserTracingIntegration({ router })],
 			tracesSampleRate: 1,

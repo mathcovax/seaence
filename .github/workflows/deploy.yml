@@ -16,9 +16,14 @@ jobs:
         with:
           node-version: 22.x
       - run: npm ci
+      - run: echo '${{ secrets.BUILD_FRONT_ENV }}' > ./.env.build
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2.3.0
+        with:
+          path: ./
+          mode: build
+          load-mode: strict
       - run: npm run build
-        env: 
-          VITE_HORIZON_ENTRYPOINT_BASE_URL: ${{ secrets.HORIZON_ENTRYPOINT_BASE_URL }}
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -52,11 +57,31 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/seaence_duplo-back:latest,
             ghcr.io/${{ github.repository_owner }}/seaence_duplo-back:${{ github.event.release.tag_name }}
 
+  build-duplo-rosetta-back:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v5
+        with:
+          file: ./.docker/duplo-rosetta-back.dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/seaence_duplo-rosetta-back:latest,
+            ghcr.io/${{ github.repository_owner }}/seaence_duplo-rosetta-back:${{ github.event.release.tag_name }}
+
   clear-cache:
     runs-on: self-hosted
     needs:
       - build-vue-front
       - build-duplo-back
+      - build-duplo-rosetta-back
     steps:
       - run: |
           docker rmi $(docker images -q) -f || true
@@ -83,15 +108,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
+          echo '${{ secrets.SPOTTER_NGINX_CONF }}' > ./spotter.nginx.conf
+          echo '${{ secrets.LIGHTHOUSE_NGINX_CONF }}' > ./lighthouse.nginx.conf
+
           echo '${{ secrets.FIREBASE_CREDENTIALS }}' > ./firebase.credential.json
           echo '${{ secrets.HORIZON_ENV_LOCAL }}' > ./horizon.env.local
           echo '${{ secrets.HARBOR_ENV_LOCAL }}' > ./harbor.env.local
-          echo '${{ secrets.SPOTTER_NGINX_CONF }}' > ./spotter.nginx.conf
           echo '${{ secrets.SCHOOL_ENV_LOCAL }}' > ./school.env.local
           echo '${{ secrets.MARINE_SNOW_ENV_LOCAL }}' > ./marine-snow.env.local
           echo '${{ secrets.ABYS_ENV_LOCAL }}' > ./abys.env.local
           echo '${{ secrets.SEA_ENV_LOCAL }}' > ./sea.env.local
           echo '${{ secrets.BOTTLE_ENV_LOCAL }}' > ./bottle.env.local
+          echo '${{ secrets.BEACON_ENV_LOCAL }}' > ./beacon.env.local
+          echo '${{ secrets.BRIDGE_ENV_LOCAL }}' > ./bridge.env.local
+          echo '${{ secrets.CORAL_ENV_LOCAL }}' > ./coral.env.local
+          echo '${{ secrets.ROSETTA_ENV_LOCAL }}' > ./rosetta.env.local
       - run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.MASTER_SSH_KEY }}" > ~/.ssh/runner-key

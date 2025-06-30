@@ -1,7 +1,11 @@
 ## 1. Check build script scripts/build.sh
 Check if your service build command is in `scripts/build.sh`.
 
-## 2. Add nginx conf in github action secret
+## 2. Add env var you need
+Envs var is globals with all front service. If you want add var to build new service, add then in BUILD_FRONT_ENV secret.
+D'ont forget envs var of all front services.
+
+## 3. Add nginx conf in github action secret
 [Here.](https://github.com/mathcovax/seaence/settings/secrets/actions)
 
 format name: [SERVICE_NAME]_NGINX_CONF
@@ -20,20 +24,20 @@ server {
 }
 ```
 
-## 3. Add env var needed to build
+## 4. Write .nginx.conf file in deploy job
 ```yml
 jobs:
   ...
-    build-vue-front:
+  deploy:
     ...
 	steps:
 	  ...
-	  - run: npm run build
-        env: 
-          VITE_[NAME]: ${{ secrets.[NAME] }}
+	  - run: |
+	  	...
+		echo '${{ secrets.[SERVICE_NAME]_NGINX_CONF }}' > ./<service_name>.nginx.conf # simple cote is importante
 ```
 
-## 4. Add service in compose.prod.yml
+## 5. Add service in compose.prod.yml
 ```yml
 services:
   <service_name>:
