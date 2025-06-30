@@ -13,7 +13,7 @@ const {
 	closeCreateDocumentFolderDialog,
 	setStateCreateDocumentFolderDialog,
 } = useCreateDocumentFolderDialog();
-const { CreateDocumentFolderForm, createDocumentFolderCheck } = useCreateDocumentFolder();
+const { CreateDocumentFolderForm, createDocumentFolderCheck, createDocumentFolderReset } = useCreateDocumentFolder();
 const {
 	SearchDocumentFolderForm,
 	documentFolderList,
@@ -22,8 +22,8 @@ const {
 	handleSearchDocumentFolderByName,
 	documentFolderSetPage,
 	findManyDocumentFolder,
-	findManyDocumentFolderDetails,
 	documentFolderPageOfList,
+	findDocumentFolderPage,
 } = useDocumentFolderPage(
 	() => {
 		void router.push(homePage.createTo());
@@ -50,7 +50,8 @@ function handleCreateDocumentFolder() {
 			"documentFolder.created",
 			() => {
 				closeCreateDocumentFolderDialog();
-				void Promise.all([findManyDocumentFolder(), findManyDocumentFolderDetails()]);
+				findDocumentFolderPage();
+				createDocumentFolderReset();
 			},
 		);
 }

@@ -8,6 +8,7 @@ import { FindOneNodeSameRawDocumentUsecase } from "@business/applications/usecas
 import { TransformeNodeSameRawDocumentToBakedDocumentUsecase } from "@business/applications/usecases/nodeSameRawDocument/transformeNodeSameRawDocumentToBakedDocument";
 import { TransformeUpdatedNodeSameRawDocumentsToBakedDocumentsUsecase } from "@business/applications/usecases/nodeSameRawDocument/transformeUpdatedNodeSameRawDocumentsToBakedDocuments";
 import { UpsertPubmedRawDocumentUsecase } from "@business/applications/usecases/rawDocument/pubmed/upsertPubmedRawDocument";
+import { TransformeNodeSameRawDocumentAndReindexBakedDocumentUsecase } from "@business/applications/usecases/transformeNodeSameRawDocumentAndReindexBakedDocument";
 
 export const upsertPubmedRawDocumentUsecase = new UpsertPubmedRawDocumentUsecase();
 
@@ -22,3 +23,6 @@ export const upsertBakedDocumentUsecase = new UpsertBakedDocumentUsecase();
 export const indexUpdatedBakedDocumentsUsecase = new IndexUpdatedBakedDocumentsUsecase();
 export const findBakedDocumentByIdUsecase = new FindBakedDocumentByIdUsecase();
 export const findManyBakedDocumentByIdUsecase = new FindManyBakedDocumentByIdUsecase();
+
+export const transformeNodeSameRawDocumentAndReindexBakedDocumentUsecase
+	= new TransformeNodeSameRawDocumentAndReindexBakedDocumentUsecase();

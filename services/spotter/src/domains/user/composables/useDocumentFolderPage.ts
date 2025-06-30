@@ -91,19 +91,23 @@ export function useDocumentFolderPage(
 		pageOfList.value = value;
 	}
 
-	void horizonClient
-		.post("/document-folder-page")
-		.whenInformation(
-			"documentFolderPage.found",
-			({ body }) => {
-				pageInformation.value = body;
-			},
-		)
-		.whenRequestError(
-			whenFindError,
-		);
+	function findPage() {
+		void horizonClient
+			.post("/document-folder-page")
+			.whenInformation(
+				"documentFolderPage.found",
+				({ body }) => {
+					pageInformation.value = body;
+				},
+			)
+			.whenRequestError(
+				whenFindError,
+			);
+		void findMany();
+		void findManyDetails();
+	}
 
-	void Promise.all([findMany(), findManyDetails()]);
+	findPage();
 
 	watch(
 		pageOfList,
@@ -119,6 +123,7 @@ export function useDocumentFolderPage(
 		handleSearchDocumentFolderByName,
 		findManyDocumentFolder: findMany,
 		findManyDocumentFolderDetails: findManyDetails,
+		findDocumentFolderPage: findPage,
 		SearchDocumentFolderForm: Form,
 	};
 }

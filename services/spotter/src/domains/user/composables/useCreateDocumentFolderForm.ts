@@ -5,7 +5,7 @@ export function useCreateDocumentFolder() {
 	const { t: $t } = useI18n();
 	const { $pt } = documentFolderPage.use();
 
-	const { Form, formValue, check } = useFormBuilder(
+	const { Form, formValue, check, reset } = useFormBuilder(
 		useMultiFieldLayout({
 			name: useBaseLayout(
 				textFormField,
@@ -30,5 +30,6 @@ export function useCreateDocumentFolder() {
 		CreateDocumentFolderForm: Form,
 		createDocumentFolderValue: formValue,
 		createDocumentFolderCheck: check,
+		createDocumentFolderReset: reset,
 	};
 }

@@ -1,11 +1,12 @@
 import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/nodeSameRawDocument";
 import { iWantNodeSameRawDocumentExist } from "../checkers/nodeSameRawDocument";
-import { cookNodeSameRawDocumentUsecase, transformeNodeSameRawDocumentToBakedDocumentUsecase } from "@interfaces/usecase";
+import { cookNodeSameRawDocumentUsecase, transformeNodeSameRawDocumentAndReindexBakedDocumentUsecase } from "@interfaces/usecase";
 import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 import { match, P } from "ts-pattern";
 import { TechnicalError, toSimpleObject } from "@vendors/clean";
 import { endpointCookedNodeSameRawDocumentSchema } from "../schemas/nodeSameRawDocument";
 import { cookingModeObjecter } from "@business/domains/common/cookingMode";
+import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
 
 useBuilder()
 	.createRoute("POST", "/cook-node-same-raw-document")
@@ -73,21 +74,21 @@ useBuilder()
 			const { nodeSameRawDocument } = pickup(["nodeSameRawDocument"]);
 			const { bakedDocumentLanguage, cookingMode } = pickup("body");
 
-			const result = await transformeNodeSameRawDocumentToBakedDocumentUsecase.execute({
+			const result = await transformeNodeSameRawDocumentAndReindexBakedDocumentUsecase.execute({
 				nodeSameRawDocument,
 				cookingMode,
-				bakedDocumentLanguages: [bakedDocumentLanguage],
+				bakedDocumentLanguage,
 			});
 
 			return match({ result })
 				.with(
-					{ result: { information: "error-during-transformation" } },
+					{ result: { information: "unmatching-priority-raw-document" } },
 					({ result: error }) => {
 						throw new TechnicalError("unmatching-priority-raw-document", { error });
 					},
 				)
 				.with(
-					{ result: P.array() },
+					{ result: P.instanceOf(BakedDocumentEntity) },
 					() => dropper(null),
 				)
 				.exhaustive();

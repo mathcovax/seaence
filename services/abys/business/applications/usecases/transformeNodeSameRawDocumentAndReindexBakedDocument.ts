@@ -1,4 +1,4 @@
-import { UsecaseError, UsecaseHandler } from "@vendors/clean";
+import { UsecaseHandler } from "@vendors/clean";
 import { TransformeNodeSameRawDocumentToBakedDocumentUsecase } from "./nodeSameRawDocument/transformeNodeSameRawDocumentToBakedDocument";
 import { type NodeSameRawDocumentEntity } from "@business/domains/entities/nodeSameRawDocument";
 import { type CookingMode } from "@business/domains/common/cookingMode";
@@ -8,36 +8,25 @@ import { IndexBakedDocumentUsecase } from "./bakedDocument/indexBakedDocument";
 interface Input {
 	cookingMode: CookingMode;
 	nodeSameRawDocument: NodeSameRawDocumentEntity;
-	bakedDocumentLanguages: BakedDocumentLanguage[];
+	bakedDocumentLanguage: BakedDocumentLanguage;
 }
 
 export class TransformeNodeSameRawDocumentAndReindexBakedDocumentUsecase extends UsecaseHandler.create({
 	transformNode: TransformeNodeSameRawDocumentToBakedDocumentUsecase,
 	indexation: IndexBakedDocumentUsecase,
 }) {
-	public async execute({
-		cookingMode,
-		nodeSameRawDocument,
-		bakedDocumentLanguages,
-	}: Input) {
+	public async execute(
+		{
+			cookingMode,
+			nodeSameRawDocument,
+			bakedDocumentLanguage,
+		}: Input,
+	) {
 		const bakedDocument = await this
 			.transformNode({
 				cookingMode,
 				nodeSameRawDocument,
-				bakedDocumentLanguages,
-			})
-			.then((result) => {
-				if (result instanceof Error) {
-					return result;
-				}
-
-				const bakedDocument = result.shift();
-
-				if (bakedDocument === undefined) {
-					return new UsecaseError("missing-baked-document-result");
-				}
-
-				return bakedDocument;
+				bakedDocumentLanguage,
 			});
 
 		if (bakedDocument instanceof Error) {
@@ -47,7 +36,5 @@ export class TransformeNodeSameRawDocumentAndReindexBakedDocumentUsecase extends
 		await this.indexation({ bakedDocument });
 
 		return bakedDocument;
-
-		//to branche to duplo
 	}
 }
