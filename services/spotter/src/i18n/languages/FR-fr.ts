@@ -37,7 +37,7 @@ export const FRfr = {
 				documents plus agréable et plus efficace.`,
 			},
 			faq: {
-				title: "Question fréquemment posées",
+				title: "Questions fréquemment posées",
 				accordion: {
 					item1: {
 						question: "Comment puis-je m'inscrire ?",
@@ -79,7 +79,7 @@ export const FRfr = {
 				cta: "Signaler un problème de traduction du document",
 				information: [
 					"La traduction est effectuée par un modèle de machine learning générique, cela",
-					"implique que certains mots peuvent être traduits. Signaler une mauvaise traduction",
+					"implique que certains mots peuvent être mal traduits. Signaler une mauvaise traduction",
 					"nous permet d'améliorer le modèle et donc d'améliorer votre expérience utilisateur sur Seaence.",
 				].join(" "),
 				form: {
@@ -96,15 +96,15 @@ export const FRfr = {
 			titleLinkPost: "Post(s) lié(s) au document : {title}",
 			authorIs: "Posté par {author}",
 			responseCount: "{count} réponse(s)",
-			noPost: "Aucun post(s) trouvé pour ce document.",
-			createPost: "Créer un poste",
+			noPost: "Aucun post trouvé pour ce document.",
+			createPost: "Créer un post",
 		},
 		[postPage.name]: {
 			connexionRequire: "Vous devez être connecté pour répondre à ce post.",
 			backToPostList: "Retour à la liste des posts",
 			countResponse: "{count}/{totalCount} Réponse(s)",
 			authorIs: "Posté par {author}",
-			noResponse: "Aucune réponse(s) pour ce post.",
+			noResponse: "Aucune réponse pour ce post.",
 			writeAnAnswer: "Écrivez un commentaire",
 			writeAnAnswerDescription: "Partagez votre avis ou répondez à la question posée.",
 			writeYourAnswer: "Un super commentaire...",
@@ -120,7 +120,7 @@ export const FRfr = {
 			tab: {
 				favorite: {
 					title: "Mes favoris",
-					empty: "Aucun favoris trouvé.",
+					empty: "Aucun favori trouvé.",
 					emptyDesc: "Ajoutez des documents à vos favoris pour les retrouver facilement.",
 				},
 				post: {
@@ -208,15 +208,16 @@ export const FRfr = {
 	},
 	removeDocumentFolderDialog: {
 		title: "Supprimer un dossier",
-		description: "Êtes-vous sur de vouloir supprimer ce dossier ? La suppression dossier supprimera également son contenu",
+		description: "Êtes-vous sûr de vouloir supprimer ce dossier ? La suppression du dossier supprimera également son contenu.",
 	},
 	documentFolderHeader: {
 		label: "{count} élément(s)",
 		filtered: "{filtered} sur {total}",
+		noFiltered: "Aucun élément trouvé",
 	},
 	createManyDocumentInFolderDialog: {
 		title: "Ajouter le document",
-		sectionLabel: "Dossier dans le quel il se trouve",
+		sectionLabel: "Se trouve déjà dans :",
 		form: {
 			label: {
 				name: "Libellé",
@@ -393,7 +394,7 @@ export const FRfr = {
 		searchScore: "Score de recherche: {0}",
 	},
 	favoriteEquation: {
-		connexionRequire: "Vous devez être connecté pour ajouter des équations en favoris.",
+		connexionRequire: "Vous devez être connecté pour ajouter des équations aux favoris.",
 		needEquation: "Il n'est pas possible d'enregistrer une équation vide.",
 		emptySearch: "Aucune équation favorite trouvée.",
 		saveEquation: "Enregistrer l'équation",
@@ -401,8 +402,8 @@ export const FRfr = {
 		inputLabel: "Rechercher ou nommer",
 		remove: "Supprimer l'équation des favoris ?",
 		replace: "Une équation avec ce nom existe déjà, voulez-vous la remplacer ?",
-		invalidEquation: "L'équation que vous voulez utiliser possède un ou plusieurs champs"
-		+ "invalides, n'hésitez pas à faire une recherche avec pour vous assurer qu'elle fonctionne correctement.",
+		invalidEquation: "L'équation que vous voulez utiliser possède un ou plusieurs champs "
+		+ "invalides. N'hésitez pas à faire une recherche avec pour vous assurer qu'elle fonctionne correctement.",
 		found: "Équation trouvée",
 		addToFavorites: "Ajouter aux favoris",
 		confirmRemove: "Supprimer '{name}' des favoris ?",
@@ -566,7 +567,7 @@ export const FRfr = {
 			created: "Réponse créée avec succès.",
 		},
 		bakedDocumentTranslationReporting: {
-			upsert: "Le signalement a corectement étais pris en compte, merci de votre contribution.",
+			upsert: "Le signalement a bien été pris en compte, merci de votre contribution.",
 		},
 		favoriteEquation: {
 			upsert: "L'équation a bien été mise en favoris.",
@@ -577,7 +578,7 @@ export const FRfr = {
 			maxQuantity: "Le dossier est plein",
 			notfound: "Le dossier n'existe pas",
 			removed: "Le dossier a été supprimé",
-			created: "Le dossier a été créer",
+			created: "Le dossier a été créé",
 		},
 		documentInFolder: {
 			notfound: "Le document n'existe pas",

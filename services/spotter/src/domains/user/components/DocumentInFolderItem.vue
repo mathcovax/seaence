@@ -1,27 +1,17 @@
 <script setup lang="ts">
 import type { DocumentInFoloder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import { formatDate } from "@vendors/design-system/lib/utils";
 
 interface Props {
 	documentInFolder: DocumentInFoloder;
-	isSelected?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-	isSelected: false,
-});
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
 	click: [document: DocumentInFoloder];
 	delete: [document: DocumentInFoloder];
 }>();
-
-const formattedDate = computed(() => new Intl.DateTimeFormat("fr-FR", {
-	day: "2-digit",
-	month: "2-digit",
-	year: "numeric",
-	hour: "2-digit",
-	minute: "2-digit",
-}).format(new Date(props.documentInFolder.addedAt)));
 
 function handleClick() {
 	emit("click", props.documentInFolder);
@@ -35,45 +25,40 @@ function handleDelete() {
 
 <template>
 	<div
-		class="flex items-center py-3 px-4 hover:bg-gray-50 rounded-md transition-colors cursor-pointer group"
-		:class="{ 'bg-blue-50': isSelected }"
+		class="group px-4 py-2 flex gap-4 items-center bg-muted/50 cursor-pointer hover:bg-muted rounded-md transition-colors"
 		@click="handleClick"
 	>
-		<div class="flex-shrink-0 mr-4">
+		<div class="shrink-0">
 			<DSIcon
 				name="fileOutline"
-				class="h-5 w-5 text-gray-500"
-				:class="{ 'text-blue-seaence': isSelected }"
+				class="text-muted-foreground"
 			/>
 		</div>
 
-		<div class="flex-grow min-w-0">
-			<h4 class="text-sm font-medium text-gray-900 truncate">
+		<div class="flex-grow">
+			<h4 class="text-sm font-medium truncate">
 				{{ documentInFolder.name }}
 			</h4>
 		</div>
 
-		<div class="flex-shrink-0 ml-4 text-xs text-gray-500">
-			{{ formattedDate }}
+		<div class="flex-shrink-0 text-xs text-muted-foreground/80">
+			{{ formatDate(documentInFolder.addedAt) }}
 		</div>
 
-		<div class="flex-shrink-0 ml-4">
+		<div class="shrink-0">
 			<DSDropdownMenu>
 				<DSDropdownMenuTrigger as-child>
 					<DSButton
 						variant="ghost"
+						square
 						icon="dotsVertical"
-						class="h-8 w-8"
 						@click.stop
 					/>
 				</DSDropdownMenuTrigger>
 
 				<DSDropdownMenuContent @click.stop>
 					<DSDropdownMenuItem @click.stop="handleDelete">
-						<DSIcon
-							name="delete"
-							class="h-4 w-4 mr-2"
-						/>
+						<DSIcon name="delete" />
 						{{ $t("cta.delete") }}
 					</DSDropdownMenuItem>
 				</DSDropdownMenuContent>

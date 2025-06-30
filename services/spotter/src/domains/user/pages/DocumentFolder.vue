@@ -85,57 +85,33 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 </script>
 
 <template>
-	<DSDialog
-		:open="isOpenCreateDocumentFolderDialog"
-		@update:open="setStateCreateDocumentFolderDialog"
-	>
-		<template #title>
-			{{ $pt("dialog.createDocumentFolder.title") }}
-		</template>
-
-		<template #content>
-			<CreateDocumentFolderForm @submit="handleCreateDocumentFolder">
-				<DSPrimaryButton
-					size="full"
-					type="submit"
-				>
-					{{ $t("cta.create") }}
-				</DSPrimaryButton>
-			</CreateDocumentFolderForm>
-		</template>
-	</DSDialog>
-
-	<main class="max-w-5xl mx-auto p-8">
-		<header class="mb-6 flex justify-between items-center">
+	<section class="min-h-screen-nh space-y-6">
+		<header class="flex justify-between items-center">
 			<div class="flex gap-4 items-center">
-				<DSPrimaryButton
-					icon="arrowLeft"
-					@click="router.back()"
-				/>
+				<BackButton />
 
-				<h1 class="text-3xl font-semibold text-blue-seaence">
+				<h1 class="text-xl md:text-3xl font-bold text-blue-seaence">
 					{{ $pt("title") }}
 				</h1>
 			</div>
 
 			<div class="flex gap-4">
-				<DSOutlineButton
-					icon="plus"
-					@click="setStateCreateDocumentFolderDialog(true)"
-				/>
-
 				<SearchDocumentFolderForm @submit="handleSearchDocumentFolderByName">
-					<DSPrimaryButton
-						size="small"
-						type="submit"
-					>
-						{{ $t("cta.search") }}
-					</DSPrimaryButton>
+					<div class="ml-auto flex gap-2 justify-end items-center">
+						<DSOutlineButton
+							icon="plus"
+							@click="setStateCreateDocumentFolderDialog(true)"
+						/>
+
+						<DSPrimaryButton type="submit">
+							{{ $t("cta.search") }}
+						</DSPrimaryButton>
+					</div>
 				</SearchDocumentFolderForm>
 			</div>
 		</header>
 
-		<section v-if="documentFolderPageInformation && documentFolderListDetails">
+		<div v-if="documentFolderPageInformation && documentFolderListDetails">
 			<DocumentFolderHeader
 				icon="folder"
 				:count-total-item="documentFolderPageInformation.total"
@@ -146,7 +122,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 				v-if="documentFolderList"
 				class="mt-6"
 			>
-				<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+				<ul class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
 					<li
 						v-for="folder in documentFolderList"
 						:key="folder.id"
@@ -159,22 +135,45 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 					</li>
 				</ul>
 
-				<nav class="mt-10 flex justify-center">
+				<div
+					v-if="documentFolderListDetails.total > documentFolderPageInformation.quantityPerPage"
+					class="mt-10 flex justify-center"
+				>
 					<DSPagination
 						:total="documentFolderListDetails.total"
 						:current-page="documentFolderPageOfList"
 						:quantity-per-page="documentFolderPageInformation.quantityPerPage"
 						@update="documentFolderSetPage"
 					/>
-				</nav>
+				</div>
 			</div>
 
 			<p
 				v-else
-				class="text-center text-gray-500 mt-10 italic"
+				class="mt-10 text-center text-muted-foreground italic"
 			>
 				{{ $pt("noDocumentFolder") }}
 			</p>
-		</section>
-	</main>
+		</div>
+
+		<DSDialog
+			:open="isOpenCreateDocumentFolderDialog"
+			@update:open="setStateCreateDocumentFolderDialog"
+		>
+			<template #title>
+				{{ $pt("dialog.createDocumentFolder.title") }}
+			</template>
+
+			<template #content>
+				<CreateDocumentFolderForm @submit="handleCreateDocumentFolder">
+					<DSPrimaryButton
+						size="full"
+						type="submit"
+					>
+						{{ $t("cta.create") }}
+					</DSPrimaryButton>
+				</CreateDocumentFolderForm>
+			</template>
+		</DSDialog>
+	</section>
 </template>

@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BackButton: typeof import('./src/components/BackButton.vue')['default']
+    BaseInlineLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseInlineLayoutTemplate.vue')['default']
     BaseLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseLayoutTemplate.vue')['default']
     CheckboxTemplate: typeof import('./vendors/design-system/components/form/CheckboxTemplate.vue')['default']
     CheckLayoutTemplate: typeof import('./vendors/design-system/components/form/CheckLayoutTemplate.vue')['default']

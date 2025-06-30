@@ -7,7 +7,7 @@ export function useCreateDocumentFolder() {
 
 	const { Form, formValue, check, reset } = useFormBuilder(
 		useMultiFieldLayout({
-			name: useBaseLayout(
+			name: useCheckLayout(
 				textFormField,
 				{
 					mandatory: true,

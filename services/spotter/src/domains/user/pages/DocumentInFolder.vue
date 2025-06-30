@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DocumentInFoloder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import DocumentInFolderItem from "../components/DocumentInFolderItem.vue";
-import DocumentInFolderSeparatorItem from "../components/DocumentInFolderSeparatorItem.vue";
 import { useDocumentInFolderPage } from "../composables/useDocumentInFolderPage";
 import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
 import { createBakedDocumentId } from "@/utils/createBakedDocumentId";
@@ -68,16 +67,13 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 <template>
 	<section
 		v-if="documentInFolderPageInformation && documentInFolderListDetails"
-		class="max-w-5xl mx-auto p-8"
+		class="min-h-screen-nh space-y-6"
 	>
-		<header class="flex justify-between items-center mb-6">
-			<div class="flex items-center gap-4">
-				<DSPrimaryButton
-					icon="arrowLeft"
-					@click="router.back()"
-				/>
+		<header class="flex justify-between items-center">
+			<div class="flex gap-4 items-center">
+				<BackButton />
 
-				<h1 class="text-3xl font-semibold text-blue-seaence">
+				<h1 class="text-xl md:text-3xl font-bold text-blue-seaence">
 					{{ $pt("title") }} : {{ documentInFolderPageInformation?.documentFolderName }}
 				</h1>
 			</div>
@@ -86,6 +82,7 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 				<DSPrimaryButton
 					size="small"
 					type="submit"
+					class="ml-auto"
 				>
 					{{ $t("cta.search") }}
 				</DSPrimaryButton>
@@ -99,22 +96,20 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 		/>
 
 		<template v-if="documentInFolderList?.length">
-			<div class="space-y-1">
-				<template
+			<div class="space-y-2">
+				<DocumentInFolderItem
 					v-for="(item, index) in documentInFolderList"
 					:key="item.nodeSameRawDocumentId"
+					:document-in-folder="item"
+					:is-selected="selectedDocumentinFolderIndex === index"
+					@click="handleClickDocumentInFolder"
+					@delete="handleRemoveDocumentInFolder"
+				/>
+
+				<div
+					class="mt-10 flex justify-center"
+					v-if="documentInFolderListDetails.total > documentInFolderPageInformation.quantityPerPage"
 				>
-					<DocumentInFolderItem
-						:document-in-folder="item"
-						:is-selected="selectedDocumentinFolderIndex === index"
-						@click="handleClickDocumentInFolder"
-						@delete="handleRemoveDocumentInFolder"
-					/>
-
-					<DocumentInFolderSeparatorItem v-if="index < documentInFolderList.length - 1" />
-				</template>
-
-				<div class="mt-10 flex justify-center">
 					<DSPagination
 						:total="documentInFolderListDetails.total"
 						:current-page="documentInFolderPageOfList"
@@ -127,7 +122,7 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 
 		<p
 			v-else
-			class="text-center text-gray-500 italic mt-8"
+			class="mt-10 text-center text-muted-foreground italic"
 		>
 			{{ $pt("noDocumentInFolder") }}
 		</p>

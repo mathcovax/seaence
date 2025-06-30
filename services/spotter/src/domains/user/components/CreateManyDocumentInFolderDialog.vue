@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useCreateManyDocumentInFolderDialog } from "../composables/useCreateManyDocumentInFolderDialog";
+import { formatDate } from "@vendors/design-system/lib/utils";
 
 interface Props {
 	nodeSameRawDocumentId: string;
@@ -8,16 +9,6 @@ interface Props {
 
 const props = defineProps<Props>();
 const router = useRouter();
-
-function formattedDate(value: string | Date) {
-	return new Intl.DateTimeFormat("fr-FR", {
-		day: "2-digit",
-		month: "2-digit",
-		year: "numeric",
-		hour: "2-digit",
-		minute: "2-digit",
-	}).format(new Date(value));
-}
 
 const {
 	CreateManyDocumentInFolderDialogForm,
@@ -60,27 +51,33 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 					{{ $t("createManyDocumentInFolderDialog.sectionLabel") }}
 				</DSLabel>
 
-				<template
-					v-for="(item, index) in documentFoldersInWhichDocumentExistList"
+				<ul
+					v-for="item in documentFoldersInWhichDocumentExistList"
 					:key="item.id"
+					class="space-y-2"
 				>
-					<div
-						class="flex items-center py-3 px-4 hover:bg-gray-50 rounded-md transition-colors cursor-pointer group"
+					<li
+						class="p-4 flex gap-2 items-center bg-muted/50 hover:bg-muted rounded-md cursor-pointer transition-colors"
 						@click="handleClickDocumentFolder(item)"
 					>
-						<div class="flex-grow min-w-0">
-							<h4 class="text-sm font-medium text-gray-900 truncate">
+						<div class="shrink-0">
+							<DSIcon
+								name="folderOutline"
+								class="text-muted-foreground"
+							/>
+						</div>
+
+						<div class="flex-grow">
+							<h4 class="text-sm font-medium truncate">
 								{{ item.name }}
 							</h4>
 						</div>
 
-						<div class="flex-shrink-0 ml-4 text-xs text-gray-500">
-							{{ formattedDate(item.createdAt) }}
+						<div class="flex-shrink-0 ml-4 text-xs text-muted-foreground">
+							{{ formatDate(item.createdAt) }}
 						</div>
-					</div>
-
-					<DSSelectSeparator v-if="index < documentFoldersInWhichDocumentExistList.length - 1" />
-				</template>
+					</li>
+				</ul>
 
 				<div
 					v-if="documentFoldersInWhichDocumentExistListDetails.total < documentFoldersInWhichDocumentExistList.length && documentFolderDialogInformation"
