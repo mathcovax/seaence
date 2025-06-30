@@ -18,12 +18,3 @@ ENV PLAYWRIGHT_VERSION=1.53.1
 RUN npm i -g playwright@$PLAYWRIGHT_VERSION
 
 ENV PLAYWRIGHT_BROWSERS_PATH=/usr/lib/chromium
-
-
-WORKDIR /home/node/project
-
-COPY ../ .
-
-EXPOSE 80
-
-RUN npm install

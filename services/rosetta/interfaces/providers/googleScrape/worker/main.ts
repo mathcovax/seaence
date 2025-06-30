@@ -8,7 +8,11 @@ import { scliceText } from "./sliceText";
 
 const queue = new Qyu({ concurrency: 1 });
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({
+	executablePath: "/usr/bin/chromium-browser",
+	args: ["--no-sandbox", "--disable-dev-shm-usage"],
+	headless: true,
+});
 const page = await browser.newPage();
 
 await queue.add(async() => {

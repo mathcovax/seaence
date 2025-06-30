@@ -109,7 +109,6 @@ function formatedDate(date: FlexibleDate) {
 					</div>
 
 					<ReportingWrongTranslateDialog
-						v-if="isConnected"
 						:baked-document-id="document.id"
 					>
 						<DSClickableText

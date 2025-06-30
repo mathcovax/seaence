@@ -1,6 +1,8 @@
 services:
   rosetta:
-    image: mcr.microsoft.com/playwright:v1.53.1-noble
+    build: 
+      context: .
+      dockerfile: ../../.docker/node-rosetta.dockerfile
     volumes:
       - ${PWD}:/home/node/project
     environment:
