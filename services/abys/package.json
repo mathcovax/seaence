@@ -11,7 +11,7 @@
     "test:types": "tsc",
 
     "transformeUpdatedNodeSameRawDocumentsToBakedDocuments": "tsx interfaces/commands/transformeUpdatedNodeSameRawDocumentsToBakedDocuments.ts",
-    "exportBakedDocument": "tsx interfaces/commands/exportBakedDocument.ts",
+    "indexUpdatedBakedDocuments": "tsx interfaces/commands/indexUpdatedBakedDocuments.ts",
     "fixtures": "tsx interfaces/fixtures/index.ts",
 
     "postinstall": "npm run duplo:generate"

@@ -46,7 +46,7 @@ export class GoogleScrape {
 }
 
 if (envs.DB_CONNECTION) {
-	const timeoutStratWorker = 3000;
+	const timeoutStratWorker = 5000;
 	await new Promise<void>(
 		(promiseResolve, rejectResolve) => {
 			const timeoutId = setTimeout(

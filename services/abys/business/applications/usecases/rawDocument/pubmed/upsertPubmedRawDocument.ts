@@ -5,7 +5,6 @@ import { type RawResourceUrl, type RawAbstract, type RawAbstractPart, type RawAu
 import { type PubmedRawDocumentArticleId, PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
 import { type FlexibleDate, UsecaseHandler } from "@vendors/clean";
 import { UpsertNodeSameRawDocumentUsecase } from "../../nodeSameRawDocument/upsertNodeSameRawDocument";
-import { match, P } from "ts-pattern";
 import { type UniqueField } from "@business/domains/common/uniqueField";
 
 interface Input {

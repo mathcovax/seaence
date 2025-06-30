@@ -1,7 +1,6 @@
 import "../repositories";
 import { nodeSameRawDocumentRepository } from "@business/applications/repositories/nodeSameRawDocument";
 import { TransformeUpdatedNodeSameRawDocumentsToBakedDocumentsUsecase } from "@business/applications/usecases/nodeSameRawDocument/transformeUpdatedNodeSameRawDocumentsToBakedDocuments";
-import { bakedDocumentLanguageEnum, bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 import { cookingModeObjecter } from "@business/domains/common/cookingMode";
 import { mongo } from "@interfaces/providers/mongo";
 import { logger } from "@vendors/backend-logger";
@@ -31,14 +30,7 @@ const transformeUpdatedNodeSameRawDocumentsToBakedDocumentsUsecase
 		},
 	});
 
-const bakedDocumentLanguages = bakedDocumentLanguageEnum
-	.toTuple()
-	.map(
-		(language) => bakedDocumentLanguageObjecter.unsafeCreate(language),
-	);
-
 const result = await transformeUpdatedNodeSameRawDocumentsToBakedDocumentsUsecase.execute({
-	bakedDocumentLanguages,
 	cookingMode: cookingModeObjecter.unsafeCreate("default"),
 });
 
