@@ -20,6 +20,7 @@ export async function makeBakedDocument(
 			BakedDocumentEntity,
 			{
 				id: `${nodeSameRawDocumentId}_${bakedDocumentLanguageEnum["en-US"]}`,
+				cookingMode: "default",
 				nodeSameRawDocumentId,
 				title: bakedDocument?.title || faker.lorem.sentences({
 					min: 3,
@@ -63,7 +64,7 @@ export async function makeBakedDocument(
 					includeDay: faker.datatype.boolean(),
 				}),
 				lastUpdate: bakedDocument?.lastUpdate || new Date(),
-				lastExportOnSea: null,
+				lastIndexation: null,
 				articleTypes: bakedDocument?.articleTypes || Array.from(
 					{
 						length: faker.number.int({

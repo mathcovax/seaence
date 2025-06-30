@@ -1,12 +1,27 @@
 services:
   rosetta:
+    image: mcr.microsoft.com/playwright:v1.53.1-noble
+    volumes:
+      - ${PWD}:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+      rosetta-libretranslate: 
+        condition: service_started
+    command: npm -w services/rosetta run duplo:dev
+
+  rosetta-libretranslate:
     image: libretranslate/libretranslate:v1.6.5
-    env_file:
-      - ${INCLUDE_PATH}/rosetta/.env
+    environment:
+      LT_UPDATE_MODELS: true
+      LT_LOAD_ONLY: en,fr
+      LT_FRONTEND_LANGUAGE_TARGET: fr
+      LT_API_ONLY: true
     ports:
-      - 5001:5000 # delete this line if you want to use only in docker network
+      - 5001:5000
     volumes:
       - ${INCLUDE_PATH}/rosetta/languages:/home/libretranslate/.local/share/argos-translate/packages/
-    #post_start:
-    #  - command: ["sh", "-c", "chown 1032 /home/libretranslate/.local/share/argos-translate/packages/"]
-    #    user: root

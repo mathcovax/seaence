@@ -3,14 +3,14 @@
 npm run docker:abys
 ```
 
-### transforme document
+### transforme updated node to baked document
 ```bash
 npm run docker:abys:transformeUpdatedNodeSameRawDocumentsToBakedDocuments
 ```
 
-### export baked document to sea
+### index updated baked document in search engine
 ```bash
-npm run docker:abys:exportBakedDocument
+npm run docker:abys:indexUpdatedBakedDocuments
 ```
 
 ### run fixtures

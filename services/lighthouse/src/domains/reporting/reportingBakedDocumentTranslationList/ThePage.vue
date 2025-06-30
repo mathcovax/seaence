@@ -116,12 +116,5 @@ function setPage(page: number) {
 				/>
 			</div>
 		</div>
-
-		<div
-			v-else
-			class="py-16 flex justify-center items-center"
-		>
-			<DSAdminLoadingLogo />
-		</div>
 	</section>
 </template>

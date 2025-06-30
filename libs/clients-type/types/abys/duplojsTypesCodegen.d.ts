@@ -13,6 +13,10 @@ type UniqueFieldName = "digitalObjectIdentifier" | "specific";
 
 export { UniqueFieldName };
 
+type CookingMode = "default" | "googleScrape" | "libretranslate";
+
+export { CookingMode };
+
 type Language = "fr-FR" | "en-US";
 
 export { Language };
@@ -101,6 +105,7 @@ type CodegenRoutes = ({
         information: "bakedDocument.get";
         body: {
             id: string;
+            cookingMode: CookingMode;
             nodeSameRawDocumentId: string;
             title: string;
             language: Language;
@@ -173,6 +178,7 @@ type CodegenRoutes = ({
     body: {
         nodeSameRawDocumentId: string;
         bakedDocumentLanguage: Language;
+        cookingMode: CookingMode;
     };
     response: {
         code: 404;
@@ -182,6 +188,7 @@ type CodegenRoutes = ({
         code: 200;
         information: "cookedNodeSameRawDocument.cook";
         body: {
+            cookingMode: CookingMode;
             nodeSameRawDocumentId: string;
             title: string;
             language: Language;
@@ -237,6 +244,7 @@ type CodegenRoutes = ({
     body: {
         nodeSameRawDocumentId: string;
         bakedDocumentLanguage: Language;
+        cookingMode: CookingMode;
     };
     response: {
         code: 404;

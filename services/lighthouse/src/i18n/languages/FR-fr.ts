@@ -57,6 +57,7 @@ export const FRfr = {
 			title: "Signalements de traduction",
 			description: "Gérez les signalements de documents traduits et leurs corrections.",
 			bakedDocument: {
+				cookingMode: "Mode de cuisson",
 				title: "Document traduit",
 				id: "Identifiant",
 				nodeId: "ID du nœud",

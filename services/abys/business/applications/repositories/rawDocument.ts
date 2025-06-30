@@ -23,6 +23,7 @@ export interface RawDocumentRepository extends RepositoryBase<RawDocument> {
 	findByNodeSameRawDocument(
 		NodeSameRawDocumentEntity: NodeSameRawDocumentEntity
 	): Promise<NodeSameRawDocumentWrapper>;
+	isEqual(rawDocumentLeft: RawDocument, rawDocumentRight: RawDocument): boolean;
 }
 
 export const rawDocumentRepository = createRepositoryHandler<RawDocumentRepository>();

@@ -5,8 +5,13 @@ export namespace BakedDocument {
 
 	export const language = zod.enum(languageEnum.toTuple());
 
+	const cookingModeEnum = createEnum(["default", "libretranslate", "googleScrape"]);
+
+	export const cookingMode = zod.enum(cookingModeEnum.toTuple());
+
 	export const index = zod.object({
 		id: zod.string(),
+		cookingMode,
 		nodeSameRawDocumentId: zod.string(),
 		language,
 		title: zod.string(),
@@ -23,6 +28,7 @@ export namespace BakedDocument {
 	});
 
 	export const newTranslation = index.pick({
+		cookingMode: true,
 		title: true,
 		abstract: true,
 		abstractDetails: true,

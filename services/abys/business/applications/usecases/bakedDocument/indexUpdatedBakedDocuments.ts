@@ -1,24 +1,20 @@
 import { bakedDocumentRepository } from "@business/applications/repositories/bakedDocument";
-import { seaRepository } from "@business/applications/repositories/sea";
 import { UsecaseHandler } from "@vendors/clean";
+import { IndexBakedDocumentUsecase } from "./indexBakedDocument";
 
 interface Input {
 
 }
 
-export class ExportBakedDocumentToAbysUsecase extends UsecaseHandler.create({
+export class IndexUpdatedBakedDocumentsUsecase extends UsecaseHandler.create({
 	bakedDocumentRepository,
-	seaRepository,
+	indexation: IndexBakedDocumentUsecase,
 }) {
 	public async execute(__: Input) {
 		for await (
 			const bakedDocument of this.bakedDocumentRepository.findUpdatedDocuments()
 		) {
-			await this.seaRepository.sendBakedDocument(bakedDocument);
-
-			await this.bakedDocumentRepository.save(
-				bakedDocument.exportToSea(),
-			);
+			await this.indexation({ bakedDocument });
 		}
 	}
 }

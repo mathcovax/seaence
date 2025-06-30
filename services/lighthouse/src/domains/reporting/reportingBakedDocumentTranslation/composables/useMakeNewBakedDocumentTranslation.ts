@@ -14,7 +14,10 @@ export function useMakeNewBakedDocumentTranslation() {
 		return bridgeClient
 			.post(
 				"/make-new-baked-document-translation",
-				{ body },
+				{
+					body,
+					requestTimeout: false,
+				},
 			);
 	}
 	return {

@@ -15,6 +15,7 @@ export function useGetNewBakedDocumentTranslation() {
 		{
 			nodeSameRawDocumentId,
 			bakedDocumentLanguage,
+			cookingMode,
 		}: Params,
 	) {
 		getNewBakedDocumentTranslation.abortController = new AbortController();
@@ -25,6 +26,7 @@ export function useGetNewBakedDocumentTranslation() {
 					body: {
 						nodeSameRawDocumentId,
 						bakedDocumentLanguage,
+						cookingMode,
 					},
 					disabledLoader: true,
 					signal: getNewBakedDocumentTranslation.abortController.signal,
