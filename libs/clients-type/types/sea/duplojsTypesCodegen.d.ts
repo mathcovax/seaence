@@ -116,6 +116,7 @@ type CodegenRoutes = ({
     path: "/document/{language}";
     body: {
         bakedDocumentId: string;
+        nodeSameRawDocumentId: string;
         title: string;
         articleTypes: ArticleType[];
         authors: string[];
@@ -168,6 +169,7 @@ type CodegenRoutes = ({
         body: {
             score: number;
             bakedDocumentId: string;
+            nodeSameRawDocumentId: string;
             title: string;
             articleTypes: ArticleType[];
             authors: string[];

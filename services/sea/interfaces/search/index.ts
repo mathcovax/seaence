@@ -30,6 +30,7 @@ interface Hit {
 		| "articleTypes"
 		| "webPublishDate"
 		| "journalPublishDate"
+		| "nodeSameRawDocumentId"
 	>;
 	highlight?: {
 		[Props in Extract<
@@ -61,6 +62,7 @@ const source = [
 	"summary",
 	"webPublishDate",
 	"journalPublishDate",
+	"nodeSameRawDocumentId",
 ] as const satisfies (keyof Hit["_source"])[];
 
 type _ExpectSourceHasAllKey = ExpectType<

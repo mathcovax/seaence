@@ -62,6 +62,7 @@ export namespace BackedDocument {
 		.object({
 			score: zod.number(),
 			bakedDocumentId: zod.string(),
+			nodeSameRawDocumentId: zod.string(),
 			title: zod.string(),
 			articleTypes: ArticleType.index.array(),
 			authors: zod.string().array(),

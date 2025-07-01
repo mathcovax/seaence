@@ -204,6 +204,7 @@ export { Facet };
 type BakedDocumentSearchResult = {
     score: number;
     bakedDocumentId: string;
+    nodeSameRawDocumentId: string;
     title: string;
     articleTypes: ArticleType[];
     authors: string[];

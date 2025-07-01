@@ -3,6 +3,7 @@ import { articleTypeSchema } from "./common";
 export const endpointSimpleSearchResultSchema = zod.object({
 	score: zod.number(),
 	bakedDocumentId: zod.string(),
+	nodeSameRawDocumentId: zod.string(),
 	title: zod.string(),
 	articleTypes: articleTypeSchema.array(),
 	authors: zod.string().array(),

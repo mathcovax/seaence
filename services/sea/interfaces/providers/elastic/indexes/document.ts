@@ -11,6 +11,9 @@ export const elasticDocumentMappingSchema = {
 	bakedDocumentId: {
 		type: "keyword",
 	},
+	nodeSameRawDocumentId: {
+		type: "keyword",
+	},
 	title: {
 		type: "text",
 		fields: {
@@ -106,6 +109,7 @@ export const elasticDocumentMappingSchema = {
 
 export interface Document {
 	bakedDocumentId: string;
+	nodeSameRawDocumentId: string;
 	title: string;
 	articleTypes: ArticleType[];
 	authors: string[];
@@ -258,6 +262,7 @@ export type AvailableField =
 
 export const availableFieldEnum = createEnum([
 	"bakedDocumentId",
+	"nodeSameRawDocumentId",
 	"title",
 	"articleTypes",
 	"authors",

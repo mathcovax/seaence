@@ -11,6 +11,7 @@ export const splitDateSchema = zod
 export const entrypointDocumentSchema = zod
 	.object({
 		bakedDocumentId: zod.string(),
+		nodeSameRawDocumentId: zod.string(),
 		title: zod.string(),
 		articleTypes: articleTypeSchema.array(),
 		authors: zod.string().array(),

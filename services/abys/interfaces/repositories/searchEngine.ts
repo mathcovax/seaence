@@ -77,6 +77,7 @@ searchEngineRepository.default = {
 			language,
 			{
 				bakedDocumentId: restSimplifyObject.id,
+				nodeSameRawDocumentId: restSimplifyObject.nodeSameRawDocumentId,
 				articleTypes: restSimplifyObject.articleTypes,
 				authors: restSimplifyObject.authors.map(
 					({ name }) => name,

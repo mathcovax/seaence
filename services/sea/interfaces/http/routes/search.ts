@@ -41,6 +41,7 @@ useBuilder()
 						({ _source, highlight, _score }) => ({
 							score: _score,
 							bakedDocumentId: _source.bakedDocumentId,
+							nodeSameRawDocumentId: _source.nodeSameRawDocumentId,
 							title: highlight.title,
 							articleTypes: _source.articleTypes,
 							authors: [
