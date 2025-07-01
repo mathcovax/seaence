@@ -12,9 +12,3 @@ RUN apk add --no-cache \
   bash \
   curl \
   coreutils
-
-ENV PLAYWRIGHT_VERSION=1.53.1
-
-RUN npm i -g playwright@$PLAYWRIGHT_VERSION
-
-ENV PLAYWRIGHT_BROWSERS_PATH=/usr/lib/chromium
