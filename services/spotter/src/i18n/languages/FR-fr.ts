@@ -18,38 +18,70 @@ export const FRfr = {
 		[homePage.name]: {
 			hero: {
 				title: {
-					begin: "L’exploration de",
-					spanBlue: "documents",
-					middle: "est devenue plus",
-					spanRed: "agréable",
-					end: "que jamais.",
+					begin: "Explorez la",
+					spanBlue: "recherche scientifique",
+					middle: "avec une approche",
+					spanRed: "collaborative",
+					end: "et intelligente.",
 				},
-				subtitle: `Plongez dans le domaine de l'information avec une joie retrouvée
-				en parcourant les documents sans effort. Découvrez une multitude d'informations
-				et tirez le meilleur parti de votre exploration, transformant chaque recherche
-				en un délicieux voyage de découverte.`,
+				subtitle: `Découvrez une plateforme de recherche documentaire moderne qui combine 
+				recherche avancée, traduction automatique, forum communautaire et outils 
+				d'organisation. Transformez votre façon d'explorer la littérature scientifique.`,
 			},
 			about: {
-				title: "À propos",
-				content: `Seaence est une plateforme de recherche de documents qui vous permet de
-				trouver des documents de recherche, des articles, des thèses, des livres
-				et bien plus encore. Nous avons pour mission de rendre la recherche de
-				documents plus agréable et plus efficace.`,
+				title: "À propos de Seaence",
+				content: `Seaence est une plateforme de recherche documentaire scientifique de nouvelle génération. 
+				Nous centralisons et indexons des données provenant de multiples sources dans une base vectorielle, 
+				offrant des capacités de recherche avancées avec traduction, reformulation et analyse sémantique. 
+				Notre mission est de révolutionner l'accès à l'information scientifique.`,
+			},
+			features: {
+				title: "Fonctionnalités principales",
+				items: {
+					search: {
+						title: "Recherche intelligente",
+						description: "Recherche vectorielle avec filtres avancés, traduction automatique et reformulation des requêtes.",
+					},
+					forum: {
+						title: "Forum communautaire",
+						description: "Échangez avec la caummunauté, posez des questions et partagez vos découvertes.",
+					},
+					organization: {
+						title: "Organisation personnalisée",
+						description: "Créez vos dossiers, sauvegardez vos favoris et suivez votre historique de recherche.",
+					},
+				},
 			},
 			faq: {
 				title: "Questions fréquemment posées",
 				accordion: {
 					item1: {
-						question: "Comment puis-je m'inscrire ?",
+						question: "Comment fonctionne la recherche vectorielle ?",
 						answer:
-							"Pour vous inscrire, vous devez cliquer sur le bouton \"S'inscrire\" "
-							+ "en haut à droite de la page d'accueil.",
+							"Notre système utilise des embeddings pour comprendre le sens de vos recherches, "
+							+ "permettant de trouver des documents pertinents même avec des termes différents. "
+							+ "La recherche sémantique va au-delà des mots-clés traditionnels.",
 					},
 					item2: {
-						question: "Comment puis-je me connecter ?",
+						question: "Puis-je traduire les documents ?",
 						answer:
-							"Pour vous connecter, vous devez cliquer sur le bouton \"Se connecter\" "
-							+ "en haut à droite de la page d'accueil.",
+							"Oui, Seaence intègre un service de traduction automatique qui permet de "
+							+ "traduire les résumés et contenus dans plusieurs langues, facilitant l'accès "
+							+ "à la littérature internationale.",
+					},
+					item3: {
+						question: "Comment participer au forum ?",
+						answer:
+							"Une fois connecté, vous pouvez créer des discussions sur des documents spécifiques, "
+							+ "poser des questions à la communauté et partager vos analyses. Le forum est organisé "
+							+ "par thématiques et documents.",
+					},
+					item4: {
+						question: "Mes données sont-elles sécurisées ?",
+						answer:
+							"Absolument. Nous utilisons une authentification SSO sécurisée, vos données personnelles "
+							+ "sont chiffrées et nous respectons les standards de sécurité les plus élevés. "
+							+ "Vous gardez le contrôle total sur vos informations.",
 					},
 				},
 			},
