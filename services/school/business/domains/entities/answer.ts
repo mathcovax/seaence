@@ -20,7 +20,7 @@ export type AnswerStatus = GetValueObject<typeof answerStatusObjecter>;
 export type AnswerContent = GetValueObject<typeof answerContentObjecter>;
 export type AnswerId = GetValueObject<typeof answerIdObjecter>;
 
-type InputCreateAnswerEntity = Omit<GetEntityProperties<typeof AnswerEntity>, "createdAt">;
+type InputCreateAnswerEntity = Omit<GetEntityProperties<typeof AnswerEntity>, "createdAt" | "status">;
 
 export class AnswerEntity extends EntityHandler.create({
 	id: answerIdObjecter,
@@ -34,6 +34,7 @@ export class AnswerEntity extends EntityHandler.create({
 	public static create(params: InputCreateAnswerEntity) {
 		return new AnswerEntity({
 			...params,
+			status: answerStatusObjecter.unsafeCreate("unprocessed"),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
