@@ -90,13 +90,14 @@ documentInFolderRepository.default = {
 
 		return numberOfDocumentsInFolder;
 	},
-	nodeSameRawDocumentIdsHaveDocumentInFolder(nodeSameRawDocumentIds) {
+	nodeSameRawDocumentIdsHaveDocumentInFolder(userId, nodeSameRawDocumentIds) {
 		return mongo.documentInFolder
 			.aggregate<{ _id: string }>([
 				{
 					$match: {
+						userId: userId.value,
 						nodeSameRawDocumentId: {
-							$or: toSimpleObject(nodeSameRawDocumentIds),
+							$in: toSimpleObject(nodeSameRawDocumentIds),
 						},
 					},
 				},
