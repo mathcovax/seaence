@@ -44,7 +44,11 @@ export function useRegisterForm() {
 						(value) => value === true,
 						t("authDialog.registerForm.requireCGU"),
 					),
-					props: { label: t("authDialog.registerForm.CGULabel") },
+					props: {
+						label: t("authDialog.registerForm.CGULabel"),
+						link: cguPage.recordRaw.path,
+						linkText: t("authDialog.registerForm.CGULinkText"),
+					},
 				},
 			),
 		}),

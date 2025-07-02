@@ -202,7 +202,8 @@ export const FRfr = {
 		googleSignError: "Une erreur s'est produite lors de la connexion avec Google.",
 		registerForm: {
 			usernameLabel: "Nom d'utilisateur",
-			CGULabel: "Accepter les conditions générales d'utilisation.",
+			CGULabel: "J'accepte les ",
+			CGULinkText: "conditions générales d'utilisation",
 			requireCGU: "Vous devez accepter conditions générales d'utilisation.",
 		},
 	},

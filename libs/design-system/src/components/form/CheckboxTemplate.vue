@@ -5,6 +5,8 @@ import { useId } from "vue";
 
 interface Props {
 	label: string;
+	link?: string;
+	linkText?: string;
 }
 
 defineProps<Props>();
@@ -22,9 +24,16 @@ const checkboxId = useId();
 
 		<DSLabel
 			:for="checkboxId"
-			class="cursor-pointer"
+			class="cursor-pointer flex-1"
 		>
 			{{ label }}
+
+			<a
+				v-if="link"
+				:href="link"
+				target="_blank"
+				class="text-sm font-medium text-blue-seaence hover:underline"
+			>{{ linkText }}</a>
 		</DSLabel>
 	</div>
 </template>
