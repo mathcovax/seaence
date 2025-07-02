@@ -132,5 +132,6 @@ export const FRfr = {
 			wrongStatus: "Le post n'est pas en attente de modération.",
 			updated: "Le post a été mis à jour avec succès.",
 		},
+		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},
 };

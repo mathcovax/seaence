@@ -92,7 +92,7 @@ async function onDelete() {
 				<span class="text-gray-500">{{ formattedDate }}</span>
 			</div>
 		</DSCard>
-	</div>
 
-	<DeleteDialog />
+		<DeleteDialog />
+	</div>
 </template>

@@ -1,3 +1,4 @@
+import { iWantNodeSameRawDocumentExist } from "@interfaces/http/checkers/nodeSameRawDocument";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { CoralAPI } from "@interfaces/providers/coral";
 import { documentInFolderRules } from "@vendors/entity-rules";
@@ -14,6 +15,10 @@ useMustBeConnectedBuilder()
 				.max(documentInFolderRules.name.maxLength),
 		}),
 	})
+	.presetCheck(
+		iWantNodeSameRawDocumentExist,
+		(pickup) => pickup("body").nodeSameRawDocumentId,
+	)
 	.handler(
 		async(pickup) => {
 			const {

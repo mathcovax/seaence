@@ -29,7 +29,7 @@ export function useCreateManyDocumentInFolderDialog(
 	const pageOfListDocumentFoldersInWhichDocumentExist = ref(defaultPage);
 	const dialogInformation = ref<DocumentFolderDialog | null>(null);
 
-	const { Form, check } = useFormBuilder(
+	const { Form, check, reset } = useFormBuilder(
 		useMultiFieldLayout({
 			name: useBaseLayout(
 				textFormField,
@@ -174,9 +174,13 @@ export function useCreateManyDocumentInFolderDialog(
 						),
 					},
 				},
-			).whenInformation(
+			)
+			.whenInformation(
 				"documentInFolder.created",
-				() => void reload(),
+				() => {
+					reset();
+					void reload();
+				},
 			);
 	}
 
