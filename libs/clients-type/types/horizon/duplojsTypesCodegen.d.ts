@@ -280,6 +280,26 @@ type Notification = RegisterNotification | ReplyToPostNotification | {
     postId: string;
     reason: string;
     warningId: string;
+} | {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userAnswerBanNotificationType";
+    postId: string;
+    answerId: string;
+    reason: string;
+    warningId: string;
+} | {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userAnswerWarningNotificationType";
+    postId: string;
+    answerId: string;
+    reason: string;
+    warningId: string;
 };
 
 export { Notification };

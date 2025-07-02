@@ -33,10 +33,28 @@ export namespace Notification {
 		warningId: zod.string(),
 	});
 
+	export const answerBan = base.extend({
+		type: zod.literal("userAnswerBanNotificationType"),
+		postId: zod.string(),
+		answerId: zod.string(),
+		reason: zod.string(),
+		warningId: zod.string(),
+	});
+
+	export const answerWarning = base.extend({
+		type: zod.literal("userAnswerWarningNotificationType"),
+		postId: zod.string(),
+		answerId: zod.string(),
+		reason: zod.string(),
+		warningId: zod.string(),
+	});
+
 	export const index = zod.union([
 		register,
 		replyToPost,
 		postBan,
 		postWarning,
+		answerBan,
+		answerWarning,
 	]);
 }
