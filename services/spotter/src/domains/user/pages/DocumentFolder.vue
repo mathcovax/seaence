@@ -87,7 +87,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 <template>
 	<section class="min-h-screen-nh space-y-6">
 		<header class="flex justify-between items-center">
-			<div class="flex gap-4 items-center">
+			<div class="flex-1/2 sm:flex-none flex flex-col sm:flex-row gap-4 items-start sm:items-center">
 				<BackButton />
 
 				<h1 class="text-xl md:text-3xl font-bold text-blue-seaence">
@@ -96,10 +96,14 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 			</div>
 
 			<div class="flex gap-4">
-				<SearchDocumentFolderForm @submit="handleSearchDocumentFolderByName">
+				<SearchDocumentFolderForm
+					class="flex-1/2 sm:flex-none"
+					@submit="handleSearchDocumentFolderByName"
+				>
 					<div class="ml-auto flex gap-2 justify-end items-center">
 						<DSOutlineButton
 							icon="plus"
+							:title="$pt('dialog.createDocumentFolder.title')"
 							@click="setStateCreateDocumentFolderDialog(true)"
 						/>
 

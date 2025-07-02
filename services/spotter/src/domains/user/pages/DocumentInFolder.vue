@@ -69,8 +69,8 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 		v-if="documentInFolderPageInformation && documentInFolderListDetails"
 		class="min-h-screen-nh space-y-6"
 	>
-		<header class="flex justify-between items-center">
-			<div class="flex gap-4 items-center">
+		<header class="flex justify-between items-start">
+			<div class="flex-1/2 sm:flex-none flex flex-col sm:flex-row gap-4 items-start sm:items-center">
 				<BackButton />
 
 				<h1 class="text-xl md:text-3xl font-bold text-blue-seaence">
@@ -78,7 +78,10 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 				</h1>
 			</div>
 
-			<SearchDocumentInFolderForm @submit="handleSearchDocumentInFolder">
+			<SearchDocumentInFolderForm
+				class="flex-1/2 sm:flex-none"
+				@submit="handleSearchDocumentInFolder"
+			>
 				<DSPrimaryButton
 					size="small"
 					type="submit"
