@@ -100,3 +100,9 @@ export type InputFindManyDocumentFoldersInWichDocumentExistDetails = FindHttpCli
 	"POST",
 	"/find-many-document-folders-in-which-document-exist-details"
 >["body"];
+
+export type InputNodeSameRawDocumentIdsHaveDocumentInFolder = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/node-same-raw-document-ids-have-document-in-folder"
+>["body"];

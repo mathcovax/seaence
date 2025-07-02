@@ -19,6 +19,7 @@ import { UserFindManyDocumentFolderByIdUsecase } from "@business/applications/us
 import { UserCheckManyDocumentFolderCapacityUsecase } from "@business/applications/usecases/documentFolder/userCheckManyDocumentFolderCapacity";
 import { FindManyDocumentFolderInWichDocumentExistUsecase } from "@business/applications/usecases/documentFolder/findManyDocumentFolderInWichDocumentExist";
 import { CountResultOfFindManyDocumentFolderInWichDocumentExistUsecase } from "@business/applications/usecases/documentFolder/countResultOfFindManyDocumentFolderInWichDocumentExist";
+import { NodeSameRawDocumentIdsHaveDocumentInFolderUsecase } from "@business/applications/usecases/nodeSameRawDocument/nodeSameRawDocumentIdsHaveDocumentInFolder";
 
 export const userCreateDocumentFolderUsecase = new UserCreateDocumentFolderUsecase();
 export const userFindDocumentFolderByIdUsecase = new UserFindDocumentFolderByIdUsecase();
@@ -44,4 +45,7 @@ export const userFindFavoriteEquationByIdUsecase = new UserFindFavoriteEquationB
 export const userRemoveFavoriteEquationUsecase = new UserRemoveFavoriteEquationUsecase();
 export const userFindManyFavoriteEquationUsecase = new UserFindManyFavoriteEquationUsecase();
 export const userCountResultOfFindManyFavoriteEquationUsecase = new UserCountResultOfFindManyFavoriteEquationUsecase();
+
+export const nodeSameRawDocumentIdsHaveDocumentInFolderUsecase
+	= new NodeSameRawDocumentIdsHaveDocumentInFolderUsecase();
 

@@ -5,6 +5,8 @@ import { match } from "ts-pattern";
 import { Facet } from "@business/entities/facets";
 import { operatorContentSchema } from "@vendors/types-advanced-query";
 import { BodyLimitDescription } from "../plugins/bodyLimit";
+import { tryAuthenticationProcess } from "../security/authentication";
+import { CoralAPI } from "@interfaces/providers/coral";
 
 useBuilder()
 	.createRoute("POST", "/search-details")
@@ -78,6 +80,10 @@ useBuilder()
 
 useBuilder()
 	.createRoute("POST", "/search-results")
+	.execute(
+		tryAuthenticationProcess,
+		{ pickup: ["user"] },
+	)
 	.extract(
 		{
 			body: zod.object({
@@ -97,7 +103,7 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const body = pickup("body");
+			const { body, user } = pickup(["body", "user"]);
 
 			const { body: results } = await SeaAPI.searchResult({
 				...body,
@@ -105,9 +111,28 @@ useBuilder()
 				page: body.page - searchConfig.pageOffset,
 			});
 
+			const likedDocumentInFolder = user && results.length
+				? await CoralAPI
+					.nodeSameRawDocumentIdsHaveDocumentInFolder({
+						userId: user.id,
+						nodeSameRawDocumentIds: results.map(
+							({ nodeSameRawDocumentId }) => nodeSameRawDocumentId,
+						),
+					})
+					.then(({ body }) => body)
+				: [];
+
+			const searchResults = likedDocumentInFolder.length
+				? results.map((result): typeof BackedDocument.searchResult["_output"] => ({
+					...result,
+					userHaveLinkedDocumentInFolder: likedDocumentInFolder
+						.includes(result.nodeSameRawDocumentId),
+				}))
+				: results;
+
 			return new OkHttpResponse(
 				"simpleSearch.results",
-				results,
+				searchResults,
 			);
 		},
 		makeResponseContract(OkHttpResponse, "simpleSearch.results", BackedDocument.searchResult.array()),

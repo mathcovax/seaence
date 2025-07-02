@@ -42,9 +42,9 @@ const maxPage = 100;
 
 			<div class="w-full max-w-5xl mx-auto">
 				<DocumentResultRow
-					v-for="document in result.searchResult"
-					:key="document.bakedDocumentId"
-					:document="document"
+					v-for="searchResult in result.searchResult"
+					:key="searchResult.bakedDocumentId"
+					:search-result="searchResult"
 				/>
 			</div>
 

@@ -1,35 +1,23 @@
 <script setup lang="ts">
-import type { ArticleType } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
-
-interface Document {
-	score: number;
-	bakedDocumentId: string;
-	title: string;
-	articleTypes: ArticleType[];
-	authors: string[];
-	webPublishDate: string | null;
-	journalPublishDate: string | null;
-	summary: string | null;
-	keywords: string[] | null;
-}
+import type { BakedDocumentSearchResult } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 const props = defineProps<{
-	document: Document;
+	searchResult: BakedDocumentSearchResult;
 }>();
 
-const score = computed(() => Math.ceil(props.document.score));
-const authors = computed(() => props.document.authors.join(", "));
+const score = computed(() => Math.ceil(props.searchResult.score));
+const authors = computed(() => props.searchResult.authors.join(", "));
 const wenPublishDate = computed(
-	() => props.document.webPublishDate
-		? new Date(props.document.webPublishDate).toLocaleDateString()
+	() => props.searchResult.webPublishDate
+		? new Date(props.searchResult.webPublishDate).toLocaleDateString()
 		: "N/A",
 );
 const journalPublishDate = computed(
-	() => props.document.journalPublishDate
-		? new Date(props.document.journalPublishDate).toLocaleDateString()
+	() => props.searchResult.journalPublishDate
+		? new Date(props.searchResult.journalPublishDate).toLocaleDateString()
 		: "N/A",
 );
-const keywords = computed(() => props.document.keywords?.join(", "));
+const keywords = computed(() => props.searchResult.keywords?.join(", "));
 </script>
 
 <template>
@@ -39,7 +27,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 
 			<div class="w-full flex gap-1 flex-wrap">
 				<DSBadge
-					v-for="articleType in document.articleTypes"
+					v-for="articleType in searchResult.articleTypes"
 					:key="articleType"
 					variant="outline"
 					class="max-w-full text-xs overflow-hidden"
@@ -53,18 +41,18 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 		</div>
 
 		<RouterLink
-			:to="documentPage.createTo({ params: { id: document.bakedDocumentId } })"
+			:to="documentPage.createTo({ params: { id: searchResult.bakedDocumentId } })"
 			class="group block"
 		>
 			<h3
 				class="text-base first-letter:capitalize sm:text-lg font-semibold text-primary group-hover:underline transition-colors break-words"
-				v-html="document.title"
+				v-html="searchResult.title"
 			/>
 		</RouterLink>
 
 		<p
 			class="mt-2 text-xs sm:text-sm text-muted-foreground line-clamp-3 break-words"
-			v-html="document.summary"
+			v-html="searchResult.summary"
 		/>
 
 		<div class="mt-4 flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 text-xs text-muted-foreground">
@@ -79,7 +67,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 			</div>
 
 			<div
-				v-if="document.webPublishDate"
+				v-if="searchResult.webPublishDate"
 				class="flex items-center gap-1"
 			>
 				<DSIcon
@@ -92,7 +80,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 			</div>
 
 			<div
-				v-if="document.webPublishDate"
+				v-if="searchResult.webPublishDate"
 				class="flex items-center gap-1"
 			>
 				<DSIcon
@@ -105,7 +93,7 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 			</div>
 
 			<div
-				v-if="document.keywords?.length"
+				v-if="searchResult.keywords?.length"
 				class="flex items-center gap-1"
 			>
 				<DSIcon
@@ -116,6 +104,13 @@ const keywords = computed(() => props.document.keywords?.join(", "));
 
 				<span v-html="keywords" />
 			</div>
+
+			<DSIcon
+				v-if="searchResult.userHaveLinkedDocumentInFolder"
+				name="folderFileOutline"
+				size="small"
+				class="shrink-0"
+			/>
 		</div>
 	</div>
 </template>
