@@ -19,6 +19,7 @@ export async function makeAnswer(
 				}),
 				authorId: answer?.authorId || uuidv7(),
 				authorName: answer?.authorName || faker.internet.displayName(),
+				status: answer?.status || "unprocessed",
 				createdAt: answer?.createdAt || faker.date.past({
 					years: 1,
 					refDate: new Date(),
