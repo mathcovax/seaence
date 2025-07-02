@@ -457,6 +457,10 @@ export const FRfr = {
 		refuse: "Refuser",
 		add: "Ajouter",
 	},
+	languages: {
+		"fr-FR": "Français",
+		"en-US": "English",
+	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
 		address: "Adresse",
