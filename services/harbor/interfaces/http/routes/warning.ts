@@ -1,5 +1,5 @@
-import { entrypointCreatePostUserWarning } from "../schemas/warning";
-import { createPostUserWarning } from "@interfaces/usecases";
+import { entrypointCreateAnswerUserWarning, entrypointCreatePostUserWarning } from "../schemas/warning";
+import { createAnswerUserWarning, createPostUserWarning } from "@interfaces/usecases";
 import { IWantUserExistsById } from "../checkers/user";
 
 useBuilder()
@@ -24,6 +24,44 @@ useBuilder()
 
 			await createPostUserWarning.execute({
 				postId,
+				reason,
+				makeUserBan,
+				user,
+			});
+
+			return new CreatedHttpResponse(
+				"warning.created",
+			);
+		},
+		makeResponseContract(CreatedHttpResponse, "warning.created"),
+	);
+
+useBuilder()
+	.createRoute("POST", "/create-answer-user-warning")
+	.extract({
+		body: entrypointCreateAnswerUserWarning,
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const {
+				body: {
+					postId,
+					reason,
+					makeUserBan,
+					answerId,
+				},
+				user,
+			} = pickup(["body", "user"]);
+
+			console.log("HARBOR: Creating answer user warning");
+
+			await createAnswerUserWarning.execute({
+				postId,
+				answerId,
 				reason,
 				makeUserBan,
 				user,

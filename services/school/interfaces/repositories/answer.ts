@@ -3,7 +3,7 @@ import { AnswerEntity, answerIdObjecter } from "@business/domains/entities/answe
 import { postAnswerCountObjecter } from "@business/domains/entities/post";
 import { asyncMessage } from "@interfaces/providers/asyncMessage";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler } from "@vendors/clean";
+import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
 answerRepository.default = {
@@ -88,5 +88,51 @@ answerRepository.default = {
 				yield answer;
 			}
 		}
+	},
+	async getTotalCountOfUnprocessedAnswers() {
+		const mongoResult = await mongo.answerCollection.countDocuments({
+			status: "unprocessed",
+		});
+
+		return intObjecter.unsafeCreate(mongoResult);
+	},
+	async findOldestUnprocessedAnswer() {
+		const unprocessedOldestMongoAnswer = await mongo.answerCollection.findOne(
+			{
+				status: "unprocessed",
+			},
+			{
+				sort: {
+					createdAt: 1,
+				},
+			},
+		);
+
+		if (!unprocessedOldestMongoAnswer) {
+			return null;
+		}
+
+		return EntityHandler.unsafeMapper(
+			AnswerEntity,
+			{
+				...unprocessedOldestMongoAnswer,
+			},
+		);
+	},
+	async findOneById(id) {
+		const mongoAnswer = await mongo.answerCollection.findOne({
+			id: id.value,
+		});
+
+		if (!mongoAnswer) {
+			return null;
+		}
+
+		return EntityHandler.unsafeMapper(
+			AnswerEntity,
+			{
+				...mongoAnswer,
+			},
+		);
 	},
 };

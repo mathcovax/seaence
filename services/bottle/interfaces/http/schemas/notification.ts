@@ -1,8 +1,11 @@
+import { answerIdObjecter } from "@business/domains/common/answer";
 import { postIdObjecter } from "@business/domains/common/post";
 import { warningIdObjecter, warningReasonObjecter } from "@business/domains/common/warning";
 import { notificationIdObjecter, processedObjecter } from "@business/domains/entities/notification/base";
 import { registerNotificationTypeObjecter } from "@business/domains/entities/notification/register";
 import { replyToPostNotificationTypeObjecter, summaryOfReplyPostObjecter } from "@business/domains/entities/notification/replyToPost";
+import { userAnswerBanNotificationTypeObjecter } from "@business/domains/entities/notification/userAnswerBan";
+import { userAnswerWarningNotificationTypeObjecter } from "@business/domains/entities/notification/userAnswerWarning";
 import { userPostBanNotificationTypeObjecter } from "@business/domains/entities/notification/userPostBan";
 import { userPostWarningNotificationTypeObjecter } from "@business/domains/entities/notification/userPostWarning";
 import { userEmailObjecter, userIdObjecter, userLanguageObjecter, usernameObjecter } from "@business/domains/entities/user";
@@ -46,10 +49,34 @@ const userPostWarningNotificationSchema = baseNotificatinSchema.extend({
 	warningId: warningIdObjecter.zodSchema,
 });
 
+const userAnswerBanNotificationSchema = baseNotificatinSchema.extend({
+	type: userAnswerBanNotificationTypeObjecter.zodSchema,
+	postId: postIdObjecter.zodSchema,
+	answerId: answerIdObjecter.zodSchema,
+	reason: warningReasonObjecter.zodSchema,
+	warningId: warningIdObjecter.zodSchema,
+});
+
+const userAnswerWarningNotificationSchema = baseNotificatinSchema.extend({
+	type: userAnswerWarningNotificationTypeObjecter.zodSchema,
+	postId: postIdObjecter.zodSchema,
+	answerId: answerIdObjecter.zodSchema,
+	reason: warningReasonObjecter.zodSchema,
+	warningId: warningIdObjecter.zodSchema,
+});
+
 export const entrypointPostNotification = zod.object({
 	userId: userIdObjecter.toZodSchema(),
 	warningId: warningIdObjecter.toZodSchema(),
 	postId: postIdObjecter.toZodSchema(),
+	reason: warningReasonObjecter.toZodSchema(),
+});
+
+export const entrypointAnswerNotification = zod.object({
+	userId: userIdObjecter.toZodSchema(),
+	warningId: warningIdObjecter.toZodSchema(),
+	postId: postIdObjecter.toZodSchema(),
+	answerId: answerIdObjecter.toZodSchema(),
 	reason: warningReasonObjecter.toZodSchema(),
 });
 
@@ -58,6 +85,8 @@ export const endpointFindNotification = zod.union([
 	replyToPostNotificationSchema,
 	userPostBanNotificationSchema,
 	userPostWarningNotificationSchema,
+	userAnswerBanNotificationSchema,
+	userAnswerWarningNotificationSchema,
 ]).array();
 
 export const endpointCountNotification = zod.object({

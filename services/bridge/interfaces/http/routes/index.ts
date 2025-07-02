@@ -9,3 +9,7 @@ import "./bakedDocument/makeNewTranslation";
 import "./post/postModerationPage";
 import "./post/indicatePostIsCompliant";
 import "./post/indicatePostIsNotCompliantAndCreateWarning";
+
+import "./answer/answerModerationPage";
+import "./answer/indicateAnswerIsCompliant";
+import "./answer/indicateAnswerIsNotCompliantAndCreateWarning";

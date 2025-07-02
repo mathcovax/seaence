@@ -79,13 +79,34 @@ useBuilder()
 		["answers"],
 		makeResponseContract(NotFoundHttpResponse, "post.notfound"),
 	)
+	.cut(
+		({ pickup, dropper }) => {
+			const answers = pickup("answers");
+
+			const processedAnswers = answers.map(
+				(answer) => {
+					if (answer.status === "notCompliant") {
+						return {
+							...answer,
+							content: Answer.notCompliantContent,
+						};
+					} else {
+						return answer;
+					}
+				},
+			);
+
+			return dropper({ processedAnswers });
+		},
+		["processedAnswers"],
+	)
 	.handler(
 		(pickup) => {
-			const answers = pickup("answers");
+			const processedAnswers = pickup("processedAnswers");
 
 			return new OkHttpResponse(
 				"answerList.found",
-				answers,
+				processedAnswers,
 			);
 		},
 		makeResponseContract(OkHttpResponse, "answerList.found", Answer.index.array()),

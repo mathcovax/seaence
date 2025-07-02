@@ -10,6 +10,8 @@ import { DisableReplyToPostNotificationSettingToPostUsecase } from "@business/ap
 import { CreateUserPostBanNotificationUsecase } from "@business/applications/usecases/createUserPostBanNotification";
 import { CreateUserPostWarningNotificationUsecase } from "@business/applications/usecases/createUserPostWarningNotification";
 import { UpdateUserUsecase } from "@business/applications/usecases/updateUser";
+import { CreateUserAnswerBanNotificationUsecase } from "@business/applications/usecases/createUserAnswerBanNotification";
+import { CreateUserAnswerWarningNotificationUsecase } from "@business/applications/usecases/createUserAnswerWarningNotification";
 
 export const createUserUsecase = new CreateUserUsecase();
 export const enableReplyToPostNotificationSettingToPostUsecase
@@ -24,4 +26,6 @@ export const disableReplyToPostNotificationSettingToPostUsecase
 = new DisableReplyToPostNotificationSettingToPostUsecase();
 export const createUserPostBanNotificationUsecase = new CreateUserPostBanNotificationUsecase();
 export const createUserPostWarningNotificationUsecase = new CreateUserPostWarningNotificationUsecase();
+export const createUserAnswerBanNotificationUsecase = new CreateUserAnswerBanNotificationUsecase();
+export const createUserAnswerWarningNotificationUsecase = new CreateUserAnswerWarningNotificationUsecase();
 export const updateUserUsecase = new UpdateUserUsecase();

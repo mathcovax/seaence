@@ -25,13 +25,13 @@ useBuilder()
 				postId,
 			} = pickup(["body", "postId"]);
 
-			const schoolReponse = await SchoolAPI.indicatePostIsNotCompliantAndCreateWarning({
+			const schoolResponse = await SchoolAPI.indicatePostIsNotCompliantAndCreateWarning({
 				postId,
 				makeUserBan,
 				reason,
 			});
 
-			return match(schoolReponse)
+			return match(schoolResponse)
 				.with(
 					{ information: "post.wrongStatus" },
 					() => new ForbiddenHttpResponse("post.wrongStatus"),
@@ -42,13 +42,11 @@ useBuilder()
 				)
 				.with(
 					{ information: "post.updated" },
-					({ body }) => dropper({
-						post: body,
-					}),
+					() => dropper(null),
 				)
 				.exhaustive();
 		},
-		["post"],
+		undefined,
 		[
 			...makeResponseContract(ForbiddenHttpResponse, "post.wrongStatus"),
 			...makeResponseContract(NotFoundHttpResponse, "post.notfound"),

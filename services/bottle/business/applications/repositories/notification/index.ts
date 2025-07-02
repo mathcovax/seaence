@@ -1,6 +1,8 @@
 import { type NotificationId } from "@business/domains/entities/notification/base";
 import { type RegisterNotificationEntity } from "@business/domains/entities/notification/register";
 import { type ReplyToPostNotificationEntity } from "@business/domains/entities/notification/replyToPost";
+import { type UserAnswerBanNotificationEntity } from "@business/domains/entities/notification/userAnswerBan";
+import { type UserAnswerWarningNotificationEntity } from "@business/domains/entities/notification/userAnswerWarning";
 import { type UserPostBanNotificationEntity } from "@business/domains/entities/notification/userPostBan";
 import { type UserPostWarningNotificationEntity } from "@business/domains/entities/notification/userPostWarning";
 import { type UserEntity } from "@business/domains/entities/user";
@@ -10,7 +12,9 @@ export type Notification =
 	| RegisterNotificationEntity
 	| ReplyToPostNotificationEntity
 	| UserPostBanNotificationEntity
-	| UserPostWarningNotificationEntity;
+	| UserPostWarningNotificationEntity
+	| UserAnswerBanNotificationEntity
+	| UserAnswerWarningNotificationEntity;
 
 interface FindProcessedNotificationToUserParams {
 	page: Int;

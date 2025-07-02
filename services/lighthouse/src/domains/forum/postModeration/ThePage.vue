@@ -13,8 +13,8 @@ const {
 } = usePostModerationPage();
 const {
 	PostModerationForm,
-	passeToApproveForm,
-	passeToRejectForm,
+	switchToApproveForm,
+	switchToRejectForm,
 	formMode,
 	checkForm,
 	resetForm,
@@ -108,7 +108,7 @@ function confirmReject() {
 
 						<DSDestructiveButton
 							icon="close"
-							@click="passeToRejectForm"
+							@click="switchToRejectForm"
 						>
 							{{ $t("cta.reject") }}
 						</DSDestructiveButton>
@@ -123,7 +123,7 @@ function confirmReject() {
 							{{ $pt("warningModal.confirm") }}
 						</DSDestructiveButton>
 
-						<DSOutlineButton @click="passeToApproveForm">
+						<DSOutlineButton @click="switchToApproveForm">
 							{{ $t("cta.cancel") }}
 						</DSOutlineButton>
 					</template>

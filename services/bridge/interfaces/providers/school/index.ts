@@ -6,10 +6,17 @@ export type SchoolClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-interface InputIndicatePostIsNotCompliantAndCreateWarning {
-	postId: string;
+interface InputIndicateIsNotCompliantAndCreateWarning {
 	makeUserBan: boolean;
 	reason: string;
+}
+
+interface InputIndicatePostIsNotCompliantAndCreateWarning extends InputIndicateIsNotCompliantAndCreateWarning {
+	postId: string;
+}
+
+interface InputIndicateAnswerIsNotCompliantAndCreateWarning extends InputIndicateIsNotCompliantAndCreateWarning {
+	answerId: string;
 }
 export class SchoolAPI {
 	private static httpClient: HttpClient<SchoolClientRoute>;
@@ -65,6 +72,52 @@ export class SchoolAPI {
 				{
 					params: {
 						postId,
+					},
+				},
+			)
+			.iWantExpectedResponse();
+	}
+
+	public static findOldestUnprocessedAnswer() {
+		return this.httpClient
+			.get(
+				"/find-oldest-unprocessed-answer",
+			)
+			.iWantExpectedResponse();
+	}
+
+	public static getUnprocessedAnswerDetails() {
+		return this.httpClient
+			.get(
+				"/unprocessed-answer-details",
+			)
+			.iWantExpectedResponse();
+	}
+
+	public static indicateAnswerIsCompliant(answerId: string) {
+		return this.httpClient.patch(
+			"/answers/{answerId}/is-compliant",
+			{
+				params: {
+					answerId,
+				},
+			},
+		).iWantExpectedResponse();
+	}
+
+	public static indicateAnswerIsNotCompliantAndCreateWarning(
+		params: InputIndicateAnswerIsNotCompliantAndCreateWarning,
+	) {
+		return this.httpClient
+			.patch(
+				"/answers/{answerId}/is-not-compliant-and-create-warning",
+				{
+					params: {
+						answerId: params.answerId,
+					},
+					body: {
+						makeUserBan: params.makeUserBan,
+						reason: params.reason,
 					},
 				},
 			)

@@ -217,8 +217,101 @@ type CodegenRoutes = ({
             content: string;
             authorId: string;
             authorName: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
             createdAt: Date;
         }[];
+    };
+}) | ({
+    method: "GET";
+    path: "/find-oldest-unprocessed-answer";
+    response: {
+        code: 404;
+        information: "oldestUnprocessedAnswer.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "oldestUnprocessedAnswer.found";
+        body: {
+            id: string;
+            postId: string;
+            content: string;
+            authorId: string;
+            authorName: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
+            createdAt: Date;
+        };
+    };
+}) | ({
+    method: "GET";
+    path: "/unprocessed-answer-details";
+    response: {
+        code: 200;
+        information: "unprocessedAnswer.details";
+        body: {
+            totalCount: number;
+        };
+    };
+}) | ({
+    method: "PATCH";
+    path: "/answers/{answerId}/is-compliant";
+    params: {
+        answerId: string;
+    };
+    response: {
+        code: 404;
+        information: "answer.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "answer.wrongStatus";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "answer.updated";
+        body: {
+            id: string;
+            postId: string;
+            content: string;
+            authorId: string;
+            authorName: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
+            createdAt: Date;
+        };
+    };
+}) | ({
+    method: "PATCH";
+    path: "/answers/{answerId}/is-not-compliant-and-create-warning";
+    body: {
+        makeUserBan: boolean;
+        reason: string;
+    };
+    params: {
+        answerId: string;
+    };
+    response: {
+        code: 404;
+        information: "answer.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "answer.wrongStatus";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "answer.updated";
+        body: {
+            id: string;
+            postId: string;
+            content: string;
+            authorId: string;
+            authorName: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
+            createdAt: Date;
+        };
     };
 });
 

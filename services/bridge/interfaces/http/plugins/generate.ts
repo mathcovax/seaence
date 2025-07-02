@@ -13,3 +13,4 @@ BakedDocument.newTranslation._zttIdentifier = "BakedDocumentNewTranslation";
 BakedDocument.cookingMode._zttIdentifier = "CookingMode";
 
 Page.moderationPost._zttIdentifier = "PostModerationPage";
+Page.moderationAnswer._zttIdentifier = "AnswerModerationPage";

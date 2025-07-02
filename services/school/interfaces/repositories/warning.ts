@@ -16,4 +16,15 @@ warningRepository.default = {
 			postId: post.id.value,
 		});
 	},
+	async createAnswerWarning(warning) {
+		const { makeUserBan, reason, answer } = warning;
+
+		await HarborAPI.createAnswerUserWarning({
+			makeUserBan: makeUserBan.value,
+			reason: reason.value,
+			userId: answer.authorId.value,
+			answerId: answer.id.value,
+			postId: answer.postId.value,
+		});
+	},
 };

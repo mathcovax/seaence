@@ -16,4 +16,6 @@ export namespace Answer {
 			authorName: zod.string(),
 			createdAt: zod.string(),
 		});
+
+	export const notCompliantContent = "**********";
 }

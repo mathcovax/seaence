@@ -1,10 +1,13 @@
-import { answerContentObjecter } from "@business/domains/entities/answer";
+import { answerContentObjecter, AnswerEntity, answerIdObjecter } from "@business/domains/entities/answer";
 import { postIdObjecter } from "@business/domains/entities/post";
-import { findAnswersFromPostUsecase, replyToPostUsecase } from "@interfaces/usecase";
+import { findAnswersFromPostUsecase, findOldestUnprocessedAnswerUsecase, getTotalCountOfUnprocessedAnswersUsecase, indicateAnswerIsCompliantUsecase, indicateAnswerIsNotCompliantAndCreateWarningUsecase, replyToPostUsecase } from "@interfaces/usecase";
 import { iWantPostExistById } from "../checkers/post";
-import { endpointAnswerSchema } from "../schemas/answer";
-import { intObjecter, toSimpleObject } from "@vendors/clean";
+import { endpointAnswerSchema, endpointUnprocessedAnswerDetails } from "../schemas/answer";
+import { intObjecter, toSimpleObject, UsecaseError } from "@vendors/clean";
 import { userIdObjecter, usernameObjecter } from "@business/domains/common/user";
+import { iWantAnswerExistById } from "../checkers/answer";
+import { warningMakeUserBanObjecter, warningReasonObjecter } from "@business/domains/common/warning";
+import { match, P } from "ts-pattern";
 
 useBuilder()
 	.createRoute("POST", "/posts/{postId}/answers")
@@ -75,4 +78,146 @@ useBuilder()
 			);
 		},
 		makeResponseContract(OkHttpResponse, "answers.found", endpointAnswerSchema.array()),
+	);
+
+useBuilder()
+	.createRoute("GET", "/find-oldest-unprocessed-answer")
+	.cut(
+		async({ dropper }) => {
+			const result = await findOldestUnprocessedAnswerUsecase.execute();
+
+			return match({ result })
+				.with(
+					{ result: null },
+					() => new NotFoundHttpResponse("oldestUnprocessedAnswer.notfound"),
+				)
+				.with(
+					{ result: P.instanceOf(AnswerEntity) },
+					({ result: answer }) => dropper({ answer }),
+				)
+				.exhaustive();
+		},
+		["answer"],
+		makeResponseContract(NotFoundHttpResponse, "oldestUnprocessedAnswer.notfound"),
+	)
+	.handler(
+		(pickup) => {
+			const answer = pickup("answer");
+
+			return new OkHttpResponse(
+				"oldestUnprocessedAnswer.found",
+				answer.toSimpleObject(),
+			);
+		},
+		makeResponseContract(OkHttpResponse, "oldestUnprocessedAnswer.found", endpointAnswerSchema),
+	);
+
+useBuilder()
+	.createRoute("GET", "/unprocessed-answer-details")
+	.handler(
+		async() => {
+			const totalCount = await getTotalCountOfUnprocessedAnswersUsecase.execute();
+
+			return new OkHttpResponse(
+				"unprocessedAnswer.details",
+				{ totalCount: totalCount.value },
+			);
+		},
+		makeResponseContract(OkHttpResponse, "unprocessedAnswer.details", endpointUnprocessedAnswerDetails),
+	);
+
+useBuilder()
+	.createRoute("PATCH", "/answers/{answerId}/is-compliant")
+	.extract({
+		params: {
+			answerId: answerIdObjecter.toZodSchema(),
+		},
+	})
+	.presetCheck(
+		iWantAnswerExistById,
+		(pickup) => pickup("answerId"),
+	)
+	.cut(
+		async({ pickup, dropper }) => {
+			const answer = pickup("answer");
+
+			const updatedAnswer = await indicateAnswerIsCompliantUsecase.execute({
+				answer,
+			});
+
+			if (updatedAnswer instanceof UsecaseError) {
+				return new ForbiddenHttpResponse("answer.wrongStatus");
+			}
+
+			return dropper({ updatedAnswer });
+		},
+		["updatedAnswer"],
+		makeResponseContract(ForbiddenHttpResponse, "answer.wrongStatus"),
+	)
+	.handler(
+		(pickup) => {
+			const answer = pickup("updatedAnswer");
+
+			return new OkHttpResponse(
+				"answer.updated",
+				answer.toSimpleObject(),
+			);
+		},
+		makeResponseContract(OkHttpResponse, "answer.updated", endpointAnswerSchema),
+	);
+
+useBuilder()
+	.createRoute("PATCH", "/answers/{answerId}/is-not-compliant-and-create-warning")
+	.extract({
+		params: {
+			answerId: answerIdObjecter.toZodSchema(),
+		},
+		body: {
+			makeUserBan: warningMakeUserBanObjecter.toZodSchema(),
+			reason: warningReasonObjecter.toZodSchema(),
+		},
+	})
+	.presetCheck(
+		iWantAnswerExistById,
+		(pickup) => pickup("answerId"),
+	)
+	.presetCheck(
+		iWantPostExistById,
+		(pickup) => pickup("answer").postId,
+	)
+	.cut(
+		async({ pickup, dropper }) => {
+			const {
+				answer,
+				post,
+				makeUserBan,
+				reason,
+			} = pickup(["answer", "post", "makeUserBan", "reason"]);
+
+			const updatedAnswer = await indicateAnswerIsNotCompliantAndCreateWarningUsecase.execute({
+				answer,
+				post,
+				reason,
+				makeUserBan,
+			});
+
+			if (updatedAnswer instanceof UsecaseError) {
+				return new ForbiddenHttpResponse("answer.wrongStatus");
+			}
+
+			return dropper({ updatedAnswer });
+		},
+		["updatedAnswer"],
+		makeResponseContract(ForbiddenHttpResponse, "answer.wrongStatus"),
+	)
+	.handler(
+		(pickup) => {
+			const answer = pickup("updatedAnswer");
+
+			return new OkHttpResponse(
+				"answer.updated",
+				answer.toSimpleObject(),
+			);
+		},
+		makeResponseContract(OkHttpResponse, "answer.updated", endpointAnswerSchema),
 	);

@@ -5,6 +5,7 @@ import {
 	reportingBakedDocumentTranslationListPage,
 } from "@/domains/reporting/reportingBakedDocumentTranslationList/router";
 import ModuleCard from "./components/ModuleCard.vue";
+import { answerPage } from "@/domains/forum/answerModeration/router";
 // import StatusCard from "./components/StatusCard.vue";
 
 const { $pt } = dashboardPage.use();
@@ -16,6 +17,13 @@ const adminModule = [
 		description: $pt("modules.post.description"),
 		link: postPage,
 		icon: "post" as const,
+	},
+	{
+		name: "answer",
+		title: $pt("modules.answer.title"),
+		description: $pt("modules.answer.description"),
+		link: answerPage,
+		icon: "answer" as const,
 	},
 	{
 		name: "reportingBakedDocumentTranslation",

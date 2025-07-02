@@ -49,6 +49,7 @@ import {
 	mdiChevronDown,
 	mdiChefHat,
 	mdiFolderFileOutline,
+	mdiReply,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -78,6 +79,7 @@ export const iconsMapper = {
 	check: mdiCheck,
 	clock: mdiClock,
 	post: mdiPost,
+	answer: mdiReply,
 	home: mdiHome,
 	identifier: mdiIdentifier,
 	alert: mdiAlert,
