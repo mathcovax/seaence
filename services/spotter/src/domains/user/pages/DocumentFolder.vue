@@ -161,7 +161,6 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 
 				<nav class="mt-10 flex justify-center">
 					<DSPagination
-
 						:total="documentFolderListDetails.total"
 						:current-page="documentFolderPageOfList"
 						:quantity-per-page="documentFolderPageInformation.quantityPerPage"

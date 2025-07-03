@@ -437,6 +437,18 @@ type CodegenRoutes = ({
             total: number;
         };
     };
+}) | ({
+    method: "POST";
+    path: "/node-same-raw-document-ids-have-document-in-folder";
+    body: {
+        userId: string;
+        nodeSameRawDocumentIds: string[];
+    };
+    response: {
+        code: 200;
+        information: "nodeSameRawDocumentIdsHaveDocumentInFolder.found";
+        body: string[];
+    };
 });
 
 export { CodegenRoutes };

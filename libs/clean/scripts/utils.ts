@@ -1,4 +1,4 @@
-import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel, hasKey } from "@duplojs/utils";
+import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel } from "@duplojs/utils";
 import { type ValueObject, type ValueObjecterAttribute, type ValueObjectError } from "./valueObject";
 import { type ZodType } from "zod";
 
@@ -317,4 +317,23 @@ export function promiseObject<
 		.then(
 			(entries) => Object.fromEntries(entries) as SimplifyObjectTopLevel<AwaitedPromiseObject<GenericObject>>,
 		);
+}
+
+export function createExternalPromise<
+	GenericPromiseValue extends unknown,
+>() {
+	type PossibleValue = Awaited<GenericPromiseValue> | GenericPromiseValue | Promise<GenericPromiseValue>;
+
+	let resolve = (_value: PossibleValue) => {};
+	let reject = (_value: PossibleValue) => {};
+	const promise = new Promise<Awaited<GenericPromiseValue>>((res, rej) => {
+		resolve = res as never;
+		reject = rej;
+	});
+
+	return {
+		resolve,
+		reject,
+		promise,
+	};
 }

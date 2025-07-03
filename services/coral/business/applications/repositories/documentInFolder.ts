@@ -1,3 +1,4 @@
+import { type UserId } from "@business/domains/common/user";
 import { type DocumentFolderEntity, type DocumentFolderId } from "@business/domains/entities/documentFolder";
 import { type NodeSameRawDocumentId, type DocumentInFolderEntity } from "@business/domains/entities/documentInFolder";
 import { createRepositoryHandler, type Text, type Int, type PositiveInt, type RepositoryBase } from "@vendors/clean";
@@ -22,6 +23,10 @@ export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFol
 		documentFolder: DocumentFolderEntity,
 		partialDocumentInFolderName: Text | null,
 	): Promise<Int>;
+	nodeSameRawDocumentIdsHaveDocumentInFolder(
+		userId: UserId,
+		nodeSameRawDocumentIds: NodeSameRawDocumentId[]
+	): Promise<NodeSameRawDocumentId[]>;
 }
 
 export const documentInFolderRepository = createRepositoryHandler<DocumentInFolderRepository>();

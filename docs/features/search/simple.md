@@ -19,7 +19,8 @@
   * les auteurs  
 - La recherche ne doit pas être sensible à la casse  
 - Les groupes de mots doivent avoir plus d’impact dans les résultats de recherche  
-- Les termes de la recherche doivent être mis en avant  
+- Les termes de la recherche doivent être mis en avant
+- Je doit pouvoir distinger les resultas de recherche lier a un document qui on déjà étais enregister dans un dossier par l'utilisateur
 
 #### strict :
 - Il doit être possible de faire des termes stricts avec l’utilisation de doubles quotes : `"monTerm"`  

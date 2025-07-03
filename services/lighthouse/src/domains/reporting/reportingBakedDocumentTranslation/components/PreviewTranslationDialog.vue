@@ -42,6 +42,16 @@ function onSubmit() {
 			},
 		);
 }
+
+function onOpenDialop() {
+	void getNewBakedDocumentTranslation(props)
+		.whenServerError(
+			() => {
+				openModel.value = false;
+			},
+		);
+}
+
 </script>
 
 <template>
@@ -51,7 +61,7 @@ function onSubmit() {
 		@update:open="onUpdateOpen"
 	>
 		<template #trigger>
-			<DSPrimaryButton @click="getNewBakedDocumentTranslation(props)">
+			<DSPrimaryButton @click="onOpenDialop">
 				{{ $pt("dialog.ctaTrigger") }}
 			</DSPrimaryButton>
 		</template>

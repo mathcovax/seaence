@@ -255,6 +255,30 @@ type CodegenRoutes = ({
         information: "nodeSameRawDocument.transformeBakedDocument";
         body?: undefined;
     };
+}) | ({
+    method: "POST";
+    path: "/find-node-same-raw-document";
+    body: {
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "nodeSameRawDocument.found";
+        body: {
+            id: string;
+            lastCookingDates: Record<Language, Date>;
+            lastUpdate: Date;
+            rawDocumentWrapper: Record<"pubmed", string>;
+            uniqueField: {
+                name: UniqueFieldName;
+                value: string;
+            };
+        };
+    };
 });
 
 export { CodegenRoutes };

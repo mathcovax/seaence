@@ -4,7 +4,7 @@ import { cookNodeSameRawDocumentUsecase, transformeNodeSameRawDocumentAndReindex
 import { bakedDocumentLanguageObjecter } from "@business/domains/common/bakedDocumentLanguage";
 import { match, P } from "ts-pattern";
 import { TechnicalError, toSimpleObject } from "@vendors/clean";
-import { endpointCookedNodeSameRawDocumentSchema } from "../schemas/nodeSameRawDocument";
+import { endpointCookedNodeSameRawDocumentSchema, endpointFindNodeSameRawDocumentSchema } from "../schemas/nodeSameRawDocument";
 import { cookingModeObjecter } from "@business/domains/common/cookingMode";
 import { BakedDocumentEntity } from "@business/domains/entities/bakedDocument";
 
@@ -97,4 +97,24 @@ useBuilder()
 	.handler(
 		() => new NoContentHttpResponse("nodeSameRawDocument.transformeBakedDocument"),
 		makeResponseContract(NoContentHttpResponse, "nodeSameRawDocument.transformeBakedDocument"),
+	);
+
+useBuilder()
+	.createRoute("POST", "/find-node-same-raw-document")
+	.extract({
+		body: {
+			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
+		},
+	})
+	.presetCheck(
+		iWantNodeSameRawDocumentExist.rewriteIndexing("nodeSameRawDocument"),
+		(pickup) => pickup("nodeSameRawDocumentId"),
+	)
+	.handler(
+		(pickup) => {
+			const { nodeSameRawDocument } = pickup(["nodeSameRawDocument"]);
+
+			return new OkHttpResponse("nodeSameRawDocument.found", nodeSameRawDocument.toSimpleObject());
+		},
+		makeResponseContract(OkHttpResponse, "nodeSameRawDocument.found", endpointFindNodeSameRawDocumentSchema),
 	);

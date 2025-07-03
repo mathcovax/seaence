@@ -19,7 +19,26 @@ export class AbysAPI {
 					},
 				},
 			)
-			.iWantExpectedResponse();
+			.iWantInformation([
+				"bakedDocument.get",
+				"bakedDocument.notfound",
+			]);
+	}
+
+	public static findNodeSameRawDocument(nodeSameRawDocumentId: string) {
+		return this.httpClient
+			.post(
+				"/find-node-same-raw-document",
+				{
+					body: {
+						nodeSameRawDocumentId,
+					},
+				},
+			)
+			.iWantInformation([
+				"nodeSameRawDocument.found",
+				"nodeSameRawDocument.notfound",
+			]);
 	}
 
 	static {

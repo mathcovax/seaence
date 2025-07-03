@@ -6,7 +6,7 @@ import AuthDialog from "./domains/auth/components/AuthDialog.vue";
 <template>
 	<DSSonner close-button />
 
-	<TheLoader class="z-10" />
+	<TheLoader />
 
 	<AuthDialog />
 

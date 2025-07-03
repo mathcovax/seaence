@@ -4,6 +4,8 @@ import DocumentInFolderItem from "../components/DocumentInFolderItem.vue";
 import DocumentInFolderSeparatorItem from "../components/DocumentInFolderSeparatorItem.vue";
 import { useDocumentInFolderPage } from "../composables/useDocumentInFolderPage";
 import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
+import { createBakedDocumentId } from "@/utils/createBakedDocumentId";
+import { useUserInformation } from "../composables/useUserInformation";
 
 const router = useRouter();
 const { $pt, params } = documentInFolderPage.use();
@@ -23,21 +25,22 @@ const {
 	},
 );
 
+const { userNavigatorLanguage } = useUserInformation();
+
 const defaultdocumentinFolderIndex = 0;
 const selectedDocumentinFolderIndex = ref(defaultdocumentinFolderIndex);
 
-function navigateToDocumentPage(documentInFolder: DocumentInFoloder) {
-	return router.push(documentPage.createTo(
+function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFoloder) {
+	void router.push(documentPage.createTo(
 		{
 			params: {
-				id: documentInFolder.nodeSameRawDocumentId,
+				id: createBakedDocumentId({
+					nodeSameRawDocumentId,
+					bakedDocumentLanguage: userNavigatorLanguage.value,
+				}),
 			},
 		},
 	));
-}
-
-function handleClickDocumentInFolder(documentInFolder: DocumentInFoloder) {
-	return navigateToDocumentPage(documentInFolder);
 }
 
 function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {

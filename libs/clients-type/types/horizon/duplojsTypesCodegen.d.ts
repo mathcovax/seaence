@@ -205,6 +205,7 @@ type BakedDocumentSearchResult = {
     score: number;
     bakedDocumentId: string;
     nodeSameRawDocumentId: string;
+    userHaveLinkedDocumentInFolder?: boolean | undefined;
     title: string;
     articleTypes: ArticleType[];
     authors: string[];
@@ -596,6 +597,10 @@ type CodegenRoutes = ({
         filtersValues?: FiltersValues | undefined;
     };
     response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
         code: 200;
         information: "simpleSearch.results";
         body: BakedDocumentSearchResult[];

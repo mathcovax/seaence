@@ -1,8 +1,8 @@
 import { documentInFolderRepository } from "@business/applications/repositories/documentInFolder";
-import { DocumentInFolderEntity } from "@business/domains/entities/documentInFolder";
+import { DocumentInFolderEntity, nodeSameRawDocumentIdObjecter } from "@business/domains/entities/documentInFolder";
 import { escapeRegExp } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler, intObjecter } from "@vendors/clean";
+import { EntityHandler, intObjecter, toSimpleObject } from "@vendors/clean";
 
 documentInFolderRepository.default = {
 	async save(documentInFolderEntity) {
@@ -89,5 +89,30 @@ documentInFolderRepository.default = {
 			);
 
 		return numberOfDocumentsInFolder;
+	},
+	nodeSameRawDocumentIdsHaveDocumentInFolder(userId, nodeSameRawDocumentIds) {
+		return mongo.documentInFolder
+			.aggregate<{ _id: string }>([
+				{
+					$match: {
+						userId: userId.value,
+						nodeSameRawDocumentId: {
+							$in: toSimpleObject(nodeSameRawDocumentIds),
+						},
+					},
+				},
+				{
+					$group: {
+						_id: "$nodeSameRawDocumentId",
+					},
+				},
+			])
+			.toArray()
+			.then(
+				(result) => result
+					.map(
+						({ _id }) => nodeSameRawDocumentIdObjecter.unsafeCreate(_id),
+					),
+			);
 	},
 };

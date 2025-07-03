@@ -119,7 +119,7 @@ function formatedDate(date: FlexibleDate) {
 
 					<CreateManyDocumentInFolderDialog
 						v-if="isConnected"
-						:node-same-raw-document-id="params.id"
+						:node-same-raw-document-id="document.nodeSameRawDocumentId"
 					>
 						<DSOutlineButton
 							icon="plus"

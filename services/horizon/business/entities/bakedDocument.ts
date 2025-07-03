@@ -1,7 +1,6 @@
 import { createEnum, zod, flexibleDateObjecter } from "@vendors/clean";
 import { ArticleType } from "./common/articleType";
 import { Provider } from "./common/provider";
-import { Post } from "./forum/post";
 
 export namespace BackedDocument {
 	export const languageEnum = createEnum([
@@ -63,6 +62,7 @@ export namespace BackedDocument {
 			score: zod.number(),
 			bakedDocumentId: zod.string(),
 			nodeSameRawDocumentId: zod.string(),
+			userHaveLinkedDocumentInFolder: zod.boolean().optional(),
 			title: zod.string(),
 			articleTypes: ArticleType.index.array(),
 			authors: zod.string().array(),
