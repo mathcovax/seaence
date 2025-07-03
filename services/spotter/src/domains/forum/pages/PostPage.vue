@@ -72,6 +72,7 @@ function handleCreateAnswer() {
 						authorId: userId,
 						postId: params.value.postId,
 						createdAt: new Date().toJSON(),
+						status: "unprocessed",
 					},
 				);
 

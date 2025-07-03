@@ -32,8 +32,6 @@ export class IndicateAnswerIsNotCompliantAndCreateWarningUsecase extends Usecase
 			post,
 		});
 
-		console.log("usecase: IndicateAnswerIsNotCompliantAndCreateWarningUsecase");
-
 		return updatedAnswer;
 	}
 }

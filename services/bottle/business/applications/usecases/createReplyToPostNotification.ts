@@ -28,7 +28,7 @@ export class CreateReplyToPostNotificationsUsecase extends UsecaseHandler.create
 			await Promise.all(
 				settings.map(
 					async(setting) => {
-						if (setting.user.value.id === userIdOfReplyPost) {
+						if (setting.user.value.id.value === userIdOfReplyPost.value) {
 							return;
 						}
 

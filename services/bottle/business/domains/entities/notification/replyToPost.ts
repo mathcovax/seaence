@@ -4,8 +4,6 @@ import { replyToPostNotificationRules } from "@vendors/entity-rules";
 import { postIdObjecter } from "@business/domains/common/post";
 import { usernameObjecter } from "../user";
 
-// 7 days
-const timeToLive = 604800;
 const { summaryOfReplyPost } = replyToPostNotificationRules;
 
 export const summaryOfReplyPostObjecter = zod
@@ -35,8 +33,10 @@ export class ReplyToPostNotificationEntity extends EntityHandler.create(
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + this.timeToLive)),
 			type: replyToPostNotificationTypeObjecter.unsafeCreate("replyToPostNotificationType"),
 		});
 	}
+
+	public static readonly timeToLive = BaseNotificationEntity.timeToLive;
 }

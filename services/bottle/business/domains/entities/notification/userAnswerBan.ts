@@ -7,8 +7,6 @@ import { answerIdObjecter } from "@business/domains/common/answer";
 export const userAnswerBanNotificationTypeObjecter = createNotificationTypeObjecter("userAnswerBanNotificationType");
 export type UserAnswerBanNotificationType = GetValueObject<typeof userAnswerBanNotificationTypeObjecter>;
 
-const timeToLive = 604800;
-
 export class UserAnswerBanNotificationEntity extends EntityHandler.create(
 	{
 		type: userAnswerBanNotificationTypeObjecter,
@@ -29,8 +27,10 @@ export class UserAnswerBanNotificationEntity extends EntityHandler.create(
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + this.timeToLive)),
 			type: userAnswerBanNotificationTypeObjecter.unsafeCreate("userAnswerBanNotificationType"),
 		});
 	}
+
+	public static readonly timeToLive = BaseNotificationEntity.timeToLive;
 }

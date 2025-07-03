@@ -131,6 +131,7 @@ notificationRepository.default = {
 			.find({
 				"user.id": user.id.value,
 			})
+			.sort({ createdAt: -1 })
 			.skip(params.page.value * params.quantityPerPage.value)
 			.limit(params.quantityPerPage.value)
 			.toArray();

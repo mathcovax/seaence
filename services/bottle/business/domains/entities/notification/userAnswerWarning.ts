@@ -7,8 +7,6 @@ import { answerIdObjecter } from "@business/domains/common/answer";
 export const userAnswerWarningNotificationTypeObjecter = createNotificationTypeObjecter("userAnswerWarningNotificationType");
 export type UserAnswerWarningNotificationType = GetValueObject<typeof userAnswerWarningNotificationTypeObjecter>;
 
-const timeToLive = 604800;
-
 export class UserAnswerWarningNotificationEntity extends EntityHandler.create(
 	{
 		type: userAnswerWarningNotificationTypeObjecter,
@@ -29,8 +27,10 @@ export class UserAnswerWarningNotificationEntity extends EntityHandler.create(
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + this.timeToLive)),
 			type: userAnswerWarningNotificationTypeObjecter.unsafeCreate("userAnswerWarningNotificationType"),
 		});
 	}
+
+	public static readonly timeToLive = BaseNotificationEntity.timeToLive;
 }

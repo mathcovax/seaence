@@ -6,8 +6,6 @@ import { postIdObjecter } from "@business/domains/common/post";
 export const userPostWarningNotificationTypeObjecter = createNotificationTypeObjecter("userPostWarningNotificationType");
 export type UserPostWarningNotificationType = GetValueObject<typeof userPostWarningNotificationTypeObjecter>;
 
-const timeToLive = 604800;
-
 export class UserPostWarningNotificationEntity extends EntityHandler.create(
 	{
 		type: userPostWarningNotificationTypeObjecter,
@@ -27,8 +25,10 @@ export class UserPostWarningNotificationEntity extends EntityHandler.create(
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + this.timeToLive)),
 			type: userPostWarningNotificationTypeObjecter.unsafeCreate("userPostWarningNotificationType"),
 		});
 	}
+
+	public static readonly timeToLive = BaseNotificationEntity.timeToLive;
 }

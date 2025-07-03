@@ -2,6 +2,7 @@ import type { FindHttpClientRoute } from "@duplojs/http-client";
 import type { User, UserLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 const accessTokenLocalStorageKey = "accessToken";
+const lastSeeNotificationsLocalStorageKey = "lastSeeNotifications";
 const user = ref<User | null>(null);
 
 const userNavigatorLanguageMapper: Partial<Record<string, UserLanguage>> = {
@@ -24,6 +25,15 @@ const { refresh } = useWindow();
 
 export function useUserInformation() {
 	const accessTokenItem = useLocalStorageItem<string>(accessTokenLocalStorageKey);
+
+	const lastSeeNotificationsItem = useLocalStorageItem<number>(
+		lastSeeNotificationsLocalStorageKey,
+		Date.now(),
+	);
+
+	function seeNotifications() {
+		lastSeeNotificationsItem.value = Date.now();
+	}
 
 	function setAccessToken(accessToken: string) {
 		accessTokenItem.value = accessToken;
@@ -78,6 +88,10 @@ export function useUserInformation() {
 		promisedRequestInformation: computed(
 			() => externalPromisedRequestInformation.value.promise,
 		),
+		lastSeeNotifications: computed(
+			() => lastSeeNotificationsItem.value,
+		),
+		seeNotifications,
 	};
 }
 
