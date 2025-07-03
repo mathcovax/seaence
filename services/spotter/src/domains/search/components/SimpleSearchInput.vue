@@ -51,6 +51,10 @@ function onSubmit() {
 
 	emit("submit");
 }
+
+onMounted(() => {
+	inputElement.value?.focus();
+});
 </script>
 
 <template>

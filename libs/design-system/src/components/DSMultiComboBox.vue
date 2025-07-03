@@ -32,6 +32,7 @@ const searchTerm = defineModel<string>(
 );
 
 const open = ref(false);
+const inputRef = ref<HTMLElement | null>(null);
 
 function getKey(item: GenericItem) {
 	if (props.label) {
@@ -72,6 +73,13 @@ function onSelect(selectedItem: GenericItem) {
 	}
 	open.value = false;
 }
+
+defineExpose({
+	focus() {
+		inputRef.value?.click();
+	},
+	inputRef,
+});
 </script>
 
 <template>
@@ -84,6 +92,7 @@ function onSelect(selectedItem: GenericItem) {
 				props.class,
 				open ? 'ring-2 ring-primary' : '',
 			]"
+			ref="inputRef"
 		>
 			<div
 				class="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide"

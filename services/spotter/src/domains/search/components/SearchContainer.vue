@@ -74,6 +74,7 @@ defineExpose({
 
 <template>
 	<div
+		translate="no"
 		class="relative transition-all duration-1500 ease-in-out"
 		:class="{
 			'mt-[calc(25vh)] md:mt-[calc(35vh)]': !isExpanded && searchMode === 'simple',

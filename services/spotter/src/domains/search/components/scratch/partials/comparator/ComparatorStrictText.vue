@@ -4,10 +4,14 @@ import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
 import BoostButton from "../BoostButton.vue";
+import { useAutoFocusInput } from "../../composables/useAutoFocusInput";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorStrictText>({ required: true });
 const { t } = useI18n();
+const { inputToFocusRef } = useAutoFocusInput({
+	canFocus: () => model.value.value === "",
+});
 
 const textFieldSchema = zod
 	.string({ message: t("formMessage.required") })
@@ -64,6 +68,7 @@ const { hintMessage } = useHintMessage(
 			/>
 
 			<DSInput
+				ref="inputToFocusRef"
 				draggable="false"
 				v-model="model.value"
 				:placeholder="$t('search.scratch.comparator.strictText.inputPlaceholder')"
