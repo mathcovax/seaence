@@ -35,8 +35,11 @@ function handleDelete() {
 			/>
 		</div>
 
-		<div class="flex-grow">
-			<h4 class="text-sm font-medium truncate">
+		<div class="flex-grow truncate">
+			<h4
+				class="text-sm font-medium truncate"
+				:title="documentInFolder.name"
+			>
 				{{ documentInFolder.name }}
 			</h4>
 		</div>

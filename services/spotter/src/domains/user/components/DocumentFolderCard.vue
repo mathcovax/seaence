@@ -45,15 +45,21 @@ async function onDelete() {
 			class=" flex flex-col hover:shadow-md transition-shadow"
 		>
 			<div class="flex justify-between">
-				<div class="space-x-2 flex items-center">
-					<DSIcon name="folderOutline" />
+				<div class="min-w-0 flex-grow space-x-2 flex items-center">
+					<DSIcon
+						name="folderOutline"
+						class="shrink-0"
+					/>
 
-					<h3 class="font-medium truncate">
+					<h3
+						class="font-medium truncate"
+						:title="documentFolder.name"
+					>
 						{{ documentFolder.name }}
 					</h3>
 				</div>
 
-				<DSDropdownMenu>
+				<DSDropdownMenu class="shrink-0">
 					<DSDropdownMenuTrigger as-child>
 						<DSButton
 							variant="ghost"
