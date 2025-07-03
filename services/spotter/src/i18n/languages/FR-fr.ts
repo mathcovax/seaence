@@ -420,6 +420,11 @@ export const FRfr = {
 				},
 			},
 		},
+		boost: {
+			low: "Boost faible",
+			medium: "Boost moyen",
+			high: "Boost élevé",
+		},
 		foundResults: "{count} résultat(s) trouvé(s)",
 		noResult: "Aucun résultat trouvé",
 	},

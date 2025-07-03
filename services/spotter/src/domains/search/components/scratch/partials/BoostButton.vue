@@ -2,6 +2,8 @@
 import type { iconSizeMapper } from "@vendors/design-system/components/ui/icon";
 import type { ComparatorBoostEnumValue } from "@vendors/types-advanced-query";
 
+const { t } = useI18n();
+
 const modelValue = defineModel<ComparatorBoostEnumValue>({ required: true });
 
 const boostStates: Record<
@@ -27,9 +29,9 @@ const iconSize: Record<
 };
 
 const boostLabels: Record<ComparatorBoostEnumValue, string> = {
-	1: "Boost faible",
-	2: "Boost moyen",
-	3: "Boost élevé",
+	1: t("search.boost.low"),
+	2: t("search.boost.medium"),
+	3: t("search.boost.high"),
 };
 
 const boostColors: Record<ComparatorBoostEnumValue, string> = {
