@@ -293,12 +293,12 @@ type CodegenRoutes = ({
         information: "answer.notfound";
         body?: undefined;
     } | {
-        code: 404;
-        information: "post.notfound";
+        code: 403;
+        information: "answer.wrongStatus";
         body?: undefined;
     } | {
         code: 403;
-        information: "answer.wrongStatus";
+        information: "answer.postMismatch";
         body?: undefined;
     } | {
         code: 200;

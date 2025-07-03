@@ -181,34 +181,45 @@ useBuilder()
 		iWantAnswerExistById,
 		(pickup) => pickup("answerId"),
 	)
-	.presetCheck(
-		iWantPostExistById,
-		(pickup) => pickup("answer").postId,
-	)
 	.cut(
 		async({ pickup, dropper }) => {
 			const {
 				answer,
-				post,
 				makeUserBan,
 				reason,
-			} = pickup(["answer", "post", "makeUserBan", "reason"]);
+			} = pickup(["answer", "makeUserBan", "reason"]);
 
-			const updatedAnswer = await indicateAnswerIsNotCompliantAndCreateWarningUsecase.execute({
+			const result = await indicateAnswerIsNotCompliantAndCreateWarningUsecase.execute({
 				answer,
-				post,
 				reason,
 				makeUserBan,
 			});
 
-			if (updatedAnswer instanceof UsecaseError) {
-				return new ForbiddenHttpResponse("answer.wrongStatus");
-			}
-
-			return dropper({ updatedAnswer });
+			return match(result)
+				.with(
+					P.instanceOf(UsecaseError),
+					({ information }) => match(information)
+						.with(
+							"wrong-status",
+							() => new ForbiddenHttpResponse("answer.wrongStatus"),
+						)
+						.with(
+							"answer-post-mismatch",
+							() => new ForbiddenHttpResponse("answer.postMismatch"),
+						)
+						.exhaustive(),
+				)
+				.with(
+					P.instanceOf(AnswerEntity),
+					(updatedAnswer) => dropper({ updatedAnswer }),
+				)
+				.exhaustive();
 		},
 		["updatedAnswer"],
-		makeResponseContract(ForbiddenHttpResponse, "answer.wrongStatus"),
+		[
+			...makeResponseContract(ForbiddenHttpResponse, "answer.wrongStatus"),
+			...makeResponseContract(ForbiddenHttpResponse, "answer.postMismatch"),
+		],
 	)
 	.handler(
 		(pickup) => {

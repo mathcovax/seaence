@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AnswerContent from "./components/AnswerContent.vue";
+import AnswerStats from "./components/AnswerStats.vue";
 import { useAnswerModerationForm } from "./composables/useAnswerModerationForm";
 import { useAnswerModerationPage } from "./composables/useAnswerModerationPage";
 import { answerPage } from "./router";
