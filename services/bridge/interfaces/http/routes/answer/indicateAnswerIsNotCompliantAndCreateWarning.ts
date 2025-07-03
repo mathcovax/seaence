@@ -41,8 +41,8 @@ useBuilder()
 					() => new NotFoundHttpResponse("answer.notfound"),
 				)
 				.with(
-					{ information: "post.notfound" },
-					() => new NotFoundHttpResponse("post.notfound"),
+					{ information: "answer.postMismatch" },
+					() => new NotFoundHttpResponse("answer.postMismatch"),
 				)
 				.with(
 					{ information: "answer.updated" },
@@ -53,7 +53,7 @@ useBuilder()
 		undefined,
 		[
 			...makeResponseContract(ForbiddenHttpResponse, "answer.wrongStatus"),
-			...makeResponseContract(NotFoundHttpResponse, "post.notfound"),
+			...makeResponseContract(NotFoundHttpResponse, "answer.postMismatch"),
 			...makeResponseContract(NotFoundHttpResponse, "answer.notfound"),
 		],
 	)

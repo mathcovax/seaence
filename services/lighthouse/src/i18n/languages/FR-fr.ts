@@ -151,6 +151,7 @@ export const FRfr = {
 			notfound: "La réponse n'a pas été trouvée.",
 			wrongStatus: "La réponse n'est pas en attente de modération.",
 			updated: "La réponse a été mise à jour avec succès.",
+			postMismatch: "La réponse ne correspond pas au post.",
 		},
 		post: {
 			notfound: "Le post n'a pas été trouvé.",
