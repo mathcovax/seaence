@@ -5,6 +5,7 @@ import { useUserInformation } from "@/domains/user/composables/useUserInformatio
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
 import PostAnswer from "../components/PostAnswer.vue";
 import BellButton from "@/domains/notification/components/BellButton.vue";
+import { answerRules } from "@vendors/entity-rules";
 
 const { params, $pt } = postPage.use();
 const router = useRouter();
@@ -23,13 +24,17 @@ const { postPageInformation, answers, seeMoreAnswers } = usePostPage(
 
 const newAnswer = ref("");
 
-const minLength = 5;
-const maxLength = 500;
 const answerSchema
 	= zod.string()
 		.trim()
-		.min(minLength, { message: t("formMessage.minLength", { value: minLength }) })
-		.max(maxLength, { message: t("formMessage.maxLength", { value: maxLength }) });
+		.min(
+			answerRules.content.minLength,
+			{ message: t("formMessage.minLength", { value: answerRules.content.minLength }) },
+		)
+		.max(
+			answerRules.content.maxLength,
+			{ message: t("formMessage.maxLength", { value: answerRules.content.maxLength }) },
+		);
 
 const errorMessage = ref("");
 
