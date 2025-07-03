@@ -159,7 +159,7 @@ function removeFavoriteEquation(
 						<DSPrimaryButton
 							@click="upsertFavoriteEquation"
 							:disabled="favoriteEquationNameListIsLoading"
-							icon="contentSaveCheck"
+							icon="contentSave"
 							class="w-full"
 						>
 							{{ $t("cta.save") }}
