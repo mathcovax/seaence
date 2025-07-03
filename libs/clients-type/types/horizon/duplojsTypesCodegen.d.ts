@@ -12,6 +12,7 @@ export { UserLanguage };
 type Answer = {
     id: string;
     postId: string;
+    status: "compliant" | "unprocessed" | "notCompliant";
     content: string;
     authorId: string;
     authorName: string;

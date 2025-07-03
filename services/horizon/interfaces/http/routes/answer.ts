@@ -84,16 +84,12 @@ useBuilder()
 			const answers = pickup("answers");
 
 			const processedAnswers = answers.map(
-				(answer) => {
-					if (answer.status === "notCompliant") {
-						return {
-							...answer,
-							content: Answer.notCompliantContent,
-						};
-					} else {
-						return answer;
+				(answer) => answer.status === "notCompliant"
+					? {
+						...answer,
+						content: Answer.notCompliantContent,
 					}
-				},
+					: answer,
 			);
 
 			return dropper({ processedAnswers });

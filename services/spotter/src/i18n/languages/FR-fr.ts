@@ -140,6 +140,7 @@ export const FRfr = {
 			writeAnAnswer: "Écrivez un commentaire",
 			writeAnAnswerDescription: "Partagez votre avis ou répondez à la question posée.",
 			writeYourAnswer: "Un super commentaire...",
+			notCompliantContent: "Le contenu de ce message a été censuré.",
 		},
 		[profilePage.name]: {
 			personalInfo: {
