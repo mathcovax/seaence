@@ -56,6 +56,7 @@ export const FRfr = {
 		[reportingBakedDocumentTranslationPage.name]: {
 			title: "Signalements de traduction",
 			description: "Gérez les signalements de documents traduits et leurs corrections.",
+			seeDocument: "Voir le document",
 			bakedDocument: {
 				cookingMode: "Mode de cuisson",
 				title: "Document traduit",

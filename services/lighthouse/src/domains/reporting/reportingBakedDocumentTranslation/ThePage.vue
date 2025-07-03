@@ -6,6 +6,7 @@ import { useList } from "./composables/useList";
 import { usePage } from "./composables/usePage";
 import { reportingBakedDocumentTranslationPage } from "./router";
 import { cookingModeEnum } from "@/libs/bridge/types/cookingMode";
+import { makeDocumentUrl } from "./utils/makeDocumentUrl";
 
 const { $pt } = reportingBakedDocumentTranslationPage.use();
 const { pageContent } = usePage();
@@ -56,6 +57,15 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 							:items="cookingModeEnum.toTuple()"
 							class="w-40"
 						/>
+
+						<a
+							:href="makeDocumentUrl(pageContent.bakedDocument.id)"
+							target="_blank"
+						>
+							<DSOutlineButton>
+								{{ $pt("seeDocument") }}
+							</DSOutlineButton>
+						</a>
 					</div>
 
 					<PreviewDocument :baked-document="pageContent.bakedDocument" />
