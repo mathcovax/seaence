@@ -15,6 +15,7 @@ declare global {
   const checkLayoutTemplateGridCols: typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
+  const createBakedDocumentId: typeof import('./src/utils/createBakedDocumentId')['createBakedDocumentId']
   const createExternalPromise: typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']
   const createFetchDebounce: typeof import('./vendors/design-system/utils/debounce')['createFetchDebounce']
   const createFormField: typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']
@@ -194,6 +195,7 @@ declare module 'vue' {
     readonly checkLayoutTemplateGridCols: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['checkLayoutTemplateGridCols']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
+    readonly createBakedDocumentId: UnwrapRef<typeof import('./src/utils/createBakedDocumentId')['createBakedDocumentId']>
     readonly createExternalPromise: UnwrapRef<typeof import('./vendors/design-system/utils/createExternalPromise')['createExternalPromise']>
     readonly createFetchDebounce: UnwrapRef<typeof import('./vendors/design-system/utils/debounce')['createFetchDebounce']>
     readonly createFormField: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/createFormField')['createFormField']>

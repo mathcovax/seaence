@@ -1143,6 +1143,10 @@ type CodegenRoutes = ({
         information: "authentication.required";
         body?: undefined;
     } | {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentInFolder.created";
         body?: undefined;
