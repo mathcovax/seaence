@@ -4,9 +4,9 @@ import DSLabel from "../ui/label/DSLabel.vue";
 import { useId } from "vue";
 
 interface Props {
-	label: string;
+	labelKey: string;
 	link?: string;
-	linkText?: string;
+	linkTextKey?: string;
 }
 
 defineProps<Props>();
@@ -26,14 +26,21 @@ const checkboxId = useId();
 			:for="checkboxId"
 			class="cursor-pointer flex-1"
 		>
-			{{ label }}
-
-			<a
-				v-if="link"
-				:href="link"
-				target="_blank"
-				class="text-sm font-medium text-blue-seaence hover:underline"
-			>{{ linkText }}</a>
+			<i18n-t
+				:keypath="labelKey"
+				tag="span"
+			>
+				<template #default>
+					<a
+						v-if="link && linkTextKey"
+						:href="link"
+						target="_blank"
+						class="text-sm font-medium text-blue-seaence hover:underline"
+					>
+						{{ $t(linkTextKey) }}
+					</a>
+				</template>
+			</i18n-t>
 		</DSLabel>
 	</div>
 </template>

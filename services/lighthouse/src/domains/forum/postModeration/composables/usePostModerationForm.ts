@@ -20,7 +20,7 @@ export function usePostModerationForm() {
 								booleanFormField,
 								{
 									mandatory: true,
-									props: { label: $pt("warningModal.checkboxBanUser") },
+									props: { labelKey: "page.postModeration.warningModal.checkboxBanUser" },
 								},
 							),
 							reason: useCheckLayout(

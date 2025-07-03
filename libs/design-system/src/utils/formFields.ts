@@ -15,9 +15,9 @@ export const textFormField = createFormField(DSInput, {
 export const booleanFormField = createFormField(CheckboxTemplate, {
 	defaultValue: false,
 	props: {
-		label: "",
+		labelKey: "",
 		link: undefined,
-		linkText: undefined,
+		linkTextKey: undefined,
 	},
 });
 
