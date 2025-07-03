@@ -1,10 +1,16 @@
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { userLanguageEnum, userLanguageSchema } from "@/lib/horizon/types/user";
 import { userRules } from "@vendors/entity-rules";
+import CGUCheckboxTemplate from "../components/CGUCheckboxTemplate.vue";
 
 export function useRegisterForm() {
 	const { t } = useI18n();
 	const { userNavigatorLanguage } = useUserInformation();
+
+	const CGUFormField = createFormField(CGUCheckboxTemplate, {
+		defaultValue: false,
+		props: {},
+	});
 
 	const { Form, formValue, check } = useFormBuilder(
 		useMultiFieldLayout({
@@ -37,18 +43,13 @@ export function useRegisterForm() {
 				},
 			),
 			generalConditionsOfUse: useCheckLayout(
-				booleanFormField,
+				CGUFormField,
 				{
 					mandatory: true,
 					schema: zod.custom<true>(
 						(value) => value === true,
 						t("authDialog.registerForm.requireCGU"),
 					),
-					props: {
-						labelKey: "authDialog.registerForm.CGULabel",
-						link: cguPage.recordRaw.path,
-						linkTextKey: "authDialog.registerForm.CGULinkText",
-					},
 				},
 			),
 		}),

@@ -83,7 +83,6 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 				@submit="handleSearchDocumentInFolder"
 			>
 				<DSPrimaryButton
-					size="small"
 					type="submit"
 					class="ml-auto"
 				>

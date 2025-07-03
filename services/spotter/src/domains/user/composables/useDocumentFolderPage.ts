@@ -41,6 +41,7 @@ export function useDocumentFolderPage(
 						page: pageOfList.value,
 						partialDocumentFolderName: formValue.value.name,
 					},
+					disableAuthenticationRequiredManagement: true,
 				},
 			)
 			.whenInformation(
@@ -62,6 +63,7 @@ export function useDocumentFolderPage(
 					body: {
 						partialDocumentFolderName: formValue.value.name,
 					},
+					disableAuthenticationRequiredManagement: true,
 				},
 			)
 			.whenInformation(
@@ -93,7 +95,12 @@ export function useDocumentFolderPage(
 
 	function findPage() {
 		void horizonClient
-			.post("/document-folder-page")
+			.post(
+				"/document-folder-page",
+				{
+					disableAuthenticationRequiredManagement: true,
+				},
+			)
 			.whenInformation(
 				"documentFolderPage.found",
 				({ body }) => {

@@ -86,7 +86,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 
 <template>
 	<section class="min-h-screen-nh space-y-6">
-		<header class="flex justify-between items-center">
+		<header class="flex justify-between items-start">
 			<div class="flex-1/2 sm:flex-none flex flex-col sm:flex-row gap-4 items-start sm:items-center">
 				<BackButton />
 
@@ -124,9 +124,9 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 
 			<div
 				v-if="documentFolderList"
-				class="mt-6"
+				class="mt-4 md:mt-6"
 			>
-				<ul class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+				<ul class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
 					<li
 						v-for="folder in documentFolderList"
 						:key="folder.id"
