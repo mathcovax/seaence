@@ -57,8 +57,6 @@ useBuilder()
 				user,
 			} = pickup(["body", "user"]);
 
-			console.log("HARBOR: Creating answer user warning");
-
 			await createAnswerUserWarning.execute({
 				postId,
 				answerId,

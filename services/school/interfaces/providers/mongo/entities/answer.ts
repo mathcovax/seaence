@@ -1,4 +1,4 @@
-import { type AnswerStatus } from "@business/domains/entities/answer";
+import { type AnswerStatusEnum } from "@business/domains/entities/answer";
 
 export interface MongoAnswer {
 	id: string;
@@ -6,7 +6,7 @@ export interface MongoAnswer {
 	content: string;
 	authorId: string;
 	authorName: string;
-	status: AnswerStatus["value"];
+	status: AnswerStatusEnum;
 	createdAt: Date;
 }
 

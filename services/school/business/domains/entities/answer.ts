@@ -1,4 +1,4 @@
-import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
+import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetEnumValue, type GetValueObject, zod } from "@vendors/clean";
 import { postIdObjecter } from "./post";
 import { answerRules } from "@vendors/entity-rules";
 import { userIdObjecter, type Username, usernameObjecter } from "../common/user";
@@ -14,6 +14,9 @@ export const answerStatusEnum = createEnum([
 	"unprocessed",
 	"notCompliant",
 ]);
+
+export type AnswerStatusEnum = GetEnumValue<typeof answerStatusEnum>;
+
 export const answerStatusObjecter = zod.enum(answerStatusEnum.toTuple()).createValueObjecter("answerStatus");
 
 export type AnswerStatus = GetValueObject<typeof answerStatusObjecter>;
