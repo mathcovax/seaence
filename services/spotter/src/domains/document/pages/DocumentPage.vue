@@ -20,8 +20,8 @@ const { document, posts } = useDocumentPage(
 	},
 );
 
-function onLanguageChange(newLanguage: unknown) {
-	if (!document.value || typeof newLanguage !== "string" || newLanguage === document.value.language) {
+function onLanguageChange(newLanguage: BakedDocumentLanguage | null) {
+	if (!newLanguage || !document.value || newLanguage === document.value.language) {
 		return;
 	}
 
@@ -92,13 +92,13 @@ function formatedDate(date: FlexibleDate) {
 								/>
 
 								<DSSelect
-									:model-value="document.language"
 									:items="bakedDocumentLanguageEnum.toTuple()"
+									:model-value="document.language"
+									@update:model-value="onLanguageChange"
 									:label="getLanguageLabel"
 									placeholder="Choisir une langue"
 									size="sm"
 									class="w-48"
-									@update:model-value="onLanguageChange"
 								/>
 							</div>
 						</div>

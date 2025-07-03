@@ -1,5 +1,5 @@
 <script generic="GenericItem extends object | string | number" setup lang="ts">
-import { SelectRoot, useForwardPropsEmits, type SelectRootEmits, type SelectRootProps } from "reka-ui";
+import { SelectRoot, useForwardPropsEmits, type SelectRootProps } from "reka-ui";
 import DSSelectItem from "./DSSelectItem.vue";
 import DSSelectContent from "./DSSelectContent.vue";
 import DSSelectGroup from "./DSSelectGroup.vue";
@@ -15,7 +15,9 @@ interface Props extends SelectRootProps {
 	size?: "default" | "sm";
 }
 const props = withDefaults(defineProps<Props>(), { placeholder: "" });
-const emits = defineEmits<SelectRootEmits>();
+const emits = defineEmits<{
+	"update:open": [value: boolean];
+}>();
 
 const model = defineModel<GenericItem | null>({ required: true });
 
