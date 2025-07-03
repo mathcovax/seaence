@@ -6,6 +6,7 @@ import { useList } from "./composables/useList";
 import { usePage } from "./composables/usePage";
 import { reportingBakedDocumentTranslationPage } from "./router";
 import { cookingModeEnum } from "@/libs/bridge/types/cookingMode";
+import { makeDocumentUrl } from "./utils/makeDocumentUrl";
 
 const { $pt } = reportingBakedDocumentTranslationPage.use();
 const { pageContent } = usePage();
@@ -30,6 +31,8 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 	<section class="min-h-screen-nh">
 		<div v-if="pageContent && list && selectedCookingMode">
 			<header class="mb-8">
+				<BackButton />
+
 				<h1 class="mb-2 text-3xl font-bold">
 					{{ $pt("title") }}
 				</h1>
@@ -54,6 +57,15 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 							:items="cookingModeEnum.toTuple()"
 							class="w-40"
 						/>
+
+						<a
+							:href="makeDocumentUrl(pageContent.bakedDocument.id)"
+							target="_blank"
+						>
+							<DSOutlineButton>
+								{{ $pt("seeDocument") }}
+							</DSOutlineButton>
+						</a>
 					</div>
 
 					<PreviewDocument :baked-document="pageContent.bakedDocument" />
@@ -73,6 +85,7 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 
 						<div class="flex justify-center">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"
@@ -159,6 +172,7 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 
 						<div class="pt-4 flex justify-center border-t">
 							<DSPagination
+								v-if="pageContent.reporting.countTotal > pageContent.reporting.quantityPerPage"
 								:current-page="pageOfList"
 								:quantity-per-page="pageContent.reporting.quantityPerPage"
 								:total="pageContent.reporting.countTotal"

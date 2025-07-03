@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import { formatDate } from "@vendors/design-system/lib/utils";
 
 interface Props {
 	documentFolder: DocumentFolder;
@@ -19,18 +20,8 @@ const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = u
 	description: t("removeDocumentFolderDialog.description"),
 	acceptLabel: t("cta.validate"),
 	rejectLabel: t("cta.refuse"),
+	destructive: true,
 });
-
-const formattedDate = computed(
-	() => new Intl.DateTimeFormat(
-		"fr-FR",
-		{
-			day: "2-digit",
-			month: "2-digit",
-			year: "numeric",
-		},
-	).format(new Date(props.documentFolder.createdAt)),
-);
 
 function onClick() {
 	emit("click", props.documentFolder);
@@ -51,46 +42,47 @@ async function onDelete() {
 		@click="onClick"
 	>
 		<DSCard
-			class="transition-all hover:shadow-md border border-gray-200 p-4 aspect-square flex flex-col w-full max-w-[180px] max-h-[180px]"
+			class=" flex flex-col hover:shadow-md transition-shadow"
 		>
-			<div class="flex items-start justify-between">
-				<div class="flex items-center space-x-2">
-					<DSIcon name="folderOutline" />
+			<div class="flex justify-between">
+				<div class="min-w-0 flex-grow space-x-2 flex items-center">
+					<DSIcon
+						name="folderOutline"
+						class="shrink-0"
+					/>
 
-					<h3 class="font-medium truncate">
+					<h3
+						class="font-medium truncate"
+						:title="documentFolder.name"
+					>
 						{{ documentFolder.name }}
 					</h3>
 				</div>
 
-				<DSDropdownMenu>
+				<DSDropdownMenu class="shrink-0">
 					<DSDropdownMenuTrigger as-child>
 						<DSButton
 							variant="ghost"
 							icon="dotsVertical"
-							class="h-8 w-8"
+							square
 							@click.stop
 						/>
 					</DSDropdownMenuTrigger>
 
 					<DSDropdownMenuContent @click.stop>
 						<DSDropdownMenuItem @click="onDelete">
-							<DSIcon
-								name="delete"
-								class="h-4 w-4"
-							/>
+							<DSIcon name="delete" />
 							{{ $t("cta.delete") }}
 						</DSDropdownMenuItem>
 					</DSDropdownMenuContent>
 				</DSDropdownMenu>
 			</div>
 
-			<div class="mt-auto flex flex-col justify-center gap-4 pt-5">
-				<div class="bg-gray-100 rounded-md px-2 py-1 border border-gray-200">
-					{{ $t("documentFolderCard.items", documentFolder.numberOfDocument) }}
-				</div>
-
-				<span class="text-gray-500">{{ formattedDate }}</span>
+			<div class="p-2 bg-muted rounded-md border border-border">
+				{{ $t("documentFolderCard.items", documentFolder.numberOfDocument) }}
 			</div>
+
+			<span class="text-muted-foreground">{{ formatDate(documentFolder.createdAt ) }}</span>
 		</DSCard>
 
 		<DeleteDialog />

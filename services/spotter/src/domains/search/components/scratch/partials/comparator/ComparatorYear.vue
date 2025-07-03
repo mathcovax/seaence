@@ -4,10 +4,14 @@ import DraggableComparator from "./DraggableComparator.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
 import BoostButton from "../BoostButton.vue";
+import { useAutoFocusInput } from "../../composables/useAutoFocusInput";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorYear>({ required: true });
 const { t } = useI18n();
+const { inputToFocusRef } = useAutoFocusInput({
+	canFocus: () => isNaN(model.value.value),
+});
 
 const yearFieldSchema = zod
 	.number({ message: t("formMessage.required") })
@@ -64,6 +68,7 @@ const { hintMessage } = useHintMessage(
 			/>
 
 			<DSInput
+				ref="inputToFocusRef"
 				@dragstart.prevent
 				type="number"
 				mode="numeric"

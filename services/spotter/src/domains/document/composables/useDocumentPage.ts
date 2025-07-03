@@ -29,7 +29,9 @@ export function useDocumentPage(
 			);
 	}
 
-	void findDocument();
+	watch(bakedDocumentId, () => {
+		void findDocument();
+	}, { immediate: true });
 
 	return {
 		document,

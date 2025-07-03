@@ -49,14 +49,12 @@ const { hintMessage } = useHintMessage(
 		<div class="h-11 flex justify-between items-center px-2 py-1 text-white bg-pink-seaence">
 			<span class="font-medium text-sm">{{ $t("search.scratch.operator.not.label") }}</span>
 
-			<DSButton
-				variant="ghost"
+			<DSGhostButton
 				square
+				icon="close"
 				class="text-white"
 				@click="emit('remove')"
-			>
-				<DSIcon name="close" />
-			</DSButton>
+			/>
 		</div>
 
 		<div class="bg-background p-2">

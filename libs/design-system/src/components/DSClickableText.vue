@@ -15,7 +15,7 @@ const emit = defineEmits<{
 	<p
 		role="button"
 		@click="emit('click')"
-		class="text-primary text-start underline hover:text-secondary cursor-pointer select-none transition-all"
+		class="text-primary text-start underline hover:text-secondary group-hover:text-secondary cursor-pointer select-none transition-all"
 	>
 		{{ content }}
 	</p>

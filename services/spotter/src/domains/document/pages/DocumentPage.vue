@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import type { FlexibleDate } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { FlexibleDate, BakedDocumentLanguage } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useDocumentPage } from "../composables/useDocumentPage";
+import { bakedDocumentLanguageEnum } from "@/lib/horizon/types/bakedDocument";
 import PostRow from "@/domains/forum/components/PostRow.vue";
 import { RouterLink } from "vue-router";
 import ReportingWrongTranslateDialog from "../components/ReportingWrongTranslateDialog.vue";
 import CreateManyDocumentInFolderDialog from "@/domains/user/components/CreateManyDocumentInFolderDialog.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
+const { t } = useI18n();
 const { $pt, params } = documentPage.use();
 const router = useRouter();
 const { isConnected } = useUserInformation();
@@ -17,6 +19,22 @@ const { document, posts } = useDocumentPage(
 		router.back();
 	},
 );
+
+function onLanguageChange(newLanguage: BakedDocumentLanguage | null) {
+	if (!newLanguage || !document.value || newLanguage === document.value.language) {
+		return;
+	}
+
+	const newDocumentId = `${document.value.nodeSameRawDocumentId}_${newLanguage}`;
+
+	void router.push(documentPage.createTo({
+		params: { id: newDocumentId },
+	}));
+}
+
+function getLanguageLabel(languageCode: BakedDocumentLanguage) {
+	return t(`languages.${languageCode}`) ?? languageCode;
+}
 
 const allAffiliations = computed(() => {
 	if (!document.value) {
@@ -59,9 +77,32 @@ function formatedDate(date: FlexibleDate) {
 		>
 			<header class="flex flex-col gap-8 lg:gap-12">
 				<div class="flex flex-col gap-2">
-					<h1 class="mb-4 text-xl md:text-3xl font-bold text-blue-seaence first-letter:uppercase">
-						{{ document.title }}
-					</h1>
+					<div class="flex gap-4 items-start">
+						<BackButton />
+
+						<div class="flex-1">
+							<h1 class="mb-4 text-xl md:text-3xl font-bold text-blue-seaence first-letter:uppercase">
+								{{ document.title }}
+							</h1>
+
+							<div class="flex items-center gap-2 mb-4">
+								<DSIcon
+									name="translate"
+									class="shrink-0"
+								/>
+
+								<DSSelect
+									:items="bakedDocumentLanguageEnum.toTuple()"
+									:model-value="document.language"
+									@update:model-value="onLanguageChange"
+									:label="getLanguageLabel"
+									placeholder="Choisir une langue"
+									size="sm"
+									class="w-48"
+								/>
+							</div>
+						</div>
+					</div>
 
 					<div
 						class="flex items-center gap-2"
@@ -242,7 +283,7 @@ function formatedDate(date: FlexibleDate) {
 
 			<div class="flex flex-col gap-4">
 				<RouterLink
-					:to="postListPage.createTo({params: {documentId: document.id}})"
+					:to="postListPage.createTo({ params: { documentId: document.id } })"
 					class="flex gap-2 self-start hover:underline"
 				>
 					<h2 class="text-xl md:text-2xl font-bold hover:underline">
@@ -270,7 +311,7 @@ function formatedDate(date: FlexibleDate) {
 						class="self-start"
 						as-child
 					>
-						<RouterLink :to="postCreatePage.createTo({params: {documentId: document.id}})">
+						<RouterLink :to="postCreatePage.createTo({ params: { documentId: document.id } })">
 							{{ $pt("createPost") }}
 						</RouterLink>
 					</DSPrimaryButton>

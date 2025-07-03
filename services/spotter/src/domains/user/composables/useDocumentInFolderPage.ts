@@ -43,6 +43,7 @@ export function useDocumentInFolderPage(
 						documentFolderId,
 						partialDocumentInFolderName: formValue.value.name,
 					},
+					disableAuthenticationRequiredManagement: true,
 				},
 			)
 			.whenInformation(
@@ -65,6 +66,7 @@ export function useDocumentInFolderPage(
 						documentFolderId,
 						partialDocumentInFolderName: formValue.value.name,
 					},
+					disableAuthenticationRequiredManagement: true,
 				},
 			)
 			.whenInformation(
@@ -106,6 +108,7 @@ export function useDocumentInFolderPage(
 				body: {
 					documentFolderId,
 				},
+				disableAuthenticationRequiredManagement: true,
 			},
 		)
 		.whenInformation(

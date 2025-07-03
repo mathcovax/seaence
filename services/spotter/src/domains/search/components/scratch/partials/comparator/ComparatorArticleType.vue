@@ -8,10 +8,14 @@ import DraggableComparator from "./DraggableComparator.vue";
 import BoostButton from "../BoostButton.vue";
 import ScratchHint from "../ScratchHint.vue";
 import { useHintMessage } from "../../composables/useHintMessage";
+import { useAutoFocusInput } from "../../composables/useAutoFocusInput";
 
 const emit = defineEmits<{ remove: [] }>();
 const model = defineModel<ComparatorArticleType>({ required: true });
 const { t } = useI18n();
+const { inputToFocusRef } = useAutoFocusInput({
+	canFocus: () => !model.value.value.length,
+});
 
 const textFieldSchema = zod
 	.any()
@@ -54,6 +58,7 @@ const { hintMessage } = useHintMessage(
 
 		<div class="grid grid-cols-1">
 			<DSMultiComboBox
+				ref="inputToFocusRef"
 				:empty-label="$t('search.scratch.comparator.articleType.emptyLabel')"
 				:items="articleTypeEnum.toTuple()"
 				:label="(item) => $t(`articleType.${item}`) || item"

@@ -2,6 +2,8 @@ import { envs } from "@/envs";
 import * as Sentry from "@sentry/vue";
 import type { App } from "vue";
 import { router } from "@/router";
+import { RequestError } from "@duplojs/http-client";
+import { simpleClone } from "@duplojs/utils";
 
 export interface SentryContext {
 	tags?: Record<string, string>;
@@ -20,6 +22,24 @@ export class SentryLogger {
 			tracesSampleRate: 1,
 			attachProps: true,
 			environment: "production",
+			beforeSend(event, hint) {
+				const currentException = hint.originalException;
+
+				if (currentException instanceof RequestError) {
+					const requestDefinition = simpleClone(currentException.requestDefinition);
+
+					if (requestDefinition.headers?.authorization) {
+						requestDefinition.headers.authorization = "****";
+					}
+
+					event.extra = {
+						...event.extra,
+						requestDefinition,
+					};
+				}
+
+				return event;
+			},
 		});
 
 		this.isInit = true;

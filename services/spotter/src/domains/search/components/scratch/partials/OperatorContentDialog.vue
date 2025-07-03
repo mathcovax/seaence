@@ -27,7 +27,10 @@ function onUpdateOpen(value: boolean) {
 }
 
 function selectOperatorContent(name: OperatorContent["name"]) {
-	currentResolve.value!(
+	const resolve = currentResolve.value;
+	currentResolve.value = null;
+
+	resolve!(
 		match(name)
 			.with("and", (): OperatorAnd => ({
 				type: "operator",
@@ -55,7 +58,7 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 				type: "comparator",
 				name: "year",
 				field: "allDate",
-				value: new Date().getFullYear(),
+				value: NaN,
 				boost: "1",
 			}))
 			.with("strictText", (): ComparatorStrictText => ({
@@ -88,15 +91,13 @@ function selectOperatorContent(name: OperatorContent["name"]) {
 				name: "yearInterval",
 				field: "allDate",
 				value: {
-					from: new Date().getFullYear(),
+					from: NaN,
 					to: new Date().getFullYear(),
 				},
 				boost: "1",
 			}))
 			.exhaustive(),
 	);
-
-	currentResolve.value = null;
 }
 
 defineExpose({

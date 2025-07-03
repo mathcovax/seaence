@@ -32,6 +32,7 @@ const maxPage = 100;
 			class="bg-background flex flex-col items-center rounded-b-xl"
 		>
 			<DSPagination
+				v-if="result.total > result.quantityPerPage"
 				class="my-8"
 				:max-page="maxPage"
 				:total="result.total"
@@ -49,6 +50,7 @@ const maxPage = 100;
 			</div>
 
 			<DSPagination
+				v-if="result.total > result.quantityPerPage"
 				class="my-8"
 				:max-page="maxPage"
 				:total="result.total"
@@ -62,7 +64,7 @@ const maxPage = 100;
 			v-else
 			class="mt-20 flex items-center justify-center"
 		>
-			<p class="p-3 text-2xl text-gray-700 rounded-xl bg-background/60 backdrop-blur-sm">
+			<p class="p-3 text-2xl italic text-muted-foreground rounded-xl bg-background/60 backdrop-blur-sm">
 				{{ $t("search.noResult") }}
 			</p>
 		</div>

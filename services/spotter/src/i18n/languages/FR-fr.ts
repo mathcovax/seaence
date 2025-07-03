@@ -11,44 +11,77 @@ import type {
 	TextFieldEnumValue,
 	YearFieldEnumValue,
 } from "@vendors/types-advanced-query";
+import { cguFRfr } from "./cgu/FR-fr";
 
 export const FRfr = {
 	page: {
 		[homePage.name]: {
 			hero: {
 				title: {
-					begin: "L’exploration de",
-					spanBlue: "documents",
-					middle: "est devenue plus",
-					spanRed: "agréable",
-					end: "que jamais.",
+					begin: "Explorez la",
+					spanBlue: "recherche scientifique",
+					middle: "avec une approche",
+					spanRed: "collaborative",
+					end: "et intelligente.",
 				},
-				subtitle: `Plongez dans le domaine de l'information avec une joie retrouvée
-				en parcourant les documents sans effort. Découvrez une multitude d'informations
-				et tirez le meilleur parti de votre exploration, transformant chaque recherche
-				en un délicieux voyage de découverte.`,
+				subtitle: `Découvrez une plateforme de recherche documentaire moderne qui combine 
+				recherche avancée, traduction automatique, forum communautaire et outils 
+				d'organisation. Transformez votre façon d'explorer la littérature scientifique.`,
 			},
 			about: {
-				title: "À propos",
-				content: `Seaence est une plateforme de recherche de documents qui vous permet de
-				trouver des documents de recherche, des articles, des thèses, des livres
-				et bien plus encore. Nous avons pour mission de rendre la recherche de
-				documents plus agréable et plus efficace.`,
+				title: "À propos de Seaence",
+				content: `Seaence est une plateforme de recherche documentaire scientifique de nouvelle génération. 
+				Nous centralisons et indexons des données provenant de multiples sources dans une base vectorielle, 
+				offrant des capacités de recherche avancées avec traduction, reformulation et analyse sémantique. 
+				Notre mission est de révolutionner l'accès à l'information scientifique.`,
+			},
+			features: {
+				title: "Fonctionnalités principales",
+				items: {
+					search: {
+						title: "Recherche intelligente",
+						description: "Recherche vectorielle avec filtres avancés, traduction automatique et reformulation des requêtes.",
+					},
+					forum: {
+						title: "Forum communautaire",
+						description: "Échangez avec la caummunauté, posez des questions et partagez vos découvertes.",
+					},
+					organization: {
+						title: "Organisation personnalisée",
+						description: "Créez vos dossiers, sauvegardez vos favoris et suivez votre historique de recherche.",
+					},
+				},
 			},
 			faq: {
-				title: "Question fréquemment posées",
+				title: "Questions fréquemment posées",
 				accordion: {
 					item1: {
-						question: "Comment puis-je m'inscrire ?",
+						question: "Comment fonctionne la recherche vectorielle ?",
 						answer:
-							"Pour vous inscrire, vous devez cliquer sur le bouton \"S'inscrire\" "
-							+ "en haut à droite de la page d'accueil.",
+							"Notre système utilise des embeddings pour comprendre le sens de vos recherches, "
+							+ "permettant de trouver des documents pertinents même avec des termes différents. "
+							+ "La recherche sémantique va au-delà des mots-clés traditionnels.",
 					},
 					item2: {
-						question: "Comment puis-je me connecter ?",
+						question: "Puis-je traduire les documents ?",
 						answer:
-							"Pour vous connecter, vous devez cliquer sur le bouton \"Se connecter\" "
-							+ "en haut à droite de la page d'accueil.",
+							"Oui, Seaence intègre un service de traduction automatique qui permet de "
+							+ "traduire les résumés et contenus dans plusieurs langues, facilitant l'accès "
+							+ "à la littérature internationale.",
+					},
+					item3: {
+						question: "Comment participer au forum ?",
+						answer:
+							"Une fois connecté, vous pouvez créer des discussions sur des documents spécifiques, "
+							+ "poser des questions à la communauté et partager vos analyses. Le forum est organisé "
+							+ "par thématiques et documents.",
+					},
+					item4: {
+						question: "Mes données sont-elles sécurisées ?",
+						answer:
+							"Absolument. Nous utilisons une authentification SSO sécurisée, vos données personnelles "
+							+ "sont chiffrées et nous respectons les standards de sécurité les plus élevés. "
+							+ "Vous gardez le contrôle total sur vos informations.",
 					},
 				},
 			},
@@ -74,15 +107,15 @@ export const FRfr = {
 			createPost: "Créer un poste",
 			noPost: "Aucun post(s) trouvé pour ce document.",
 			reportingWrongTranslate: {
-				connexionRequire: "Il est obligatoire d'être connecté avant d'écrire un message.",
-				cta: "Signaler un problème de traduction du document.",
+				connexionRequire: "Vous devez être connecté pour signaler un problème de traduction.",
+				cta: "Signaler un problème de traduction du document",
 				information: [
-					"La tarduction est faite pars un model machine learning généric, cela",
-					"implique que certain mots n'arrive pas a étre traduit. Signaler une mauvaise traduction",
-					"nous permer d'amélioré le model et donc d'amélioré votre expérience utilisateur de seance.",
+					"La traduction est effectuée par un modèle de machine learning générique, cela",
+					"implique que certains mots peuvent être mal traduits. Signaler une mauvaise traduction",
+					"nous permet d'améliorer le modèle et donc d'améliorer votre expérience utilisateur sur Seaence.",
 				].join(" "),
 				form: {
-					textareaLabel: "Détails du probléme de traduction.",
+					textareaLabel: "Détails du problème de traduction.",
 				},
 			},
 			createManyDocumentInFolderDialog: {
@@ -95,15 +128,15 @@ export const FRfr = {
 			titleLinkPost: "Post(s) lié(s) au document : {title}",
 			authorIs: "Posté par {author}",
 			responseCount: "{count} réponse(s)",
-			noPost: "Aucun post(s) trouvé pour ce document.",
-			createPost: "Créer un poste",
+			noPost: "Aucun post trouvé pour ce document.",
+			createPost: "Créer un post",
 		},
 		[postPage.name]: {
-			connexionRequire: "Il est obligatoire d'être connecté avant d'écrire un message.",
+			connexionRequire: "Vous devez être connecté pour répondre à ce post.",
 			backToPostList: "Retour à la liste des posts",
 			countResponse: "{count}/{totalCount} Réponse(s)",
 			authorIs: "Posté par {author}",
-			noResponse: "Aucune réponse(s) pour ce post.",
+			noResponse: "Aucune réponse pour ce post.",
 			writeAnAnswer: "Écrivez un commentaire",
 			writeAnAnswerDescription: "Partagez votre avis ou répondez à la question posée.",
 			writeYourAnswer: "Un super commentaire...",
@@ -119,7 +152,7 @@ export const FRfr = {
 			tab: {
 				favorite: {
 					title: "Mes favoris",
-					empty: "Aucun favoris trouvé.",
+					empty: "Aucun favori trouvé.",
 					emptyDesc: "Ajoutez des documents à vos favoris pour les retrouver facilement.",
 				},
 				post: {
@@ -136,7 +169,7 @@ export const FRfr = {
 		[postCreatePage.name]: {
 			title: "Créer un post",
 			description: "Posez une question ou partagez votre avis sur un document.",
-			connexionRequire: "Il est obligatoire d'être connecté avant de créer un post.",
+			connexionRequire: "Vous devez être connecté pour créer un post.",
 			form: {
 				topic: {
 					label: {
@@ -145,7 +178,7 @@ export const FRfr = {
 					},
 					placeholder: "Exemple : Comment interpréter les données du graphique page 5 ?",
 					writingHelp: `Résumez le problème de manière concise.
-					Soyez spécifique pour augmenter les chances d’obtenir une réponse utile.`,
+					Plus vous serez précis, plus vous aurez de chances d'obtenir une réponse pertinente.`,
 				},
 				content: {
 					label: "Détaillez votre question",
@@ -164,11 +197,10 @@ export const FRfr = {
 				},
 				submitBtn: "Publier ma question",
 			},
-
 		},
 		[notificationListPage.name]: {
 			title: "Notifications",
-			noNotification: "Aucune notification trouvé.",
+			noNotification: "Aucune notification trouvée.",
 		},
 		[documentFolderPage.name]: {
 			title: "Dossiers",
@@ -194,28 +226,31 @@ export const FRfr = {
 			},
 			noDocumentInFolder: "Aucun document trouvé.",
 		},
+		...cguFRfr,
 	},
 	authDialog: {
-		title: "Authtification",
+		title: "Authentification",
 		subtitle: "Connectez-vous ou inscrivez-vous avec Google.",
-		googleSignError: "Une erreur c'est produite lors de la connexion avec google.",
+		googleSignError: "Une erreur s'est produite lors de la connexion avec Google.",
 		registerForm: {
-			usernameLabel: "Nom utilisateur",
-			CGULabel: "Accepter les contion général d'utilisation.",
-			requireCGU: "L'acceptation des condition général d'utilisation est obligatoire.",
+			usernameLabel: "Nom d'utilisateur",
+			CGULabel: "J’accepte les {0}",
+			CGULinkText: "Conditions Générales d’Utilisation",
+			requireCGU: "Vous devez accepter conditions générales d'utilisation.",
 		},
 	},
 	removeDocumentFolderDialog: {
 		title: "Supprimer un dossier",
-		description: "Êtes-vous sur de vouloir supprimer ce dossier ? La suppression dossier supprimera également son contenu",
+		description: "Êtes-vous sûr de vouloir supprimer ce dossier ? La suppression du dossier supprimera également son contenu.",
 	},
 	documentFolderHeader: {
 		label: "{count} élément(s)",
 		filtered: "{filtered} sur {total}",
+		noFiltered: "Aucun élément trouvé",
 	},
 	createManyDocumentInFolderDialog: {
 		title: "Ajouter le document",
-		sectionLabel: "Dossier dans le quel il se trouve",
+		sectionLabel: "Se trouve déjà dans :",
 		form: {
 			label: {
 				name: "Libellé",
@@ -251,7 +286,7 @@ export const FRfr = {
 			},
 			footer: {
 				nav: {
-					conditions: "Conditions d'utilisation",
+					conditions: "Conditions générales d'utilisation",
 					about: "À propos",
 					support: "Support",
 				},
@@ -320,29 +355,29 @@ export const FRfr = {
 					label: "Comparaison textuelle",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Abstract",
+						abstract: "Résumé",
 						title: "Titre",
-						keywords: "Mots clef",
+						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
 				},
 				strictText: {
 					selectPlaceholder: "Sélectionner un champ",
 					inputPlaceholder: "Entrer une valeur",
-					label: "Comparaison textuelle strict",
+					label: "Comparaison textuelle stricte",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Abstract",
+						abstract: "Résumé",
 						title: "Titre",
-						keywords: "Mots clef",
+						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
 				},
 				year: {
 					selectPlaceholder: "Sélectionner un champ",
 					label: "Comparaison d'années",
 					fields: {
-						allDate: "Toutes Dates",
-						journalDate: "publication journal",
-						webDate: "publication web",
+						allDate: "Toutes les dates",
+						journalDate: "Publication journal",
+						webDate: "Publication web",
 					} satisfies Record<YearFieldEnumValue, string>,
 				},
 				author: {
@@ -355,21 +390,21 @@ export const FRfr = {
 					emptyLabel: "Type d'article non trouvé",
 				},
 				provider: {
-					label: "Comparaison de platforme",
-					selectPlaceholder: "Sélectionner une platforme",
-					emptyLabel: "Platforme non trouvé",
+					label: "Comparaison de plateforme",
+					selectPlaceholder: "Sélectionner une plateforme",
+					emptyLabel: "Plateforme non trouvée",
 					value: {
 						pubmed: "PubMed",
 					} satisfies Record<ProviderEnumValue, string>,
 				},
 				yearInterval: {
 					selectPlaceholder: "Sélectionner un champ",
-					label: "Comparaison d'années avec interval",
-					refineMessage: "La veleur du premier champ doit étre supérieur au deuxiéme.",
+					label: "Comparaison d'années avec intervalle",
+					refineMessage: "La valeur du premier champ doit être supérieure à celle du deuxième.",
 					fields: {
-						allDate: "Toutes Dates",
-						journalDate: "publication journal",
-						webDate: "publication web",
+						allDate: "Toutes les dates",
+						journalDate: "Publication journal",
+						webDate: "Publication web",
 					} satisfies Record<YearFieldEnumValue, string>,
 				},
 			} satisfies Record<Comparator["name"], object>,
@@ -385,6 +420,11 @@ export const FRfr = {
 				},
 			},
 		},
+		boost: {
+			low: "Boost faible",
+			medium: "Boost moyen",
+			high: "Boost élevé",
+		},
 		foundResults: "{count} résultat(s) trouvé(s)",
 		noResult: "Aucun résultat trouvé",
 	},
@@ -392,15 +432,21 @@ export const FRfr = {
 		searchScore: "Score de recherche: {0}",
 	},
 	favoriteEquation: {
-		connexionRequire: "Voud devez étre connecter pour ajouter des équation en favorit.",
-		needEquation: "Il n'est pas possible d'enregister une équation vide.",
-		emptySearch: "Aucune equation favorite trouver.",
+		connexionRequire: "Vous devez être connecté pour ajouter des équations aux favoris.",
+		needEquation: "Il n'est pas possible d'enregistrer une équation vide.",
+		emptySearch: "Aucune équation favorite trouvée.",
+		saveEquation: "Enregistrer l'équation",
+		savedEquations: "Équations enregistrées",
 		inputLabel: "Rechercher ou nommer",
-		remove: "Supprimer l'equation des favorit ?",
-		replace: "Une équation avec ce nom éxiste déjà, voulez vous la remplacer ?",
-		invalidEquation: "L'equation que vous voulez utilisé a un ou plusieur champ "
-		+ "invalide, ésiter pas a faire une recherche avec pour s'assuré qu'elle fonctionne correctement.",
-
+		remove: "Supprimer l'équation des favoris ?",
+		replace: "Une équation avec ce nom existe déjà, voulez-vous la remplacer ?",
+		invalidEquation: "L'équation que vous voulez utiliser possède un ou plusieurs champs "
+		+ "invalides. N'hésitez pas à faire une recherche avec pour vous assurer qu'elle fonctionne correctement.",
+		found: "Équation trouvée",
+		addToFavorites: "Ajouter aux favoris",
+		confirmRemove: "Supprimer '{name}' des favoris ?",
+		noSavedEquations: "Aucune équation sauvegardée",
+		saveFirstEquation: "Sauvegardez votre première équation de recherche",
 	},
 	post: {
 		authorIs: "",
@@ -448,6 +494,10 @@ export const FRfr = {
 		validate: "Valider",
 		refuse: "Refuser",
 		add: "Ajouter",
+	},
+	languages: {
+		"fr-FR": "Français",
+		"en-US": "English",
 	},
 	articleType: {
 		adaptiveClinicalTrial: "Essai clinique adaptatif",
@@ -539,8 +589,8 @@ export const FRfr = {
 			registered: "Création de compte réalisée avec succès.",
 			notfound: "Utilisateur introuvable.",
 			shortUpdatedDelay: "Vous devez attendre avant de pouvoir modifier à nouveau ces informations.",
-			alreadyExist: "Un utilisateur avec cette address eùail éxiste déjà.",
-			banned: "L'action que vous southais faire vous est interdit a cause d'un banisement.",
+			alreadyExist: "Un utilisateur avec cette adresse email existe déjà.",
+			banned: "L'action que vous souhaitez faire vous est interdite à cause d'un bannissement.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",
@@ -559,18 +609,18 @@ export const FRfr = {
 			created: "Réponse créée avec succès.",
 		},
 		bakedDocumentTranslationReporting: {
-			upsert: "Le signalement a corectement étais pris en compte, merci de votre contribution.",
+			upsert: "Le signalement a bien été pris en compte, merci de votre contribution.",
 		},
 		favoriteEquation: {
-			upsert: "L'équation a bien étais mise dans les favorit.",
-			remove: "l'équation a bien étais supprimer.",
+			upsert: "L'équation a bien été mise en favoris.",
+			remove: "L'équation a bien été supprimée.",
 		},
 		documentFolder: {
 			alreadyExists: "Le dossier existe déjà",
 			maxQuantity: "Le dossier est plein",
 			notfound: "Le dossier n'existe pas",
 			removed: "Le dossier a été supprimé",
-			created: "Le dossier a été créer",
+			created: "Le dossier a été créé",
 		},
 		documentInFolder: {
 			notfound: "Le document n'existe pas",

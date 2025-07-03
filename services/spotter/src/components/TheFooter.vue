@@ -1,14 +1,15 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
 	<footer class="bg-background">
 		<div class="container py-8">
 			<nav>
-				<ul class="flex gap-4 md:gap-8">
+				<ul class="text-sm flex gap-2 md:gap-4">
 					<li>
 						<RouterLink
-							to=""
+							:to="cguPage"
 							class="hover:text-primary"
 						>
 							{{ $t("layout.base.footer.nav.conditions") }}

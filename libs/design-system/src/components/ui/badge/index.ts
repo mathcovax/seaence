@@ -22,6 +22,8 @@ export const badgeVariants = cva(
 				destructive:
 					"border-transparent bg-destructive text-primary-foreground",
 				outline: "border-primary text-primary",
+				seaence:
+					"border-transparent bg-blue-seaence text-primary-foreground",
 			},
 		},
 		defaultVariants: {

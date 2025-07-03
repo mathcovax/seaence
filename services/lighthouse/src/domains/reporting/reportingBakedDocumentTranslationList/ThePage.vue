@@ -19,6 +19,8 @@ function setPage(page: number) {
 	<section class="min-h-screen-nh">
 		<div v-if="pageContent && list">
 			<header class="mb-8">
+				<BackButton />
+
 				<h1 class="mb-2 text-3xl font-bold">
 					{{ $pt("title") }}
 				</h1>
@@ -30,6 +32,7 @@ function setPage(page: number) {
 
 			<div class="mb-6 flex justify-center">
 				<DSPagination
+					v-if="pageContent.countTotal > pageContent.quantityPerPage"
 					:max-page="maxPage"
 					:total="pageContent.countTotal"
 					:current-page="pageOfList"
@@ -108,6 +111,7 @@ function setPage(page: number) {
 
 			<div class="flex justify-center">
 				<DSPagination
+					v-if="pageContent.countTotal > pageContent.quantityPerPage"
 					:max-page="maxPage"
 					:total="pageContent.countTotal"
 					:current-page="pageOfList"

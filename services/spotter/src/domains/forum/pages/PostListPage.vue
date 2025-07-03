@@ -32,13 +32,7 @@ watch(
 			class="flex flex-col gap-6"
 		>
 			<div class="mb-6 flex gap-4 items-start">
-				<DSOutlineButton
-					square
-					class="shrink-0"
-					@click="router.back()"
-				>
-					<DSIcon name="arrowLeft" />
-				</DSOutlineButton>
+				<BackButton />
 
 				<h1 class="text-3xl font-semibold text-blue-seaence">
 					{{ $pt("titleLinkPost", { title: postListPageInforamtion.document.title }) }}

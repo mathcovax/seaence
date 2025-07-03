@@ -31,7 +31,7 @@ export function useCreateManyDocumentInFolderDialog(
 
 	const { Form, check, reset } = useFormBuilder(
 		useMultiFieldLayout({
-			name: useBaseLayout(
+			name: useCheckLayout(
 				textFormField,
 				{
 					mandatory: true,

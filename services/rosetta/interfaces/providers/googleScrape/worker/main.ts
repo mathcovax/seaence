@@ -43,7 +43,7 @@ const iconLocator = "path[d=\"M16,20H5V6H3v14c0,1.1,0.9,2,2,2h11V20z M20,16V4c0-
 const textChunk = 5000;
 // 30 min
 const resteTimeInterval = 1_800_000;
-const lastResetTime = Date.now();
+let lastResetTime = Date.now();
 
 parentPort!.on(
 	"message",
@@ -54,6 +54,7 @@ parentPort!.on(
 					(scliceText) => queue.add(
 						async() => {
 							if (Date.now() - resteTimeInterval >= lastResetTime) {
+								lastResetTime = Date.now();
 								await page.close();
 								await browser.close();
 								const newWebPage = await initWebPage();

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DSPrimaryButton from "@vendors/design-system/components/ui/button/DSPrimaryButton.vue";
 import RegisterNotificationCard from "../components/RegisterNotificationCard.vue";
 import ReplyToPostNotificationCard from "../components/ReplyToPostNotificationCard.vue";
 import { useNotificationListPage } from "../composables/useNotificationListPage";
@@ -42,11 +41,8 @@ watch(
 			v-if="notificationListPageInformation"
 			class="flex flex-col gap-6"
 		>
-			<div class="mb-6 flex gap-4 items-center">
-				<DSPrimaryButton
-					icon="arrowLeft"
-					@click="router.back()"
-				/>
+			<div class="flex gap-4 items-start">
+				<BackButton />
 
 				<h1 class="text-3xl font-semibold text-blue-seaence">
 					{{ $pt("title") }}
@@ -84,7 +80,7 @@ watch(
 
 			<div
 				v-else
-				class="text-center text-gray-500 mt-10"
+				class="py-16 text-center text-muted-foreground"
 			>
 				<p class="italic">
 					{{ $pt("noNotification") }}

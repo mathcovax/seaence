@@ -11,7 +11,7 @@ defineProps<Props>();
 </script>
 
 <template>
-	<DSCard class="group hover:shadow-md transition-shadow">
+	<DSCard class="h-30 group hover:shadow-md transition-shadow">
 		<div class="flex gap-4 items-start">
 			<div class="p-3 bg-primary/10 rounded-lg">
 				<DSIcon
@@ -28,7 +28,10 @@ defineProps<Props>();
 					{{ title }}
 				</h3>
 
-				<p class="mt-1 text-sm text-muted-foreground line-clamp-3">
+				<p
+					class="mt-1 text-sm text-muted-foreground line-clamp-2"
+					:title="description"
+				>
 					{{ description }}
 				</p>
 			</div>
