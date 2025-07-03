@@ -16,7 +16,7 @@ const checkboxId = useId();
 			:for="checkboxId"
 			class="cursor-pointer flex-1"
 		>
-			<i18n-t
+			<I18nT
 				keypath="authDialog.registerForm.CGULabel"
 				tag="span"
 			>
@@ -29,7 +29,7 @@ const checkboxId = useId();
 						{{ $t("authDialog.registerForm.CGULinkText") }}
 					</a>
 				</template>
-			</i18n-t>
+			</I18nT>
 		</DSLabel>
 	</div>
 </template>

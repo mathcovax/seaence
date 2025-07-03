@@ -52,6 +52,7 @@ export type PageUse<
 	)
 	& {
 		$pt: Composer["t"];
+		$gpt(key: string): string;
 	}
 >;
 
@@ -109,53 +110,59 @@ export function createPage<
 				return $t(`page.${pageName}.${path}`, rest || {});
 			}
 
-			const paramsZodSchema = zod.object(paramsShape ?? {});
-			const queryZodSchema = zod.object(queryShape ?? {});
-
-			const params = computed(() => {
-				if (!paramsShape) {
-					return;
-				}
-
-				const { success, data } = paramsZodSchema.safeParse(route.params);
-
-				if (pageName !== route.name) {
-					throw new Error("Route change.");
-				}
-
-				if (!success) {
-					void router.push({ path: createPage.redirectPath });
-
-					throw new Error("Params is invalid.");
-				}
-
-				return data;
-			});
-
-			const query = computed(() => {
-				if (!queryShape) {
-					return;
-				}
-
-				const { success, data } = queryZodSchema.safeParse(route.query);
-
-				if (pageName !== route.name) {
-					throw new Error("Route change.");
-				}
-
-				if (!success) {
-					void router.push({ path: createPage.redirectPath });
-
-					throw new Error("Query is invalid.");
-				}
-
-				return data;
-			});
+			function $gpt(path: string) {
+				return `page.${pageName}.${path}`;
+			}
 
 			return {
-				params,
-				query,
+				get params() {
+					const paramsZodSchema = zod.object(paramsShape ?? {});
+
+					return computed(() => {
+						if (!paramsShape) {
+							return;
+						}
+
+						const { success, data } = paramsZodSchema.safeParse(route.params);
+
+						if (pageName !== route.name) {
+							throw new Error("Route change.");
+						}
+
+						if (!success) {
+							void router.push({ path: createPage.redirectPath });
+
+							throw new Error("Params is invalid.");
+						}
+
+						return data;
+					});
+				},
+				get query() {
+					const queryZodSchema = zod.object(queryShape ?? {});
+
+					return computed(() => {
+						if (!queryShape) {
+							return;
+						}
+
+						const { success, data } = queryZodSchema.safeParse(route.query);
+
+						if (pageName !== route.name) {
+							throw new Error("Route change.");
+						}
+
+						if (!success) {
+							void router.push({ path: createPage.redirectPath });
+
+							throw new Error("Query is invalid.");
+						}
+
+						return data;
+					});
+				},
 				$pt,
+				$gpt,
 			} as never;
 		},
 		createTo(...[goParam]) {

@@ -94,7 +94,7 @@ export const cguFRfr = {
 						+ "sécurité de la Plateforme.",
 					2:
 						"L'Utilisateur dispose d'un droit d'accès, de rectification, de suppression et d'opposition sur ses "
-						+ "données. Pour exercer ces droits, contactez-nous à support{'@'}seaence.com.",
+						+ "données. Pour exercer ces droits, contactez-nous à {supportEmail}.",
 					3: "Seaence met en œuvre des mesures de sécurité adaptées pour protéger les données personnelles.",
 				},
 			},
@@ -142,10 +142,11 @@ export const cguFRfr = {
 					0:
 						"Pour toute question, suggestion ou réclamation concernant la Plateforme ou les présentes CGU, "
 						+ "vous pouvez nous contacter à l'adresse suivante :",
-					1: "support{'@'}seaence.com",
+					1: "{supportEmail}",
 					2: "Nous nous efforcerons de vous répondre dans les meilleurs délais.",
 				},
 			},
 		},
+		emailSupport: "support@seaence.com",
 	},
 };

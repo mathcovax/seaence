@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $pt } = cguPage.use();
+const { $pt, $gpt } = cguPage.use();
 
 interface Section {
 	key: string;
@@ -128,15 +128,6 @@ const sections: Section[] = [
 		type: "paragraphs",
 	},
 ];
-
-function formatContentWithEmailLinks(content: string) {
-	return content.replace(
-		/support@seaence\.com/g,
-		"<a href=\"mailto:support@seaence.com\" "
-        + "class=\"text-blue-seaence hover:underline font-medium\">"
-        + "support@seaence.com</a>",
-	);
-}
 </script>
 
 <template>
@@ -159,29 +150,30 @@ function formatContentWithEmailLinks(content: string) {
 			{{ $pt(section.titleKey) }}
 		</h2>
 
-		<div
-			v-if="section.type === 'paragraphs'"
-			class="space-y-3"
+		<component
+			:is="section.type === 'paragraphs' ? 'div' : 'ul'"
+			:class="{
+				'space-y-3': section.type === 'paragraphs',
+				'space-y-2 list-disc list-inside': section.type === 'list',
+			}"
 		>
-			<p
+			<I18nT
 				v-for="contentKey in section.contentKeys"
 				:key="contentKey"
+				:keypath="$gpt(contentKey)"
+				:tag="section.type === 'paragraphs' ? 'p' : 'li'"
 				class="leading-relaxed"
-				v-html="formatContentWithEmailLinks($pt(contentKey))"
-			/>
-		</div>
-
-		<ul
-			v-else-if="section.type === 'list'"
-			class="space-y-2 list-disc list-inside"
-		>
-			<li
-				v-for="contentKey in section.contentKeys"
-				:key="contentKey"
-				class="leading-relaxed"
-				v-html="formatContentWithEmailLinks($pt(contentKey))"
-			/>
-		</ul>
+			>
+				<template #supportEmail>
+					<a
+						href="mailto:support@seaence.com"
+						class="text-blue-seaence hover:underline font-medium"
+					>
+						{{ $pt('emailSupport') }}
+					</a>
+				</template>
+			</I18nT>
+		</component>
 	</section>
 
 	<div class="mt-12 pt-8 text-center border-t border-border">
