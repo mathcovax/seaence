@@ -13,6 +13,17 @@ const favoriteEquation = database.collection<MongoFavoriteEquation>("favoriteEqu
 
 if (envs.DB_CONNECTION) {
 	await client.connect();
+	await Promise.all([
+		documentInFolder.createIndex({
+			nodeSameRawDocumentId: 1,
+			userId: 1,
+		}),
+		documentFolder.createIndex({
+			id: 1,
+			addedAt: -1,
+			userId: 1,
+		}),
+	]);
 }
 
 export const mongo = {

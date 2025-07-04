@@ -51,6 +51,7 @@ export function useNotificationListPage(
 	watch(
 		pageOfNotificationList,
 		findNotificationList,
+		{ immediate: true },
 	);
 
 	return {

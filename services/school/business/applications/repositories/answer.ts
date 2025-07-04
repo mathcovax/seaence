@@ -13,6 +13,9 @@ export interface AnswerRepository extends RepositoryBase<AnswerEntity> {
 	findByPostId(postId: PostId, params: FindByPostIdParams): Promise<AnswerEntity[]>;
 	getCountByPostId(postId: PostId): Promise<PostAnswerCount>;
 	findByAuthorId(userId: UserId): AsyncGenerator<AnswerEntity>;
+	findOneById(id: AnswerId): Promise<AnswerEntity | null>;
+	findOldestUnprocessedAnswer(): Promise<AnswerEntity | null>;
+	getTotalCountOfUnprocessedAnswers(): Promise<Int>;
 }
 
 export const answerRepository = createRepositoryHandler<AnswerRepository>();

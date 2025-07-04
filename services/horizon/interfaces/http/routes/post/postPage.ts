@@ -26,6 +26,19 @@ useBuilder()
 	)
 	.cut(
 		({ pickup, dropper }) => {
+			const { status } = pickup("post");
+
+			if (status === "notCompliant") {
+				return new UnauthorizedHttpResponse("post.notCompliant");
+			}
+
+			return dropper(null);
+		},
+		[],
+		makeResponseContract(UnauthorizedHttpResponse, "post.notCompliant"),
+	)
+	.cut(
+		({ pickup, dropper }) => {
 			const { post, language } = pickup(["post", "language"]);
 			return dropper({
 				documentId: `${post.nodeSameRawDocumentId}_${language}`,

@@ -4,9 +4,6 @@ import { BaseNotificationEntity, createNotificationTypeObjecter, processedObject
 export const registerNotificationTypeObjecter = createNotificationTypeObjecter("registerNotificationType");
 export type RegisterNotificationType = GetValueObject<typeof registerNotificationTypeObjecter>;
 
-// 7 days
-const timeToLive = 604800;
-
 export class RegisterNotificationEntity extends EntityHandler.create(
 	{
 		type: registerNotificationTypeObjecter,
@@ -23,8 +20,10 @@ export class RegisterNotificationEntity extends EntityHandler.create(
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + this.timeToLive)),
 			type: registerNotificationTypeObjecter.unsafeCreate("registerNotificationType"),
 		});
 	}
+
+	public static readonly timeToLive = BaseNotificationEntity.timeToLive;
 }

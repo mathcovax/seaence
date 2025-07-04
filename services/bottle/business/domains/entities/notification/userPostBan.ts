@@ -6,8 +6,6 @@ import { warningIdObjecter, warningReasonObjecter } from "@business/domains/comm
 export const userPostBanNotificationTypeObjecter = createNotificationTypeObjecter("userPostBanNotificationType");
 export type UserPostBanNotificationType = GetValueObject<typeof userPostBanNotificationTypeObjecter>;
 
-const timeToLive = 604800;
-
 export class UserPostBanNotificationEntity extends EntityHandler.create(
 	{
 		type: userPostBanNotificationTypeObjecter,
@@ -27,8 +25,10 @@ export class UserPostBanNotificationEntity extends EntityHandler.create(
 			...params,
 			processed: processedObjecter.unsafeCreate(false),
 			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + timeToLive)),
+			deleteAt: commonDateObjecter.unsafeCreate(new Date(Date.now() + this.timeToLive)),
 			type: userPostBanNotificationTypeObjecter.unsafeCreate("userPostBanNotificationType"),
 		});
 	}
+
+	public static readonly timeToLive = BaseNotificationEntity.timeToLive;
 }

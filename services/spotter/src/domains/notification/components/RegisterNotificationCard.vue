@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import type { RegisterNotification } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 interface Props {
@@ -7,6 +7,9 @@ interface Props {
 }
 
 defineProps<Props>();
+const { lastSeeNotifications } = useUserInformation();
+
+const currentLastSeeNotifications = lastSeeNotifications.value;
 
 </script>
 
@@ -31,7 +34,7 @@ defineProps<Props>();
 			</div>
 
 			<DSBadge
-				v-if="!registerNotification.processed"
+				v-if="Date.parse(registerNotification.createdAt) > currentLastSeeNotifications"
 				variant="outline"
 				class="self-start"
 			>

@@ -1,6 +1,7 @@
+import { postIdObjecter } from "@business/domains/common/post";
 import { userIdObjecter } from "@business/domains/entities/user";
+import { answerUserWarningAnswerIdObjecter } from "@business/domains/entities/warning/answer";
 import { userWarningMakeUserBanObjecter, userWarningReasonObjecter } from "@business/domains/entities/warning/base";
-import { postUserWarningPostIdObjecter } from "@business/domains/entities/warning/post";
 
 const createUserWarning = zod.object({
 	makeUserBan: userWarningMakeUserBanObjecter.toZodSchema(),
@@ -9,5 +10,10 @@ const createUserWarning = zod.object({
 });
 
 export const entrypointCreatePostUserWarning = createUserWarning.extend({
-	postId: postUserWarningPostIdObjecter.toZodSchema(),
+	postId: postIdObjecter.toZodSchema(),
+});
+
+export const entrypointCreateAnswerUserWarning = createUserWarning.extend({
+	postId: postIdObjecter.toZodSchema(),
+	answerId: answerUserWarningAnswerIdObjecter.toZodSchema(),
 });

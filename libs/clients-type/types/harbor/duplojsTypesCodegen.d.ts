@@ -25,6 +25,25 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/create-answer-user-warning";
+    body: {
+        makeUserBan: boolean;
+        reason: string;
+        userId: string;
+        postId: string;
+        answerId: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "warning.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/find-user";
     body: {
         accessToken: string;

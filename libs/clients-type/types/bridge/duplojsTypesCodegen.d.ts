@@ -90,6 +90,21 @@ type PostModerationPage = {
 
 export { PostModerationPage };
 
+type AnswerModerationPage = {
+    answer: {
+        id: string;
+        postId: string;
+        content: string;
+        authorId: string;
+        authorName: string;
+        status: "compliant" | "unprocessed" | "notCompliant";
+        createdAt: string;
+    };
+    unprocessedTotalCount: number;
+};
+
+export { AnswerModerationPage };
+
 type CodegenRoutes = ({
     method: "POST";
     path: "/reporting-baked-document-translation-aggregate-list-page";
@@ -223,6 +238,64 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "post.updated";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/answer-moderation-page";
+    response: {
+        code: 404;
+        information: "answerModerationPage.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "answerModerationPage.found";
+        body: AnswerModerationPage;
+    };
+}) | ({
+    method: "POST";
+    path: "/answers/{answerId}/is-compliant";
+    params: {
+        answerId: string;
+    };
+    response: {
+        code: 404;
+        information: "answer.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "answer.wrongStatus";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "answer.updated";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/answers/{answerId}/is-not-compliant-and-create-warning";
+    body: {
+        makeUserBan: boolean;
+        reason: string;
+    };
+    params: {
+        answerId: string;
+    };
+    response: {
+        code: 403;
+        information: "answer.wrongStatus";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "answer.postMismatch";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "answer.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "answer.updated";
         body?: undefined;
     };
 });

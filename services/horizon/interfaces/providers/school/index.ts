@@ -60,7 +60,7 @@ export class SchoolAPI {
 					},
 				},
 			)
-			.iWantExpectedResponse();
+			.iWantInformation(["answers.found", "post.notfound"]);
 	}
 
 	public static replyToPost(postId: string, body: InputCreateAnswer) {

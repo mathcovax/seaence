@@ -53,11 +53,11 @@ export function usePostModerationForm() {
 		),
 	);
 
-	function passeToRejectForm() {
+	function switchToRejectForm() {
 		formValue.value.type = "reject";
 	}
 
-	function passeToApproveForm() {
+	function switchToApproveForm() {
 		formValue.value.type = "approve";
 	}
 
@@ -66,8 +66,8 @@ export function usePostModerationForm() {
 	);
 
 	return {
-		passeToRejectForm,
-		passeToApproveForm,
+		switchToRejectForm,
+		switchToApproveForm,
 		formMode,
 		resetForm: reset,
 		checkForm: check,

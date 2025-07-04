@@ -1,23 +1,33 @@
 <script setup lang="ts">
-
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import type { ReplyToPostNotification } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 
 interface Props {
 	replyToPostNotification: ReplyToPostNotification;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+const router = useRouter();
+const { lastSeeNotifications } = useUserInformation();
 
-const emit = defineEmits<{ click: [] }>();
+const currentLastSeeNotifications = lastSeeNotifications.value;
 
 function onClick() {
-	emit("click");
+	void router.push(
+		postPage.createTo({
+			params: {
+				postId: props.replyToPostNotification.postId,
+			},
+		}),
+	);
 }
-
 </script>
 
 <template>
-	<DSCard @click="onClick()">
+	<DSCard
+		@click="onClick()"
+		class="hover:cursor-pointer"
+	>
 		<div class="flex gap-3 items-center">
 			<div class="p-2 bg-blue-seaence/20 rounded-full">
 				<DSIcon
@@ -44,7 +54,7 @@ function onClick() {
 			</div>
 
 			<DSBadge
-				v-if="!replyToPostNotification.processed"
+				v-if="Date.parse(replyToPostNotification.createdAt) > currentLastSeeNotifications"
 				variant="outline"
 				class="self-start"
 			>

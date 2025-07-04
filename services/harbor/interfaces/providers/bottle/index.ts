@@ -6,11 +6,19 @@ export type BottleClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-interface InputCreateUserPostNotification {
+interface InputCreateNotification {
 	userId: string;
 	warningId: string;
-	postId: string;
 	reason: string;
+}
+
+interface InputCreateUserPostNotification extends InputCreateNotification {
+	postId: string;
+}
+
+interface InputCreateUserAnswerNotification extends InputCreateNotification {
+	postId: string;
+	answerId: string;
 }
 
 export class BottleAPI {
@@ -28,6 +36,24 @@ export class BottleAPI {
 	public static createUserPostWarningNotification(params: InputCreateUserPostNotification) {
 		return this.httpClient.post(
 			"/create-post-warning-notification",
+			{
+				body: params,
+			},
+		).iWantExpectedResponse();
+	}
+
+	public static createUserAnswerBanNotification(params: InputCreateUserAnswerNotification) {
+		return this.httpClient.post(
+			"/create-answer-ban-notification",
+			{
+				body: params,
+			},
+		).iWantExpectedResponse();
+	}
+
+	public static createUserAnswerWarningNotification(params: InputCreateUserAnswerNotification) {
+		return this.httpClient.post(
+			"/create-answer-warning-notification",
 			{
 				body: params,
 			},

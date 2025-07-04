@@ -15,17 +15,12 @@ import { DocumentInFolder } from "@business/entities/documentInFolder";
 ArticleType.index._zttIdentifier = "ArticleType";
 
 BackedDocument.index._zttIdentifier = "BakedDocument";
-
 BackedDocument.language._zttIdentifier = "BakedDocumentLanguage";
-
 BackedDocument.searchResult._zttIdentifier = "BakedDocumentSearchResult";
 
 Facet.index._zttIdentifier = "Facet";
-
 Facet.filters._zttIdentifier = "FiltersValues";
-
 Facet.genderValue._zttIdentifier = "GenderFacetValue";
-
 Facet.speciesValue._zttIdentifier = "SpeciesFacetValue";
 
 flexibleDateObjecter.zodSchema._zttIdentifier = "FlexibleDate";
@@ -37,14 +32,15 @@ User.index._zttIdentifier = "User";
 User.language._zttIdentifier = "UserLanguage";
 
 Notification.index._zttIdentifier = "Notification";
-
 Notification.replyToPost._zttIdentifier = "ReplyToPostNotification";
-
 Notification.register._zttIdentifier = "RegisterNotification";
+Notification.answerBan._zttIdentifier = "AnswerBanNotification";
+Notification.answerWarning._zttIdentifier = "AnswerWarningNotification";
+Notification.postBan._zttIdentifier = "PostBanNotification";
+Notification.postWarning._zttIdentifier = "PostWarningNotification";
 
 FavoriteEquation.index._zttIdentifier = "FavoriteEquation";
 FavoriteEquation.listDetails._zttIdentifier = "FavoriteEquationListDetails";
 
 DocumentFolder.index._zttIdentifier = "DocumentFolder";
-
 DocumentInFolder.index._zttIdentifier = "DocumentInFoloder";

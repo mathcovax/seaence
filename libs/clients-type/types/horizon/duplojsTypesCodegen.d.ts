@@ -12,6 +12,7 @@ export { UserLanguage };
 type Answer = {
     id: string;
     postId: string;
+    status: "compliant" | "unprocessed" | "notCompliant";
     content: string;
     authorId: string;
     authorName: string;
@@ -22,6 +23,7 @@ export { Answer };
 
 type Post = {
     id: string;
+    status: "compliant" | "unprocessed" | "notCompliant";
     topic: string;
     content: string;
     authorId: string;
@@ -262,25 +264,7 @@ type FlexibleDate = {
 
 export { FlexibleDate };
 
-type Notification = RegisterNotification | ReplyToPostNotification | {
-    id: string;
-    processed: boolean;
-    createdAt: string;
-    deleteAt: string;
-    type: "userPostBanNotificationType";
-    postId: string;
-    reason: string;
-    warningId: string;
-} | {
-    id: string;
-    processed: boolean;
-    createdAt: string;
-    deleteAt: string;
-    type: "userPostWarningNotificationType";
-    postId: string;
-    reason: string;
-    warningId: string;
-};
+type Notification = RegisterNotification | ReplyToPostNotification | PostBanNotification | PostWarningNotification | AnswerBanNotification | AnswerWarningNotification;
 
 export { Notification };
 
@@ -306,6 +290,60 @@ type ReplyToPostNotification = {
 };
 
 export { ReplyToPostNotification };
+
+type PostBanNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userPostBanNotificationType";
+    postId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { PostBanNotification };
+
+type PostWarningNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userPostWarningNotificationType";
+    postId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { PostWarningNotification };
+
+type AnswerBanNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userAnswerBanNotificationType";
+    postId: string;
+    answerId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { AnswerBanNotification };
+
+type AnswerWarningNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userAnswerWarningNotificationType";
+    postId: string;
+    answerId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { AnswerWarningNotification };
 
 type FavoriteEquationListDetails = {
     total: number;
@@ -480,6 +518,10 @@ type CodegenRoutes = ({
     } | {
         code: 404;
         information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 401;
+        information: "post.notCompliant";
         body?: undefined;
     } | {
         code: 404;

@@ -17,6 +17,13 @@ const { $pt } = postPage.use();
 			{{ answer.content }}
 		</p>
 
+		<small
+			v-if="answer.status === 'notCompliant'"
+			class="text-muted-foreground"
+		>
+			{{ $pt("notCompliantContent") }}
+		</small>
+
 		<template #footer>
 			<div class="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
 				<div class="flex items-center gap-2">

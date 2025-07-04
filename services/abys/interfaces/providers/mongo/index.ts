@@ -15,10 +15,12 @@ const keyDateCollection = database.collection<MongoKeyDate>("keyDate");
 
 if (envs.DB_CONNECTION) {
 	await client.connect();
-	await bakedDocumentCollection.createIndex({
-		lastUpdate: 1,
-		id: 1,
-	});
+	await Promise.all([
+		bakedDocumentCollection.createIndex({
+			lastUpdate: 1,
+			id: 1,
+		}),
+	]);
 }
 
 export const mongo = {

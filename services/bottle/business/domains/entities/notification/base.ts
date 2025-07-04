@@ -26,4 +26,6 @@ export class BaseNotificationEntity extends EntityHandler.create({
 			processed: processedObjecter.unsafeCreate(true),
 		});
 	}
+
+	public static readonly timeToLive = 604_800_000;
 }

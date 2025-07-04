@@ -1,7 +1,7 @@
 import { userIdObjecter } from "@business/domains/entities/user";
-import { countNotificationToUserUsecase, createUserPostBanNotificationUsecase, createUserPostWarningNotificationUsecase, findManyNotificationToUserUsecase } from "@interfaces/usecases";
+import { countNotificationToUserUsecase, createUserAnswerBanNotificationUsecase, createUserAnswerWarningNotificationUsecase, createUserPostBanNotificationUsecase, createUserPostWarningNotificationUsecase, findManyNotificationToUserUsecase } from "@interfaces/usecases";
 import { intObjecter, positiveIntObjecter } from "@vendors/clean";
-import { endpointCountNotification, endpointFindNotification, entrypointPostNotification } from "../schemas/notification";
+import { endpointCountNotification, endpointFindNotification, entrypointAnswerNotification, entrypointPostNotification } from "../schemas/notification";
 import { IWantUserExistsById } from "../checkers/user";
 
 useBuilder()
@@ -125,4 +125,76 @@ useBuilder()
 			);
 		},
 		makeResponseContract(CreatedHttpResponse, "notification.postBan.created"),
+	);
+
+useBuilder()
+	.createRoute("POST", "/create-answer-warning-notification")
+	.extract({
+		body: entrypointAnswerNotification,
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const {
+				body: {
+					warningId,
+					postId,
+					answerId,
+					reason,
+				},
+				user,
+			} = pickup(["body", "user"]);
+
+			await createUserAnswerWarningNotificationUsecase.execute({
+				user,
+				warningId,
+				postId,
+				answerId,
+				reason,
+			});
+
+			return new CreatedHttpResponse(
+				"notification.answerWarning.created",
+			);
+		},
+		makeResponseContract(CreatedHttpResponse, "notification.answerWarning.created"),
+	);
+
+useBuilder()
+	.createRoute("POST", "/create-answer-ban-notification")
+	.extract({
+		body: entrypointAnswerNotification,
+	})
+	.presetCheck(
+		IWantUserExistsById,
+		(pickup) => pickup("body").userId,
+	)
+	.handler(
+		async(pickup) => {
+			const {
+				body: {
+					warningId,
+					postId,
+					answerId,
+					reason,
+				},
+				user,
+			} = pickup(["body", "user"]);
+
+			await createUserAnswerBanNotificationUsecase.execute({
+				user,
+				warningId,
+				postId,
+				answerId,
+				reason,
+			});
+
+			return new CreatedHttpResponse(
+				"notification.answerBan.created",
+			);
+		},
+		makeResponseContract(CreatedHttpResponse, "notification.answerBan.created"),
 	);

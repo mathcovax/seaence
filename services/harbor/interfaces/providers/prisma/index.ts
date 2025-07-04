@@ -9,9 +9,17 @@ export interface PostReference {
 	postId: string;
 }
 
+export interface AnswerReference {
+	type: "answer";
+	postId: string;
+	answerId: string;
+}
+
 declare global {
 	namespace PrismaJson {
-		type WarningReference = | PostReference;
+		type WarningReference =
+			| PostReference
+			| AnswerReference;
 	}
 }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import RegisterNotificationCard from "../components/RegisterNotificationCard.vue";
-import ReplyToPostNotificationCard from "../components/ReplyToPostNotificationCard.vue";
+import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { useNotificationListPage } from "../composables/useNotificationListPage";
+import { notificationWrapper } from "../utils/notificationWrapper";
 
 const { $pt } = notificationListPage.use();
 const router = useRouter();
@@ -16,16 +16,7 @@ const {
 		router.back();
 	},
 );
-
-function onClikReplyPostNotification(postId: string) {
-	void router.push(
-		postPage.createTo({
-			params: {
-				postId,
-			},
-		}),
-	);
-}
+const { seeNotifications } = useUserInformation();
 
 watch(
 	pageOfNotificationList,
@@ -33,6 +24,10 @@ watch(
 		scrollToTop("instant");
 	},
 );
+
+onMounted(() => {
+	seeNotifications();
+});
 </script>
 
 <template>
@@ -55,21 +50,13 @@ watch(
 						v-for="notification in notificationList"
 						:key="notification.id"
 					>
-						<RegisterNotificationCard
-							v-if="notification.type === 'registerNotificationType'"
-							:register-notification="notification"
-						/>
-
-						<ReplyToPostNotificationCard
-							v-else-if="notification.type === 'replyToPostNotificationType'"
-							:reply-to-post-notification="notification"
-							@click="onClikReplyPostNotification(notification.postId)"
-						/>
+						<component :is="notificationWrapper(notification)" />
 					</div>
 				</div>
 
 				<div class="mt-10 flex justify-center">
 					<DSPagination
+						v-if="notificationListPageInformation.totalNoticationCount > notificationListPageInformation.quantityNotificationPerPage"
 						:total="notificationListPageInformation.totalNoticationCount"
 						:current-page="pageOfNotificationList"
 						:quantity-per-page="notificationListPageInformation.quantityNotificationPerPage"

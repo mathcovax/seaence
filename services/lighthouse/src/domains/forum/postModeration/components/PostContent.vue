@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { postPage } from "@/domains/forum/postModeration/router";
-import type { Post } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { PostModerationPage } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
 
 interface Props {
-	post: Post;
+	post: PostModerationPage["post"];
 }
 
 defineProps<Props>();

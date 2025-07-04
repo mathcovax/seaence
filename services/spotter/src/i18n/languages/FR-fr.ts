@@ -140,6 +140,7 @@ export const FRfr = {
 			writeAnAnswer: "Écrivez un commentaire",
 			writeAnAnswerDescription: "Partagez votre avis ou répondez à la question posée.",
 			writeYourAnswer: "Un super commentaire...",
+			notCompliantContent: "Le contenu de ce message a été censuré.",
 		},
 		[profilePage.name]: {
 			personalInfo: {
@@ -453,13 +454,21 @@ export const FRfr = {
 		responseCount: "",
 	},
 	notification: {
+		status: "Nouveau",
 		register: {
 			content: "Bienvenue sur Seance !",
 		},
 		replyToPost: {
 			repliedToYourPostMessage: "a répondu à votre publication",
 		},
-		status: "Nouveau",
+		answer: {
+			ban: "Publication de réponses suspendu, vous ne pouvez plus répondre aux posts pour le moment",
+			warning: "Votre réponse a reçu un avertissement",
+		},
+		post: {
+			ban: "Publication de post suspendu, vous ne pouvez plus poster pour le moment",
+			warning: "Votre post a reçu un avertissement",
+		},
 	},
 	formMessage: {
 		required: "Champ obligatoire.",

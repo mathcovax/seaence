@@ -142,6 +142,38 @@ type CodegenRoutes = ({
             postId: string;
             reason: string;
             warningId: string;
+        } | {
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+            type: "userAnswerBanNotificationType";
+            postId: string;
+            answerId: string;
+            reason: string;
+            warningId: string;
+        } | {
+            id: string;
+            user: {
+                id: string;
+                username: string;
+                email: string;
+                language: "fr-FR" | "en-US";
+            };
+            processed: boolean;
+            createdAt: Date;
+            deleteAt: Date;
+            type: "userAnswerWarningNotificationType";
+            postId: string;
+            answerId: string;
+            reason: string;
+            warningId: string;
         })[];
     };
 }) | ({
@@ -195,6 +227,44 @@ type CodegenRoutes = ({
     } | {
         code: 201;
         information: "notification.postBan.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/create-answer-warning-notification";
+    body: {
+        userId: string;
+        warningId: string;
+        postId: string;
+        answerId: string;
+        reason: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "notification.answerWarning.created";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/create-answer-ban-notification";
+    body: {
+        userId: string;
+        warningId: string;
+        postId: string;
+        answerId: string;
+        reason: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 201;
+        information: "notification.answerBan.created";
         body?: undefined;
     };
 });

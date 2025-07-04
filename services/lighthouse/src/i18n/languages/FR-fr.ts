@@ -1,4 +1,5 @@
 import { dashboardPage } from "@/domains/dashboard/dashboardPage/router";
+import { answerPage } from "@/domains/forum/answerModeration/router";
 import { postPage } from "@/domains/forum/postModeration/router";
 import { reportingBakedDocumentTranslationPage } from "@/domains/reporting/reportingBakedDocumentTranslation/router";
 import {
@@ -20,6 +21,10 @@ export const FRfr = {
 				post: {
 					title: "Modération des Posts",
 					description: "Examinez et modérez les posts en attente de validation.",
+				},
+				answer: {
+					title: "Modération des Réponses",
+					description: "Examinez et modérez les réponses en attente de validation.",
 				},
 				reportingBakedDocumentTranslation: {
 					title: "Signalements de Traduction",
@@ -44,6 +49,24 @@ export const FRfr = {
 				pending: "Posts en attente",
 				approved: "Posts approuvés",
 				rejected: "Posts rejetés",
+			},
+		},
+		[answerPage.name]: {
+			title: "Modération des Réponses",
+			description: "Examinez et modérez les réponses en attente de validation.",
+			emptyTitle: "Aucune réponse en attente",
+			emptyDescription: "Il n'y a actuellement aucune réponse en attente de modération.",
+			answerStatus: "En attente",
+			warningModal: {
+				title: "Avertisement utilisateur :",
+				checkboxBanUser: "Bannir l'utilisateur ?",
+				reasonLabel: "Raison de l'avertisement",
+				confirm: "Confirmer le rejet",
+			},
+			answerStats: {
+				pending: "Réponses en attente",
+				approved: "Réponses approuvées",
+				rejected: "Réponses rejetées",
 			},
 		},
 		[reportingBakedDocumentTranslationListPage.name]: {
@@ -123,6 +146,12 @@ export const FRfr = {
 		},
 		nodeSameRawDocument: {
 			notfound: "Le nœud n'a pas été trouvé.",
+		},
+		answer: {
+			notfound: "La réponse n'a pas été trouvée.",
+			wrongStatus: "La réponse n'est pas en attente de modération.",
+			updated: "La réponse a été mise à jour avec succès.",
+			postMismatch: "La réponse ne correspond pas au post.",
 		},
 		post: {
 			notfound: "Le post n'a pas été trouvé.",

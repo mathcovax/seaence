@@ -1,15 +1,16 @@
 import { type UserWarningReason, type UserWarningMakeUserBan } from "@business/domains/entities/warning/base";
-import { PostUserWarningEntity, type PostUserWarningPostId } from "@business/domains/entities/warning/post";
+import { PostUserWarningEntity } from "@business/domains/entities/warning/post";
 import { UsecaseHandler } from "@vendors/clean";
 import { userWarningRepository } from "../repositories/warning";
 import { MakeUserBanUsecase } from "./makeUserBan";
 import { type UserEntity } from "@business/domains/entities/user";
 import { notificationRepository } from "../repositories/notification";
+import { type PostId } from "@business/domains/common/post";
 
 interface Input {
 	makeUserBan: UserWarningMakeUserBan;
 	reason: UserWarningReason;
-	postId: PostUserWarningPostId;
+	postId: PostId;
 	user: UserEntity;
 }
 

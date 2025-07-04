@@ -7,6 +7,7 @@ import {
 import {
 	reportingBakedDocumentTranslationPage,
 } from "@/domains/reporting/reportingBakedDocumentTranslation/router";
+import { answerPage } from "@/domains/forum/answerModeration/router";
 
 export const router = createRouter({
 	history: createWebHistory(),
@@ -17,6 +18,7 @@ export const router = createRouter({
 			children: [
 				dashboardPage.recordRaw,
 				postPage.recordRaw,
+				answerPage.recordRaw,
 				reportingBakedDocumentTranslationListPage.recordRaw,
 				reportingBakedDocumentTranslationPage.recordRaw,
 			],
