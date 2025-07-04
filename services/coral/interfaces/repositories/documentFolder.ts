@@ -8,12 +8,12 @@ import { EntityHandler, intObjecter } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
 const defaultCountResult = 0;
-const countResultSchema = zod
-	.object({
-		folder: zod.number(),
-	});
 
-const countResultSchemaAcc = ZodAccelerator.build(countResultSchema);
+const countResultSchema = ZodAccelerator.build(
+	zod.object({
+		folder: zod.number(),
+	}),
+);
 
 documentFolderRepository.default = {
 	generateDocumentFolderId() {
@@ -223,7 +223,7 @@ documentFolderRepository.default = {
 			return intObjecter.unsafeCreate(defaultCountResult);
 		}
 
-		const countResult = countResultSchemaAcc.parse(result);
+		const countResult = countResultSchema.parse(result);
 
 		return intObjecter.throwCreate(countResult.folder);
 	},
