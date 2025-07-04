@@ -50,6 +50,9 @@ import {
 	mdiChefHat,
 	mdiFolderFileOutline,
 	mdiReply,
+	mdiCloseCircle,
+	mdiCommentAlert,
+	mdiCommentRemove,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -104,6 +107,9 @@ export const iconsMapper = {
 	chevronDown: mdiChevronDown,
 	chefHat: mdiChefHat,
 	folderFileOutline: mdiFolderFileOutline,
+	closeCircle: mdiCloseCircle,
+	commentAlert: mdiCommentAlert,
+	commentRemove: mdiCommentRemove,
 };
 
 export const iconSizeMapper = {

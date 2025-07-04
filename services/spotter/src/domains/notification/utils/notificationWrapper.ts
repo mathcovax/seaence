@@ -2,6 +2,10 @@ import type { NotificationList } from "@/lib/horizon/types/notification";
 import { match } from "ts-pattern";
 import RegisterNotificationCard from "../components/RegisterNotificationCard.vue";
 import ReplyToPostNotificationCard from "../components/ReplyToPostNotificationCard.vue";
+import AnswerBanNotificationCard from "../components/AnswerBanNotificationCard.vue";
+import AnswerWarningNotificationCard from "../components/AnswerWarningNotificationCard.vue";
+import PostBanNotificationCard from "../components/PostBanNotificationCard.vue";
+import PostWarningNotificationCard from "../components/PostWarningNotificationCard.vue";
 
 export function notificationWrapper(notification: NotificationList[number]) {
 	return match(notification)
@@ -21,19 +25,31 @@ export function notificationWrapper(notification: NotificationList[number]) {
 		)
 		.with(
 			{ type: "userAnswerBanNotificationType" },
-			() => null,
+			(answerBanNotification) => h(
+				AnswerBanNotificationCard,
+				{ answerBanNotification },
+			),
 		)
 		.with(
 			{ type: "userAnswerWarningNotificationType" },
-			() => null,
+			(answerWarningNotification) => h(
+				AnswerWarningNotificationCard,
+				{ answerWarningNotification },
+			),
 		)
 		.with(
 			{ type: "userPostBanNotificationType" },
-			() => null,
+			(postBanNotification) => h(
+				PostBanNotificationCard,
+				{ postBanNotification },
+			),
 		)
 		.with(
 			{ type: "userPostWarningNotificationType" },
-			() => null,
+			(postWarningNotification) => h(
+				PostWarningNotificationCard,
+				{ postWarningNotification },
+			),
 		)
 		.exhaustive();
 }

@@ -287,7 +287,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 404;
-        information: "post.notfound";
+        information: "answer.postMismatch";
         body?: undefined;
     } | {
         code: 404;

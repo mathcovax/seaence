@@ -263,45 +263,7 @@ type FlexibleDate = {
 
 export { FlexibleDate };
 
-type Notification = RegisterNotification | ReplyToPostNotification | {
-    id: string;
-    processed: boolean;
-    createdAt: string;
-    deleteAt: string;
-    type: "userPostBanNotificationType";
-    postId: string;
-    reason: string;
-    warningId: string;
-} | {
-    id: string;
-    processed: boolean;
-    createdAt: string;
-    deleteAt: string;
-    type: "userPostWarningNotificationType";
-    postId: string;
-    reason: string;
-    warningId: string;
-} | {
-    id: string;
-    processed: boolean;
-    createdAt: string;
-    deleteAt: string;
-    type: "userAnswerBanNotificationType";
-    postId: string;
-    answerId: string;
-    reason: string;
-    warningId: string;
-} | {
-    id: string;
-    processed: boolean;
-    createdAt: string;
-    deleteAt: string;
-    type: "userAnswerWarningNotificationType";
-    postId: string;
-    answerId: string;
-    reason: string;
-    warningId: string;
-};
+type Notification = RegisterNotification | ReplyToPostNotification | PostBanNotification | PostWarningNotification | AnswerBanNotification | AnswerWarningNotification;
 
 export { Notification };
 
@@ -327,6 +289,60 @@ type ReplyToPostNotification = {
 };
 
 export { ReplyToPostNotification };
+
+type PostBanNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userPostBanNotificationType";
+    postId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { PostBanNotification };
+
+type PostWarningNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userPostWarningNotificationType";
+    postId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { PostWarningNotification };
+
+type AnswerBanNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userAnswerBanNotificationType";
+    postId: string;
+    answerId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { AnswerBanNotification };
+
+type AnswerWarningNotification = {
+    id: string;
+    processed: boolean;
+    createdAt: string;
+    deleteAt: string;
+    type: "userAnswerWarningNotificationType";
+    postId: string;
+    answerId: string;
+    reason: string;
+    warningId: string;
+};
+
+export { AnswerWarningNotification };
 
 type FavoriteEquationListDetails = {
     total: number;
