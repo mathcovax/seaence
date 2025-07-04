@@ -21,6 +21,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             nodeSameRawDocumentId: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
             topic: string;
             content: string;
             authorId: string;
@@ -75,6 +76,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             nodeSameRawDocumentId: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
             topic: string;
             content: string;
             authorId: string;
@@ -96,6 +98,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             nodeSameRawDocumentId: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
             topic: string;
             content: string;
             authorId: string;
@@ -134,6 +137,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             nodeSameRawDocumentId: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
             topic: string;
             content: string;
             authorId: string;
@@ -166,6 +170,7 @@ type CodegenRoutes = ({
         body: {
             id: string;
             nodeSameRawDocumentId: string;
+            status: "compliant" | "unprocessed" | "notCompliant";
             topic: string;
             content: string;
             authorId: string;

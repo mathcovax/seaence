@@ -1,9 +1,10 @@
 import { zod } from "@vendors/clean";
-import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/post";
+import { nodeSameRawDocumentIdObjecter, postStatusEnum } from "@business/domains/entities/post";
 
 export const endpointPostSchema = zod.object({
 	id: zod.string(),
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.zodSchema,
+	status: zod.enum(postStatusEnum.toTuple()),
 	topic: zod.string(),
 	content: zod.string(),
 	authorId: zod.string(),

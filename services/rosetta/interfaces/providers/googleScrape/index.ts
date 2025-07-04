@@ -58,7 +58,7 @@ export class GoogleScrape {
 	public static async initWorker() {
 		this.worker = createExternalPromise();
 
-		const timeoutStratWorker = 5000;
+		const timeoutStratWorker = 10000;
 
 		const worker = await new Promise<Worker>(
 			(promiseResolve, rejectResolve) => {
@@ -75,7 +75,8 @@ export class GoogleScrape {
 							clearTimeout(timeoutId);
 							promiseResolve(worker);
 						}
-					});
+					})
+					.once("error", rejectResolve);
 			},
 		);
 

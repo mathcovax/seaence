@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Answer } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { AnswerModerationPage } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 import { getRelativeTime } from "@vendors/design-system/lib/utils";
 import { answerPage } from "../router";
 
 interface Props {
-	answer: Answer;
+	answer: AnswerModerationPage["answer"];
 }
 
 defineProps<Props>();

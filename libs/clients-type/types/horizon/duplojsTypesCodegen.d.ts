@@ -23,6 +23,7 @@ export { Answer };
 
 type Post = {
     id: string;
+    status: "compliant" | "unprocessed" | "notCompliant";
     topic: string;
     content: string;
     authorId: string;
@@ -517,6 +518,10 @@ type CodegenRoutes = ({
     } | {
         code: 404;
         information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 401;
+        information: "post.notCompliant";
         body?: undefined;
     } | {
         code: 404;
