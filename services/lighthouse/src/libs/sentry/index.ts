@@ -4,6 +4,7 @@ import type { App } from "vue";
 import { router } from "@/router";
 import { RequestError } from "@duplojs/http-client";
 import { simpleClone } from "@duplojs/utils";
+import { IgnoreTimeoutRequestError } from "./errors/ignoreTimeoutRequestError";
 
 export interface SentryContext {
 	tags?: Record<string, string>;
@@ -20,12 +21,17 @@ export class SentryLogger {
 			sendDefaultPii: true,
 			integrations: [Sentry.browserTracingIntegration({ router })],
 			tracesSampleRate: 1,
+			maxBreadcrumbs: 1,
 			attachProps: true,
 			environment: "production",
 			beforeSend(event, hint) {
 				const currentException = hint.originalException;
 
 				if (currentException instanceof RequestError) {
+					if (currentException.error instanceof IgnoreTimeoutRequestError) {
+						return null;
+					}
+
 					const requestDefinition = simpleClone(currentException.requestDefinition);
 
 					if (requestDefinition.headers?.authorization) {
@@ -35,6 +41,7 @@ export class SentryLogger {
 					event.extra = {
 						...event.extra,
 						requestDefinition,
+						reelError: currentException.error,
 					};
 				}
 

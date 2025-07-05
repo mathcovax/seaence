@@ -2,6 +2,7 @@ import { useUserInformation } from "@/domains/user/composables/useUserInformatio
 import { envs } from "@/envs";
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import type { CodegenRoutes } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import { HttpClientTimeoutRequestError } from "../sentry/errors/httpClientTimeoutRequestError";
 
 export type HorizonClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
@@ -55,7 +56,7 @@ export const horizonClient = new HttpClient<HorizonClientRoute>({
 				const controller = new AbortController();
 				requestDefinition.paramsRequest.timeoutId = setTimeout(
 					() => {
-						void controller.abort();
+						void controller.abort(new HttpClientTimeoutRequestError(requestDefinition));
 					},
 					requestTimeout === true || !requestTimeout
 						? defaultRequestTimeout

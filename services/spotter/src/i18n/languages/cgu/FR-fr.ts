@@ -147,6 +147,6 @@ export const cguFRfr = {
 				},
 			},
 		},
-		emailSupport: "support@seaence.com",
+		emailSupport: "support{'@'}seaence.com",
 	},
 };

@@ -244,6 +244,10 @@ export const FRfr = {
 		title: "Supprimer un dossier",
 		description: "Êtes-vous sûr de vouloir supprimer ce dossier ? La suppression du dossier supprimera également son contenu.",
 	},
+	removeDocumentInFolderDialog: {
+		title: "Supprimer un document",
+		description: "Êtes-vous sûr de vouloir supprimer ce document ? La suppression du document sera irréversible.",
+	},
 	documentFolderHeader: {
 		label: "{count} élément(s)",
 		filtered: "{filtered} sur {total}",
@@ -265,6 +269,7 @@ export const FRfr = {
 				folder: "Aucun dossier trouvé.",
 			},
 		},
+		noParentFolder: "Ce document n'est associé à aucun dossier.",
 	},
 	documentFolderCard: {
 		items: "{count} document(s)",

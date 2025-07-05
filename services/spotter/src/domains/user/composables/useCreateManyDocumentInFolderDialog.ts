@@ -3,6 +3,7 @@ import type {
 	DocumentFolderInWhichDocumentExistListDetails,
 	DocumentFolderDialog,
 } from "@/lib/horizon/types/documentFolder";
+import { IgnoreTimeoutRequestError } from "@/lib/sentry/errors/ignoreTimeoutRequestError";
 import { type MultiComboboxItem } from "@vendors/design-system/components/form/MultiComboboxTemplate.vue";
 import { documentInFolderRules } from "@vendors/entity-rules";
 
@@ -16,8 +17,15 @@ const folderItemSchema = zod.object({
 	value: zod.string(),
 });
 
+const debunceTime = 500;
+const debounce = createFetchDebounce(
+	debunceTime,
+	() => new IgnoreTimeoutRequestError(),
+);
+
 export function useCreateManyDocumentInFolderDialog(
 	nodeSameRawDocumentId: string,
+	currentDocumentTitle: string,
 ) {
 	const { t: $t } = useI18n();
 
@@ -45,6 +53,7 @@ export function useCreateManyDocumentInFolderDialog(
 							documentInFolderRules.name.maxLength,
 							$t("formMessage.maxLength", { value: documentInFolderRules.name.maxLength }),
 						),
+					defaultValue: currentDocumentTitle,
 				},
 			),
 			folder: useCheckLayout(
@@ -60,8 +69,8 @@ export function useCreateManyDocumentInFolderDialog(
 						items: itemsOfInputFolder.value,
 						placeholder: $t("createManyDocumentInFolderDialog.form.placeholder.folder"),
 						emptyLabel: $t("createManyDocumentInFolderDialog.form.emptyLabel.folder"),
-						"onUpdate:searchTerm":
-							(value) => findManyDocumentFolderByName(value),
+						"onUpdate:searchTerm": findManyDocumentFolderByName,
+						onFocus: findManyDocumentFolderByName,
 					})),
 				},
 			),
@@ -81,29 +90,36 @@ export function useCreateManyDocumentInFolderDialog(
 			);
 	}
 
-	function findManyDocumentFolderByName(name = "", page = defaultPage) {
-		return horizonClient
-			.post(
-				"/find-many-document-folder",
-				{
-					body: {
-						page,
-						partialDocumentFolderName: name,
+	function findManyDocumentFolderByName(
+		name = "",
+		page = defaultPage,
+	) {
+		debounce(
+			(abortController) => horizonClient
+				.post(
+					"/find-many-document-folder",
+					{
+						body: {
+							page,
+							partialDocumentFolderName: name,
+						},
+						disabledLoader: true,
+						signal: abortController.signal,
 					},
-				},
-			)
-			.whenInformation(
-				"documentFolders.found",
-				({ body }) => {
-					itemsOfInputFolder.value = body
-						.map(
-							(item) => ({
-								label: item.name,
-								value: item.id,
-							}),
-						);
-				},
-			);
+				)
+				.whenInformation(
+					"documentFolders.found",
+					({ body }) => {
+						itemsOfInputFolder.value = body
+							.map(
+								(item) => ({
+									label: item.name,
+									value: item.id,
+								}),
+							);
+					},
+				),
+		);
 	}
 
 	function findManyDocumentFolderInWhichDocumentExist() {
@@ -147,9 +163,9 @@ export function useCreateManyDocumentInFolderDialog(
 		pageOfListDocumentFoldersInWhichDocumentExist.value = page;
 	}
 
-	function reload() {
+	function initDialog() {
 		return Promise.all([
-			findManyDocumentFolderByName(),
+			void findDilagInformation(),
 			findManyDocumentFolderInWhichDocumentExist(),
 			findManyDocumentFolderInWhichDocumentExistDetails(),
 		]);
@@ -179,13 +195,10 @@ export function useCreateManyDocumentInFolderDialog(
 				"documentInFolder.created",
 				() => {
 					reset();
-					void reload();
+					void initDialog();
 				},
 			);
 	}
-
-	void findDilagInformation();
-	void reload();
 
 	watch(
 		pageOfListDocumentFoldersInWhichDocumentExist,
@@ -200,5 +213,6 @@ export function useCreateManyDocumentInFolderDialog(
 		setPageDocumentFoldersInWhichDocumentExist,
 		documentFoldersInWhichDocumentExistListDetails,
 		documentFolderDialogInformation: dialogInformation,
+		initDialog,
 	};
 }

@@ -14,6 +14,10 @@ interface Props {
 
 defineProps<Props>();
 
+const emit = defineEmits<{
+	focus: [];
+}>();
+
 const modelValue = defineModel<MultiComboboxItem[]>({
 	required: true,
 });
@@ -33,5 +37,6 @@ const modelSearchTerm = defineModel<string>(
 		:empty-label="emptyLabel"
 		:label="({label}) => label"
 		v-model:search-term="modelSearchTerm"
+		@focus="emit('focus')"
 	/>
 </template>

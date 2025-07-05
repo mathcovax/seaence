@@ -4,7 +4,7 @@ import { ZodAccelerator } from "@duplojs/core";
 import { escapeRegExp } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
 import { type MongoDocumentFolder } from "@interfaces/providers/mongo/entities/documentFolder";
-import { EntityHandler, intObjecter } from "@vendors/clean";
+import { EntityHandler, intObjecter, TechnicalError } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
 const defaultCountResult = 0;
@@ -226,5 +226,19 @@ documentFolderRepository.default = {
 		const countResult = countResultSchema.parse(result);
 
 		return intObjecter.throwCreate(countResult.folder);
+	},
+	async getDocumentFolderByDocumentInFolder(documentInFolder) {
+		const documentFolder = await mongo.documentFolder.findOne({
+			id: documentInFolder.documentFolderId.value,
+		});
+
+		if (!documentFolder) {
+			throw new TechnicalError("document-folder-is-missing", { from: documentInFolder });
+		}
+
+		return EntityHandler.unsafeMapper(
+			DocumentFolderEntity,
+			documentFolder,
+		);
 	},
 };

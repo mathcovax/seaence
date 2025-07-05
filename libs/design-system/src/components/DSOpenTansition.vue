@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { nextTick, ref, watch, type HTMLAttributes } from "vue";
+import { nextTick, ref, watch, type HTMLAttributes, withDefaults, defineProps, onMounted } from "vue";
 
 interface Props {
-	visible: boolean;
+	visible?: boolean;
 	class?: HTMLAttributes["class"];
+	imediateEnter?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(
+	defineProps<Props>(),
+	{ visible: true },
+);
 const elementRef = ref<HTMLElement | null>(null);
 
 const defaultHeight = 0;
@@ -29,7 +33,7 @@ function onEnter(element: Element) {
 		return;
 	}
 
-	element.style.height = "0px";
+	element.style.height = "0.0px";
 	void nextTick(() => {
 		element.style.height = `${computeHeight(element)}px`;
 	});
@@ -42,12 +46,12 @@ function onLeave(element: Element) {
 
 	element.style.height = `${computeHeight(element)}px`;
 	void element.offsetHeight;
-	element.style.height = "0px";
+	element.style.height = "0.0px";
 }
 
 const resizeObserver = new MutationObserver(() => {
 	const element = elementRef.value;
-	if (!element || element.style.height === "0px") {
+	if (!element || element.style.height === "0.0px") {
 		return;
 	}
 
@@ -67,6 +71,12 @@ watch(
 		});
 	},
 );
+
+onMounted(() => {
+	if (props.imediateEnter && elementRef.value) {
+		onEnter(elementRef.value);
+	}
+});
 </script>
 
 <template>

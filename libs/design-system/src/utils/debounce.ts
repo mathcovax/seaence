@@ -1,6 +1,9 @@
 import { type ObjectKey } from "@duplojs/utils";
 
-export function createFetchDebounce(time: number) {
+export function createFetchDebounce(
+	time: number,
+	getAbortReason: () => Error,
+) {
 	const debunceTime: Partial<Record<ObjectKey, number>> = {};
 	const debunceTrigger: Partial<Record<ObjectKey, boolean>> = {};
 
@@ -21,7 +24,7 @@ export function createFetchDebounce(time: number) {
 			setTimeout(
 				() => {
 					if (debunceTrigger[identifier]) {
-						abortController.abort();
+						abortController.abort(getAbortReason());
 						debounce(debuncedFunction, identifier);
 					}
 				},

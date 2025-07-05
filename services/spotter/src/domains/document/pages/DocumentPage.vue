@@ -161,6 +161,7 @@ function formatedDate(date: FlexibleDate) {
 					<CreateManyDocumentInFolderDialog
 						v-if="isConnected"
 						:node-same-raw-document-id="document.nodeSameRawDocumentId"
+						:current-document-title="document.title"
 					>
 						<DSOutlineButton
 							icon="plus"

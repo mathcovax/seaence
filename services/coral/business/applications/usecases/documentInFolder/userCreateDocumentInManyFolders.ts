@@ -13,7 +13,7 @@ interface Input {
 
 export class UserCreateDocumentInManyFoldersUsecase extends UsecaseHandler.create({
 	documentInFolderRepository,
-	computeDocumentQuantityInFolderrUsecase: ComputeDocumentQuantityInFolderUsecase,
+	computeDocumentQuantityInFolderUsecase: ComputeDocumentQuantityInFolderUsecase,
 	userFindDocumentFolderByIdUsecase: UserFindDocumentFolderByIdUsecase,
 }) {
 	public async execute({
@@ -43,7 +43,7 @@ export class UserCreateDocumentInManyFoldersUsecase extends UsecaseHandler.creat
 
 				await this.documentInFolderRepository.save(newDocumentInFolder);
 
-				await this.computeDocumentQuantityInFolderrUsecase({
+				await this.computeDocumentQuantityInFolderUsecase({
 					documentFolder: userDocumentFolderWithCapacity.value,
 				});
 

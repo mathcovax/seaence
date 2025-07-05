@@ -8,6 +8,7 @@ import { useUserInformation } from "../composables/useUserInformation";
 
 const router = useRouter();
 const { $pt, params } = documentInFolderPage.use();
+const { t } = useI18n();
 const {
 	SearchDocumentInFolderForm,
 	documentInFolderList,
@@ -16,7 +17,7 @@ const {
 	handleSearchDocumentInFolder,
 	documentInFolderPageOfList,
 	documentInFolderSetPage,
-	documentInFolderFindMany,
+	initDocumentInFolderPage,
 } = useDocumentInFolderPage(
 	params.value.documentFolderId,
 	() => {
@@ -28,6 +29,14 @@ const { userNavigatorLanguage } = useUserInformation();
 
 const defaultdocumentinFolderIndex = 0;
 const selectedDocumentinFolderIndex = ref(defaultdocumentinFolderIndex);
+
+const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = useValidationDialog({
+	title: t("removeDocumentInFolderDialog.title"),
+	description: t("removeDocumentInFolderDialog.description"),
+	acceptLabel: t("cta.validate"),
+	rejectLabel: t("cta.refuse"),
+	destructive: true,
+});
 
 function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFoloder) {
 	void router.push(documentPage.createTo(
@@ -42,7 +51,11 @@ function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFolode
 	));
 }
 
-function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
+async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
+	if (!(await getDeleteValidation())) {
+		return;
+	}
+
 	return horizonClient
 		.post(
 			"/remove-document-in-folder",
@@ -55,7 +68,9 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 		)
 		.whenInformation(
 			"documentInFolder.removed",
-			() => void documentInFolderFindMany(),
+			() => {
+				initDocumentInFolderPage();
+			},
 		)
 		.whenRequestError(
 			() => void router.back(),
@@ -128,5 +143,7 @@ function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
 		>
 			{{ $pt("noDocumentInFolder") }}
 		</p>
+
+		<DeleteDialog />
 	</section>
 </template>

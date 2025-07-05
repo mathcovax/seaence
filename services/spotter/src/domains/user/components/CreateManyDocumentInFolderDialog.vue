@@ -5,6 +5,7 @@ import { formatDate } from "@vendors/design-system/lib/utils";
 
 interface Props {
 	nodeSameRawDocumentId: string;
+	currentDocumentTitle: string;
 }
 
 const props = defineProps<Props>();
@@ -18,7 +19,11 @@ const {
 	documentFoldersInWhichDocumentExistListDetails,
 	setPageDocumentFoldersInWhichDocumentExist,
 	documentFolderDialogInformation,
-} = useCreateManyDocumentInFolderDialog(props.nodeSameRawDocumentId);
+	initDialog,
+} = useCreateManyDocumentInFolderDialog(
+	props.nodeSameRawDocumentId,
+	props.currentDocumentTitle,
+);
 
 function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 	return router.push(documentInFolderPage.createTo(
@@ -30,10 +35,16 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 	));
 }
 
+function onUpdateOpen(value: boolean) {
+	if (value) {
+		void initDialog();
+	}
+}
+
 </script>
 
 <template>
-	<DSDialog>
+	<DSDialog @update:open="onUpdateOpen">
 		<template #trigger>
 			<slot />
 		</template>
@@ -43,55 +54,66 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 		</template>
 
 		<template #content>
-			<div
-				class="space-y-1"
-				v-if="documentFoldersInWhichDocumentExistList && documentFoldersInWhichDocumentExistListDetails"
+			<DSOpenTansition
+				class="duration-1000"
+				imediate-enter
 			>
-				<DSLabel>
-					{{ $t("createManyDocumentInFolderDialog.sectionLabel") }}
-				</DSLabel>
-
-				<ul
-					v-for="item in documentFoldersInWhichDocumentExistList"
-					:key="item.id"
-					class="space-y-2"
-				>
-					<li
-						class="p-4 flex gap-2 items-center bg-muted/50 hover:bg-muted rounded-md cursor-pointer transition-colors"
-						@click="handleClickDocumentFolder(item)"
+				<div class="w-full">
+					<div
+						class="space-y-1"
+						v-if="documentFoldersInWhichDocumentExistList && documentFoldersInWhichDocumentExistListDetails?.total"
 					>
-						<div class="shrink-0">
-							<DSIcon
-								name="folderOutline"
-								class="text-muted-foreground"
+						<DSLabel>
+							{{ $t("createManyDocumentInFolderDialog.sectionLabel") }}
+						</DSLabel>
+
+						<ul
+							v-for="item in documentFoldersInWhichDocumentExistList"
+							:key="item.id"
+							class="space-y-2"
+						>
+							<li
+								class="p-4 flex gap-2 items-center bg-muted/50 hover:bg-muted rounded-md cursor-pointer transition-colors"
+								@click="handleClickDocumentFolder(item)"
+							>
+								<div class="shrink-0">
+									<DSIcon
+										name="folderOutline"
+										class="text-muted-foreground"
+									/>
+								</div>
+
+								<div class="flex-grow">
+									<h4 class="text-sm font-medium truncate">
+										{{ item.name }}
+									</h4>
+								</div>
+
+								<div class="flex-shrink-0 ml-4 text-xs text-muted-foreground">
+									{{ formatDate(item.createdAt) }}
+								</div>
+							</li>
+						</ul>
+
+						<div
+							v-if="documentFoldersInWhichDocumentExistListDetails.total < documentFoldersInWhichDocumentExistList.length && documentFolderDialogInformation"
+							class="mt-10 flex justify-center"
+						>
+							<DSPagination
+								size="small"
+								:total="documentFoldersInWhichDocumentExistListDetails.total"
+								:current-page="pageOfListDocumentFoldersInWhichDocumentExist"
+								:quantity-per-page="documentFolderDialogInformation.quantityPerPage"
+								@update="setPageDocumentFoldersInWhichDocumentExist"
 							/>
 						</div>
+					</div>
 
-						<div class="flex-grow">
-							<h4 class="text-sm font-medium truncate">
-								{{ item.name }}
-							</h4>
-						</div>
-
-						<div class="flex-shrink-0 ml-4 text-xs text-muted-foreground">
-							{{ formatDate(item.createdAt) }}
-						</div>
-					</li>
-				</ul>
-
-				<div
-					v-if="documentFoldersInWhichDocumentExistListDetails.total < documentFoldersInWhichDocumentExistList.length && documentFolderDialogInformation"
-					class="mt-10 flex justify-center"
-				>
-					<DSPagination
-						size="small"
-						:total="documentFoldersInWhichDocumentExistListDetails.total"
-						:current-page="pageOfListDocumentFoldersInWhichDocumentExist"
-						:quantity-per-page="documentFolderDialogInformation.quantityPerPage"
-						@update="setPageDocumentFoldersInWhichDocumentExist"
-					/>
+					<DSLabel v-else-if="documentFoldersInWhichDocumentExistListDetails?.total === 0">
+						{{ $t("createManyDocumentInFolderDialog.noParentFolder") }}
+					</DSLabel>
 				</div>
-			</div>
+			</DSOpenTansition>
 
 			<CreateManyDocumentInFolderDialogForm @submit="handleCreateManyDocumentInFolder">
 				<DSPrimaryButton

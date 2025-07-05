@@ -1,4 +1,5 @@
 import type { HorizonClientRoute } from "@/lib/horizon";
+import { IgnoreTimeoutRequestError } from "@/lib/sentry/errors/ignoreTimeoutRequestError";
 import type { FindHttpClientRoute, FindHttpClientRouteResponse } from "@duplojs/http-client";
 import type { FavoriteEquationListDetails } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { favoriteEquationRules } from "@vendors/entity-rules";
@@ -6,7 +7,10 @@ import { watchPausable } from "@vueuse/core";
 
 const defaultPage = 1;
 const debunceTime = 500;
-const debounce = createFetchDebounce(debunceTime);
+const debounce = createFetchDebounce(
+	debunceTime,
+	() => new IgnoreTimeoutRequestError(),
+);
 
 type NameList = FindHttpClientRouteResponse<
 	FindHttpClientRoute<

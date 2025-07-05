@@ -166,7 +166,7 @@ const sections: Section[] = [
 			>
 				<template #supportEmail>
 					<a
-						href="mailto:support@seaence.com"
+						:href="`mailto:${$pt('emailSupport')}`"
 						class="text-blue-seaence hover:underline font-medium"
 					>
 						{{ $pt('emailSupport') }}

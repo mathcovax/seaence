@@ -1,6 +1,6 @@
 import { type UserId } from "@business/domains/common/user";
 import { type DocumentFolderId, type DocumentFolderEntity, type DocumentFolderName } from "@business/domains/entities/documentFolder";
-import { type NodeSameRawDocumentId } from "@business/domains/entities/documentInFolder";
+import { type DocumentInFolderEntity, type NodeSameRawDocumentId } from "@business/domains/entities/documentInFolder";
 import { createRepositoryHandler, type PositiveInt, type Int, type RepositoryBase, type Text } from "@vendors/clean";
 
 interface InputFindDocumentFolders {
@@ -29,6 +29,7 @@ export interface DocumentFolderRepository extends RepositoryBase<DocumentFolderE
 	delete(folder: DocumentFolderEntity): Promise<void>;
 	countDocumentsInFolder(folder: DocumentFolderEntity): Promise<Int>;
 	findDocumentFolderById(documentFolderId: DocumentFolderId): Promise<DocumentFolderEntity | null>;
+	getDocumentFolderByDocumentInFolder(documentInFolder: DocumentInFolderEntity): Promise<DocumentFolderEntity>;
 	findDocumentFolder(
 		userId: UserId,
 		documentFolderName: DocumentFolderName,

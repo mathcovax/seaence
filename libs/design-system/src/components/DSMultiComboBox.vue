@@ -22,6 +22,10 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const emit = defineEmits<{
+	focus: [];
+}>();
+
 const modelValue = defineModel<GenericItem[]>(
 	{ required: true },
 );
@@ -131,6 +135,7 @@ defineExpose({
 					<DSCommandInput
 						class="h-9"
 						:placeholder="placeholder"
+						@focus="emit('focus')"
 					/>
 
 					<DSCommandList>

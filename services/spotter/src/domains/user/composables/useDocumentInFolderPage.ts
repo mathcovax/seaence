@@ -101,29 +101,33 @@ export function useDocumentInFolderPage(
 		pageOfList.value = value;
 	}
 
-	void horizonClient
-		.post(
-			"/document-in-folder-page",
-			{
-				body: {
-					documentFolderId,
+	function init() {
+		void horizonClient
+			.post(
+				"/document-in-folder-page",
+				{
+					body: {
+						documentFolderId,
+					},
+					disableAuthenticationRequiredManagement: true,
 				},
-				disableAuthenticationRequiredManagement: true,
-			},
-		)
-		.whenInformation(
-			"documentInFolderPage.found",
-			({ body }) => {
-				pageInformation.value = body;
-			},
-		)
-		.whenRequestError(
-			whenFindError,
-		);
+			)
+			.whenInformation(
+				"documentInFolderPage.found",
+				({ body }) => {
+					pageInformation.value = body;
+				},
+			)
+			.whenRequestError(
+				whenFindError,
+			);
 
-	void findMany();
+		void findMany();
 
-	void findManyDetails();
+		void findManyDetails();
+	}
+
+	void init();
 
 	return {
 		documentInFolderList: list,
@@ -134,6 +138,7 @@ export function useDocumentInFolderPage(
 		handleSearchDocumentInFolder: handleSearch,
 		documentInFolderFindMany: findMany,
 		documentInFolderFindManyDetails: findManyDetails,
+		initDocumentInFolderPage: init,
 		SearchDocumentInFolderForm: Form,
 	};
 }

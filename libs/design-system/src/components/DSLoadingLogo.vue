@@ -34,27 +34,30 @@
 
 <style scoped>
 @keyframes wave {
-    from, to {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-1.25px);
-    }
+
+	from,
+	to {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-1.25px);
+	}
 }
 
 .animate-wave {
-    animation: wave 2s ease-in-out infinite;
+	animation: wave 2s ease-in-out infinite;
 }
 
 .wave-1 {
-    animation-delay: 0s;
+	animation-delay: 0s;
 }
 
 .wave-2 {
-    animation-delay: 0.3s;
+	animation-delay: 0.3s;
 }
 
 .wave-3 {
-    animation-delay: 0.6s;
+	animation-delay: 0.6s;
 }
 </style>

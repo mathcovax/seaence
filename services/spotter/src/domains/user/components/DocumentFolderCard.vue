@@ -13,24 +13,11 @@ const emit = defineEmits<{
 	delete: [documentFolder: DocumentFolder];
 }>();
 
-const { t } = useI18n();
-
-const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = useValidationDialog({
-	title: t("removeDocumentFolderDialog.title"),
-	description: t("removeDocumentFolderDialog.description"),
-	acceptLabel: t("cta.validate"),
-	rejectLabel: t("cta.refuse"),
-	destructive: true,
-});
-
 function onClick() {
 	emit("click", props.documentFolder);
 }
 
-async function onDelete() {
-	if (!(await getDeleteValidation())) {
-		return;
-	}
+function onDelete() {
 	emit("delete", props.documentFolder);
 }
 

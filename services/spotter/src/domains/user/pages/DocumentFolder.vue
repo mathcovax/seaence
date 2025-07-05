@@ -8,6 +8,7 @@ import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
 
 const router = useRouter();
 const { $pt } = documentFolderPage.use();
+const { t } = useI18n();
 const {
 	isOpenCreateDocumentFolderDialog,
 	closeCreateDocumentFolderDialog,
@@ -21,7 +22,6 @@ const {
 	documentFolderPageInformation,
 	handleSearchDocumentFolderByName,
 	documentFolderSetPage,
-	findManyDocumentFolder,
 	documentFolderPageOfList,
 	findDocumentFolderPage,
 } = useDocumentFolderPage(
@@ -29,6 +29,14 @@ const {
 		void router.push(homePage.createTo());
 	},
 );
+
+const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = useValidationDialog({
+	title: t("removeDocumentFolderDialog.title"),
+	description: t("removeDocumentFolderDialog.description"),
+	acceptLabel: t("cta.validate"),
+	rejectLabel: t("cta.refuse"),
+	destructive: true,
+});
 
 function handleCreateDocumentFolder() {
 	const result = createDocumentFolderCheck();
@@ -56,7 +64,11 @@ function handleCreateDocumentFolder() {
 		);
 }
 
-function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
+async function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
+	if (!(await getDeleteValidation())) {
+		return;
+	}
+
 	return horizonClient
 		.post(
 			"/remove-document-folder",
@@ -68,7 +80,7 @@ function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
 		)
 		.whenInformation(
 			"documentFolder.removed",
-			() => void findManyDocumentFolder(),
+			() => void findDocumentFolderPage(),
 		);
 }
 
@@ -179,5 +191,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 				</CreateDocumentFolderForm>
 			</template>
 		</DSDialog>
+
+		<DeleteDialog />
 	</section>
 </template>
