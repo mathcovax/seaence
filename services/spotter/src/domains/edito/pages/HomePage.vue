@@ -1,17 +1,27 @@
 <script setup lang="ts">
-const { $pt } = homePage.use();
+const { $pt, $gpt } = homePage.use();
 </script>
 
 <template>
 	<section class="mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center text-center md:text-start">
 		<div class="md:flex-2/3 space-y-6">
-			<h1 class="text-4xl font-bold">
-				{{ $pt("hero.title.begin") }}
-				<span class="text-blue-seaence">{{ $pt("hero.title.spanBlue") }}</span>
-				{{ $pt("hero.title.middle") }}
-				<span class="text-secondary">{{ $pt("hero.title.spanRed") }}</span>
-				{{ $pt("hero.title.end") }}
-			</h1>
+			<I18nT
+				class="text-4xl font-bold"
+				:keypath="$gpt('hero.title.base')"
+				tag="h1"
+			>
+				<template #one>
+					<span class="text-blue-seaence capitalize">{{ $pt("hero.title.one") }}</span>
+				</template>
+
+				<template #two>
+					<span class="text-secondary capitalize">{{ $pt("hero.title.two") }}</span>
+				</template>
+
+				<template #three>
+					<span class="text-secondary capitalize">{{ $pt("hero.title.three") }}</span>
+				</template>
+			</I18nT>
 
 			<p class="text-lg text-muted-foreground">
 				{{ $pt("hero.subtitle") }}

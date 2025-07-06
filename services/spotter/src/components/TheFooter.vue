@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+const discordInvitLink = "https://discord.gg/hErxVKfU9q";
 </script>
 
 <template>
@@ -17,21 +17,13 @@
 					</li>
 
 					<li>
-						<RouterLink
-							to=""
+						<a
+							:href="discordInvitLink"
+							target="_blank"
 							class="hover:text-primary"
 						>
-							{{ $t("layout.base.footer.nav.about") }}
-						</RouterLink>
-					</li>
-
-					<li>
-						<RouterLink
-							to=""
-							class="hover:text-primary"
-						>
-							{{ $t("layout.base.footer.nav.support") }}
-						</RouterLink>
+							{{ $t("layout.base.footer.nav.discord") }}
+						</a>
 					</li>
 				</ul>
 			</nav>

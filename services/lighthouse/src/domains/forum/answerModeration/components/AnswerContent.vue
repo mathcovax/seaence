@@ -40,7 +40,7 @@ const { $pt } = answerPage.use();
 
 				<DSBadge
 					variant="outline"
-					class="text-green-600 bg-green-50 border-green-200"
+					class="text-orange-600 bg-orange-50 border-orange-200"
 				>
 					{{ $pt("answerStatus") }}
 				</DSBadge>

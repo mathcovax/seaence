@@ -96,55 +96,5 @@ const hasChange = computed(
 				<path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
 			</svg>
 		</section>
-
-		<section>
-			<DSTabs default-value="favorites">
-				<DSTabsList class="grid grid-cols-2">
-					<DSTabsTrigger
-						value="favorites"
-						:title="$pt('tab.favorite.title')"
-					>
-						<div class="flex items-center gap-2">
-							{{ $pt('tab.favorite.title') }}
-							<DSIcon name="star" />
-						</div>
-					</DSTabsTrigger>
-
-					<DSTabsTrigger
-						value="posts"
-						:title="$pt('tab.post.title')"
-					>
-						<div class="flex items-center gap-2">
-							{{ $pt('tab.post.title') }}
-							<DSIcon name="messageText" />
-						</div>
-					</DSTabsTrigger>
-				</DSTabsList>
-
-				<DSTabsContent value="favorites">
-					<div class="flex flex-col items-center justify-center py-16 px-4 text-center space-y-4">
-						<h3 class="text-xl font-semibold">
-							{{ $pt("tab.favorite.empty") }}
-						</h3>
-
-						<p>
-							{{ $pt("tab.favorite.emptyDesc") }}
-						</p>
-					</div>
-				</DSTabsContent>
-
-				<DSTabsContent value="posts">
-					<div class="flex flex-col items-center justify-center py-16 px-4 text-center space-y-4">
-						<h3 class="text-xl font-semibold">
-							{{ $pt("tab.post.empty") }}
-						</h3>
-
-						<p>
-							{{ $pt("tab.post.emptyDesc") }}
-						</p>
-					</div>
-				</DSTabsContent>
-			</DSTabs>
-		</section>
 	</div>
 </template>

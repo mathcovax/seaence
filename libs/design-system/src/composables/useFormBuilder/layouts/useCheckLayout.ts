@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { effect, h, ref, toRef, watch } from "vue";
 import { type FormFieldParams, type GetGenericFormField, type FormField, type FormFieldInstance } from "../formField";
 import { type ZodType } from "zod";
 import { type MaybeCheckedType, useBaseLayout, type BaseLayoutOptions, type ChouseDefaultValue } from "./useBaseLayout";
 import { type CheckLayoutTemplateRender } from "../templates/checkLayout";
+import { type IsEqual } from "@duplojs/utils";
 
 export interface CheckLayoutOptions<
 	GenericFormField extends FormField = FormField,
@@ -13,6 +15,14 @@ export interface CheckLayoutOptions<
 	> {
 	schema: ZodType;
 }
+
+export type CheckedTypeContaineAny<
+	GenericCheckedTypeOutputSchema extends unknown,
+> = IsEqual<GenericCheckedTypeOutputSchema, any> extends true
+	? true
+	: IsEqual<GenericCheckedTypeOutputSchema, any[]> extends true
+		? true
+		: false;
 
 export function useCheckLayout<
 	GenericFormField extends FormField,
@@ -26,7 +36,9 @@ export function useCheckLayout<
 			GenericCheckLayoutOptions
 		>,
 		MaybeCheckedType<
-			GenericCheckLayoutOptions["schema"]["_output"],
+			CheckedTypeContaineAny<GenericCheckLayoutOptions["schema"]["_output"]> extends true
+				? GetGenericFormField<GenericFormField>["GenericCheckedType"]
+				: GenericCheckLayoutOptions["schema"]["_output"],
 			GenericCheckLayoutOptions
 		>,
 		GetGenericFormField<GenericFormField>["GenericProps"]
@@ -69,7 +81,13 @@ export function useCheckLayout<
 				return undefined;
 			}
 
-			const result = schema.safeParse(formFieldComponent.exposed.check());
+			const subResult = formFieldComponent.exposed.check();
+
+			if (subResult instanceof Error) {
+				return subResult;
+			}
+
+			const result = schema.safeParse(subResult);
 
 			if (result.success) {
 				errorMessage.value = "";

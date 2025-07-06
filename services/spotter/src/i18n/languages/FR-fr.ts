@@ -18,29 +18,25 @@ export const FRfr = {
 		[homePage.name]: {
 			hero: {
 				title: {
-					begin: "Explorez la",
-					spanBlue: "recherche scientifique",
-					middle: "avec une approche",
-					spanRed: "collaborative",
-					end: "et intelligente.",
+					base: "Explorez la {one} avec une approche {two} et {three}.",
+					one: "recherche scientifique",
+					two: "collaborative",
+					three: "intelligente",
 				},
-				subtitle: `Découvrez une plateforme de recherche documentaire moderne qui combine 
-				recherche avancée, traduction automatique, forum communautaire et outils 
-				d'organisation. Transformez votre façon d'explorer la littérature scientifique.`,
+				subtitle: "Découvrez une plateforme de recherche documentaire moderne qui combine recherche avancée, traduction de document, forum communautaire et outils d'organisation. Transformez votre façon d'explorer la littérature scientifique.",
 			},
 			about: {
 				title: "À propos de Seaence",
 				content: `Seaence est une plateforme de recherche documentaire scientifique de nouvelle génération. 
-				Nous centralisons et indexons des données provenant de multiples sources dans une base vectorielle, 
-				offrant des capacités de recherche avancées avec traduction, reformulation et analyse sémantique. 
-				Notre mission est de révolutionner l'accès à l'information scientifique.`,
+                Nous centralisons et indexons des données provenant de multiples sources dans une base vectorielle, 
+				offrant des capacités de recherche avancées. Notre mission est de faire évoluer l'accès à l'information scientifique.`,
 			},
 			features: {
 				title: "Fonctionnalités principales",
 				items: {
 					search: {
-						title: "Recherche intelligente",
-						description: "Recherche vectorielle avec filtres avancés, traduction automatique et reformulation des requêtes.",
+						title: "Recherche avancées",
+						description: "Recherche vectorielle avec filtres avancés, sur des documents traduits dans plusieurs langues.",
 					},
 					forum: {
 						title: "Forum communautaire",
@@ -48,7 +44,7 @@ export const FRfr = {
 					},
 					organization: {
 						title: "Organisation personnalisée",
-						description: "Créez vos dossiers, sauvegardez vos favoris et suivez votre historique de recherche.",
+						description: "Créez vos dossiers pour sauvegarder des documents que vous souhaitez retrouver.",
 					},
 				},
 			},
@@ -56,32 +52,32 @@ export const FRfr = {
 				title: "Questions fréquemment posées",
 				accordion: {
 					item1: {
-						question: "Comment fonctionne la recherche vectorielle ?",
-						answer:
-							"Notre système utilise des embeddings pour comprendre le sens de vos recherches, "
-							+ "permettant de trouver des documents pertinents même avec des termes différents. "
-							+ "La recherche sémantique va au-delà des mots-clés traditionnels.",
+						question: "Pourquoi « Seaence » ?",
+						answer: "Le nom est un jeu de mots avec « sea » signifiant l'océan et « science ». La combinaison des deux (Seaence) illustre l'océan de savoir sur lequel vous allez naviguer.",
 					},
 					item2: {
-						question: "Puis-je traduire les documents ?",
+						question: "Quelles sont les motivations du projet ?",
 						answer:
-							"Oui, Seaence intègre un service de traduction automatique qui permet de "
-							+ "traduire les résumés et contenus dans plusieurs langues, facilitant l'accès "
-							+ "à la littérature internationale.",
+							`Seaence est avant tout un projet de fin d'étude. Cependant, nous avons travaillé avec la volonté de 
+							faire vivre ce projet au-delà de notre fin de cursus. À terme, nous souhaitons proposer encore plus 
+							de solutions intelligentes pour simplifier au maximum l'accès à la connaissance. Avec la 
+							multiplication des bases de données, chacune ayant leur propre système de recherche pensé pour des personnes 
+							qui connaissent déjà le sujet, il nous paraît essentiel de tout centraliser. Comme ça, plus d'excuse pour 
+							ne pas faire de la veille !`,
 					},
 					item3: {
-						question: "Comment participer au forum ?",
+						question: "Où et comment sont trouvées nos ressources ?",
 						answer:
-							"Une fois connecté, vous pouvez créer des discussions sur des documents spécifiques, "
-							+ "poser des questions à la communauté et partager vos analyses. Le forum est organisé "
-							+ "par thématiques et documents.",
+							`Aujourd'hui, nous trouvons nos données principalement sur PubMed grâce à leur API mise à disposition. 
+							Plus tard, nous indexerons plus de bases de données comme PEDro et ScienceDirect. Cela permettra 
+							d'avoir la même expérience de recherche pour toutes les bases que nous indexerons.`,
 					},
 					item4: {
-						question: "Mes données sont-elles sécurisées ?",
+						question: "À quoi ça sert de se créer un compte ?",
 						answer:
-							"Absolument. Nous utilisons une authentification SSO sécurisée, vos données personnelles "
-							+ "sont chiffrées et nous respectons les standards de sécurité les plus élevés. "
-							+ "Vous gardez le contrôle total sur vos informations.",
+							`Cela vous donne accès à des fonctionnalités supplémentaires comme la possibilité de participer au forum 
+							sur les documents. Vous pourrez également créer des dossiers pour enregistrer des documents que vous 
+							voulez sauvegarder.`,
 					},
 				},
 			},
@@ -296,8 +292,7 @@ export const FRfr = {
 			footer: {
 				nav: {
 					conditions: "Conditions générales d'utilisation",
-					about: "À propos",
-					support: "Support",
+					discord: "Discord communautaire",
 				},
 			},
 		},
