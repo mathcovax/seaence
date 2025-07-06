@@ -1,20 +1,14 @@
 <script setup lang="ts">
 import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import DocumentFolderCard from "../components/DocumentFolderCard.vue";
-import { useCreateDocumentFolderDialog } from "../composables/useCreateDocumentFolderDialog";
-import { useCreateDocumentFolder } from "../composables/useCreateDocumentFolderForm";
 import { useDocumentFolderPage } from "../composables/useDocumentFolderPage";
 import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
+import CreateDocumentFolderDialog from "../components/CreateDocumentFolderDialog.vue";
 
 const router = useRouter();
 const { $pt } = documentFolderPage.use();
 const { t } = useI18n();
-const {
-	isOpenCreateDocumentFolderDialog,
-	closeCreateDocumentFolderDialog,
-	setStateCreateDocumentFolderDialog,
-} = useCreateDocumentFolderDialog();
-const { CreateDocumentFolderForm, createDocumentFolderCheck, createDocumentFolderReset } = useCreateDocumentFolder();
+
 const {
 	SearchDocumentFolderForm,
 	documentFolderList,
@@ -37,32 +31,6 @@ const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = u
 	rejectLabel: t("cta.refuse"),
 	destructive: true,
 });
-
-function handleCreateDocumentFolder() {
-	const result = createDocumentFolderCheck();
-
-	if (!result) {
-		return;
-	}
-
-	return horizonClient
-		.post(
-			"/create-document-folder",
-			{
-				body: {
-					documentFolderName: result.name,
-				},
-			},
-		)
-		.whenInformation(
-			"documentFolder.created",
-			() => {
-				closeCreateDocumentFolderDialog();
-				findDocumentFolderPage();
-				createDocumentFolderReset();
-			},
-		);
-}
 
 async function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
 	if (!(await getDeleteValidation())) {
@@ -113,11 +81,11 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 					@submit="handleSearchDocumentFolderByName"
 				>
 					<div class="ml-auto flex gap-2 justify-end items-center">
-						<DSOutlineButton
-							icon="plus"
-							:title="$pt('dialog.createDocumentFolder.title')"
-							@click="setStateCreateDocumentFolderDialog(true)"
-						/>
+						<CreateDocumentFolderDialog @create-document-folder="findDocumentFolderPage()">
+							<DSOutlineButton
+								icon="plus"
+							/>
+						</CreateDocumentFolderDialog>
 
 						<DSPrimaryButton type="submit">
 							{{ $t("cta.search") }}
@@ -171,26 +139,6 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 				{{ $pt("noDocumentFolder") }}
 			</p>
 		</div>
-
-		<DSDialog
-			:open="isOpenCreateDocumentFolderDialog"
-			@update:open="setStateCreateDocumentFolderDialog"
-		>
-			<template #title>
-				{{ $pt("dialog.createDocumentFolder.title") }}
-			</template>
-
-			<template #content>
-				<CreateDocumentFolderForm @submit="handleCreateDocumentFolder">
-					<DSPrimaryButton
-						size="full"
-						type="submit"
-					>
-						{{ $t("cta.create") }}
-					</DSPrimaryButton>
-				</CreateDocumentFolderForm>
-			</template>
-		</DSDialog>
 
 		<DeleteDialog />
 	</section>

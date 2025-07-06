@@ -16,3 +16,8 @@ export const endpointSearchDocumentInFolderRouteSchema = documentInFolderSchema.
 export const endpointGetCountSearchDocumentInFolderRouteSchema = zod.object({
 	total: zod.number(),
 });
+
+export const endpointCreateManyDocumentInFolderSchema = zod.object({
+	foundError: zod.number(),
+	capacityError: zod.number(),
+});

@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import type { DocumentInFoloder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { DocumentInFoloderDetailedList } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { formatDate } from "@vendors/design-system/lib/utils";
 
 interface Props {
-	documentInFolder: DocumentInFoloder;
+	documentInFolder: DocumentInFoloderDetailedList[number];
 }
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
-	click: [document: DocumentInFoloder];
-	delete: [document: DocumentInFoloder];
+	click: [document: DocumentInFoloderDetailedList[number]];
+	delete: [document: DocumentInFoloderDetailedList[number]];
 }>();
+
+const { $pt } = documentInFolderPage.use();
 
 function handleClick() {
 	emit("click", props.documentInFolder);
@@ -36,12 +38,19 @@ function handleDelete() {
 		</div>
 
 		<div class="flex-grow truncate">
-			<h4
-				class="text-sm font-medium truncate"
+			<p
+				class="truncate"
 				:title="documentInFolder.name"
 			>
 				{{ documentInFolder.name }}
-			</h4>
+			</p>
+
+			<small
+				v-if="documentInFolder.bakedDocumentTitle"
+				class="truncate"
+			>
+				{{ $pt("bakedDocumentTitle", [documentInFolder.bakedDocumentTitle]) }}
+			</small>
 		</div>
 
 		<div class="flex-shrink-0 text-xs text-muted-foreground/80">

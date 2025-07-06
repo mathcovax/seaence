@@ -170,7 +170,7 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "bakedDocumentTitle.findMany";
-        body: Record<string, string>;
+        body: Partial<Record<string, string | undefined>>;
     };
 }) | ({
     method: "POST";

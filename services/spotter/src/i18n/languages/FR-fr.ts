@@ -210,11 +210,6 @@ export const FRfr = {
 					name: "Nom du dossier",
 				},
 			},
-			dialog: {
-				createDocumentFolder: {
-					title: "Créer un dossier",
-				},
-			},
 			header: {
 				label: "{count} dossier(s)",
 			},
@@ -226,6 +221,7 @@ export const FRfr = {
 				label: "{count} document(s)",
 			},
 			noDocumentInFolder: "Aucun document trouvé.",
+			bakedDocumentTitle: "Titre du document: {0}",
 		},
 		...cguFRfr,
 	},
@@ -270,6 +266,13 @@ export const FRfr = {
 			},
 		},
 		noParentFolder: "Ce document n'est associé à aucun dossier.",
+		createDocumentFolder: "Créer un dossier",
+		createdMessage: "Le document a été ajouté dans le(s) dossier(s)",
+		createdMessageWithError: "Le document a été ajouté à certains dossiers, cependant il y a eu {foundError} dossier(s) non trouvé(s) et {capacityError} dossier(s) plein(s).",
+
+	},
+	createDocumentFolderDialog: {
+		title: "Créer un dossier",
 	},
 	documentFolderCard: {
 		items: "{count} document(s)",
@@ -635,11 +638,12 @@ export const FRfr = {
 			notfound: "Le dossier n'existe pas",
 			removed: "Le dossier a été supprimé",
 			created: "Le dossier a été créé",
+			noneFound: "Aucun dossier n'a été trouvé.",
+			noneCapacity: "Tous les dossiers ont atteint le nombre maximal de documents qu'ils peuvent contenir.",
 		},
 		documentInFolder: {
 			notfound: "Le document n'existe pas",
 			removed: "Le document a été supprimé",
-			created: "Le document a été ajouté dans le(s) dossier(s)",
 		},
 		SERVER_ERROR: "Veuillez nous excuser, une erreur serveur s'est produite.",
 	},

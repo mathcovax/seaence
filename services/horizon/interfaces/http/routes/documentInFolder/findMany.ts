@@ -2,7 +2,9 @@ import { DocumentInFolder } from "@business/entities/documentInFolder";
 import { documentInFolderConfig } from "@interfaces/configs/documentInFolder";
 import { iWantDocumentFolderExist } from "@interfaces/http/checkers/documentFolder";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
+import { AbysAPI } from "@interfaces/providers/abys";
 import { CoralAPI } from "@interfaces/providers/coral";
+import { createBakedDocumentId } from "@interfaces/utils/createBakedDocumentId";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/find-many-document-in-folder")
@@ -34,12 +36,33 @@ useMustBeConnectedBuilder()
 				quantityPerPage: documentInFolderConfig.findMany.quantityPerPage,
 			});
 
+			const response = await AbysAPI.findManyBakedDocumentTitle(
+				list.map(({ nodeSameRawDocumentId }) => createBakedDocumentId({
+					nodeSameRawDocumentId,
+					bakedDocumentLanguage: user.language,
+				})),
+			);
+
+			const formatedList = response.information === "bakedDocuments.notfound"
+				? list
+				: list.map(
+					(documentInFolder): typeof DocumentInFolder.detailedList["_output"][number] => ({
+						...documentInFolder,
+						bakedDocumentTitle: response.body[
+							createBakedDocumentId({
+								nodeSameRawDocumentId: documentInFolder.nodeSameRawDocumentId,
+								bakedDocumentLanguage: user.language,
+							})
+						],
+					}),
+				);
+
 			return new OkHttpResponse(
 				"documentInFolderList.found",
-				list,
+				formatedList,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "documentInFolderList.found", DocumentInFolder.list),
+		makeResponseContract(OkHttpResponse, "documentInFolderList.found", DocumentInFolder.detailedList),
 	);
 
 useMustBeConnectedBuilder()

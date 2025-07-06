@@ -18,6 +18,7 @@ interface Props {
 	placeholder: string;
 	emptyLabel: string;
 	class?: string;
+	max?: number;
 }
 
 const props = defineProps<Props>();
@@ -68,6 +69,7 @@ function onSelect(selectedItem: GenericItem) {
 	const deleteQuantity = 1;
 
 	const index = modelValue.value.findIndex((item) => getValue(item) === getValue(selectedItem));
+
 	if (index === notfoundIndex) {
 		modelValue.value = [...modelValue.value, selectedItem];
 	} else {
@@ -76,6 +78,14 @@ function onSelect(selectedItem: GenericItem) {
 		modelValue.value = newModelValue;
 	}
 	open.value = false;
+}
+
+function preflight(event: Event) {
+	if (props.max !== undefined && modelValue.length >= props.max) {
+		event.stopImmediatePropagation();
+		event.stopPropagation();
+		event.preventDefault();
+	}
 }
 
 defineExpose({
@@ -89,6 +99,7 @@ defineExpose({
 <template>
 	<DSPopover v-model:open="open">
 		<div
+			@click.capture="preflight"
 			role="combobox"
 			:aria-expanded="open"
 			:class="[

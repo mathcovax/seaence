@@ -23,11 +23,13 @@ const debounce = createFetchDebounce(
 	() => new IgnoreTimeoutRequestError(),
 );
 
+const { sonnerMessage, sonnerWarning } = useSonner();
+
 export function useCreateManyDocumentInFolderDialog(
 	nodeSameRawDocumentId: string,
 	currentDocumentTitle: string,
 ) {
-	const { t: $t } = useI18n();
+	const { t } = useI18n();
 
 	const itemsOfInputFolder = ref<MultiComboboxItem[]>([]);
 	const documentFoldersInWhichDocumentExistList = ref<DocumentFolderInWhichDocumentExistList | null>(null);
@@ -43,15 +45,15 @@ export function useCreateManyDocumentInFolderDialog(
 				textFormField,
 				{
 					mandatory: true,
-					label: $t("createManyDocumentInFolderDialog.form.label.name"),
+					label: t("createManyDocumentInFolderDialog.form.label.name"),
 					schema: zod.string()
 						.min(
 							documentInFolderRules.name.minLength,
-							$t("formMessage.minLength", { value: documentInFolderRules.name.minLength }),
+							t("formMessage.minLength", { value: documentInFolderRules.name.minLength }),
 						)
 						.max(
 							documentInFolderRules.name.maxLength,
-							$t("formMessage.maxLength", { value: documentInFolderRules.name.maxLength }),
+							t("formMessage.maxLength", { value: documentInFolderRules.name.maxLength }),
 						),
 					defaultValue: currentDocumentTitle,
 				},
@@ -60,17 +62,18 @@ export function useCreateManyDocumentInFolderDialog(
 				multiComboBoxFormField,
 				{
 					mandatory: true,
-					label: $t("createManyDocumentInFolderDialog.form.label.folder"),
+					label: t("createManyDocumentInFolderDialog.form.label.folder"),
 					schema: folderItemSchema
 						.array()
-						.min(minSelectFolder, $t("formMessage.minLength", { value: minSelectFolder }))
-						.max(maxSelectFolder, $t("formMessage.minLength", { value: maxSelectFolder })),
+						.min(minSelectFolder, t("formMessage.minLength", { value: minSelectFolder }))
+						.max(maxSelectFolder, t("formMessage.minLength", { value: maxSelectFolder })),
 					props: computed(() => ({
 						items: itemsOfInputFolder.value,
-						placeholder: $t("createManyDocumentInFolderDialog.form.placeholder.folder"),
-						emptyLabel: $t("createManyDocumentInFolderDialog.form.emptyLabel.folder"),
+						placeholder: t("createManyDocumentInFolderDialog.form.placeholder.folder"),
+						emptyLabel: t("createManyDocumentInFolderDialog.form.emptyLabel.folder"),
 						"onUpdate:searchTerm": findManyDocumentFolderByName,
 						onFocus: findManyDocumentFolderByName,
+						max: maxSelectFolder,
 					})),
 				},
 			),
@@ -193,7 +196,17 @@ export function useCreateManyDocumentInFolderDialog(
 			)
 			.whenInformation(
 				"documentInFolder.created",
-				() => {
+				({ body: { foundError, capacityError } }) => {
+					if (!foundError && !capacityError) {
+						sonnerMessage(t("createManyDocumentInFolderDialog.createdMessage"));
+					} else {
+						sonnerWarning(
+							t("createManyDocumentInFolderDialog.createdMessageWithError", {
+								foundError,
+								capacityError,
+							}),
+						);
+					}
 					reset();
 					void initDialog();
 				},

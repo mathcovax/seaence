@@ -372,14 +372,15 @@ type DocumentFolder = {
 
 export { DocumentFolder };
 
-type DocumentInFoloder = {
+type DocumentInFoloderDetailedList = {
     documentFolderId: string;
     nodeSameRawDocumentId: string;
     name: string;
     addedAt: string;
-};
+    bakedDocumentTitle?: string | undefined;
+}[];
 
-export { DocumentInFoloder };
+export { DocumentInFoloderDetailedList };
 
 type CodegenRoutes = ({
     method: "POST";
@@ -1116,7 +1117,7 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "documentInFolderList.found";
-        body: DocumentInFoloder[];
+        body: DocumentInFoloderDetailedList;
     };
 }) | ({
     method: "POST";
@@ -1189,9 +1190,20 @@ type CodegenRoutes = ({
         information: "nodeSameRawDocument.notfound";
         body?: undefined;
     } | {
+        code: 404;
+        information: "documentFolder.noneFound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "documentFolder.noneCapacity";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentInFolder.created";
-        body?: undefined;
+        body: {
+            capacityError: number;
+            foundError: number;
+        };
     };
 });
 

@@ -44,3 +44,5 @@ FavoriteEquation.listDetails._zttIdentifier = "FavoriteEquationListDetails";
 
 DocumentFolder.index._zttIdentifier = "DocumentFolder";
 DocumentInFolder.index._zttIdentifier = "DocumentInFoloder";
+
+DocumentInFolder.detailedList._zttIdentifier = "DocumentInFoloderDetailedList";

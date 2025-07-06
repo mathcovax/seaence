@@ -11,6 +11,12 @@ export namespace DocumentInFolder {
 
 	export const list = index.array();
 
+	export const detailedList = index
+		.extend({
+			bakedDocumentTitle: zod.string().optional(),
+		})
+		.array();
+
 	export const details = zod.object({
 		total: zod.number(),
 	});
@@ -20,5 +26,10 @@ export namespace DocumentInFolder {
 		quantityPerPage: zod.number(),
 		maxInFolder: zod.number(),
 		documentFolderName: zod.string(),
+	});
+
+	export const createManyResult = zod.object({
+		capacityError: zod.number(),
+		foundError: zod.number(),
 	});
 }

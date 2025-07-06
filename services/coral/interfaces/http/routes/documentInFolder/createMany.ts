@@ -1,6 +1,7 @@
 import { userIdObjecter } from "@business/domains/common/user";
 import { documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
 import { nodeSameRawDocumentIdObjecter, documentInFolderNameObjecter } from "@business/domains/entities/documentInFolder";
+import { endpointCreateManyDocumentInFolderSchema } from "@interfaces/http/schemas/documentInFolder";
 import { userCheckManyDocumentFolderCapacityUsecase, userCreateDocumentInManyFoldersUsecase, userFindManyDocumentFolderByIdsUsecase } from "@interfaces/usecase";
 
 useBuilder()
@@ -17,7 +18,7 @@ useBuilder()
 		async({ pickup, dropper }) => {
 			const { documentFolderIds, userId } = pickup("body");
 
-			const { userDocumentFolders } = await userFindManyDocumentFolderByIdsUsecase
+			const { userDocumentFolders, errors } = await userFindManyDocumentFolderByIdsUsecase
 				.execute({
 					userId,
 					documentFolderIds,
@@ -27,30 +28,43 @@ useBuilder()
 				return new NotFoundHttpResponse("documentFolder.noneFound");
 			}
 
-			return dropper({ userDocumentFolders });
+			return dropper({
+				userDocumentFolders,
+				foundErrors: errors,
+			});
 		},
-		["userDocumentFolders"],
+		["userDocumentFolders", "foundErrors"],
 		makeResponseContract(NotFoundHttpResponse, "documentFolder.noneFound"),
 	)
 	.cut(
 		({ pickup, dropper }) => {
 			const { userDocumentFolders } = pickup(["userDocumentFolders"]);
 
-			const { userDocumentFoldersWithCapacity } = userCheckManyDocumentFolderCapacityUsecase
+			const { userDocumentFoldersWithCapacity, errors } = userCheckManyDocumentFolderCapacityUsecase
 				.execute({
 					userDocumentFolders,
 				});
 
-			return dropper({ userDocumentFoldersWithCapacity });
+			if (!userDocumentFoldersWithCapacity.length) {
+				return new ForbiddenHttpResponse("documentFolder.noneCapacity");
+			}
+
+			return dropper({
+				userDocumentFoldersWithCapacity,
+				capacityError: errors,
+			});
 		},
-		["userDocumentFoldersWithCapacity"],
+		["userDocumentFoldersWithCapacity", "capacityError"],
+		makeResponseContract(ForbiddenHttpResponse, "documentFolder.noneCapacity"),
 	)
 	.handler(
 		async(pickup) => {
 			const {
 				body: { nodeSameRawDocumentId, documentInFolderName },
 				userDocumentFoldersWithCapacity,
-			} = pickup(["body", "userDocumentFoldersWithCapacity"]);
+				foundErrors,
+				capacityError,
+			} = pickup(["body", "userDocumentFoldersWithCapacity", "capacityError", "foundErrors"]);
 
 			await userCreateDocumentInManyFoldersUsecase.execute({
 				userDocumentFoldersWithCapacity,
@@ -58,7 +72,14 @@ useBuilder()
 				documentInFolderName,
 			});
 
-			return new OkHttpResponse("documentInFolder.created");
+			return new OkHttpResponse("documentInFolder.created", {
+				capacityError: capacityError.length,
+				foundError: foundErrors.length,
+			});
 		},
-		makeResponseContract(OkHttpResponse, "documentInFolder.created"),
+		makeResponseContract(
+			OkHttpResponse,
+			"documentInFolder.created",
+			endpointCreateManyDocumentInFolderSchema,
+		),
 	);

@@ -9,6 +9,19 @@ export type AbysClientRoute = TransformCodegenRouteToHttpClientRoute<
 export class AbysAPI {
 	private static httpClient: HttpClient<AbysClientRoute>;
 
+	public static findManyBakedDocumentTitle(bakedDocumentIds: string[]) {
+		return this.httpClient
+			.post(
+				"/find-many-baked-document-title",
+				{
+					body: {
+						bakedDocumentIds,
+					},
+				},
+			)
+			.iWantInformation(["bakedDocumentTitle.findMany", "bakedDocuments.notfound"]);
+	}
+
 	public static getBakedDocumentById(bakedDocumentId: string) {
 		return this.httpClient
 			.get(

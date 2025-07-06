@@ -2,6 +2,7 @@
 import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useCreateManyDocumentInFolderDialog } from "../composables/useCreateManyDocumentInFolderDialog";
 import { formatDate } from "@vendors/design-system/lib/utils";
+import CreateDocumentFolderDialog from "./CreateDocumentFolderDialog.vue";
 
 interface Props {
 	nodeSameRawDocumentId: string;
@@ -13,11 +14,11 @@ const router = useRouter();
 
 const {
 	CreateManyDocumentInFolderDialogForm,
-	handleCreateManyDocumentInFolder,
 	pageOfListDocumentFoldersInWhichDocumentExist,
 	documentFoldersInWhichDocumentExistList,
 	documentFoldersInWhichDocumentExistListDetails,
 	setPageDocumentFoldersInWhichDocumentExist,
+	handleCreateManyDocumentInFolder,
 	documentFolderDialogInformation,
 	initDialog,
 } = useCreateManyDocumentInFolderDialog(
@@ -123,6 +124,12 @@ function onUpdateOpen(value: boolean) {
 					{{ $t("cta.add") }}
 				</DSPrimaryButton>
 			</CreateManyDocumentInFolderDialogForm>
+
+			<CreateDocumentFolderDialog>
+				<DSOutlineButton>
+					{{ $t("createManyDocumentInFolderDialog.createDocumentFolder") }}
+				</DSOutlineButton>
+			</CreateDocumentFolderDialog>
 		</template>
 	</DSDialog>
 </template>

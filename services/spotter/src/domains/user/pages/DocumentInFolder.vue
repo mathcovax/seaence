@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DocumentInFoloder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { DocumentInFoloderDetailedList } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import DocumentInFolderItem from "../components/DocumentInFolderItem.vue";
 import { useDocumentInFolderPage } from "../composables/useDocumentInFolderPage";
 import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
@@ -38,7 +38,7 @@ const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = u
 	destructive: true,
 });
 
-function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFoloder) {
+function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFoloderDetailedList[number]) {
 	void router.push(documentPage.createTo(
 		{
 			params: {
@@ -51,7 +51,7 @@ function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFolode
 	));
 }
 
-async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder) {
+async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloderDetailedList[number]) {
 	if (!(await getDeleteValidation())) {
 		return;
 	}

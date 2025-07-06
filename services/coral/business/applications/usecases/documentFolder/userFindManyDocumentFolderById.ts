@@ -1,7 +1,7 @@
 import { type UserId } from "@business/domains/common/user";
-import { UsecaseError, UsecaseHandler } from "@vendors/clean";
+import { UsecaseError, UsecaseHandler, ValueObject } from "@vendors/clean";
 import { type DocumentFolderId } from "@business/domains/entities/documentFolder";
-import { type UserDocumentFolder, UserFindDocumentFolderByIdUsecase } from "./userFindDocumentFolderById";
+import { UserFindDocumentFolderByIdUsecase } from "./userFindDocumentFolderById";
 
 interface Input {
 	userId: UserId;
@@ -13,16 +13,25 @@ export class UserFindManyDocumentFolderByIdUsecase extends UsecaseHandler.create
 }) {
 	public async execute({ userId, documentFolderIds }: Input) {
 		const userDocumentFolderPromises = documentFolderIds.map(
-			async(documentFolderId) => this.userFindDocumentFolderByIdUsecase({
-				userId,
-				documentFolderId,
-			}),
+			async(documentFolderId) => this
+				.userFindDocumentFolderByIdUsecase({
+					userId,
+					documentFolderId,
+				})
+				.then(
+					(result) => result instanceof ValueObject
+						? result
+						: new UsecaseError("problem-while-finding-document-folder", {
+							documentFolderId,
+							result,
+						}),
+				),
 		);
 
 		const result = await Promise.all(userDocumentFolderPromises);
 
 		const userDocumentFolders = result
-			.filter((result): result is UserDocumentFolder => result !== null && !(result instanceof UsecaseError));
+			.filter((result) => result instanceof ValueObject);
 
 		const errors = result
 			.filter((result) => result instanceof UsecaseError);

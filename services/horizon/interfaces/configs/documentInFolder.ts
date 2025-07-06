@@ -4,4 +4,5 @@ export const documentInFolderConfig = {
 		pageOffset: 1,
 	},
 	maxInFolder: 20,
+	maxCreateManyInSameTime: 5,
 };

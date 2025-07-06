@@ -30,5 +30,5 @@ export const endpointFindManyBakedDocumentNotfoundSchema = zod.object({
 
 export const endpointFindManyBakedDocumentTitleSchema = zod.record(
 	nodeSameRawDocumentIdObjecter.zodSchema,
-	bakedDocumentTitleObjecter.zodSchema,
+	bakedDocumentTitleObjecter.zodSchema.optional(),
 );

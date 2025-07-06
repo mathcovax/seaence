@@ -10,6 +10,7 @@ interface Props {
 	items: MultiComboboxItem[];
 	placeholder: string;
 	emptyLabel: string;
+	max?: number;
 }
 
 defineProps<Props>();
@@ -36,7 +37,9 @@ const modelSearchTerm = defineModel<string>(
 		:placeholder="placeholder"
 		:empty-label="emptyLabel"
 		:label="({label}) => label"
+		:value="({value}) => value"
 		v-model:search-term="modelSearchTerm"
+		:max="max"
 		@focus="emit('focus')"
 	/>
 </template>

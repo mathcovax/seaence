@@ -233,9 +233,16 @@ type CodegenRoutes = ({
         information: "documentFolder.noneFound";
         body?: undefined;
     } | {
+        code: 403;
+        information: "documentFolder.noneCapacity";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentInFolder.created";
-        body?: undefined;
+        body: {
+            foundError: number;
+            capacityError: number;
+        };
     };
 }) | ({
     method: "POST";

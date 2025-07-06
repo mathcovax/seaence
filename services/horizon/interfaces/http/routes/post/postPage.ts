@@ -6,6 +6,7 @@ import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
 import { iWantPostExistById } from "@interfaces/http/checkers/post";
 import { tryAuthenticationProcess } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
+import { createBakedDocumentId } from "@interfaces/utils/createBakedDocumentId";
 import { match } from "ts-pattern";
 
 useBuilder()
@@ -41,7 +42,10 @@ useBuilder()
 		({ pickup, dropper }) => {
 			const { post, language } = pickup(["post", "language"]);
 			return dropper({
-				documentId: `${post.nodeSameRawDocumentId}_${language}`,
+				documentId: createBakedDocumentId({
+					nodeSameRawDocumentId: post.nodeSameRawDocumentId,
+					bakedDocumentLanguage: language,
+				}),
 			});
 		},
 		["documentId"],

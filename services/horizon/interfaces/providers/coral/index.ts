@@ -166,7 +166,11 @@ export class CoralAPI {
 					body: input,
 				},
 			)
-			.iWantInformation("documentInFolder.created");
+			.iWantInformation([
+				"documentInFolder.created",
+				"documentFolder.noneFound",
+				"documentFolder.noneCapacity",
+			]);
 	}
 
 	public static findManyDocumentFoldersInWichDocumentExist(input: InputFindManyDocumentFoldersInWichDocumentExist) {
