@@ -29,6 +29,7 @@ export interface NotificationRepository extends RepositoryBase<Notification> {
 		params: FindProcessedNotificationToUserParams
 	): Promise<Notification[]>;
 	countNotificationToUser(user: UserEntity): Promise<Int>;
+	findLastNotificationDateToUser(user: UserEntity): Promise<Date | null>;
 }
 
 export const notificationRepository = createRepositoryHandler<NotificationRepository>();

@@ -228,4 +228,27 @@ notificationRepository.default = {
 				(count) => intObjecter.unsafeCreate(count),
 			);
 	},
+	async findLastNotificationDateToUser(user) {
+		const mongoNotification = await mongo.notificationCollection
+			.findOne(
+				{
+					"user.id": user.id.value,
+				},
+				{
+					sort: { createdAt: -1 },
+					projection: { createdAt: 1 },
+				},
+			);
+
+		return match({ mongoNotification })
+			.with(
+				{ mongoNotification: P.not(P.nullish) },
+				({ mongoNotification }) => mongoNotification.createdAt,
+			)
+			.with(
+				{ mongoNotification: P.nullish },
+				() => null,
+			)
+			.exhaustive();
+	},
 };

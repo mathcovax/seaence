@@ -140,7 +140,7 @@ declare global {
   export type { BaseProps, ExposedProperties, FormFieldParams, FormFieldInstance, FormField, GetGenericFormField } from './vendors/design-system/composables/useFormBuilder/formField'
   import('./vendors/design-system/composables/useFormBuilder/formField')
   // @ts-ignore
-  export type { CheckLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout'
+  export type { CheckLayoutOptions, CheckedTypeContaineAny } from './vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout'
   import('./vendors/design-system/composables/useFormBuilder/layouts/useCheckLayout')
   // @ts-ignore
   export type { MultiLayoutOptions } from './vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout'
@@ -172,6 +172,9 @@ declare global {
   // @ts-ignore
   export type { MultiLayoutTemplateProps, MultiLayoutTemplateItem, MultiLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/multiLayout'
   import('./vendors/design-system/composables/useFormBuilder/templates/multiLayout')
+  // @ts-ignore
+  export type { RepeatLayoutTemplateProps, RepeatLayoutTemplateItem, RepeatLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/repeatLayout'
+  import('./vendors/design-system/composables/useFormBuilder/templates/repeatLayout')
   // @ts-ignore
   export type { TextLayoutTemplateProps, TextLayoutTemplateItem, TextLayoutTemplateRender } from './vendors/design-system/composables/useFormBuilder/templates/textLayout'
   import('./vendors/design-system/composables/useFormBuilder/templates/textLayout')
@@ -288,6 +291,7 @@ declare module 'vue' {
     readonly useMultiFieldLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')['useMultiFieldLayout']>
     readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
     readonly useRefHasChange: UnwrapRef<typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']>
+    readonly useRepeatLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useRepeatLayout')['useRepeatLayout']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useScroll: UnwrapRef<typeof import('./vendors/design-system/composables/useScroll')['useScroll']>
