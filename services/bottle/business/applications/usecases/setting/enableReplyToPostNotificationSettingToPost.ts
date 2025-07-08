@@ -1,6 +1,6 @@
 import { type PostId } from "@business/domains/common/post";
 import { UsecaseHandler } from "@vendors/clean";
-import { notificationSettingRepository } from "../repositories/notificationSetting";
+import { notificationSettingRepository } from "../../repositories/notificationSetting";
 import { ReplyToPostNotificationSettingEntity } from "@business/domains/entities/setting/replyToPost";
 import { type UserEntity } from "@business/domains/entities/user";
 import { userObjecter } from "@business/domains/common/user";

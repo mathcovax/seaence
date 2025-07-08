@@ -1,5 +1,5 @@
 import { UsecaseHandler } from "@vendors/clean";
-import { replyToPostNotificationSettingRepository } from "../repositories/notificationSetting/replyToPost";
+import { replyToPostNotificationSettingRepository } from "../../repositories/notificationSetting/replyToPost";
 import { type ReplyToPostNotificationSettingEntity } from "@business/domains/entities/setting/replyToPost";
 
 interface Input {

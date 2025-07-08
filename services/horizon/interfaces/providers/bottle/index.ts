@@ -1,48 +1,14 @@
-import { type FindHttpClientRoute, HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
+import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
-import { type CodegenRoutes } from "@vendors/clients-type/bottle/duplojsTypesCodegen";
-
-export type BottleClientRoute = TransformCodegenRouteToHttpClientRoute<
-	CodegenRoutes
->;
-
-type InputFindNotifications = FindHttpClientRoute<
-	BottleClientRoute,
-	"POST",
-	"/find-notifications"
->["body"];
-
-type InputFindNotificationSettingToPost = FindHttpClientRoute<
-	BottleClientRoute,
-	"POST",
-	"/find-reply-to-post-notification-setting"
->["body"];
-
-type InputEnableNotificationToPost = FindHttpClientRoute<
-	BottleClientRoute,
-	"POST",
-	"/enable-reply-post-notification-setting"
->["body"];
-
-type InputDisableNotificationToPost = FindHttpClientRoute<
-	BottleClientRoute,
-	"POST",
-	"/disable-reply-post-notification-setting"
->["body"];
-
-type InputCountNotifications = FindHttpClientRoute<
-	BottleClientRoute,
-	"POST",
-	"/count-notifications"
->["body"];
+import type { BottleClientRoute, InputDisableNotificationToPost, InputEnableNotificationToPost, InputFindNotificationSettingToPost, InputNotificationCount, InputNotificationFindMany, InputNotificatondateFindLast } from "./types";
 
 export class BottleAPI {
 	private static httpClient: HttpClient<BottleClientRoute>;
 
-	public static findNotifications(input: InputFindNotifications) {
+	public static findNotifications(input: InputNotificationFindMany) {
 		return this.httpClient
 			.post(
-				"/find-notifications",
+				"/notification-find-many",
 				{
 					body: input,
 				},
@@ -53,7 +19,7 @@ export class BottleAPI {
 	public static findNotificationSettingToPost(input: InputFindNotificationSettingToPost) {
 		return this.httpClient
 			.post(
-				"/find-reply-to-post-notification-setting",
+				"/notification-reply-to-post-setting-find-one",
 				{
 					body: input,
 				},
@@ -67,7 +33,7 @@ export class BottleAPI {
 	public static enableNotificationToPost(input: InputEnableNotificationToPost) {
 		return this.httpClient
 			.post(
-				"/enable-reply-post-notification-setting",
+				"/notification-reply-post-setting-enable",
 				{
 					body: input,
 				},
@@ -78,7 +44,7 @@ export class BottleAPI {
 	public static disableNotificationToPost(input: InputDisableNotificationToPost) {
 		return this.httpClient
 			.post(
-				"/disable-reply-post-notification-setting",
+				"/notification-reply-post-setting-disable",
 				{
 					body: input,
 				},
@@ -89,15 +55,26 @@ export class BottleAPI {
 			]);
 	}
 
-	public static countNotifications(input: InputCountNotifications) {
+	public static countNotifications(input: InputNotificationCount) {
 		return this.httpClient
 			.post(
-				"/count-notifications",
+				"/notification-count",
 				{
 					body: input,
 				},
 			)
 			.iWantInformation("notifications.count");
+	}
+
+	public static findUserLastNotificationDate(input: InputNotificatondateFindLast) {
+		return this.httpClient
+			.post(
+				"/notification-date-find-last",
+				{
+					body: input,
+				},
+			)
+			.iWantExpectedResponse();
 	}
 
 	static {

@@ -1,31 +1,19 @@
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/bottle/duplojsTypesCodegen";
+import type { InputEnableNotification } from "./types";
 
 export type BottleClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-interface InputEnableNotification {
-	postId: string;
-	userId: string;
-}
-
 export class BottleAPI {
 	private static httpClient: HttpClient<BottleClientRoute>;
 
-	public static createWarningNotification() {
-		throw new Error("Method not implemented.");
-	}
-
-	public static createBanNotification() {
-		throw new Error("Method not implemented.");
-	}
-
-	public static enableNotification(input: InputEnableNotification) {
+	public static enableReplyPostNotification(input: InputEnableNotification) {
 		return this.httpClient
 			.post(
-				"/enable-reply-post-notification-setting",
+				"/notification-reply-post-setting-enable",
 				{
 					body: input,
 				},

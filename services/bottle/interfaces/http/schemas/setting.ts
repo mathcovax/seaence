@@ -17,4 +17,23 @@ const replyToPostNotificationSettingSchema = baseNotificationSettingSchema
 		type: replyToPostNotificationSettingTypeObjecter.zodSchema,
 	});
 
-export const endpointFindReplyToPostNotificationSetting = replyToPostNotificationSettingSchema.nullable();
+export namespace EntrypointNotificationSetting {
+	export const replyPostEnable = zod.object({
+		userId: userIdObjecter.toZodSchema(),
+		postId: postIdObjecter.toZodSchema(),
+	});
+
+	export const replyPostDisable = zod.object({
+		userId: userIdObjecter.toZodSchema(),
+		postId: postIdObjecter.toZodSchema(),
+	});
+
+	export const replyToPostFindOne = zod.object({
+		userId: userIdObjecter.toZodSchema(),
+		postId: postIdObjecter.toZodSchema(),
+	});
+}
+
+export namespace EndpointNotificationSetting {
+	export const replyToPostFindOne = replyToPostNotificationSettingSchema.nullable();
+}

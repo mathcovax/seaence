@@ -1,6 +1,6 @@
 import { type UserId } from "@business/domains/entities/user";
 import { UsecaseHandler } from "@vendors/clean";
-import { userRepository } from "../repositories/user";
+import { userRepository } from "../../repositories/user";
 
 interface Input {
 	userId: UserId;

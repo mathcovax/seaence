@@ -1,6 +1,6 @@
 import { type UserEntity } from "@business/domains/entities/user";
 import { UsecaseHandler } from "@vendors/clean";
-import { notificationRepository } from "../repositories/notification";
+import { notificationRepository } from "../../repositories/notification";
 
 interface Input {
 	user: UserEntity;

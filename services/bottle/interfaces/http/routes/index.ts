@@ -1,2 +1,2 @@
-import "./notificationSetting";
+import "./setting";
 import "./notification";
