@@ -1,0 +1,17 @@
+services:
+  rosetta:
+    build: 
+      context: .
+      dockerfile: ../.docker/node-e2e.dockerfile
+    volumes:
+      - ${PWD}:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    depends_on:
+      node-installer:
+        condition: service_completed_successfully
+      rosetta-libretranslate: 
+        condition: service_started
+    command: npm -w e2e run test
