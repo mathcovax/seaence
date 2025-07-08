@@ -1,11 +1,11 @@
 import { IWantUserExistsById } from "@interfaces/http/checkers/user";
-import { EndpointNotification, EntrypointNotification } from "@interfaces/http/schemas/notification";
 import { countNotificationToUserUsecase } from "@interfaces/usecases";
+import { NotificationRoute } from "@interfaces/http/schemas/notification";
 
 useBuilder()
 	.createRoute("POST", "/notification-count")
 	.extract({
-		body: EntrypointNotification.count,
+		body: NotificationRoute.count.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,
@@ -19,5 +19,5 @@ useBuilder()
 
 			return new OkHttpResponse("notifications.count", { count: countNotification.value });
 		},
-		makeResponseContract(OkHttpResponse, "notifications.count", EndpointNotification.count),
+		makeResponseContract(OkHttpResponse, "notifications.count", NotificationRoute.count.endpoint),
 	);

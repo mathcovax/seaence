@@ -1,11 +1,11 @@
 import { IWantUserExistsById } from "@interfaces/http/checkers/user";
-import { EndpointNotification, EntrypointNotification } from "@interfaces/http/schemas/notification";
+import { NotificationRoute } from "@interfaces/http/schemas/notification";
 import { findUserLastNotificationDateUsecase } from "@interfaces/usecases";
 
 useBuilder()
 	.createRoute("POST", "/notification-date-find-last")
 	.extract({
-		body: EntrypointNotification.dateFindLast,
+		body: NotificationRoute.findLastDate.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,
@@ -39,5 +39,5 @@ useBuilder()
 				},
 			);
 		},
-		makeResponseContract(OkHttpResponse, "dateOfLastNotification.found", EndpointNotification.dateFindLast),
+		makeResponseContract(OkHttpResponse, "dateOfLastNotification.found", NotificationRoute.findLastDate.endpoint),
 	);

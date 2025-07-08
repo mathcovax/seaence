@@ -1,11 +1,11 @@
 import { IWantUserExistsById } from "@interfaces/http/checkers/user";
-import { EntrypointNotificationSetting } from "@interfaces/http/schemas/setting";
+import { ReplyToPostNotificationRoute } from "@interfaces/http/schemas/notification/replyToPost";
 import { enableReplyToPostNotificationSettingToPostUsecase } from "@interfaces/usecases";
 
 useBuilder()
 	.createRoute("POST", "/notification-reply-post-setting-enable")
 	.extract({
-		body: EntrypointNotificationSetting.replyPostEnable,
+		body: ReplyToPostNotificationRoute.settingEnable.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,
