@@ -2,10 +2,8 @@
 import NotificationIcon from "@/domains/notification/components/NotificationIcon.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
-const { disconect } = useUserInformation();
+const { disconect, hasNewNotifications } = useUserInformation();
 
-// TODO: Replace with real sate
-const isNewNotification = ref(true);
 </script>
 
 <template>
@@ -13,7 +11,7 @@ const isNewNotification = ref(true);
 		<DSDropdownMenuTrigger>
 			<div class="relative">
 				<NotificationIcon
-					v-if="isNewNotification"
+					v-if="hasNewNotifications"
 					class="absolute right-0"
 				/>
 
@@ -46,7 +44,7 @@ const isNewNotification = ref(true);
 					</RouterLink>
 
 					<NotificationIcon
-						v-if="isNewNotification"
+						v-if="hasNewNotifications"
 					/>
 				</div>
 			</DSDropdownMenuItem>
