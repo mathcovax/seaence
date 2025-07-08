@@ -22,15 +22,6 @@ const userNavigatorLanguage = useLocalStorageItem<UserLanguage>(
 type RequestInformation = FindHttpClientRoute<HorizonClientRoute, "POST", "/self-user">["response"];
 const externalPromisedRequestInformation = ref(createExternalPromise<RequestInformation>());
 
-type RequestLastDateOfNoticaton = FindHttpClientRoute<
-	HorizonClientRoute,
-	"POST",
-	"/notification-last-date-find"
->["response"];
-const externalPromisedRequestLastDateOfNoticaton = ref(
-	createExternalPromise<RequestLastDateOfNoticaton>(),
-);
-
 const { refresh } = useWindow();
 
 export function useUserInformation() {
@@ -57,14 +48,6 @@ export function useUserInformation() {
 	const isConnected = computed(() => !!user.value);
 
 	const accessToken = computed(() => accessTokenItem.value);
-
-	const hasNewNotifications = computed(() => {
-		if (!lastDateOfNotification.value) {
-			return false;
-		}
-
-		return lastDateOfNotification.value.getTime() > lastSeeNotificationsItem.value;
-	});
 
 	function fetchInformation() {
 		const externalPromise = createExternalPromise<RequestInformation>();
@@ -96,12 +79,7 @@ export function useUserInformation() {
 	}
 
 	function fetchLastDateOfNotification() {
-		const externalPromise = createExternalPromise<RequestLastDateOfNoticaton>();
-
-		externalPromisedRequestLastDateOfNoticaton.value.resolve(externalPromise.promise);
-		externalPromisedRequestLastDateOfNoticaton.value = externalPromise;
-
-		const result = window.horizonClient
+		return window.horizonClient
 			.post(
 				"/notification-last-date-find",
 				{ disableAuthenticationRequiredManagement: true },
@@ -112,10 +90,6 @@ export function useUserInformation() {
 					lastDateOfNotification.value = new Date(body.dateOfLastNotification);
 				},
 			);
-
-		externalPromise.resolve(result);
-
-		return result;
 	}
 
 	return {
@@ -127,7 +101,9 @@ export function useUserInformation() {
 		isConnected,
 		accessToken,
 		user,
-		hasNewNotifications,
+		hasNewNotifications: computed(
+			() => lastDateOfNotification.value && lastDateOfNotification.value.getTime() > lastSeeNotificationsItem.value,
+		),
 		promisedRequestInformation: computed(
 			() => externalPromisedRequestInformation.value.promise,
 		),
@@ -138,7 +114,7 @@ export function useUserInformation() {
 	};
 }
 
-const { accessToken, fetchInformation, fetchLastDateOfNotification } = useUserInformation();
+const { accessToken, fetchInformation, fetchLastDateOfNotification, promisedRequestInformation } = useUserInformation();
 
 watch(
 	accessToken,
@@ -154,5 +130,9 @@ void Promise
 	.resolve()
 	.then(() => {
 		void fetchInformation();
-		void fetchLastDateOfNotification();
 	});
+
+void promisedRequestInformation.value
+	.then(
+		({ information }) => information === "user.self" && void fetchLastDateOfNotification(),
+	);

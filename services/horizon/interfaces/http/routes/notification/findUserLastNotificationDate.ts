@@ -1,11 +1,7 @@
+import { Notification } from "@business/entities/notification";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 import { match } from "ts-pattern";
-
-// pas sur de l'endroit, mais trouver ou mettre d'autre
-const endpointSchema = zod.object({
-	dateOfLastNotification: zod.string(),
-});
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/notification-last-date-find")
@@ -44,5 +40,5 @@ useMustBeConnectedBuilder()
 
 			return new OkHttpResponse("notification.lastDate", { dateOfLastNotification });
 		},
-		makeResponseContract(OkHttpResponse, "notification.lastDate", endpointSchema),
+		makeResponseContract(OkHttpResponse, "notification.lastDate", Notification.dateOfLastNotification),
 	);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NotificationIcon from "@/domains/notification/components/NotificationIcon.vue";
+import NotificationHint from "@/domains/notification/components/NotificationHint.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { disconect, hasNewNotifications } = useUserInformation();
@@ -10,7 +10,7 @@ const { disconect, hasNewNotifications } = useUserInformation();
 	<DSDropdownMenu>
 		<DSDropdownMenuTrigger>
 			<div class="relative">
-				<NotificationIcon
+				<NotificationHint
 					v-if="hasNewNotifications"
 					class="absolute right-0"
 				/>
@@ -43,7 +43,7 @@ const { disconect, hasNewNotifications } = useUserInformation();
 						{{ $t("layout.base.header.accountDropdown.notification") }}
 					</RouterLink>
 
-					<NotificationIcon
+					<NotificationHint
 						v-if="hasNewNotifications"
 					/>
 				</div>

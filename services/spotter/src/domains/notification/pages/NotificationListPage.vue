@@ -2,7 +2,6 @@
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { useNotificationListPage } from "../composables/useNotificationListPage";
 import { notificationWrapper } from "../utils/notificationWrapper";
-import NotificationIcon from "../components/NotificationIcon.vue";
 
 const { $pt } = notificationListPage.use();
 const router = useRouter();
