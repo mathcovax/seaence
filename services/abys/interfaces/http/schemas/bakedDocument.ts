@@ -24,11 +24,12 @@ export const endpointBakedDocumentSchema = zod.object({
 	journalPublishDate: flexibleDateObjecter.zodSchema.nullable(),
 });
 
-export const endpointFindManyBakedDocumentNotfoundSchema = zod.object({
-	notfoundBakedDocumentIds: zod.string().array(),
-});
-
 export const endpointFindManyBakedDocumentTitleSchema = zod.record(
 	nodeSameRawDocumentIdObjecter.zodSchema,
 	bakedDocumentTitleObjecter.zodSchema.optional(),
 );
+
+export const endpointFindManyBakedDocumentNotfoundSchema = zod.object({
+	idsNotLinkToBakedDocument: zod.string().array(),
+	bakedDocumentTitleWrapper: endpointFindManyBakedDocumentTitleSchema,
+});

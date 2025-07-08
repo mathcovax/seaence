@@ -7,15 +7,10 @@ export namespace DocumentInFolder {
 		nodeSameRawDocumentId: zod.string(),
 		name: zod.string(),
 		addedAt: zod.string(),
+		bakedDocumentTitle: zod.string().nullable(),
 	});
 
 	export const list = index.array();
-
-	export const detailedList = index
-		.extend({
-			bakedDocumentTitle: zod.string().optional(),
-		})
-		.array();
 
 	export const details = zod.object({
 		total: zod.number(),

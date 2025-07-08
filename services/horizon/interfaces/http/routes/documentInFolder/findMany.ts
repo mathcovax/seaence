@@ -36,33 +36,37 @@ useMustBeConnectedBuilder()
 				quantityPerPage: documentInFolderConfig.findMany.quantityPerPage,
 			});
 
-			const response = await AbysAPI.findManyBakedDocumentTitle(
-				list.map(({ nodeSameRawDocumentId }) => createBakedDocumentId({
-					nodeSameRawDocumentId,
-					bakedDocumentLanguage: user.language,
-				})),
-			);
-
-			const formatedList = response.information === "bakedDocuments.notfound"
-				? list
-				: list.map(
-					(documentInFolder): typeof DocumentInFolder.detailedList["_output"][number] => ({
-						...documentInFolder,
-						bakedDocumentTitle: response.body[
-							createBakedDocumentId({
-								nodeSameRawDocumentId: documentInFolder.nodeSameRawDocumentId,
-								bakedDocumentLanguage: user.language,
-							})
-						],
-					}),
+			const backedTitleWrapper = await AbysAPI
+				.findManyBakedDocumentTitle(
+					list.map(({ nodeSameRawDocumentId }) => createBakedDocumentId({
+						nodeSameRawDocumentId,
+						bakedDocumentLanguage: user.language,
+					})),
+				)
+				.then(
+					({ information, body }) => information === "bakedDocumentTitle.findMany"
+						? body
+						: body.bakedDocumentTitleWrapper,
 				);
+
+			const formatedList = list.map(
+				(documentInFolder): typeof DocumentInFolder.list["_output"][number] => ({
+					...documentInFolder,
+					bakedDocumentTitle: backedTitleWrapper[
+						createBakedDocumentId({
+							nodeSameRawDocumentId: documentInFolder.nodeSameRawDocumentId,
+							bakedDocumentLanguage: user.language,
+						})
+					] ?? null,
+				}),
+			);
 
 			return new OkHttpResponse(
 				"documentInFolderList.found",
 				formatedList,
 			);
 		},
-		makeResponseContract(OkHttpResponse, "documentInFolderList.found", DocumentInFolder.detailedList),
+		makeResponseContract(OkHttpResponse, "documentInFolderList.found", DocumentInFolder.list),
 	);
 
 useMustBeConnectedBuilder()

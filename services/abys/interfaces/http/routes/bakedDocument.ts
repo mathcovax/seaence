@@ -47,25 +47,34 @@ useBuilder()
 					bakedDocumentIds,
 				});
 
+			const bakedDocumentTitleWrapper = (
+				result instanceof Error
+					? result.moreData.foundBakedDocument
+					: result
+			)
+				.reduce<Partial<Record<string, string>>>(
+					(acc, bakedDocument) => ({
+						...acc,
+						[bakedDocument.id.value]: bakedDocument.title.value,
+					}),
+					{},
+				);
+
 			return match({ result })
 				.with(
 					{ result: { information: "notfound-baked-document" } },
 					({ result: error }) => new NotFoundHttpResponse(
 						"bakedDocuments.notfound",
-						{ notfoundBakedDocumentIds: toSimpleObject(error.moreData.bakedDocumentIds) },
+						{
+							idsNotLinkToBakedDocument: toSimpleObject(error.moreData.idsNotLinkToBakedDocument),
+							bakedDocumentTitleWrapper,
+						},
 					),
 				)
 				.with(
 					{ result: P.instanceOf(Array) },
-					({ result: bakedDocuments }) => dropper({
-						bakedDocumentTitleWrapper: bakedDocuments
-							.reduce<Record<string, string>>(
-								(acc, bakedDocument) => ({
-									...acc,
-									[bakedDocument.id.value]: bakedDocument.title.value,
-								}),
-								{},
-							),
+					() => dropper({
+						bakedDocumentTitleWrapper,
 					}),
 				)
 				.exhaustive();

@@ -372,15 +372,15 @@ type DocumentFolder = {
 
 export { DocumentFolder };
 
-type DocumentInFoloderDetailedList = {
+type DocumentInFoloder = {
     documentFolderId: string;
     nodeSameRawDocumentId: string;
     name: string;
     addedAt: string;
-    bakedDocumentTitle?: string | undefined;
-}[];
+    bakedDocumentTitle: string | null;
+};
 
-export { DocumentInFoloderDetailedList };
+export { DocumentInFoloder };
 
 type CodegenRoutes = ({
     method: "POST";
@@ -1117,7 +1117,7 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "documentInFolderList.found";
-        body: DocumentInFoloderDetailedList;
+        body: DocumentInFoloder[];
     };
 }) | ({
     method: "POST";

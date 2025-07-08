@@ -57,7 +57,7 @@ function setPage(page: number) {
 					<DSCard class="h-full hover:shadow-md transition-shadow">
 						<div class="space-y-3">
 							<h3 class="text-primary font-semibold line-clamp-2 group-hover:underline transition-colors">
-								{{ row.bakedDocumentTitle }}
+								{{ row.bakedDocumentTitle ?? $pt("missingBakedDocumentTitle") }}
 							</h3>
 
 							<div class="space-y-2 text-sm text-muted-foreground">

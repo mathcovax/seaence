@@ -1,8 +1,8 @@
 import type {
 	DocumentInFolderPage,
-	DocumentInFolderList,
 	DocumentInFolderListDetails,
 } from "@/lib/horizon/types/documentInFolder";
+import type { DocumentInFoloder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { documentInFolderRules } from "@vendors/entity-rules";
 
 export function useDocumentInFolderPage(
@@ -11,7 +11,7 @@ export function useDocumentInFolderPage(
 ) {
 	const { t: $t } = useI18n();
 	const pageInformation = ref<DocumentInFolderPage | null>(null);
-	const list = ref<DocumentInFolderList | null>(null);
+	const list = ref<DocumentInFoloder[] | null>(null);
 	const listDetails = ref<DocumentInFolderListDetails | null>(null);
 	const defaultPage = 1;
 	const pageOfList = ref(defaultPage);

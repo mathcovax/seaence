@@ -35,7 +35,10 @@ export interface BakedDocumentRepository extends RepositoryBase<BakedDocumentEnt
 		| BakedDocumentEntity[]
 		| RepositoryError<
 			"notfound-baked-document",
-			{ bakedDocumentIds: BakedDocumentId[] }
+			{
+				idsNotLinkToBakedDocument: BakedDocumentId[];
+				foundBakedDocument: BakedDocumentEntity[];
+			}
 		>
 	>;
 

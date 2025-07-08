@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { DocumentInFoloderDetailedList } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
+import type { DocumentInFoloder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { formatDate } from "@vendors/design-system/lib/utils";
 
 interface Props {
-	documentInFolder: DocumentInFoloderDetailedList[number];
+	documentInFolder: DocumentInFoloder;
 }
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
-	click: [document: DocumentInFoloderDetailedList[number]];
-	delete: [document: DocumentInFoloderDetailedList[number]];
+	click: [document: DocumentInFoloder];
+	delete: [document: DocumentInFoloder];
 }>();
 
 const { $pt } = documentInFolderPage.use();
@@ -49,7 +49,7 @@ function handleDelete() {
 				v-if="documentInFolder.bakedDocumentTitle"
 				class="truncate"
 			>
-				{{ $pt("bakedDocumentTitle", [documentInFolder.bakedDocumentTitle]) }}
+				{{ $pt("bakedDocumentTitle", [documentInFolder.bakedDocumentTitle ?? $pt("missingBakedDocumentTitle")]) }}
 			</small>
 		</div>
 

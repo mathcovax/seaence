@@ -6,12 +6,6 @@ export type DocumentInFolderPage = FindHttpClientRouteResponse<
 	"documentInFolderPage.found"
 >["body"];
 
-export type DocumentInFolderList = FindHttpClientRouteResponse<
-	FindHttpClientRoute<HorizonClientRoute, "POST", "/find-many-document-in-folder">,
-	"information",
-	"documentInFolderList.found"
->["body"];
-
 export type DocumentInFolderListDetails = FindHttpClientRouteResponse<
 	FindHttpClientRoute<HorizonClientRoute, "POST", "/find-many-document-in-folder-details">,
 	"information",

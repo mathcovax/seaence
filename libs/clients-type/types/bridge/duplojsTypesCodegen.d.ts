@@ -13,7 +13,7 @@ type ReportingBakedDocumentTranslationListPage = {
 export { ReportingBakedDocumentTranslationListPage };
 
 type ReportingBakedDocumentTranslationAggregateListRow = {
-    bakedDocumentTitle: string;
+    bakedDocumentTitle: string | null;
     bakedDocumentId: string;
     reportingQuantity: number;
 };

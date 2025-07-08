@@ -2,7 +2,6 @@ import { ReportingBakedDocumentTranslation } from "@business/entities/reporting/
 import { reportingBakedDocumentTranslationConfig } from "@interfaces/configs/reportingBakedDocumentTranslation";
 import { AbysAPI } from "@interfaces/providers/abys";
 import { BeaconAPI } from "@interfaces/providers/beacon";
-import { TechnicalError } from "@vendors/clean";
 
 useBuilder()
 	.createRoute("POST", "/reporting-baked-document-translation-aggregate-list")
@@ -22,23 +21,21 @@ useBuilder()
 				reportingBakedDocumentTranslationConfig.findManyAggregate.quantityPerPage,
 			);
 
-			const { body: backedTitleWrapper } = await AbysAPI.findManyBakedDocumentTitle(
-				reportingAggregateList.map(({ bakedDocumentId }) => bakedDocumentId),
-			);
+			const backedTitleWrapper = await AbysAPI
+				.findManyBakedDocumentTitle(
+					reportingAggregateList.map(({ bakedDocumentId }) => bakedDocumentId),
+				)
+				.then(
+					({ information, body }) => information === "bakedDocumentTitle.findMany"
+						? body
+						: body.bakedDocumentTitleWrapper,
+				);
 
 			const list = reportingAggregateList.map(
-				(reportingAggregate) => {
-					const bakedDocumentTitle = backedTitleWrapper[reportingAggregate.bakedDocumentId];
-
-					if (!bakedDocumentTitle) {
-						throw new TechnicalError("missing-baked-document-title", { bakedDocumentId: reportingAggregate.bakedDocumentId });
-					}
-
-					return {
-						...reportingAggregate,
-						bakedDocumentTitle,
-					};
-				},
+				(reportingAggregate) => ({
+					...reportingAggregate,
+					bakedDocumentTitle: backedTitleWrapper[reportingAggregate.bakedDocumentId] ?? null,
+				}),
 			);
 
 			return new OkHttpResponse(

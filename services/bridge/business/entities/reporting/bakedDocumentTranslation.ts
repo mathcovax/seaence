@@ -3,7 +3,7 @@ import { zod } from "@vendors/clean";
 export namespace ReportingBakedDocumentTranslation {
 	export const aggregateListRow = zod
 		.object({
-			bakedDocumentTitle: zod.string(),
+			bakedDocumentTitle: zod.string().nullable(),
 			bakedDocumentId: zod.string(),
 			reportingQuantity: zod.number(),
 		});

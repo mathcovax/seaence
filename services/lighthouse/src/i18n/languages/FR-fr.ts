@@ -75,6 +75,7 @@ export const FRfr = {
 			emptyTitle: "Aucun document signalé",
 			emptyDescription: "Il n'y a actuellement aucun document avec des signalements de traduction.",
 			reporting: "Nombre de signalement(s) :",
+			missingBakedDocumentTitle: "Titre du document manquant.",
 		},
 		[reportingBakedDocumentTranslationPage.name]: {
 			title: "Signalements de traduction",

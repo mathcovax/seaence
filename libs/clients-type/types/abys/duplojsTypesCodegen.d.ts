@@ -165,7 +165,8 @@ type CodegenRoutes = ({
         code: 404;
         information: "bakedDocuments.notfound";
         body: {
-            notfoundBakedDocumentIds: string[];
+            idsNotLinkToBakedDocument: string[];
+            bakedDocumentTitleWrapper: Partial<Record<string, string | undefined>>;
         };
     } | {
         code: 200;

@@ -214,7 +214,7 @@ bakedDocumentRepository.default = {
 			})
 			.toArray();
 
-		const missingBakedDocumentIds
+		const idsNotLinkToBakedDocument
 				= ids.map(
 					(id) => mongoBakedDocuments.find(
 						(mongoBakedDocument) => mongoBakedDocument.id === id.value,
@@ -224,20 +224,23 @@ bakedDocumentRepository.default = {
 				)
 					.filter((mybeyId) => !!mybeyId);
 
-		if (missingBakedDocumentIds.length) {
-			return new RepositoryError(
-				"notfound-baked-document",
-				{
-					bakedDocumentIds: missingBakedDocumentIds,
-				},
-			);
-		}
-
-		return mongoBakedDocuments.map(
+		const foundBakedDocument = mongoBakedDocuments.map(
 			(mongoEntity) => EntityHandler.unsafeMapper(
 				BakedDocumentEntity,
 				mongoEntity,
 			),
 		);
+
+		if (idsNotLinkToBakedDocument.length) {
+			return new RepositoryError(
+				"notfound-baked-document",
+				{
+					idsNotLinkToBakedDocument,
+					foundBakedDocument,
+				},
+			);
+		}
+
+		return foundBakedDocument;
 	},
 };

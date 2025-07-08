@@ -20,7 +20,7 @@ export class AbysAPI {
 					},
 				},
 			)
-			.iWantInformation("bakedDocumentTitle.findMany");
+			.iWantInformation(["bakedDocumentTitle.findMany", "bakedDocuments.notfound"]);
 	}
 
 	public static findBakedDocumentById(bakedDocumentId: string) {

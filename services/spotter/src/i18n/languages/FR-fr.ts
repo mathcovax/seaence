@@ -218,6 +218,7 @@ export const FRfr = {
 			},
 			noDocumentInFolder: "Aucun document trouvé.",
 			bakedDocumentTitle: "Titre du document: {0}",
+			missingBakedDocumentTitle: "Titre du document manquant.",
 		},
 		...cguFRfr,
 	},
