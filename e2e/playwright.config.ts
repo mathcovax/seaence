@@ -9,8 +9,13 @@ export default defineConfig({
 	workers: envs.WORKER,
 	reporter: "html",
 	use: {
-		baseURL: "http://localhost:3000",
+		headless: true,
+		baseURL: envs.BASE_URL,
 		trace: "on-first-retry",
+		launchOptions: {
+			executablePath: "/usr/bin/chromium-browser",
+			args: ["--no-sandbox", "--disable-dev-shm-usage"],
+		},
 	},
 	projects: [
 		{

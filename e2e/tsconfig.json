@@ -21,6 +21,12 @@
 			"@playwright": [
 				"./playwright/index.ts"
 			],
+			"@pages/*": [
+				"./pages/*"
+			],
+			"@components/*": [
+				"./components/*"
+			],
 			"@vendors/*": [
 				"./vendors/*"
 			],

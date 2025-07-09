@@ -91,6 +91,7 @@ watch(
 	<DSDialog
 		:open="isOpen"
 		@update:open="setState"
+		data-testid="auth-dialog"
 	>
 		<template #title>
 			{{ $t("authDialog.title") }}
@@ -103,6 +104,7 @@ watch(
 		<template #content>
 			<div v-if="!firebaseTokenToRegister">
 				<DSOutlineButton
+					data-testid="auth-dialog-google-sign-button"
 					size="full"
 					@click="googleSign"
 				>

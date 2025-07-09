@@ -12,6 +12,7 @@ const { toggle } = useAuthDialog();
 
 <template>
 	<header
+		data-testid="header"
 		class="sticky top-0 left-0 z-50 bg-background transition-shadow duration-300"
 		:class="{ 'shadow-md': isScrolled }"
 	>
@@ -64,6 +65,7 @@ const { toggle } = useAuthDialog();
 				</nav>
 
 				<DSPrimaryButton
+					data-testid="header-sign-button"
 					v-if="!isConnected"
 					:title="$t('cta.connection')"
 					@click="toggle"

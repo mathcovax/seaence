@@ -1,4 +1,4 @@
 export * from "./client";
-export * from "./component";
+export * from "./componentEngine";
 export * from "./pageEngine";
 export * from "./webSiteEngine";

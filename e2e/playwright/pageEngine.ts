@@ -1,23 +1,23 @@
 import { type Locator, type Page } from "@playwright/test";
-import { createComponentEngine, type Elements, type ComponentEngine } from "./component";
-import { type WebSiteEngine } from "./webSiteEngine";
-import { type AnyFunction } from "@duplojs/utils";
+import { createComponentEngine, type Elements, type ComponentInstance } from "./componentEngine";
+import { type WebSiteInstance } from "./webSiteEngine";
+import { type IsEqual, type AnyFunction } from "@duplojs/utils";
 
-export interface PageEngine<
-	GenericName extends string,
-	GenericPathParams extends Record<string, string>,
-	GenericElement extends Elements | undefined,
-	GenericActions extends Record<string, AnyFunction> | undefined,
-> extends ComponentEngine<
+export interface PageInstance<
+	GenericName extends string = string,
+	GenericPathParams extends Record<string, string> = Record<string, string>,
+	GenericElement extends Elements | undefined = Elements | undefined,
+	GenericActions extends Record<string, AnyFunction> | undefined = Record<string, AnyFunction> | undefined,
+> extends ComponentInstance<
 		GenericName,
 		GenericElement,
 		GenericActions
 	> {
 	page: unknown;
 	makePath(
-		...args: {} extends GenericPathParams
-			? [params: GenericPathParams]
-			: []
+		...args: IsEqual<GenericPathParams, Record<string, string>> extends true
+			? []
+			: [params: GenericPathParams]
 	): string;
 }
 
@@ -48,7 +48,7 @@ export function createPageEngine<
 		},
 	);
 
-	return (webSite: WebSiteEngine): PageEngine<
+	return (webSite: WebSiteInstance): PageInstance<
 		GenericName,
 		GenericPathParams,
 		GenericElements,

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import test, { expect, type Page } from "@playwright/test";
-import { type createPageEngine } from "./pageEngine";
-import { type createComponentEngine } from "./component";
+import { type PageInstance, type createPageEngine } from "./pageEngine";
+import { type createComponentEngine } from "./componentEngine";
 
-export interface WebSiteEngine {
+export interface WebSiteInstance {
 	playwrightPage: Page;
 	iNavigateTo<
 		GenericPageEngine extends ReturnType<typeof createPageEngine>,
@@ -29,37 +30,34 @@ export interface WebSiteEngine {
 	): Promise<ReturnType<GenericComponentEngine>>;
 }
 
-export function createWebSiteEngine(
+export function webSiteEngine(
 	playwrightPage: Page,
 ) {
-	const webSite: WebSiteEngine = {
+	const webSite: WebSiteInstance = {
 		playwrightPage,
-		async iNavigateTo(pageEngine, params) {
-			const page = pageEngine(webSite);
+		async iNavigateTo(pageEngine, ...args) {
+			const page = pageEngine(webSite) as PageInstance<string, never>;
 
-			const path = page.makePath(params);
+			const path = page.makePath(args.shift() as never);
 
 			await test.step(
-				`I navigate to ${page.name}:${path}`,
+				`webSite: I navigate to ${page.name}:${path}`,
 				async() => {
 					await playwrightPage.goto(path);
-
-					await Promise.all([
-						expect(playwrightPage).toHaveURL(path),
-						expect(page.mainElement).toBeVisible(),
-					]);
+					await expect(playwrightPage).toHaveURL(path);
+					await expect(page.mainElement).toBeVisible();
 				},
 			);
 
 			return page as never;
 		},
-		async iGoTo(pageEngine, params) {
-			const page = pageEngine(webSite);
+		async iGoTo(pageEngine, ...args) {
+			const page = pageEngine(webSite) as PageInstance<string, never>;
 
-			const path = page.makePath(params);
+			const path = page.makePath(args.shift() as never);
 
 			await test.step(
-				`I go to ${page.name}:${path}`,
+				`webSite: I go to ${page.name}:${path}`,
 				async() => {
 					await playwrightPage.goto(path);
 				},
@@ -67,28 +65,26 @@ export function createWebSiteEngine(
 
 			return page as never;
 		},
-		async iWantToBeOnThisPage(pageEngine, params) {
-			const page = pageEngine(webSite);
+		async iWantToBeOnThisPage(pageEngine, ...args) {
+			const page = pageEngine(webSite) as PageInstance<string, never>;
 
-			const path = page.makePath(params);
+			const path = page.makePath(args.shift() as never);
 
 			await test.step(
-				`I want be on this page ${page.name}:${path}`,
+				`webSite: I want be on this page ${page.name}:${path}`,
 				async() => {
-					await Promise.all([
-						expect(playwrightPage).toHaveURL(path),
-						expect(page.mainElement).toBeVisible(),
-					]);
+					await expect(playwrightPage).toHaveURL(path);
+					await expect(page.mainElement).toBeVisible();
 				},
 			);
 
 			return page as never;
 		},
 		async iWantToSee(componentEngine) {
-			const component = componentEngine(webSite);
+			const component = componentEngine(webSite) as PageInstance<string, never>;
 
 			await test.step(
-				`I want to see ${component.name}`,
+				`webSite: I want to see ${component.name}`,
 				async() => {
 					await expect(component.mainElement).toBeVisible();
 				},

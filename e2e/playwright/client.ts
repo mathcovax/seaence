@@ -1,13 +1,13 @@
 import test from "@playwright/test";
-import { createWebSiteEngine, type WebSiteEngine } from "./webSiteEngine";
+import { webSiteEngine, type WebSiteInstance } from "./webSiteEngine";
 
 interface TestExtend {
-	webSite: WebSiteEngine;
+	webSite: WebSiteInstance;
 }
 
 export const testCLient = test.extend<TestExtend>({
 	async webSite({ page }, use) {
-		const webSite = createWebSiteEngine(page);
+		const webSite = webSiteEngine(page);
 		await use(webSite);
 	},
 });

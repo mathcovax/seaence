@@ -1,7 +1,8 @@
 {
   "name": "e2e",
+  "type": "module",
   "scripts": {
-    "test": ""
+    "test": "playwright test"
   },
   "devDependencies": {
     "@duplojs/utils": "0.3.1",

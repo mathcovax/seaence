@@ -1,18 +1,14 @@
 
 import { type Page, type Locator } from "@playwright/test";
-import { type WebSiteEngine } from "./webSiteEngine";
+import { type WebSiteInstance } from "./webSiteEngine";
 import { type AnyFunction } from "@duplojs/utils";
 
-export type Elements = Record<
-	string,
-	| Locator
-	| ((webSite: WebSiteEngine) => ComponentEngine)
->;
+export type Elements = Record<string, Locator>;
 
-export interface ComponentEngine<
+export interface ComponentInstance<
 	GenericName extends string = string,
 	GenericElements extends Elements | undefined = Elements | undefined,
-	GenericActions extends Record<string, AnyFunction> | undefined = Record<string, AnyFunction>,
+	GenericActions extends Record<string, AnyFunction> | undefined = Record<string, AnyFunction> | undefined,
 > {
 	component: unknown;
 	name: GenericName;
@@ -37,7 +33,7 @@ export function createComponentEngine<
 		getActions?(elements: GenericElements & { mainElement: Locator }): GenericActions;
 	},
 ) {
-	return (webSite: WebSiteEngine) => {
+	return (webSite: WebSiteInstance) => {
 		const mainElement = getMainElement(
 			webSite.playwrightPage,
 		);
@@ -56,7 +52,7 @@ export function createComponentEngine<
 			mainElement,
 			elements,
 			actions,
-		} as ComponentEngine<
+		} as ComponentInstance<
 			GenericName,
 			GenericElements,
 			GenericActions

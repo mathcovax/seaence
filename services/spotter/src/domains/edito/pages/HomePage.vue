@@ -3,7 +3,10 @@ const { $pt, $gpt } = homePage.use();
 </script>
 
 <template>
-	<section class="mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center text-center md:text-start">
+	<section
+		data-testid="home-page"
+		class="mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center text-center md:text-start"
+	>
 		<div class="md:flex-2/3 space-y-6">
 			<I18nT
 				class="text-4xl font-bold"

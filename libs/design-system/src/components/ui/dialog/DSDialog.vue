@@ -8,6 +8,7 @@ import DSDialogTrigger from "./DSDialogTrigger.vue";
 
 export interface Props extends DialogRootProps {
 	size?: "small" | "normal" | "full";
+	dataTestid?: string;
 }
 
 const props = defineProps<Props>();
@@ -36,7 +37,7 @@ const slot = defineSlots<{
 			<slot name="trigger" />
 		</DSDialogTrigger>
 
-		<DSDialogContent :size="size ?? 'small'">
+		<DSDialogContent :size="size ?? 'small'" :data-testid="dataTestid">
 			<DSDialogHeader v-if="slot.title || slot.description">
 				<DSDialogTitle>
 					<slot name="title" />
