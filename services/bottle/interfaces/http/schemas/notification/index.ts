@@ -1,13 +1,13 @@
 import { userIdObjecter } from "@business/domains/entities/user";
 import { intObjecter, positiveIntObjecter } from "@vendors/clean";
-import { registerNotificationSchema } from "./register";
-import { replyToPostNotificationSchema } from "./replyToPost";
-import { userPostBanNotificationSchema } from "./postBan";
-import { userPostWarningNotificationSchema } from "./postWarning";
-import { userAnswerBanNotificationSchema } from "./answerBan";
-import { userAnswerWarningNotificationSchema } from "./answerWarning";
+import { RegisterNotificationSchema } from "./register";
+import { ReplyToPostNotificationSchema } from "./replyToPost";
+import { PostBanNotificationSchema } from "./postBan";
+import { PostWarningNotificationRoute } from "./postWarning";
+import { AnswerBanNotificationSchema } from "./answerBan";
+import { AnswerWarningNotificationSchema } from "./answerWarning";
 
-export namespace NotificationRoute {
+export namespace NotificationSchema {
 	export const findMany = {
 		entrypoint: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -15,12 +15,12 @@ export namespace NotificationRoute {
 			quantityPerPage: positiveIntObjecter.toZodSchema(),
 		}),
 		endpoint: zod.union([
-			registerNotificationSchema,
-			replyToPostNotificationSchema,
-			userPostBanNotificationSchema,
-			userPostWarningNotificationSchema,
-			userAnswerBanNotificationSchema,
-			userAnswerWarningNotificationSchema,
+			RegisterNotificationSchema.index,
+			ReplyToPostNotificationSchema.index,
+			PostBanNotificationSchema.index,
+			PostWarningNotificationRoute.index,
+			AnswerBanNotificationSchema.index,
+			AnswerWarningNotificationSchema.index,
 		]).array(),
 	};
 

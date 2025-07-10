@@ -5,15 +5,15 @@ import { answerIdObjecter } from "@business/domains/common/answer";
 import { warningIdObjecter, warningReasonObjecter } from "@business/domains/common/warning";
 import { userIdObjecter } from "@business/domains/entities/user";
 
-export const userAnswerWarningNotificationSchema = baseNotificatinSchema.extend({
-	type: userAnswerWarningNotificationTypeObjecter.zodSchema,
-	postId: postIdObjecter.zodSchema,
-	answerId: answerIdObjecter.zodSchema,
-	reason: warningReasonObjecter.zodSchema,
-	warningId: warningIdObjecter.zodSchema,
-});
+export namespace AnswerWarningNotificationSchema {
+	export const index = baseNotificatinSchema.extend({
+		type: userAnswerWarningNotificationTypeObjecter.zodSchema,
+		postId: postIdObjecter.zodSchema,
+		answerId: answerIdObjecter.zodSchema,
+		reason: warningReasonObjecter.zodSchema,
+		warningId: warningIdObjecter.zodSchema,
+	});
 
-export namespace AnswerWarningNotificationRoute {
 	export const create = {
 		entrypoint: zod.object({
 			userId: userIdObjecter.toZodSchema(),

@@ -4,20 +4,14 @@ import { userIdObjecter, usernameObjecter } from "@business/domains/entities/use
 import { replyToPostNotificationTypeObjecter, summaryOfReplyPostObjecter } from "@business/domains/entities/notification/replyToPost";
 import { replyToPostNotificationSettingTypeObjecter } from "@business/domains/entities/setting/replyToPost";
 
-export const replyToPostNotificationSchema = baseNotificatinSchema.extend({
-	postId: postIdObjecter.zodSchema,
-	usernameOfReplyPost: usernameObjecter.zodSchema,
-	summaryOfReplyPost: summaryOfReplyPostObjecter.zodSchema,
-	type: replyToPostNotificationTypeObjecter.zodSchema,
-});
-
-export const replyToPostNotificationSettingSchema = baseNotificationSettingSchema
-	.extend({
+export namespace ReplyToPostNotificationSchema {
+	export const index = baseNotificatinSchema.extend({
 		postId: postIdObjecter.zodSchema,
-		type: replyToPostNotificationSettingTypeObjecter.zodSchema,
+		usernameOfReplyPost: usernameObjecter.zodSchema,
+		summaryOfReplyPost: summaryOfReplyPostObjecter.zodSchema,
+		type: replyToPostNotificationTypeObjecter.zodSchema,
 	});
 
-export namespace ReplyToPostNotificationRoute {
 	export const settingEnable = {
 		entrypoint: zod.object({
 			userId: userIdObjecter.toZodSchema(),
@@ -32,11 +26,17 @@ export namespace ReplyToPostNotificationRoute {
 		}),
 	};
 
+	export const setting = baseNotificationSettingSchema
+		.extend({
+			postId: postIdObjecter.zodSchema,
+			type: replyToPostNotificationSettingTypeObjecter.zodSchema,
+		});
+
 	export const settingFindOne = {
 		entrypoint: zod.object({
 			userId: userIdObjecter.toZodSchema(),
 			postId: postIdObjecter.toZodSchema(),
 		}),
-		endpoint: replyToPostNotificationSettingSchema.nullable(),
+		endpoint: setting.nullable(),
 	};
 }

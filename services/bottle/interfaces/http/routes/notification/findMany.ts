@@ -1,11 +1,11 @@
 import { IWantUserExistsById } from "@interfaces/http/checkers/user";
-import { NotificationRoute } from "@interfaces/http/schemas/notification";
+import { NotificationSchema } from "@interfaces/http/schemas/notification";
 import { findManyNotificationToUserUsecase } from "@interfaces/usecases";
 
 useBuilder()
 	.createRoute("POST", "/notification-find-many")
 	.extract({
-		body: NotificationRoute.findMany.entrypoint,
+		body: NotificationSchema.findMany.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,
@@ -28,5 +28,5 @@ useBuilder()
 
 			return new OkHttpResponse("notifications.found", simpleNotifications);
 		},
-		makeResponseContract(OkHttpResponse, "notifications.found", NotificationRoute.findMany.endpoint),
+		makeResponseContract(OkHttpResponse, "notifications.found", NotificationSchema.findMany.endpoint),
 	);

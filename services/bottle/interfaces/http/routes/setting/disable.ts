@@ -1,12 +1,12 @@
 import { iWantReplyToPostNotificationSettingExist } from "@interfaces/http/checkers/notificationSetting/replyToPost";
 import { IWantUserExistsById } from "@interfaces/http/checkers/user";
-import { ReplyToPostNotificationRoute } from "@interfaces/http/schemas/notification/replyToPost";
+import { ReplyToPostNotificationSchema } from "@interfaces/http/schemas/notification/replyToPost";
 import { disableReplyToPostNotificationSettingToPostUsecase } from "@interfaces/usecases";
 
 useBuilder()
 	.createRoute("POST", "/notification-reply-post-setting-disable")
 	.extract({
-		body: ReplyToPostNotificationRoute.settingDisable.entrypoint,
+		body: ReplyToPostNotificationSchema.settingDisable.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,

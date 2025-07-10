@@ -1,7 +1,7 @@
 import { IWantUserExistsById } from "@interfaces/http/checkers/user";
-import { AnswerBanNotificationRoute } from "@interfaces/http/schemas/notification/answerBan";
-import { AnswerWarningNotificationRoute } from "@interfaces/http/schemas/notification/answerWarning";
-import { PostBanNotificationRoute } from "@interfaces/http/schemas/notification/postBan";
+import { AnswerBanNotificationSchema } from "@interfaces/http/schemas/notification/answerBan";
+import { AnswerWarningNotificationSchema } from "@interfaces/http/schemas/notification/answerWarning";
+import { PostBanNotificationSchema } from "@interfaces/http/schemas/notification/postBan";
 import { PostWarningNotificationRoute } from "@interfaces/http/schemas/notification/postWarning";
 import { createUserAnswerBanNotificationUsecase, createUserAnswerWarningNotificationUsecase, createUserPostBanNotificationUsecase, createUserPostWarningNotificationUsecase } from "@interfaces/usecases";
 
@@ -40,7 +40,7 @@ useBuilder()
 useBuilder()
 	.createRoute("POST", "/notification-post-ban-create")
 	.extract({
-		body: PostBanNotificationRoute.create.entrypoint,
+		body: PostBanNotificationSchema.create.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,
@@ -72,7 +72,7 @@ useBuilder()
 useBuilder()
 	.createRoute("POST", "/notification-answer-warning-create")
 	.extract({
-		body: AnswerWarningNotificationRoute.create.entrypoint,
+		body: AnswerWarningNotificationSchema.create.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,
@@ -106,7 +106,7 @@ useBuilder()
 useBuilder()
 	.createRoute("POST", "/notification-answer-ban-create")
 	.extract({
-		body: AnswerBanNotificationRoute.create.entrypoint,
+		body: AnswerBanNotificationSchema.create.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,

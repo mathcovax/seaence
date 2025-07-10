@@ -6,7 +6,7 @@ import { type UserAnswerWarningNotificationEntity } from "@business/domains/enti
 import { type UserPostBanNotificationEntity } from "@business/domains/entities/notification/userPostBan";
 import { type UserPostWarningNotificationEntity } from "@business/domains/entities/notification/userPostWarning";
 import { type UserEntity } from "@business/domains/entities/user";
-import { createRepositoryHandler, type PositiveInt, type Int, type RepositoryBase } from "@vendors/clean";
+import { createRepositoryHandler, type PositiveInt, type Int, type RepositoryBase, type CommonDate } from "@vendors/clean";
 
 export type Notification =
 	| RegisterNotificationEntity
@@ -29,7 +29,7 @@ export interface NotificationRepository extends RepositoryBase<Notification> {
 		params: FindProcessedNotificationToUserParams
 	): Promise<Notification[]>;
 	countNotificationToUser(user: UserEntity): Promise<Int>;
-	findLastNotificationDateToUser(user: UserEntity): Promise<Date | null>;
+	findLastNotificationDateToUser(user: UserEntity): Promise<CommonDate | null>;
 }
 
 export const notificationRepository = createRepositoryHandler<NotificationRepository>();

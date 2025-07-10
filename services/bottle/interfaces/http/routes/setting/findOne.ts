@@ -1,11 +1,11 @@
 import { iWantReplyToPostNotificationSettingExist } from "@interfaces/http/checkers/notificationSetting/replyToPost";
 import { IWantUserExistsById } from "@interfaces/http/checkers/user";
-import { ReplyToPostNotificationRoute } from "@interfaces/http/schemas/notification/replyToPost";
+import { ReplyToPostNotificationSchema } from "@interfaces/http/schemas/notification/replyToPost";
 
 useBuilder()
 	.createRoute("POST", "/notification-reply-to-post-setting-find-one")
 	.extract({
-		body: ReplyToPostNotificationRoute.settingFindOne.entrypoint,
+		body: ReplyToPostNotificationSchema.settingFindOne.entrypoint,
 	})
 	.presetCheck(
 		IWantUserExistsById,
@@ -26,5 +26,5 @@ useBuilder()
 
 			return new OkHttpResponse("replyPostNotificationSetting.found", simpleReplyToPostNotificationSetting);
 		},
-		makeResponseContract(OkHttpResponse, "replyPostNotificationSetting.found", ReplyToPostNotificationRoute.settingFindOne.endpoint),
+		makeResponseContract(OkHttpResponse, "replyPostNotificationSetting.found", ReplyToPostNotificationSchema.settingFindOne.endpoint),
 	);
