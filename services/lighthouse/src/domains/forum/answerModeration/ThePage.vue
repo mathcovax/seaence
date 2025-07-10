@@ -75,6 +75,8 @@ function confirmReject() {
 
 <template>
 	<section class="min-h-screen-nh">
+		<BackButton />
+
 		<header class="mb-8">
 			<h1 class="mb-2 text-3xl font-bold">
 				{{ $pt("title") }}
