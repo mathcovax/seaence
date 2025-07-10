@@ -37,6 +37,7 @@
 | Service de notification | Bottle | | Duplo, MongoDB | @ZeRiix |
 | Service de traduction | Rosetta | | Duplo, MongoDB | @ZeRiix |
 | Service de gestion de données utilisateur | Coral | | Duplo, MongoDB | @ZeRiix |
+| Service d'administration des traduction | Beacon | | Duplo, Mongo | @mathcovax |
 
 ### Description des services
 
@@ -89,6 +90,10 @@ Backoffice permettant de gérer les utilisateurs, les documents et les forums.
 
 Service de gestion de données utilisateur. Il permettra de stocker les données utilisateur et de les gérer.
 
+### Beacon 
+
+Service de gestion des reports d'erreur de traduction. Il permettra de gerer toutes les erreurs liées aux potentiels erreurs de traduction depuis le BO.
+
 ## Architecture des services
 
 ```mermaid
@@ -112,6 +117,7 @@ flowchart TB
         Abys[Abys]
         Rosetta[Rosetta]
         MarineSnow[MarineSnow]
+		Beacon[Beacon]
     end
 
     subgraph Social
@@ -137,11 +143,13 @@ flowchart TB
     Horizon --> School
     Horizon --> Bottle
 	Horizon --> Coral
+	Horizon --> Beacon
     
     Bridge --> Harbor
     Bridge --> MarineSnow
     Bridge --> Abys
     Bridge --> School
+	Bridge --> Beacon
 
     %% Connexions Search
 	Coral --> Sea
@@ -170,7 +178,7 @@ flowchart TB
     class Spotter frontend
     class Horizon,Bridge gateway
     class Harbor auth
-    class Sea,Abys,MarineSnow,Rosetta search
+    class Sea,Abys,MarineSnow,Rosetta,Beacon search
     class School social
     class Lighthouse bo
     class Bottle notification

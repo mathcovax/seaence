@@ -1,8 +1,8 @@
 import { type Username, type UserId, type UserEmail, UserEntity, type UserLanguage } from "@business/domains/entities/user";
 import { UsecaseHandler } from "@vendors/clean";
-import { userRepository } from "../repositories/user";
+import { userRepository } from "@business/applications/repositories/user";
 import { RegisterNotificationEntity } from "@business/domains/entities/notification/register";
-import { notificationRepository } from "../repositories/notification";
+import { notificationRepository } from "@business/applications/repositories/notification";
 import { userObjecter } from "@business/domains/common/user";
 
 interface Input {

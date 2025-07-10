@@ -1,17 +1,18 @@
 import "../repositories";
-import { CreateUserUsecase } from "@business/applications/usecases/createUser";
-import { EnableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/enableReplyToPostNotificationSettingToPost";
-import { CreateReplyToPostNotificationsUsecase } from "@business/applications/usecases/createReplyToPostNotification";
-import { FindManyNotificationToUserUsecase } from "@business/applications/usecases/findManyNotificationToUser";
-import { FindOneUserByIdUsecase } from "@business/applications/usecases/findUserById";
-import { CountNotificationToUserUsecase } from "@business/applications/usecases/countNotitificationToUser";
-import { FindOneReplyToPostNotificationSettingToUserByPostIdUsecase } from "@business/applications/usecases/findOneReplyToPostNotificationSettingToUserByPostId";
-import { DisableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/disableReplyToPostNotificationSettingToPost";
-import { CreateUserPostBanNotificationUsecase } from "@business/applications/usecases/createUserPostBanNotification";
-import { CreateUserPostWarningNotificationUsecase } from "@business/applications/usecases/createUserPostWarningNotification";
-import { UpdateUserUsecase } from "@business/applications/usecases/updateUser";
-import { CreateUserAnswerBanNotificationUsecase } from "@business/applications/usecases/createUserAnswerBanNotification";
-import { CreateUserAnswerWarningNotificationUsecase } from "@business/applications/usecases/createUserAnswerWarningNotification";
+import { CreateUserUsecase } from "@business/applications/usecases/user/createUser";
+import { EnableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/setting/enableReplyToPostNotificationSettingToPost";
+import { CreateReplyToPostNotificationsUsecase } from "@business/applications/usecases/notification/createReplyToPostNotification";
+import { FindManyNotificationToUserUsecase } from "@business/applications/usecases/notification/findManyNotificationToUser";
+import { FindOneUserByIdUsecase } from "@business/applications/usecases/user/findUserById";
+import { CountNotificationToUserUsecase } from "@business/applications/usecases/notification/countNotitificationToUser";
+import { FindOneReplyToPostNotificationSettingToUserByPostIdUsecase } from "@business/applications/usecases/setting/findOneReplyToPostNotificationSettingToUserByPostId";
+import { DisableReplyToPostNotificationSettingToPostUsecase } from "@business/applications/usecases/setting/disableReplyToPostNotificationSettingToPost";
+import { CreateUserPostBanNotificationUsecase } from "@business/applications/usecases/notification/createUserPostBanNotification";
+import { CreateUserPostWarningNotificationUsecase } from "@business/applications/usecases/notification/createUserPostWarningNotification";
+import { CreateUserAnswerBanNotificationUsecase } from "@business/applications/usecases/notification/createUserAnswerBanNotification";
+import { CreateUserAnswerWarningNotificationUsecase } from "@business/applications/usecases/notification/createUserAnswerWarningNotification";
+import { UpdateUserUsecase } from "@business/applications/usecases/user/updateUser";
+import { FindUserLastNotificationDateUsecase } from "@business/applications/usecases/notification/findUserLastNotificationDate";
 
 export const createUserUsecase = new CreateUserUsecase();
 export const enableReplyToPostNotificationSettingToPostUsecase
@@ -29,3 +30,4 @@ export const createUserPostWarningNotificationUsecase = new CreateUserPostWarnin
 export const createUserAnswerBanNotificationUsecase = new CreateUserAnswerBanNotificationUsecase();
 export const createUserAnswerWarningNotificationUsecase = new CreateUserAnswerWarningNotificationUsecase();
 export const updateUserUsecase = new UpdateUserUsecase();
+export const findUserLastNotificationDateUsecase = new FindUserLastNotificationDateUsecase();

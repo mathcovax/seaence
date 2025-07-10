@@ -1,7 +1,7 @@
 import { type PostId } from "@business/domains/common/post";
 import { type UserEntity } from "@business/domains/entities/user";
 import { UsecaseHandler } from "@vendors/clean";
-import { replyToPostNotificationSettingRepository } from "../repositories/notificationSetting/replyToPost";
+import { replyToPostNotificationSettingRepository } from "../../repositories/notificationSetting/replyToPost";
 
 interface Input {
 	user: UserEntity;

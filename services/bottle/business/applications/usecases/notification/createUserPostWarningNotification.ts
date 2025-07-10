@@ -3,7 +3,7 @@ import { type WarningReason, type WarningId } from "@business/domains/common/war
 import { UserPostWarningNotificationEntity } from "@business/domains/entities/notification/userPostWarning";
 import { type UserEntity } from "@business/domains/entities/user";
 import { UsecaseHandler } from "@vendors/clean";
-import { notificationRepository } from "../repositories/notification";
+import { notificationRepository } from "../../repositories/notification";
 import { userObjecter } from "@business/domains/common/user";
 
 interface Input {

@@ -4,6 +4,7 @@ import type { User, UserLanguage } from "@vendors/clients-type/horizon/duplojsTy
 const accessTokenLocalStorageKey = "accessToken";
 const lastSeeNotificationsLocalStorageKey = "lastSeeNotifications";
 const user = ref<User | null>(null);
+const lastDateOfNotification = ref<Date | null>(null);
 
 const userNavigatorLanguageMapper: Partial<Record<string, UserLanguage>> = {
 	fr: "fr-FR",
@@ -77,14 +78,32 @@ export function useUserInformation() {
 		return result;
 	}
 
+	function fetchLastDateOfNotification() {
+		return window.horizonClient
+			.post(
+				"/notification-last-date-find",
+				{ disableAuthenticationRequiredManagement: true },
+			)
+			.whenInformation(
+				"notification.lastDate",
+				({ body }) => {
+					lastDateOfNotification.value = new Date(body.dateOfLastNotification);
+				},
+			);
+	}
+
 	return {
 		userNavigatorLanguage,
 		setAccessToken,
 		disconect,
 		fetchInformation,
+		fetchLastDateOfNotification,
 		isConnected,
 		accessToken,
 		user,
+		hasNewNotifications: computed(
+			() => lastDateOfNotification.value && lastDateOfNotification.value.getTime() > lastSeeNotificationsItem.value,
+		),
 		promisedRequestInformation: computed(
 			() => externalPromisedRequestInformation.value.promise,
 		),
@@ -95,19 +114,25 @@ export function useUserInformation() {
 	};
 }
 
-const { accessToken, fetchInformation } = useUserInformation();
+const { accessToken, fetchInformation, fetchLastDateOfNotification, promisedRequestInformation } = useUserInformation();
 
 watch(
 	accessToken,
 	(value) => {
 		if (value) {
 			void fetchInformation();
+			void fetchLastDateOfNotification();
 		}
 	},
 );
 
 void Promise
 	.resolve()
+	.then(() => {
+		void fetchInformation();
+	});
+
+void promisedRequestInformation.value
 	.then(
-		fetchInformation,
+		({ information }) => information === "user.self" && void fetchLastDateOfNotification(),
 	);

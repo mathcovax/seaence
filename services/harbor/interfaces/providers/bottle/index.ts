@@ -1,59 +1,40 @@
-import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
+import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
-import { type CodegenRoutes } from "@vendors/clients-type/bottle/duplojsTypesCodegen";
-
-export type BottleClientRoute = TransformCodegenRouteToHttpClientRoute<
-	CodegenRoutes
->;
-
-interface InputCreateNotification {
-	userId: string;
-	warningId: string;
-	reason: string;
-}
-
-interface InputCreateUserPostNotification extends InputCreateNotification {
-	postId: string;
-}
-
-interface InputCreateUserAnswerNotification extends InputCreateNotification {
-	postId: string;
-	answerId: string;
-}
+import type { BottleClientRoute, InputCreateUserAnswerWarningNotification, InputCreateUserAnswerBanNotification, InputCreateUserPostWarningNotification, InputCreateUserPostBanNotification } from "./types";
 
 export class BottleAPI {
 	private static httpClient: HttpClient<BottleClientRoute>;
 
-	public static createUserPostBanNotification(params: InputCreateUserPostNotification) {
+	public static createUserPostBanNotification(params: InputCreateUserPostBanNotification) {
 		return this.httpClient.post(
-			"/create-post-ban-notification",
+			"/notification-post-ban-create",
 			{
 				body: params,
 			},
 		).iWantExpectedResponse();
 	}
 
-	public static createUserPostWarningNotification(params: InputCreateUserPostNotification) {
+	public static createUserPostWarningNotification(params: InputCreateUserPostWarningNotification) {
 		return this.httpClient.post(
-			"/create-post-warning-notification",
+			"/notification-post-warning-create",
 			{
 				body: params,
 			},
 		).iWantExpectedResponse();
 	}
 
-	public static createUserAnswerBanNotification(params: InputCreateUserAnswerNotification) {
+	public static createUserAnswerBanNotification(params: InputCreateUserAnswerBanNotification) {
 		return this.httpClient.post(
-			"/create-answer-ban-notification",
+			"/notification-answer-ban-create",
 			{
 				body: params,
 			},
 		).iWantExpectedResponse();
 	}
 
-	public static createUserAnswerWarningNotification(params: InputCreateUserAnswerNotification) {
+	public static createUserAnswerWarningNotification(params: InputCreateUserAnswerWarningNotification) {
 		return this.httpClient.post(
-			"/create-answer-warning-notification",
+			"/notification-answer-warning-create",
 			{
 				body: params,
 			},

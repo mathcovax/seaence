@@ -57,4 +57,8 @@ export namespace Notification {
 		answerBan,
 		answerWarning,
 	]);
+
+	export const dateOfLastNotification = zod.object({
+		dateOfLastNotification: zod.string(),
+	});
 }

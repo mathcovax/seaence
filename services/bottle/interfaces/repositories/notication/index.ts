@@ -9,7 +9,7 @@ import { RegisterNotificationEntity } from "@business/domains/entities/notificat
 import { registerTemplate } from "@interfaces/providers/email/templates/registerTemplate";
 import { ReplyToPostNotificationEntity } from "@business/domains/entities/notification/replyToPost";
 import { type MongoNotification } from "@interfaces/providers/mongo/entities/notification";
-import { EntityHandler, intObjecter } from "@vendors/clean";
+import { commonDateObjecter, EntityHandler, intObjecter } from "@vendors/clean";
 import { UserEntity } from "@business/domains/entities/user";
 import { UserPostBanNotificationEntity } from "@business/domains/entities/notification/userPostBan";
 import { UserPostWarningNotificationEntity } from "@business/domains/entities/notification/userPostWarning";
@@ -227,5 +227,21 @@ notificationRepository.default = {
 			.then(
 				(count) => intObjecter.unsafeCreate(count),
 			);
+	},
+	async findLastNotificationDateToUser(user) {
+		const mongoNotification = await mongo.notificationCollection
+			.findOne(
+				{
+					"user.id": user.id.value,
+				},
+				{
+					sort: { createdAt: -1 },
+					projection: { createdAt: 1 },
+				},
+			);
+
+		return mongoNotification
+			? commonDateObjecter.unsafeCreate(mongoNotification.createdAt)
+			: null;
 	},
 };

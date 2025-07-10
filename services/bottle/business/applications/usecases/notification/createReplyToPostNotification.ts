@@ -1,10 +1,10 @@
 import { UsecaseHandler } from "@vendors/clean";
-import { notificationRepository } from "../repositories/notification";
+import { notificationRepository } from "@business/applications/repositories/notification";
 import { ReplyToPostNotificationEntity, type SummaryOfReplyPost } from "@business/domains/entities/notification/replyToPost";
 import { type PostId } from "@business/domains/common/post";
-import { notificationSettingRepository } from "../repositories/notificationSetting";
+import { notificationSettingRepository } from "@business/applications/repositories/notificationSetting";
 import { type UserId, type Username } from "@business/domains/entities/user";
-import { replyToPostNotificationSettingRepository } from "../repositories/notificationSetting/replyToPost";
+import { replyToPostNotificationSettingRepository } from "@business/applications/repositories/notificationSetting/replyToPost";
 
 interface Input {
 	postId: PostId;

@@ -734,6 +734,32 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/notification-last-date-find";
+    response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "authentication.required";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "notification.noNotification";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "notification.lastDate";
+        body: {
+            dateOfLastNotification: string;
+        };
+    };
+}) | ({
+    method: "POST";
     path: "/upsert-baked-document-translation-reporting";
     body: {
         bakedDocumentId: string;

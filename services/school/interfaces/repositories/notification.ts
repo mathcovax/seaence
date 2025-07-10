@@ -7,7 +7,7 @@ notificationRepository.default = {
 		throw new RepositoryError("unsupported-method");
 	},
 	async enableReplyPostNotificationToAuthor(post) {
-		await BottleAPI.enableNotification({
+		await BottleAPI.enableReplyPostNotification({
 			postId: post.id.value,
 			userId: post.authorId.value,
 		});

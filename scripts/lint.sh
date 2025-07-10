@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 npx concurrently --kill-others-on-fail \
+	--names "design-system,clean,fixture,types-query,abys,bottle,bridge,harbor,horizon,marine-snow,lighthouse,school,sea,coral,spotter,beacon" \
 	"npm -w libs/design-system run test:lint" \
 	"npm -w libs/clean run test:lint" \
 	"npm -w libs/fixture run test:lint" \
