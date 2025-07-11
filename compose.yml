@@ -41,6 +41,8 @@ include:
   # beacon service
   - path:
       - ${INCLUDE_PATH}/beacon/compose.yml
+  - path:
+      - e2e/compose.yml
 
 services:
   async-message-mongo:

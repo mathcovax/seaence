@@ -13,7 +13,7 @@ const {
 	setPageOfNotificaitonList,
 } = useNotificationListPage(
 	() => {
-		router.back();
+		void router.push(homePage.createTo());
 	},
 );
 const { seeNotifications } = useUserInformation();

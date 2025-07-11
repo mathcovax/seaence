@@ -9,13 +9,17 @@ const { disconect, hasNewNotifications } = useUserInformation();
 <template>
 	<DSDropdownMenu>
 		<DSDropdownMenuTrigger>
-			<div class="relative">
+			<div
+				class="relative"
+				data-testid="account-dropdown"
+			>
 				<NotificationHint
 					v-if="hasNewNotifications"
 					class="absolute right-0"
 				/>
 
 				<DSOutlineButton
+					data-testid="account-dropdown-button"
 					square
 					rounded
 				>
@@ -25,7 +29,7 @@ const { disconect, hasNewNotifications } = useUserInformation();
 		</DSDropdownMenuTrigger>
 
 		<DSDropdownMenuContent align="end">
-			<DSDropdownMenuItem>
+			<DSDropdownMenuItem as-child>
 				<RouterLink
 					:to="profilePage"
 					class="w-full"
@@ -34,7 +38,7 @@ const { disconect, hasNewNotifications } = useUserInformation();
 				</RouterLink>
 			</DSDropdownMenuItem>
 
-			<DSDropdownMenuItem>
+			<DSDropdownMenuItem as-child>
 				<div class="w-full flex items-center">
 					<RouterLink
 						:to="notificationListPage"
@@ -49,7 +53,7 @@ const { disconect, hasNewNotifications } = useUserInformation();
 				</div>
 			</DSDropdownMenuItem>
 
-			<DSDropdownMenuItem>
+			<DSDropdownMenuItem as-child>
 				<RouterLink :to="documentFolderPage.createTo()">
 					{{ $t("layout.base.header.accountDropdown.documentFolder") }}
 				</RouterLink>
@@ -58,7 +62,7 @@ const { disconect, hasNewNotifications } = useUserInformation();
 			<DSDropdownMenuSeparator />
 
 			<DSDropdownMenuItem @click="disconect">
-				<span class="w-full cursor-pointer">{{ $t("layout.base.header.accountDropdown.disconnect") }}</span>
+				{{ $t("layout.base.header.accountDropdown.disconnect") }}
 			</DSDropdownMenuItem>
 		</DSDropdownMenuContent>
 	</DSDropdownMenu>

@@ -16,6 +16,7 @@ defineProps<Props>();
 			'grid-column': `span ${cols} / span ${cols}`
 		}"
 		class="flex flex-col gap-2"
+		:data-id="`baselayout-${formKey}`"
 	>
 		<DSLabel
 			v-if="label"

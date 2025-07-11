@@ -15,13 +15,14 @@ import DialogOverlay from "./DSDialogOverlay.vue";
 interface Props extends DialogContentProps {
 	class?: HTMLAttributes["class"];
 	size: "small" | "normal" | "full";
+	dataTestid?: string;
 }
 
 const props = defineProps<Props>();
 const emits = defineEmits<DialogContentEmits>();
 
 const delegatedProps = computed(() => {
-	const { class: _class, ...delegated } = props;
+	const { class: _class, dataTestid: _dataTestid, ...delegated } = props;
 
 	return delegated;
 });
@@ -46,6 +47,7 @@ const className = computed(
 
 		<DialogContent
 			data-slot="dialog-content"
+			:data-testid="dataTestid"
 			v-bind="forwarded"
 			:class="{
 				[className]: true,

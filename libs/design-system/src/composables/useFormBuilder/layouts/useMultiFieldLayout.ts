@@ -89,33 +89,33 @@ export function useMultiFieldLayout(
 	);
 
 	function multiFieldLayout(params: FormFieldParams<Record<string, unknown>>): FormFieldInstance {
-		const { modelValue, key: paramsKey } = params;
+		const { modelValue, key } = params;
 
 		const { exposed, formFieldVNode } = entriesFormFieldsWrapper
 			.reduce<SpreadFormFieldInstance>(
-				(acc, [key, formField]) => {
+				(acc, [keyFormField, formField]) => {
 					const { exposed, getVNode } = formField({
 						modelValue: computed({
 							get() {
 								if (modelValue.value === undefined) {
 									return simpleClone(multiFieldLayout.defaultValue);
 								}
-								return modelValue.value?.[key];
+								return modelValue.value?.[keyFormField];
 							},
 							set(value) {
 								if (modelValue.value === undefined) {
 									return;
 								}
-								modelValue.value[key] = value;
+								modelValue.value[keyFormField] = value;
 							},
 						}),
-						key: `${paramsKey}.${key}`,
+						key: `${key}.${keyFormField}`,
 					});
 
 					return {
 						exposed: {
 							...acc.exposed,
-							[key]: exposed,
+							[keyFormField]: exposed,
 						},
 						formFieldVNode: [
 							...acc.formFieldVNode,
@@ -133,7 +133,7 @@ export function useMultiFieldLayout(
 			return Object
 				.entries(exposed)
 				.reduce<Record<string, unknown> | Error>(
-					(acc, [key, { check } = {}]) => {
+					(acc, [keyFormField, { check } = {}]) => {
 						if (!check) {
 							return acc;
 						}
@@ -150,7 +150,7 @@ export function useMultiFieldLayout(
 
 						return {
 							...acc,
-							[key]: result,
+							[keyFormField]: result,
 						};
 					},
 					{},
@@ -171,7 +171,7 @@ export function useMultiFieldLayout(
 			getVNode: () => {
 				if (template) {
 					return template(
-						{ },
+						{ formKey: key },
 						formFieldVNode
 							.map(
 								(formFieldComponent) => h(formFieldComponent),
@@ -179,7 +179,7 @@ export function useMultiFieldLayout(
 					);
 				} else if (useMultiFieldLayout.defaultTemplate) {
 					return useMultiFieldLayout.defaultTemplate(
-						{ },
+						{ formKey: key },
 						formFieldVNode
 							.map(
 								(formFieldComponent) => h(formFieldComponent),
@@ -201,9 +201,9 @@ export function useMultiFieldLayout(
 
 	multiFieldLayout.defaultValue = entriesFormFieldsWrapper
 		.reduce(
-			(acc, [key, formField]) => ({
+			(acc, [keyFormField, formField]) => ({
 				...acc,
-				[key]: formField.defaultValue,
+				[keyFormField]: formField.defaultValue,
 			}),
 			{},
 		) as never;

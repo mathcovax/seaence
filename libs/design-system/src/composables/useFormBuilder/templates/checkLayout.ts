@@ -4,6 +4,7 @@ import { type TemplateRender, type LayoutTemplateItem } from "./createLayoutTemp
 
 export interface CheckLayoutTemplateProps {
 	errorMessage: string;
+	formKey: string;
 }
 
 export type CheckLayoutTemplateItem = LayoutTemplateItem<

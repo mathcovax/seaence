@@ -1,0 +1,14 @@
+services:
+  e2e:
+    profiles: ["e2e"]
+    build: 
+      context: .
+      dockerfile: ../.docker/node-e2e.dockerfile
+    network_mode: host
+    volumes:
+      - ${PWD}:/home/node/project
+    environment:
+      npm_config_cache: /home/node/cache
+    working_dir: /home/node/project
+    user: 1000:1000
+    command: npm -w e2e run test

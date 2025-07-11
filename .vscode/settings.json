@@ -49,6 +49,7 @@
 	"services/coral",
 	"services/lighthouse",
 	"services/beacon",
+	"e2e",
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,

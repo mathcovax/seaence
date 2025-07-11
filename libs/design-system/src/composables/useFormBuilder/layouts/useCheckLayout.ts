@@ -126,12 +126,18 @@ export function useCheckLayout<
 					return null;
 				} else if (template) {
 					return template(
-						{ errorMessage: errorMessage.value },
+						{
+							errorMessage: errorMessage.value,
+							formKey: key,
+						},
 						formFieldComponent.getVNode(),
 					);
 				} else if (useCheckLayout.defaultTemplate) {
 					return useCheckLayout.defaultTemplate(
-						{ errorMessage: errorMessage.value },
+						{
+							errorMessage: errorMessage.value,
+							formKey: key,
+						},
 						formFieldComponent.getVNode(),
 					);
 				}

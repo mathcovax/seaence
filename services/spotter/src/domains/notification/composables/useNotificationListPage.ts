@@ -33,7 +33,10 @@ export function useNotificationListPage(
 	}
 
 	void horizonClient
-		.post("/notification-list-page")
+		.post(
+			"/notification-list-page",
+			{ disableAuthenticationRequiredManagement: true },
+		)
 		.whenInformation(
 			"notificationListPage.found",
 			({ body }) => {

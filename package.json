@@ -33,6 +33,7 @@
     "test:types": "./scripts/types.sh",
     "test:tu": "vitest --watch false",
     "test:coverage": "vitest --watch false --coverage",
+    "test:e2e": "docker compose --profile e2e up e2e",
 
     "build": "./scripts/build.sh",
     "clear": "./scripts/clear.sh",
@@ -77,7 +78,8 @@
   "workspaces": [
     ".npm-packages",
     "libs/**",
-    "services/**"
+    "services/**",
+    "e2e"
   ],
   "license": "./LICENSE"
 }

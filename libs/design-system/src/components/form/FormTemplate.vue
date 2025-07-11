@@ -6,6 +6,7 @@ const emit = defineEmits<{
 interface Props {
 	align?: "auto" | "center" | "end";
 	reverse?: boolean;
+	dataTestId?: string;
 }
 
 defineProps<Props>();
@@ -28,6 +29,7 @@ defineSlots<{
 		:class="{
 			'flex-col-reverse': reverse
 		}"
+		:data-testid="dataTestId"
 	>
 		<slot name="formField" />
 

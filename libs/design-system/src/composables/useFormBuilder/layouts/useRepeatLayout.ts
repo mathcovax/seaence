@@ -107,6 +107,7 @@ export function useRepeatLayout<
 							items: formFieldItems.value.map(
 								({ getVNode }) => getVNode,
 							),
+							formKey: key,
 						},
 						null,
 					);
@@ -119,6 +120,7 @@ export function useRepeatLayout<
 							items: formFieldItems.value.map(
 								({ getVNode }) => getVNode,
 							),
+							formKey: key,
 						},
 						null,
 					);

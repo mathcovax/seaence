@@ -1,0 +1,45 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"lib": [
+			"ESNext"
+		],
+		"moduleDetection": "force",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"types": [
+			"node"
+		],
+		"noEmit": true,
+		"esModuleInterop": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"paths": {
+			"@envs": [
+				"./envs.ts"
+			],
+			"@playwright": [
+				"./playwright/index.ts"
+			],
+			"@pages/*": [
+				"./pages/*"
+			],
+			"@components/*": [
+				"./components/*"
+			],
+			"@providers/*": [
+				"./providers/*"
+			],
+			"@vendors/*": [
+				"./vendors/*"
+			],
+		}
+	},
+	"include": [
+		"**/*.ts",
+		"eslint.config.ts"
+	],
+	"exclude": [
+		"vendors/**/*.test.ts",
+	]
+}
