@@ -1,25 +1,44 @@
 <script setup lang="ts">
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { firebaseApp } from "@/lib/firebase";
+import { useFirebaseApp, useFirebaseAuth } from "@/lib/firebase";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 import { useAuthDialog } from "../composables/useAuthDialog";
 import { useRegisterForm } from "../composables/useRegisterForm";
+import { match, P } from "ts-pattern";
 
 const { isOpen, setState, close } = useAuthDialog();
 const { t } = useI18n();
 const { setAccessToken } = useUserInformation();
 const { sonnerError } = useSonner();
+const { enableLoader, disableLoader } = useLoader();
 const { RegisterForm, registerFormValue, checkRegisterForm } = useRegisterForm();
 
 const firebaseTokenToRegister = ref<string | null>(null);
 
 async function googleSign() {
+	const { firebaseApp } = await useFirebaseApp();
+	const { GoogleAuthProvider, getAuth, signInWithPopup, signOut } = await useFirebaseAuth();
+
 	const provider = new GoogleAuthProvider();
 	const auth = getAuth(firebaseApp);
 
+	const loaderId = enableLoader();
+
 	try {
-		const userCredential = await signInWithPopup(auth, provider);
-		const firebaseToken = await userCredential.user.getIdToken();
+		const firebaseUser = await match(auth.currentUser)
+			.with(
+				null,
+				async() => {
+					const userCredential = await signInWithPopup(auth, provider);
+					return userCredential.user;
+				},
+			)
+			.with(
+				P.not(null),
+				(user) => user,
+			)
+			.exhaustive();
+
+		const firebaseToken = await firebaseUser.getIdToken();
 
 		await horizonClient
 			.post(
@@ -40,12 +59,16 @@ async function googleSign() {
 				"user.notfound",
 				() => {
 					firebaseTokenToRegister.value = firebaseToken;
-					registerFormValue.value.username = userCredential.user.email?.split("@").shift() ?? "";
+					registerFormValue.value.username = firebaseUser.email?.split("@").shift() ?? "";
+					console.log(registerFormValue.value.username);
 				},
 			)
 			.iWantExpectedResponse();
 	} catch {
 		sonnerError(t("authDialog.googleSignError"));
+	} finally {
+		disableLoader(loaderId);
+		await signOut(auth);
 	}
 }
 
@@ -114,8 +137,12 @@ watch(
 			</div>
 
 			<div v-else>
-				<RegisterForm @submit="register">
+				<RegisterForm
+					data-testid="auth-dialog-register-form"
+					@submit="register"
+				>
 					<DSPrimaryButton
+						data-testid="auth-dialog-register-form-submit-button"
 						size="full"
 						type="submit"
 					>

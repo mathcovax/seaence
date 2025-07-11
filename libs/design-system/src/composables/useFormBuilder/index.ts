@@ -71,12 +71,12 @@ export function useFormBuilder<
 
 		if (template) {
 			return template(
-				{},
+				{ ...porps },
 				child,
 			);
 		} else if (useFormBuilder.defaultTemplate) {
 			return useFormBuilder.defaultTemplate(
-				{},
+				{ ...porps },
 				child,
 			);
 		}
@@ -84,6 +84,7 @@ export function useFormBuilder<
 		return h(
 			"form",
 			{
+				...porps,
 				class: "formBilderForm",
 				onSubmit(event) {
 					event.preventDefault();

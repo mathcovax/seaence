@@ -11,7 +11,7 @@ export default defineConfig({
 	use: {
 		headless: true,
 		baseURL: envs.BASE_URL,
-		trace: "on-first-retry",
+		trace: "on",
 		launchOptions: {
 			executablePath: "/usr/bin/chromium-browser",
 			args: ["--no-sandbox", "--disable-dev-shm-usage"],

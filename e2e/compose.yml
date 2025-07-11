@@ -4,6 +4,7 @@ services:
     build: 
       context: .
       dockerfile: ../.docker/node-e2e.dockerfile
+    network_mode: host
     volumes:
       - ${PWD}:/home/node/project
     environment:

@@ -4,25 +4,27 @@ import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 
 export const firebaseAuth = await (async() => {
-	if (envs.DB_CONNECTION) {
-		if (!existsSync(envs.FIREBASE_CREDENTIAL_PATH)) {
-			throw new Error("Firebase credential not found.");
-		}
-
-		const credential: ServiceAccount = JSON.parse(
-			await readFile(envs.FIREBASE_CREDENTIAL_PATH, "utf-8"),
-		);
-
-		firebaseAdmin.initializeApp({
-			credential: firebaseAdmin.credential.cert(credential),
-		});
-
-		const firebaseAuth = firebaseAdmin.auth();
-
-		await firebaseAuth.getUsers([{ email: "campani.mathieu@gmail.com" }]);
-
-		return firebaseAuth;
-	} else {
-		return undefined as never;
+	if (!existsSync(envs.FIREBASE_CREDENTIAL_PATH)) {
+		throw new Error("Firebase credential not found.");
 	}
+
+	const credential: ServiceAccount = JSON.parse(
+		await readFile(envs.FIREBASE_CREDENTIAL_PATH, "utf-8"),
+	);
+
+	firebaseAdmin.initializeApp({
+		credential: firebaseAdmin.credential.cert(credential),
+	});
+
+	const firebaseAuth = firebaseAdmin.auth();
+
+	if (envs.DB_CONNECTION) {
+		try {
+			await firebaseAuth.getUsers([{ email: "campani.mathieu@gmail.com" }]);
+		} catch {
+			throw new Error("Failed connect to firebase.");
+		}
+	}
+
+	return firebaseAuth;
 })();

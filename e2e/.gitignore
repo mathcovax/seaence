@@ -5,3 +5,9 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# env local
+.env.local
+
+# Firebase
+firebase.credential.json

@@ -3,6 +3,7 @@ import { type LayoutTemplateItem, type TemplateRender } from "./createLayoutTemp
 import { type FormFieldInstance } from "../formField";
 
 export interface RepeatLayoutTemplateProps {
+	formKey: string;
 	maxItems: number;
 	"onAddItem"(): void;
 	"onRemoveItem"(index: number): void;

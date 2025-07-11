@@ -2,6 +2,7 @@ import { type useUnionLayout } from "../layouts/useUnionLayout";
 import { type LayoutTemplateItem, type TemplateRender } from "./createLayoutTemplate";
 
 export interface UnionLayoutTemplateProps {
+	formKey: string;
 	types: string[];
 	"onUpdate:modelValue"(value: string): void;
 	modelValue: string;

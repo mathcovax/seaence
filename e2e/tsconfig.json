@@ -27,6 +27,9 @@
 			"@components/*": [
 				"./components/*"
 			],
+			"@providers/*": [
+				"./providers/*"
+			],
 			"@vendors/*": [
 				"./vendors/*"
 			],

@@ -4,6 +4,6 @@ export const homePageEngine = createPageEngine(
 	"home",
 	() => "/",
 	{
-		getMainElement: (page) => page.getByTestId("home-page"),
+		getMainElement: (body) => body.getByTestId("home-page"),
 	},
 );

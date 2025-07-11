@@ -2,6 +2,7 @@
 interface Props {
 	errorMessage: string;
 	cols: number;
+	formKey: string;
 }
 
 defineProps<Props>();
@@ -17,6 +18,9 @@ defineProps<Props>();
 	>
 		<slot />
 
-		<small class="text-sm text-destructive h-[1.2rem] overflow-hidden text-ellipsis text-nowrap">{{ errorMessage }}</small>
+		<small
+			:id="formKey"
+			class="text-sm text-destructive h-[1.2rem] overflow-hidden text-ellipsis text-nowrap"
+		>{{ errorMessage }}</small>
 	</div>
 </template>

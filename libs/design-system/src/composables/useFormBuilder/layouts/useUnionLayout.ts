@@ -143,6 +143,7 @@ export function useUnionLayout<
 							types: typesUnionFormField,
 							modelValue: modelValue.value.type,
 							"onUpdate:modelValue": changeType,
+							formKey: paramsKey,
 						},
 						h(unionFormFieldInstanceWrapper[modelValue.value.type].getVNode),
 					);
@@ -152,6 +153,7 @@ export function useUnionLayout<
 							types: typesUnionFormField,
 							modelValue: modelValue.value.type,
 							"onUpdate:modelValue": changeType,
+							formKey: paramsKey,
 						},
 						h(unionFormFieldInstanceWrapper[modelValue.value.type].getVNode),
 					);
