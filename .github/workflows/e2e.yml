@@ -1,0 +1,32 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.15.0'
+        run: npm ci
+
+      - run: npx playwright install --with-deps
+
+      - run: |
+          echo '${{ secrets.FIREBASE_CREDENTIALS }}' > ./e2e/firebase.credential.json
+
+      - run: npm -w e2e run test
+        env:
+          BASE_URL: https://seaence.org
+          CI: true
+          RETRIES: 0
+          WORKER: 1
+
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: e2e/playwright-report
