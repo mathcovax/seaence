@@ -7,6 +7,9 @@ const actions = {
 
 		return element.click();
 	},
+	async forceClick({ element }) {
+		return element.click();
+	},
 	async fill({ element, elementKey, component }, content: string) {
 		await Assertions.toBeVisible(component, elementKey);
 
@@ -19,6 +22,11 @@ export namespace Actions {
 
 	export const click = createStepEmbeder(
 		"$component: I click on $element.",
+		actions.click,
+	);
+
+	export const forceClick = createStepEmbeder(
+		"$component: I force click on $element.",
 		actions.click,
 	);
 

@@ -28,6 +28,11 @@ export interface WebSiteInstance {
 	>(
 		componentEngine: GenericComponentEngine,
 	): Promise<ReturnType<GenericComponentEngine>>;
+	iWantToExist<
+		GenericComponentEngine extends ReturnType<typeof createComponentEngine>,
+	>(
+		componentEngine: GenericComponentEngine,
+	): Promise<ReturnType<GenericComponentEngine>>;
 }
 
 export function webSiteEngine(
@@ -87,6 +92,18 @@ export function webSiteEngine(
 				`webSite: I want to see ${component.name}`,
 				async() => {
 					await expect(component.mainElement).toBeVisible();
+				},
+			);
+
+			return component as never;
+		},
+		async iWantToExist(componentEngine) {
+			const component = componentEngine(webSite) as PageInstance<string, never>;
+
+			await test.step(
+				`webSite: I want to exist ${component.name}`,
+				async() => {
+					await expect(component.mainElement).toBeAttached();
 				},
 			);
 

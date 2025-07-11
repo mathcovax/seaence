@@ -9,13 +9,17 @@ const { disconect, hasNewNotifications } = useUserInformation();
 <template>
 	<DSDropdownMenu>
 		<DSDropdownMenuTrigger>
-			<div class="relative">
+			<div
+				class="relative"
+				data-testid="account-dropdown"
+			>
 				<NotificationHint
 					v-if="hasNewNotifications"
 					class="absolute right-0"
 				/>
 
 				<DSOutlineButton
+					data-testid="account-dropdown-button"
 					square
 					rounded
 				>

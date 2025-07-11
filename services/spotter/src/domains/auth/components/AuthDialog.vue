@@ -60,7 +60,6 @@ async function googleSign() {
 				() => {
 					firebaseTokenToRegister.value = firebaseToken;
 					registerFormValue.value.username = firebaseUser.email?.split("@").shift() ?? "";
-					console.log(registerFormValue.value.username);
 				},
 			)
 			.iWantExpectedResponse();

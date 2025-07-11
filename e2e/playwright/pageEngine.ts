@@ -31,7 +31,7 @@ export function createPageEngine<
 		getElements,
 	}: {
 		getMainElement(body: Locator): Locator;
-		getElements?(mainElement: Locator): GenericElements;
+		getElements?(mainElement: Locator, body: Locator): GenericElements;
 	},
 ) {
 	const component = createComponentEngine(

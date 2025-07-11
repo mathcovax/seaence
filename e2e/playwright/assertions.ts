@@ -11,6 +11,11 @@ const assertions = {
 
 		return expect(element).toHaveText(context);
 	},
+	async toHaveNoText({ element, component, elementKey }) {
+		await Assertions.toBeVisible(component, elementKey);
+
+		return expect(element).toHaveText("");
+	},
 } satisfies WrapperStepEmbededFunction;
 
 export namespace Assertions {
@@ -24,5 +29,10 @@ export namespace Assertions {
 	export const toHaveText = createStepEmbeder(
 		"$component: I want $element have Text.",
 		assertions.toHaveText,
+	);
+
+	export const toHaveNoText = createStepEmbeder(
+		"$component: I want $element have no Text.",
+		assertions.toHaveNoText,
 	);
 }

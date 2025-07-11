@@ -24,15 +24,16 @@ export function createComponentEngine<
 		getElements,
 	}: {
 		getMainElement(body: Locator): Locator;
-		getElements?(mainElement: Locator): GenericElements;
+		getElements?(mainElement: Locator, body: Locator): GenericElements;
 	},
 ) {
 	return (webSite: WebSiteInstance) => {
+		const body = webSite.playwrightPage.locator("body");
 		const mainElement = getMainElement(
-			webSite.playwrightPage.locator("body"),
+			body,
 		);
 
-		const elements = getElements?.(mainElement);
+		const elements = getElements?.(mainElement, body);
 
 		return {
 			name,

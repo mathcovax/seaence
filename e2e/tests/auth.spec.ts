@@ -4,6 +4,8 @@ import { headerEngine } from "@components/header";
 import { authDialogEngine } from "@components/auth/authDialog";
 import { createFirebaseUser, deleteFirebaseUser, initFirebaseAuth, setupFirebaseAuth } from "@providers/firebase";
 import { Assertions } from "../playwright/assertions";
+import { sonnerEngine } from "@components/sonner";
+import { accountDropdownEngine } from "@components/accountDropdown";
 
 const { firebaseAuth } = await initFirebaseAuth();
 
@@ -29,6 +31,7 @@ testCLient.describe(
 
 			await Actions.click(header, "signButton");
 
+			const sonner = await webSite.iWantToExist(sonnerEngine);
 			const authDialog = await webSite.iWantToSee(authDialogEngine);
 
 			await setupFirebaseAuth({
@@ -49,6 +52,41 @@ testCLient.describe(
 			await Assertions
 				.withStepContent("alert a short username")
 				.toHaveText(authDialog, "registerFormUsernameHint");
+
+			await Actions
+				.withStepContent("fill too long username")
+				.fill(authDialog, "registerFormUsername", "thisIsATooLongUsernameForEndToEndTest");
+
+			await Assertions
+				.withStepContent("alert too long username")
+				.toHaveText(authDialog, "registerFormUsernameHint");
+
+			await Actions
+				.withStepContent("fill good username")
+				.fill(authDialog, "registerFormUsername", userFirebaseUid);
+
+			await Assertions
+				.withStepContent("no hint")
+				.toHaveNoText(authDialog, "registerFormUsernameHint");
+
+			await Actions
+				.withStepContent("open select language")
+				.click(authDialog, "registerFormTriggerSelectLanguage");
+
+			await Actions
+				.withStepContent("select french")
+				.click(authDialog, "registerFormSelectLanguageFranceOption");
+
+			await Actions
+				.withStepContent("valide CGU")
+				.click(authDialog, "registerFormValideCGU");
+
+			await Actions.click(authDialog, "registerFormSubmitButton");
+
+			await Assertions
+				.toBeVisible(sonner, "firstDefault");
+
+			await webSite.iWantToSee(accountDropdownEngine);
 		});
 	},
 );
