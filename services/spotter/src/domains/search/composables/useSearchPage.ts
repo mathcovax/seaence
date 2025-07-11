@@ -5,7 +5,7 @@ export interface SearchResult {
 	total: number;
 	quantityPerPage: number;
 	facets: Facet[];
-	searchResult: BakedDocumentSearchResult[];
+	searchResults: BakedDocumentSearchResult[];
 }
 
 const smoothTimeEnabled = 400;
@@ -66,11 +66,11 @@ export function useSearchPage() {
 	}
 
 	const result = computed(
-		() => searchDetails.value !== null
+		(): SearchResult | null => searchDetails.value !== null
 		&& bakedDocumentSearchResult.value !== null
 			? {
 				...searchDetails.value,
-				searchResult: bakedDocumentSearchResult.value,
+				searchResults: bakedDocumentSearchResult.value,
 			}
 			: null,
 	);

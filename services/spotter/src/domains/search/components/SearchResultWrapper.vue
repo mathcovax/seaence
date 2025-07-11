@@ -28,7 +28,7 @@ const maxPage = 100;
 		}"
 	>
 		<div
-			v-if="result && result.searchResult.length > 0"
+			v-if="result && result.searchResults.length > 0"
 			class="bg-background flex flex-col items-center rounded-b-xl"
 		>
 			<DSPagination
@@ -41,9 +41,11 @@ const maxPage = 100;
 				@update="updatePage"
 			/>
 
-			<div class="w-full max-w-5xl mx-auto">
+			<div
+				class="w-full max-w-5xl mx-auto"
+			>
 				<DocumentResultRow
-					v-for="searchResult in result.searchResult"
+					v-for="searchResult in result.searchResults"
 					:key="searchResult.bakedDocumentId"
 					:search-result="searchResult"
 				/>
