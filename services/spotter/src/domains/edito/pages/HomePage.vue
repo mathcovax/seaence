@@ -5,7 +5,7 @@ const { $pt, $gpt } = homePage.use();
 <template>
 	<section
 		data-testid="home-page"
-		class="mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center text-center md:text-start"
+		class="mb-12 flex flex-col-reverse md:flex-row gap-7 md:gap-14 justify-between items-center"
 	>
 		<div class="md:flex-2/3 space-y-6">
 			<I18nT
@@ -30,7 +30,7 @@ const { $pt, $gpt } = homePage.use();
 				{{ $pt("hero.subtitle") }}
 			</p>
 
-			<div class="flex gap-4 flex-wrap">
+			<div class="flex flex-wrap gap-4">
 				<RouterLink :to="simpleSearchPage">
 					<DSPrimaryButton icon="magnify">
 						{{ $t("cta.explore") }}
@@ -52,24 +52,24 @@ const { $pt, $gpt } = homePage.use();
 		/>
 	</section>
 
-	<section class="mb-12 space-y-6 text-center md:text-start">
-		<h2 class="text-center text-4xl font-bold">
+	<section class="mb-12 space-y-6">
+		<h2 class="text-4xl font-bold">
 			{{ $pt("about.title") }}
 		</h2>
 
-		<p class="max-w-4xl mx-auto text-center">
+		<p>
 			{{ $pt("about.content") }}
 		</p>
 	</section>
 
 	<section class="mb-12">
-		<h2 class="text-center text-3xl font-bold mb-8">
+		<h2 class="mb-8 text-3xl font-bold">
 			{{ $pt("features.title") }}
 		</h2>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			<DSCard class="text-center">
-				<div class="flex justify-center mb-4">
+			<DSCard>
+				<div class="mb-4 flex justify-center">
 					<div class="p-3 bg-blue-seaence/10 rounded-lg">
 						<DSIcon
 							name="magnifyPlus"
@@ -78,7 +78,7 @@ const { $pt, $gpt } = homePage.use();
 					</div>
 				</div>
 
-				<h3 class="font-semibold mb-2">
+				<h3 class="mb-2 font-semibold text-center">
 					{{ $pt("features.items.search.title") }}
 				</h3>
 
@@ -87,8 +87,8 @@ const { $pt, $gpt } = homePage.use();
 				</p>
 			</DSCard>
 
-			<DSCard class="text-center">
-				<div class="flex justify-center mb-4">
+			<DSCard>
+				<div class="mb-4 flex justify-center">
 					<div class="p-3 bg-secondary/10 rounded-lg">
 						<DSIcon
 							name="forum"
@@ -97,7 +97,7 @@ const { $pt, $gpt } = homePage.use();
 					</div>
 				</div>
 
-				<h3 class="font-semibold mb-2">
+				<h3 class="mb-2 font-semibold text-center">
 					{{ $pt("features.items.forum.title") }}
 				</h3>
 
@@ -106,8 +106,8 @@ const { $pt, $gpt } = homePage.use();
 				</p>
 			</DSCard>
 
-			<DSCard class="text-center">
-				<div class="flex justify-center mb-4">
+			<DSCard>
+				<div class="mb-4 flex justify-center">
 					<div class="p-3 bg-green-seaence/10 rounded-lg">
 						<DSIcon
 							name="folder"
@@ -116,7 +116,7 @@ const { $pt, $gpt } = homePage.use();
 					</div>
 				</div>
 
-				<h3 class="font-semibold mb-2">
+				<h3 class="mb-2 font-semibold text-center">
 					{{ $pt("features.items.organization.title") }}
 				</h3>
 
@@ -127,36 +127,43 @@ const { $pt, $gpt } = homePage.use();
 		</div>
 	</section>
 
-	<section class="mb-12 space-y-6 text-center md:text-start">
-		<h2 class="text-center text-4xl font-bold">
+	<section class="mb-12 space-y-6">
+		<h2 class=" text-4xl font-bold">
 			{{ $pt("faq.title") }}
 		</h2>
 
 		<DSAccordion
 			type="multiple"
 			collapsible
-			class="w-full max-w-4xl mx-auto"
 		>
 			<DSAccordionItem value="item-1">
-				<DSAccordionTrigger>{{ $pt("faq.accordion.item1.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>
+					{{ $pt("faq.accordion.item1.question") }}
+				</DSAccordionTrigger>
 
 				<DSAccordionContent>{{ $pt("faq.accordion.item1.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-2">
-				<DSAccordionTrigger>{{ $pt("faq.accordion.item2.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>
+					{{ $pt("faq.accordion.item2.question") }}
+				</DSAccordionTrigger>
 
 				<DSAccordionContent>{{ $pt("faq.accordion.item2.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-3">
-				<DSAccordionTrigger>{{ $pt("faq.accordion.item3.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>
+					{{ $pt("faq.accordion.item3.question") }}
+				</DSAccordionTrigger>
 
 				<DSAccordionContent>{{ $pt("faq.accordion.item3.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-4">
-				<DSAccordionTrigger>{{ $pt("faq.accordion.item4.question") }}</DSAccordionTrigger>
+				<DSAccordionTrigger>
+					{{ $pt("faq.accordion.item4.question") }}
+				</DSAccordionTrigger>
 
 				<DSAccordionContent>{{ $pt("faq.accordion.item4.answer") }}</DSAccordionContent>
 			</DSAccordionItem>
