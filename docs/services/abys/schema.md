@@ -1,0 +1,41 @@
+# Abys
+
+## Interaction
+
+```mermaid
+flowchart TB
+    subgraph Gateway
+        Horizon[Horizon]
+        Bridge[Bridge]
+    end
+
+    subgraph Search
+        Sea[Sea]
+        Abys[Abys]
+        Rosetta[Rosetta]
+    end
+
+    Horizon --> Abys
+
+    Bridge --> Abys
+
+    Abys --> Sea
+    Abys --> Rosetta
+	
+    classDef gateway fill:#6272a4,color:white
+    classDef search fill:#8be9fd,color:black
+
+    class Horizon,Bridge gateway
+    class Sea,Abys,Rosetta search
+```
+
+> [!NOTE]
+> **Horizon** appelle **Abys** pour récupérer les documents.
+> **Bridge** appelle **Abys** pour chercher des documents.
+> **Abys** appelle **Sea** pour indexer des documents.
+> **Abys** appelle **Rosetta** pour traduire des documents.
+
+## Composition
+
+- **Database:** MongoDB
+- **Interface:** HTTP
