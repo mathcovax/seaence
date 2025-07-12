@@ -9,18 +9,6 @@
 | Manque d'information autour d'une études / accès cette information | Forum / Blog et commentaire |
 | Languages de recherches trop différents | Créer un language plus adpaté et confortable (scratch) |
 
-## Features
-
-- [ ] Mise en place d'une authentification SSO (google, microsoft, github)
-- [ ] Centralisation et indexationde données des différentes base dans une base vectorielle
-- [ ] Traduction / Reformulation des données de recherche
-- [ ] Recherche avancées avec création d'un language accessible + application de recherche avec [Embedding](https://en.wikipedia.org/wiki/Embedding)
-- [ ] Historique de recherche
-- [ ] Pattern de recherche enregistrable et copiable
-- [ ] Sauvegarde  et classement d'article (favoris, list)
-- [ ] Systeme de warning pour indiquer aux utilisateurs si l'article est correctement indexer (manque de keyword, résumer trop court, manque de source, etc)
-- [ ] Forum à la demande afin d'échanger autour d'un article ou d'un sujet
-
 ## Infrastructure
 
 | Service | Nom | Description | Technologies | Équipe |
@@ -117,7 +105,6 @@ flowchart TB
         Abys[Abys]
         Rosetta[Rosetta]
         MarineSnow[MarineSnow]
-		Beacon[Beacon]
     end
 
     subgraph Social
@@ -132,6 +119,10 @@ flowchart TB
         Bottle[Bottle]
     end
 
+	subgraph Report
+		Beacon[Beacon]
+	end
+
     %% Connexions Client
     Spotter --> Horizon
     Lighthouse --> Bridge
@@ -144,16 +135,12 @@ flowchart TB
     Horizon --> Bottle
 	Horizon --> Coral
 	Horizon --> Beacon
-    
-    Bridge --> Harbor
+
     Bridge --> MarineSnow
     Bridge --> Abys
     Bridge --> School
 	Bridge --> Beacon
 
-    %% Connexions Search
-	Coral --> Sea
-	Coral --> Abys
     MarineSnow --> Abys
     Abys --> Sea
     Abys --> Rosetta
@@ -161,9 +148,6 @@ flowchart TB
     %% Connexions Notification
     School --> Bottle
     Harbor --> Bottle
-
-	%% Connexions User
-	Harbor --> Coral
 	
     %% Styles
     classDef frontend fill:#42b883,color:white
@@ -173,13 +157,15 @@ flowchart TB
     classDef social fill:#50fa7b,color:black
     classDef bo fill:#ffb86c,color:black
     classDef notification fill:#bd93f9,color:white
+	classDef report fill:#8B2920,color:white
 
     %% Application des styles
     class Spotter frontend
     class Horizon,Bridge gateway
-    class Harbor auth
+    class Harbor,Coral auth
     class Sea,Abys,MarineSnow,Rosetta,Beacon search
     class School social
     class Lighthouse bo
     class Bottle notification
+	class Beacon report
 ```
