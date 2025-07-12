@@ -137,7 +137,7 @@ const { $pt, $gpt } = homePage.use();
 			collapsible
 		>
 			<DSAccordionItem value="item-1">
-				<DSAccordionTrigger lass="text-start">
+				<DSAccordionTrigger>
 					{{ $pt("faq.accordion.item1.question") }}
 				</DSAccordionTrigger>
 
@@ -145,7 +145,7 @@ const { $pt, $gpt } = homePage.use();
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-2">
-				<DSAccordionTrigger lass="text-start">
+				<DSAccordionTrigger>
 					{{ $pt("faq.accordion.item2.question") }}
 				</DSAccordionTrigger>
 
@@ -153,7 +153,7 @@ const { $pt, $gpt } = homePage.use();
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-3">
-				<DSAccordionTrigger class="text-start">
+				<DSAccordionTrigger>
 					{{ $pt("faq.accordion.item3.question") }}
 				</DSAccordionTrigger>
 
@@ -161,7 +161,7 @@ const { $pt, $gpt } = homePage.use();
 			</DSAccordionItem>
 
 			<DSAccordionItem value="item-4">
-				<DSAccordionTrigger lass="text-start">
+				<DSAccordionTrigger>
 					{{ $pt("faq.accordion.item4.question") }}
 				</DSAccordionTrigger>
 
