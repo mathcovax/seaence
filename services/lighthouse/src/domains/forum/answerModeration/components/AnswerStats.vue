@@ -20,14 +20,14 @@ const { $pt } = answerPage.use();
 						{{ $pt("answerStats.pending") }}
 					</p>
 
-					<p class="text-2xl text-orange-600 font-bold">
+					<p class="text-2xl text-warning font-bold">
 						{{ pendingCount }}
 					</p>
 				</div>
 
 				<DSIcon
 					name="clock"
-					class="text-orange-600"
+					class="text-warning"
 				/>
 			</div>
 		</DSCard>

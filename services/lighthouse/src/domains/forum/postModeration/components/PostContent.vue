@@ -16,16 +16,17 @@ const { $pt } = postPage.use();
 	<DSCard>
 		<template #header>
 			<div class="flex justify-between items-start">
-				<div>
+				<div class="flex flex-col gap-2 sm:gap-0">
 					<h2 class="mb-2 text-xl text-blue-seaence font-semibold">
 						{{ post.topic }}
 					</h2>
 
-					<div class="flex gap-4 items-center text-sm text-muted-foreground">
+					<div class="flex flex-wrap gap-4 items-center text-sm text-muted-foreground">
 						<div class="flex gap-2 items-center">
 							<DSIcon
 								name="account"
 								size="small"
+								class="shrink-0"
 							/>
 
 							<span>{{ post.authorId }}</span>
@@ -35,6 +36,7 @@ const { $pt } = postPage.use();
 							<DSIcon
 								name="calendar"
 								size="small"
+								class="shrink-0"
 							/>
 
 							<span>{{ getRelativeTime(post.createdAt) }}</span>
@@ -44,7 +46,7 @@ const { $pt } = postPage.use();
 
 				<DSBadge
 					variant="outline"
-					class="text-orange-600 bg-orange-50 border-orange-200"
+					class="text-warning bg-warning/5 border-warning/20"
 				>
 					{{ $pt("postStatus") }}
 				</DSBadge>

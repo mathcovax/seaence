@@ -35,9 +35,9 @@ const boostLabels: Record<ComparatorBoostEnumValue, string> = {
 };
 
 const boostColors: Record<ComparatorBoostEnumValue, string> = {
-	1: "text-gray-600",
-	2: "text-orange-600",
-	3: "text-red-600",
+	1: "text-muted-foreground",
+	2: "text-warning",
+	3: "text-destructive",
 };
 
 </script>

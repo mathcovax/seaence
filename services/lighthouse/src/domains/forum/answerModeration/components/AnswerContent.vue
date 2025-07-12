@@ -16,31 +16,31 @@ const { $pt } = answerPage.use();
 	<DSCard>
 		<template #header>
 			<div class="flex justify-between items-start">
-				<div>
-					<div class="flex gap-4 items-center text-sm text-muted-foreground mb-2">
-						<div class="flex gap-2 items-center">
-							<DSIcon
-								name="account"
-								size="small"
-							/>
+				<div class="flex flex-wrap gap-4 items-center text-sm text-muted-foreground">
+					<div class="flex gap-2 items-center">
+						<DSIcon
+							name="account"
+							size="small"
+							class="shrink-0"
+						/>
 
-							<span class="font-medium">{{ answer.authorName }}</span>
-						</div>
+						<span class="font-medium">{{ answer.authorName }}</span>
+					</div>
 
-						<div class="flex gap-2 items-center">
-							<DSIcon
-								name="calendar"
-								size="small"
-							/>
+					<div class="flex gap-2 items-center">
+						<DSIcon
+							name="calendar"
+							size="small"
+							class="shrink-0"
+						/>
 
-							<span>{{ getRelativeTime(answer.createdAt) }}</span>
-						</div>
+						<span>{{ getRelativeTime(answer.createdAt) }}</span>
 					</div>
 				</div>
 
 				<DSBadge
 					variant="outline"
-					class="text-orange-600 bg-orange-50 border-orange-200"
+					class="text-warning bg-warning/5 border-warning/20"
 				>
 					{{ $pt("answerStatus") }}
 				</DSBadge>

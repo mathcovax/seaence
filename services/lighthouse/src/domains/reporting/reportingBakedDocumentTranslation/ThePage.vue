@@ -44,7 +44,16 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 
 			<div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
 				<DSCard class="xl:col-span-8">
-					<div class="flex gap-2">
+					<div class="flex flex-wrap gap-2">
+						<a
+							:href="makeDocumentUrl(pageContent.bakedDocument.id)"
+							target="_blank"
+						>
+							<DSOutlineButton>
+								{{ $pt("seeDocument") }}
+							</DSOutlineButton>
+						</a>
+
 						<PreviewTranslationDialog
 							:cooking-mode="selectedCookingMode"
 							:baked-document-id="pageContent.bakedDocument.id"
@@ -57,15 +66,6 @@ const selectedCookingMode = ref<null | CookingMode>(null);
 							:items="cookingModeEnum.toTuple()"
 							class="w-40"
 						/>
-
-						<a
-							:href="makeDocumentUrl(pageContent.bakedDocument.id)"
-							target="_blank"
-						>
-							<DSOutlineButton>
-								{{ $pt("seeDocument") }}
-							</DSOutlineButton>
-						</a>
 					</div>
 
 					<PreviewDocument :baked-document="pageContent.bakedDocument" />
