@@ -115,4 +115,11 @@ documentInFolderRepository.default = {
 					),
 			);
 	},
+	async deleteAllByUserId(userId) {
+		await mongo.documentInFolder.deleteMany(
+			{
+				userId: userId.value,
+			},
+		);
+	},
 };

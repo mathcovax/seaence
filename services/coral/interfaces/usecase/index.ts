@@ -1,5 +1,5 @@
-import { UserCheckDocumentFolderCapacityUsecase } from "@business/applications/usecases/documentFolder/userCheckDocumentFolderCapacity";
 import "../repositories";
+import { UserCheckDocumentFolderCapacityUsecase } from "@business/applications/usecases/documentFolder/userCheckDocumentFolderCapacity";
 import { UserCountResultOfSearchDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/userCountResultOfSearchDocumentFolder";
 import { UserCreateDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/userCreateDocumentFolder";
 import { UserFindDocumentFolderByIdUsecase } from "@business/applications/usecases/documentFolder/userFindDocumentFolderById";
@@ -20,6 +20,7 @@ import { UserCheckManyDocumentFolderCapacityUsecase } from "@business/applicatio
 import { FindManyDocumentFolderInWichDocumentExistUsecase } from "@business/applications/usecases/documentFolder/findManyDocumentFolderInWichDocumentExist";
 import { CountResultOfFindManyDocumentFolderInWichDocumentExistUsecase } from "@business/applications/usecases/documentFolder/countResultOfFindManyDocumentFolderInWichDocumentExist";
 import { NodeSameRawDocumentIdsHaveDocumentInFolderUsecase } from "@business/applications/usecases/nodeSameRawDocument/nodeSameRawDocumentIdsHaveDocumentInFolder";
+import { DeleteAllUserDataUsecase } from "@business/applications/usecases/user/deleteAllUserData";
 
 export const userCreateDocumentFolderUsecase = new UserCreateDocumentFolderUsecase();
 export const userFindDocumentFolderByIdUsecase = new UserFindDocumentFolderByIdUsecase();
@@ -48,4 +49,6 @@ export const userCountResultOfFindManyFavoriteEquationUsecase = new UserCountRes
 
 export const nodeSameRawDocumentIdsHaveDocumentInFolderUsecase
 	= new NodeSameRawDocumentIdsHaveDocumentInFolderUsecase();
+
+export const deleteAllUserDataUsecase = new DeleteAllUserDataUsecase();
 

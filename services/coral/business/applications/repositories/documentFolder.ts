@@ -47,6 +47,7 @@ export interface DocumentFolderRepository extends RepositoryBase<DocumentFolderE
 	countResultOfFindManyFolderInWhichDocumentExist(
 		input: InputCountResultOfFindManyFolderInWhichFileExist
 	): Promise<Int>;
+	deleteAllByUserId(userId: UserId): Promise<void>;
 }
 
 export const documentFolderRepository = createRepositoryHandler<DocumentFolderRepository>();

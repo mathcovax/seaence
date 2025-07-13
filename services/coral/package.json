@@ -3,6 +3,9 @@
   "description": "Microservice dédier à gestion des données utilisateur. Nommé 'Coral' en réference au corail, qui est un organisme vivant et qui vit en communauté.",
   "type": "module",
   "scripts": {
+    "dev": "tsx --watch interfaces/main.ts",
+    "start": "tsx interfaces/main.ts",
+
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
     "duplo:start": "tsx interfaces/http/main.ts",
     "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --require interfaces/http/plugins/generate.ts --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/coral/duplojsTypesCodegen.d.ts",
