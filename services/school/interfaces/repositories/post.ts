@@ -32,17 +32,17 @@ postRepository.default = {
 		);
 	},
 	async findByNodeSameRawDocumentId(nodeSameRawDocumentId, { quantityPerPage, page }) {
-		const mongoPosts = mongo.postCollection.find({
-			nodeSameRawDocumentId: nodeSameRawDocumentId.value,
-		});
-
-		return mongoPosts
+		return mongo
+			.postCollection
+			.find({
+				nodeSameRawDocumentId: nodeSameRawDocumentId.value,
+				status: { $ne: "notCompliant" },
+			})
 			.sort(
 				{
 					answerCount: -1,
 				},
 			)
-			.filter({ status: { $ne: "notCompliant" } })
 			.skip(page.value * quantityPerPage.value)
 			.limit(quantityPerPage.value)
 			.map(
