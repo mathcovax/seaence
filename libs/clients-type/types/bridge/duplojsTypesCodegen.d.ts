@@ -170,12 +170,14 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/make-new-baked-document-translation";
+    path: "/baked-document-translation-reporting-aggregate/process/{bakedDocumentId}";
     body: {
-        bakedDocumentId: string;
         nodeSameRawDocumentId: string;
         bakedDocumentLanguage: BakedDocumentLanguage;
         cookingMode: CookingMode;
+    };
+    params: {
+        bakedDocumentId: string;
     };
     response: {
         code: 404;
@@ -183,7 +185,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 204;
-        information: "bakedDocument.makeNewTranslation";
+        information: "bakedDocumentTranslationReportingAggregate.processed";
         body?: undefined;
     };
 }) | ({

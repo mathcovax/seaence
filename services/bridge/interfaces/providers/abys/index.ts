@@ -45,19 +45,6 @@ export class AbysAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static transformeNodeSameRawDocumentToBakedDocument(
-		body: InputTransformeNodeSameRawDocumentToBakedDocument,
-	) {
-		return this.httpClient
-			.post(
-				"/transforme-node-same-raw-document-to-baked-document",
-				{
-					body,
-				},
-			)
-			.iWantExpectedResponse();
-	}
-
 	static {
 		this.httpClient = new HttpClient({
 			baseUrl: envs.ABYS_BASE_URL,

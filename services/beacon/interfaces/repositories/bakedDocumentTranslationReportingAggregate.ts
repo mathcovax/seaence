@@ -67,4 +67,32 @@ bakedDocumentTranslationReportingAggregateRepository.default = {
 				},
 			);
 	},
+	findOne(bakedDocumentId) {
+		return mongo.bakedDocumentTranslationReportingCollection
+			.aggregate<FindManyRawResult>([
+				{
+					$match: {
+						bakedDocumentId: bakedDocumentId.value,
+					},
+				},
+				{
+					$group: {
+						_id: "$bakedDocumentId",
+						reportingQuantity: { $sum: 1 },
+					},
+				},
+			])
+			.toArray()
+			.then(
+				([mongoEntity]) => mongoEntity
+					? EntityHandler.unsafeMapper(
+						BakedDocumentTranslationReportingAggregateEntity,
+						{
+							bakedDocumentId: mongoEntity._id,
+							reportingQuantity: mongoEntity.reportingQuantity,
+						},
+					)
+					: null,
+			);
+	},
 };

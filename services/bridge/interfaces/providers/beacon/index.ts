@@ -1,10 +1,6 @@
-import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
+import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
-import { type CodegenRoutes } from "@vendors/clients-type/beacon/duplojsTypesCodegen";
-
-export type BeaconClientRoute = TransformCodegenRouteToHttpClientRoute<
-	CodegenRoutes
->;
+import { type ProcessBakedDocumentTranslationReportingAggregatePayload, type BeaconClientRoute } from "./types";
 
 export class BeaconAPI {
 	private static httpClient: HttpClient<BeaconClientRoute>;
@@ -68,15 +64,22 @@ export class BeaconAPI {
 			.iWantInformation("bakedDocumentTranslationReporting.findMany");
 	}
 
-	public static deleteManyBakedDocumentTranslationReporting(
+	public static processBakedDocumentTranslationReportingAggregate(
 		bakedDocumentId: string,
+		body: ProcessBakedDocumentTranslationReportingAggregatePayload,
 	) {
 		return this.httpClient
 			.post(
-				"/delete-many-baked-document-translation-reporting/{bakedDocumentId}",
-				{ params: { bakedDocumentId } },
+				"/baked-document-translation-reporting-aggregate/process/{bakedDocumentId}",
+				{
+					params: { bakedDocumentId },
+					body,
+				},
 			)
-			.iWantInformation("bakedDocumentTranslationReporting.deleteMany");
+			.iWantInformation([
+				"bakedDocumentTranslationReportingAggregate.processed",
+				"bakedDocumentTranslationReportingAggregate.notfound",
+			]);
 	}
 
 	static {

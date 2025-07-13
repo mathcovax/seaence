@@ -3,7 +3,9 @@ import type { BakedDocumentLanguage, CookingMode } from "@vendors/clients-type/b
 import { useGetNewBakedDocumentTranslation } from "../composables/useGetNewBakedDocumentTranslation";
 import { reportingBakedDocumentTranslationPage } from "../router";
 import PreviewDocument from "./PreviewDocument.vue";
-import { useMakeNewBakedDocumentTranslation } from "../composables/useMakeNewBakedDocumentTranslation";
+import {
+	useProcessBakedDocumentTranslationReportingAggregate,
+} from "../composables/useProcessBakedDocumentTranslationReportingAggregate";
 import { reportingBakedDocumentTranslationListPage } from "../../reportingBakedDocumentTranslationList/router";
 
 interface Props {
@@ -17,7 +19,7 @@ const props = defineProps<Props>();
 
 const { $pt } = reportingBakedDocumentTranslationPage.use();
 const { getNewBakedDocumentTranslation, newBakedDocumentTranslation } = useGetNewBakedDocumentTranslation();
-const { makeNewBakedDocumentTranslation } = useMakeNewBakedDocumentTranslation();
+const { processBakedDocumentTranslationReportingAggregate } = useProcessBakedDocumentTranslationReportingAggregate();
 const router = useRouter();
 
 const openModel = ref(false);
@@ -32,9 +34,10 @@ function onUpdateOpen(value: boolean) {
 
 function onSubmit() {
 	openModel.value = false;
-	void makeNewBakedDocumentTranslation(props)
+	const { bakedDocumentId, ...body } = props;
+	void processBakedDocumentTranslationReportingAggregate(bakedDocumentId, body)
 		.whenInformation(
-			"bakedDocument.makeNewTranslation",
+			"bakedDocumentTranslationReportingAggregate.processed",
 			() => {
 				void router.push(
 					reportingBakedDocumentTranslationListPage.createTo({ query: {} }),
