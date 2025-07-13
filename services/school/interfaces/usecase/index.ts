@@ -15,6 +15,8 @@ import { IndicateAnswerIsCompliantUsecase } from "@business/applications/usecase
 import { IndicateAnswerIsNotCompliantAndCreateWarningUsecase } from "@business/applications/usecases/indicateAnswerIsNotCompliantAndCreateWarning";
 import { FindOldestUnprocessedAnswerUsecase } from "@business/applications/usecases/findOldestUnprocessedAnswer";
 import { GetTotalCountOfUnprocessedAnswersUsecase } from "@business/applications/usecases/getTotalCountOfUnprocessedAnswers";
+import { AnonymizeAuthorUsecase } from "@business/applications/usecases/anonymizeAuthor";
+import { RestoreAuthorUsecase } from "@business/applications/usecases/restoreAuthor";
 
 export const createPostUsecase = new CreatePostUsecase();
 export const findPostsFromNodeSameRawDocumentIdUsecase = new FindPostsFromNodeSameRawDocumentIdUsecase();
@@ -35,3 +37,5 @@ export const indicateAnswerIsNotCompliantAndCreateWarningUsecase
 	= new IndicateAnswerIsNotCompliantAndCreateWarningUsecase();
 export const findOldestUnprocessedAnswerUsecase = new FindOldestUnprocessedAnswerUsecase();
 export const getTotalCountOfUnprocessedAnswersUsecase = new GetTotalCountOfUnprocessedAnswersUsecase();
+export const anonymizeAuthorUsecase = new AnonymizeAuthorUsecase();
+export const restoreAuthorUsecase = new RestoreAuthorUsecase();

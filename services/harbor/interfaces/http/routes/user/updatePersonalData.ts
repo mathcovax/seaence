@@ -1,30 +1,10 @@
 import { updateUser } from "@interfaces/usecases";
-import { endpointUserSchema } from "../schemas/user";
 import { UserEntity, userIdObjecter, userLanguageObjecter, userUsernameObjecter } from "@business/domains/entities/user";
-import { findUserWithAccessTokenProcess } from "../processes/findUserWithAccessToken";
-import { IWantUserExistsById } from "../checkers/user";
+import { IWantUserExistsById } from "../../checkers/user";
 import { match, P } from "ts-pattern";
 
 useBuilder()
-	.createRoute("POST", "/find-user")
-	.execute(
-		findUserWithAccessTokenProcess,
-		{ pickup: ["user"] },
-	)
-	.handler(
-		(pickup) => {
-			const { user } = pickup(["user"]);
-
-			return new OkHttpResponse(
-				"user.found",
-				user.toSimpleObject(),
-			);
-		},
-		makeResponseContract(OkHttpResponse, "user.found", endpointUserSchema),
-	);
-
-useBuilder()
-	.createRoute("POST", "/update-user")
+	.createRoute("POST", "/user/update-personal-data")
 	.extract({
 		body: {
 			userId: userIdObjecter.toZodSchema(),

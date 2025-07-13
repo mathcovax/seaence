@@ -5,7 +5,7 @@ export interface MongoAnswer {
 	postId: string;
 	content: string;
 	authorId: string;
-	authorName: string;
+	authorName: string | null;
 	status: AnswerStatusEnum;
 	createdAt: Date;
 }

@@ -1,6 +1,6 @@
 import { documentFolderRepository } from "@business/applications/repositories/documentFolder";
 import { DocumentFolderEntity, documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
-import { ZodAccelerator } from "@duplojs/core";
+import { ZodAccelerator, zod } from "@duplojs/core";
 import { escapeRegExp } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
 import { type MongoDocumentFolder } from "@interfaces/providers/mongo/entities/documentFolder";
@@ -239,6 +239,13 @@ documentFolderRepository.default = {
 		return EntityHandler.unsafeMapper(
 			DocumentFolderEntity,
 			documentFolder,
+		);
+	},
+	async deleteAllByUserId(userId) {
+		await mongo.documentFolder.deleteMany(
+			{
+				userId: userId.value,
+			},
 		);
 	},
 };

@@ -4,7 +4,7 @@ import "./reporting/bakedDocumentTranslationPage";
 import "./reporting/bakedDocumentTranslationList";
 
 import "./bakedDocument/getNewTranslation";
-import "./bakedDocument/makeNewTranslation";
+import "./reporting/processBakedDocumentTranslationReportingAggregate";
 
 import "./post/postModerationPage";
 import "./post/indicatePostIsCompliant";

@@ -33,7 +33,13 @@ defineProps<Props>();
 						size="small"
 					/>
 
-					<span>{{ $pt("authorIs", { author: post.authorName }) }}</span>
+					<span v-if="post.authorName">
+						{{ $pt("authorIs", { author: post.authorName }) }}
+					</span>
+
+					<i v-else>
+						{{ $t("post.deletedAuthors") }}
+					</i>
 				</div>
 
 				<div class="flex items-center gap-2">

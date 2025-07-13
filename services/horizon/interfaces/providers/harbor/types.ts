@@ -7,8 +7,8 @@ export type InputRegisterUser = FindHttpClientRoute<
 	"/register"
 >["body"];
 
-export type InputUserPayload = FindHttpClientRoute<
+export type InputUpdateUserPersonalDataPayload = FindHttpClientRoute<
 	HarborClientRoute,
 	"POST",
-	"/update-user"
+	"/user/update-personal-data"
 >["body"];

@@ -155,7 +155,7 @@ services:
 
   coral:
     image: ghcr.io/mathcovax/seaence_duplo-back:${TAG}
-    command: npm -w services/coral run duplo:start
+    command: npm -w services/coral run start
     deploy:
       replicas: 1
       restart_policy:

@@ -24,6 +24,7 @@ export interface FavoriteEquationRepository extends RepositoryBase<FavoriteEquat
 		userId: UserId,
 		partialFavoriteEquationName: Text
 	): Promise<Int>;
+	deleteAllByUserId(userId: UserId): Promise<void>;
 }
 
 export const favoriteEquationRepository = createRepositoryHandler<FavoriteEquationRepository>();

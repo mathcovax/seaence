@@ -96,4 +96,11 @@ favoriteEquationRepository.default = {
 
 		return numberOfFavoriEquation;
 	},
+	async deleteAllByUserId(userId) {
+		await mongo.favoriteEquation.deleteMany(
+			{
+				userId: userId.value,
+			},
+		);
+	},
 };

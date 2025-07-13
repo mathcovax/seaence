@@ -53,17 +53,6 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/delete-many-baked-document-translation-reporting/{bakedDocumentId}";
-    params: {
-        bakedDocumentId: string;
-    };
-    response: {
-        code: 204;
-        information: "bakedDocumentTranslationReporting.deleteMany";
-        body?: undefined;
-    };
-}) | ({
-    method: "POST";
     path: "/find-many-baked-document-translation-reporting-aggregate";
     body: {
         quantityPerPage: number;
@@ -86,6 +75,26 @@ type CodegenRoutes = ({
         body: {
             countTotal: number;
         };
+    };
+}) | ({
+    method: "POST";
+    path: "/baked-document-translation-reporting-aggregate/process/{bakedDocumentId}";
+    body: {
+        cookingMode: "default" | "googleScrape" | "libretranslate";
+        nodeSameRawDocumentId: string;
+        bakedDocumentLanguage: "fr-FR" | "en-US";
+    };
+    params: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 404;
+        information: "bakedDocumentTranslationReportingAggregate.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "bakedDocumentTranslationReportingAggregate.processed";
+        body?: undefined;
     };
 });
 

@@ -29,7 +29,7 @@ export namespace Post {
 			topic: topic,
 			content: content,
 			authorId: zod.string(),
-			authorName: zod.string(),
+			authorName: zod.string().nullable(),
 			createdAt: zod.string(),
 			answerCount: zod.number(),
 		});

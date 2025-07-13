@@ -27,6 +27,7 @@ export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFol
 		userId: UserId,
 		nodeSameRawDocumentIds: NodeSameRawDocumentId[]
 	): Promise<NodeSameRawDocumentId[]>;
+	deleteAllByUserId(userId: UserId): Promise<void>;
 }
 
 export const documentInFolderRepository = createRepositoryHandler<DocumentInFolderRepository>();

@@ -32,7 +32,13 @@ const { $pt } = postPage.use();
 						size="small"
 					/>
 
-					<span>{{ $pt("authorIs", { author: answer.authorName }) }}</span>
+					<span v-if="answer.authorName">
+						{{ $pt("authorIs", { author: answer.authorName }) }}
+					</span>
+
+					<i v-else>
+						{{ $t("post.deletedAuthors") }}
+					</i>
 				</div>
 
 				<div class="flex items-center gap-2">

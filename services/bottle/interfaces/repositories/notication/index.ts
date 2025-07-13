@@ -244,4 +244,10 @@ notificationRepository.default = {
 			? commonDateObjecter.unsafeCreate(mongoNotification.createdAt)
 			: null;
 	},
+	async deleteUserNotification(user) {
+		await mongo.notificationCollection
+			.deleteMany({
+				"user.id": user.id.value,
+			});
+	},
 };

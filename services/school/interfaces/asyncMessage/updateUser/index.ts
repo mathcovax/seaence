@@ -3,12 +3,13 @@ import { asyncMessage } from "@interfaces/providers/asyncMessage";
 import { renameAuthor } from "@interfaces/usecase";
 
 asyncMessage.collections.updateUser.on(
-	async(updateUserPayload) => {
-		if (!updateUserPayload.value.updatedFields.includes("username")) {
+	async({ value }) => {
+		const username = value.username;
+		if (!username) {
 			return;
 		}
-		const authorId = userIdObjecter.unsafeCreate(updateUserPayload.value.id);
-		const newAuthorName = usernameObjecter.unsafeCreate(updateUserPayload.value.username);
+		const authorId = userIdObjecter.unsafeCreate(value.userId);
+		const newAuthorName = usernameObjecter.unsafeCreate(username);
 
 		await renameAuthor.execute({
 			authorId,

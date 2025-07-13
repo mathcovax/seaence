@@ -28,4 +28,10 @@ notificationSettingRepository.default = {
 
 		return entity;
 	},
+	async deleteUserSettings(user) {
+		await mongo.notificationSettingCollection
+			.deleteMany({
+				"user.id": user.id.value,
+			});
+	},
 };

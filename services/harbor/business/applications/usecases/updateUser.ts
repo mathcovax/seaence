@@ -17,7 +17,7 @@ export class UpdateUserUsecase extends UsecaseHandler.create({
 			return new UsecaseError("update-delay-is-not-respected");
 		}
 
-		const updatedUser = user.updateProps({
+		const updatedUser = user.updatePersonalData({
 			username,
 			language,
 		});

@@ -26,7 +26,7 @@ useMustBeConnectedBuilder()
 		async({ pickup, dropper }) => {
 			const { user, username, language } = pickup(["user", "username", "language"]);
 
-			const result = await HarborAPI.updateUser({
+			const result = await HarborAPI.updateUserPersonalData({
 				userId: user.id,
 				username,
 				language,
@@ -56,4 +56,38 @@ useMustBeConnectedBuilder()
 	.handler(
 		() => new NoContentHttpResponse("user.updated"),
 		makeResponseContract(NoContentHttpResponse, "user.updated"),
+	);
+
+useMustBeConnectedBuilder()
+	.createRoute("POST", "/delete-self-user")
+	.cut(
+		async({ pickup, dropper }) => {
+			const { user } = pickup(["user"]);
+
+			const result = await HarborAPI.deleteUser(user.id);
+
+			return match(result)
+				.with(
+					{ information: "user.alreadyDelete" },
+					({ information }) => new ForbiddenHttpResponse(information),
+				)
+				.with(
+					{ information: "user.notfound" },
+					({ information }) => new NotFoundHttpResponse(information),
+				)
+				.with(
+					{ information: "user.deleted" },
+					() => dropper(null),
+				)
+				.exhaustive();
+		},
+		[],
+		[
+			...makeResponseContract(ForbiddenHttpResponse, "user.alreadyDelete"),
+			...makeResponseContract(NotFoundHttpResponse, "user.notfound"),
+		],
+	)
+	.handler(
+		() => new NoContentHttpResponse("user.deleted"),
+		makeResponseContract(NoContentHttpResponse, "user.deleted"),
 	);

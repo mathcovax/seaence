@@ -1,7 +1,7 @@
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/harbor/duplojsTypesCodegen";
-import { type InputUserPayload, type InputRegisterUser } from "./types";
+import { type InputUpdateUserPersonalDataPayload, type InputRegisterUser } from "./types";
 
 export type HarborClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
@@ -32,10 +32,10 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static findUser(accessToken: string) {
+	public static findOneUserByAccessToken(accessToken: string) {
 		return this.httpClient
 			.post(
-				"/find-user",
+				"/user/find-one-by-access-token",
 				{
 					body: { accessToken },
 				},
@@ -43,15 +43,30 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
-	public static updateUser(body: InputUserPayload) {
+	public static updateUserPersonalData(body: InputUpdateUserPersonalDataPayload) {
 		return this.httpClient
 			.post(
-				"/update-user",
+				"/user/update-personal-data",
 				{
 					body,
 				},
 			)
 			.iWantExpectedResponse();
+	}
+
+	public static deleteUser(userId: string) {
+		return this.httpClient
+			.post(
+				"/user/delete",
+				{
+					body: { userId },
+				},
+			)
+			.iWantInformation([
+				"user.alreadyDelete",
+				"user.deleted",
+				"user.notfound",
+			]);
 	}
 
 	static {

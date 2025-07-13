@@ -15,7 +15,7 @@ type Answer = {
     status: "compliant" | "unprocessed" | "notCompliant";
     content: string;
     authorId: string;
-    authorName: string;
+    authorName: string | null;
     createdAt: string;
 };
 
@@ -27,7 +27,7 @@ type Post = {
     topic: string;
     content: string;
     authorId: string;
-    authorName: string;
+    authorName: string | null;
     createdAt: string;
     answerCount: number;
 };
@@ -611,6 +611,30 @@ type CodegenRoutes = ({
     } | {
         code: 204;
         information: "user.updated";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/delete-self-user";
+    response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "authentication.required";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "user.alreadyDelete";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "user.deleted";
         body?: undefined;
     };
 }) | ({

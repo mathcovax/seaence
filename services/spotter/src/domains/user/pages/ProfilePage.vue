@@ -6,7 +6,7 @@ import { useEditProfileForm } from "../composables/useEditProfileForm";
 const router = useRouter();
 const { $pt } = profilePage.use();
 const user = ref<User | null>(null);
-const { promisedRequestInformation, fetchInformation } = useUserInformation();
+const { promisedRequestInformation, fetchInformation, disconect } = useUserInformation();
 const { EditProfileForm, editProfileformValue, editProfileformCheck } = useEditProfileForm();
 
 void promisedRequestInformation.value!
@@ -58,6 +58,17 @@ function editUser() {
 		);
 }
 
+function deleteAccount() {
+	return horizonClient
+		.post(
+			"/delete-self-user",
+		)
+		.whenInformation(
+			"user.deleted",
+			() => void disconect(),
+		);
+}
+
 const hasChange = computed(
 	() => editProfileformValue.value.username !== user.value?.username
 		|| editProfileformValue.value.language !== user.value?.language,
@@ -77,13 +88,27 @@ const hasChange = computed(
 
 				<div class="grid gap-4">
 					<EditProfileForm @submit="editUser">
-						<DSPrimaryButton
-							type="submit"
-							:disabled="!hasChange"
-							class="mt-6"
-						>
-							{{ $t("cta.save") }}
-						</DSPrimaryButton>
+						<div class="mt-6 space-x-3">
+							<DSPrimaryButton
+								type="submit"
+								:disabled="!hasChange"
+							>
+								{{ $t("cta.save") }}
+							</DSPrimaryButton>
+
+							<DSValidationDialog
+								:title="$pt('deleteAccount.dialog.title')"
+								:description="$pt('deleteAccount.dialog.description')"
+								:reject-label="$t('cta.no')"
+								:accept-label="$t('cta.yes')"
+								destructive
+								@accept="deleteAccount"
+							>
+								<DSDestructiveButton>
+									{{ $pt("deleteAccount.button") }}
+								</DSDestructiveButton>
+							</DSValidationDialog>
+						</div>
 					</EditProfileForm>
 				</div>
 			</div>

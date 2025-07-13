@@ -22,7 +22,7 @@ export namespace Answer {
 			status,
 			content,
 			authorId: zod.string(),
-			authorName: zod.string(),
+			authorName: zod.string().nullable(),
 			createdAt: zod.string(),
 		});
 

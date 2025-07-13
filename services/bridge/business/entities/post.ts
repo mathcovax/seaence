@@ -7,7 +7,7 @@ export namespace Post {
 		topic: zod.string(),
 		content: zod.string(),
 		authorId: zod.string(),
-		authorName: zod.string(),
+		authorName: zod.string().nullable(),
 		answerCount: zod.number(),
 		createdAt: zod.string(),
 	});

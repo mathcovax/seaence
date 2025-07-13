@@ -137,7 +137,7 @@ export class EntityHandler {
 					...this,
 					...Object.fromEntries(
 						getTypedEntries(values)
-							.filter((entity) => !!entity[1]),
+							.filter(([_key, value]) => value !== undefined),
 					) as Properties,
 				});
 
