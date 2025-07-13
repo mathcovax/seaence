@@ -1,5 +1,9 @@
 # Beacon
 
+---
+
+Service de gestion des reports d'erreur de traduction. Il permettra de gerer toutes les erreurs liées aux potentiels erreurs de traduction depuis le BO.
+
 ## Interaction
 
 ```mermaid
@@ -31,3 +35,7 @@ flowchart TB
 
 - **Database:** MongoDB
 - **Interface:** HTTP
+
+## Technologie
+
+- Duplo

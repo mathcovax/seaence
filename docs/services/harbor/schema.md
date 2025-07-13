@@ -1,5 +1,10 @@
 # Harbor
 
+---
+
+Service d'authentification unique. Il permettra de s'authentifier avec un compte google.
+C'est ici que sont stockés les comptes uitilisateurs ainsi que leur données.
+
 ## Interaction
 
 ```mermaid
@@ -50,3 +55,8 @@ flowchart TB
 - **Databases**: Postgres
 - **Interfaces:** HTTP
 - **External Services:** Firebase
+
+## Technologie
+
+- Duplo
+- Firebase

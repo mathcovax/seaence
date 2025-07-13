@@ -1,5 +1,9 @@
 # Coral
 
+---
+
+Service de gestion de données utilisateur. Il permettra de stocker les données utilisateur et de les gérer.
+
 ## Interaction
 
 ```mermaid
@@ -28,3 +32,7 @@ flowchart TB
 
 - **Databases:** MongoDB
 - **Interfaces:** HTTP
+
+## Technologie
+
+- Duplo

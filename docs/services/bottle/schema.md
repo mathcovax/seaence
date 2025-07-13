@@ -1,5 +1,9 @@
 # Bottle
 
+---
+
+Service de notification, il permettra d'envoyer des notifications aux utilisateurs.
+
 ## Interaction
 
 ```mermaid
@@ -45,3 +49,7 @@ flowchart TB
 - **Database:** MongoDB
 - **Interface:** HTTP
 - **External Services:** Brevo
+
+## Technologie
+
+- Duplo

@@ -1,5 +1,9 @@
 # School
 
+---
+
+Service de forum, il permettra de créer des forums autour d'un article ou d'un sujet à la manière de StackOverflow.
+
 ## Interaction
 
 ```mermaid
@@ -53,3 +57,7 @@ flowchart TB
 
 - **Database:** MongoDB
 - **Interface:** HTTP
+
+## Technologie
+
+- Duplo

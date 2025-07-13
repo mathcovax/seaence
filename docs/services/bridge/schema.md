@@ -1,5 +1,9 @@
 # Bridge
 
+---
+
+API Gateway pour le BackOffice. Il ne peut etre requeter que par le service Lighthouse.
+
 ## Interaction
 
 ```mermaid
@@ -54,3 +58,7 @@ flowchart TB
 ## Composition
 
 - **Interfaces:** HTTP
+
+## Technologie
+
+- Duplo

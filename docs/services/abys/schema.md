@@ -1,5 +1,9 @@
 # Abys
 
+---
+
+Service de stockage de documents. Il contiendra les documents originaux et les données associées. Ce service mettra d'alimenter, structurer et organiser les données. qui servira de source de vérité pour les autres services.
+
 ## Interaction
 
 ```mermaid
@@ -39,3 +43,7 @@ flowchart TB
 
 - **Database:** MongoDB
 - **Interface:** HTTP
+
+## Technologie
+
+- Duplo

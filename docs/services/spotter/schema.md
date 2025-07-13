@@ -1,5 +1,9 @@
 # Spotter
 
+---
+
+Application web client permettant de rechercher des articles, de les lire, de les commenter et de les sauvegarder dans les listes.
+
 ## Interaction
 
 ```mermaid
@@ -27,3 +31,7 @@ flowchart TB
 ## Composition
 
 - **Interfaces:** HTTP
+
+## Technologies
+
+- **Vue**
