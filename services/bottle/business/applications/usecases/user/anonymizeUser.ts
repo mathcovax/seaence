@@ -14,7 +14,7 @@ export class AnonymizeUserUsecase extends UsecaseHandler.create({
 	notificationSettingRepository,
 }) {
 	public async execute({ user }: Input) {
-		if (user.anonymized) {
+		if (user.anonymized.value) {
 			return new UsecaseError("user-already-anonymized", { user });
 		}
 

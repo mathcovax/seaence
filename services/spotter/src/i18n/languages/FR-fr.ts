@@ -146,17 +146,12 @@ export const FRfr = {
 					email: "Email",
 				},
 			},
-			tab: {
-				favorite: {
-					title: "Mes favoris",
-					empty: "Aucun favori trouvé.",
-					emptyDesc: "Ajoutez des documents à vos favoris pour les retrouver facilement.",
+			deleteAccount: {
+				dialog: {
+					title: "Supprimer votre compte ?",
+					description: "Supprimer votre compte entraînera la perte de toutes vos données et l'anonymisation complète du compte sur la plateforme.",
 				},
-				post: {
-					title: "Mes posts",
-					empty: "Vous n'avez encore rien posté",
-					emptyDesc: "Partagez vos avis avec la communauté.",
-				},
+				button: "Supprimer mon compte",
 			},
 		},
 		[notFoundPage.name]: {
@@ -498,6 +493,7 @@ export const FRfr = {
 		save: "Enregistrer",
 		remove: "Supprimer",
 		no: "Non",
+		yes: "Oui",
 		replace: "Remplacer",
 		register: "Créer un compte",
 		connection: "Inscription / Connexion",
@@ -603,6 +599,8 @@ export const FRfr = {
 			shortUpdatedDelay: "Vous devez attendre avant de pouvoir modifier à nouveau ces informations.",
 			alreadyExist: "Un utilisateur avec cette adresse email existe déjà.",
 			banned: "L'action que vous souhaitez faire vous est interdite à cause d'un bannissement.",
+			deleted: "L'utilisateur a correctement été supprimé.",
+			alreadyDelete: "L'utilisateur est déjà supprimé.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",

@@ -23,8 +23,8 @@ useBuilder()
 
 			return match({ result })
 				.with(
-					{ result: { information: "user-already-ban" } },
-					() => new ForbiddenHttpResponse("user.alreadyBan"),
+					{ result: { information: "user-already-delete" } },
+					() => new ForbiddenHttpResponse("user.alreadyDelete"),
 				)
 				.with(
 					{ result: P.instanceOf(UserEntity) },
@@ -33,7 +33,7 @@ useBuilder()
 				.exhaustive();
 		},
 		[],
-		makeResponseContract(ForbiddenHttpResponse, "user.alreadyBan"),
+		makeResponseContract(ForbiddenHttpResponse, "user.alreadyDelete"),
 	)
 	.handler(
 		() => new NoContentHttpResponse("user.deleted"),

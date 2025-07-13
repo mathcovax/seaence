@@ -54,6 +54,21 @@ export class HarborAPI {
 			.iWantExpectedResponse();
 	}
 
+	public static deleteUser(userId: string) {
+		return this.httpClient
+			.post(
+				"/user/delete",
+				{
+					body: { userId },
+				},
+			)
+			.iWantInformation([
+				"user.alreadyDelete",
+				"user.deleted",
+				"user.notfound",
+			]);
+	}
+
 	static {
 		this.httpClient = new HttpClient({
 			baseUrl: envs.HARBOR_BASE_URL,

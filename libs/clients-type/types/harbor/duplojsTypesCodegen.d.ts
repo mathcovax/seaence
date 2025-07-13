@@ -38,7 +38,7 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 403;
-        information: "user.alreadyBan";
+        information: "user.alreadyDelete";
         body?: undefined;
     } | {
         code: 204;

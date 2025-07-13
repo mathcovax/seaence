@@ -11,7 +11,7 @@ export class DeleteUserUsecase extends UsecaseHandler.create({
 }) {
 	public execute({ user }: Input) {
 		if (user.deleteId) {
-			return new UsecaseError("user-already-ban", { user });
+			return new UsecaseError("user-already-delete", { user });
 		}
 
 		const deleteId = this.userRepository.generateDeleteId(user.email);

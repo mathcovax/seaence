@@ -615,6 +615,30 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/delete-self-user";
+    response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "authentication.required";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "user.alreadyDelete";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "user.deleted";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/search-details";
     body: {
         language: BakedDocumentLanguage;
