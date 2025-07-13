@@ -1,3 +1,4 @@
+import { type BakedDocumentId } from "@business/domains/common/bakedDocument";
 import { type BakedDocumentTranslationReportingAggregateEntity } from "@business/domains/entities/bakedDocumentTranslationReportingAggregate";
 import { createRepositoryHandler, type Int, type RepositoryBase } from "@vendors/clean";
 
@@ -10,6 +11,7 @@ export interface BakedDocumentTranslationReportingAggregateRepository extends Re
 	findMany(params: FindManyParams): Promise<
 		BakedDocumentTranslationReportingAggregateEntity[]
 	>;
+	findOne(bakedDocumentId: BakedDocumentId): Promise<BakedDocumentTranslationReportingAggregateEntity | null>;
 	countTotal(): Promise<Int>;
 }
 

@@ -1,7 +1,7 @@
 import { bakedDocumentIdObjecter } from "@business/domains/common/bakedDocument";
 import { userIdObjecter } from "@business/domains/common/user";
 import { reportingDetailsObjecter } from "@business/domains/entities/reporting";
-import { countTotalBakedDocumentTranslationReportingByBakedDocumentIdUsecase, deleteManyBakedDocumentTranslationReportingUsecase, findManyBakedDocumentTranslationReportingUsecase, upsertBakedDocumentTranslationReportingUsecase } from "@interfaces/usecase";
+import { countTotalBakedDocumentTranslationReportingByBakedDocumentIdUsecase, findManyBakedDocumentTranslationReportingUsecase, upsertBakedDocumentTranslationReportingUsecase } from "@interfaces/usecase";
 import { intObjecter } from "@vendors/clean";
 import { endpointFindManyBakedDocumentTranslationReportingDetailsSchema, endPointFindManyBakedDocumentTranslationReportingEntitySchema } from "../schemas/bakedDocumentTranslationReporting";
 
@@ -98,25 +98,4 @@ useBuilder()
 			"bakedDocumentTranslationReporting.findManyDetails",
 			endpointFindManyBakedDocumentTranslationReportingDetailsSchema,
 		),
-	);
-
-useBuilder()
-	.createRoute("POST", "/delete-many-baked-document-translation-reporting/{bakedDocumentId}")
-	.extract({
-		params: {
-			bakedDocumentId: bakedDocumentIdObjecter.toZodSchema(),
-		},
-	})
-	.handler(
-		async(pickup) => {
-			const { bakedDocumentId } = pickup(["bakedDocumentId"]);
-
-			await deleteManyBakedDocumentTranslationReportingUsecase
-				.execute({
-					bakedDocumentId,
-				});
-
-			return new NoContentHttpResponse("bakedDocumentTranslationReporting.deleteMany");
-		},
-		makeResponseContract(NoContentHttpResponse, "bakedDocumentTranslationReporting.deleteMany"),
 	);

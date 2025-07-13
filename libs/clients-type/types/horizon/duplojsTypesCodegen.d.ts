@@ -15,7 +15,7 @@ type Answer = {
     status: "compliant" | "unprocessed" | "notCompliant";
     content: string;
     authorId: string;
-    authorName: string;
+    authorName: string | null;
     createdAt: string;
 };
 
@@ -27,7 +27,7 @@ type Post = {
     topic: string;
     content: string;
     authorId: string;
-    authorName: string;
+    authorName: string | null;
     createdAt: string;
     answerCount: number;
 };

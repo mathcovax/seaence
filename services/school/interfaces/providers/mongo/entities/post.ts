@@ -6,7 +6,7 @@ export interface MongoPost {
 	content: string;
 	nodeSameRawDocumentId: string;
 	authorId: string;
-	authorName: string;
+	authorName: string | null;
 	answerCount: number;
 	status: PostStatus["value"];
 	createdAt: Date;

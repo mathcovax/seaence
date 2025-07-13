@@ -107,6 +107,9 @@ export const FRfr = {
 			},
 		},
 	},
+	post: {
+		deletedAuthors: "Auteur supprimé",
+	},
 	layout: {
 		loader: {
 			title: "Chargement en cours...",

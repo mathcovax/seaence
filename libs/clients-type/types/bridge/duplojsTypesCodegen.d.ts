@@ -81,7 +81,7 @@ type PostModerationPage = {
         topic: string;
         content: string;
         authorId: string;
-        authorName: string;
+        authorName: string | null;
         answerCount: number;
         createdAt: string;
     };
@@ -96,7 +96,7 @@ type AnswerModerationPage = {
         postId: string;
         content: string;
         authorId: string;
-        authorName: string;
+        authorName: string | null;
         status: "compliant" | "unprocessed" | "notCompliant";
         createdAt: string;
     };

@@ -30,7 +30,7 @@ export class AnswerEntity extends EntityHandler.create({
 	postId: postIdObjecter,
 	content: answerContentObjecter,
 	authorId: userIdObjecter,
-	authorName: usernameObjecter,
+	authorName: usernameObjecter.nullable(),
 	status: answerStatusObjecter,
 	createdAt: commonDateObjecter,
 }) {
@@ -56,5 +56,11 @@ export class AnswerEntity extends EntityHandler.create({
 
 	public isUnprocessed() {
 		return this.status.value === "unprocessed";
+	}
+
+	public anonymize() {
+		return this.update({
+			authorName: null,
+		});
 	}
 }

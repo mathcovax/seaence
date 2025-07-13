@@ -454,8 +454,7 @@ export const FRfr = {
 		saveFirstEquation: "Sauvegardez votre première équation de recherche",
 	},
 	post: {
-		authorIs: "",
-		responseCount: "",
+		deletedAuthors: "Auteur supprimé",
 	},
 	notification: {
 		status: "Nouveau",

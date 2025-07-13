@@ -1,4 +1,4 @@
-import { type UserId } from "@business/domains/common/user";
+import { type Username, type UserId } from "@business/domains/common/user";
 import { type PostId, type PostEntity, type NodeSameRawDocumentId } from "@business/domains/entities/post";
 import { createRepositoryHandler, type Int, type RepositoryBase } from "@vendors/clean";
 
@@ -16,7 +16,7 @@ export interface PostRepository extends RepositoryBase<PostEntity> {
 	findOldestUnprocessedPost(): Promise<PostEntity | null>;
 	getTotalCountByNodeSameRawDocumentId(documentId: NodeSameRawDocumentId): Promise<Int>;
 	getTotalCountOfUnprocessedPosts(): Promise<Int>;
-	findByAuthorId(userId: UserId): AsyncGenerator<PostEntity>;
+	renameAuthor(userId: UserId, newName: Username | null): Promise<void>;
 }
 
 export const postRepository = createRepositoryHandler<PostRepository>();

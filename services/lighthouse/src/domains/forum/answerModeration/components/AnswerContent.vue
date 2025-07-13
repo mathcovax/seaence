@@ -24,7 +24,15 @@ const { $pt } = answerPage.use();
 							class="shrink-0"
 						/>
 
-						<span class="font-medium">{{ answer.authorName }}</span>
+						<span v-if="answer.authorName">
+							{{ answer.authorName }}
+						</span>
+
+						<i v-else>
+							{{ $t("post.deletedAuthors") }}
+						</i>
+
+						{{ answer.authorId }}
 					</div>
 
 					<div class="flex gap-2 items-center">

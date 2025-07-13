@@ -2,13 +2,9 @@ import { type AsyncMessage } from "../asyncMessage";
 import { MessageCollection } from "../messageCollection";
 
 export interface UpdateUserMessageValue {
-	id: string;
-	email: string;
-	username: string;
-	lastUpdate: Date;
-	banned: boolean;
-	language: "fr-FR" | "en-US";
-	updatedFields: "username"[];
+	userId: string;
+	username?: string;
+	language?: "fr-FR" | "en-US";
 }
 
 export class UpdateUserMessageColletion extends MessageCollection<UpdateUserMessageValue> {

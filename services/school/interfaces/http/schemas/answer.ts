@@ -5,7 +5,7 @@ export const endpointAnswerSchema = zod.object({
 	postId: zod.string(),
 	content: zod.string(),
 	authorId: zod.string(),
-	authorName: zod.string(),
+	authorName: zod.string().nullable(),
 	status: zod.enum(answerStatusEnum.toTuple()),
 	createdAt: zod.date(),
 });

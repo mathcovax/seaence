@@ -1,7 +1,7 @@
 import { postRepository } from "@business/applications/repositories/post";
 import { PostEntity, postIdObjecter } from "@business/domains/entities/post";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler, intObjecter } from "@vendors/clean";
+import { EntityHandler, intObjecter, toSimpleObject } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
 
 postRepository.default = {
@@ -98,33 +98,16 @@ postRepository.default = {
 
 		return entity;
 	},
-	async *findByAuthorId(userId) {
-		const startPage = 0;
-		const quantityPerPage = 10;
-
-		for (let page = startPage; true; page++) {
-			const posts = await mongo.postCollection.find(
-				{ "author.id": userId.value },
-			)
-				.skip(page * quantityPerPage)
-				.limit(quantityPerPage)
-				.map(
-					(mongoPost) => EntityHandler.unsafeMapper(
-						PostEntity,
-						{
-							...mongoPost,
-						},
-					),
-				)
-				.toArray();
-
-			if (!posts.length) {
-				break;
-			}
-
-			for (const post of posts) {
-				yield post;
-			}
-		}
+	async renameAuthor(userId, newName) {
+		await mongo.postCollection.updateMany(
+			{
+				authorId: userId.value,
+			},
+			{
+				$set: {
+					authorName: toSimpleObject(newName),
+				},
+			},
+		);
 	},
 };

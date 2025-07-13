@@ -29,7 +29,7 @@ export const tryAuthenticationProcess = createProcess(
 				return dropper({ user: null });
 			}
 
-			const harborResponse = await HarborAPI.findUser(
+			const harborResponse = await HarborAPI.findOneUserByAccessToken(
 				accessToken,
 			);
 

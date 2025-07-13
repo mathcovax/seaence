@@ -9,17 +9,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BackButton: typeof import('./src/components/BackButton.vue')['default']
-    BaseInlineLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseInlineLayoutTemplate.vue')['default']
     BaseLayoutTemplate: typeof import('./vendors/design-system/components/form/BaseLayoutTemplate.vue')['default']
     CheckboxTemplate: typeof import('./vendors/design-system/components/form/CheckboxTemplate.vue')['default']
     CheckLayoutTemplate: typeof import('./vendors/design-system/components/form/CheckLayoutTemplate.vue')['default']
-    copy: typeof import('./vendors/design-system/components/form/SelectTemplate copy.vue')['default']
     DSAccordion: typeof import('./vendors/design-system/components/ui/accordion/DSAccordion.vue')['default']
     DSAccordionContent: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionContent.vue')['default']
     DSAccordionItem: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionItem.vue')['default']
     DSAccordionTrigger: typeof import('./vendors/design-system/components/ui/accordion/DSAccordionTrigger.vue')['default']
     DSAdminLoadingLogo: typeof import('./vendors/design-system/components/DSAdminLoadingLogo.vue')['default']
-    DSBackButton: typeof import('./vendors/design-system/components/ui/button/DSBackButton.vue')['default']
     DSBadge: typeof import('./vendors/design-system/components/ui/badge/DSBadge.vue')['default']
     DSButton: typeof import('./vendors/design-system/components/ui/button/DSButton.vue')['default']
     DSCard: typeof import('./vendors/design-system/components/ui/card/DSCard.vue')['default']
@@ -129,12 +126,10 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SelectStringTemplate: typeof import('./vendors/design-system/components/form/SelectStringTemplate.vue')['default']
     SelectTemplate: typeof import('./vendors/design-system/components/form/SelectTemplate.vue')['default']
-    Separator: typeof import('./vendors/design-system/components/ui/separator/Separator.vue')['default']
     TextLayoutTemplate: typeof import('./vendors/design-system/components/form/TextLayoutTemplate.vue')['default']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheLoader: typeof import('./src/components/TheLoader.vue')['default']
-    UnionLayoutTemplate: typeof import('./vendors/design-system/components/form/UnionLayoutTemplate.vue')['default']
     UnionSelectLessLayoutTemplate: typeof import('./vendors/design-system/components/form/UnionSelectLessLayoutTemplate.vue')['default']
   }
 }

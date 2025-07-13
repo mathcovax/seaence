@@ -13,6 +13,8 @@ import { CreateUserAnswerBanNotificationUsecase } from "@business/applications/u
 import { CreateUserAnswerWarningNotificationUsecase } from "@business/applications/usecases/notification/createUserAnswerWarningNotification";
 import { UpdateUserUsecase } from "@business/applications/usecases/user/updateUser";
 import { FindUserLastNotificationDateUsecase } from "@business/applications/usecases/notification/findUserLastNotificationDate";
+import { AnonymizeUserUsecase } from "@business/applications/usecases/user/anonymizeUser";
+import { RestoreUserUsecase } from "@business/applications/usecases/user/restoreUser";
 
 export const createUserUsecase = new CreateUserUsecase();
 export const enableReplyToPostNotificationSettingToPostUsecase
@@ -31,3 +33,5 @@ export const createUserAnswerBanNotificationUsecase = new CreateUserAnswerBanNot
 export const createUserAnswerWarningNotificationUsecase = new CreateUserAnswerWarningNotificationUsecase();
 export const updateUserUsecase = new UpdateUserUsecase();
 export const findUserLastNotificationDateUsecase = new FindUserLastNotificationDateUsecase();
+export const anonymizeUserUsecase = new AnonymizeUserUsecase();
+export const restoreUserUsecase = new RestoreUserUsecase();

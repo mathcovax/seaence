@@ -6,7 +6,7 @@ export namespace Answer {
 		postId: zod.string(),
 		content: zod.string(),
 		authorId: zod.string(),
-		authorName: zod.string(),
+		authorName: zod.string().nullable(),
 		status: zod.enum(["compliant", "unprocessed", "notCompliant"]),
 		createdAt: zod.string(),
 	});

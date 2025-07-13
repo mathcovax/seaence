@@ -1,12 +1,11 @@
-import { type UserEmail, type UserEntity, type UserLanguage, type Username } from "@business/domains/entities/user";
+import { type UserEntity, type UserLanguage, type Username } from "@business/domains/entities/user";
 import { UsecaseHandler } from "@vendors/clean";
 import { userRepository } from "../../repositories/user";
 
 interface Input {
 	user: UserEntity;
-	email: UserEmail;
-	username: Username;
-	language: UserLanguage;
+	username?: Username;
+	language?: UserLanguage;
 }
 
 export class UpdateUserUsecase extends UsecaseHandler.create({
@@ -15,13 +14,11 @@ export class UpdateUserUsecase extends UsecaseHandler.create({
 	public execute(
 		{
 			user,
-			email,
 			username,
 			language,
 		}: Input,
 	) {
 		const updatedUser = user.updateValues({
-			email,
 			username,
 			language,
 		});

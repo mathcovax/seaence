@@ -9,6 +9,7 @@ for (const pathEnv of [".env.local", ".env"]) {
 }
 
 const minLenghtJWTKey = 10;
+const minLenghtUserDeleteIdKey = 10;
 
 export const envs = zod
 	.object({
@@ -18,6 +19,7 @@ export const envs = zod
 		FIREBASE_CREDENTIAL_PATH: zod.string(),
 		JWT_KEY: zod.string().min(minLenghtJWTKey),
 		JWT_TIME: zod.coerce.number(),
+		USER_DELETE_ID_KEY: zod.string().min(minLenghtUserDeleteIdKey),
 		DB_CONNECTION: zod.booleanInString(),
 		BOTTLE_BASE_URL: zod.string().url(),
 		ASYNC_MESSAGE_MONGO_URL: zod.string(),

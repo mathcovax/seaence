@@ -7,6 +7,46 @@
 // @ts-nocheck
 type CodegenRoutes = ({
     method: "POST";
+    path: "/user/update-personal-data";
+    body: {
+        userId: string;
+        username?: string | undefined;
+        language?: ("fr-FR" | "en-US") | undefined;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "user.shortUpdatedDelay";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "user.updated";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/user/delete";
+    body: {
+        userId: string;
+    };
+    response: {
+        code: 404;
+        information: "user.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "user.alreadyBan";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "user.deleted";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/create-post-user-warning";
     body: {
         makeUserBan: boolean;
@@ -44,7 +84,7 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
-    path: "/find-user";
+    path: "/user/find-one-by-access-token";
     body: {
         accessToken: string;
     };
@@ -67,27 +107,6 @@ type CodegenRoutes = ({
             language: "fr-FR" | "en-US";
             banned: boolean;
         };
-    };
-}) | ({
-    method: "POST";
-    path: "/update-user";
-    body: {
-        userId: string;
-        username?: string | undefined;
-        language?: ("fr-FR" | "en-US") | undefined;
-    };
-    response: {
-        code: 404;
-        information: "user.notfound";
-        body?: undefined;
-    } | {
-        code: 403;
-        information: "user.shortUpdatedDelay";
-        body?: undefined;
-    } | {
-        code: 204;
-        information: "user.updated";
-        body?: undefined;
     };
 }) | ({
     method: "POST";

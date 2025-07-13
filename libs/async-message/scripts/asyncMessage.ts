@@ -4,6 +4,8 @@ import { UpdateUserMessageColletion } from "./collections/updateUser";
 import { getTypedEntries } from "@duplojs/utils";
 import { CreateUserMessageColletion } from "./collections/createUser";
 import { CreateAnswerMessageCollection } from "./collections/createAnswer";
+import { DeleteUserMessageCollection } from "./collections/deleteUser";
+import { RestoreUserMessageCollection } from "./collections/restoreUser";
 
 export interface AsyncMessageParams {
 	mongoUrl: string;
@@ -14,6 +16,8 @@ export interface AsyncMessageCollection {
 	updateUser: UpdateUserMessageColletion;
 	createUser: CreateUserMessageColletion;
 	createAnswer: CreateAnswerMessageCollection;
+	deleteUser: DeleteUserMessageCollection;
+	restoreUser: RestoreUserMessageCollection;
 }
 
 export interface Resume {
@@ -43,6 +47,8 @@ export class AsyncMessage {
 			updateUser: new UpdateUserMessageColletion(this),
 			createUser: new CreateUserMessageColletion(this),
 			createAnswer: new CreateAnswerMessageCollection(this),
+			deleteUser: new DeleteUserMessageCollection(this),
+			restoreUser: new RestoreUserMessageCollection(this),
 		};
 	}
 

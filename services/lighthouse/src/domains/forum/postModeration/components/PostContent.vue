@@ -29,7 +29,15 @@ const { $pt } = postPage.use();
 								class="shrink-0"
 							/>
 
-							<span>{{ post.authorId }}</span>
+							<span v-if="post.authorName">
+								{{ post.authorName }}
+							</span>
+
+							<i v-else>
+								{{ $t("post.deletedAuthors") }}
+							</i>
+
+							{{ post.authorId }}
 						</div>
 
 						<div class="flex gap-2 items-center">

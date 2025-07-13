@@ -24,13 +24,14 @@ enum UserLanguage {
 }
 
 model User {
-    id         String       @id
-    username   String       @unique
-    email      String       @unique
+    id         String       @id @unique
+    username   String
+    email      String
     banned     Boolean
     warnings   Warning[]
     language   UserLanguage
     lastUpdate DateTime     @default(now())
+    deleteId   String?
 }
 
 model Warning {

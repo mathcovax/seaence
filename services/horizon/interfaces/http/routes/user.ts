@@ -26,7 +26,7 @@ useMustBeConnectedBuilder()
 		async({ pickup, dropper }) => {
 			const { user, username, language } = pickup(["user", "username", "language"]);
 
-			const result = await HarborAPI.updateUser({
+			const result = await HarborAPI.updateUserPersonalData({
 				userId: user.id,
 				username,
 				language,

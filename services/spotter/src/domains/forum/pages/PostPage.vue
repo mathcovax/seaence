@@ -158,7 +158,13 @@ watch(
 							size="small"
 						/>
 
-						<span>{{ $pt("authorIs", { author: postPageInformation.post.authorName }) }}</span>
+						<span v-if="postPageInformation.post.authorName">
+							{{ $pt("authorIs", { author: postPageInformation.post.authorName }) }}
+						</span>
+
+						<i v-else>
+							{{ $t("post.deletedAuthors") }}
+						</i>
 					</div>
 
 					<div class="flex items-center gap-2 text-muted-foreground">

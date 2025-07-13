@@ -43,7 +43,7 @@ export class PostEntity extends EntityHandler.create({
 	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
 	answerCount: postAnswerCountObjecter,
 	authorId: userIdObjecter,
-	authorName: usernameObjecter,
+	authorName: usernameObjecter.nullable(),
 	status: postStatusObjecter,
 	createdAt: commonDateObjecter,
 }) {
@@ -76,5 +76,11 @@ export class PostEntity extends EntityHandler.create({
 
 	public isUnprocessed() {
 		return this.status.value === "unprocessed";
+	}
+
+	public anonymize() {
+		return this.update({
+			authorName: null,
+		});
 	}
 }
