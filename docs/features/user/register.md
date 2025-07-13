@@ -15,7 +15,12 @@
 - Je remplie tout les champ.
 - Je valide le fomulaire
 - Le dialog ce ferme et je suis connecter
-- Je recois notification de bienvenue
+- Si j'ai un vieux compte lié à l'adresse email :
+	* Je reprends le même identifiant
+	* Mes anciens posts créés sont dé-anonymisés
+	* Mes anciennes réponses créées sont dé-anonymisées
+- Si je n'ai pas le vieux compte :
+	- Je reçois une notification de bienvenue
 
 ### Harbor implémentation
 
