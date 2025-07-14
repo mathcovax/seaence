@@ -11,6 +11,7 @@ export interface DSButtonProps extends PrimitiveProps {
 	icon?: keyof typeof iconsMapper;
 	square?: boolean;
 	rounded?: boolean;
+	disabled?: boolean;
 }
 
 export const buttonVariants = cva(

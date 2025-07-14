@@ -39,7 +39,7 @@ testCLient.describe(
 				customToken,
 			});
 
-			await Actions.click(authDialog, "googleSignButton");
+			await Actions.click(authDialog, "googleLoginButton");
 
 			await Assertions.toBeVisible(authDialog, "registerForm");
 

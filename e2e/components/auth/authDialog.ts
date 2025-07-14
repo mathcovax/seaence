@@ -5,7 +5,7 @@ export const authDialogEngine = createComponentEngine(
 	{
 		getMainElement: (body) => body.getByTestId("auth-dialog"),
 		getElements: (mainElement, body) => ({
-			googleSignButton: mainElement.getByTestId("auth-dialog-google-sign-button"),
+			googleLoginButton: mainElement.getByTestId("auth-dialog-google-login-button"),
 
 			registerForm: mainElement.getByTestId("auth-dialog-register-form"),
 			get registerFormUsername() {

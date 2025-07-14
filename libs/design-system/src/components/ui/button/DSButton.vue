@@ -30,7 +30,8 @@ const className = computed(
 			'aspect-square overflow-hidden': square,
 			'!rounded-full': rounded,
 		}"
-		:type
+		:type="type"
+		:disabled="disabled"
 	>
 		<DSIcon
 			v-if="icon"

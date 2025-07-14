@@ -1,18 +1,17 @@
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
-import type { FirebaseApp } from "firebase/app";
+import * as FirebaseApp from "firebase/app";
+import * as FirebaseAuth from "firebase/auth";
 
 declare global {
 	interface Window {
-		e2eFirebaseApp?: FirebaseApp;
+		e2eFirebaseApp?: FirebaseApp.FirebaseApp;
 	}
 }
-export async function useFirebaseApp() {
-	const { initializeApp } = await import("firebase/app");
 
+export function useFirebaseApp() {
 	return {
-		firebaseApp: window.e2eFirebaseApp ?? initializeApp({
+		firebaseApp: window.e2eFirebaseApp ?? FirebaseApp.initializeApp({
 			apiKey: "AIzaSyBi30m3j1SmMqApwnVCtRM0yHwpREbHynQ",
 			authDomain: "seaence-65707.firebaseapp.com",
 			projectId: "seaence-65707",
@@ -23,13 +22,11 @@ export async function useFirebaseApp() {
 	};
 }
 
-export async function useFirebaseAuth() {
-	const { GoogleAuthProvider, getAuth, signInWithPopup, signOut } = await import("firebase/auth");
-
+export function useFirebaseAuth() {
 	return {
-		GoogleAuthProvider,
-		getAuth,
-		signInWithPopup,
-		signOut,
+		GoogleAuthProvider: FirebaseAuth.GoogleAuthProvider,
+		getAuth: FirebaseAuth.getAuth,
+		signInWithPopup: FirebaseAuth.signInWithPopup,
+		signOut: FirebaseAuth.signOut,
 	};
 }
