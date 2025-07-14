@@ -17,20 +17,23 @@ export function debug(options: DebugOptions) {
 				dsn,
 				environment: "production",
 				tracesSampleRate: tracesSampleRate,
+				maxBreadcrumbs: 2,
 			});
 
 			instance.hook("onError", (request, error) => {
 				const { path, method, headers } = request;
-	
-				Sentry.captureException(error);
-				Sentry.setContext(
-					"request", 
-					{
-						path,
-						method,
-						headers,
-					}
-				);
+
+				Sentry.withScope((scope) => {
+					scope.setContext(
+						"request", 
+						{
+							path,
+							method,
+							headers,
+						}
+					);
+					Sentry.captureException(error);
+				});
 			});
 		} else if (instance.config.environment === "DEV") {
 			instance.config.disabledZodAccelerator = true;
