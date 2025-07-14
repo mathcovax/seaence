@@ -1,34 +1,78 @@
 import { type Translate } from "@business/entites/translate";
-import { envs } from "@interfaces/envs";
 import { createExternalPromise } from "@vendors/clean";
-import { resolve } from "path";
+import path from "path";
 import { Worker } from "worker_threads";
 
-export interface JobsParams {
-	id: string;
-	text: string;
-	language: Translate.Language;
-}
+export namespace GoogleScrape {
+	export interface JobsParams {
+		id: string;
+		text: string;
+		language: Translate.Language;
+	}
 
-export interface JobsResult {
-	id: string;
-	text: string;
-}
+	export interface JobsResult {
+		id: string;
+		text: string;
+	}
 
-export class GoogleScrape {
-	public static worker = createExternalPromise<Worker>();
+	function workerEngine() {
+		let inComingWorker: Promise<Worker> | undefined = undefined;
 
-	public static async translate(
+		// 10 second
+		const timeoutStratWorker = 10_000;
+
+		return async() => {
+			if (!inComingWorker) {
+				const { promise, resolve, reject } = createExternalPromise<Worker>();
+				inComingWorker = promise;
+
+				try {
+					const worker = await new Promise<Worker>(
+						(promiseResolve, rejectResolve) => {
+							const timeoutId = setTimeout(
+								() => void rejectResolve(new Error("Worker timeout")),
+								timeoutStratWorker,
+							);
+
+							const worker = new Worker(
+								path.resolve(import.meta.dirname, "worker/main.js"),
+							)
+								.once("message", (message: string) => {
+									if (message === "started") {
+										clearTimeout(timeoutId);
+										promiseResolve(worker);
+									}
+								})
+								.once("error", rejectResolve);
+						},
+					);
+
+					worker.once("exit", () => {
+						inComingWorker = undefined;
+					});
+
+					resolve(worker);
+				} catch (error) {
+					reject(error);
+				}
+			}
+
+			return inComingWorker;
+		};
+	}
+
+	const getWorker = workerEngine();
+
+	export async function translate(
 		text: string,
 		language: Translate.Language,
 	) {
-		const worker = await this.worker.promise;
+		const worker = await getWorker();
 
 		const result = await new Promise<JobsResult>((resolve, reject) => {
 			const id = process.hrtime.bigint().toString();
 
-			async function onError(error: Error) {
-				await GoogleScrape.initWorker();
+			function onError(error: Error) {
 				reject(error);
 			}
 
@@ -54,37 +98,5 @@ export class GoogleScrape {
 
 		return result.text;
 	}
-
-	public static async initWorker() {
-		this.worker = createExternalPromise();
-
-		const timeoutStratWorker = 10000;
-
-		const worker = await new Promise<Worker>(
-			(promiseResolve, rejectResolve) => {
-				const timeoutId = setTimeout(
-					() => void rejectResolve(new Error("Worker timeout")),
-					timeoutStratWorker,
-				);
-
-				const worker = new Worker(
-					resolve(import.meta.dirname, "worker/main.js"),
-				)
-					.once("message", (message: string) => {
-						if (message === "started") {
-							clearTimeout(timeoutId);
-							promiseResolve(worker);
-						}
-					})
-					.once("error", rejectResolve);
-			},
-		);
-
-		this.worker.resolve(worker);
-	}
-}
-
-if (envs.DB_CONNECTION) {
-	await GoogleScrape.initWorker();
 }
 
