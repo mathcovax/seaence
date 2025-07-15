@@ -33,7 +33,7 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Abys** appelle **Sea** pour indexer des documents
+> **Abys** appelle **Sea** pour indexer des documents\
 > **Horizon** appelle **Sea** pour chercher des documents
 
 ## Composition

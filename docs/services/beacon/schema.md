@@ -17,8 +17,13 @@ flowchart TB
 		Beacon[Beacon]
 	end
 
+	subgraph Search
+        Abys[Abys]
+    end
+
 	Horizon --> Beacon
 	Bridge --> Beacon
+	Beacon --> Abys
 	
     classDef gateway fill:#6272a4,color:white
 	classDef report fill:#8B2920,color:white
@@ -28,8 +33,9 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Horizon** appelle **Beacon** pour créer des signalements sur la traduction d'un document.
-> **Bridge** appelle **Beacon** pour modérer les signalements sur la traduction d'un document.
+> **Horizon** appelle **Beacon** pour créer des signalements sur la traduction d'un document.\
+> **Bridge** appelle **Beacon** pour modérer les signalements sur la traduction d'un document.\
+> **Beacon** appelle **Abys** pour traiter la re-traduction d'un document.
 
 ## Composition
 

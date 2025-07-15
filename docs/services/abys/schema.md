@@ -34,9 +34,9 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Horizon** appelle **Abys** pour récupérer les documents.
-> **Bridge** appelle **Abys** pour chercher des documents.
-> **Abys** appelle **Sea** pour indexer des documents.
+> **Horizon** appelle **Abys** pour récupérer les documents.\
+> **Bridge** appelle **Abys** pour chercher des documents.\
+> **Abys** appelle **Sea** pour indexer des documents.\
 > **Abys** appelle **Rosetta** pour traduire des documents.
 
 ## Composition

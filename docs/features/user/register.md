@@ -20,7 +20,7 @@
 	* Mes anciens posts créés sont dé-anonymisés
 	* Mes anciennes réponses créées sont dé-anonymisées
 - Si je n'ai pas le vieux compte :
-	- Je reçois une notification de bienvenue
+	* Je reçois une notification de bienvenue
 
 ### Harbor implémentation
 

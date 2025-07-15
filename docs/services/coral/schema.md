@@ -14,9 +14,11 @@ flowchart TB
 
     subgraph User
 		Coral[Coral]
+		Harbor[Harbor]
     end
 
 	Horizon --> Coral
+	Harbor -.->|Async Message| Coral
 	
     classDef gateway fill:#6272a4,color:white
     classDef auth fill:#ff79c6,color:white
@@ -26,7 +28,8 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Horizon** appelle **Coral** pour permettre aux utilisateurs d'acceder à leurs données
+> **Horizon** appelle **Coral** pour permettre aux utilisateurs d'acceder à leurs données\
+> **Coral** est abonnée au flux de delete d'un utilisateur
 
 ## Composition
 

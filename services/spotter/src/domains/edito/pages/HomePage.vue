@@ -82,7 +82,7 @@ const { $pt, $gpt } = homePage.use();
 					{{ $pt("features.items.search.title") }}
 				</h3>
 
-				<p class="text-sm text-muted-foreground">
+				<p class="text-sm text-muted-foreground text-center">
 					{{ $pt("features.items.search.description") }}
 				</p>
 			</DSCard>
@@ -101,7 +101,7 @@ const { $pt, $gpt } = homePage.use();
 					{{ $pt("features.items.forum.title") }}
 				</h3>
 
-				<p class="text-sm text-muted-foreground">
+				<p class="text-sm text-muted-foreground text-center">
 					{{ $pt("features.items.forum.description") }}
 				</p>
 			</DSCard>
@@ -120,7 +120,7 @@ const { $pt, $gpt } = homePage.use();
 					{{ $pt("features.items.organization.title") }}
 				</h3>
 
-				<p class="text-sm text-muted-foreground">
+				<p class="text-sm text-muted-foreground text-center">
 					{{ $pt("features.items.organization.description") }}
 				</p>
 			</DSCard>

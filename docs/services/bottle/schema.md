@@ -27,6 +27,8 @@ flowchart TB
     Horizon --> Bottle
     School --> Bottle
     Harbor --> Bottle
+	Harbor -.->|Async Message| Bottle
+	School -.->|Async Message| Bottle
 	
     classDef gateway fill:#6272a4,color:white
     classDef auth fill:#ff79c6,color:white
@@ -40,9 +42,11 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Horizon** appelle **Bottle** pour la création de notifications.
-> **School** appelle **Bottle** pour la création de notification d'avertissement.
-> **Harbor** appelle **Bottle** pour la création de notification lié à un utilisateur.
+> **Horizon** appelle **Bottle** pour la création de notifications.\
+> **School** appelle **Bottle** pour la création de notification d'avertissement.\
+> **Harbor** appelle **Bottle** pour la création de notification lié à un utilisateur.\
+> **Bottle** est abonnée au flux de création, delete et de restore d'un utilisateur\
+> **Bottle** est abonné au flux de création d'une réponse d'un utilisateur
 
 ## Composition
 

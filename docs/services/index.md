@@ -84,6 +84,7 @@ flowchart TB
     MarineSnow --> Abys
     Abys --> Sea
     Abys --> Rosetta
+	Beacon --> Abys
 
     %% Connexions Notification
     School --> Bottle

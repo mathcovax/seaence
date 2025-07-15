@@ -51,8 +51,8 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Bridge** appelle **Beacon** pour modérer la traduction des documents.
-> **Bridge** appelle **School** pour modérer le contenus du forum.
+> **Bridge** appelle **Beacon** pour modérer la traduction des documents.\
+> **Bridge** appelle **School** pour modérer le contenus du forum.\
 > **Bridge** appelle **Abys** pour re-cuire un document.
 
 ## Composition
