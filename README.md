@@ -1,4 +1,13 @@
-# SEAENCE
+<p align="center">
+  <img src="./services//spotter/public/images/logos/logo.svg" alt="logo" width="150" height="auto" />
+</p>
+<p align="center">
+  <a href="https://seaence.org/" style="font-size: 24px; font-weight: bold;">SEAENCE</a>
+  
+</p>
+<p align="center">
+	<a href="https://seaence.org/">https://seaence.org</a>
+</p>
 
 ## Introduction
 
