@@ -200,3 +200,25 @@ flowchart TB
 	class Postgres,MongoDB,ElasticSearch databaseStyle
 	class GithubRunner utilityStyle
 ```
+
+## Schéma système externe
+
+```mermaid
+sequenceDiagram
+	participant Client
+    participant CloudFlare
+	box Server
+		participant NGINX
+		participant Swarm
+	end
+
+	Client ->> CloudFlare: Request
+	CloudFlare ->>+ NGINX: Request
+	NGINX ->> NGINX: Check CloudFlare IP
+	NGINX -->> CloudFlare: Response 401
+	CloudFlare -->> Client: Response 401
+	NGINX ->>- Swarm: Request
+	Swarm ->> NGINX: Response
+	NGINX ->> CloudFlare: Response
+	CloudFlare ->> Client: Response
+```

@@ -22,10 +22,7 @@
 ## Sommaire
 
 - [Architecture](docs/services/index.md)
-	* [Sommaire des services](docs/services/index.md#sommaire-des-services)
-	* [Schéma micro-service](docs/services/index.md#schéma-micro-service)
-	* [Schéma système](docs/services/index.md#schéma-système)
-- [Déploiement](docs/deploy/schema.md)
+- [Déploiement](docs/deploy/index.md)
 - [Fonctionnalitées](docs/features/)
 
 ## Contributeurs
