@@ -1,5 +1,9 @@
 # Horizon
 
+---
+
+API Gateway serai le seul service directement exposé. Il ne peut etre requeter que par le service Spotter.
+
 ## Interaction
 
 ```mermaid
@@ -69,3 +73,7 @@ flowchart TB
 ## Composition
 
 - **Interfaces:** HTTP
+
+## Technologie
+
+- Duplo

@@ -1,5 +1,9 @@
 # School
 
+---
+
+Service de forum, il permettra de créer des forums autour d'un article ou d'un sujet à la manière de StackOverflow.
+
 ## Interaction
 
 ```mermaid
@@ -42,14 +46,18 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Horizon** appelle **School** pour accéder aux contenus des forums
-> **School** appelle **Bottle** pour envoyer des notifications
-> **School** appelle **Harbor** pour mettre des avertissements aux utilisateurs pour leurs contenus
-> **Bridge** appelle **School** pour administrer le contenu
-> **School** est abonnée au flux de mise à jour d'un utilisateur
+> **Horizon** appelle **School** pour accéder aux contenus des forums\
+> **School** appelle **Bottle** pour envoyer des notifications\
+> **School** appelle **Harbor** pour mettre des avertissements aux utilisateurs pour leurs contenus\
+> **Bridge** appelle **School** pour administrer le contenu\
+> **School** est abonnée au flux de mise à jour, delete et restore des utilisateurs\
 > **School** Émet un flux de création de contenu
 
 ## Composition
 
 - **Database:** MongoDB
 - **Interface:** HTTP
+
+## Technologie
+
+- Duplo

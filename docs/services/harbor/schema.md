@@ -1,5 +1,10 @@
 # Harbor
 
+---
+
+Service d'authentification unique. Il permettra de s'authentifier avec un compte google.
+C'est ici que sont stockés les comptes uitilisateurs ainsi que leur données.
+
 ## Interaction
 
 ```mermaid
@@ -39,10 +44,10 @@ flowchart TB
 ```
 
 > [!NOTE]
-> **Horizon** appelle **Harbor** pour authentifier les utilisateurs
-> **Bridge** appelle **Harbor** pour admistrer les utilisateurs
-> **Harbor** appelle **Bottle** pour envoyer des notifications
-> **Harbor** créer un flux de création d'utilsateur 
+> **Horizon** appelle **Harbor** pour authentifier les utilisateurs\
+> **Bridge** appelle **Harbor** pour admistrer les utilisateurs\
+> **Harbor** appelle **Bottle** pour envoyer des notifications\
+> **Harbor** créer un flux de création d'utilsateur\
 > **Harbor** créer un flux de modification d'utilisateur
 
 ## Composition
@@ -50,3 +55,8 @@ flowchart TB
 - **Databases**: Postgres
 - **Interfaces:** HTTP
 - **External Services:** Firebase
+
+## Technologie
+
+- Duplo
+- Firebase

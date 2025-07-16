@@ -1,5 +1,9 @@
 # Lighthouse
 
+---
+
+Backoffice permettant de gérer les utilisateurs, les documents et les forums.
+
 ## Interaction
 
 ```mermaid
@@ -27,3 +31,7 @@ flowchart TB
 ## Composition
 
 - **Interfaces:** HTTP
+
+## Technologie
+
+- Vue

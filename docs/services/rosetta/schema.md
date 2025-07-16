@@ -1,5 +1,9 @@
 # Rosetta
 
+---
+
+Service de traduction, il permettra de traduire les documents dans différentes langues.
+
 ## Interaction
 
 ```mermaid
@@ -25,3 +29,7 @@ flowchart TB
 - **Interfaces:** HTTP
 - **Inrernal Service:** Libretranslate
 - **External Service:** Google translate
+
+## Technologie
+
+- Duplo
