@@ -4,7 +4,7 @@ import { type BakedDocumentTranslationReportingMongo } from "./entities/bakedDoc
 
 const client = new MongoClient(envs.MONGO_DATABASE_URL);
 
-const database = client.db(envs.MONGO_DB);
+const database = client.db(envs.MONGO_DB, { ignoreUndefined: true });
 
 const bakedDocumentTranslationReportingCollection = database.collection<
 	BakedDocumentTranslationReportingMongo

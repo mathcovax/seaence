@@ -10,7 +10,7 @@ if (envs.DB_CONNECTION) {
 	await client.connect();
 }
 
-const database = client.db(envs.MONGO_DB);
+const database = client.db(envs.MONGO_DB, { ignoreUndefined: true });
 const notificationCollection = database.collection<MongoNotification>("notification");
 const userCollection = database.collection<MongoUser>("user");
 const notificationSettingCollection = database.collection<MongoNotificationSetting>("notificationSetting");

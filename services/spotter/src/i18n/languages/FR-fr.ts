@@ -601,6 +601,7 @@ export const FRfr = {
 			banned: "L'action que vous souhaitez faire vous est interdite à cause d'un bannissement.",
 			deleted: "L'utilisateur a correctement été supprimé.",
 			alreadyDelete: "L'utilisateur est déjà supprimé.",
+			updated: "Vos informations ont bien été mises à jour.",
 		},
 		credential: {
 			invalid: "Identifiant Google invalide.",

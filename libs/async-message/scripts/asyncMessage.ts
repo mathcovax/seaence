@@ -40,7 +40,7 @@ export class AsyncMessage {
 	) {
 		this.client = new MongoClient(params.mongoUrl);
 		const { database } = extractIdFromMongoUrl(params.mongoUrl);
-		this.database = this.client.db(database);
+		this.database = this.client.db(database, { ignoreUndefined: true });
 		this.resumeCollection = this.database.collection("resume");
 
 		this.collections = {

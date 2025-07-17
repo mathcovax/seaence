@@ -1,5 +1,5 @@
 import { type MybePromise } from "@duplojs/utils";
-import { type ChangeStream, type Collection, type CollectionOptions, type Db } from "mongodb";
+import { type ChangeStream, type Collection, type CollectionOptions } from "mongodb";
 import { type AsyncMessage } from "./asyncMessage";
 
 export interface MessageCollectionParams {

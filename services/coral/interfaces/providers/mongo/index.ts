@@ -6,7 +6,7 @@ import { type MongoDocumentInFolder } from "./entities/documentinFolder";
 
 const client = new MongoClient(envs.MONGO_DATABASE_URL);
 
-const database = client.db(envs.MONGO_DB);
+const database = client.db(envs.MONGO_DB, { ignoreUndefined: true });
 const documentFolder = database.collection<MongoDocumentFolder>("documentFolder");
 const documentInFolder = database.collection<MongoDocumentInFolder>("documentInFolder");
 const favoriteEquation = database.collection<MongoFavoriteEquation>("favoriteEquation");

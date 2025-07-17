@@ -7,7 +7,7 @@ import { type MongoKeyDate } from "./entities/keyDate";
 
 const client = new MongoClient(envs.MONGO_DATABASE_URL);
 
-const database = client.db(envs.MONGO_DB);
+const database = client.db(envs.MONGO_DB, { ignoreUndefined: true });
 const rawDocumentCollection = database.collection<MongoRawDocument>("rawDocument");
 const nodeNameRawDocumentCollection = database.collection<MongoNodeSameRawDocument>("nodeSameRawDocument");
 const bakedDocumentCollection = database.collection<MongoBakedDocument>("bakedDocument");
