@@ -18,7 +18,7 @@ export class CreateUserPostBanNotificationUsecase extends UsecaseHandler.create(
 }) {
 	public execute({ user, warningId, postId, reason }: Input) {
 		const banNotification = UserPostBanNotificationEntity.create({
-			id: this.notificationRepository.generateNotificationId(),
+			id: this.notificationRepository.generateId(),
 			warningId,
 			postId,
 			reason,

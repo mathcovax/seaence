@@ -23,9 +23,7 @@ useMustBeConnectedBuilder()
 
 			return new OkHttpResponse(
 				"notificationList.found",
-				notications.map(
-					({ user, ...notification }) => notification,
-				),
+				notications,
 			);
 		},
 		makeResponseContract(OkHttpResponse, "notificationList.found", Notification.index.array()),

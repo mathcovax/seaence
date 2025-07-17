@@ -11,9 +11,14 @@ useBuilder()
 		(pickup) => {
 			const { user } = pickup(["user"]);
 
+			const {
+				deleteId,
+				...formatedUser
+			} = user.toSimpleObject();
+
 			return new OkHttpResponse(
 				"user.found",
-				user.toSimpleObject(),
+				formatedUser,
 			);
 		},
 		makeResponseContract(OkHttpResponse, "user.found", endpointUserSchema),

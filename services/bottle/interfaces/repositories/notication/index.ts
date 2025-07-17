@@ -17,7 +17,7 @@ import { UserAnswerBanNotificationEntity } from "@business/domains/entities/noti
 import { UserAnswerWarningNotificationEntity } from "@business/domains/entities/notification/userAnswerWarning";
 
 notificationRepository.default = {
-	generateNotificationId() {
+	generateId() {
 		return notificationIdObjecter.unsafeCreate(uuidv7());
 	},
 	async save(entity) {

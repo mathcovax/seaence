@@ -22,7 +22,7 @@ interface FindProcessedNotificationToUserParams {
 }
 
 export interface NotificationRepository extends RepositoryBase<Notification> {
-	generateNotificationId(): NotificationId;
+	generateId(): NotificationId;
 	sendNotification(notification: Notification): Promise<void>;
 	findManyNotificationToUser(
 		user: UserEntity,

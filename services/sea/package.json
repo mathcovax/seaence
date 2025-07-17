@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@duplojs/core": "1.0.3",
-    "@duplojs/node": "1.0.1",
+    "@duplojs/node": "1.0.3",
     "@duplojs/utils": "0.3.1",
     "@elastic/elasticsearch": "8.18.2",
     "dotenv": "16.4.5",
