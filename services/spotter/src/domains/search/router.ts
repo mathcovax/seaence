@@ -31,3 +31,11 @@ export const advancedSearchPage = createPage(
 		query: searchPageQuery,
 	},
 );
+
+export const scratchTutorialPage = createPage(
+	"scratchTutorial",
+	{
+		path: "/scratch-tutorial",
+		component: () => import("./pages/ScratchTutorialPage.vue"),
+	},
+);

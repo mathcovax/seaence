@@ -53,6 +53,13 @@ import {
 	mdiCloseCircle,
 	mdiCommentAlert,
 	mdiCommentRemove,
+	mdiSchool,
+	mdiStarCircleOutline,
+	mdiDragVariant,
+	mdiCheckCircle,
+	mdiLightbulb,
+	mdiHelp,
+	mdiPuzzle,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -110,6 +117,13 @@ export const iconsMapper = {
 	closeCircle: mdiCloseCircle,
 	commentAlert: mdiCommentAlert,
 	commentRemove: mdiCommentRemove,
+	school: mdiSchool,
+	starCircleOutline: mdiStarCircleOutline,
+	dragVariant: mdiDragVariant,
+	checkCircle: mdiCheckCircle,
+	lightbulb: mdiLightbulb,
+	help: mdiHelp,
+	puzzle: mdiPuzzle,
 };
 
 export const iconSizeMapper = {
