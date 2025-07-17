@@ -68,7 +68,7 @@ type CodegenRoutes = ({
             };
             postId: string;
             type: "replyToPostNotificationSettingType";
-        } | null;
+        };
     };
 }) | ({
     method: "POST";
