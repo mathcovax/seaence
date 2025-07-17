@@ -33,7 +33,7 @@ export class CreateReplyToPostNotificationsUsecase extends UsecaseHandler.create
 						}
 
 						const replyToPostNotification = ReplyToPostNotificationEntity.create({
-							id: this.notificationRepository.generateNotificationId(),
+							id: this.notificationRepository.generateId(),
 							user: setting.user,
 							postId,
 							usernameOfReplyPost,

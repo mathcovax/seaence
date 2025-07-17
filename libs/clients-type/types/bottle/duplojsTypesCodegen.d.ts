@@ -60,15 +60,10 @@ type CodegenRoutes = ({
         code: 200;
         information: "replyPostNotificationSetting.found";
         body: {
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
+            id: string;
             postId: string;
             type: "replyToPostNotificationSettingType";
-        } | null;
+        };
     };
 }) | ({
     method: "POST";
@@ -87,24 +82,12 @@ type CodegenRoutes = ({
         information: "notifications.found";
         body: ({
             id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
             processed: boolean;
             createdAt: Date;
             deleteAt: Date;
             type: "registerNotificationType";
         } | {
             id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
             processed: boolean;
             createdAt: Date;
             deleteAt: Date;
@@ -114,12 +97,6 @@ type CodegenRoutes = ({
             type: "replyToPostNotificationType";
         } | {
             id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
             processed: boolean;
             createdAt: Date;
             deleteAt: Date;
@@ -129,12 +106,6 @@ type CodegenRoutes = ({
             warningId: string;
         } | {
             id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
             processed: boolean;
             createdAt: Date;
             deleteAt: Date;
@@ -144,12 +115,6 @@ type CodegenRoutes = ({
             warningId: string;
         } | {
             id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
             processed: boolean;
             createdAt: Date;
             deleteAt: Date;
@@ -160,12 +125,6 @@ type CodegenRoutes = ({
             warningId: string;
         } | {
             id: string;
-            user: {
-                id: string;
-                username: string;
-                email: string;
-                language: "fr-FR" | "en-US";
-            };
             processed: boolean;
             createdAt: Date;
             deleteAt: Date;

@@ -37,6 +37,6 @@ export namespace ReplyToPostNotificationSchema {
 			userId: userIdObjecter.toZodSchema(),
 			postId: postIdObjecter.toZodSchema(),
 		}),
-		endpoint: setting.nullable(),
+		endpoint: setting,
 	};
 }

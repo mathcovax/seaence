@@ -27,7 +27,7 @@ export class CreateUserUsecase extends UsecaseHandler.create({
 		await this.userRepository.save(user);
 
 		const registerNotification = RegisterNotificationEntity.create({
-			id: this.notificationRepository.generateNotificationId(),
+			id: this.notificationRepository.generateId(),
 			user: userObjecter.unsafeCreate(user),
 		});
 

@@ -15,6 +15,7 @@ export class EnableReplyToPostNotificationSettingToPostUsecase extends UsecaseHa
 }) {
 	public async execute({ user, postId }: Input) {
 		const replyToPostSettingNotification = ReplyToPostNotificationSettingEntity.create({
+			id: this.notificationSettingRepository.generateId(),
 			user: userObjecter.unsafeCreate(user),
 			postId,
 		});

@@ -20,7 +20,7 @@ export class CreateUserAnswerWarningNotificationUsecase extends UsecaseHandler.c
 }) {
 	public execute({ user, warningId, postId, answerId, reason }: Input) {
 		const warningNotification = UserAnswerWarningNotificationEntity.create({
-			id: this.notificationRepository.generateNotificationId(),
+			id: this.notificationRepository.generateId(),
 			warningId,
 			postId,
 			answerId,

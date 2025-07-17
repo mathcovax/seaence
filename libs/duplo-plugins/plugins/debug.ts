@@ -21,20 +21,42 @@ export function debug(options: DebugOptions) {
 			});
 
 			instance.hook("onError", (request, error) => {
-				const { path, method, headers } = request;
+				const { path, method, headers, body, url } = request;
 
 				Sentry.withScope((scope) => {
 					scope.setContext(
-						"request", 
+						"request onError", 
 						{
 							path,
 							method,
+							url,
 							headers,
+							body,
 						}
 					);
 					Sentry.captureException(error);
 				});
 			});
+			instance.hook(
+				"onHttpServerError",
+				(request, error) => {
+					const { path, method, headers, body, url } = request;
+
+					Sentry.withScope((scope) => {
+					scope.setContext(
+						"request serverError",
+						{
+							path,
+							method,
+							url,
+							headers,
+							body,
+						}
+					);
+					Sentry.captureException(error);
+				});
+				}
+			)
 		} else if (instance.config.environment === "DEV") {
 			instance.config.disabledZodAccelerator = true;
 		}
