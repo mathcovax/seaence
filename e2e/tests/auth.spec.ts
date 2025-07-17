@@ -24,20 +24,21 @@ testCLient.describe(
 			});
 		});
 
-		testCLient("register", async({ webSite, page }) => {
+		testCLient("register and disconnect", async({ webSite, page }) => {
 			await webSite.iNavigateTo(homePageEngine);
 
-			const header = await webSite.iWantToSee(headerEngine);
-
-			await Actions.click(header, "signButton");
-
 			const sonner = await webSite.iWantToExist(sonnerEngine);
-			const authDialog = await webSite.iWantToSee(authDialogEngine);
 
 			await setupFirebaseAuth({
 				playwrightPage: page,
 				customToken,
 			});
+
+			const header = await webSite.iWantToSee(headerEngine);
+
+			await Actions.click(header, "signButton");
+
+			const authDialog = await webSite.iWantToSee(authDialogEngine);
 
 			await Actions.click(authDialog, "googleLoginButton");
 
@@ -86,7 +87,43 @@ testCLient.describe(
 			await Assertions
 				.toBeVisible(sonner, "firstDefault");
 
-			await webSite.iWantToSee(accountDropdownEngine);
+			const accountDropdown = await webSite.iWantToSee(accountDropdownEngine);
+
+			await Actions.click(accountDropdown, "button");
+
+			await Actions.click(accountDropdown, "disconnectButton");
+
+			await Assertions.toBeVisible(header, "signButton");
+		});
+
+		testCLient("login and disconnect", async({ webSite, page }) => {
+			await webSite.iNavigateTo(homePageEngine);
+
+			const sonner = await webSite.iWantToExist(sonnerEngine);
+
+			await setupFirebaseAuth({
+				playwrightPage: page,
+				customToken,
+			});
+
+			const header = await webSite.iWantToSee(headerEngine);
+
+			await Actions.click(header, "signButton");
+
+			const authDialog = await webSite.iWantToSee(authDialogEngine);
+
+			await Actions.click(authDialog, "googleLoginButton");
+
+			await Assertions
+				.toBeVisible(sonner, "firstDefault");
+
+			const accountDropdown = await webSite.iWantToSee(accountDropdownEngine);
+
+			await Actions.click(accountDropdown, "button");
+
+			await Actions.click(accountDropdown, "disconnectButton");
+
+			await Assertions.toBeVisible(header, "signButton");
 		});
 	},
 );

@@ -61,7 +61,10 @@ const { disconect, hasNewNotifications } = useUserInformation();
 
 			<DSDropdownMenuSeparator />
 
-			<DSDropdownMenuItem @click="disconect">
+			<DSDropdownMenuItem
+				data-testid="account-dropdown-disconnect"
+				@click="disconect"
+			>
 				{{ $t("layout.base.header.accountDropdown.disconnect") }}
 			</DSDropdownMenuItem>
 		</DSDropdownMenuContent>
