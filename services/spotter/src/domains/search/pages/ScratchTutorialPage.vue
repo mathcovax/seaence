@@ -124,16 +124,16 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("elements.comparators.title") }}
 				</h3>
 
-				<ul class="space-y-1 text-sm text-blue-seaence">
-					<li>• {{ $pt("elements.comparators.text") }}</li>
+				<ul class="space-y-1 text-sm text-blue-seaence list-disc list-inside">
+					<li>{{ $pt("elements.comparators.text") }}</li>
 
-					<li>• {{ $pt("elements.comparators.strictText") }}</li>
+					<li>{{ $pt("elements.comparators.strictText") }}</li>
 
-					<li>• {{ $pt("elements.comparators.year") }}</li>
+					<li>{{ $pt("elements.comparators.year") }}</li>
 
-					<li>• {{ $pt("elements.comparators.author") }}</li>
+					<li>{{ $pt("elements.comparators.author") }}</li>
 
-					<li>• {{ $pt("elements.comparators.articleType") }}</li>
+					<li>{{ $pt("elements.comparators.articleType") }}</li>
 				</ul>
 			</div>
 
@@ -142,12 +142,12 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("elements.operators.title") }}
 				</h3>
 
-				<ul class="space-y-1 text-sm text-success">
-					<li>• <strong>AND</strong> : {{ $pt("elements.operators.and") }}</li>
+				<ul class="space-y-1 text-sm text-success list-disc list-inside">
+					<li><strong>AND</strong> : {{ $pt("elements.operators.and") }}</li>
 
-					<li>• <strong>OR</strong> : {{ $pt("elements.operators.or") }}</li>
+					<li><strong>OR</strong> : {{ $pt("elements.operators.or") }}</li>
 
-					<li>• <strong>NOT</strong> : {{ $pt("elements.operators.not") }}</li>
+					<li><strong>NOT</strong> : {{ $pt("elements.operators.not") }}</li>
 				</ul>
 			</div>
 		</div>
@@ -194,7 +194,7 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("stepByStep.step2.title") }}
 				</h3>
 
-				<ol class="space-y-2 list-decimal list-inside text-sm text-muted-foreground">
+				<ol class="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
 					<li>{{ $pt("stepByStep.step2.item1") }}</li>
 
 					<li>{{ $pt("stepByStep.step2.item2") }}</li>
@@ -207,14 +207,14 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 						{{ $pt("stepByStep.step2.fieldsTitle") }}
 					</h4>
 
-					<ul class="space-y-1 text-sm text-warning">
-						<li>• <strong>{{ $pt("stepByStep.step2.allFields") }}</strong> : {{ $pt("stepByStep.step2.allFieldsDesc") }}</li>
+					<ul class="space-y-1 text-sm text-warning list-disc list-inside">
+						<li><strong>{{ $pt("stepByStep.step2.allFields") }}</strong> : {{ $pt("stepByStep.step2.allFieldsDesc") }}</li>
 
-						<li>• <strong>{{ $pt("stepByStep.step2.abstract") }}</strong> : {{ $pt("stepByStep.step2.abstractDesc") }}</li>
+						<li><strong>{{ $pt("stepByStep.step2.abstract") }}</strong> : {{ $pt("stepByStep.step2.abstractDesc") }}</li>
 
-						<li>• <strong>{{ $pt("stepByStep.step2.titleField") }}</strong> : {{ $pt("stepByStep.step2.titleFieldDesc") }}</li>
+						<li><strong>{{ $pt("stepByStep.step2.titleField") }}</strong> : {{ $pt("stepByStep.step2.titleFieldDesc") }}</li>
 
-						<li>• <strong>{{ $pt("stepByStep.step2.keywords") }}</strong> : {{ $pt("stepByStep.step2.keywordsDesc") }}</li>
+						<li><strong>{{ $pt("stepByStep.step2.keywords") }}</strong> : {{ $pt("stepByStep.step2.keywordsDesc") }}</li>
 					</ul>
 				</div>
 			</div>
@@ -370,7 +370,7 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 			<div class="p-6 bg-background rounded-lg border shadow-sm">
 				<h3 class="mb-3 flex gap-2 items-center text-lg font-semibold">
 					<DSIcon
-						name="star"
+						name="weight"
 						class="text-warning/70"
 					/>
 					{{ $pt("advanced.boost.title") }}
@@ -438,12 +438,12 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("tips.beginner.title") }}
 				</h3>
 
-				<ul class="space-y-2 text-sm text-success">
-					<li>• {{ $pt("tips.beginner.startSimple") }}</li>
+				<ul class="space-y-2 text-sm text-success list-disc list-inside">
+					<li>{{ $pt("tips.beginner.startSimple") }}</li>
 
-					<li>• {{ $pt("tips.beginner.testProgressively") }}</li>
+					<li>{{ $pt("tips.beginner.testProgressively") }}</li>
 
-					<li>• {{ $pt("tips.beginner.checkResults") }}</li>
+					<li>{{ $pt("tips.beginner.checkResults") }}</li>
 				</ul>
 			</div>
 
@@ -452,12 +452,12 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("tips.optimization.title") }}
 				</h3>
 
-				<ul class="space-y-2 text-sm text-blue-seaence">
-					<li>• {{ $pt("tips.optimization.specificTerms") }}</li>
+				<ul class="space-y-2 text-sm text-blue-seaence list-disc list-inside">
+					<li>{{ $pt("tips.optimization.specificTerms") }}</li>
 
-					<li>• {{ $pt("tips.optimization.combineFields") }}</li>
+					<li>{{ $pt("tips.optimization.combineFields") }}</li>
 
-					<li>• {{ $pt("tips.optimization.useOperators") }}</li>
+					<li>{{ $pt("tips.optimization.useOperators") }}</li>
 				</ul>
 			</div>
 
@@ -466,12 +466,12 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("tips.common.title") }}
 				</h3>
 
-				<ul class="space-y-2 text-sm text-destructive">
-					<li>• {{ $pt("tips.common.tooManyAnd") }}</li>
+				<ul class="space-y-2 text-sm text-destructive list-disc list-inside">
+					<li>{{ $pt("tips.common.tooManyAnd") }}</li>
 
-					<li>• {{ $pt("tips.common.vagueTerms") }}</li>
+					<li>{{ $pt("tips.common.vagueTerms") }}</li>
 
-					<li>• {{ $pt("tips.common.validation") }}</li>
+					<li>{{ $pt("tips.common.validation") }}</li>
 				</ul>
 			</div>
 		</div>
@@ -492,10 +492,10 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("troubleshooting.scratchNotVisible.title") }}
 				</h3>
 
-				<ul class="space-y-1 text-sm text-muted-foreground">
-					<li>• {{ $pt("troubleshooting.scratchNotVisible.solution1") }}</li>
+				<ul class="space-y-1 text-sm text-muted-foreground list-disc list-inside">
+					<li>{{ $pt("troubleshooting.scratchNotVisible.solution1") }}</li>
 
-					<li>• {{ $pt("troubleshooting.scratchNotVisible.solution2") }}</li>
+					<li>{{ $pt("troubleshooting.scratchNotVisible.solution2") }}</li>
 				</ul>
 			</div>
 
@@ -504,12 +504,12 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("troubleshooting.noResults.title") }}
 				</h3>
 
-				<ul class="space-y-1 text-sm text-muted-foreground">
-					<li>• {{ $pt("troubleshooting.noResults.solution1") }}</li>
+				<ul class="space-y-1 text-sm text-muted-foreground list-disc list-inside">
+					<li>{{ $pt("troubleshooting.noResults.solution1") }}</li>
 
-					<li>• {{ $pt("troubleshooting.noResults.solution2") }}</li>
+					<li>{{ $pt("troubleshooting.noResults.solution2") }}</li>
 
-					<li>• {{ $pt("troubleshooting.noResults.solution3") }}</li>
+					<li>{{ $pt("troubleshooting.noResults.solution3") }}</li>
 				</ul>
 			</div>
 
@@ -518,10 +518,10 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 					{{ $pt("troubleshooting.validationError.title") }}
 				</h3>
 
-				<ul class="space-y-1 text-sm text-muted-foreground">
-					<li>• {{ $pt("troubleshooting.validationError.solution1") }}</li>
+				<ul class="space-y-1 text-sm text-muted-foreground list-disc list-inside">
+					<li>{{ $pt("troubleshooting.validationError.solution1") }}</li>
 
-					<li>• {{ $pt("troubleshooting.validationError.solution2") }}</li>
+					<li>{{ $pt("troubleshooting.validationError.solution2") }}</li>
 				</ul>
 			</div>
 		</div>
