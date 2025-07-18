@@ -16,6 +16,9 @@ const assertions = {
 
 		return expect(element).toHaveText("");
 	},
+	toBeHidden({ element }) {
+		return expect(element).toBeHidden();
+	},
 } satisfies WrapperStepEmbededFunction;
 
 export namespace Assertions {
@@ -34,5 +37,10 @@ export namespace Assertions {
 	export const toHaveNoText = createStepEmbeder(
 		"$component: I want $element have no Text.",
 		assertions.toHaveNoText,
+	);
+
+	export const toBeHidden = createStepEmbeder(
+		"$component: I want $element is hidden.",
+		assertions.toBeHidden,
 	);
 }
