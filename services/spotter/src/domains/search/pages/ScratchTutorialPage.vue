@@ -292,7 +292,7 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 			<div class="p-6 bg-background rounded-lg border shadow-sm">
-				<h3 class="mb-3 text-lg font-semibold text-success">
+				<h3 class="mb-3 text-lg font-semibold">
 					{{ $pt("examples.simple.title") }}
 				</h3>
 
@@ -308,7 +308,7 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 			</div>
 
 			<div class="p-6 bg-background rounded-lg border shadow-sm">
-				<h3 class="mb-3 text-lg font-semibold text-blue-seaence">
+				<h3 class="mb-3 text-lg font-semibold text-green-seaence">
 					{{ $pt("examples.comparative.title") }}
 				</h3>
 
@@ -324,7 +324,7 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 			</div>
 
 			<div class="p-6 bg-background rounded-lg border shadow-sm">
-				<h3 class="mb-3 text-lg font-semibold text-purple-seaence">
+				<h3 class="mb-3 text-lg font-semibold text-primary">
 					{{ $pt("examples.temporal.title") }}
 				</h3>
 
@@ -340,7 +340,7 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 			</div>
 
 			<div class="p-6 bg-background rounded-lg border shadow-sm">
-				<h3 class="mb-3 text-lg font-semibold text-destructive">
+				<h3 class="mb-3 text-lg font-semibold text-pink-seaence">
 					{{ $pt("examples.exclusion.title") }}
 				</h3>
 
