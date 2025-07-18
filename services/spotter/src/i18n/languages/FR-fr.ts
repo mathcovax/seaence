@@ -698,6 +698,7 @@ export const FRfr = {
 		validate: "Valider",
 		refuse: "Refuser",
 		add: "Ajouter",
+		howItWorks: "Comment ça marche ?",
 	},
 	languages: {
 		"fr-FR": "Français",
