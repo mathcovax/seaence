@@ -1,5 +1,5 @@
 import { envs } from "@interfaces/envs";
-import type { CoralClientRoute, InputCreateManyDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputRemoveDocumentFolder, InputRemoveDocumentInFolder, InputFindManyDocumentFoldersInWichDocumentExist, InputfindManyDocumentFolderDetails, InputFindManyDocumentFoldersInWichDocumentExistDetails, InputFindManyDocumentInFolderDetails, InputFindManyFavoritEquationName, InputFindManyFavoritEquationDetails, InputFindOneFavoritEquation, InputUpsertFavoritEquation, InputRemoveFavoritEquation, InputNodeSameRawDocumentIdsHaveDocumentInFolder } from "./types";
+import type { CoralClientRoute, InputCreateManyDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputRemoveDocumentFolder, InputRenameDocumentFolder, InputRemoveDocumentInFolder, InputFindManyDocumentFoldersInWichDocumentExist, InputfindManyDocumentFolderDetails, InputFindManyDocumentFoldersInWichDocumentExistDetails, InputFindManyDocumentInFolderDetails, InputFindManyFavoritEquationName, InputFindManyFavoritEquationDetails, InputFindOneFavoritEquation, InputUpsertFavoritEquation, InputRemoveFavoritEquation, InputNodeSameRawDocumentIdsHaveDocumentInFolder } from "./types";
 import { HttpClient } from "@duplojs/http-client";
 export class CoralAPI {
 	private static httpClient: HttpClient<CoralClientRoute>;
@@ -112,6 +112,17 @@ export class CoralAPI {
 				},
 			)
 			.iWantInformation(["documentFolder.removed", "documentFolder.notfound"]);
+	}
+
+	public static renameDocumentFolder(input: InputRenameDocumentFolder) {
+		return this.httpClient
+			.post(
+				"/rename-document-folder",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation(["documentFolder.renamed", "documentFolder.notfound", "documentFolder.wrongProprietary"]);
 	}
 
 	public static findOneDocumentFolder(input: InputFindOneDocumentFolder) {

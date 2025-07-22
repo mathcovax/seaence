@@ -151,6 +151,30 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/rename-document-folder";
+    body: {
+        documentFolderId: string;
+        userId: string;
+        newDocumentFolderName: string;
+    } & {
+        documentFolderId: string;
+        userId: string;
+    };
+    response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolder.renamed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/find-many-document-folder";
     body: {
         userId: string;
