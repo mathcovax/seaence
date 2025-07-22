@@ -1077,6 +1077,34 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/rename-document-folder";
+    body: {
+        documentFolderId: string;
+        newDocumentFolderName: string;
+    };
+    response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "authentication.required";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolder.renamed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/find-one-document-folder";
     body: {
         documentFolderId: string;

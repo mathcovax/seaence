@@ -32,6 +32,26 @@ const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = u
 	destructive: true,
 });
 
+const renameDialogOpen = ref(false);
+const documentFolderToRename = ref<DocumentFolder | null>(null);
+const minLength = 1;
+const maxLength = 100;
+
+const { Form: RenameForm, check: checkRename, reset: resetRename } = useFormBuilder(
+	useMultiFieldLayout({
+		newName: useBaseLayout(
+			textFormField,
+			{
+				mandatory: true,
+				defaultValue: "",
+				schema: zod.string()
+					.min(minLength, t("formMessage.required"))
+					.max(maxLength, t("formMessage.maxLength", { value: maxLength })),
+			},
+		),
+	}),
+);
+
 async function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
 	if (!(await getDeleteValidation())) {
 		return;
@@ -62,6 +82,38 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 	));
 }
 
+function handleRenameDocumentFolder(documentFolder: DocumentFolder) {
+	documentFolderToRename.value = documentFolder;
+	resetRename();
+	renameDialogOpen.value = true;
+}
+
+async function handleRenameSubmit() {
+	const result = checkRename();
+
+	if (!result || !documentFolderToRename.value) {
+		return;
+	}
+
+	return horizonClient
+		.post(
+			"/rename-document-folder",
+			{
+				body: {
+					documentFolderId: documentFolderToRename.value.id,
+					newDocumentFolderName: result.newName,
+				},
+			},
+		)
+		.whenInformation(
+			"documentFolder.renamed",
+			() => {
+				renameDialogOpen.value = false;
+				documentFolderToRename.value = null;
+				findDocumentFolderPage();
+			},
+		);
+}
 </script>
 
 <template>
@@ -115,6 +167,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 							:document-folder="folder"
 							@click="handleClickDocumentFolder"
 							@delete="handleRemoveDocumentFolder"
+							@rename="handleRenameDocumentFolder"
 						/>
 					</li>
 				</ul>
@@ -141,5 +194,39 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 		</div>
 
 		<DeleteDialog />
+
+		<DSDialog v-model:open="renameDialogOpen">
+			<template #title>
+				{{ $t("renameDocumentFolderDialog.title") }}
+			</template>
+
+			<template #content>
+				<RenameForm
+					class="flex flex-col gap-4"
+					@submit="handleRenameSubmit"
+				>
+					<template #newName="{ field }">
+						<DSField v-bind="field">
+							<template #label>
+								{{ $t("renameDocumentFolderDialog.form.label.newName") }}
+							</template>
+						</DSField>
+					</template>
+
+					<div class="flex gap-2 justify-end">
+						<DSOutlineButton
+							type="button"
+							@click="renameDialogOpen = false"
+						>
+							{{ $t("cta.cancel") }}
+						</DSOutlineButton>
+
+						<DSPrimaryButton type="submit">
+							{{ $t("cta.rename") }}
+						</DSPrimaryButton>
+					</div>
+				</RenameForm>
+			</template>
+		</DSDialog>
 	</section>
 </template>

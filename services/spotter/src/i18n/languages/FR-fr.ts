@@ -236,6 +236,14 @@ export const FRfr = {
 		title: "Supprimer un document",
 		description: "Êtes-vous sûr de vouloir supprimer ce document ? La suppression du document sera irréversible.",
 	},
+	renameDocumentFolderDialog: {
+		title: "Renommer le dossier",
+		form: {
+			label: {
+				newName: "Nouveau nom",
+			},
+		},
+	},
 	documentFolderHeader: {
 		label: "{count} élément(s)",
 		filtered: "{filtered} sur {total}",
@@ -504,6 +512,8 @@ export const FRfr = {
 		validate: "Valider",
 		refuse: "Refuser",
 		add: "Ajouter",
+		rename: "Renommer",
+		cancel: "Annuler",
 	},
 	languages: {
 		"fr-FR": "Français",
