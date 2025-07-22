@@ -5,7 +5,7 @@ import { headerEngine } from "@components/header";
 import { Assertions } from "../playwright/assertions";
 import { simpleSearchInputEngine } from "@components/search/simpleSearchInput";
 import { searchResultWrapperEngine } from "@components/search/searchResultWrapper";
-import { expect } from "@playwright/test";
+import { documentPageEngine } from "@pages/document";
 
 testCLient.describe(
 	"SimpleSearch",
@@ -47,7 +47,7 @@ testCLient.describe(
 
 			await Actions
 				.withStepContent("fill good search term")
-				.fill(simpleSearchInput, "inputSearch", "libero");
+				.fill(simpleSearchInput, "inputSearch", "meta");
 
 			await Actions
 				.withStepContent("open select language")
@@ -65,12 +65,13 @@ testCLient.describe(
 
 			await Assertions.toBeVisible(searchResultWrapper, "listResult");
 
+			const documentId = await Assertions.extractTestValue(searchResultWrapper, "firstResult");
+
 			await Actions
 				.withStepContent("click first document result")
 				.click(searchResultWrapper, "firstResult");
 
-			await expect(webSite.playwrightPage).toHaveURL(/\/document\/[^/]+/);
+			await webSite.iWantToBeOnThisPage(documentPageEngine, { documentId });
 		});
-		testCLient("search document with filter", async({ webSite }) => {});
 	},
 );

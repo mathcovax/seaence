@@ -2,10 +2,13 @@ import { envs } from "@envs";
 import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import firebaseAdmin, { type auth, type ServiceAccount } from "firebase-admin";
-import { type Page } from "@playwright/test";
-import { evalSetupFirebaseAuth } from "./evalSetupFirebaseAuth";
+
+let memoFirebaseAuth: auth.Auth | undefined = undefined;
 
 export async function initFirebaseAuth() {
+	if (memoFirebaseAuth) {
+		return { firebaseAuth: memoFirebaseAuth };
+	}
 	if (!existsSync(envs.FIREBASE_CREDENTIAL_PATH)) {
 		throw new Error("Firebase credential not found.");
 	}
@@ -18,7 +21,9 @@ export async function initFirebaseAuth() {
 		credential: firebaseAdmin.credential.cert(credential),
 	});
 
-	const firebaseAuth = firebaseAdmin.auth();
+	memoFirebaseAuth = firebaseAdmin.auth();
+
+	const firebaseAuth = memoFirebaseAuth;
 
 	return { firebaseAuth };
 }
@@ -55,6 +60,28 @@ export async function createFirebaseUser(
 	};
 }
 
+export interface GetFirebaseUserParams {
+	firebaseAuth: auth.Auth;
+	email: string;
+}
+
+export async function getFirebaseUser(
+	{
+		firebaseAuth,
+		email,
+	}: GetFirebaseUserParams,
+) {
+	const user = await firebaseAuth.getUserByEmail(email);
+
+	const customToken = await firebaseAuth.createCustomToken(user.uid);
+
+	return {
+		userFirebaseUid: user.uid,
+		userFirebaseEmail: email,
+		customToken,
+	};
+}
+
 export interface DeleteFirebaseUserParams {
 	firebaseAuth: auth.Auth;
 	userFirebaseUid: ReturnType<typeof createUserTestId>;
@@ -67,33 +94,4 @@ export function deleteFirebaseUser(
 	}: DeleteFirebaseUserParams,
 ) {
 	return firebaseAuth.deleteUser(userFirebaseUid);
-}
-
-export interface SetupFirebaseAuthParams {
-	playwrightPage: Page;
-	customToken: string;
-}
-
-export async function setupFirebaseAuth(
-	{
-		playwrightPage,
-		customToken,
-	}: SetupFirebaseAuthParams,
-) {
-	await playwrightPage.addScriptTag({ url: "https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js" });
-	await playwrightPage.addScriptTag({ url: "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js" });
-	await playwrightPage.evaluate(
-		evalSetupFirebaseAuth,
-		[
-			customToken,
-			{
-				apiKey: "AIzaSyBi30m3j1SmMqApwnVCtRM0yHwpREbHynQ",
-				authDomain: "seaence-65707.firebaseapp.com",
-				projectId: "seaence-65707",
-				storageBucket: "seaence-65707.firebasestorage.app",
-				messagingSenderId: "529736055664",
-				appId: "1:529736055664:web:61e2aa7f8dc4a0095b2db5",
-			},
-		],
-	);
 }

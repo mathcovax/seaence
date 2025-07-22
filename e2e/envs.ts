@@ -14,6 +14,8 @@ export const envs = zod
 		WORKER: zod.coerce.number(),
 		CI: zod.enum(["true", "false"]).transform((value) => value === "true"),
 		BASE_URL: zod.string().url(),
+		BASE_URL_HORIZON: zod.string().url(),
 		FIREBASE_CREDENTIAL_PATH: zod.string(),
+		TEST_USER_EMAIL: zod.string().email(),
 	})
 	.parse(process.env);

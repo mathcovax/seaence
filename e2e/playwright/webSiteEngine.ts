@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import test, { expect, type Page } from "@playwright/test";
 import { type PageInstance, type createPageEngine } from "./pageEngine";
@@ -18,7 +19,7 @@ export interface WebSiteInstance {
 		...args: Parameters<ReturnType<GenericPageEngine>["makePath"]>
 	): Promise<ReturnType<GenericPageEngine>>;
 	iWantToBeOnThisPage<
-		GenericPageEngine extends ReturnType<typeof createPageEngine>,
+		GenericPageEngine extends ReturnType<typeof createPageEngine<any, any, any>>,
 	>(
 		pageEngine: GenericPageEngine,
 		...args: Parameters<ReturnType<GenericPageEngine>["makePath"]>

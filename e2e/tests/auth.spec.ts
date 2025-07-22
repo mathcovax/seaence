@@ -2,10 +2,12 @@ import { testCLient, Actions } from "@playwright";
 import { homePageEngine } from "@pages/home";
 import { headerEngine } from "@components/header";
 import { authDialogEngine } from "@components/auth/authDialog";
-import { createFirebaseUser, deleteFirebaseUser, initFirebaseAuth, setupFirebaseAuth } from "@providers/firebase";
+import { createFirebaseUser, deleteFirebaseUser, initFirebaseAuth } from "@providers/firebase";
 import { Assertions } from "../playwright/assertions";
 import { sonnerEngine } from "@components/sonner";
 import { accountDropdownEngine } from "@components/accountDropdown";
+import { setupFirebaseAuth } from "@processes/setupFirebaseAuth";
+import { connectUser } from "@processes/connectUser";
 
 const { firebaseAuth } = await initFirebaseAuth();
 
@@ -24,13 +26,13 @@ testCLient.describe(
 			});
 		});
 
-		testCLient("register and disconnect", async({ webSite, page }) => {
+		testCLient("register and disconnect", async({ webSite }) => {
 			await webSite.iNavigateTo(homePageEngine);
 
 			const sonner = await webSite.iWantToExist(sonnerEngine);
 
 			await setupFirebaseAuth({
-				playwrightPage: page,
+				webSite,
 				customToken,
 			});
 
@@ -96,13 +98,13 @@ testCLient.describe(
 			await Assertions.toBeVisible(header, "signButton");
 		});
 
-		testCLient("login and disconnect", async({ webSite, page }) => {
+		testCLient("login and disconnect", async({ webSite }) => {
 			await webSite.iNavigateTo(homePageEngine);
 
 			const sonner = await webSite.iWantToExist(sonnerEngine);
 
 			await setupFirebaseAuth({
-				playwrightPage: page,
+				webSite,
 				customToken,
 			});
 
@@ -116,6 +118,25 @@ testCLient.describe(
 
 			await Assertions
 				.toBeVisible(sonner, "firstDefault");
+
+			const accountDropdown = await webSite.iWantToSee(accountDropdownEngine);
+
+			await Actions.click(accountDropdown, "button");
+
+			await Actions.click(accountDropdown, "disconnectButton");
+
+			await Assertions.toBeVisible(header, "signButton");
+		});
+
+		testCLient("login on existing user and disconnect", async({ webSite, firebaseAuth }) => {
+			await webSite.iNavigateTo(homePageEngine);
+
+			await connectUser({
+				webSite,
+				firebaseAuth,
+			});
+
+			const header = await webSite.iWantToSee(headerEngine);
 
 			const accountDropdown = await webSite.iWantToSee(accountDropdownEngine);
 

@@ -6,12 +6,8 @@ export const searchResultWrapperEngine = createComponentEngine(
 		getMainElement: (body) => body.getByTestId("search-result-wrapper"),
 		getElements: (mainElement) => ({
 			listResult: mainElement.getByTestId("search-result-list"),
-			get noResult() {
-				return mainElement.getByTestId("search-result-no-result");
-			},
-			get firstResult() {
-				return mainElement.locator("[data-testid=\"search-result-list\"] > div").first().locator("a[href*=\"/document/\"]");
-			},
+			noResult: mainElement.getByTestId("search-result-no-result"),
+			firstResult: mainElement.getByTestId("document-result-row").first(),
 		}),
 	},
 );
