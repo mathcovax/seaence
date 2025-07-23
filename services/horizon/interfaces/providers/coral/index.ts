@@ -1,5 +1,5 @@
 import { envs } from "@interfaces/envs";
-import type { CoralClientRoute, InputCreateManyDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputRemoveDocumentFolder, InputRenameDocumentFolder, InputRemoveDocumentInFolder, InputFindManyDocumentFoldersInWichDocumentExist, InputfindManyDocumentFolderDetails, InputFindManyDocumentFoldersInWichDocumentExistDetails, InputFindManyDocumentInFolderDetails, InputFindManyFavoritEquationName, InputFindManyFavoritEquationDetails, InputFindOneFavoritEquation, InputUpsertFavoritEquation, InputRemoveFavoritEquation, InputNodeSameRawDocumentIdsHaveDocumentInFolder } from "./types";
+import type { CoralClientRoute, InputCreateManyDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputRemoveDocumentFolder, InputRenameDocumentFolder, InputRemoveDocumentInFolder, InputRenameDocumentInFolder, InputFindManyDocumentFoldersInWichDocumentExist, InputfindManyDocumentFolderDetails, InputFindManyDocumentFoldersInWichDocumentExistDetails, InputFindManyDocumentInFolderDetails, InputFindManyFavoritEquationName, InputFindManyFavoritEquationDetails, InputFindOneFavoritEquation, InputUpsertFavoritEquation, InputRemoveFavoritEquation, InputNodeSameRawDocumentIdsHaveDocumentInFolder } from "./types";
 import { HttpClient } from "@duplojs/http-client";
 export class CoralAPI {
 	private static httpClient: HttpClient<CoralClientRoute>;
@@ -167,6 +167,17 @@ export class CoralAPI {
 				},
 			)
 			.iWantInformation("documentInFolder.removed");
+	}
+
+	public static renameDocumentInFolder(input: InputRenameDocumentInFolder) {
+		return this.httpClient
+			.post(
+				"/rename-document-in-folder",
+				{
+					body: input,
+				},
+			)
+			.iWantInformation(["documentInFolder.renamed", "documentFolder.notfound", "documentFolder.wrongProprietary", "documentInFolder.notfound"]);
 	}
 
 	public static createManyDocumentInFolder(input: InputCreateManyDocumentInFolder) {

@@ -80,7 +80,5 @@ function onRename() {
 
 			<span class="text-muted-foreground">{{ formatDate(documentFolder.createdAt ) }}</span>
 		</DSCard>
-
-		<DeleteDialog />
 	</div>
 </template>
