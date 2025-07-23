@@ -4,6 +4,7 @@ import DocumentFolderCard from "../components/DocumentFolderCard.vue";
 import { useDocumentFolderPage } from "../composables/useDocumentFolderPage";
 import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
 import CreateDocumentFolderDialog from "../components/CreateDocumentFolderDialog.vue";
+import { useRenameForm } from "../composables/useRenameForm";
 
 const router = useRouter();
 const { $pt } = documentFolderPage.use();
@@ -24,6 +25,13 @@ const {
 	},
 );
 
+const {
+	RenameForm,
+	renameFormValue,
+	renameFormCheck,
+	renameFormReset,
+} = useRenameForm("renameDocumentFolderDialog.form.label.newName");
+
 const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = useValidationDialog({
 	title: t("removeDocumentFolderDialog.title"),
 	description: t("removeDocumentFolderDialog.description"),
@@ -34,27 +42,6 @@ const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = u
 
 const renameDialogOpen = ref(false);
 const documentFolderToRename = ref<DocumentFolder | null>(null);
-const minLength = 1;
-const maxLength = 100;
-
-const renameFormField = useMultiFieldLayout({
-	newName: useBaseLayout(
-		textFormField,
-		{
-			mandatory: true,
-			schema: zod.string()
-				.min(minLength, t("formMessage.required"))
-				.max(maxLength, t("formMessage.maxLength", { value: maxLength })),
-		},
-	),
-});
-
-const {
-	Form: RenameForm,
-	check: checkRename,
-	reset: resetRename,
-	formValue: renameFormValue,
-} = useFormBuilder(renameFormField);
 
 async function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
 	if (!(await getDeleteValidation())) {
@@ -88,13 +75,13 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 
 function handleRenameDocumentFolder(documentFolder: DocumentFolder) {
 	documentFolderToRename.value = documentFolder;
-	resetRename();
-	renameFormValue.value.newName = documentFolder.name;
+	renameFormReset();
+	renameFormValue.value = documentFolder.name;
 	renameDialogOpen.value = true;
 }
 
 async function handleRenameSubmit() {
-	const result = checkRename();
+	const result = renameFormCheck();
 
 	if (!result || !documentFolderToRename.value) {
 		return;
@@ -106,7 +93,7 @@ async function handleRenameSubmit() {
 			{
 				body: {
 					documentFolderId: documentFolderToRename.value.id,
-					newDocumentFolderName: result.newName,
+					newDocumentFolderName: result,
 				},
 			},
 		)
@@ -206,18 +193,7 @@ async function handleRenameSubmit() {
 			</template>
 
 			<template #content>
-				<RenameForm
-					class="flex flex-col gap-4"
-					@submit="handleRenameSubmit"
-				>
-					<template #newName="{ field }">
-						<DSField v-bind="field">
-							<template #label>
-								{{ $t("renameDocumentFolderDialog.form.label.newName") }}
-							</template>
-						</DSField>
-					</template>
-
+				<RenameForm>
 					<div class="flex gap-2 justify-end">
 						<DSOutlineButton
 							type="button"
@@ -226,7 +202,10 @@ async function handleRenameSubmit() {
 							{{ $t("cta.cancel") }}
 						</DSOutlineButton>
 
-						<DSPrimaryButton type="submit">
+						<DSPrimaryButton
+							type="submit"
+							@click="handleRenameSubmit"
+						>
 							{{ $t("cta.rename") }}
 						</DSPrimaryButton>
 					</div>
