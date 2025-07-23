@@ -40,20 +40,24 @@ const documentInFolderToRename = ref<DocumentInFoloder | null>(null);
 const minLength = 1;
 const maxLength = 100;
 
-const { Form: RenameForm, check: checkRename, reset: resetRename } = useFormBuilder(
-	useMultiFieldLayout({
-		newName: useBaseLayout(
-			textFormField,
-			{
-				mandatory: true,
-				defaultValue: "",
-				schema: zod.string()
-					.min(minLength, t("formMessage.required"))
-					.max(maxLength, t("formMessage.maxLength", { value: maxLength })),
-			},
-		),
-	}),
-);
+const renameFormField = useMultiFieldLayout({
+	newName: useBaseLayout(
+		textFormField,
+		{
+			mandatory: true,
+			schema: zod.string()
+				.min(minLength, t("formMessage.required"))
+				.max(maxLength, t("formMessage.maxLength", { value: maxLength })),
+		},
+	),
+});
+
+const {
+	Form: RenameForm,
+	check: checkRename,
+	reset: resetRename,
+	formValue: renameFormValue,
+} = useFormBuilder(renameFormField);
 
 function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFoloder) {
 	void router.push(documentPage.createTo(
@@ -97,6 +101,7 @@ async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder)
 function handleRenameDocumentInFolder(documentInFolder: DocumentInFoloder) {
 	documentInFolderToRename.value = documentInFolder;
 	resetRename();
+	renameFormValue.value.newName = documentInFolder.name;
 	renameDialogOpen.value = true;
 }
 
