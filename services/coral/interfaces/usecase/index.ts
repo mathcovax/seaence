@@ -10,6 +10,7 @@ import { UserCountResultOfSearchDocumentInFolderUsecase } from "@business/applic
 import { UserCreateDocumentInManyFoldersUsecase } from "@business/applications/usecases/documentInFolder/userCreateDocumentInManyFolders";
 import { UserFindDocumentInFolderByUniqueCombinationUsecase } from "@business/applications/usecases/documentInFolder/userFindDocumentInFolderByUniqueCombination";
 import { UserRemoveDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userRemoveDocumentInFolder";
+import { UserRenameInDocumentFolderUsecase } from "@business/applications/usecases/documentInFolder/userRenameInDocumentFolder";
 import { UserSearchDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userSearchDocumentInFolder";
 import { UserCountResultOfFindManyFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userCountResultOfSearchFavoriteEquation";
 import { UserUpsertFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userUpsertFavoriteEquation";
@@ -40,6 +41,7 @@ export const userCreateDocumentInManyFoldersUsecase = new UserCreateDocumentInMa
 export const userFindDocumentInFolderByUniqueCombinationUsecase
 	= new UserFindDocumentInFolderByUniqueCombinationUsecase();
 export const userRemoveDocumentInFolderUsecase = new UserRemoveDocumentInFolderUsecase();
+export const userRenameDocumentInFolderUsecase = new UserRenameInDocumentFolderUsecase();
 export const userSearchDocumentInFolderUsecase = new UserSearchDocumentInFolderUsecase();
 export const userCountResultOfSearchDocumentInFolderUsecase = new UserCountResultOfSearchDocumentInFolderUsecase();
 

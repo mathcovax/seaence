@@ -27,9 +27,6 @@ const {
 
 const { userNavigatorLanguage } = useUserInformation();
 
-const defaultdocumentinFolderIndex = 0;
-const selectedDocumentinFolderIndex = ref(defaultdocumentinFolderIndex);
-
 const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = useValidationDialog({
 	title: t("removeDocumentInFolderDialog.title"),
 	description: t("removeDocumentInFolderDialog.description"),
@@ -37,6 +34,26 @@ const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = u
 	rejectLabel: t("cta.refuse"),
 	destructive: true,
 });
+
+const renameDialogOpen = ref(false);
+const documentInFolderToRename = ref<DocumentInFoloder | null>(null);
+const minLength = 1;
+const maxLength = 100;
+
+const { Form: RenameForm, check: checkRename, reset: resetRename } = useFormBuilder(
+	useMultiFieldLayout({
+		newName: useBaseLayout(
+			textFormField,
+			{
+				mandatory: true,
+				defaultValue: "",
+				schema: zod.string()
+					.min(minLength, t("formMessage.required"))
+					.max(maxLength, t("formMessage.maxLength", { value: maxLength })),
+			},
+		),
+	}),
+);
 
 function handleClickDocumentInFolder({ nodeSameRawDocumentId }: DocumentInFoloder) {
 	void router.push(documentPage.createTo(
@@ -74,6 +91,39 @@ async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder)
 		)
 		.whenRequestError(
 			() => void router.back(),
+		);
+}
+
+function handleRenameDocumentInFolder(documentInFolder: DocumentInFoloder) {
+	documentInFolderToRename.value = documentInFolder;
+	resetRename();
+	renameDialogOpen.value = true;
+}
+
+async function handleRenameSubmit() {
+	const result = checkRename();
+
+	if (!result || !documentInFolderToRename.value) {
+		return;
+	}
+
+	return horizonClient
+		.post(
+			"/rename-document-in-folder",
+			{
+				body: {
+					documentFolderId: documentInFolderToRename.value.documentFolderId,
+					nodeSameRawDocumentId: documentInFolderToRename.value.nodeSameRawDocumentId,
+					newDocumentInFolderName: result.newName,
+				},
+			},
+		)
+		.whenInformation(
+			"documentInFolder.renamed",
+			() => {
+				renameDialogOpen.value = false;
+				initDocumentInFolderPage();
+			},
 		);
 }
 
@@ -115,12 +165,12 @@ async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder)
 		<template v-if="documentInFolderList?.length">
 			<div class="space-y-2">
 				<DocumentInFolderItem
-					v-for="(item, index) in documentInFolderList"
+					v-for="item in documentInFolderList"
 					:key="item.nodeSameRawDocumentId"
 					:document-in-folder="item"
-					:is-selected="selectedDocumentinFolderIndex === index"
 					@click="handleClickDocumentInFolder"
 					@delete="handleRemoveDocumentInFolder"
+					@rename="handleRenameDocumentInFolder"
 				/>
 
 				<div
@@ -145,5 +195,39 @@ async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder)
 		</p>
 
 		<DeleteDialog />
+
+		<DSDialog v-model:open="renameDialogOpen">
+			<template #title>
+				{{ $t("renameDocumentInFolderDialog.title") }}
+			</template>
+
+			<template #content>
+				<RenameForm
+					class="flex flex-col gap-4"
+					@submit="handleRenameSubmit"
+				>
+					<template #newName="{ field }">
+						<DSField v-bind="field">
+							<template #label>
+								{{ $t('documentInFolderForm.name') }}
+							</template>
+						</DSField>
+					</template>
+
+					<div class="flex gap-2 justify-end">
+						<DSOutlineButton
+							type="button"
+							@click="renameDialogOpen = false"
+						>
+							{{ $t("cta.cancel") }}
+						</DSOutlineButton>
+
+						<DSPrimaryButton type="submit">
+							{{ $t("cta.rename") }}
+						</DSPrimaryButton>
+					</div>
+				</RenameForm>
+			</template>
+		</DSDialog>
 	</section>
 </template>

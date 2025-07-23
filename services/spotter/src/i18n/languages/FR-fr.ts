@@ -236,6 +236,9 @@ export const FRfr = {
 		title: "Supprimer un document",
 		description: "Êtes-vous sûr de vouloir supprimer ce document ? La suppression du document sera irréversible.",
 	},
+	renameDocumentInFolderDialog: {
+		title: "Renommer le document",
+	},
 	renameDocumentFolderDialog: {
 		title: "Renommer le dossier",
 		form: {
@@ -248,6 +251,9 @@ export const FRfr = {
 		label: "{count} élément(s)",
 		filtered: "{filtered} sur {total}",
 		noFiltered: "Aucun élément trouvé",
+	},
+	documentInFolderForm: {
+		name: "Nom du document",
 	},
 	createManyDocumentInFolderDialog: {
 		title: "Ajouter le document",

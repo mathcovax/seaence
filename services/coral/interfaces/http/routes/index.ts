@@ -7,6 +7,7 @@ import "./documentFolder/findMany";
 import "./documentInFolder/createMany";
 import "./documentInFolder/get";
 import "./documentInFolder/remove";
+import "./documentInFolder/rename";
 import "./documentInFolder/findMany";
 
 import "./favoriteEquation/upsert";

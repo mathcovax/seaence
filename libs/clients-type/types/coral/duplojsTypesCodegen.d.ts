@@ -327,6 +327,37 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/rename-document-in-folder";
+    body: ({
+        documentFolderId: string;
+        userId: string;
+        nodeSameRawDocumentId: string;
+        newDocumentInFolderName: string;
+    } & {
+        documentFolderId: string;
+        userId: string;
+    }) & {
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentInFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolder.renamed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/find-many-document-in-folder";
     body: {
         documentFolderId: string;
