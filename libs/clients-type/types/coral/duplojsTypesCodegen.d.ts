@@ -153,8 +153,6 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/rename-document-folder";
     body: {
-        documentFolderId: string;
-        userId: string;
         newDocumentFolderName: string;
     } & {
         documentFolderId: string;
@@ -329,9 +327,6 @@ type CodegenRoutes = ({
     method: "POST";
     path: "/rename-document-in-folder";
     body: ({
-        documentFolderId: string;
-        userId: string;
-        nodeSameRawDocumentId: string;
         newDocumentInFolderName: string;
     } & {
         documentFolderId: string;
