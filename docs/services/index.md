@@ -76,7 +76,6 @@ flowchart TB
 	Horizon --> Coral
 	Horizon --> Beacon
 
-    Bridge --> MarineSnow
     Bridge --> Abys
     Bridge --> School
 	Bridge --> Beacon
