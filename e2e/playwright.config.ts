@@ -8,6 +8,9 @@ export default defineConfig({
 	retries: envs.RETRIES,
 	workers: envs.WORKER,
 	reporter: [["html", { open: "never" }]],
+	expect: {
+		timeout: envs.TEST_TIMEOUT,
+	},
 	use: {
 		headless: true,
 		baseURL: envs.BASE_URL,

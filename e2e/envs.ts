@@ -17,5 +17,6 @@ export const envs = zod
 		BASE_URL_HORIZON: zod.string().url(),
 		FIREBASE_CREDENTIAL_PATH: zod.string(),
 		TEST_USER_EMAIL: zod.string().email(),
+		TEST_TIMEOUT: zod.coerce.number(),
 	})
 	.parse(process.env);

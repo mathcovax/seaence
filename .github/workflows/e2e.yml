@@ -7,6 +7,10 @@ on:
         description: "Adresse email"
         required: true
         type: string
+      test_timeout:
+        description: "Tests timeout"
+        required: true
+        type: string
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
@@ -30,9 +34,10 @@ jobs:
           BASE_URL: https://seaence.org
           BASE_URL_HORIZON: https://api.seaence.org
           TEST_USER_EMAIL: ${{ github.event.inputs.test_user_email }}
+          TEST_TIMEOUT: ${{ github.event.inputs.test_timeout }}
           CI: true
           RETRIES: 0
-          WORKER: 1
+          WORKER: 4
 
       - if: always()
         uses: actions/upload-artifact@v4

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import test, { expect, type Page } from "@playwright/test";
+import test, { expect, type Page, type Response } from "@playwright/test";
 import { type PageInstance, type createPageEngine } from "./pageEngine";
 import { type createComponentEngine } from "./componentEngine";
 
@@ -34,6 +34,7 @@ export interface WebSiteInstance {
 	>(
 		componentEngine: GenericComponentEngine,
 	): Promise<ReturnType<GenericComponentEngine>>;
+	refresh(): Promise<null | Response>;
 }
 
 export function webSiteEngine(
@@ -109,6 +110,9 @@ export function webSiteEngine(
 			);
 
 			return component as never;
+		},
+		refresh() {
+			return playwrightPage.reload();
 		},
 	};
 
