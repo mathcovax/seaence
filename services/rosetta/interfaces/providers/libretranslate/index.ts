@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable id-length */
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute, StrictFormData } from "@duplojs/http-client";
 import { type SupportedLanguage, type CodegenRoutes } from "./types/api";
@@ -25,6 +26,7 @@ export class LibretranslateAPI {
 					source: "auto",
 					target: languageMapper[language],
 					q: text,
+					api_key: envs.LIBRETRANSLATE_KEY,
 				}),
 			},
 		)

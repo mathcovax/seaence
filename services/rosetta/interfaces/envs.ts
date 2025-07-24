@@ -16,5 +16,6 @@ export const envs = zod
 		DB_CONNECTION: zod.booleanInString(),
 		LIBRETRANSLATE_BASE_URL: zod.string().url(),
 		GLITCHTIP_DSN: zod.string(),
+		LIBRETRANSLATE_KEY: zod.string(),
 	})
 	.parse(process.env);
