@@ -12,6 +12,7 @@ import type {
 	YearFieldEnumValue,
 } from "@vendors/types-advanced-query";
 import { cguFRfr } from "./cgu/FR-fr";
+import { scratchTutorialFRfr } from "./tutorial/Fr-fr";
 
 export const FRfr = {
 	page: {
@@ -91,7 +92,6 @@ export const FRfr = {
 			maxSizeRequest: "L'équation est trop grande.",
 		},
 		[documentPage.name]: {
-			download: "Télécharger l'article",
 			label: {
 				articleType: "Type d'article",
 				keywords: "Mots clés",
@@ -222,202 +222,8 @@ export const FRfr = {
 				description: "Êtes-vous sûr de vouloir supprimer ce document ? La suppression du document sera irréversible.",
 			},
 		},
-		[scratchTutorialPage.name]: {
-			title: "Tutoriel : Utilisation de la recherche avancée",
-			subtitle: "Apprenez à maîtriser l'interface de recherche avancée de Seaence",
-			quickNav: {
-				title: "Navigation rapide",
-				whatIs: "Qu'est-ce que le Scratch ?",
-				access: "Accès au Scratch",
-				anatomy: "Anatomie du Scratch",
-				stepByStep: "Guide pas à pas",
-				examples: "Exemples pratiques",
-				tips: "Conseils et astuces",
-			},
-			whatIs: {
-				title: "Qu'est-ce que la recherche avancée ?",
-				description: "La recherche avancée vous permet de construire des équations de recherche complexes de manière visuelle et intuitive. Il s'agit d'une zone de travail interactive où vous pouvez glisser-déposer des éléments pour créer des requêtes sophistiquées.",
-			},
-			access: {
-				title: "Accès au Scratch",
-				step1: {
-					title: "Étape 1 : Naviguer vers la recherche avancée",
-					item1: "Depuis la page d'accueil, cliquez sur \"Recherche\" dans le menu principal",
-					item2: "Sélectionnez \"Avancée\" pour accéder à la recherche avancée",
-					item3: "Le Scratch apparaît automatiquement dans la zone principale",
-				},
-				step2: {
-					title: "Étape 2 : Afficher/Masquer le Scratch",
-					showButton: "Bouton \"Afficher l'équation\"",
-					showDescription: "Rend le Scratch visible",
-					hideButton: "Bouton \"Masquer l'équation\"",
-					hideDescription: "Cache le Scratch pour plus d'espace",
-					autoVisible: "Le Scratch est automatiquement visible lors de votre première visite",
-				},
-			},
-			elements: {
-				title: "Comparateurs et opérateurs",
-				comparators: {
-					title: "Comparateurs (Éléments de recherche)",
-					text: "Comparaison textuelle : Recherche dans le texte des documents",
-					strictText: "Comparaison textuelle stricte : Recherche exacte d'un terme",
-					year: "Comparaison d'années : Filtrage par période temporelle",
-					author: "Comparaison d'auteur : Recherche par nom d'auteur",
-					articleType: "Comparaison de type d'article : Filtrage par type de publication",
-				},
-				operators: {
-					title: "Opérateurs (Logique de connexion)",
-					and: "Combine plusieurs conditions (toutes doivent être vraies)",
-					or: "Alternative entre conditions (au moins une doit être vraie)",
-					not: "Exclut une condition",
-				},
-			},
-			stepByStep: {
-				title: "Guide pas à pas",
-				step1: {
-					title: "Créer votre première recherche",
-					item1: "Cliquez sur le bouton \"+\"",
-					item2: "Choisissez l'onglet \"Comparateur\" pour des critères de recherche ou \"Opérateur\" pour la logique",
-					item3: "Sélectionnez l'élément",
-				},
-				step2: {
-					title: "Configurer un comparateur textuel",
-					item1: "Sélectionnez \"Comparaison textuelle\"",
-					item2: "Configurez le champ de recherche",
-					item3: "Entrez votre terme de recherche",
-					fieldsTitle: "Champs de recherche disponibles",
-					allFields: "Tous les champs",
-					allFieldsDesc: "Recherche globale",
-					abstract: "Résumé",
-					abstractDesc: "Uniquement dans les abstracts",
-					titleField: "Titre",
-					titleFieldDesc: "Uniquement dans les titres",
-					keywords: "Mots-clés",
-					keywordsDesc: "Uniquement dans les mots-clés",
-				},
-				step3: {
-					title: "Ajouter de la complexité avec les opérateurs",
-					description: "Les opérateurs vous permettent de combiner plusieurs conditions de recherche.",
-					andDesc: "Toutes les conditions doivent être vraies",
-					orDesc: "Au moins une condition doit être vraie",
-					notDesc: "Exclut une condition spécifique",
-				},
-			},
-			examples: {
-				title: "Exemples pratiques",
-				simple: {
-					title: "Recherche médicale simple",
-					objective: "Objectif : Trouver des articles sur les effets de l'aspirine",
-					comparator: "Comparateur Textuel",
-					field: "Champ",
-					allFields: "Tous les champs",
-					value: "Valeur",
-					searchTerm: "aspirine",
-				},
-				comparative: {
-					title: "Recherche comparative",
-					objective: "Objectif : Comparer deux traitements",
-					comparator: "Comparateur Textuel",
-					treatmentA: "traitement A",
-					treatmentB: "traitement B",
-					inTitle: "dans \"Titre\"",
-				},
-				temporal: {
-					title: "Recherche ciblée par période",
-					objective: "Objectif : Études récentes sur un sujet",
-					textComparator: "Comparateur Textuel",
-					aiTerm: "intelligence artificielle",
-					inTitle: "dans \"Titre\"",
-					yearComparator: "Comparateur Année",
-					yearRange: "2020-2024",
-					inJournal: "dans \"Publication journal\"",
-				},
-				exclusion: {
-					title: "Recherche avec exclusion",
-					objective: "Objectif : Études humaines uniquement",
-					textComparator: "Comparateur Textuel",
-					geneTerm: "thérapie génique",
-					animalTerm: "animal",
-					inAllFields: "dans \"Tous les champs\"",
-				},
-			},
-			advanced: {
-				title: "Fonctionnalités avancées",
-				boost: {
-					title: "Boost des termes",
-					description: "Augmentez l'importance d'un terme dans les résultats de recherche.",
-					usage: "Utilisation",
-					usageDesc: "Cliquez sur l'étoile à côté d'un comparateur pour l'activer",
-				},
-				dragDrop: {
-					title: "Glisser-déposer",
-					description: "Réorganisez vos éléments par simple glisser-déposer.",
-					reorganize: "Réorganiser",
-					reorganizeDesc: "Changez l'ordre logique de vos conditions",
-				},
-				validation: {
-					title: "Validation automatique",
-					description: "Le système vérifie automatiquement la validité de vos entrées.",
-					check: "Vérification",
-					checkDesc: "Des indicateurs visuels signalent les erreurs",
-				},
-			},
-			tips: {
-				title: "Conseils et bonnes pratiques",
-				beginner: {
-					title: "Pour débuter",
-					startSimple: "Commencez simple : Utilisez d'abord un seul comparateur",
-					testProgressively: "Testez progressivement : Ajoutez la complexité étape par étape",
-					checkResults: "Vérifiez les résultats : Lancez la recherche après chaque modification",
-				},
-				optimization: {
-					title: "Optimisation des recherches",
-					specificTerms: "Utilisez des termes spécifiques plutôt que génériques",
-					combineFields: "Combinez différents champs : Titre + mots-clés pour plus de précision",
-					useOperators: "Exploitez les opérateurs : AND pour restreindre, OR pour élargir",
-				},
-				common: {
-					title: "Éviter les erreurs communes",
-					tooManyAnd: "Trop de conditions AND peuvent donner trop peu de résultats",
-					vagueTerms: "Les termes trop vagues génèrent trop de résultats non pertinents",
-					validation: "N'oubliez pas de vérifier que tous les champs sont remplis",
-				},
-				shortcuts: {
-					title: "Raccourcis et astuces",
-					undo: "Annuler la dernière action",
-					rightClick: "Clic droit",
-					rightClickDesc: "Menu contextuel sur les éléments",
-					doubleClick: "Double-clic",
-					doubleClickDesc: "Édition rapide d'un comparateur",
-					dragDrop: "Réorganisation intuitive des éléments",
-				},
-			},
-			troubleshooting: {
-				title: "Dépannage",
-				scratchNotVisible: {
-					title: "Le Scratch n'apparaît pas",
-					solution1: "Vérifiez que vous êtes sur la page \"Recherche avancée\"",
-					solution2: "Cliquez sur \"Afficher l'équation\"",
-				},
-				noResults: {
-					title: "Mes termes ne donnent pas de résultats",
-					solution1: "Vérifiez l'orthographe",
-					solution2: "Essayez des synonymes",
-					solution3: "Utilisez des termes plus généraux",
-				},
-				validationError: {
-					title: "Erreur de validation",
-					solution1: "Vérifiez que tous les champs sont remplis",
-					solution2: "Respectez les longueurs minimales/maximales",
-				},
-			},
-			cta: {
-				title: "Prêt à commencer ?",
-				description: "Mettez en pratique ce que vous avez appris et explorez toutes les possibilités du Scratch.",
-				button: "Essayer la recherche avancée",
-			},
-		},
 		...cguFRfr,
+		...scratchTutorialFRfr,
 	},
 	authDialog: {
 		title: "Authentification",
