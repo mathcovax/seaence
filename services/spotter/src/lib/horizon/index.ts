@@ -13,7 +13,7 @@ const { enableLoader, disableLoader } = useLoader();
 const { accessToken } = useUserInformation();
 const { refresh } = useWindow();
 
-const defaultRequestTimeout = 5000;
+const defaultRequestTimeout = 10_000;
 
 declare module "@duplojs/http-client" {
 	interface HttpClientRequestInit {
