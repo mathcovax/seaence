@@ -4,6 +4,7 @@ import DocumentFolderCard from "../components/DocumentFolderCard.vue";
 import { useDocumentFolderPage } from "../composables/useDocumentFolderPage";
 import DocumentFolderHeader from "../components/DocumentFolderHeader.vue";
 import CreateDocumentFolderDialog from "../components/CreateDocumentFolderDialog.vue";
+import { useRenameForm } from "../composables/useRenameForm";
 
 const router = useRouter();
 const { $pt } = documentFolderPage.use();
@@ -24,6 +25,13 @@ const {
 	},
 );
 
+const {
+	RenameForm,
+	renameFormValue,
+	renameFormCheck,
+	renameFormReset,
+} = useRenameForm("renameDocumentFolderDialog.form.label.newName");
+
 const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = useValidationDialog({
 	title: t("removeDocumentFolderDialog.title"),
 	description: t("removeDocumentFolderDialog.description"),
@@ -31,6 +39,9 @@ const { ValidationDialog: DeleteDialog, getValidation: getDeleteValidation } = u
 	rejectLabel: t("cta.refuse"),
 	destructive: true,
 });
+
+const renameDialogOpen = ref(false);
+const documentFolderToRename = ref<DocumentFolder | null>(null);
 
 async function handleRemoveDocumentFolder(documentFolder: DocumentFolder) {
 	if (!(await getDeleteValidation())) {
@@ -62,6 +73,39 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 	));
 }
 
+function handleRenameDocumentFolder(documentFolder: DocumentFolder) {
+	documentFolderToRename.value = documentFolder;
+	renameFormReset();
+	renameFormValue.value = documentFolder.name;
+	renameDialogOpen.value = true;
+}
+
+async function handleRenameSubmit() {
+	const result = renameFormCheck();
+
+	if (!result || !documentFolderToRename.value) {
+		return;
+	}
+
+	return horizonClient
+		.post(
+			"/rename-document-folder",
+			{
+				body: {
+					documentFolderId: documentFolderToRename.value.id,
+					newDocumentFolderName: result,
+				},
+			},
+		)
+		.whenInformation(
+			"documentFolder.renamed",
+			() => {
+				renameDialogOpen.value = false;
+				documentFolderToRename.value = null;
+				findDocumentFolderPage();
+			},
+		);
+}
 </script>
 
 <template>
@@ -115,6 +159,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 							:document-folder="folder"
 							@click="handleClickDocumentFolder"
 							@delete="handleRemoveDocumentFolder"
+							@rename="handleRenameDocumentFolder"
 						/>
 					</li>
 				</ul>
@@ -141,5 +186,31 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 		</div>
 
 		<DeleteDialog />
+
+		<DSDialog v-model:open="renameDialogOpen">
+			<template #title>
+				{{ $t("renameDocumentFolderDialog.title") }}
+			</template>
+
+			<template #content>
+				<RenameForm>
+					<div class="flex gap-2 justify-end">
+						<DSOutlineButton
+							type="button"
+							@click="renameDialogOpen = false"
+						>
+							{{ $t("cta.cancel") }}
+						</DSOutlineButton>
+
+						<DSPrimaryButton
+							type="submit"
+							@click="handleRenameSubmit"
+						>
+							{{ $t("cta.rename") }}
+						</DSPrimaryButton>
+					</div>
+				</RenameForm>
+			</template>
+		</DSDialog>
 	</section>
 </template>
