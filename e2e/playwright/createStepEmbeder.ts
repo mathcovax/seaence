@@ -43,7 +43,7 @@ export function createStepEmbeder<
 				} as never,
 				...args,
 			),
-		);
+		) as ReturnType<typeof step>;
 	};
 }
 

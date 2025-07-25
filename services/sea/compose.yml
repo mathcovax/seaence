@@ -1,24 +1,17 @@
 services:
   sea-es:
-    extends:
-      file: ${INCLUDE_PATH}/sea/compose.template.yml
-      service: sea-es-template
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.0
+    env_file:
+      - ${INCLUDE_PATH}/sea/.env
     ports:
       - 9200:9200
     attach: false
-  # kibana:
-  #   extends:
-  #     file: ${INCLUDE_PATH}/sea/compose.template.yml
-  #     service: kibana-template
-  #   ports:
-  #     - 5601:5601
-  #   depends_on:
-  #     - sea-es
-  #   attach: false
+    volumes:
+      - sea-es-data:/usr/share/elasticsearch/data
   sea:
     extends:
-      file: ${INCLUDE_PATH}/sea/compose.template.yml
-      service: sea-duplo-template
+      file: ${TEMPLATE_COMPOSE_NODE_DEV}
+      service: template-node
     ports:
       - 9300:1506
     command: npm -w services/sea run duplo:dev

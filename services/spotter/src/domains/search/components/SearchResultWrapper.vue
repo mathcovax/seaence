@@ -22,6 +22,7 @@ const maxPage = 100;
 
 <template>
 	<div
+		data-testid="search-result-wrapper"
 		class="duration-1500 transition-all ease-in pb-10"
 		:class="{
 			'opacity-0': !result || isFetching
@@ -42,6 +43,7 @@ const maxPage = 100;
 			/>
 
 			<div
+				data-testid="search-result-list"
 				class="w-full max-w-5xl mx-auto"
 			>
 				<DocumentResultRow
@@ -65,6 +67,7 @@ const maxPage = 100;
 		<div
 			v-else
 			class="mt-20 flex items-center justify-center"
+			data-testid="search-result-no-result"
 		>
 			<p class="p-3 text-2xl italic text-muted-foreground rounded-xl bg-background/60 backdrop-blur-sm">
 				{{ $t("search.noResult") }}
