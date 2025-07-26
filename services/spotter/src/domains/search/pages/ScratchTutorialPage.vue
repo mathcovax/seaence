@@ -131,9 +131,13 @@ const exampleExclusionOperator = ref<OperatorAnd>({
 
 					<li>{{ $pt("elements.comparators.year") }}</li>
 
+					<li>{{ $pt("elements.comparators.yearInterval") }}</li>
+
 					<li>{{ $pt("elements.comparators.author") }}</li>
 
 					<li>{{ $pt("elements.comparators.articleType") }}</li>
+
+					<li>{{ $pt("elements.comparators.provider") }}</li>
 				</ul>
 			</div>
 
