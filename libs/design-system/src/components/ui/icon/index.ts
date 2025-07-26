@@ -60,6 +60,7 @@ import {
 	mdiLightbulb,
 	mdiHelp,
 	mdiPuzzle,
+	mdiHelpCircleOutline,
 	mdiRename,
 } from "@mdi/js";
 
@@ -125,6 +126,7 @@ export const iconsMapper = {
 	lightbulb: mdiLightbulb,
 	help: mdiHelp,
 	puzzle: mdiPuzzle,
+	helpCircleOutline: mdiHelpCircleOutline,
 	rename: mdiRename,
 };
 
