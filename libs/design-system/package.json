@@ -36,7 +36,7 @@
     "@types/web": "0.0.216",
     "@vue.ts/complex-types": "0.6.0",
     "shadcn-vue": "2.1.0",
-    "vite": "6.2.4",
+    "vite": "6.3.2",
     "vue-tsc": "2.2.4"
   }
 }
