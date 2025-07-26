@@ -41,8 +41,10 @@ export const scratchTutorialFRfr = {
 				text: "Comparaison textuelle : Recherche dans le texte des documents",
 				strictText: "Comparaison textuelle stricte : Recherche exacte d'un terme",
 				year: "Comparaison d'années : Filtrage par période temporelle",
+				yearInterval: "Intervalle d'années : Filtrage par plage d'années",
 				author: "Comparaison d'auteur : Recherche par nom d'auteur",
 				articleType: "Comparaison de type d'article : Filtrage par type de publication",
+				provider: "Fournisseur de données : Filtrage par source de données",
 			},
 			operators: {
 				title: "Opérateurs (Logique de connexion)",
