@@ -357,7 +357,7 @@ export const FRfr = {
 					label: "Comparaison textuelle",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Résumé",
+						abstract: "Abstract",
 						title: "Titre",
 						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
@@ -368,7 +368,7 @@ export const FRfr = {
 					label: "Comparaison textuelle stricte",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Résumé",
+						abstract: "Abstract",
 						title: "Titre",
 						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
@@ -542,7 +542,7 @@ export const FRfr = {
 		duplicatePublication: "Publication en double",
 		editorial: "Éditorial",
 		electronicSupplementaryMaterials: "Matériaux supplémentaires électroniques",
-		englishAbstract: "Résumé en anglais",
+		englishAbstract: "Abstract en anglais",
 		equivalenceTrial: "Essai d'équivalence",
 		evaluationStudy: "Étude d'évaluation",
 		expressionOfConcern: "Expression de préoccupation",
