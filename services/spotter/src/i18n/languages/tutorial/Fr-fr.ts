@@ -67,7 +67,7 @@ export const scratchTutorialFRfr = {
 				fieldsTitle: "Champs de recherche disponibles",
 				allFields: "Tous les champs",
 				allFieldsDesc: "Recherche globale",
-				abstract: "Résumé",
+				abstract: "Abstract",
 				abstractDesc: "Uniquement dans les abstracts",
 				titleField: "Titre",
 				titleFieldDesc: "Uniquement dans les titres",
