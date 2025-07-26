@@ -42,7 +42,7 @@ function onSubmit() {
 		class="flex flex-col gap-4 pt-1"
 		@submit.prevent="onSubmit"
 	>
-		<div class="flex gap-4 items-center">
+		<div class="flex flex-wrap gap-4 items-center">
 			<DSPrimaryButton type="submit">
 				{{ $t("cta.search") }}
 			</DSPrimaryButton>
