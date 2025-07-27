@@ -1,12 +1,13 @@
 /* eslint-disable camelcase */
 import { HttpClient } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
-import { retry } from "@interfaces/utils/retrying";
 import { type PubMedRoute } from "./types/pubmedRoute";
 import { XMLParser } from "fast-xml-parser";
 import { searchResultPayloadBuildedSchema } from "./types/searchResult";
 import { type PubmedFilterArticleType } from "./types/utils";
 import { articlePayloadBuildedSchema } from "./types/article";
+import { useAsyncRetry } from "@vendors/clean";
+import { logger } from "@vendors/backend-logger";
 
 /**
  * @link https://pubmed.ncbi.nlm.nih.gov/help/#dp
@@ -36,7 +37,7 @@ export class PubMedAPI {
 		const monthDay = date.getDate();
 		const publicationDate = `${fullYear}/${month}/${monthDay}`;
 
-		return retry(
+		return useAsyncRetry(
 			() => this.httpClient.get(
 				"/entrez/eutils/esearch.fcgi",
 				{
@@ -69,7 +70,7 @@ export class PubMedAPI {
 	}
 
 	public static getArticle(pubmedId: string[]) {
-		return retry(
+		return useAsyncRetry(
 			() => this.httpClient.get(
 				"/entrez/eutils/efetch.fcgi",
 				{

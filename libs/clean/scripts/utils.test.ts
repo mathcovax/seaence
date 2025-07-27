@@ -1,4 +1,4 @@
-import { applyAttributes, AttributeError } from "./utils";
+import { applyAttributes, AttributeError, createAsyncRetry } from "./utils";
 import { z as zod } from "zod";
 import "./valueObject";
 
@@ -88,5 +88,38 @@ describe("utils", () => {
 			),
 		)
 			.toEqual(new AttributeError("firstName", "array"));
+	});
+
+	it("createAsyncRetry", async() => {
+		const fn = vi.fn(() => Promise.resolve(0));
+
+		fn
+			.mockImplementationOnce(() => Promise.resolve(1))
+			.mockImplementationOnce(() => Promise.resolve(3));
+
+		const functionWithRetry1 = createAsyncRetry(
+			fn,
+			(result) => result < 2,
+			{ maxRetry: 2 },
+		);
+
+		expect(await functionWithRetry1()).toBe(3);
+		expect(fn).toBeCalledTimes(2);
+
+		fn.mockReset();
+
+		fn
+			.mockImplementationOnce(() => Promise.resolve(1))
+			.mockImplementationOnce(() => Promise.resolve(2))
+			.mockImplementationOnce(() => Promise.resolve(3));
+
+		const functionWithRetry2 = createAsyncRetry(
+			fn,
+			(result) => result < 2,
+			{ maxRetry: 2 },
+		);
+
+		expect(await functionWithRetry2()).toBe(2);
+		expect(fn).toBeCalledTimes(2);
 	});
 });
