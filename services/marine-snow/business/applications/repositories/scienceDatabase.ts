@@ -1,6 +1,7 @@
+import { type Provider } from "@business/domains/common/provider";
 import { type PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
 import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
-import { type SearchResultEntity } from "@business/domains/entities/searchResult";
+import { type SearchResultReference, type SearchResultEntity } from "@business/domains/entities/searchResult";
 import { createRepositoryHandler, type RepositoryError, type RepositoryBase } from "@vendors/clean";
 
 export type SearchResultMission =
@@ -33,6 +34,7 @@ export interface ScienceDatabaseRepository extends RepositoryBase<never> {
 		| GetStartSearchResultItem<GenericSearchResultMission>
 		| RepositoryError
 	>;
+	searchResultReferenceIsValid(provider: Provider, reference: SearchResultReference): Promise<boolean>;
 }
 
 export const scienceDatabaseRepository = createRepositoryHandler<

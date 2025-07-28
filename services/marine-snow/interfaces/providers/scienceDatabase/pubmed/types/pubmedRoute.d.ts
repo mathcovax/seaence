@@ -3,16 +3,20 @@
 import { type ArticlePayload } from "./article";
 import { type SearchResultPayload } from "./searchResult";
 
+type Retmode = "json" | "xml";
+
+type DB = "pubmed";
+
 export type PubMedRoute =
 	| {
 		method: "GET";
 		path: "/entrez/eutils/esearch.fcgi";
 		query: {
-			db: string;
+			db: DB;
 			term: string;
 			retmax: string;
 			retstart: string;
-			retmode: string;
+			retmode: "json";
 		};
 		response:
 			| {
@@ -32,9 +36,9 @@ export type PubMedRoute =
 		method: "GET";
 		path: "/entrez/eutils/efetch.fcgi";
 		query: {
-			db: string;
+			db: DB;
 			id: string | string[];
-			retmode: string;
+			retmode: "xml";
 		};
 		response:
 			| {

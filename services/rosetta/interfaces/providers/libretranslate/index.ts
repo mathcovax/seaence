@@ -10,11 +10,6 @@ export type LibretranslateClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes
 >;
 
-const languageMapper: Record<Translate.Language, SupportedLanguage> = {
-	"fr-FR": "fr",
-	"en-US": "en",
-};
-
 export namespace LibretranslateAPI {
 	const httpClient = new HttpClient<LibretranslateClientRoute>({
 		baseUrl: envs.LIBRETRANSLATE_BASE_URL,
@@ -22,8 +17,13 @@ export namespace LibretranslateAPI {
 
 	const expectedCode = 200;
 
-	export async function translate(text: string, language: Translate.Language) {
-		const response = await useAsyncRetry(
+	const languageMapper: Record<Translate.Language, SupportedLanguage> = {
+		"fr-FR": "fr",
+		"en-US": "en",
+	};
+
+	export function translate(text: string, language: Translate.Language) {
+		return useAsyncRetry(
 			() => httpClient
 				.post(
 					"/translate",
@@ -37,31 +37,26 @@ export namespace LibretranslateAPI {
 						}),
 					},
 				)
-				.catch(
-					(error: unknown) => {
-						if (error instanceof TypeError) {
-							return error;
-						}
-
-						throw error;
-					},
-				),
-			(response) => response instanceof TypeError || response.code !== expectedCode,
+				.catch((error: unknown) => error as Error),
+			(response) => response instanceof Error || response.code !== expectedCode,
 			{
 				maxRetry: 5,
 				timeToSleep: 1000,
 			},
-		);
+		)
+			.then(
+				(response) => {
+					if (response instanceof Error) {
+						throw response;
+					} else if (response.code !== expectedCode) {
+						throw new WrongResponseError(response, {
+							expect: expectedCode.toString(),
+							receive: response.code.toString(),
+						});
+					}
 
-		if (response instanceof TypeError) {
-			throw response;
-		} else if (response.code !== expectedCode) {
-			throw new WrongResponseError(response, {
-				expect: expectedCode.toString(),
-				receive: response.code.toString(),
-			});
-		}
-
-		return response.body.translatedText;
+					return response.body.translatedText;
+				},
+			);
 	}
 }

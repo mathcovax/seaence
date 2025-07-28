@@ -35,6 +35,10 @@ export async function pubmedSender(references: string[]): Promise<ProcessedResul
 		return new TechnicalError("Unsupport book.");
 	}
 
+	if (!pubmedResponse.body.PubmedArticleSet.PubmedArticle) {
+		return new TechnicalError("Missing PubmedArticle key.");
+	}
+
 	const processedSearchResults = await Promise.all(
 		pubmedResponse.body.PubmedArticleSet.PubmedArticle
 			.map(

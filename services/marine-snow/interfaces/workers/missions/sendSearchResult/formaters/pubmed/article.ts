@@ -5,7 +5,13 @@ import { TechnicalError } from "@vendors/clean";
 import { formatDate } from "./date";
 import { reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
 
-type PubmedArticle = Extract<ArticlePayload["PubmedArticleSet"], { PubmedArticle: object }>["PubmedArticle"][number];
+type PubmedArticle = Extract<
+	Extract<
+		ArticlePayload["PubmedArticleSet"],
+		{ PubmedArticle?: object }
+	>["PubmedArticle"],
+	object
+>[number];
 
 const pubmedBaseUrl = "https://pubmed.ncbi.nlm.nih.gov";
 
