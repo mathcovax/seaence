@@ -8,7 +8,7 @@ interface Input {
 	newDocumentInFolderName: DocumentInFolderName;
 }
 
-export class UserRenameInDocumentFolderUsecase extends UsecaseHandler.create({
+export class UserRenameDocumentInFolderUsecase extends UsecaseHandler.create({
 	documentInFolderRepository,
 }) {
 	public async execute({ userDocumentInFolder, newDocumentInFolderName }: Input) {
