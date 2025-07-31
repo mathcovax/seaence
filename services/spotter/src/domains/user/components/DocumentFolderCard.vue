@@ -49,6 +49,7 @@ function onDelete() {
 				<DSDropdownMenu class="shrink-0">
 					<DSDropdownMenuTrigger as-child>
 						<DSButton
+							data-testid="document-folder-card-button"
 							variant="ghost"
 							icon="dotsVertical"
 							square
@@ -57,7 +58,10 @@ function onDelete() {
 					</DSDropdownMenuTrigger>
 
 					<DSDropdownMenuContent @click.stop>
-						<DSDropdownMenuItem @click="onDelete">
+						<DSDropdownMenuItem
+							data-testid="document-folder-card-button-dropdown-menu-delete-option"
+							@click="onDelete"
+						>
 							<DSIcon name="delete" />
 							{{ $t("cta.delete") }}
 						</DSDropdownMenuItem>
