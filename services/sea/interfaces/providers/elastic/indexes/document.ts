@@ -1,9 +1,8 @@
-
 import { type estypes } from "@elastic/elasticsearch";
 import { type ArticleType } from "../common/articleType";
 import { type Provider } from "../common/provider";
 import { type ExpectType } from "@duplojs/utils";
-import { ElasticDocument } from ".";
+import { Elastic } from "../elastic";
 import { languageEnum } from "../common/language";
 import { createEnum, type GetEnumValue } from "@vendors/clean";
 
@@ -137,116 +136,120 @@ type _ExpectSameKeyof = ExpectType<
 	"strict"
 >;
 
-export const enUsDocument = new ElasticDocument<Document>(
-	`document_${languageEnum["en-US"]}`,
-	"bakedDocumentId",
-	{
-		analysis: {
-			filter: {
-				stemmer_filter: {
-					type: "stemmer",
-					language: "english",
+export const enUsElasticIndex = Elastic
+	.createIndex({
+		name: `document_${languageEnum["en-US"]}`,
+		schema: elasticDocumentMappingSchema,
+		keyId: "bakedDocumentId",
+		settings: {
+			max_result_window: 2001,
+			analysis: {
+				filter: {
+					stemmer_filter: {
+						type: "stemmer",
+						language: "english",
+					},
+					stop_filter: {
+						type: "stop",
+						stopwords: ["_english_"],
+					},
 				},
-				stop_filter: {
-					type: "stop",
-					stopwords: ["_english_"],
+				normalizer: {
+					flexible_normalizer: {
+						type: "custom",
+						filter: ["lowercase", "asciifolding"],
+					},
+				},
+				analyzer: {
+					default: {
+						type: "english",
+					},
+					stemmer_analyzer: {
+						type: "custom",
+						tokenizer: "standard",
+						filter: [
+							"lowercase",
+							"asciifolding",
+							"stemmer_filter",
+							"stop_filter",
+						],
+					},
+					strict_analyzer: {
+						type: "custom",
+						tokenizer: "standard",
+						filter: [
+							"lowercase",
+							"asciifolding",
+						],
+					},
 				},
 			},
-			normalizer: {
-				flexible_normalizer: {
-					type: "custom",
-					filter: ["lowercase", "asciifolding"],
-				},
-			},
-			analyzer: {
-				default: {
-					type: "english",
-				},
-				stemmer_analyzer: {
-					type: "custom",
-					tokenizer: "standard",
-					filter: [
-						"lowercase",
-						"asciifolding",
-						"stemmer_filter",
-						"stop_filter",
-					],
-				},
-				strict_analyzer: {
-					type: "custom",
-					tokenizer: "standard",
-					filter: [
-						"lowercase",
-						"asciifolding",
-					],
-				},
+			index: {
+				number_of_shards: 3,
+				number_of_replicas: 1,
 			},
 		},
-		index: {
-			number_of_shards: 3,
-			number_of_replicas: 1,
-		},
-	},
-	elasticDocumentMappingSchema,
-);
+	})<Document>();
 
-export const frFrDocument = new ElasticDocument<Document>(
-	`document_${languageEnum["fr-FR"]}`,
-	"bakedDocumentId",
-	{
-		analysis: {
-			filter: {
-				stemmer_filter: {
-					type: "stemmer",
-					language: "french",
+export const frFrElasticIndex = Elastic
+	.createIndex({
+		name: `document_${languageEnum["fr-FR"]}`,
+		schema: elasticDocumentMappingSchema,
+		keyId: "bakedDocumentId",
+		settings: {
+			max_result_window: 2001,
+			analysis: {
+				filter: {
+					stemmer_filter: {
+						type: "stemmer",
+						language: "french",
+					},
+					stop_filter: {
+						type: "stop",
+						stopwords: ["_french_"],
+					},
+					french_elision: {
+						type: "elision",
+						articles: ["l", "m", "t", "qu", "n", "s", "j", "d", "c", "jusqu", "quoiqu", "lorsqu", "puisqu"],
+					},
 				},
-				stop_filter: {
-					type: "stop",
-					stopwords: ["_french_"],
+				normalizer: {
+					flexible_normalizer: {
+						type: "custom",
+						filter: ["lowercase", "asciifolding"],
+					},
 				},
-				french_elision: {
-					type: "elision",
-					articles: ["l", "m", "t", "qu", "n", "s", "j", "d", "c", "jusqu", "quoiqu", "lorsqu", "puisqu"],
+				analyzer: {
+					default: {
+						type: "french",
+					},
+					stemmer_analyzer: {
+						type: "custom",
+						tokenizer: "standard",
+						filter: [
+							"lowercase",
+							"asciifolding",
+							"french_elision",
+							"stemmer_filter",
+							"stop_filter",
+						],
+					},
+					strict_analyzer: {
+						type: "custom",
+						tokenizer: "standard",
+						filter: [
+							"lowercase",
+							"asciifolding",
+						],
+					},
 				},
 			},
-			normalizer: {
-				flexible_normalizer: {
-					type: "custom",
-					filter: ["lowercase", "asciifolding"],
-				},
-			},
-			analyzer: {
-				default: {
-					type: "french",
-				},
-				stemmer_analyzer: {
-					type: "custom",
-					tokenizer: "standard",
-					filter: [
-						"lowercase",
-						"asciifolding",
-						"french_elision",
-						"stemmer_filter",
-						"stop_filter",
-					],
-				},
-				strict_analyzer: {
-					type: "custom",
-					tokenizer: "standard",
-					filter: [
-						"lowercase",
-						"asciifolding",
-					],
-				},
+			index: {
+				number_of_shards: 3,
+				number_of_replicas: 1,
 			},
 		},
-		index: {
-			number_of_shards: 3,
-			number_of_replicas: 1,
-		},
-	},
-	elasticDocumentMappingSchema,
-);
+	})<Document>();
 
 export type AvailableField =
 	| keyof Document
