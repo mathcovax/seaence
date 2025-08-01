@@ -29,9 +29,12 @@ const { disconect, hasNewNotifications } = useUserInformation();
 		</DSDropdownMenuTrigger>
 
 		<DSDropdownMenuContent align="end">
-			<DSDropdownMenuItem as-child>
+			<DSDropdownMenuItem
+				data-testid="account-dropdown-profil"
+				as-child
+			>
 				<RouterLink
-					:to="profilePage"
+					:to="profilPage"
 					class="w-full"
 				>
 					{{ $t("layout.base.header.accountDropdown.profile") }}
@@ -53,7 +56,10 @@ const { disconect, hasNewNotifications } = useUserInformation();
 				</div>
 			</DSDropdownMenuItem>
 
-			<DSDropdownMenuItem as-child>
+			<DSDropdownMenuItem
+				data-testid="account-dropdown-document-folder"
+				as-child
+			>
 				<RouterLink :to="documentFolderPage.createTo()">
 					{{ $t("layout.base.header.accountDropdown.documentFolder") }}
 				</RouterLink>

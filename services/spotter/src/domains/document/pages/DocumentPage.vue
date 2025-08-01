@@ -70,7 +70,10 @@ function formatedDate(date: FlexibleDate) {
 </script>
 
 <template>
-	<section class="min-h-screen-nh px-4 md:px-6 lg:px-8">
+	<section
+		class="min-h-screen-nh px-4 md:px-6 lg:px-8"
+		data-testId="document-page"
+	>
 		<article
 			v-if="document && allAffiliations && posts"
 			class="flex flex-col gap-12"
@@ -164,6 +167,7 @@ function formatedDate(date: FlexibleDate) {
 						:current-document-title="document.title"
 					>
 						<DSOutlineButton
+							data-testId="create-many-document-in-folder-dialog-button"
 							icon="plus"
 							size="small"
 							class="self-start"

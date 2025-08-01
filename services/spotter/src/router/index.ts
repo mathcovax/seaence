@@ -16,7 +16,7 @@ export const router = createRouter({
 				postListPage.recordRaw,
 				postPage.recordRaw,
 				postCreatePage.recordRaw,
-				profilePage.recordRaw,
+				profilPage.recordRaw,
 				notificationListPage.recordRaw,
 				notFoundPage.recordRaw,
 				documentFolderPage.recordRaw,

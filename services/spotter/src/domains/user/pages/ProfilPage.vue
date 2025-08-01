@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import type { User } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
 import { useUserInformation } from "../composables/useUserInformation";
-import { useEditProfileForm } from "../composables/useEditProfileForm";
+import { useEditProfilForm } from "../composables/useEditProfilForm";
 
 const router = useRouter();
-const { $pt } = profilePage.use();
+const { $pt } = profilPage.use();
 const user = ref<User | null>(null);
 const { promisedRequestInformation, fetchInformation, disconect } = useUserInformation();
-const { EditProfileForm, editProfileformValue, editProfileformCheck } = useEditProfileForm();
+const { EditProfilForm, editProfilformValue, editProfilformCheck } = useEditProfilForm();
 
 void promisedRequestInformation.value!
 	.then(
 		({ information, body }) => {
 			if (information === "user.self") {
 				user.value = { ...body };
-				editProfileformValue.value = { ...body };
+				editProfilformValue.value = { ...body };
 			} else {
 				void router.push(
 					homePage.createTo(),
@@ -24,7 +24,7 @@ void promisedRequestInformation.value!
 	);
 
 function editUser() {
-	const result = editProfileformCheck();
+	const result = editProfilformCheck();
 
 	if (!result || !user.value || !hasChange) {
 		return;
@@ -70,14 +70,15 @@ function deleteAccount() {
 }
 
 const hasChange = computed(
-	() => editProfileformValue.value.username !== user.value?.username
-		|| editProfileformValue.value.language !== user.value?.language,
+	() => editProfilformValue.value.username !== user.value?.username
+		|| editProfilformValue.value.language !== user.value?.language,
 );
 </script>
 
 <template>
 	<div
 		v-if="user"
+		data-testid="profil-page"
 		class="min-h-[calc(100vh-6rem-2rem)]"
 	>
 		<section class="mb-12 flex flex-col-reverse md:flex-row gap-6 md:gap-12 items-center">
@@ -87,9 +88,13 @@ const hasChange = computed(
 				</h1>
 
 				<div class="grid gap-4">
-					<EditProfileForm @submit="editUser">
+					<EditProfilForm
+						data-testid="edit-profil-form"
+						@submit="editUser"
+					>
 						<div class="mt-6 space-x-3">
 							<DSPrimaryButton
+								data-testid="edit-profil-form-submit-button"
 								type="submit"
 								:disabled="!hasChange"
 							>
@@ -109,7 +114,7 @@ const hasChange = computed(
 								</DSDestructiveButton>
 							</DSValidationDialog>
 						</div>
-					</EditProfileForm>
+					</EditProfilForm>
 				</div>
 			</div>
 

@@ -39,6 +39,7 @@ function handleCreateDocumentFolder() {
 
 <template>
 	<DSDialog
+		data-testid="create-document-folder-dialog"
 		v-model:open="dialogState"
 	>
 		<template #trigger>
@@ -50,8 +51,12 @@ function handleCreateDocumentFolder() {
 		</template>
 
 		<template #content>
-			<CreateDocumentFolderForm @submit="handleCreateDocumentFolder">
+			<CreateDocumentFolderForm
+				data-testid="create-document-folder-dialog-form"
+				@submit="handleCreateDocumentFolder"
+			>
 				<DSPrimaryButton
+					data-testid="create-document-folder-dialog-form-submit-button"
 					size="full"
 					type="submit"
 				>

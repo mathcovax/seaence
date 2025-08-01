@@ -65,8 +65,14 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 </script>
 
 <template>
-	<section class="min-h-screen-nh space-y-6">
-		<header class="flex justify-between items-start">
+	<section
+		data-testid="document-folder-page"
+		class="min-h-screen-nh space-y-6"
+	>
+		<header
+			data-testid="document-folder-header"
+			class="flex justify-between items-start"
+		>
 			<div class="flex-1/2 sm:flex-none flex flex-col sm:flex-row gap-4 items-start sm:items-center">
 				<BackButton />
 
@@ -83,6 +89,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 					<div class="ml-auto flex gap-2 justify-end items-center">
 						<CreateDocumentFolderDialog @create-document-folder="findDocumentFolderPage()">
 							<DSOutlineButton
+								data-testid="document-folder-create-document-folder"
 								icon="plus"
 							/>
 						</CreateDocumentFolderDialog>
@@ -95,7 +102,10 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 			</div>
 		</header>
 
-		<div v-if="documentFolderPageInformation && documentFolderListDetails">
+		<div
+			data-testid="document-folder-wrapper"
+			v-if="documentFolderPageInformation && documentFolderListDetails"
+		>
 			<DocumentFolderHeader
 				icon="folder"
 				:count-total-item="documentFolderPageInformation.total"
@@ -103,13 +113,18 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 			/>
 
 			<div
-				v-if="documentFolderList"
+				v-if="documentFolderList && documentFolderList.length"
 				class="mt-4 md:mt-6"
 			>
-				<ul class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+				<ul
+					data-testid="document-folder-wrapper-list"
+					class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+				>
 					<li
+						data-testid="document-folder-wrapper-element"
 						v-for="folder in documentFolderList"
 						:key="folder.id"
+						:data-testvalue="folder.id"
 					>
 						<DocumentFolderCard
 							:document-folder="folder"
@@ -134,6 +149,7 @@ function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 
 			<p
 				v-else
+				data-testid="document-folder-wrapper-no-result"
 				class="mt-10 text-center text-muted-foreground italic"
 			>
 				{{ $pt("noDocumentFolder") }}

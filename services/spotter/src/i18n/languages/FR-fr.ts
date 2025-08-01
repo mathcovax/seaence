@@ -138,7 +138,7 @@ export const FRfr = {
 			writeYourAnswer: "Un super commentaire...",
 			notCompliantContent: "Le contenu de ce message a été censuré.",
 		},
-		[profilePage.name]: {
+		[profilPage.name]: {
 			personalInfo: {
 				title: "Informations personnelles",
 				label: {

@@ -25,7 +25,7 @@ export function createPageEngine<
 	GenericElements extends ComponentElements | undefined = undefined,
 >(
 	name: GenericName,
-	makePath: (params?: GenericPathParams) => string,
+	makePath: (params: GenericPathParams) => string,
 	{
 		getMainElement,
 		getElements,
@@ -51,7 +51,7 @@ export function createPageEngine<
 
 		return {
 			page: true,
-			makePath,
+			makePath: makePath as never,
 			...pageBase,
 		};
 	};

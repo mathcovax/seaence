@@ -36,6 +36,7 @@ const { toggle } = useAuthDialog();
 					<ul class="flex gap-4 text-primary">
 						<li>
 							<RouterLink
+								data-testid="header-simple-search"
 								class="flex gap-1 items-center hover:underline"
 								:to="simpleSearchPage"
 								:title="$t('layout.base.header.link.simple')"

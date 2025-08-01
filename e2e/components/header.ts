@@ -6,6 +6,7 @@ export const headerEngine = createComponentEngine(
 		getMainElement: (body) => body.getByTestId("header"),
 		getElements: (mainElement) => ({
 			signButton: mainElement.getByTestId("header-sign-button"),
+			simpleSearchButton: mainElement.getByTestId("header-simple-search"),
 		}),
 	},
 );

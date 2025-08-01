@@ -15,6 +15,9 @@ const actions = {
 
 		return element.fill(content);
 	},
+	async press({ element }, key: string) {
+		return element.press(key);
+	},
 } satisfies WrapperStepEmbededFunction;
 
 export namespace Actions {
@@ -33,5 +36,10 @@ export namespace Actions {
 	export const fill = createStepEmbeder(
 		"$component: I fill on $element.",
 		actions.fill,
+	);
+
+	export const press = createStepEmbeder(
+		"$component: I press key on $element",
+		actions.press,
 	);
 }

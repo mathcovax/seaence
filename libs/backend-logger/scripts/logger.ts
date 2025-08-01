@@ -4,7 +4,7 @@ export function logger(...args: any[]) {
 			? args
 			: args[0],
 		{
-			depth: 10,
+			depth: 15,
 			colors: true,
 		},
 	);

@@ -7,6 +7,8 @@ export const accountDropdownEngine = createComponentEngine(
 		getElements: (mainElement, body) => ({
 			button: mainElement.getByTestId("account-dropdown-button"),
 			disconnectButton: body.getByTestId("account-dropdown-disconnect"),
+			documentFolderButton: body.getByTestId("account-dropdown-document-folder"),
+			profilButton: body.getByTestId("account-dropdown-profil"),
 		}),
 	},
 );

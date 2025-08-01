@@ -2,9 +2,9 @@ import { userLanguageEnum, userLanguageSchema } from "@/lib/horizon/types/user";
 import { userRules } from "@vendors/entity-rules";
 import { useUserInformation } from "./useUserInformation";
 
-export function useEditProfileForm() {
+export function useEditProfilForm() {
 	const { t: $t } = useI18n();
-	const { $pt } = profilePage.use();
+	const { $pt } = profilPage.use();
 	const { userNavigatorLanguage } = useUserInformation();
 
 	const { Form, formValue, check } = useFormBuilder(
@@ -52,8 +52,8 @@ export function useEditProfileForm() {
 	);
 
 	return {
-		EditProfileForm: Form,
-		editProfileformValue: formValue,
-		editProfileformCheck: check,
+		EditProfilForm: Form,
+		editProfilformValue: formValue,
+		editProfilformCheck: check,
 	};
 }
