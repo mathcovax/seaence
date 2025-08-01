@@ -167,6 +167,7 @@ function formatedDate(date: FlexibleDate) {
 						:current-document-title="document.title"
 					>
 						<DSOutlineButton
+							data-testId="create-many-document-in-folder-dialog-button"
 							icon="plus"
 							size="small"
 							class="self-start"

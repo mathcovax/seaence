@@ -14,6 +14,14 @@ const supportedLanguageEnum = createEnum([
 	"en-US",
 ]);
 
+const randomMin = 10000000;
+const randomMax = 90000000;
+
+function makeRandomName(prefix = "zeriixBg-") {
+	const randomNumber = Math.floor(randomMin + (Math.random() * randomMax));
+	return `${prefix}${randomNumber}`;
+}
+
 testCLient.describe(
 	"Profil",
 	() => {
@@ -58,7 +66,7 @@ testCLient.describe(
 
 			await Actions
 				.withStepContent("fill good username")
-				.fill(editPorfilForm, "username", "zeriixBg");
+				.fill(editPorfilForm, "username", makeRandomName());
 
 			await Assertions
 				.withStepContent("no hint")
