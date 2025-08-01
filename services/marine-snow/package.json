@@ -16,6 +16,7 @@
     "mission:resumeSearchResult": "tsx interfaces/commands/resumeMissionSearchResult.ts",
     "mission:sendSearchResult": "tsx interfaces/commands/missionSendSearchResult.ts",
     "mission:sendOneSearchResult": "tsx interfaces/commands/missionSendOneSearchResult.ts",
+    "addOneSearchResult": "tsx interfaces/commands/addOneSearchResult.ts",
     "postinstall": "npm run prisma:generate && npm run duplo:generate"
   },
   "dependencies": {

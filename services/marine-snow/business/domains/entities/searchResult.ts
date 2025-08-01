@@ -16,7 +16,7 @@ export class SearchResultEntity extends EntityHandler.create({
 	reference: searchResultReferenceObjecter,
 	failedToSend: searchResultFailedToSendObjecter,
 }) {
-	public static create(params: Omit<GetEntityProperties<typeof SearchResultEntity>, "status">) {
+	public static create(params: Omit<GetEntityProperties<typeof SearchResultEntity>, "status" | "failedToSend">) {
 		return new SearchResultEntity({
 			...params,
 			failedToSend: searchResultFailedToSendObjecter.unsafeCreate(false),

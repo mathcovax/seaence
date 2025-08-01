@@ -1,4 +1,4 @@
-import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel, sleep } from "@duplojs/utils";
 import { type ValueObject, type ValueObjecterAttribute, type ValueObjectError } from "./valueObject";
 import { type ZodType } from "zod";
 
@@ -336,4 +336,62 @@ export function createExternalPromise<
 		reject,
 		promise,
 	};
+}
+
+interface CreateAsyncRetryOptions {
+	maxRetry: number;
+	timeToSleep?: number;
+	"z-currentRetry"?: number;
+}
+
+export function createAsyncRetry<
+	GenericAnyFunction extends((...args: unknown[]) => Promise<any>),
+>(
+	retryFunction: GenericAnyFunction,
+	checkFunction: (result: Awaited<ReturnType<GenericAnyFunction>>) => boolean,
+	options: CreateAsyncRetryOptions,
+) {
+	return (
+		(...args: Parameters<GenericAnyFunction>) => retryFunction(...args)
+			.then((result): ReturnType<GenericAnyFunction> => {
+				if (
+					typeof options["z-currentRetry"] === "number"
+					&& options["z-currentRetry"] >= options.maxRetry
+				) {
+					return result;
+				}
+
+				const mustRetry = checkFunction(result as never);
+
+				if (mustRetry) {
+					return sleep(options.timeToSleep ?? 0)
+						.then(
+							() => createAsyncRetry(
+								retryFunction,
+								checkFunction,
+								{
+									...options,
+									"z-currentRetry": (options["z-currentRetry"] ?? 0) + 1,
+								},
+							)(...args),
+						) as never;
+				}
+
+				return result;
+			})
+	) as GenericAnyFunction;
+}
+
+export function useAsyncRetry<
+	GenericOutput extends unknown,
+>(
+	retryFunction: () => Promise<GenericOutput>,
+	checkFunction: (result: GenericOutput) => boolean,
+	options: CreateAsyncRetryOptions,
+) {
+	return createAsyncRetry(
+		retryFunction,
+		checkFunction,
+		options,
+	)();
 }

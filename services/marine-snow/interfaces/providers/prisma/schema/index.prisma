@@ -24,12 +24,11 @@ enum provider {
 }
 
 model searchResult {
-    reference                     String
-    provider                      provider
-    failedToSend                  Boolean                      @default(false)
-    selected                      Boolean                      @default(false)
-    createdAt                     DateTime                     @default(now())
-    SingleSendSearchResultMission SendOneSearchResultMission[]
+    reference    String
+    provider     provider
+    failedToSend Boolean  @default(false)
+    selected     Boolean  @default(false)
+    createdAt    DateTime @default(now())
 
     @@id([reference, provider], name: "id")
 }
@@ -76,7 +75,6 @@ model SendSearchResultMission {
 model SendOneSearchResultMission {
     id                    String        @id
     status                missionStatus
-    searchResult          searchResult  @relation(fields: [searchResultReference, searchResultProvider], references: [reference, provider])
     searchResultReference String
     searchResultProvider  provider
 }

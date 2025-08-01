@@ -145,7 +145,9 @@ export const articlePayloadSchema = zo({
 						}).toArray(),
 					}),
 				}),
-			}).toArray(),
+			})
+				.toArray()
+				.optional(),
 		}),
 		zo({
 			PubmedBookArticle: zo({

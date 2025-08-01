@@ -8,6 +8,7 @@ import { PubMedSearchResultMissionEntity } from "@business/domains/entities/miss
 import { startWorkerMission } from "@interfaces/workers";
 import { TechnicalError } from "@vendors/clean/error";
 import { prismaClient } from "@interfaces/providers/prisma";
+import { PubMedAPI } from "@interfaces/providers/scienceDatabase/pubmed";
 
 scienceDatabaseRepository.default = {
 	save() {
@@ -96,5 +97,13 @@ scienceDatabaseRepository.default = {
 				)
 				.exhaustive();
 		}
+	},
+	searchResultReferenceIsValid(provider, reference) {
+		return match(provider.value)
+			.with(
+				"pubmed",
+				() => PubMedAPI.articleExist(reference.value),
+			)
+			.exhaustive();
 	},
 };

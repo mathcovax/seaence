@@ -1,6 +1,5 @@
 import { type ArticleType } from "@business/domains/common/articleType";
 import { type ExpectType } from "@duplojs/utils";
-import { createEnum } from "@vendors/clean";
 import { type UniqueFieldName } from "@vendors/clients-type/abys/duplojsTypesCodegen";
 
 export const articleTypeToFilterArticleType = {
@@ -101,7 +100,7 @@ export const articleTypeBackedToUI: Record<ArticleType["value"], string | string
 	caseReports: "D002363",
 	classicalArticle: "D016419",
 	clinicalConference: "D016429",
-	clinicalStudy: undefined,
+	clinicalStudy: "D000068397",
 	clinicalTrial: "D016430",
 	clinicalTrialProtocol: "D000078325",
 	clinicalTrialPhaseI: "D017426",
@@ -115,7 +114,7 @@ export const articleTypeBackedToUI: Record<ArticleType["value"], string | string
 	congress: "D016423",
 	consensusDevelopmentConference: "D016446",
 	consensusDevelopmentConferenceNIH: "D016447",
-	controlledClinicalTrial: "D016449",
+	controlledClinicalTrial: ["D016449", "D018848"],
 	correctedAndRepublishedArticle: "D016439",
 	dataset: "D064886",
 	dictionary: "D016437",

@@ -28,4 +28,6 @@ npm run docker:marine-snow:mission:resumeSearchResult -- --id [missionId]
 npm run docker:marine-snow:mission:sendSearchResult -- --concurrency 5
 
 npm run docker:marine-snow:mission:sendOneSearchResult -- --provider pubmed --reference [searchResultReference]
+
+npm run docker:marine-snow:addOneSearchResult -- --provider pubmed --reference [searchResultReference]
 ```
