@@ -344,54 +344,59 @@ interface CreateAsyncRetryOptions {
 	"z-currentRetry"?: number;
 }
 
+export function useAsyncRetry<
+	GenericOutput extends unknown,
+>(
+	retryFunction: () => Promise<GenericOutput>,
+	shouldRetry: (result: GenericOutput) => boolean,
+	options: CreateAsyncRetryOptions,
+): Promise<GenericOutput> {
+	return retryFunction()
+		.then(
+			(result) => {
+				if (
+					(
+						typeof options["z-currentRetry"] === "number"
+						&& options["z-currentRetry"] >= options.maxRetry
+					)
+					|| !shouldRetry(result)
+				) {
+					return result;
+				}
+
+				return sleep(options.timeToSleep ?? 0)
+					.then(
+						() => useAsyncRetry(
+							retryFunction,
+							shouldRetry,
+							{
+								...options,
+								"z-currentRetry": (options["z-currentRetry"] ?? 0) + 1,
+							},
+						),
+					);
+			},
+		);
+}
+
 export function createAsyncRetry<
 	GenericAnyFunction extends((...args: unknown[]) => Promise<any>),
 >(
 	retryFunction: GenericAnyFunction,
 	checkFunction: (result: Awaited<ReturnType<GenericAnyFunction>>) => boolean,
 	options: CreateAsyncRetryOptions,
-) {
+): GenericAnyFunction {
 	return (
-		(...args: Parameters<GenericAnyFunction>) => retryFunction(...args)
-			.then((result): ReturnType<GenericAnyFunction> => {
-				if (
-					typeof options["z-currentRetry"] === "number"
-					&& options["z-currentRetry"] >= options.maxRetry
-				) {
-					return result;
-				}
-
-				const mustRetry = checkFunction(result as never);
-
-				if (mustRetry) {
-					return sleep(options.timeToSleep ?? 0)
-						.then(
-							() => createAsyncRetry(
-								retryFunction,
-								checkFunction,
-								{
-									...options,
-									"z-currentRetry": (options["z-currentRetry"] ?? 0) + 1,
-								},
-							)(...args),
-						) as never;
-				}
-
-				return result;
-			})
+		(...args) => useAsyncRetry(
+			() => retryFunction(...args),
+			checkFunction,
+			options,
+		)
 	) as GenericAnyFunction;
 }
 
-export function useAsyncRetry<
-	GenericOutput extends unknown,
->(
-	retryFunction: () => Promise<GenericOutput>,
-	checkFunction: (result: GenericOutput) => boolean,
-	options: CreateAsyncRetryOptions,
-) {
-	return createAsyncRetry(
-		retryFunction,
-		checkFunction,
-		options,
-	)();
+export function arrayIsNotEmpty<
+	GenericArray extends any[],
+>(array: GenericArray): array is Exclude<GenericArray, undefined[]> {
+	return !!array.length;
 }

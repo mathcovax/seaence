@@ -98,7 +98,7 @@ scienceDatabaseRepository.default = {
 				.exhaustive();
 		}
 	},
-	searchResultReferenceIsValid(provider, reference) {
+	articleReferenceValueExist(provider, reference) {
 		return match(provider.value)
 			.with(
 				"pubmed",
