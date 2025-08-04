@@ -341,42 +341,33 @@ export function createExternalPromise<
 interface CreateAsyncRetryOptions {
 	maxRetry: number;
 	timeToSleep?: number;
-	"z-currentRetry"?: number;
 }
 
-export function useAsyncRetry<
+export async function useAsyncRetry<
 	GenericOutput extends unknown,
 >(
 	retryFunction: () => Promise<GenericOutput>,
 	shouldRetry: (result: GenericOutput) => boolean,
 	options: CreateAsyncRetryOptions,
 ): Promise<GenericOutput> {
-	return retryFunction()
-		.then(
-			(result) => {
-				if (
-					(
-						typeof options["z-currentRetry"] === "number"
-						&& options["z-currentRetry"] >= options.maxRetry
-					)
-					|| !shouldRetry(result)
-				) {
-					return result;
-				}
+	let currentDeep = 0;
 
-				return sleep(options.timeToSleep ?? 0)
-					.then(
-						() => useAsyncRetry(
-							retryFunction,
-							shouldRetry,
-							{
-								...options,
-								"z-currentRetry": (options["z-currentRetry"] ?? 0) + 1,
-							},
-						),
-					);
-			},
-		);
+	while (true) {
+		const result = await retryFunction();
+
+		if (
+			currentDeep >= options.maxRetry
+			|| !shouldRetry(result)
+		) {
+			return result;
+		}
+
+		if (options.timeToSleep) {
+			await sleep(options.timeToSleep);
+		}
+
+		currentDeep++;
+	}
 }
 
 export function createAsyncRetry<
@@ -395,8 +386,55 @@ export function createAsyncRetry<
 	) as GenericAnyFunction;
 }
 
-export function arrayIsNotEmpty<
-	GenericArray extends any[],
->(array: GenericArray): array is Exclude<GenericArray, undefined[]> {
-	return !!array.length;
+interface LoopOutputExistResult<
+	GenericOutput extends any,
+> {
+	"-exitData": GenericOutput;
+}
+
+interface LoopOutputNextResult<
+	GenericOutput extends any,
+> {
+	"-nextData": GenericOutput;
+}
+
+export interface LoopParams<
+	GenericRawNextOutput extends any,
+> {
+	count: number;
+	previousOutput: GenericRawNextOutput | undefined;
+	next(output?: GenericRawNextOutput): LoopOutputNextResult<GenericRawNextOutput | undefined>;
+	exit<
+		GenericOutput extends any = undefined,
+	>(output?: GenericOutput): LoopOutputExistResult<GenericOutput>;
+}
+
+export async function useAsyncLoop<
+	GenericExitOutput extends LoopOutputExistResult<any> = LoopOutputExistResult<undefined>,
+	GenericRawNextOutput extends any = undefined,
+>(
+	loop: (params: LoopParams<GenericRawNextOutput>) => Promise<
+		| LoopOutputNextResult<GenericRawNextOutput>
+		| GenericExitOutput
+	>,
+): Promise<GenericExitOutput["-exitData"]> {
+	let count = 0;
+	let previousOutput: any = undefined;
+
+	while (true) {
+		const result = await loop({
+			previousOutput,
+			count,
+			next: (data) => ({ "-nextData": data as any }),
+			exit: (data) => ({ "-exitData": data as any }),
+		});
+
+		if ("-nextData" in result) {
+			previousOutput = result["-nextData"];
+			count++;
+			continue;
+		}
+
+		return result["-exitData"];
+	}
 }

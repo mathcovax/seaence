@@ -21,11 +21,11 @@ type FetchPubmedArticleReferenceResult = AsyncGenerator<
 
 type ExportArticleReferencesResult = Promise<
 	{
-		successExportArticleReferences: ArticleReferenceEntity[] | undefined[];
+		successExportArticleReferences: ArticleReferenceEntity[];
 		failedExportArticleReferences: RepositoryError<"failed-to-export-article-reference", {
 			articleReference: ArticleReferenceEntity;
 			error: TechnicalError;
-		}>[] | undefined[];
+		}>[];
 	}
 >;
 

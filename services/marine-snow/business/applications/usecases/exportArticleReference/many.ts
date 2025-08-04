@@ -2,7 +2,7 @@ import { articleReferenceRepository } from "@business/applications/repositories/
 import { exportArticleReferenceMissionRepository } from "@business/applications/repositories/exportArticleReferenceMission";
 import { scienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
 import { ExportManyArticleReferenceMissionEntity } from "@business/domains/entities/exportArticleReferenceMission/many";
-import { arrayIsNotEmpty, type Int, UsecaseError, UsecaseHandler } from "@vendors/clean";
+import { type Int, useAsyncLoop, UsecaseError, UsecaseHandler } from "@vendors/clean";
 
 interface Input {
 	concurrency: Int;
@@ -25,50 +25,68 @@ export class ExportManyArticleReferenceUsecase extends UsecaseHandler.create({
 				}),
 			);
 
-		for await (const references of this.articleReferenceRepository.foreach(concurrency)) {
-			const {
-				successExportArticleReferences,
-				failedExportArticleReferences,
-			} = await this
-				.scienceDatabaseRepository
-				.exportArticleReferences(references);
-
-			if (arrayIsNotEmpty(successExportArticleReferences)) {
-				await this
+		return useAsyncLoop(
+			async({ next, exit }) => {
+				const references = await this
 					.articleReferenceRepository
-					.deleteMany(successExportArticleReferences);
+					.findTheFirstOnes(concurrency, { ignoreFailded: true });
 
-				mission = await this.exportArticleReferenceMissionRepository.save(
-					mission.processArticleReferences(successExportArticleReferences),
-				);
-			}
+				if (!references.length) {
+					return exit(
+						await this
+							.exportArticleReferenceMissionRepository
+							.save(
+								mission.success(),
+							),
+					);
+				}
 
-			if (arrayIsNotEmpty(failedExportArticleReferences)) {
-				const failedArticleReference = await Promise.all(
-					failedExportArticleReferences
-						.map(({ moreData: { articleReference } }) => articleReference)
-						.map(
-							(articleReference) => this
-								.articleReferenceRepository
-								.save(articleReference.failed()),
-						),
-				);
-
-				const failedMission = await this
-					.exportArticleReferenceMissionRepository
-					.save(mission.failed(failedArticleReference));
-
-				return new UsecaseError("failed-to-export-many-article-references", {
+				const {
+					successExportArticleReferences,
 					failedExportArticleReferences,
-					failedMission,
-				});
-			}
-		}
+				} = await this
+					.scienceDatabaseRepository
+					.exportArticleReferences(references);
 
-		return this
-			.exportArticleReferenceMissionRepository
-			.save(
-				mission.success(),
-			);
+				if (successExportArticleReferences.length) {
+					mission = await this.exportArticleReferenceMissionRepository.save(
+						mission.processArticleReferences(successExportArticleReferences),
+					);
+
+					await Promise.all(
+						successExportArticleReferences.map(
+							(articleReferences) => this
+								.articleReferenceRepository
+								.delete(articleReferences),
+						),
+					);
+				}
+
+				if (failedExportArticleReferences.length) {
+					const failedArticleReference = await Promise.all(
+						failedExportArticleReferences
+							.map(({ moreData: { articleReference } }) => articleReference)
+							.map(
+								(articleReference) => this
+									.articleReferenceRepository
+									.save(articleReference.failed()),
+							),
+					);
+
+					const failedMission = await this
+						.exportArticleReferenceMissionRepository
+						.save(mission.failed(failedArticleReference));
+
+					return exit(
+						new UsecaseError("failed-to-export-many-article-references", {
+							failedExportArticleReferences,
+							failedMission,
+						}),
+					);
+				}
+
+				return next();
+			},
+		);
 	}
 }

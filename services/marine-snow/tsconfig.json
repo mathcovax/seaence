@@ -13,6 +13,7 @@
 		"noEmit": true,
 		"esModuleInterop": true,
 		"strict": true,
+		"noUncheckedIndexedAccess": true,
 		"skipLibCheck": true,
 		"paths": {
 			"@vendors/*": [
