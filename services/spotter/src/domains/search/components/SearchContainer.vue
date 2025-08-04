@@ -12,6 +12,8 @@ interface Props {
 	total?: number;
 }
 
+const maxResultWindow = 2000;
+
 const props = defineProps<Props>();
 
 const dSOpenTansitionRef = ref<InstanceType<typeof DSOpenTansition> | null>(null);
@@ -122,7 +124,13 @@ defineExpose({
 					{{ isScratchVisible ? $t("search.filters.hideScratch") : $t("search.filters.showScratch") }}
 				</DSPrimaryButton>
 
-				<span class="text-sm text-right text-muted-foreground lg:w-40 text-wrap">{{ $t("search.foundResults", { count: total ?? "" }) }}</span>
+				<span class="text-sm text-right text-muted-foreground lg:w-40 text-wrap">
+					{{
+						total && total > maxResultWindow
+							? $t("search.foundMoreThan2000Results")
+							: $t("search.foundResults", { count: total ?? "" })
+					}}
+				</span>
 			</div>
 		</div>
 

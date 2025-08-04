@@ -1,4 +1,4 @@
-import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel, sleep } from "@duplojs/utils";
 import { type ValueObject, type ValueObjecterAttribute, type ValueObjectError } from "./valueObject";
 import { type ZodType } from "zod";
 
@@ -336,4 +336,105 @@ export function createExternalPromise<
 		reject,
 		promise,
 	};
+}
+
+interface CreateAsyncRetryOptions {
+	maxRetry: number;
+	timeToSleep?: number;
+}
+
+export async function useAsyncRetry<
+	GenericOutput extends unknown,
+>(
+	retryFunction: () => Promise<GenericOutput>,
+	shouldRetry: (result: GenericOutput) => boolean,
+	options: CreateAsyncRetryOptions,
+): Promise<GenericOutput> {
+	let currentDeep = 0;
+
+	while (true) {
+		const result = await retryFunction();
+
+		if (
+			currentDeep >= options.maxRetry
+			|| !shouldRetry(result)
+		) {
+			return result;
+		}
+
+		if (options.timeToSleep) {
+			await sleep(options.timeToSleep);
+		}
+
+		currentDeep++;
+	}
+}
+
+export function createAsyncRetry<
+	GenericAnyFunction extends((...args: unknown[]) => Promise<any>),
+>(
+	retryFunction: GenericAnyFunction,
+	checkFunction: (result: Awaited<ReturnType<GenericAnyFunction>>) => boolean,
+	options: CreateAsyncRetryOptions,
+): GenericAnyFunction {
+	return (
+		(...args) => useAsyncRetry(
+			() => retryFunction(...args),
+			checkFunction,
+			options,
+		)
+	) as GenericAnyFunction;
+}
+
+interface LoopOutputExistResult<
+	GenericOutput extends any,
+> {
+	"-exitData": GenericOutput;
+}
+
+interface LoopOutputNextResult<
+	GenericOutput extends any,
+> {
+	"-nextData": GenericOutput;
+}
+
+export interface LoopParams<
+	GenericRawNextOutput extends any,
+> {
+	count: number;
+	previousOutput: GenericRawNextOutput | undefined;
+	next(output?: GenericRawNextOutput): LoopOutputNextResult<GenericRawNextOutput | undefined>;
+	exit<
+		GenericOutput extends any = undefined,
+	>(output?: GenericOutput): LoopOutputExistResult<GenericOutput>;
+}
+
+export async function useAsyncLoop<
+	GenericExitOutput extends LoopOutputExistResult<any> = LoopOutputExistResult<undefined>,
+	GenericRawNextOutput extends any = undefined,
+>(
+	loop: (params: LoopParams<GenericRawNextOutput>) => Promise<
+		| LoopOutputNextResult<GenericRawNextOutput>
+		| GenericExitOutput
+	>,
+): Promise<GenericExitOutput["-exitData"]> {
+	let count = 0;
+	let previousOutput: any = undefined;
+
+	while (true) {
+		const result = await loop({
+			previousOutput,
+			count,
+			next: (data) => ({ "-nextData": data as any }),
+			exit: (data) => ({ "-exitData": data as any }),
+		});
+
+		if ("-nextData" in result) {
+			previousOutput = result["-nextData"];
+			count++;
+			continue;
+		}
+
+		return result["-exitData"];
+	}
 }

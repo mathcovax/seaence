@@ -8,8 +8,10 @@ import { ResumeSearchResultMissionUsecase } from "@business/applications/usecase
 import { CreateSendOneSearchResultMissionUsecase } from "@business/applications/usecases/missions/sendSearchResult/createSendOneSearchResultMission";
 import { StartSendOneSearchResultMissionUsecase } from "@business/applications/usecases/missions/sendSearchResult/startSendOneSearchResultMission";
 import { FindOneSearchResultUsecase } from "@business/applications/usecases/searchResult/findOneSearchResult";
+import { AddOneSearchResultUsecase } from "@business/applications/usecases/searchResult/addOneSearchResult";
 
 export const findOneSearchResultUsecase = new FindOneSearchResultUsecase();
+export const addOneSearchResultUsecase = new AddOneSearchResultUsecase();
 
 export const createPubMedSearchResultMissionUsecase = new CreatePubMedSearchResultMissionUsecase();
 export const startSearchResultMissionUsecase = new StartSearchResultMissionUsecase();
