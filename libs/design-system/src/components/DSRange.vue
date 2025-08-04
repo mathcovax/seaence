@@ -41,7 +41,7 @@ function onCommit() {
 	<div class="flex flex-col gap-4 my-2">
 		<SliderRoot
 			v-model="sliderValue"
-			class="relative flex items-center h-2 bg-input rounded-full"
+			class="relative flex items-center h-2 bg-input rounded-full touch-none select-none"
 			:min="min"
 			:max="max"
 			:step="1"
