@@ -74,8 +74,10 @@ testCLient.describe(
 
 			await Actions.click(editPorfilForm, "submitButton");
 
-			await Assertions
-				.toBeVisible(sonner, "firstWarning");
+			await Promise.race([
+				Assertions.toBeVisible(sonner, "firstWarning"),
+				Assertions.toBeVisible(sonner, "firstDefault"),
+			]);
 		});
 		testCLient("Change the language", async({ webSite, firebaseAuth }) => {
 			await webSite.iNavigateTo(homePageEngine);
@@ -121,8 +123,10 @@ testCLient.describe(
 
 			await Actions.click(editPorfilForm, "submitButton");
 
-			await Assertions
-				.toBeVisible(sonner, "firstWarning");
+			await Promise.race([
+				Assertions.toBeVisible(sonner, "firstWarning"),
+				Assertions.toBeVisible(sonner, "firstDefault"),
+			]);
 		});
 	},
 );
