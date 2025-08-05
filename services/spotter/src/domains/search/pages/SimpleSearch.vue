@@ -4,5 +4,5 @@ import SearchTemplate from "../components/SearchTemplate.vue";
 </script>
 
 <template>
-	<SearchTemplate />
+	<SearchTemplate data-testid="simple-search-page" />
 </template>

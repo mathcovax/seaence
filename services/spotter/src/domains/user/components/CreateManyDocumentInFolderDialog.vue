@@ -45,7 +45,10 @@ function onUpdateOpen(value: boolean) {
 </script>
 
 <template>
-	<DSDialog @update:open="onUpdateOpen">
+	<DSDialog
+		data-testid="create-many-document-in-folder-dialog"
+		@update:open="onUpdateOpen"
+	>
 		<template #trigger>
 			<slot />
 		</template>
@@ -62,6 +65,7 @@ function onUpdateOpen(value: boolean) {
 				<div class="w-full">
 					<div
 						class="space-y-1"
+						data-test-id="create-many-document-in-folder-dialog-document-folder-list"
 						v-if="documentFoldersInWhichDocumentExistList && documentFoldersInWhichDocumentExistListDetails?.total"
 					>
 						<DSLabel>
@@ -72,6 +76,8 @@ function onUpdateOpen(value: boolean) {
 							v-for="item in documentFoldersInWhichDocumentExistList"
 							:key="item.id"
 							class="space-y-2"
+							data-testid="create-many-document-in-folder-dialog-document-folder-list-element"
+							:data-testvalue="item.id"
 						>
 							<li
 								class="p-4 flex gap-2 items-center bg-muted/50 hover:bg-muted rounded-md cursor-pointer transition-colors"
@@ -116,8 +122,12 @@ function onUpdateOpen(value: boolean) {
 				</div>
 			</DSOpenTansition>
 
-			<CreateManyDocumentInFolderDialogForm @submit="handleCreateManyDocumentInFolder">
+			<CreateManyDocumentInFolderDialogForm
+				data-testid="create-many-document-in-folder-dialog-form"
+				@submit="handleCreateManyDocumentInFolder"
+			>
 				<DSPrimaryButton
+					data-testid="create-many-document-in-folder-dialog-form-submit-button"
 					size="full"
 					type="submit"
 				>
@@ -126,7 +136,9 @@ function onUpdateOpen(value: boolean) {
 			</CreateManyDocumentInFolderDialogForm>
 
 			<CreateDocumentFolderDialog>
-				<DSOutlineButton>
+				<DSOutlineButton
+					data-testid="create-document-folder-dialog-button"
+				>
 					{{ $t("createManyDocumentInFolderDialog.createDocumentFolder") }}
 				</DSOutlineButton>
 			</CreateDocumentFolderDialog>

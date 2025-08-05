@@ -1,8 +1,8 @@
-export const profilePage = createPage(
-	"profile",
+export const profilPage = createPage(
+	"profil",
 	{
-		path: "/profile",
-		component: () => import("./pages/ProfilePage.vue"),
+		path: "/profil",
+		component: () => import("./pages/ProfilPage.vue"),
 	},
 );
 

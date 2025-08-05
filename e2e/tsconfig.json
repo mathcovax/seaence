@@ -24,6 +24,9 @@
 			"@pages/*": [
 				"./pages/*"
 			],
+			"@processes/*": [
+				"./processes/*"
+			],
 			"@components/*": [
 				"./components/*"
 			],

@@ -67,6 +67,7 @@ declare global {
   const postCreatePage: typeof import('./src/domains/forum/router')['postCreatePage']
   const postListPage: typeof import('./src/domains/forum/router')['postListPage']
   const postPage: typeof import('./src/domains/forum/router')['postPage']
+  const profilPage: typeof import('./src/domains/user/router')['profilPage']
   const profilePage: typeof import('./src/domains/user/router')['profilePage']
   const provide: typeof import('vue')['provide']
   const reactive: typeof import('vue')['reactive']
@@ -251,7 +252,7 @@ declare module 'vue' {
     readonly postCreatePage: UnwrapRef<typeof import('./src/domains/forum/router')['postCreatePage']>
     readonly postListPage: UnwrapRef<typeof import('./src/domains/forum/router')['postListPage']>
     readonly postPage: UnwrapRef<typeof import('./src/domains/forum/router')['postPage']>
-    readonly profilePage: UnwrapRef<typeof import('./src/domains/user/router')['profilePage']>
+    readonly profilPage: UnwrapRef<typeof import('./src/domains/user/router')['profilPage']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>

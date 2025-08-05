@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import test, { expect, type Page } from "@playwright/test";
+import test, { expect, type Page, type Response } from "@playwright/test";
 import { type PageInstance, type createPageEngine } from "./pageEngine";
 import { type createComponentEngine } from "./componentEngine";
 
@@ -18,7 +19,7 @@ export interface WebSiteInstance {
 		...args: Parameters<ReturnType<GenericPageEngine>["makePath"]>
 	): Promise<ReturnType<GenericPageEngine>>;
 	iWantToBeOnThisPage<
-		GenericPageEngine extends ReturnType<typeof createPageEngine>,
+		GenericPageEngine extends ReturnType<typeof createPageEngine<any, any, any>>,
 	>(
 		pageEngine: GenericPageEngine,
 		...args: Parameters<ReturnType<GenericPageEngine>["makePath"]>
@@ -33,6 +34,7 @@ export interface WebSiteInstance {
 	>(
 		componentEngine: GenericComponentEngine,
 	): Promise<ReturnType<GenericComponentEngine>>;
+	refresh(): Promise<null | Response>;
 }
 
 export function webSiteEngine(
@@ -108,6 +110,9 @@ export function webSiteEngine(
 			);
 
 			return component as never;
+		},
+		refresh() {
+			return playwrightPage.reload();
 		},
 	};
 

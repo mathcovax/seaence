@@ -81,6 +81,7 @@ async function handleRemoveDocumentInFolder(documentInFolder: DocumentInFoloder)
 
 <template>
 	<section
+		data-testid="document-in-folder-page"
 		v-if="documentInFolderPageInformation && documentInFolderListDetails"
 		class="min-h-screen-nh space-y-6"
 	>

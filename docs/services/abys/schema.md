@@ -17,11 +17,14 @@ flowchart TB
         Sea[Sea]
         Abys[Abys]
         Rosetta[Rosetta]
+        MarineSnow[MarineSnow]
     end
 
     Horizon --> Abys
 
     Bridge --> Abys
+
+    MarineSnow --> Abys
 
     Abys --> Sea
     Abys --> Rosetta
@@ -30,12 +33,13 @@ flowchart TB
     classDef search fill:#8be9fd,color:black
 
     class Horizon,Bridge gateway
-    class Sea,Abys,Rosetta search
+    class Sea,Abys,Rosetta,MarineSnow search
 ```
 
 > [!NOTE]
 > **Horizon** appelle **Abys** pour récupérer les documents.\
 > **Bridge** appelle **Abys** pour chercher des documents.\
+> **MarineSnow** appelle **Abys** pour indexer les documents crus.\
 > **Abys** appelle **Sea** pour indexer des documents.\
 > **Abys** appelle **Rosetta** pour traduire des documents.
 

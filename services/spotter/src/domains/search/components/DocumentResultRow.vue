@@ -21,7 +21,12 @@ const keywords = computed(() => props.searchResult.keywords?.join(", "));
 </script>
 
 <template>
-	<div class="flex flex-col items-start p-4 sm:p-6 border-b border-muted hover:bg-muted/5 transition-colors">
+	<RouterLink
+		data-testid="document-result-row"
+		:data-testvalue="searchResult.bakedDocumentId"
+		:to="documentPage.createTo({ params: { id: searchResult.bakedDocumentId } })"
+		class="group flex flex-col items-start p-4 sm:p-6 border-b border-muted hover:bg-muted/5 transition-colors"
+	>
 		<div class="w-full flex flex-wrap items-center gap-2 mb-1">
 			<span class="text-xs text-muted-foreground shrink-0">{{ $t("documentRowResult.searchScore", [score]) }}</span>
 
@@ -40,15 +45,10 @@ const keywords = computed(() => props.searchResult.keywords?.join(", "));
 			</div>
 		</div>
 
-		<RouterLink
-			:to="documentPage.createTo({ params: { id: searchResult.bakedDocumentId } })"
-			class="group block"
-		>
-			<h3
-				class="text-base first-letter:capitalize sm:text-lg font-semibold text-primary group-hover:underline transition-colors break-words"
-				v-html="searchResult.title"
-			/>
-		</RouterLink>
+		<h3
+			class="text-base first-letter:capitalize sm:text-lg font-semibold text-primary group-hover:underline transition-colors break-words"
+			v-html="searchResult.title"
+		/>
 
 		<p
 			class="mt-2 text-xs sm:text-sm text-muted-foreground line-clamp-3 break-words"
@@ -112,7 +112,7 @@ const keywords = computed(() => props.searchResult.keywords?.join(", "));
 				class="shrink-0"
 			/>
 		</div>
-	</div>
+	</RouterLink>
 </template>
 
 <style>
