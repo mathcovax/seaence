@@ -6,16 +6,22 @@
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
     "duplo:start": "tsx interfaces/http/main.ts",
     "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/marine-snow/duplojsTypesCodegen.d.ts",
+    
     "test:lint": "eslint",
     "test:types": "tsc",
+
     "prisma:generate": "prisma generate",
     "prisma:make-migration": "prisma migrate dev",
     "prisma:apply-migration": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "mission:searchResult": "tsx interfaces/commands/missionSearchResult.ts",
-    "mission:resumeSearchResult": "tsx interfaces/commands/resumeMissionSearchResult.ts",
-    "mission:sendSearchResult": "tsx interfaces/commands/missionSendSearchResult.ts",
-    "mission:sendOneSearchResult": "tsx interfaces/commands/missionSendOneSearchResult.ts",
+
+    "mission:fetchArticleReference:pubmed": "tsx interfaces/commands/fetchArticleReferenceMission/pubmed.ts",
+    "mission:fetchArticleReference:resume:pubmed": "tsx interfaces/commands/fetchArticleReferenceMission/resumePubmed.ts",
+    "mission:exportManyArictleReference": "tsx interfaces/commands/exportManyArictleReferenceMission.ts",
+    "mission:exportOneArictleReference": "tsx interfaces/commands/exportOneArictleReferenceMission.ts",
+    
+    "addOneArticleReference": "tsx interfaces/commands/addOneArticleReference.ts",
+    
     "postinstall": "npm run prisma:generate && npm run duplo:generate"
   },
   "dependencies": {

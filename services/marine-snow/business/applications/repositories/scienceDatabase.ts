@@ -1,38 +1,44 @@
-import { type PubMedSearchResultMissionEntity } from "@business/domains/entities/mission/searchResult/pubMed";
-import { type SearchResultPubMedMissionStepEntity } from "@business/domains/entities/mission/searchResult/pubMedStep";
-import { type SearchResultEntity } from "@business/domains/entities/searchResult";
-import { createRepositoryHandler, type RepositoryError, type RepositoryBase } from "@vendors/clean";
+import { type ArticleType } from "@business/domains/common/articleType";
+import { type Provider } from "@business/domains/common/provider";
+import { type ArticleReferenceEntity, type ArticleReference } from "@business/domains/entities/articleReference";
+import { createRepositoryHandler, type RepositoryError, type RepositoryBase, type DateYYYYMMDDInterval, type DateYYYYMMDD, type Int, type TechnicalError } from "@vendors/clean";
 
-export type SearchResultMission =
-	| PubMedSearchResultMissionEntity;
-
-type StartSearchResultPubMedMissionItem = {
-	currentStep: SearchResultPubMedMissionStepEntity;
-} & (
-	| {
-		searchResults: undefined;
-		error: RepositoryError;
+type FetchPubmedArticleReferenceResult = AsyncGenerator<
+	& {
+		date: DateYYYYMMDD;
+		page: Int;
 	}
-	| {
-		searchResults: SearchResultEntity[];
-		error: undefined;
-	}
-);
+	& (
+		| {
+			success: true;
+			references: ArticleReference.Value[];
+			error: undefined;
+		}
+		| {
+			success: false;
+			references: undefined;
+			error: RepositoryError;
+		}
+	)
+>;
 
-type GetStartSearchResultItem<
-	GenericSearchResultMission extends SearchResultMission,
-> = Extract<
-	| [PubMedSearchResultMissionEntity, StartSearchResultPubMedMissionItem],
-	[GenericSearchResultMission, unknown]
->[1];
+type ExportArticleReferencesResult = Promise<
+	{
+		successExportArticleReferences: ArticleReferenceEntity[];
+		failedExportArticleReferences: RepositoryError<"failed-to-export-article-reference", {
+			articleReference: ArticleReferenceEntity;
+			error: TechnicalError;
+		}>[];
+	}
+>;
 
 export interface ScienceDatabaseRepository extends RepositoryBase<never> {
-	startSearchResultMission<
-		GenericSearchResultMission extends SearchResultMission,
-	>(mission: GenericSearchResultMission): AsyncGenerator<
-		| GetStartSearchResultItem<GenericSearchResultMission>
-		| RepositoryError
-	>;
+	articleReferenceValueExist(provider: Provider, value: ArticleReference.Value): Promise<boolean>;
+	fetchPubmedArticleReferences(
+		articleType: ArticleType,
+		interval: DateYYYYMMDDInterval
+	): FetchPubmedArticleReferenceResult;
+	exportArticleReferences(articleReferences: ArticleReferenceEntity[]): ExportArticleReferencesResult;
 }
 
 export const scienceDatabaseRepository = createRepositoryHandler<

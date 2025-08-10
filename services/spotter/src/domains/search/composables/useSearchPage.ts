@@ -12,6 +12,8 @@ const smoothTimeEnabled = 400;
 
 export function useSearchPage() {
 	const { enable: fetchStart, isEnabled: isFetching, disable: fetchEnd } = useSmoothEnabled(smoothTimeEnabled);
+	const sonner = useSonner();
+	const { t } = useI18n();
 	const searchDetails = ref<SearchDetails | null>(null);
 	const bakedDocumentSearchResult = ref<BakedDocumentSearchResult[] | null>(null);
 
@@ -31,6 +33,7 @@ export function useSearchPage() {
 					bakedDocumentSearchResult.value = body;
 				},
 			)
+			.catch(() => sonner.sonnerError(t("search.failedToFetch")))
 			.finally(() => void fetchEnd(enabledId));
 	}
 

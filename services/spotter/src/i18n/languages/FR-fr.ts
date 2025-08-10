@@ -297,6 +297,7 @@ export const FRfr = {
 		},
 	},
 	search: {
+		failedToFetch: "Une erreur est survenue lors de la recherche, veuillez réessayer.",
 		filters: {
 			showFilters: "Afficher les filtres",
 			hideFilters: "Masquer les filtres",
@@ -426,6 +427,7 @@ export const FRfr = {
 			high: "Boost élevé",
 		},
 		foundResults: "{count} résultat(s) trouvé(s)",
+		foundMoreThan2000Results: "Plus de 2000 ésultat trouvés",
 		noResult: "Aucun résultat trouvé",
 	},
 	documentRowResult: {

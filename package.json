@@ -40,6 +40,8 @@
 
     "prepare": "husky",
 
+    "initDevEnv": "./scripts/initDevEnv.sh",
+
     "docker:school": "docker compose up school",
     "docker:school:fixtures": "docker compose exec school npm -w services/school run fixtures --",
 
@@ -58,10 +60,11 @@
     "docker:marine-snow:prisma:make-migration": "docker compose exec marine-snow npm -w services/marine-snow run prisma:make-migration",
     "docker:marine-snow:prisma:apply-migration": "docker compose exec marine-snow npm -w services/marine-snow run prisma:apply-migration",
     "docker:marine-snow:prisma:studio": "docker compose exec marine-snow npm -w services/marine-snow run prisma:studio",
-    "docker:marine-snow:mission:searchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:searchResult --",
-    "docker:marine-snow:mission:resumeSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:resumeSearchResult --",
-    "docker:marine-snow:mission:sendSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendSearchResult --",
-    "docker:marine-snow:mission:sendOneSearchResult": "docker compose exec marine-snow npm -w services/marine-snow run mission:sendOneSearchResult --",
+    "docker:marine-snow:mission:fetchArticleReference:pubmed": "docker compose exec marine-snow npm -w services/marine-snow run mission:fetchArticleReference:pubmed --",
+    "docker:marine-snow:mission:fetchArticleReference:resume:pubmed": "docker compose exec marine-snow npm -w services/marine-snow run mission:fetchArticleReference:resume:pubmed --",
+    "docker:marine-snow:mission:exportManyArictleReference": "docker compose exec marine-snow npm -w services/marine-snow run mission:exportManyArictleReference --",
+    "docker:marine-snow:mission:exportOneArictleReference": "docker compose exec marine-snow npm -w services/marine-snow run mission:exportOneArictleReference --",
+    "docker:marine-snow:addOneArticleReference": "docker compose exec marine-snow npm -w services/marine-snow run addOneArticleReference --",
 
     "docker:rosetta": "docker compose up rosetta",
 

@@ -133,7 +133,7 @@ type ComparatorArticleType = {
     type: "comparator";
     name: "articleType";
     boost: "1" | "2" | "3";
-    value: ("metaAnalysis")[];
+    value: ("metaAnalysis" | "controlledClinicalTrial")[];
 };
 
 export { ComparatorArticleType };

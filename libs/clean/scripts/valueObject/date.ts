@@ -24,7 +24,7 @@ export const dateYYYYMMDDObjecter = zod
 				&& date.getSeconds() === zero
 				&& date.getMilliseconds() === zero,
 	)
-	.createValueObjecter("date");
+	.createValueObjecter("dateYYYYMMDD");
 
 export type DateYYYYMMDD = GetValueObject<typeof dateYYYYMMDDObjecter>;
 
@@ -33,7 +33,7 @@ export const dateYYYYMMDDIntervalObjecter = zod
 		from: dateYYYYMMDDObjecter.zodSchema,
 		to: dateYYYYMMDDObjecter.zodSchema,
 	})
-	.createValueObjecter("dateInterval");
+	.createValueObjecter("dateYYYYMMDDInterval");
 
 export type DateYYYYMMDDInterval = GetValueObject<typeof dateYYYYMMDDIntervalObjecter>;
 

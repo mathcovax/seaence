@@ -1,23 +1,23 @@
+import { FindOneArticleReferenceUsecase } from "@business/applications/usecases/articleReference/findOne";
 import "../repositories";
-import { FindPubMedSearchResultMissionUsecase } from "@business/applications/usecases/missions/searchResult/pubMed/findPubMedSearchResultMission";
-import { CreatePubMedSearchResultMissionUsecase } from "@business/applications/usecases/missions/searchResult/pubMed/createPubMedSearchResultMission";
-import { StartSearchResultMissionUsecase } from "@business/applications/usecases/missions/searchResult/startSearchResultMission";
-import { CreateSendSearchResultMissionUsecase } from "@business/applications/usecases/missions/sendSearchResult/createSendSearchResultMission";
-import { StartSendSearchResultMissionUsecase } from "@business/applications/usecases/missions/sendSearchResult/startSendSearchResultMission";
-import { ResumeSearchResultMissionUsecase } from "@business/applications/usecases/missions/searchResult/resumeSearchResultMission";
-import { CreateSendOneSearchResultMissionUsecase } from "@business/applications/usecases/missions/sendSearchResult/createSendOneSearchResultMission";
-import { StartSendOneSearchResultMissionUsecase } from "@business/applications/usecases/missions/sendSearchResult/startSendOneSearchResultMission";
-import { FindOneSearchResultUsecase } from "@business/applications/usecases/searchResult/findOneSearchResult";
+import { AddOneArticleReferenceUsecase } from "@business/applications/usecases/articleReference/addOne";
+import { ExportManyArticleReferenceUsecase } from "@business/applications/usecases/exportArticleReference/many";
+import { ExportOneArticleReferenceUsecase } from "@business/applications/usecases/exportArticleReference/one";
+import { CreateFetchPubmedArticleReferenceMissionUsecase } from "@business/applications/usecases/fetchArticleReferenceMission/pubmed/create";
+import { FindOneFetchPubmedArticleReferenceMissionUsecase } from "@business/applications/usecases/fetchArticleReferenceMission/pubmed/findOne";
+import { FetchPubmedArticleReferencesUsecase } from "@business/applications/usecases/fetchArticleReferenceMission/pubmed";
+import { RecoveryFetchArticleReferenceMissionUsecase } from "@business/applications/usecases/fetchArticleReferenceMission/recovery";
+import { StartFetchArticleReferenceMissionUsecase } from "@business/applications/usecases/fetchArticleReferenceMission/start";
 
-export const findOneSearchResultUsecase = new FindOneSearchResultUsecase();
+export const addOneArticleReferenceUsecase = new AddOneArticleReferenceUsecase();
+export const findOneArticleReferenceUsecase = new FindOneArticleReferenceUsecase();
 
-export const createPubMedSearchResultMissionUsecase = new CreatePubMedSearchResultMissionUsecase();
-export const startSearchResultMissionUsecase = new StartSearchResultMissionUsecase();
-export const findPubMedSearchResultMissionUsecase = new FindPubMedSearchResultMissionUsecase();
-export const resumeSearchResultMissionUsecase = new ResumeSearchResultMissionUsecase();
+export const exportManyArticleReferenceUsecase = new ExportManyArticleReferenceUsecase();
+export const exportOneArticleReferenceUsecase = new ExportOneArticleReferenceUsecase();
 
-export const createSendSearchResultMissionUsecase = new CreateSendSearchResultMissionUsecase();
-export const startSendSearchResultMissionUsecase = new StartSendSearchResultMissionUsecase();
+export const createFetchPubmedArticleReferenceMissionUsecase = new CreateFetchPubmedArticleReferenceMissionUsecase();
+export const findOneFetchPubmedArticleReferenceMissionUsecase = new FindOneFetchPubmedArticleReferenceMissionUsecase();
+export const fetchPubmedArticleReferencesUsecase = new FetchPubmedArticleReferencesUsecase();
 
-export const createSendOneSearchResultMissionUsecase = new CreateSendOneSearchResultMissionUsecase();
-export const startSendOneSearchResultMissionUsecase = new StartSendOneSearchResultMissionUsecase();
+export const recoveryFetchArticleReferenceMissionUsecase = new RecoveryFetchArticleReferenceMissionUsecase();
+export const startFetchArticleReferenceMissionUsecase = new StartFetchArticleReferenceMissionUsecase();

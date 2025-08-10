@@ -20,12 +20,14 @@ npm run docker:marine-snow:prisma:studio
 
 ### start mission
 ```bash
-npm run docker:marine-snow:mission:searchResult -- -p pubmed -a metaAnalysis -t 2022/09/13 -f 2022/09/13
+npm run docker:marine-snow:mission:fetchArticleReference:pubmed -- -a metaAnalysis -t 2022/09/13 -f 2022/09/13
 # 48 search result
 
-npm run docker:marine-snow:mission:resumeSearchResult -- --id [missionId]
+npm run docker:marine-snow:mission:fetchArticleReference:resume:pubmed -- --id [missionId]
 
-npm run docker:marine-snow:mission:sendSearchResult -- --concurrency 5
+npm run docker:marine-snow:mission:exportManyArictleReference -- --concurrency 5
 
-npm run docker:marine-snow:mission:sendOneSearchResult -- --provider pubmed --reference [searchResultReference]
+npm run docker:marine-snow:mission:exportOneArictleReference -- --provider pubmed --reference [searchResultReference]
+
+npm run docker:marine-snow:addOneArticleReference -- --provider pubmed --reference [searchResultReference]
 ```
