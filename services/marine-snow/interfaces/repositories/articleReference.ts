@@ -14,13 +14,8 @@ articleReferenceRepository.default = {
 					provider: simpleArticleReference.provider,
 				},
 			},
-			create: {
-				...simpleArticleReference,
-			},
-			update: {
-				...simpleArticleReference,
-				selected: false,
-			},
+			create: simpleArticleReference,
+			update: simpleArticleReference,
 		});
 
 		return articleReference;

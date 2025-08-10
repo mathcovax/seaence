@@ -1,9 +1,8 @@
-import { fetchArticleReferenceMissionRepository } from "@business/applications/repositories/fetchArticleReferenceMission";
-import { type FetchArticleReferenceMissionEntity } from "@business/domains/entities/fetchArticleReferenceMission";
+import { fetchArticleReferenceMissionRepository, type UnionFetchArticleReferenceMission } from "@business/applications/repositories/fetchArticleReferenceMission";
 import { UsecaseError, UsecaseHandler } from "@vendors/clean";
 
 interface Input<
-	GenericMission extends FetchArticleReferenceMissionEntity,
+	GenericMission extends UnionFetchArticleReferenceMission,
 > {
 	mission: GenericMission;
 }
@@ -12,7 +11,7 @@ export class StartFetchArticleReferenceMissionUsecase extends UsecaseHandler.cre
 	fetchArticleReferenceMissionRepository,
 }) {
 	public execute<
-		GenericMission extends FetchArticleReferenceMissionEntity,
+		GenericMission extends UnionFetchArticleReferenceMission,
 	>({ mission }: Input<GenericMission>) {
 		if (mission.status.value !== "created" && mission.status.value !== "inRecovery") {
 			return new UsecaseError("wrong-mission-status", {

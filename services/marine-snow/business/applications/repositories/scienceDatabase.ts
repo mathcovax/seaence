@@ -1,3 +1,4 @@
+import { type ArticleType } from "@business/domains/common/articleType";
 import { type Provider } from "@business/domains/common/provider";
 import { type ArticleReferenceEntity, type ArticleReference } from "@business/domains/entities/articleReference";
 import { createRepositoryHandler, type RepositoryError, type RepositoryBase, type DateYYYYMMDDInterval, type DateYYYYMMDD, type Int, type TechnicalError } from "@vendors/clean";
@@ -11,9 +12,11 @@ type FetchPubmedArticleReferenceResult = AsyncGenerator<
 		| {
 			success: true;
 			references: ArticleReference.Value[];
+			error: undefined;
 		}
 		| {
 			success: false;
+			references: undefined;
 			error: RepositoryError;
 		}
 	)
@@ -31,7 +34,10 @@ type ExportArticleReferencesResult = Promise<
 
 export interface ScienceDatabaseRepository extends RepositoryBase<never> {
 	articleReferenceValueExist(provider: Provider, value: ArticleReference.Value): Promise<boolean>;
-	fetchPubmedArticleReferences(interval: DateYYYYMMDDInterval): FetchPubmedArticleReferenceResult;
+	fetchPubmedArticleReferences(
+		articleType: ArticleType,
+		interval: DateYYYYMMDDInterval
+	): FetchPubmedArticleReferenceResult;
 	exportArticleReferences(articleReferences: ArticleReferenceEntity[]): ExportArticleReferencesResult;
 }
 

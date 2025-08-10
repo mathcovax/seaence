@@ -1,6 +1,6 @@
 import { z as zod, type ZodType } from "zod";
 import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject, type AnyRecord, setProperty, type AttributeError, applyAttributes, type ApplyValueObjecterAttribute } from "./utils";
-import { EntityObjecter, type ValueObjectError, type ValueObjecter } from "./valueObject";
+import { EntityObjecter, ValueObject, type ValueObjectError, type ValueObjecter } from "./valueObject";
 import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual, getTypedEntries } from "@duplojs/utils";
 import { CleanError } from "./error";
 
@@ -351,3 +351,14 @@ export class EntityError<
 > extends CleanError<GenericInformation> {
 
 }
+
+export function createEntityKind<
+	GenericKind extends string,
+>(kind: GenericKind) {
+	const kindObjecter = zod.literal(kind).createValueObjecter(`kind_${kind}`);
+	return {
+		kind: kindObjecter,
+		kindValue: kindObjecter.unsafeCreate(kind),
+	};
+}
+

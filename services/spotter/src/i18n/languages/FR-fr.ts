@@ -297,6 +297,7 @@ export const FRfr = {
 		},
 	},
 	search: {
+		failedToFetch: "Une erreur est survenue lors de la recherche, veuillez réessayer.",
 		filters: {
 			showFilters: "Afficher les filtres",
 			hideFilters: "Masquer les filtres",

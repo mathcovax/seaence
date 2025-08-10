@@ -121,7 +121,7 @@ export class UsecaseHandler {
 							}
 
 							throw new Error(`In usecase ${this.constructor.name}: The repository at property "${property}" has not been injected and its repository Handler has no default value.`);
-						} else if (isUsecase(rawDependence)) {
+						} else if (rawDependence && isUsecase(rawDependence)) {
 							setProperty(
 								this,
 								prop,

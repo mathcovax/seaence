@@ -24,7 +24,7 @@ export const dateYYYYMMDDObjecter = zod
 				&& date.getSeconds() === zero
 				&& date.getMilliseconds() === zero,
 	)
-	.createValueObjecter("date");
+	.createValueObjecter("dateYYYYMMDD");
 
 export type DateYYYYMMDD = GetValueObject<typeof dateYYYYMMDDObjecter>;
 

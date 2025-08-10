@@ -32,10 +32,42 @@ model articleReference {
     @@id([value, provider], name: "id")
 }
 
-enum fetchArticleReferenceMissionStatus {
-    created
-    resume
+enum exportArticleReferenceMissionStatus {
     inProgress
     failed
     success
+}
+
+model exportOneArticleReferenceMission {
+    id             String                              @id @unique
+    status         exportArticleReferenceMissionStatus
+    provider       provider
+    referenceValue String
+}
+
+model exportManyArticleReferenceMission {
+    id                     String                              @id @unique
+    status                 exportArticleReferenceMissionStatus
+    concurrency            Int
+    quantityProcessed      Int
+    /// [ExportManyArticleReferenceMissionFailedArticleReference]
+    failedArticleReference Json?
+}
+
+enum fetchArticleReferenceMissionStatus {
+    created
+    inRecovery
+    inProgress
+    failed
+    success
+}
+
+model pubmedFetchArticleReferenceMission {
+    id              String                             @id @unique
+    articleType     articleType
+    status          fetchArticleReferenceMissionStatus
+    intervalFrom    DateTime
+    intervalTo      DateTime
+    currentStepDate DateTime
+    currentStepPage Int
 }

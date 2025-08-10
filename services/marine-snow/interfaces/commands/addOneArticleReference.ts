@@ -1,6 +1,6 @@
 import { providerObjecter } from "@business/domains/common/provider";
-import { searchResultReferenceObjecter } from "@business/domains/entities/searchResult";
-import { addOneSearchResultUsecase } from "@interfaces/usecase";
+import { ArticleReference } from "@business/domains/entities/articleReference";
+import { addOneArticleReferenceUsecase } from "@interfaces/usecase";
 import { logger } from "@vendors/backend-logger";
 import { program } from "commander";
 
@@ -16,11 +16,15 @@ const {
 } = program.opts<Record<string, string | undefined>>();
 
 const provider = providerObjecter.unknownThrowCreate(rawProvider);
-const reference = searchResultReferenceObjecter.unknownThrowCreate(rawReference);
+const referenceValue = ArticleReference.valueObjecter.unknownThrowCreate(rawReference);
 
-const result = await addOneSearchResultUsecase.execute({
+const result = await addOneArticleReferenceUsecase.execute({
 	provider,
-	reference,
+	referenceValue,
 });
 
 logger(result);
+
+if (result instanceof Error) {
+	throw result;
+}

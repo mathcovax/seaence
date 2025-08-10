@@ -4,7 +4,7 @@ import { scienceDatabaseRepository } from "@business/applications/repositories/s
 import { providerObjecter } from "@business/domains/common/provider";
 import { ArticleReferenceEntity } from "@business/domains/entities/articleReference";
 import { type PubmedFetchArticleReferenceMissionEntity } from "@business/domains/entities/fetchArticleReferenceMission/pubmed";
-import { UsecaseError, UsecaseHandler } from "@vendors/clean";
+import { dateYYYYMMDDIntervalObjecter, UsecaseError, UsecaseHandler } from "@vendors/clean";
 import { StartFetchArticleReferenceMissionUsecase } from "../start";
 
 interface Input {
@@ -24,10 +24,16 @@ export class FetchPubmedArticleReferencesUsecase extends UsecaseHandler.create({
 			return startedMission;
 		}
 
+		const interval = dateYYYYMMDDIntervalObjecter
+			.unsafeCreate({
+				from: startedMission.currentStep.value.date,
+				to: startedMission.interval.value.to,
+			});
+
 		for await (
 			const result of this
 				.scienceDatabaseRepository
-				.fetchPubmedArticleReferences(startedMission.interval)
+				.fetchPubmedArticleReferences(mission.articleType, interval)
 		) {
 			const { date, page } = result;
 
@@ -38,7 +44,7 @@ export class FetchPubmedArticleReferencesUsecase extends UsecaseHandler.create({
 			if (result.success === false) {
 				const { error } = result;
 
-				const failedMission = this
+				const failedMission = await this
 					.fetchArticleReferenceMissionRepository
 					.save(
 						startedMission.failed(),

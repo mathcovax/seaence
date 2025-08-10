@@ -33,6 +33,7 @@ export class ExportOneArticleReferenceUsecase extends UsecaseHandler.create({
 			await this.articleReferenceRepository.save(
 				articleReference.failed(),
 			);
+
 			const failedMission = await this
 				.exportArticleReferenceMissionRepository
 				.save(

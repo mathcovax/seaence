@@ -2,7 +2,7 @@ import { hasKey } from "@duplojs/utils";
 import { type RawDocument } from "@interfaces/providers/abys";
 import { type ArticlePayload } from "@interfaces/providers/scienceDatabase/pubmed/types/article";
 import { TechnicalError } from "@vendors/clean";
-import { formatDate } from "./date";
+import { formatDate } from "./pubmedDate";
 import { reverseArticleTypeBackedToUI, uniqueFieldNameMapper } from "@interfaces/providers/scienceDatabase/pubmed/types/utils";
 
 type PubmedArticle = Extract<
@@ -17,7 +17,7 @@ const pubmedBaseUrl = "https://pubmed.ncbi.nlm.nih.gov";
 
 export function formatePubmedArticle(
 	pubmedArticle: PubmedArticle,
-): RawDocument | Error {
+): RawDocument | TechnicalError {
 	const articleTypes = pubmedArticle
 		.MedlineCitation
 		.Article

@@ -33,7 +33,7 @@ const medlineDate = zo({
 	MedlineDate: zo(stringValue),
 }).transform(
 	({ MedlineDate }) => {
-		const [stringYear, stringMonth, stringDay] = MedlineDate["#text"].split(" ");
+		const [stringYear = "", stringMonth = "", stringDay = ""] = MedlineDate["#text"].split(" ");
 
 		const year = Number(stringYear);
 		if (isNaN(year)) {

@@ -1,4 +1,4 @@
-import { EntityHandler, intObjecter, type GetEntityProperties } from "@vendors/clean";
+import { createEntityKind, EntityHandler, intObjecter, type GetEntityProperties } from "@vendors/clean";
 import { ExportArticleReferenceMission, ExportArticleReferenceMissionEntity } from ".";
 import { articleReferenceObjecter } from "@business/domains/common/articleReference";
 import { type ArticleReferenceEntity } from "../articleReference";
@@ -13,10 +13,16 @@ type ExportManyArticleReferenceMissionEntityCreateParams = Pick<
 	| "concurrency"
 >;
 
+const {
+	kind,
+	kindValue,
+} = createEntityKind("exportManyArticleReferenceMissionEntity");
+
 const defaultQuantityProcessed = 0;
 
 export class ExportManyArticleReferenceMissionEntity extends EntityHandler.create(
 	{
+		kind,
 		concurrency: intObjecter,
 		quantityProcessed: intObjecter,
 		failedArticleReference: articleReferenceObjecter.array().nullable(),
@@ -26,6 +32,7 @@ export class ExportManyArticleReferenceMissionEntity extends EntityHandler.creat
 	public static create(params: ExportManyArticleReferenceMissionEntityCreateParams) {
 		return new ExportManyArticleReferenceMissionEntity({
 			...params,
+			kind: kindValue,
 			quantityProcessed: intObjecter.unsafeCreate(defaultQuantityProcessed),
 			failedArticleReference: null,
 			status: ExportArticleReferenceMission
