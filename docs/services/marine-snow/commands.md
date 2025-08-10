@@ -25,9 +25,9 @@ npm run docker:marine-snow:mission:fetchArticleReference:pubmed -- -a metaAnalys
 
 npm run docker:marine-snow:mission:fetchArticleReference:resume:pubmed -- --id [missionId]
 
-npm run docker:marine-snow:mission:exportManyArictleReference -- --concurrency 5
+npm run docker:marine-snow:mission:exportManyArticleReference -- --concurrency 5
 
-npm run docker:marine-snow:mission:exportOneArictleReference -- --provider pubmed --reference [searchResultReference]
+npm run docker:marine-snow:mission:exportOneArticleReference -- --provider pubmed --reference [searchResultReference]
 
 npm run docker:marine-snow:addOneArticleReference -- --provider pubmed --reference [searchResultReference]
 ```

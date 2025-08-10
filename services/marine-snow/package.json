@@ -17,8 +17,8 @@
 
     "mission:fetchArticleReference:pubmed": "tsx interfaces/commands/fetchArticleReferenceMission/pubmed.ts",
     "mission:fetchArticleReference:resume:pubmed": "tsx interfaces/commands/fetchArticleReferenceMission/resumePubmed.ts",
-    "mission:exportManyArictleReference": "tsx interfaces/commands/exportManyArictleReferenceMission.ts",
-    "mission:exportOneArictleReference": "tsx interfaces/commands/exportOneArictleReferenceMission.ts",
+    "mission:exportManyArticleReference": "tsx interfaces/commands/exportManyArticleReferenceMission.ts",
+    "mission:exportOneArticleReference": "tsx interfaces/commands/exportOneArticleReferenceMission.ts",
     
     "addOneArticleReference": "tsx interfaces/commands/addOneArticleReference.ts",
     
