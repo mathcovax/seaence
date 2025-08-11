@@ -1,4 +1,5 @@
 import { postCreatePage } from "@/domains/forum/router";
+import { scratchTutorialPage } from "@/domains/search/router";
 import { createWebHistory, createRouter } from "vue-router";
 
 export const router = createRouter({
@@ -12,6 +13,7 @@ export const router = createRouter({
 				cguPage.recordRaw,
 				simpleSearchPage.recordRaw,
 				advancedSearchPage.recordRaw,
+				scratchTutorialPage.recordRaw,
 				documentPage.recordRaw,
 				postListPage.recordRaw,
 				postPage.recordRaw,

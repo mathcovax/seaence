@@ -88,8 +88,8 @@ export const FRfr = {
 				nodeId: "ID du nœud",
 				language: "Langue",
 				keyword: "Mots-clés",
-				abstract: "Résumé",
-				abstractDetails: "Détails du résumé",
+				abstract: "Abstract",
+				abstractDetails: "Détails de l'abstract",
 				abstractPart: "{0}: {1}",
 			},
 			reporting: {
