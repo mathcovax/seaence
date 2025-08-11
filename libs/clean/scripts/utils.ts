@@ -341,6 +341,7 @@ export function createExternalPromise<
 interface CreateAsyncRetryOptions {
 	maxRetry: number;
 	timeToSleep?: number;
+	log?: boolean;
 }
 
 export async function useAsyncRetry<
@@ -360,6 +361,10 @@ export async function useAsyncRetry<
 			|| !shouldRetry(result)
 		) {
 			return result;
+		}
+
+		if (options.log) {
+			console.log(`useAsyncRetry: attempt ${currentDeep} failed, starting new attempt.`);
 		}
 
 		if (options.timeToSleep) {

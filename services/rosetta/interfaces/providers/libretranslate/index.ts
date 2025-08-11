@@ -40,8 +40,9 @@ export namespace LibretranslateAPI {
 				.catch((error: unknown) => error as Error),
 			(response) => response instanceof Error || response.code !== expectedCode,
 			{
-				maxRetry: 5,
-				timeToSleep: 1000,
+				maxRetry: 10,
+				timeToSleep: 30_000,
+				log: true,
 			},
 		)
 			.then(

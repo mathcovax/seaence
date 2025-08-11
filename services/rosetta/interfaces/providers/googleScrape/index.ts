@@ -18,7 +18,6 @@ export namespace GoogleScrape {
 	function workerEngine() {
 		let inComingWorker: Promise<Worker> | undefined = undefined;
 
-		// 10 second
 		const timeoutStratWorker = 10_000;
 
 		return async() => {
