@@ -24,13 +24,6 @@ export const eslintConfigVue = [
 			"vue/html-indent": ["error", "tab"],
 			"no-undef": "off",
 			"max-len": "off",
-			"vue/max-len": [
-				"error",
-				{
-					code: 120,
-					template: 1000,
-				},
-			],
 			"vue/padding-line-between-tags": [
 				"error",
 				[
@@ -57,6 +50,7 @@ export const eslintConfigVue = [
 			"@typescript-eslint/no-unsafe-unary-minus": "off",
 			"@typescript-eslint/no-redundant-type-constituents": "off",
 			"@typescript-eslint/no-use-before-define": "off",
+			"@typescript-eslint/no-namespace": "off",
 			"id-length": [
 				"error",
 				{

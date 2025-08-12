@@ -12,9 +12,9 @@ export class UserRenameDocumentInFolderUsecase extends UsecaseHandler.create({
 	documentInFolderRepository,
 }) {
 	public async execute({ userDocumentInFolder, newDocumentInFolderName }: Input) {
-		const updatedDocumentInFolder = userDocumentInFolder.value.update({
-			name: newDocumentInFolderName,
-		});
+		const updatedDocumentInFolder = userDocumentInFolder.value.rename(
+			newDocumentInFolderName,
+		);
 
 		await this.documentInFolderRepository.save(updatedDocumentInFolder);
 

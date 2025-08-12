@@ -34,6 +34,10 @@ useMustBeConnectedBuilder()
 					() => new ForbiddenHttpResponse("documentFolder.wrongProprietary"),
 				)
 				.with(
+					{ information: "documentFolder.alreadyExists" },
+					() => new ConflictHttpResponse("documentFolder.alreadyExists"),
+				)
+				.with(
 					{ information: "documentFolder.renamed" },
 					() => dropper(null),
 				)
@@ -42,6 +46,7 @@ useMustBeConnectedBuilder()
 		[],
 		[
 			...makeResponseContract(NotFoundHttpResponse, "documentFolder.notfound"),
+			...makeResponseContract(ConflictHttpResponse, "documentFolder.alreadyExists"),
 			...makeResponseContract(ForbiddenHttpResponse, "documentFolder.wrongProprietary"),
 		],
 	)

@@ -60,7 +60,7 @@ function onRename() {
 						/>
 					</DSDropdownMenuTrigger>
 
-					<DSDropdownMenuContent @click.stop>
+					<DSDropdownMenuContent>
 						<DSDropdownMenuItem @click="onRename">
 							<DSIcon name="rename" />
 							{{ $t("cta.rename") }}

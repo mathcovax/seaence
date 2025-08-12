@@ -52,6 +52,6 @@ export class UserCreateDocumentInManyFoldersUsecase extends UsecaseHandler.creat
 
 		const documentsInFolder = await Promise.all(documentInFolderPromises);
 
-		return documentsInFolder.filter(Boolean);
+		return documentsInFolder;
 	}
 }

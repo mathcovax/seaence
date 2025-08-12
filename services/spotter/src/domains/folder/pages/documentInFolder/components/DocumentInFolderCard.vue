@@ -73,13 +73,13 @@ function handleRename() {
 					/>
 				</DSDropdownMenuTrigger>
 
-				<DSDropdownMenuContent @click.stop>
-					<DSDropdownMenuItem @click.stop="handleRename">
+				<DSDropdownMenuContent>
+					<DSDropdownMenuItem @click="handleRename">
 						<DSIcon name="rename" />
 						{{ $t("cta.rename") }}
 					</DSDropdownMenuItem>
 
-					<DSDropdownMenuItem @click.stop="handleDelete">
+					<DSDropdownMenuItem @click="handleDelete">
 						<DSIcon name="delete" />
 						{{ $t("cta.delete") }}
 					</DSDropdownMenuItem>

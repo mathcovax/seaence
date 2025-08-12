@@ -167,6 +167,10 @@ type CodegenRoutes = ({
         information: "documentFolder.notfound";
         body?: undefined;
     } | {
+        code: 409;
+        information: "documentFolder.alreadyExists";
+        body?: undefined;
+    } | {
         code: 200;
         information: "documentFolder.renamed";
         body?: undefined;

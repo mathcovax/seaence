@@ -122,7 +122,12 @@ export class CoralAPI {
 					body: input,
 				},
 			)
-			.iWantInformation(["documentFolder.renamed", "documentFolder.notfound", "documentFolder.wrongProprietary"]);
+			.iWantInformation([
+				"documentFolder.renamed",
+				"documentFolder.notfound",
+				"documentFolder.wrongProprietary",
+				"documentFolder.alreadyExists",
+			]);
 	}
 
 	public static findOneDocumentFolder(input: InputFindOneDocumentFolder) {

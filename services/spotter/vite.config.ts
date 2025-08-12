@@ -21,7 +21,7 @@ export default defineConfig({
 			dirs: [
 				"src/composables",
 				"src/i18n",
-				"src/domains/**/router.ts",
+				"src/**/router.ts",
 				"src/lib/zod/index.ts",
 				"src/lib/horizon/index.ts",
 				"vendors/design-system/composables/**",

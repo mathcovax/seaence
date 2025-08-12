@@ -33,8 +33,16 @@ export function useValidationDialog(params: ValidationDialogParams) {
 		if (!externalPromise) {
 			opened.value = true;
 			externalPromise = createExternalPromise();
-			await new Promise(
-				(resolve) => void watch(opened, resolve),
+			await new Promise<void>(
+				(resolve) => {
+					const watcher = watch(
+						opened,
+						() => {
+							watcher.stop();
+							resolve();
+						},
+					);
+				},
 			);
 
 			externalPromise!.resolve(false);

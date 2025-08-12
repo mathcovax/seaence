@@ -42,4 +42,10 @@ export class DocumentFolderEntity extends EntityHandler.create({
 			numberOfDocument,
 		});
 	}
+
+	public rename(name: DocumentFolderName) {
+		return this.update({
+			name,
+		});
+	}
 }

@@ -33,4 +33,10 @@ export class DocumentInFolderEntity extends EntityHandler.create({
 			addedAt: commonDateObjecter.unsafeCreate(new Date()),
 		});
 	}
+
+	public rename(name: DocumentInFolderName) {
+		return this.update({
+			name,
+		});
+	}
 }

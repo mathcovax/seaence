@@ -1,6 +1,7 @@
-import { documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
+import { DocumentFolderEntity, documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
 import { mustBeUserDocumentFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentFolderExistProcess";
 import { userRenameDocumentFolderUsecase } from "@interfaces/usecase";
+import { match, P } from "ts-pattern";
 
 useBuilder()
 	.createRoute("POST", "/rename-document-folder")
@@ -13,17 +14,31 @@ useBuilder()
 		mustBeUserDocumentFolderExistProcess,
 		{ pickup: ["userDocumentFolder"] },
 	)
-	.handler(
-		async(pickup) => {
+	.cut(
+		async({ pickup, dropper }) => {
 			const { userDocumentFolder } = pickup(["userDocumentFolder"]);
 			const { newDocumentFolderName } = pickup("body");
 
-			await userRenameDocumentFolderUsecase.execute({
+			const result = await userRenameDocumentFolderUsecase.execute({
 				userDocumentFolder,
 				newDocumentFolderName,
 			});
 
-			return new OkHttpResponse("documentFolder.renamed");
+			return match({ result })
+				.with(
+					{ result: { information: "document-folder-already-exist" } },
+					() => new ConflictHttpResponse("documentFolder.alreadyExists"),
+				)
+				.with(
+					{ result: P.instanceOf(DocumentFolderEntity) },
+					() => dropper(null),
+				)
+				.exhaustive();
 		},
+		[],
+		makeResponseContract(ConflictHttpResponse, ["documentFolder.alreadyExists"]),
+	)
+	.handler(
+		() => new OkHttpResponse("documentFolder.renamed"),
 		makeResponseContract(OkHttpResponse, "documentFolder.renamed"),
 	);

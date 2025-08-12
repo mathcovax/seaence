@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { DocumentFolder } from "@vendors/clients-type/horizon/duplojsTypesCodegen";
-import { useCreateManyDocumentInFolderDialog } from "../composables/useCreateManyDocumentInFolderDialog";
+import { useCreateManyDocumentInFolderDialog } from "./composables/useCreateManyDocumentInFolderDialog";
 import { formatDate } from "@vendors/design-system/lib/utils";
-import CreateDocumentFolderDialog from "./CreateDocumentFolderDialog.vue";
+import { useCreateDocumentFolderFormDialog } from "../../composables/useCreateDocumentFolderFormDialog";
 
 interface Props {
 	nodeSameRawDocumentId: string;
@@ -25,6 +25,7 @@ const {
 	props.nodeSameRawDocumentId,
 	props.currentDocumentTitle,
 );
+const { CreateFormDialog, createDocumentFolder } = useCreateDocumentFolderFormDialog();
 
 function handleClickDocumentFolder(documentFolder: DocumentFolder) {
 	return router.push(documentInFolderPage.createTo(
@@ -125,11 +126,11 @@ function onUpdateOpen(value: boolean) {
 				</DSPrimaryButton>
 			</CreateManyDocumentInFolderDialogForm>
 
-			<CreateDocumentFolderDialog>
-				<DSOutlineButton>
-					{{ $t("createManyDocumentInFolderDialog.createDocumentFolder") }}
-				</DSOutlineButton>
-			</CreateDocumentFolderDialog>
+			<DSOutlineButton @click="createDocumentFolder">
+				{{ $t("createManyDocumentInFolderDialog.createDocumentFolder") }}
+			</DSOutlineButton>
+
+			<CreateFormDialog />
 		</template>
 	</DSDialog>
 </template>
