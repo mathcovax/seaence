@@ -11,7 +11,7 @@ export function debug(options: DebugOptions) {
 	return function(instance: Duplo) {
 		const { dsn, tracesSampleRate = 1 } = options;
 		
-		if (instance.config.environment == "PROD") {
+		if (instance.config.environment === "PROD") {
 
 			Sentry.init({
 				dsn,
@@ -32,9 +32,13 @@ export function debug(options: DebugOptions) {
 							url,
 							headers,
 							body,
+							error: typeof error === "object"
+								? {...error}
+								: error,
 						}
 					);
-					Sentry.captureException(error);
+
+					scope.captureException(error);
 				});
 			});
 			instance.hook(
@@ -43,18 +47,22 @@ export function debug(options: DebugOptions) {
 					const { path, method, headers, body, url } = request;
 
 					Sentry.withScope((scope) => {
-					scope.setContext(
-						"request serverError",
-						{
-							path,
-							method,
-							url,
-							headers,
-							body,
-						}
-					);
-					Sentry.captureException(error);
-				});
+						scope.setContext(
+							"request serverError",
+							{
+								path,
+								method,
+								url,
+								headers,
+								body,
+								error: typeof error === "object"
+									? {...error}
+									: error,
+							}
+						);
+
+						scope.captureException(error);
+					});
 				}
 			)
 		} else if (instance.config.environment === "DEV") {

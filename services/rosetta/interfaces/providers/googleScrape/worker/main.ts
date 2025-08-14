@@ -17,6 +17,8 @@ const iconLocator = "path[d=\"M16,20H5V6H3v14c0,1.1,0.9,2,2,2h11V20z M20,16V4c0-
 
 const textChunk = 5000;
 
+const locatorTimeout = 5000;
+
 function playwrightEngine() {
 	let inComingPage: Promise<Page> | undefined = undefined;
 
@@ -38,7 +40,7 @@ function playwrightEngine() {
 			try {
 				await page.goto("https://translate.google.fr");
 				const concentButton = page.getByRole("button", { name: "Tout accepter" });
-				await concentButton.click({ timeout: 3000 });
+				await concentButton.click({ timeout: locatorTimeout });
 			} catch (error) {
 				reject(error);
 			}
@@ -77,14 +79,14 @@ parentPort!.on(
 
 							await page
 								.locator(iconLocator)
-								.isEnabled({ timeout: 3000 });
+								.isEnabled({ timeout: locatorTimeout });
 
 							const element = page
 								.locator("i", { hasText: "swap_horiz" })
 								.first();
 
-							if (await element.isEnabled({ timeout: 3000 })) {
-								await element.click({ timeout: 3000 });
+							if (await element.isEnabled({ timeout: locatorTimeout })) {
+								await element.click({ timeout: locatorTimeout });
 							}
 
 							const url = new URL(page.url());

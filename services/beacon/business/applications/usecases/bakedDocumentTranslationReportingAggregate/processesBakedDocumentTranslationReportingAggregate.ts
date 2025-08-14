@@ -17,17 +17,16 @@ export class ProcessesBakedDocumentTranslationReportingAggregateUsecase extends 
 	bakedDocumentTranslationReportingRepository,
 	bakedDocumentRepository,
 }) {
-	public execute(
+	public async execute(
 		{
 			bakedDocumentTranslationReportingAggregate,
 			...restInput
 		}: Input,
 	) {
-		return Promise.all([
-			this.bakedDocumentTranslationReportingRepository.deleteMany(
-				bakedDocumentTranslationReportingAggregate.bakedDocumentId,
-			),
-			this.bakedDocumentRepository.updateTranslation(restInput),
-		]);
+		await this.bakedDocumentRepository.updateTranslation(restInput);
+
+		await this.bakedDocumentTranslationReportingRepository.deleteMany(
+			bakedDocumentTranslationReportingAggregate.bakedDocumentId,
+		);
 	}
 }

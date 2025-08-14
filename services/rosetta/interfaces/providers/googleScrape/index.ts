@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { type Translate } from "@business/entites/translate";
+import { envs } from "@interfaces/envs";
 import { createExternalPromise } from "@vendors/clean";
 import path from "path";
 import { Worker } from "worker_threads";
@@ -43,7 +44,8 @@ export namespace GoogleScrape {
 										promiseResolve(worker);
 									}
 								})
-								.once("error", rejectResolve);
+								.once("error", rejectResolve)
+								.once("exit", () => void rejectResolve(new Error("Worker exit Before start.")));
 						},
 					);
 
@@ -63,7 +65,23 @@ export namespace GoogleScrape {
 		};
 	}
 
-	const getWorker = workerEngine();
+	function createCluster(replicas: number) {
+		let currentWorker = 0;
+		const cluster = Array
+			.from({ length: replicas })
+			.map(workerEngine);
+		const next = 1;
+
+		return () => {
+			const woker = cluster[currentWorker];
+
+			currentWorker = (currentWorker + next) % cluster.length;
+
+			return woker();
+		};
+	}
+
+	const getWorker = createCluster(envs.GOOGLE_SCRAPE_REPLICAS);
 
 	export async function translate(
 		text: string,
@@ -74,12 +92,13 @@ export namespace GoogleScrape {
 		const result = await new Promise<JobsResult>((resolve, reject) => {
 			const id = process.hrtime.bigint().toString();
 
-			function onError(error: Error) {
+			function onError(error?: Error) {
 				worker
 					.removeListener("message", onMessage)
-					.removeListener("error", onError);
+					.removeListener("error", onError)
+					.removeListener("exit", onError);
 
-				reject(error);
+				reject(error ?? new Error("Worker exit whiout Error."));
 			}
 
 			function onMessage(data: JobsResult) {
@@ -89,14 +108,16 @@ export namespace GoogleScrape {
 
 				worker
 					.removeListener("message", onMessage)
-					.removeListener("error", onError);
+					.removeListener("error", onError)
+					.removeListener("exit", onError);
 
 				resolve(data);
 			}
 
 			worker
 				.on("message", onMessage)
-				.on("error", onError);
+				.on("error", onError)
+				.on("exit", onError);
 
 			worker.postMessage({
 				id,
