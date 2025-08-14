@@ -52,19 +52,6 @@ export class PubmedFetchArticleReferenceMissionEntity extends EntityHandler.crea
 		});
 	}
 
-	public start() {
-		return super
-			.start()
-			.update({
-				currentStep: PubmedFetchArticleReferenceMission
-					.currentStepObjecter
-					.unsafeCreate({
-						date: this.interval.value.from,
-						page: 0,
-					}),
-			});
-	}
-
 	public updateStep(
 		date: DateYYYYMMDD,
 		page: Int,

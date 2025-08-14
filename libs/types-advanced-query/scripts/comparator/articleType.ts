@@ -2,7 +2,11 @@ import { createEnum, zod, type GetEnumValue } from "@vendors/clean";
 import { createBaseComparator, type BaseComparator } from "./base";
 import { type ZodType } from "zod";
 
-export const articleTypeEnum = createEnum(["metaAnalysis", "controlledClinicalTrial"]);
+export const articleTypeEnum = createEnum([
+	"metaAnalysis",
+	"controlledClinicalTrial",
+	"randomizedControlledTrial",
+]);
 
 export type ArticleTypeEnumValue = GetEnumValue<typeof articleTypeEnum>;
 

@@ -206,7 +206,7 @@ function formatedDate(date: FlexibleDate) {
 									:key="index"
 								>
 									<DSBadge class="bg-green-seaence/10 text-green-seaence">
-										{{ type }}
+										{{ $t(`articleType.${type}`) }}
 									</DSBadge>
 								</li>
 							</ul>

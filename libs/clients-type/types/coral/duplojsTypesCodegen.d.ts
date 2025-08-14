@@ -29,7 +29,7 @@ type OperatorContent = OperatorAnd | OperatorOR | OperatorNot | ComparatorText |
     type: "comparator";
     name: "articleType";
     boost: "1" | "2" | "3";
-    value: ("metaAnalysis" | "controlledClinicalTrial")[];
+    value: ("metaAnalysis" | "controlledClinicalTrial" | "randomizedControlledTrial")[];
 } | {
     type: "comparator";
     name: "provider";

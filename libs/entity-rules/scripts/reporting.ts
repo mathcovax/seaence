@@ -1,6 +1,6 @@
 export const reportingRules = {
 	details: {
 		minLength: 10,
-		maxLength: 250,
+		maxLength: 1000,
 	},
 };

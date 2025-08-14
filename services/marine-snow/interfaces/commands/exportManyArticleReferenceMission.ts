@@ -1,3 +1,4 @@
+import "../repositories";
 import { exportArticleReferenceMissionRepository } from "@business/applications/repositories/exportArticleReferenceMission";
 import { ExportManyArticleReferenceUsecase } from "@business/applications/usecases/exportArticleReference/many";
 import { ExportManyArticleReferenceMissionEntity } from "@business/domains/entities/exportArticleReferenceMission/many";
