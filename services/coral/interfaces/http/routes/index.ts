@@ -1,11 +1,13 @@
 import "./documentFolder/create";
 import "./documentFolder/get";
 import "./documentFolder/remove";
+import "./documentFolder/rename";
 import "./documentFolder/findMany";
 
 import "./documentInFolder/createMany";
 import "./documentInFolder/get";
 import "./documentInFolder/remove";
+import "./documentInFolder/rename";
 import "./documentInFolder/findMany";
 
 import "./favoriteEquation/upsert";

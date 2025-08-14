@@ -196,24 +196,31 @@ export const FRfr = {
 		},
 		[documentFolderPage.name]: {
 			title: "Dossiers",
-			form: {
-				label: {
-					name: "Nom du dossier",
-				},
-			},
-			header: {
-				label: "{count} dossier(s)",
-			},
 			noDocumentFolder: "Aucun dossier trouvé.",
+			searchPlaceholder: "Rechercher un dossier...",
+			renameDialog: {
+				title: "Renomer le dossier",
+				label: "Nom",
+			},
+			removeDialog: {
+				title: "Supprimer un dossier",
+				description: "Êtes-vous sûr de vouloir supprimer ce dossier ? La suppression du dossier sera irréversible.",
+			},
 		},
 		[documentInFolderPage.name]: {
-			title: "Dossier",
-			header: {
-				label: "{count} document(s)",
-			},
+			title: "Dossier : {title}",
 			noDocumentInFolder: "Aucun document trouvé.",
+			searchPlaceholder: "Rechercher un document...",
 			bakedDocumentTitle: "Titre du document: {0}",
 			missingBakedDocumentTitle: "Titre du document manquant.",
+			renameDialog: {
+				title: "Renomer le document.",
+				label: "Nom",
+			},
+			removeDialog: {
+				title: "Supprimer un document",
+				description: "Êtes-vous sûr de vouloir supprimer ce document ? La suppression du document sera irréversible.",
+			},
 		},
 		...cguFRfr,
 	},
@@ -228,18 +235,17 @@ export const FRfr = {
 			requireCGU: "Vous devez accepter conditions générales d'utilisation.",
 		},
 	},
-	removeDocumentFolderDialog: {
-		title: "Supprimer un dossier",
-		description: "Êtes-vous sûr de vouloir supprimer ce dossier ? La suppression du dossier supprimera également son contenu.",
-	},
-	removeDocumentInFolderDialog: {
-		title: "Supprimer un document",
-		description: "Êtes-vous sûr de vouloir supprimer ce document ? La suppression du document sera irréversible.",
+	createDocumentFolderDialog: {
+		title: "Créer un dossier",
+		label: "Nom",
 	},
 	documentFolderHeader: {
 		label: "{count} élément(s)",
 		filtered: "{filtered} sur {total}",
 		noFiltered: "Aucun élément trouvé",
+	},
+	documentInFolderForm: {
+		name: "Nom du document",
 	},
 	createManyDocumentInFolderDialog: {
 		title: "Ajouter le document",
@@ -262,9 +268,6 @@ export const FRfr = {
 		createdMessage: "Le document a été ajouté dans le(s) dossier(s)",
 		createdMessageWithError: "Le document a été ajouté à certains dossiers, cependant il y a eu {foundError} dossier(s) non trouvé(s) et {capacityError} dossier(s) plein(s).",
 
-	},
-	createDocumentFolderDialog: {
-		title: "Créer un dossier",
 	},
 	documentFolderCard: {
 		items: "{count} document(s)",
@@ -480,8 +483,8 @@ export const FRfr = {
 		invalidEmail: "Cet email est invalide.",
 		minAge: "Vous devez avoir au moins {value} ans.",
 		maxItems: "Vous pouvez au maximum avoir {value} éléments.",
-		blobToLarge: "L'image est supérieure à {value} Mo.",
 		minItems: "Vous devez au minimum avoir {value} éléments.",
+		blobToLarge: "L'image est supérieure à {value} Mo.",
 		url: "Doit être sous la forme /path/to/page",
 		minDate: "Doit être après le {value}.",
 		int: "Le nombre doit être un entier.",
@@ -504,6 +507,8 @@ export const FRfr = {
 		validate: "Valider",
 		refuse: "Refuser",
 		add: "Ajouter",
+		rename: "Renommer",
+		cancel: "Annuler",
 	},
 	languages: {
 		"fr-FR": "Français",

@@ -151,6 +151,32 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/rename-document-folder";
+    body: {
+        newDocumentFolderName: string;
+    } & {
+        documentFolderId: string;
+        userId: string;
+    };
+    response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolder.renamed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/find-many-document-folder";
     body: {
         userId: string;
@@ -299,6 +325,34 @@ type CodegenRoutes = ({
     } | {
         code: 200;
         information: "documentInFolder.removed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/rename-document-in-folder";
+    body: ({
+        newDocumentInFolderName: string;
+    } & {
+        documentFolderId: string;
+        userId: string;
+    }) & {
+        nodeSameRawDocumentId: string;
+    };
+    response: {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentInFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolder.renamed";
         body?: undefined;
     };
 }) | ({

@@ -4,11 +4,11 @@
 
 - Je suis connecté
 - Je suis sur la page de listing de dossier de document
-- Je clique sur un dossier
-- Je suis rediriger sur une page qui affiche un dossier de document et son contenu
-- Je clique sur le bouton de suppression du dossier
+- Je clique sur le boutton d'action d'un des dossier
+- Je vois un pophover avec l'option de supprimer le dossier dedans
+- Je click sur l'option de suppression
 - Un dialog s'ouvre me demandant si je suis sur de vouloir supprimer le dossier
-- Qaund je clique sur valider, le dossier est supprimer et je suis rediger sur la page de listing de dossier de document
+- Je valide et le dossier a disparue de la page
 
 ### Coral implémentation
 

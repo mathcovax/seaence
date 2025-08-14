@@ -1077,6 +1077,38 @@ type CodegenRoutes = ({
     };
 }) | ({
     method: "POST";
+    path: "/rename-document-folder";
+    body: {
+        documentFolderId: string;
+        newDocumentFolderName: string;
+    };
+    response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "authentication.required";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 409;
+        information: "documentFolder.alreadyExists";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentFolder.renamed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
     path: "/find-one-document-folder";
     body: {
         documentFolderId: string;
@@ -1217,6 +1249,39 @@ type CodegenRoutes = ({
     } | {
         code: 204;
         information: "documentInFolder.removed";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/rename-document-in-folder";
+    body: {
+        documentFolderId: string;
+        nodeSameRawDocumentId: string;
+        newDocumentInFolderName: string;
+    };
+    response: {
+        code: 401;
+        information: "user.banned";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "authentication.required";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 403;
+        information: "documentFolder.wrongProprietary";
+        body?: undefined;
+    } | {
+        code: 404;
+        information: "documentInFolder.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "documentInFolder.renamed";
         body?: undefined;
     };
 }) | ({

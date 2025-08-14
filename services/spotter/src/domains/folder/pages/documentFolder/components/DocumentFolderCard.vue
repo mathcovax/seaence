@@ -11,6 +11,7 @@ const props = defineProps<Props>();
 const emit = defineEmits<{
 	click: [documentFolder: DocumentFolder];
 	delete: [documentFolder: DocumentFolder];
+	rename: [documentFolder: DocumentFolder];
 }>();
 
 function onClick() {
@@ -21,6 +22,9 @@ function onDelete() {
 	emit("delete", props.documentFolder);
 }
 
+function onRename() {
+	emit("rename", props.documentFolder);
+}
 </script>
 
 <template>
@@ -56,7 +60,12 @@ function onDelete() {
 						/>
 					</DSDropdownMenuTrigger>
 
-					<DSDropdownMenuContent @click.stop>
+					<DSDropdownMenuContent>
+						<DSDropdownMenuItem @click="onRename">
+							<DSIcon name="rename" />
+							{{ $t("cta.rename") }}
+						</DSDropdownMenuItem>
+
 						<DSDropdownMenuItem @click="onDelete">
 							<DSIcon name="delete" />
 							{{ $t("cta.delete") }}
@@ -71,7 +80,5 @@ function onDelete() {
 
 			<span class="text-muted-foreground">{{ formatDate(documentFolder.createdAt ) }}</span>
 		</DSCard>
-
-		<DeleteDialog />
 	</div>
 </template>

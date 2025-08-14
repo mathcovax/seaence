@@ -4,11 +4,13 @@ import { UserCountResultOfSearchDocumentFolderUsecase } from "@business/applicat
 import { UserCreateDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/userCreateDocumentFolder";
 import { UserFindDocumentFolderByIdUsecase } from "@business/applications/usecases/documentFolder/userFindDocumentFolderById";
 import { UserRemoveDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/userRemoveDocumentFolder";
+import { UserRenameDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/userRenameDocumentFolder";
 import { UserSearchDocumentFolderUsecase } from "@business/applications/usecases/documentFolder/userSearchDocumentFolder";
 import { UserCountResultOfSearchDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userCountResultOfSearchDocumentInFolder";
 import { UserCreateDocumentInManyFoldersUsecase } from "@business/applications/usecases/documentInFolder/userCreateDocumentInManyFolders";
 import { UserFindDocumentInFolderByUniqueCombinationUsecase } from "@business/applications/usecases/documentInFolder/userFindDocumentInFolderByUniqueCombination";
 import { UserRemoveDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userRemoveDocumentInFolder";
+import { UserRenameDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userRenameDocumentInFolder";
 import { UserSearchDocumentInFolderUsecase } from "@business/applications/usecases/documentInFolder/userSearchDocumentInFolder";
 import { UserCountResultOfFindManyFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userCountResultOfSearchFavoriteEquation";
 import { UserUpsertFavoriteEquationUsecase } from "@business/applications/usecases/favoriteEquation/userUpsertFavoriteEquation";
@@ -27,6 +29,7 @@ export const userFindDocumentFolderByIdUsecase = new UserFindDocumentFolderByIdU
 export const userFindManyDocumentFolderByIdsUsecase = new UserFindManyDocumentFolderByIdUsecase();
 export const userRemoveDocumentFolderUsecase = new UserRemoveDocumentFolderUsecase();
 export const userSearchDocumentFolderUsecase = new UserSearchDocumentFolderUsecase();
+export const userRenameDocumentFolderUsecase = new UserRenameDocumentFolderUsecase();
 export const userCountResultOfSearchDocumentFolderUsecase = new UserCountResultOfSearchDocumentFolderUsecase();
 export const userCheckDocumentFolderCapacityUsecase = new UserCheckDocumentFolderCapacityUsecase();
 export const userCheckManyDocumentFolderCapacityUsecase = new UserCheckManyDocumentFolderCapacityUsecase();
@@ -38,6 +41,7 @@ export const userCreateDocumentInManyFoldersUsecase = new UserCreateDocumentInMa
 export const userFindDocumentInFolderByUniqueCombinationUsecase
 	= new UserFindDocumentInFolderByUniqueCombinationUsecase();
 export const userRemoveDocumentInFolderUsecase = new UserRemoveDocumentInFolderUsecase();
+export const userRenameDocumentInFolderUsecase = new UserRenameDocumentInFolderUsecase();
 export const userSearchDocumentInFolderUsecase = new UserSearchDocumentInFolderUsecase();
 export const userCountResultOfSearchDocumentInFolderUsecase = new UserCountResultOfSearchDocumentInFolderUsecase();
 

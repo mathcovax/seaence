@@ -59,6 +59,12 @@ export type InputRemoveDocumentFolder = FindHttpClientRoute<
 	"/remove-document-folder"
 >["body"];
 
+export type InputRenameDocumentFolder = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/rename-document-folder"
+>["body"];
+
 export type InputFindOneDocumentFolder = FindHttpClientRoute<
 	CoralClientRoute,
 	"POST",
@@ -81,6 +87,12 @@ export type InputRemoveDocumentInFolder = FindHttpClientRoute<
 	CoralClientRoute,
 	"POST",
 	"/remove-document-in-folder"
+>["body"];
+
+export type InputRenameDocumentInFolder = FindHttpClientRoute<
+	CoralClientRoute,
+	"POST",
+	"/rename-document-in-folder"
 >["body"];
 
 export type InputCreateManyDocumentInFolder = FindHttpClientRoute<

@@ -65,8 +65,8 @@ export function useCreateManyDocumentInFolderDialog(
 					label: t("createManyDocumentInFolderDialog.form.label.folder"),
 					schema: folderItemSchema
 						.array()
-						.min(minSelectFolder, t("formMessage.minLength", { value: minSelectFolder }))
-						.max(maxSelectFolder, t("formMessage.minLength", { value: maxSelectFolder })),
+						.min(minSelectFolder, t("formMessage.minItems", { value: minSelectFolder }))
+						.max(maxSelectFolder, t("formMessage.maxItems", { value: maxSelectFolder })),
 					props: computed(() => ({
 						items: itemsOfInputFolder.value,
 						placeholder: t("createManyDocumentInFolderDialog.form.placeholder.folder"),

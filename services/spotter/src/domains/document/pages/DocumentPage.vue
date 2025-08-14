@@ -5,7 +5,7 @@ import { bakedDocumentLanguageEnum } from "@/lib/horizon/types/bakedDocument";
 import PostRow from "@/domains/forum/components/PostRow.vue";
 import { RouterLink } from "vue-router";
 import ReportingWrongTranslateDialog from "../components/ReportingWrongTranslateDialog.vue";
-import CreateManyDocumentInFolderDialog from "@/domains/user/components/CreateManyDocumentInFolderDialog.vue";
+import CreateManyDocumentInFolderDialog from "@/domains/folder/components/createManyDocumentInFolderDialog/CreateManyDocumentInFolderDialog.vue";
 import { useUserInformation } from "@/domains/user/composables/useUserInformation";
 
 const { t } = useI18n();

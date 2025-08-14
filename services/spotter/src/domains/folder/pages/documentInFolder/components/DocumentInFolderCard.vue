@@ -11,6 +11,7 @@ const props = defineProps<Props>();
 const emit = defineEmits<{
 	click: [document: DocumentInFoloder];
 	delete: [document: DocumentInFoloder];
+	rename: [document: DocumentInFoloder];
 }>();
 
 const { $pt } = documentInFolderPage.use();
@@ -21,6 +22,10 @@ function handleClick() {
 
 function handleDelete() {
 	emit("delete", props.documentInFolder);
+}
+
+function handleRename() {
+	emit("rename", props.documentInFolder);
 }
 
 </script>
@@ -68,8 +73,13 @@ function handleDelete() {
 					/>
 				</DSDropdownMenuTrigger>
 
-				<DSDropdownMenuContent @click.stop>
-					<DSDropdownMenuItem @click.stop="handleDelete">
+				<DSDropdownMenuContent>
+					<DSDropdownMenuItem @click="handleRename">
+						<DSIcon name="rename" />
+						{{ $t("cta.rename") }}
+					</DSDropdownMenuItem>
+
+					<DSDropdownMenuItem @click="handleDelete">
 						<DSIcon name="delete" />
 						{{ $t("cta.delete") }}
 					</DSDropdownMenuItem>

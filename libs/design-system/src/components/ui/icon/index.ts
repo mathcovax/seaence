@@ -53,6 +53,7 @@ import {
 	mdiCloseCircle,
 	mdiCommentAlert,
 	mdiCommentRemove,
+	mdiRename,
 } from "@mdi/js";
 
 export const iconsMapper = {
@@ -110,6 +111,7 @@ export const iconsMapper = {
 	closeCircle: mdiCloseCircle,
 	commentAlert: mdiCommentAlert,
 	commentRemove: mdiCommentRemove,
+	rename: mdiRename,
 };
 
 export const iconSizeMapper = {

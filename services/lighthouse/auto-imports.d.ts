@@ -82,6 +82,7 @@ declare global {
   const useCssVars: typeof import('vue')['useCssVars']
   const useEmptyLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']
   const useFormBuilder: typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']
+  const useFormDialog: typeof import('./vendors/design-system/composables/useFormDialog')['useFormDialog']
   const useI18n: typeof import('vue-i18n')['useI18n']
   const useId: typeof import('vue')['useId']
   const useLink: typeof import('vue-router')['useLink']
@@ -249,6 +250,7 @@ declare module 'vue' {
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useEmptyLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']>
     readonly useFormBuilder: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']>
+    readonly useFormDialog: UnwrapRef<typeof import('./vendors/design-system/composables/useFormDialog')['useFormDialog']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>

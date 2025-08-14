@@ -16,6 +16,12 @@ export class UserCreateDocumentFolderUsecase extends UsecaseHandler.create({
 	countTotalDocumentFolderUsecase: UserCountResultOfSearchDocumentFolderUsecase,
 }) {
 	public async execute({ documentFolderName, userId }: Input) {
+		const findedDocumentFolder = await this.documentFolderRepository.findDocumentFolder(userId, documentFolderName);
+
+		if (findedDocumentFolder) {
+			return new UsecaseError("document-folder-already-exist", { findedDocumentFolder });
+		}
+
 		const total = await this.countTotalDocumentFolderUsecase({
 			userId,
 			partialDocumentFolderName: null,
@@ -23,12 +29,6 @@ export class UserCreateDocumentFolderUsecase extends UsecaseHandler.create({
 
 		if (total.value >= maxDocumentFolderQuantity) {
 			return new UsecaseError("document-folder-max-quantity", { total });
-		}
-
-		const findedDocumentFolder = await this.documentFolderRepository.findDocumentFolder(userId, documentFolderName);
-
-		if (findedDocumentFolder) {
-			return new UsecaseError("document-folder-already-exist", { findedDocumentFolder });
 		}
 
 		const documentFolder = DocumentFolderEntity.create({

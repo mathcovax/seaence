@@ -24,8 +24,8 @@ declare global {
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
-  const documentFolderPage: typeof import('./src/domains/user/router')['documentFolderPage']
-  const documentInFolderPage: typeof import('./src/domains/user/router')['documentInFolderPage']
+  const documentFolderPage: typeof import('./src/domains/folder/pages/documentFolder/router')['documentFolderPage']
+  const documentInFolderPage: typeof import('./src/domains/folder/pages/documentInFolder/router')['documentInFolderPage']
   const documentPage: typeof import('./src/domains/document/router')['documentPage']
   const effectScope: typeof import('vue')['effectScope']
   const formTemplate: typeof import('./vendors/design-system/utils/layoutTemplate')['formTemplate']
@@ -98,6 +98,7 @@ declare global {
   const useCssVars: typeof import('vue')['useCssVars']
   const useEmptyLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']
   const useFormBuilder: typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']
+  const useFormDialog: typeof import('./vendors/design-system/composables/useFormDialog')['useFormDialog']
   const useI18n: typeof import('vue-i18n')['useI18n']
   const useId: typeof import('vue')['useId']
   const useLink: typeof import('vue-router')['useLink']
@@ -105,12 +106,15 @@ declare global {
   const useLocalStorageItem: typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']
   const useModel: typeof import('vue')['useModel']
   const useMultiFieldLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')['useMultiFieldLayout']
+  const usePageDetails: typeof import('./src/composables/usePageDetails')['usePageDetails']
+  const usePagination: typeof import('./src/composables/usePagination')['usePagination']
   const useProvide: typeof import('./vendors/design-system/composables/useProvide')['useProvide']
   const useRefHasChange: typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']
   const useRepeatLayout: typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useRepeatLayout')['useRepeatLayout']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useScroll: typeof import('./vendors/design-system/composables/useScroll')['useScroll']
+  const useSearch: typeof import('./src/composables/useSearch')['useSearch']
   const useSlots: typeof import('vue')['useSlots']
   const useSmoothEnabled: typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']
   const useSonner: typeof import('./vendors/design-system/composables/useSonner')['useSonner']
@@ -130,6 +134,9 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { SearchParams, UseSearchOptions } from './src/composables/useSearch'
+  import('./src/composables/useSearch')
   // @ts-ignore
   export type { HorizonClientRoute } from './src/lib/horizon/index'
   import('./src/lib/horizon/index')
@@ -208,8 +215,8 @@ declare module 'vue' {
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
-    readonly documentFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentFolderPage']>
-    readonly documentInFolderPage: UnwrapRef<typeof import('./src/domains/user/router')['documentInFolderPage']>
+    readonly documentFolderPage: UnwrapRef<typeof import('./src/domains/folder/pages/documentFolder/router')['documentFolderPage']>
+    readonly documentInFolderPage: UnwrapRef<typeof import('./src/domains/folder/pages/documentInFolder/router')['documentInFolderPage']>
     readonly documentPage: UnwrapRef<typeof import('./src/domains/document/router')['documentPage']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly formTemplate: UnwrapRef<typeof import('./vendors/design-system/utils/layoutTemplate')['formTemplate']>
@@ -282,6 +289,7 @@ declare module 'vue' {
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useEmptyLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useEmptyLayout')['useEmptyLayout']>
     readonly useFormBuilder: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/index')['useFormBuilder']>
+    readonly useFormDialog: UnwrapRef<typeof import('./vendors/design-system/composables/useFormDialog')['useFormDialog']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
@@ -289,12 +297,14 @@ declare module 'vue' {
     readonly useLocalStorageItem: UnwrapRef<typeof import('./vendors/design-system/composables/useLocalStorageItem')['useLocalStorageItem']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useMultiFieldLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useMultiFieldLayout')['useMultiFieldLayout']>
+    readonly usePageDetails: UnwrapRef<typeof import('./src/composables/usePageDetails')['usePageDetails']>
     readonly useProvide: UnwrapRef<typeof import('./vendors/design-system/composables/useProvide')['useProvide']>
     readonly useRefHasChange: UnwrapRef<typeof import('./vendors/design-system/composables/useRefHasChange')['useRefHasChange']>
     readonly useRepeatLayout: UnwrapRef<typeof import('./vendors/design-system/composables/useFormBuilder/layouts/useRepeatLayout')['useRepeatLayout']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useScroll: UnwrapRef<typeof import('./vendors/design-system/composables/useScroll')['useScroll']>
+    readonly useSearch: UnwrapRef<typeof import('./src/composables/useSearch')['useSearch']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useSmoothEnabled: UnwrapRef<typeof import('./vendors/design-system/composables/useSmoothEnabled')['useSmoothEnabled']>
     readonly useSonner: UnwrapRef<typeof import('./vendors/design-system/composables/useSonner')['useSonner']>
