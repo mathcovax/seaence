@@ -81,6 +81,7 @@ export const FRfr = {
 			title: "Signalements de traduction",
 			description: "Gérez les signalements de documents traduits et leurs corrections.",
 			seeDocument: "Voir le document",
+			errorWhenFetchingNewVersion: "Une erreur est survenu lors de la traduction du document.",
 			bakedDocument: {
 				cookingMode: "Mode de cuisson",
 				title: "Document traduit",

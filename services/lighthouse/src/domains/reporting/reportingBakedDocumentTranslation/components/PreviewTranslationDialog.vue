@@ -16,7 +16,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
+const sonner = useSonner();
 const { $pt } = reportingBakedDocumentTranslationPage.use();
 const { getNewBakedDocumentTranslation, newBakedDocumentTranslation } = useGetNewBakedDocumentTranslation();
 const { processBakedDocumentTranslationReportingAggregate } = useProcessBakedDocumentTranslationReportingAggregate();
@@ -48,11 +48,13 @@ function onSubmit() {
 
 function onOpenDialop() {
 	void getNewBakedDocumentTranslation(props)
-		.whenServerError(
-			() => {
-				openModel.value = false;
-			},
-		);
+		.whenServerError(() => {
+			openModel.value = false;
+		})
+		.catch(() => {
+			openModel.value = false;
+			sonner.sonnerError($pt("errorWhenFetchingNewVersion"));
+		});
 }
 
 </script>

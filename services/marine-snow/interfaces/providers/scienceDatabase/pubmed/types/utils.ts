@@ -128,7 +128,7 @@ export const articleTypeBackedToUI: Record<ArticleType["value"], string | string
 	expressionOfConcern: "D000075742",
 	festschrift: "D016221",
 	governmentPublication: "D022903",
-	guideline: undefined,
+	guideline: "D016431",
 	historicalArticle: "D016456",
 	interactiveTutorial: "D054710",
 	interview: "D017203",

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { type Translate } from "@business/entites/translate";
 import { createExternalPromise } from "@vendors/clean";
 import path from "path";
@@ -50,6 +51,8 @@ export namespace GoogleScrape {
 						inComingWorker = undefined;
 					});
 
+					worker.setMaxListeners(Infinity);
+
 					resolve(worker);
 				} catch (error) {
 					reject(error);
@@ -72,6 +75,10 @@ export namespace GoogleScrape {
 			const id = process.hrtime.bigint().toString();
 
 			function onError(error: Error) {
+				worker
+					.removeListener("message", onMessage)
+					.removeListener("error", onError);
+
 				reject(error);
 			}
 
@@ -79,8 +86,11 @@ export namespace GoogleScrape {
 				if (data.id !== id) {
 					return;
 				}
-				worker.removeListener("message", onMessage);
-				worker.removeListener("error", onError);
+
+				worker
+					.removeListener("message", onMessage)
+					.removeListener("error", onError);
+
 				resolve(data);
 			}
 
