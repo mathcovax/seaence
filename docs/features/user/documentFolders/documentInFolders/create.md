@@ -10,15 +10,10 @@
 	- Un champ de recherche de dossier
 	- Une liste paginer de dossier
 	- un button pour créer un dossier
-- Je peux:
-	- Rechercher les dossier par leur nom
-	- Selectionner le dossier dans le quel je veux ajouter le document
-	- [Créer un dossier à la volé](../create.md)
-- Une fois que j'ai choisie le dossier dans le quel je veux ajouter le document
-
-- Un dialog apparait avec un champ name à completer
-- Je complete le champ et valide l'ajout
-- Le document a été ajouté dans le dossier
+- Je saissie le nom que j'attribu au document dans mon dossier
+- Je choisi le ou les dossier dans le qu'elle sera ranger le document
+- Je valide
+- Je vois la liste des dossiers dans le qu'elle le document est s'actualisé.
 
 ### Coral implémentation
 
