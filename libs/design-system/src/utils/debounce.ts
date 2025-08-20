@@ -1,14 +1,16 @@
 import { type ObjectKey } from "@duplojs/utils";
 
+type DebuncedFunction = (abortController: AbortController) => void;
+
 export function createFetchDebounce(
 	time: number,
 	getAbortReason: () => Error,
 ) {
 	const debunceTime: Partial<Record<ObjectKey, number>> = {};
-	const debunceTrigger: Partial<Record<ObjectKey, boolean>> = {};
+	const debunceTrigger: Partial<Record<ObjectKey, DebuncedFunction>> = {};
 
 	function debounce(
-		debuncedFunction: (abortController: AbortController) => void,
+		debuncedFunction: DebuncedFunction,
 		identifier: ObjectKey = "default",
 	) {
 		const now = Date.now();
@@ -17,7 +19,7 @@ export function createFetchDebounce(
 			|| now - debunceTime[identifier] >= time
 		) {
 			debunceTime[identifier] = now;
-			debunceTrigger[identifier] = false;
+			debunceTrigger[identifier] = undefined;
 			const abortController = new AbortController();
 			debuncedFunction(abortController);
 
@@ -25,13 +27,13 @@ export function createFetchDebounce(
 				() => {
 					if (debunceTrigger[identifier]) {
 						abortController.abort(getAbortReason());
-						debounce(debuncedFunction, identifier);
+						debounce(debunceTrigger[identifier], identifier);
 					}
 				},
 				time,
 			);
 		} else {
-			debunceTrigger[identifier] = true;
+			debunceTrigger[identifier] = debuncedFunction;
 		}
 	}
 
