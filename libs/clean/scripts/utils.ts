@@ -153,23 +153,6 @@ export function toSimpleObject<
 	}
 }
 
-declare const BrandCleanEnumSymbol: unique symbol;
-
-export type BrandCleanEnumValue<
-	GenericValues extends unknown,
-> = GenericValues & { [BrandCleanEnumSymbol]: boolean };
-
-export type BrandCleanEnumTuple<
-	GenericValues extends unknown[],
-> = GenericValues extends [infer InferedValue, ...infer InferedRest]
-	? [
-		BrandCleanEnumValue<InferedValue>,
-		...BrandCleanEnumTuple<InferedRest>,
-	]
-	: GenericValues extends []
-		? GenericValues
-		: never;
-
 export type CleanEnum<
 	GenericValues extends [string, ...string[]] = [string, ...string[]],
 > = SimplifyObjectTopLevel<

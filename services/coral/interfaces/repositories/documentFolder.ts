@@ -92,6 +92,7 @@ documentFolderRepository.default = {
 					userId: userId.value,
 					name: {
 						$regex: escapeRegExp(partialDocumentFolderName.value),
+						$options: "i",
 					},
 				},
 			)

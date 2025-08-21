@@ -19,16 +19,16 @@ const termModel = defineModel<string>("term", { required: true });
 
 <template>
 	<header class="space-y-4">
-		<div class="flex justify-between items-start gap-4">
-			<div class="flex gap-4 items-center">
+		<div class="flex justify-between items-start gap-4 w-full">
+			<div class="flex gap-4 items-center overflow-hidden min-w-40">
 				<BackButton />
 
-				<h1 class="text-xl md:text-3xl font-bold text-blue-seaence text-nowrap">
+				<h1 class="text-xl md:text-3xl font-bold text-blue-seaence text-nowrap text-ellipsis overflow-hidden">
 					{{ title }}
 				</h1>
 			</div>
 
-			<div class="lg:w-80 flex gap-4">
+			<div class="lg:w-80 flex items-center gap-4 min-w-35">
 				<DSInput
 					:placeholder="placeholder"
 					v-model="termModel"
