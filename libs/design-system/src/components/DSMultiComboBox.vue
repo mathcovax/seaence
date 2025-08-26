@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="GenericItem extends AcceptableValue">
 import { type AcceptableValue } from "reka-ui";
-import { ref, defineModel } from "vue";
+import { ref } from "vue";
 import DSPopover from "./ui/popover/DSPopover.vue";
 import DSGhostButton from "./ui/button/DSGhostButton.vue";
 import DSClosingTag from "./DSClosingTag.vue";
@@ -81,7 +81,7 @@ function onSelect(selectedItem: GenericItem) {
 }
 
 function preflight(event: Event) {
-	if (props.max !== undefined && modelValue.length >= props.max) {
+	if (props.max !== undefined && modelValue.value.length >= props.max) {
 		event.stopImmediatePropagation();
 		event.stopPropagation();
 		event.preventDefault();

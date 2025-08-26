@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="GenericItem extends AcceptableValue">
 import { type AcceptableValue } from "reka-ui";
-import { ref, defineModel, type HTMLAttributes } from "vue";
+import { ref, type HTMLAttributes } from "vue";
 import DSPopover from "./ui/popover/DSPopover.vue";
 import DSPopoverTrigger from "./ui/popover/DSPopoverTrigger.vue";
 import DSPopoverContent from "./ui/popover/DSPopoverContent.vue";
