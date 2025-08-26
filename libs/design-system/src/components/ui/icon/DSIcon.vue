@@ -29,5 +29,6 @@ const iconStyle = computed(
 		type="mdi"
 		:path="iconsMapper[name]"
 		:style="iconStyle"
+		class="shrink-0"
 	/>
 </template>

@@ -42,7 +42,7 @@ function onSubmit() {
 		class="flex flex-col gap-4 pt-1"
 		@submit.prevent="onSubmit"
 	>
-		<div class="flex gap-4">
+		<div class="flex gap-4 items-center">
 			<DSPrimaryButton type="submit">
 				{{ $t("cta.search") }}
 			</DSPrimaryButton>
@@ -59,6 +59,16 @@ function onSubmit() {
 			<AddToFavoriteEquation
 				v-model="modelValue"
 			/>
+
+			<RouterLink
+				:to="scratchTutorialPage"
+				class="text-blue-seaence"
+			>
+				<DSIcon
+					name="helpCircleOutline"
+					square
+				/>
+			</RouterLink>
 		</div>
 
 		<TheScratch

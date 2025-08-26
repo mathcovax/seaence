@@ -73,6 +73,7 @@ declare global {
   const readonly: typeof import('vue')['readonly']
   const ref: typeof import('vue')['ref']
   const resolveComponent: typeof import('vue')['resolveComponent']
+  const scratchTutorialPage: typeof import('./src/domains/search/router')['scratchTutorialPage']
   const searchPageQuery: typeof import('./src/domains/search/router')['searchPageQuery']
   const selectFormField: typeof import('./vendors/design-system/utils/formFields')['selectFormField']
   const selectStringFormField: typeof import('./vendors/design-system/utils/formFields')['selectStringFormField']
@@ -264,6 +265,7 @@ declare module 'vue' {
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
+    readonly scratchTutorialPage: UnwrapRef<typeof import('./src/domains/search/router')['scratchTutorialPage']>
     readonly searchPageQuery: UnwrapRef<typeof import('./src/domains/search/router')['searchPageQuery']>
     readonly selectFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['selectFormField']>
     readonly selectStringFormField: UnwrapRef<typeof import('./vendors/design-system/utils/formFields')['selectStringFormField']>

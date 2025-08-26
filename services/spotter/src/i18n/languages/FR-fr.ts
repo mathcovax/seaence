@@ -12,6 +12,7 @@ import type {
 	YearFieldEnumValue,
 } from "@vendors/types-advanced-query";
 import { cguFRfr } from "./cgu/FR-fr";
+import { scratchTutorialFRfr } from "./tutorial/Fr-fr";
 
 export const FRfr = {
 	page: {
@@ -91,7 +92,6 @@ export const FRfr = {
 			maxSizeRequest: "L'équation est trop grande.",
 		},
 		[documentPage.name]: {
-			download: "Télécharger l'article",
 			label: {
 				articleType: "Type d'article",
 				keywords: "Mots clés",
@@ -223,6 +223,7 @@ export const FRfr = {
 			},
 		},
 		...cguFRfr,
+		...scratchTutorialFRfr,
 	},
 	authDialog: {
 		title: "Authentification",
@@ -279,6 +280,7 @@ export const FRfr = {
 					search: "Recherche",
 					simple: "Simple",
 					advanced: "Avancée",
+					tutorial: "Tutoriel",
 				},
 				accountDropdown: {
 					title: "Mon compte",
@@ -359,7 +361,7 @@ export const FRfr = {
 					label: "Comparaison textuelle",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Résumé",
+						abstract: "Abstract",
 						title: "Titre",
 						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
@@ -370,7 +372,7 @@ export const FRfr = {
 					label: "Comparaison textuelle stricte",
 					fields: {
 						allField: "Tous les champs",
-						abstract: "Résumé",
+						abstract: "Abstract",
 						title: "Titre",
 						keywords: "Mots-clés",
 					} satisfies Record<TextFieldEnumValue, string>,
@@ -546,7 +548,7 @@ export const FRfr = {
 		duplicatePublication: "Publication en double",
 		editorial: "Éditorial",
 		electronicSupplementaryMaterials: "Matériaux supplémentaires électroniques",
-		englishAbstract: "Résumé en anglais",
+		englishAbstract: "Abstract en anglais",
 		equivalenceTrial: "Essai d'équivalence",
 		evaluationStudy: "Étude d'évaluation",
 		expressionOfConcern: "Expression de préoccupation",

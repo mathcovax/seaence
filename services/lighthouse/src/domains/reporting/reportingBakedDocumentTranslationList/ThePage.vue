@@ -30,7 +30,10 @@ function setPage(page: number) {
 				</p>
 			</header>
 
-			<div class="mb-6 flex justify-center">
+			<div
+				v-if="list.length > 0"
+				class="mb-6 flex justify-center"
+			>
 				<DSPagination
 					v-if="pageContent.countTotal > pageContent.quantityPerPage"
 					:max-page="maxPage"
@@ -41,7 +44,10 @@ function setPage(page: number) {
 				/>
 			</div>
 
-			<div class="mb-8 flex flex-col gap-4">
+			<div
+				v-if="list.length > 0"
+				class="mb-8 flex flex-col gap-4"
+			>
 				<RouterLink
 					v-for="row of list"
 					:key="row.bakedDocumentId"
@@ -90,12 +96,12 @@ function setPage(page: number) {
 
 			<div
 				v-if="list.length === 0"
-				class="px-4 py-16 text-center"
+				class="px-4 py-12 text-center"
 			>
 				<div class="mb-4">
 					<DSIcon
-						name="document"
-						class="mx-auto text-muted-foreground"
+						name="check"
+						class="mx-auto text-green-seaence"
 						size="large"
 					/>
 				</div>
@@ -109,7 +115,10 @@ function setPage(page: number) {
 				</p>
 			</div>
 
-			<div class="flex justify-center">
+			<div
+				v-if="list.length > 0"
+				class="flex justify-center"
+			>
 				<DSPagination
 					v-if="pageContent.countTotal > pageContent.quantityPerPage"
 					:max-page="maxPage"
