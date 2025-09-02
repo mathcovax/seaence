@@ -15,7 +15,7 @@ export const envs = zod
 	.object({
 		PORT: zod.coerce.number(),
 		HOST: zod.enum(["0.0.0.0"]),
-		ENVIROMENT: zod.enum(["DEV", "PROD"]),
+		ENVIRONMENT: zod.enum(["DEV", "PROD"]),
 		FIREBASE_CREDENTIAL_PATH: zod.string(),
 		JWT_KEY: zod.string().min(minLenghtJWTKey),
 		JWT_TIME: zod.coerce.number(),

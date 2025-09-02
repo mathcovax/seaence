@@ -16,12 +16,12 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 - **Variables à définir** :
   - `VITE_HORIZON_ENTRYPOINT_BASE_URL` : URL du backend Horizon
   - `VITE_SPOTTER_GLITCHTIP_DSN` : DSN pour Glitchtip (monitoring)
-  - `VITE_ENVIRONEMENT` : Environnement (ex: DEV, PROD)
+  - `VITE_ENVIRONMENT` : Environnement (ex: DEV, PROD)
 
 ### horizon (Backend Duplo)
 - **Fichier env** : `horizon.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT` : Environnement (ex: DEV, PROD)
+  - `ENVIRONMENT` : Environnement (ex: DEV, PROD)
   - `HOST` : Adresse d'écoute du service
   - `PORT` : Port d'écoute
   - `CORS_ALLOW_ORIGIN` : Origine CORS
@@ -29,7 +29,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
   - `SCHOOL_BASE_URL` : URL du service School
   - `ABYS_BASE_URL` : URL du service Abys
   - `SEA_BASE_URL` : URL du service Sea
-  - `BOTLLE_BASE_URL` : URL du service Bottle
+  - `BOTTLE_BASE_URL` : URL du service Bottle
   - `BEACON_BASE_URL` : URL du service Beacon
   - `CORAL_BASE_URL` : URL du service Coral
   - `GLITCHTIP_DSN` : DSN pour Glitchtip
@@ -37,7 +37,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### sea (Backend Duplo)
 - **Fichier env** : `sea.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT` : Environnement (ex: DEV, PROD)
+  - `ENVIRONMENT` : Environnement (ex: DEV, PROD)
   - `HOST` : Adresse d'écoute du service
   - `PORT` : Port d'écoute
   - `ES_HOST`, `ES_PORT`, `ES_BASE_URL` : Configuration Elasticsearch
@@ -47,7 +47,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### abys (Backend Duplo)
 - **Fichier env** : `abys.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`, `MONGO_HOST`, `MONGO_PORT`, `MONGO_DB`, `MONGO_DATABASE_URL` : Connexion Mongo externe
   - `DB_CONNECTION` : Activer la connexion DB
   - `SEA_BASE_URL`, `ROSETTA_BASE_URL` : URLs des services Sea et Rosetta
@@ -56,7 +56,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### coral (Backend Duplo)
 - **Fichier env** : `coral.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`, `MONGO_HOST`, `MONGO_PORT`, `MONGO_DB`, `MONGO_DATABASE_URL` : Connexion Mongo externe
   - `DB_CONNECTION` : Activer la connexion DB
   - `ASYNC_MESSAGE_MONGO_URL` : URL Mongo pour messages asynchrones
@@ -65,7 +65,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### beacon (Backend Duplo)
 - **Fichier env** : `beacon.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`, `MONGO_HOST`, `MONGO_PORT`, `MONGO_DB`, `MONGO_DATABASE_URL` : Connexion Mongo externe
   - `DB_CONNECTION` : Activer la connexion DB
   - `ABYS_BASE_URL` : URL du service Abys
@@ -74,7 +74,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### bottle (Backend Duplo)
 - **Fichier env** : `bottle.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`, `MONGO_HOST`, `MONGO_PORT`, `MONGO_DB`, `MONGO_DATABASE_URL` : Connexion Mongo externe
   - `DB_CONNECTION` : Activer la connexion DB
   - `NO_REPLY_EMAIL`, `SUPPORT_EMAIL`, `CONTACT_EMAIL` : Emails de contact
@@ -85,7 +85,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### bridge (Backend Duplo)
 - **Fichier env** : `bridge.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT` : Environnement (ex: DEV, PROD)
+  - `ENVIRONMENT` : Environnement (ex: DEV, PROD)
   - `HOST` : Adresse d'écoute du service
   - `PORT` : Port d'écoute
   - `CORS_ALLOW_ORIGIN` : Origine CORS
@@ -97,7 +97,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### harbor (Backend Duplo)
 - **Fichier env** : `harbor.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DATABASE_URL` : Connexion à la base Postgres externe
   - `FIREBASE_CREDENTIAL_PATH` : Chemin vers les credentials Firebase (le fichier est indispensable au lancement du service)
   - `BOTTLE_BASE_URL` : URL du service Bottle
@@ -109,7 +109,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### school (Backend Duplo)
 - **Fichier env** : `school.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`, `MONGO_HOST`, `MONGO_PORT`, `MONGO_DB`, `MONGO_DATABASE_URL` : Connexion Mongo externe
   - `DB_CONNECTION` : Activer la connexion DB
   - `ASYNC_MESSAGE_MONGO_URL` : URL Mongo pour messages asynchrones
@@ -119,7 +119,7 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 ### marine-snow (Backend Duplo)
 - **Fichier env** : `marine-snow.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DATABASE_URL` : Connexion Postgres externe
   - `PUBMED_API_KEY`, `PUBMED_BASE_URL` : Accès PubMed
   - `ABYS_BASE_URL` : URL du service Abys
@@ -131,13 +131,13 @@ Ce guide explique comment déployer chaque service du projet Seaence en producti
 - **Variables à définir** :
   - `VITE_BRIDGE_ENTRYPOINT_BASE_URL` : URL du backend Bridge
   - `VITE_LIGHTHOUSE_GLITCHTIP_DSN` : DSN pour Glitchtip
-  - `VITE_ENVIRONEMENT` : Environnement
+  - `VITE_ENVIRONMENT` : Environnement
   - `VITE_SPOTTER_BASE_URL` : URL du service Spotter
 
 ### rosetta (Backend Duplo)
 - **Fichier env** : `rosetta.env.local`
 - **Variables à définir** :
-  - `ENVIROMENT`, `HOST`, `PORT` : Paramètres généraux
+  - `ENVIRONMENT`, `HOST`, `PORT` : Paramètres généraux
   - `DB_CONNECTION` : Activer la connexion DB
   - `LIBRETRANSLATE_BASE_URL` : URL du service LibreTranslate
   - `GLITCHTIP_DSN` : DSN pour Glitchtip

@@ -12,7 +12,7 @@ interface SendInput {
 
 export class EmailProvider {
 	public static transporter = nodemailer.createTransport(
-		envs.ENVIROMENT === "DEV"
+		envs.ENVIRONMENT === "DEV"
 			? {
 				host: "maildev",
 				port: 1025,
