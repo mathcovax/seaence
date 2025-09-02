@@ -7,7 +7,7 @@ import { cors } from "@vendors/duplo-plugins/cors";
 import "./routes";
 
 const duplo = new Duplo({
-	environment: envs.ENVIROMENT,
+	environment: envs.ENVIRONMENT,
 	host: envs.HOST,
 	port: envs.PORT,
 	plugins: [

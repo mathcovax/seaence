@@ -27,7 +27,7 @@ function onLanguageChange(newLanguage: BakedDocumentLanguage | null) {
 
 	const newDocumentId = `${document.value.nodeSameRawDocumentId}_${newLanguage}`;
 
-	void router.push(documentPage.createTo({
+	void router.replace(documentPage.createTo({
 		params: { id: newDocumentId },
 	}));
 }

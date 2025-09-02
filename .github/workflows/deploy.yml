@@ -108,6 +108,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
+          echo '${{ secrets.BUILD_FRONT_ENV }}' > ./build-front.env.local
+
           echo '${{ secrets.SPOTTER_NGINX_CONF }}' > ./spotter.nginx.conf
           echo '${{ secrets.LIGHTHOUSE_NGINX_CONF }}' > ./lighthouse.nginx.conf
 

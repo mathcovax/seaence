@@ -12,7 +12,7 @@ export const envs = zod
 	.object({
 		PORT: zod.coerce.number(),
 		HOST: zod.enum(["0.0.0.0"]),
-		ENVIROMENT: zod.enum(["DEV", "PROD"]),
+		ENVIRONMENT: zod.enum(["DEV", "PROD"]),
 		BREVO_USER: zod.string(),
 		BREVO_KEY: zod.string(),
 		DB_CONNECTION: zod.booleanInString(),

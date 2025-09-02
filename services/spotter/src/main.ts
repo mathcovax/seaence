@@ -9,7 +9,7 @@ import { envs } from "./envs";
 
 const app = createApp(App);
 
-if (envs.VITE_ENVIRONEMENT === "PROD") {
+if (envs.VITE_ENVIRONMENT === "PROD") {
 	SentryLogger.init(app);
 }
 

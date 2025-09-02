@@ -79,7 +79,7 @@ export class BottleAPI {
 
 	static {
 		this.httpClient = new HttpClient({
-			baseUrl: envs.BOTLLE_BASE_URL,
+			baseUrl: envs.BOTTLE_BASE_URL,
 		});
 	}
 }

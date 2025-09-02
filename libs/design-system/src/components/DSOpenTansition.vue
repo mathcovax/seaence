@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref, watch, type HTMLAttributes, withDefaults, defineProps, onMounted } from "vue";
+import { nextTick, ref, watch, type HTMLAttributes, onMounted } from "vue";
 
 interface Props {
 	visible?: boolean;

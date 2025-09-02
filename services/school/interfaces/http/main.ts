@@ -6,7 +6,7 @@ import "./routes";
 import { debug } from "@vendors/duplo-plugins/debug";
 
 const duplo = new Duplo({
-	environment: envs.ENVIROMENT,
+	environment: envs.ENVIRONMENT,
 	host: envs.HOST,
 	port: envs.PORT,
 	plugins: [

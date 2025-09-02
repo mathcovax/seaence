@@ -10,7 +10,7 @@ const elasticClient = new Client({
 });
 
 if (envs.DB_CONNECTION) {
-	if (envs.ENVIROMENT === "DEV") {
+	if (envs.ENVIRONMENT === "DEV") {
 		const timeToWaitElasticUp = 5000;
 		await sleep(timeToWaitElasticUp);
 	}
