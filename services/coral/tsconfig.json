@@ -1,18 +1,27 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"lib": [
-			"ESNext"
-		],
+		"lib": ["ESNext"],
 		"moduleDetection": "force",
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
-		"types": [
-			"node"
-		],
+		"types": ["node"],
 		"noEmit": true,
+		"isolatedModules": true,
 		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
 		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictBindCallApply": true,
+		"strictPropertyInitialization": true,
+		"noImplicitThis": true,
+		"useUnknownInCatchVariables": true,
+		"alwaysStrict": true,
+		"noImplicitReturns": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
 		"skipLibCheck": true,
 		"paths": {
 			"@vendors/*": [
@@ -24,6 +33,7 @@
 			"@interfaces/*": [
 				"./interfaces/*"
 			],
+			"@kind": ["./kind.ts"]
 		}
 	},
 	"include": [
@@ -31,6 +41,6 @@
 		"eslint.config.ts"
 	],
 	"exclude": [
-		"vendors/**/*.test.ts",
+		"vendors/**/*.test.ts"
 	]
 }

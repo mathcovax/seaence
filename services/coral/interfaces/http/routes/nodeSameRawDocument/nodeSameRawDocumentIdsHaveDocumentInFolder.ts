@@ -1,38 +1,31 @@
-import { userIdObjecter } from "@business/domains/common/user";
-import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/documentInFolder";
-import { endpointNodeSameRawDocumentIdsHaveDocumentInFolderSchema } from "@interfaces/http/schemas/nodeSameRawDocument";
-import { nodeSameRawDocumentIdsHaveDocumentInFolderUsecase } from "@interfaces/usecase";
-import { toSimpleObject } from "@vendors/clean";
+import { NodeSameRawDocumentId } from "@business/domains/common/nodeSameRawDocument";
+import { UserId } from "@business/domains/common/user";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { asyncPipe, DPE, unwrap, A } from "@duplojs/utils";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/node-same-raw-document-ids-have-document-in-folder")
+const endPointDataParser = DPE.string().array();
+
+useRouteBuilder("POST", "/node-same-raw-document-ids-have-document-in-folder")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			nodeSameRawDocumentIds: nodeSameRawDocumentIdObjecter
-				.toZodSchema()
-				.array(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			nodeSameRawDocumentIds: NodeSameRawDocumentId.toExtractParser().array(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { nodeSameRawDocumentIds, userId } = pickup("body");
-
-			const resultNodeSameRawDocumentIds
-				= await nodeSameRawDocumentIdsHaveDocumentInFolderUsecase
-					.execute({
-						userId,
-						nodeSameRawDocumentIds,
-					});
-
-			return new OkHttpResponse(
-				"nodeSameRawDocumentIdsHaveDocumentInFolder.found",
-				toSimpleObject(resultNodeSameRawDocumentIds),
-			);
-		},
-		makeResponseContract(
-			OkHttpResponse,
+		ResponseContract.ok(
 			"nodeSameRawDocumentIdsHaveDocumentInFolder.found",
-			endpointNodeSameRawDocumentIdsHaveDocumentInFolderSchema,
+			endPointDataParser,
+		),
+		({ body }, { response }) => asyncPipe(
+			useCases.nodeSameRawDocumentIdsHaveDocumentInFolderUseCase(body),
+			(nodeSameRawDocumentIds) => response(
+				"nodeSameRawDocumentIdsHaveDocumentInFolder.found",
+				A.map(
+					nodeSameRawDocumentIds,
+					unwrap,
+				),
+			),
 		),
 	);

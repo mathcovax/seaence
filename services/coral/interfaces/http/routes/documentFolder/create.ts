@@ -1,44 +1,35 @@
-import { userIdObjecter } from "@business/domains/common/user";
-import { DocumentFolderEntity, documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
-import { userCreateDocumentFolderUsecase } from "@interfaces/usecase";
-import { match, P } from "ts-pattern";
+import { UserId } from "@business/domains/common/user";
+import { DocumentFolder } from "@business/domains/entities/documentFolder";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { asyncPipe, DPE, E } from "@duplojs/utils";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/create-document-folder")
+useRouteBuilder("POST", "/create-document-folder")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			documentFolderName: documentFolderNameObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			documentFolderName: DocumentFolder.Name.toExtractParser(),
 		}),
 	})
-	.cut(
-		async({ pickup, dropper }) => {
-			const { userId, documentFolderName } = pickup("body");
-
-			const result = await userCreateDocumentFolderUsecase.execute({
-				userId,
-				documentFolderName,
-			});
-
-			return match({ result })
-				.with(
-					{ result: { information: "document-folder-already-exist" } },
-					() => new ConflictHttpResponse("documentFolder.alreadyExists"),
-				)
-				.with(
-					{ result: { information: "document-folder-max-quantity" } },
-					() => new ConflictHttpResponse("documentFolder.maxQuantity"),
-				)
-				.with(
-					{ result: P.instanceOf(DocumentFolderEntity) },
-					() => dropper(null),
-				)
-				.exhaustive();
-		},
-		[],
-		makeResponseContract(ConflictHttpResponse, ["documentFolder.alreadyExists", "documentFolder.maxQuantity"]),
-	)
 	.handler(
-		() => new OkHttpResponse("documentFolder.created"),
-		makeResponseContract(OkHttpResponse, "documentFolder.created"),
+		[
+			ResponseContract.created("documentFolder.created"),
+			ResponseContract.conflict("documentFolder.alreadyExists"),
+			ResponseContract.conflict("documentFolder.maxQuantity"),
+		],
+		({ body }, { response }) => asyncPipe(
+			useCases.createDocumentFolderUseCase(body),
+			E.whenHasInformation(
+				"document-folder-already-exist",
+				() => response("documentFolder.alreadyExists"),
+			),
+			E.whenHasInformation(
+				"document-folder-max-quantity",
+				() => response("documentFolder.maxQuantity"),
+			),
+			E.whenHasInformation(
+				"success",
+				() => response("documentFolder.created"),
+			),
+		),
 	);

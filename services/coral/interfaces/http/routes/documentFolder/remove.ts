@@ -1,21 +1,19 @@
-import { mustBeUserDocumentFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentFolderExistProcess";
-import { userRemoveDocumentFolderUsecase } from "@interfaces/usecase";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { mustBeOwnerDocumentFolderProcess } from "@interfaces/http/process/mustBeOwnerDocumentFolder";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/remove-document-folder")
-	.execute(
-		mustBeUserDocumentFolderExistProcess,
-		{ pickup: ["userDocumentFolder"] },
+useRouteBuilder("POST", "/remove-document-folder")
+	.exec(
+		mustBeOwnerDocumentFolderProcess,
+		{ imports: ["ownerDocumentFolder"] },
 	)
 	.handler(
-		async(pickup) => {
-			const { userDocumentFolder } = pickup(["userDocumentFolder"]);
-
-			await userRemoveDocumentFolderUsecase.execute({
-				userDocumentFolder,
-			});
-
-			return new OkHttpResponse("documentFolder.removed");
-		},
-		makeResponseContract(OkHttpResponse, "documentFolder.removed"),
+		ResponseContract.noContent("documentFolder.removed"),
+		({ ownerDocumentFolder }, { response }) => useCases
+			.ownerRemoveDocumentFolderUseCase({
+				ownerDocumentFolder,
+			})
+			.then(
+				() => response("documentFolder.removed"),
+			),
 	);

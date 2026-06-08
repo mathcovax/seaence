@@ -1,28 +1,22 @@
-import { equationObjecter } from "@business/domains/common/equation";
-import { userIdObjecter } from "@business/domains/common/user";
-import { favoriteEquationNameObjecter } from "@business/domains/entities/favoriteEquation";
-import { userUpsertFavoriteEquationUsecase } from "@interfaces/usecase";
+import { UserId } from "@business/domains/common/user";
+import { FavoriteEquation } from "@business/domains/entities/favoriteEquation";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { DPE } from "@duplojs/utils";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/upsert-favorite-equation")
+useRouteBuilder("POST", "/upsert-favorite-equation")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			equation: equationObjecter.toZodSchema(),
-			favoriteEquationName: favoriteEquationNameObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			equation: FavoriteEquation.Equation.toExtractParser(),
+			favoriteEquationName: FavoriteEquation.Name.toExtractParser(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { userId, equation, favoriteEquationName } = pickup("body");
-
-			await userUpsertFavoriteEquationUsecase.execute({
-				userId,
-				equation,
-				favoriteEquationName,
-			});
-
-			return new NoContentHttpResponse("favoriteEquation.upsert");
-		},
-		makeResponseContract(NoContentHttpResponse, "favoriteEquation.upsert"),
+		ResponseContract.noContent("favoriteEquation.upsert"),
+		({ body }, { response }) => useCases
+			.ownerUpsertFavoriteEquationUseCase(body)
+			.then(
+				() => response("favoriteEquation.upsert"),
+			),
 	);

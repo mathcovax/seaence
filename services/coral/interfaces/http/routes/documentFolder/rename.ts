@@ -1,44 +1,36 @@
-import { DocumentFolderEntity, documentFolderNameObjecter } from "@business/domains/entities/documentFolder";
-import { mustBeUserDocumentFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentFolderExistProcess";
-import { userRenameDocumentFolderUsecase } from "@interfaces/usecase";
-import { match, P } from "ts-pattern";
+import { DocumentFolder } from "@business/domains/entities/documentFolder";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { asyncPipe, E } from "@duplojs/utils";
+import { mustBeOwnerDocumentFolderProcess } from "@interfaces/http/process/mustBeOwnerDocumentFolder";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/rename-document-folder")
+useRouteBuilder("POST", "/rename-document-folder")
 	.extract({
-		body: zod.object({
-			newDocumentFolderName: documentFolderNameObjecter.toZodSchema(),
-		}),
-	})
-	.execute(
-		mustBeUserDocumentFolderExistProcess,
-		{ pickup: ["userDocumentFolder"] },
-	)
-	.cut(
-		async({ pickup, dropper }) => {
-			const { userDocumentFolder } = pickup(["userDocumentFolder"]);
-			const { newDocumentFolderName } = pickup("body");
-
-			const result = await userRenameDocumentFolderUsecase.execute({
-				userDocumentFolder,
-				newDocumentFolderName,
-			});
-
-			return match({ result })
-				.with(
-					{ result: { information: "document-folder-already-exist" } },
-					() => new ConflictHttpResponse("documentFolder.alreadyExists"),
-				)
-				.with(
-					{ result: P.instanceOf(DocumentFolderEntity) },
-					() => dropper(null),
-				)
-				.exhaustive();
+		body: {
+			newDocumentFolderName: DocumentFolder.Name.toExtractParser(),
 		},
-		[],
-		makeResponseContract(ConflictHttpResponse, ["documentFolder.alreadyExists"]),
+	})
+	.exec(
+		mustBeOwnerDocumentFolderProcess,
+		{ imports: ["ownerDocumentFolder"] },
 	)
 	.handler(
-		() => new OkHttpResponse("documentFolder.renamed"),
-		makeResponseContract(OkHttpResponse, "documentFolder.renamed"),
+		[
+			ResponseContract.conflict("documentFolder.alreadyExists"),
+			ResponseContract.noContent("documentFolder.renamed"),
+		],
+		({ newDocumentFolderName, ownerDocumentFolder }, { response }) => asyncPipe(
+			useCases.ownerRenameDocumentFolderUseCase({
+				ownerDocumentFolder,
+				newDocumentFolderName,
+			}),
+			E.whenHasInformation(
+				"document-folder-already-exist",
+				() => response("documentFolder.alreadyExists"),
+			),
+			E.whenHasInformation(
+				"success",
+				() => response("documentFolder.renamed"),
+			),
+		),
 	);
