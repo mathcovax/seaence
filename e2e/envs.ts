@@ -1,19 +1,16 @@
-import { config as importEnvFile } from "dotenv";
-import { expand as expandEnv } from "dotenv-expand";
-import { z as zod } from "zod";
+import { environmentVariableOrThrow } from "@duplojs/server-utils";
+import { DPE } from "@duplojs/utils";
 
-for (const pathEnv of [".env.local", ".env"]) {
-	expandEnv(
-		importEnvFile({ path: pathEnv }),
-	);
-}
-
-export const envs = zod
-	.object({
-		RETRIES: zod.coerce.number(),
-		WORKER: zod.coerce.number(),
-		CI: zod.enum(["true", "false"]).transform((value) => value === "true"),
-		BASE_URL: zod.string().url(),
-		FIREBASE_CREDENTIAL_PATH: zod.string(),
-	})
-	.parse(process.env);
+export const envs = await environmentVariableOrThrow(
+	{
+		RETRIES: DPE.coerce.number(),
+		WORKER: DPE.coerce.number(),
+		CI: DPE.coerce.boolean(),
+		BASE_URL: DPE.url(),
+		FIREBASE_CREDENTIAL_PATH: DPE.string(),
+	},
+	{
+		paths: [".env", ".env.local"],
+		justRead: true,
+	},
+);

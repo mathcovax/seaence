@@ -1,10 +1,10 @@
-import { createComponentEngine } from "@playwright";
+import { createComponent } from "@duplojs/playwright";
 
-export const authDialogEngine = createComponentEngine(
+export const authDialogComponent = createComponent(
 	"authDialog",
 	{
-		getMainElement: (body) => body.getByTestId("auth-dialog"),
-		getElements: (mainElement, body) => ({
+		getMainElement: ({ body }) => body.getByTestId("auth-dialog"),
+		getElements: ({ mainElement, body }) => ({
 			googleLoginButton: mainElement.getByTestId("auth-dialog-google-login-button"),
 
 			registerForm: mainElement.getByTestId("auth-dialog-register-form"),

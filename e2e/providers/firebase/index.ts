@@ -2,7 +2,7 @@ import { envs } from "@envs";
 import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import firebaseAdmin, { type auth, type ServiceAccount } from "firebase-admin";
-import { type Page } from "@playwright/test";
+import type { Page } from "playwright/test";
 import { evalSetupFirebaseAuth } from "./evalSetupFirebaseAuth";
 
 export async function initFirebaseAuth() {
@@ -14,9 +14,11 @@ export async function initFirebaseAuth() {
 		await readFile(envs.FIREBASE_CREDENTIAL_PATH, "utf-8"),
 	);
 
-	firebaseAdmin.initializeApp({
-		credential: firebaseAdmin.credential.cert(credential),
-	});
+	if (!firebaseAdmin.apps.length) {
+		firebaseAdmin.initializeApp({
+			credential: firebaseAdmin.credential.cert(credential),
+		});
+	}
 
 	const firebaseAuth = firebaseAdmin.auth();
 

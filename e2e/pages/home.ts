@@ -1,9 +1,9 @@
-import { createPageEngine } from "@playwright";
+import { createPage } from "@duplojs/playwright";
 
-export const homePageEngine = createPageEngine(
+export const homePage = createPage(
 	"home",
-	() => "/",
 	{
-		getMainElement: (body) => body.getByTestId("home-page"),
+		makePath: () => "/",
+		getMainElement: ({ body }) => body.getByTestId("home-page"),
 	},
 );

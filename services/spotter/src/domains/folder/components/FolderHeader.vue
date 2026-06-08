@@ -18,7 +18,10 @@ const termModel = defineModel<string>("term", { required: true });
 </script>
 
 <template>
-	<header class="space-y-4">
+	<header
+		class="space-y-4"
+		data-testid="folder-header"
+	>
 		<div class="flex justify-between items-start gap-4 w-full">
 			<div class="flex gap-4 items-center overflow-hidden min-w-40">
 				<BackButton />
@@ -32,6 +35,7 @@ const termModel = defineModel<string>("term", { required: true });
 				<DSInput
 					:placeholder="placeholder"
 					v-model="termModel"
+					data-testid="folder-header-search-input"
 				/>
 
 				<DSOutlineButton
@@ -40,6 +44,7 @@ const termModel = defineModel<string>("term", { required: true });
 					@click="emits('add')"
 					class="shrink-0"
 					square
+					data-testid="folder-header-add-button"
 				/>
 			</div>
 		</div>

@@ -15,6 +15,7 @@ const {
 <template>
 	<section
 		class="min-h-screen-nh space-y-6"
+		data-testid="document-folder-page"
 	>
 		<FolderHeader
 			:title="$pt('title')"

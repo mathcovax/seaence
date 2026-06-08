@@ -46,7 +46,10 @@ function onUpdateOpen(value: boolean) {
 </script>
 
 <template>
-	<DSDialog @update:open="onUpdateOpen">
+	<DSDialog
+		@update:open="onUpdateOpen"
+		data-testid="create-many-document-in-folder-dialog"
+	>
 		<template #trigger>
 			<slot />
 		</template>
@@ -77,6 +80,7 @@ function onUpdateOpen(value: boolean) {
 							<li
 								class="p-4 flex gap-2 items-center bg-muted/50 hover:bg-muted rounded-md cursor-pointer transition-colors"
 								@click="handleClickDocumentFolder(item)"
+								:data-testid="`create-many-document-in-folder-dialog-existing-folder-${item.id}`"
 							>
 								<div class="shrink-0">
 									<DSIcon
@@ -121,12 +125,16 @@ function onUpdateOpen(value: boolean) {
 				<DSPrimaryButton
 					size="full"
 					type="submit"
+					data-testid="create-many-document-in-folder-dialog-submit-button"
 				>
 					{{ $t("cta.add") }}
 				</DSPrimaryButton>
 			</CreateManyDocumentInFolderDialogForm>
 
-			<DSOutlineButton @click="createDocumentFolder">
+			<DSOutlineButton
+				@click="createDocumentFolder"
+				data-testid="create-many-document-in-folder-dialog-create-folder-button"
+			>
 				{{ $t("createManyDocumentInFolderDialog.createDocumentFolder") }}
 			</DSOutlineButton>
 

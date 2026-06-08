@@ -18,14 +18,17 @@
 			"@envs": [
 				"./envs.ts"
 			],
-			"@playwright": [
-				"./playwright/index.ts"
+			"@client": [
+				"./client.ts"
 			],
-			"@pages/*": [
-				"./pages/*"
+			"@pages": [
+				"./pages/index.ts"
 			],
 			"@components/*": [
 				"./components/*"
+			],
+			"@components": [
+				"./components/index.ts"
 			],
 			"@providers/*": [
 				"./providers/*"
