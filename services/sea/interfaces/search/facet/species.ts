@@ -3,7 +3,7 @@ import { createEnum, type GetEnumValue } from "@vendors/clean";
 import { type Facet, type FacetValue, type AggregationWrappedBucketsResult } from ".";
 import { type estypes } from "@elastic/elasticsearch";
 import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
-import { getTypedEntries } from "@duplojs/utils";
+import { O } from "@duplojs/utils";
 
 export const speciesEnum = createEnum(["human", "otherAnimal"]);
 
@@ -29,7 +29,7 @@ export interface SpeciesAggregationsResults {
 export function buildSpeciesAggregation(language: Language) {
 	return {
 		filters: {
-			filters: getTypedEntries(languageToSpeciesFacetValue[language])
+			filters: O.entries(languageToSpeciesFacetValue[language])
 				.reduce<Partial<Record<Species, estypes.QueryDslQueryContainer>>>(
 					(acc, [key, value]) => {
 						acc[key] = {

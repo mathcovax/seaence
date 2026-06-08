@@ -1,4 +1,4 @@
-import { type IsEqual, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type IsEqual, type SimplifyTopLevel } from "@duplojs/utils";
 import { computed, type Ref } from "vue";
 import { type Composer, useI18n } from "vue-i18n";
 import {
@@ -23,7 +23,7 @@ export interface PageParams<
 export type PageGoParams<
 	GenericParamsSchemas extends Record<string, ZodTypeAny>,
 	GenericQuerySchemas extends Record<string, ZodTypeAny>,
-> = SimplifyObjectTopLevel<
+> = SimplifyTopLevel<
 	& (
 		true extends IsEqual<never, GenericParamsSchemas>
 			? object
@@ -39,7 +39,7 @@ export type PageGoParams<
 export type PageUse<
 	GenericParamsSchemas extends Record<string, ZodTypeAny>,
 	GenericQuerySchemas extends Record<string, ZodTypeAny>,
-> = SimplifyObjectTopLevel<
+> = SimplifyTopLevel<
 	& (
 		true extends IsEqual<never, GenericParamsSchemas>
 			? object

@@ -1,4 +1,4 @@
-import { type MybePromise, type AnyFunction, type SimplifyObjectTopLevel, sleep } from "@duplojs/utils";
+import { type MaybePromise, type AnyFunction, type SimplifyTopLevel, sleep } from "@duplojs/utils";
 import { type ValueObject, type ValueObjecterAttribute, type ValueObjectError } from "./valueObject";
 import { type ZodType } from "zod";
 
@@ -155,7 +155,7 @@ export function toSimpleObject<
 
 export type CleanEnum<
 	GenericValues extends [string, ...string[]] = [string, ...string[]],
-> = SimplifyObjectTopLevel<
+> = SimplifyTopLevel<
 	{
 		[Prop in GenericValues[number]]: Prop
 	} & {
@@ -280,25 +280,25 @@ export function applyAttributesToZodSchema(
 }
 
 export type AwaitedPromiseObject<
-	GenericObject extends Record<string, MybePromise<unknown>>,
+	GenericObject extends Record<string, MaybePromise<unknown>>,
 > = {
 	[Prop in keyof GenericObject]: Awaited<GenericObject[Prop]>
 };
 
 export function promiseObject<
-	GenericObject extends Record<string, MybePromise<unknown>>,
+	GenericObject extends Record<string, MaybePromise<unknown>>,
 >(object: GenericObject) {
 	return Promise
 		.all(
 			Object.entries(object)
-				.map<MybePromise<[string, unknown]>>(
+				.map<MaybePromise<[string, unknown]>>(
 					([key, promisedValue]) => promisedValue instanceof Promise
 						? promisedValue.then((value) => [key, value])
 						: [key, promisedValue],
 				),
 		)
 		.then(
-			(entries) => Object.fromEntries(entries) as SimplifyObjectTopLevel<AwaitedPromiseObject<GenericObject>>,
+			(entries) => Object.fromEntries(entries) as SimplifyTopLevel<AwaitedPromiseObject<GenericObject>>,
 		);
 }
 

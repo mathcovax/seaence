@@ -6,7 +6,7 @@ import { RosettaAPI } from "@interfaces/providers/rosetta";
 import { KeyDate } from "@interfaces/providers/keyDate";
 import { match, P } from "ts-pattern";
 import { PubmedRawDocumentEntity } from "@business/domains/entities/rawDocument/pubmed";
-import { getTypedEntries } from "@duplojs/utils";
+import { A, O, pipe, P as PP } from "@duplojs/utils";
 
 const DOIFoundationBaseUrl = "https://www.doi.org";
 
@@ -143,21 +143,27 @@ bakedDocumentRepository.default = {
 		await KeyDate.set("lastSendBakedDocument", newLastSend);
 	},
 	makeBakedResourcesWithRawDocumentWrapper(rawDocumentWrapper) {
-		const resources = getTypedEntries(rawDocumentWrapper)
-			.map(
-				([provider, rawDocument]) => match({
-					provider,
-					rawDocument,
-				})
-					.with(
-						{ provider: "pubmed" },
-						({ provider, rawDocument }) => bakedDocumentRessourceObjecter.unsafeCreate({
-							resourceProvider: provider,
-							url: rawDocument.resourceUrl.value,
-						}),
-					)
-					.exhaustive(),
-			);
+		const resources = pipe(
+			rawDocumentWrapper,
+			O.entries,
+			A.select(
+				// eslint-disable-next-line @typescript-eslint/no-magic-numbers
+				({ select, skip, element }) => element[1] === undefined
+					? skip()
+					: select(
+						PP.match(element)
+							.with(
+								["pubmed"],
+								([provider, rawDocument]) => bakedDocumentRessourceObjecter.unsafeCreate({
+									resourceProvider: provider,
+									url: rawDocument.resourceUrl.value,
+								}),
+							)
+							.exhaustive(),
+					),
+
+			),
+		);
 
 		const findedDOIFoundationResources = Object.values({ ...rawDocumentWrapper })
 			.reduce<null | BakedDocumentRessource>(

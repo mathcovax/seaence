@@ -1,11 +1,11 @@
 import { z as zod } from "zod";
 import { EntityHandler, type EntityInstance } from "./entity";
-import { type SimplifyObjectTopLevel, type ExpectType } from "@duplojs/utils";
+import { type SimplifyTopLevel, type ExpectType } from "@duplojs/utils";
 import { ValueObject, ValueObjectError } from "./valueObject";
 
 export type GetEntityProperties<
 	GenericEntityInstance extends EntityInstance<any, any>,
-> = SimplifyObjectTopLevel<
+> = SimplifyTopLevel<
 	{
 		[
 		Prop in keyof GenericEntityInstance as

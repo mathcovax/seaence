@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type SimplifyTopLevel } from "@duplojs/utils";
 import { type VNode, type Ref, type HTMLAttributes } from "vue";
 import { type ZodError } from "zod";
 
@@ -39,7 +39,7 @@ export interface FormField<
 	GenericProps extends object = any,
 > {
 	(
-		params: SimplifyObjectTopLevel<
+		params: SimplifyTopLevel<
 			FormFieldParams<
 				GenericValueType,
 				GenericProps

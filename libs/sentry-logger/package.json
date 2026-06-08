@@ -5,7 +5,7 @@
     "@sentry/node": "9.22.0"
   },
   "devDependencies": {
-    "@duplojs/utils": "0.3.1",
+    "@duplojs/utils": "1.9.2",
     "typescript": "5.8.2"
   }
 }

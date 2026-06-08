@@ -1,15 +1,15 @@
-import { z } from "zod";
+import { DPE } from "@duplojs/utils";
 
-const mongoIdSchema = z.object({
-	user: z.string().optional(),
-	password: z.string().optional(),
-	host: z.string(),
-	port: z.coerce.number(),
-	database: z.string(),
+const mongoIdSchema = DPE.object({
+	user: DPE.string().optional(),
+	password: DPE.string().optional(),
+	host: DPE.string(),
+	port: DPE.coerce.number(),
+	database: DPE.string(),
 });
 
 export function extractIdFromMongoUrl(mongoUrl: string) {
 	const { groups } = /^mongodb:\/\/(:?(?<user>[^:]*):(?<password>[^@]*)@)?(?<host>[^:]*):(?<port>[^/]*)\/(?<database>[^?]*)\??/.exec(mongoUrl) ?? {};
 
-	return mongoIdSchema.parse(groups);
+	return mongoIdSchema.parseOrThrow(groups);
 }

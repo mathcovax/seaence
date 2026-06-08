@@ -1,8 +1,8 @@
 import { type Collection, type Db, MongoClient } from "mongodb";
 import { extractIdFromMongoUrl } from "./extractIdFromMongoUrl";
-import { UpdateUserMessageColletion } from "./collections/updateUser";
-import { getTypedEntries } from "@duplojs/utils";
-import { CreateUserMessageColletion } from "./collections/createUser";
+import { UpdateUserMessageCollection } from "./collections/updateUser";
+import { O, A, pipe } from "@duplojs/utils";
+import { CreateUserMessageCollection } from "./collections/createUser";
 import { CreateAnswerMessageCollection } from "./collections/createAnswer";
 import { DeleteUserMessageCollection } from "./collections/deleteUser";
 import { RestoreUserMessageCollection } from "./collections/restoreUser";
@@ -13,8 +13,8 @@ export interface AsyncMessageParams {
 }
 
 export interface AsyncMessageCollection {
-	updateUser: UpdateUserMessageColletion;
-	createUser: CreateUserMessageColletion;
+	updateUser: UpdateUserMessageCollection;
+	createUser: CreateUserMessageCollection;
 	createAnswer: CreateAnswerMessageCollection;
 	deleteUser: DeleteUserMessageCollection;
 	restoreUser: RestoreUserMessageCollection;
@@ -44,22 +44,25 @@ export class AsyncMessage {
 		this.resumeCollection = this.database.collection("resume");
 
 		this.collections = {
-			updateUser: new UpdateUserMessageColletion(this),
-			createUser: new CreateUserMessageColletion(this),
+			updateUser: new UpdateUserMessageCollection(this),
+			createUser: new CreateUserMessageCollection(this),
 			createAnswer: new CreateAnswerMessageCollection(this),
 			deleteUser: new DeleteUserMessageCollection(this),
 			restoreUser: new RestoreUserMessageCollection(this),
 		};
 	}
 
-	public connect() {
+	public async connect() {
 		return this.client.connect()
 			.then(
 				() => void Promise.all(
-					getTypedEntries(this.collections)
-						.map(
+					pipe(
+						this.collections,
+						O.entries,
+						A.map(
 							([_key, value]) => value.applyIndex(),
 						),
+					),
 				),
 			);
 	}

@@ -1,4 +1,3 @@
-import { Process } from "@duplojs/core";
 import { forwardLogger, logger } from "./logger";
 export * from "./logger";
 
@@ -6,7 +5,7 @@ process.on(
 	"uncaughtException",
 	(error, origine) => {
 		logger(error, origine);
-		process.exit(process.exitCode)
+		process.exit(process.exitCode);
 	},
 );
 

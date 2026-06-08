@@ -1,4 +1,4 @@
-import { type SimplifyObjectTopLevel, type IsEqual, type ObjectKey, hasKey } from "@duplojs/utils";
+import { type SimplifyTopLevel, type IsEqual, type ObjectKey, O } from "@duplojs/utils";
 import { isRepositoryHandler, type RepositoryHandler } from "./repository";
 import { CleanError, type CleanErrorMoreData } from "./error";
 
@@ -75,7 +75,7 @@ export interface UsecaseClass<
 	GenericUsecaseRawDependencies extends UsecaseRawDependencies = UsecaseRawDependencies,
 > {
 	new(
-		flatDependencies?: SimplifyObjectTopLevel<
+		flatDependencies?: SimplifyTopLevel<
 			Partial<
 				UsecaseDependencies<
 					true extends IsEqual<GenericUsecaseRawDependencies, any>
@@ -108,7 +108,7 @@ export class UsecaseHandler {
 				super();
 
 				for (const prop in rawDependencies) {
-					if (hasKey(dependencies, prop)) {
+					if (O.hasKeys(dependencies, prop)) {
 						setProperty(this, prop, dependencies[prop]);
 					} else {
 						const property: string = prop;

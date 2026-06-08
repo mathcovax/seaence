@@ -8,7 +8,7 @@ export interface CreateUserMessageValue {
 	email: string;
 }
 
-export class CreateUserMessageColletion extends MessageCollection<CreateUserMessageValue> {
+export class CreateUserMessageCollection extends MessageCollection<CreateUserMessageValue> {
 	public static readonly oneWeekInSecond = 604800;
 
 	public constructor(asyncMessage: AsyncMessage) {
@@ -16,7 +16,7 @@ export class CreateUserMessageColletion extends MessageCollection<CreateUserMess
 			asyncMessage,
 			{
 				name: "createUser",
-				expireIn: CreateUserMessageColletion.oneWeekInSecond,
+				expireIn: CreateUserMessageCollection.oneWeekInSecond,
 			},
 		);
 	}
