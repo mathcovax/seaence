@@ -3,4 +3,4 @@ export const documentInFolderRules = {
 		minLength: 3,
 		maxLength: 350,
 	},
-};
+} as const;

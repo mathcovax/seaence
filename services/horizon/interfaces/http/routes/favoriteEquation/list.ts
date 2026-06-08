@@ -1,7 +1,7 @@
 import { FavoriteEquation } from "@business/entities/favoriteEquation";
 import { favoritEquationConfig } from "@interfaces/configs/favoritEquation";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { favoriteEquationRules } from "@vendors/entity-rules";
 
 useMustBeConnectedBuilder()
@@ -16,7 +16,7 @@ useMustBeConnectedBuilder()
 		async(pickup) => {
 			const { user, page, partialFavoriteEquationName } = pickup(["user", "partialFavoriteEquationName", "page"]);
 
-			const { body: favoriteEquationNames } = await CoralAPI.findManyFavoriteEquationName({
+			const { body: favoriteEquationNames } = await CoralProvider.findManyFavoriteEquationName({
 				userId: user.id,
 				partialFavoriteEquationName,
 				page: page - favoritEquationConfig.findMany.offsetPage,
@@ -46,7 +46,7 @@ useMustBeConnectedBuilder()
 		async(pickup) => {
 			const { user, partialFavoriteEquationName } = pickup(["user", "partialFavoriteEquationName"]);
 
-			const { body: details } = await CoralAPI.findManyFavoriteEquationDetails({
+			const { body: details } = await CoralProvider.findManyFavoriteEquationDetails({
 				userId: user.id,
 				partialFavoriteEquationName,
 			});

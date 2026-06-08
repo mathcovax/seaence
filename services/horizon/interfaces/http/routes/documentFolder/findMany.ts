@@ -1,7 +1,8 @@
 import { DocumentFolder } from "@business/entities/documentFolder";
+import { A, D, O } from "@duplojs/utils";
 import { documentFolderConfig } from "@interfaces/configs/documentFolder";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { documentFolderRules } from "@vendors/entity-rules";
 
 useMustBeConnectedBuilder()
@@ -23,7 +24,7 @@ useMustBeConnectedBuilder()
 				body: { partialDocumentFolderName, page },
 			} = pickup(["body", "user"]);
 
-			const { body: list } = await CoralAPI.findManyDocumentFolder({
+			const result = await CoralProvider.findManyDocumentFolder({
 				userId: user.id,
 				quantityPerPage: documentFolderConfig.findMany.quantityPerPage,
 				partialDocumentFolderName,
@@ -32,7 +33,13 @@ useMustBeConnectedBuilder()
 
 			return new OkHttpResponse(
 				"documentFolders.found",
-				list,
+				A.map(
+					result.body,
+					O.transformProperty(
+						"createdAt",
+						D.toISOString,
+					),
+				),
 			);
 		},
 		makeResponseContract(OkHttpResponse, "documentFolders.found", DocumentFolder.list),
@@ -54,7 +61,7 @@ useMustBeConnectedBuilder()
 				body: { partialDocumentFolderName },
 			} = pickup(["body", "user"]);
 
-			const { body: { total } } = await CoralAPI.findManyDocumentFolderDetails({
+			const result = await CoralProvider.findManyDocumentFolderDetails({
 				userId: user.id,
 				partialDocumentFolderName,
 			});
@@ -62,7 +69,7 @@ useMustBeConnectedBuilder()
 			return new OkHttpResponse(
 				"documentFolders.foundDetails",
 				{
-					total,
+					total: result.body.total,
 				},
 			);
 		},
@@ -90,7 +97,7 @@ useMustBeConnectedBuilder()
 				body: { nodeSameRawDocumentId, partialDocumentFolderName, page },
 			} = pickup(["user", "body"]);
 
-			const { body: list } = await CoralAPI.findManyDocumentFoldersInWichDocumentExist({
+			const result = await CoralProvider.findManyDocumentFoldersInWhichDocumentExist({
 				userId: user.id,
 				nodeSameRawDocumentId,
 				partialDocumentFolderName,
@@ -100,7 +107,13 @@ useMustBeConnectedBuilder()
 
 			return new OkHttpResponse(
 				"documentFolders.found",
-				list,
+				A.map(
+					result.body,
+					O.transformProperty(
+						"createdAt",
+						D.toISOString,
+					),
+				),
 			);
 		},
 		makeResponseContract(OkHttpResponse, "documentFolders.found", DocumentFolder.list),
@@ -124,7 +137,7 @@ useMustBeConnectedBuilder()
 				body: { nodeSameRawDocumentId, partialDocumentFolderName },
 			} = pickup(["user", "body"]);
 
-			const { body: { total } } = await CoralAPI.findManyDocumentFoldersInWichDocumentExistDetails({
+			const result = await CoralProvider.findManyDocumentFoldersInWhichDocumentExistDetails({
 				userId: user.id,
 				nodeSameRawDocumentId,
 				partialDocumentFolderName,
@@ -133,7 +146,7 @@ useMustBeConnectedBuilder()
 			return new OkHttpResponse(
 				"documentFolders.foundDetails",
 				{
-					total,
+					total: result.body.total,
 				},
 			);
 		},

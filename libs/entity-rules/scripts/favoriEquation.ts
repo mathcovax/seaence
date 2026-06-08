@@ -3,4 +3,4 @@ export const favoriteEquationRules = {
 		minLength: 3,
 		maxLength: 350,
 	},
-};
+} as const;

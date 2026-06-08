@@ -1,4 +1,4 @@
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 
 interface InputDocumentFolderExistCheck {
 	userId: string;
@@ -8,10 +8,10 @@ interface InputDocumentFolderExistCheck {
 export const documentFolderExistCheck = createChecker("documentFolderExist")
 	.handler(
 		async(input: InputDocumentFolderExistCheck, output) => {
-			const response = await CoralAPI.findOneDocumentFolder(input);
+			const result = await CoralProvider.findOneDocumentFolder(input);
 
-			if (response.information === "documentFolder.found") {
-				return output("documentFolder.exist", response.body);
+			if (result.information === "documentFolder.found") {
+				return output("documentFolder.exist", result.body);
 			} else {
 				return output("documentFolder.notfound", null);
 			}

@@ -1,4 +1,5 @@
 import { DocumentFolder } from "@business/entities/documentFolder";
+import { D, O } from "@duplojs/utils";
 import { iWantDocumentFolderExist } from "@interfaces/http/checkers/documentFolder";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 
@@ -17,10 +18,13 @@ useMustBeConnectedBuilder()
 		}),
 	)
 	.handler(
-		(pickup) => {
-			const { documentFolder } = pickup(["documentFolder"]);
-
-			return new OkHttpResponse("documentFolder.found", documentFolder);
-		},
+		(pickup) => new OkHttpResponse(
+			"documentFolder.found",
+			O.transformProperty(
+				pickup("documentFolder"),
+				"createdAt",
+				D.toISOString,
+			),
+		),
 		makeResponseContract(OkHttpResponse, "documentFolder.found", DocumentFolder.index),
 	);

@@ -1,243 +1,274 @@
 import { envs } from "@interfaces/envs";
-import type { CoralClientRoute, InputCreateManyDocumentInFolder, InputCreateDocumentFolder, InputFindManyDocumentFolder, InputFindManyDocumentInFolder, InputFindOneDocumentFolder, InputRemoveDocumentFolder, InputRenameDocumentFolder, InputRemoveDocumentInFolder, InputRenameDocumentInFolder, InputFindManyDocumentFoldersInWichDocumentExist, InputfindManyDocumentFolderDetails, InputFindManyDocumentFoldersInWichDocumentExistDetails, InputFindManyDocumentInFolderDetails, InputFindManyFavoritEquationName, InputFindManyFavoritEquationDetails, InputFindOneFavoritEquation, InputUpsertFavoritEquation, InputRemoveFavoritEquation, InputNodeSameRawDocumentIdsHaveDocumentInFolder } from "./types";
-import { HttpClient } from "@duplojs/http-client";
-export class CoralAPI {
-	private static httpClient: HttpClient<CoralClientRoute>;
+import { createHttpClient, type FindServerRoute } from "@duplojs/http/client";
+import type { Routes } from "@vendors/clients-type/coral/duplojsTypesCodegen";
+import { kindClass, O, when } from "@duplojs/utils";
 
-	public static findManyFavoriteEquationName(
-		body: InputFindManyFavoritEquationName,
+type FindRequestBody<
+	GenericPath extends FindServerRoute<
+		Routes,
+		"POST"
+	>["path"],
+> = FindServerRoute<
+	Routes,
+	"POST",
+	GenericPath
+>["body"];
+
+class ExtractErrorCoral extends kindClass(
+	"extract-error-coral",
+	Error,
+) {
+	public constructor(
+		public content: unknown,
 	) {
-		return this.httpClient
-			.post(
-				"/find-many-favorite-equation-name",
-				{
-					body,
-				},
-			)
-			.iWantInformation("favoriteEquation.name.findMany");
+		super({}, "");
 	}
+}
 
-	public static findManyFavoriteEquationDetails(
-		body: InputFindManyFavoritEquationDetails,
+export namespace CoralProvider {
+	const client = createHttpClient<Routes>({
+		baseUrl: envs.CORAL_BASE_URL,
+	});
+
+	export function findManyFavoriteEquationName(
+		params: FindRequestBody<"/find-many-favorite-equation-name">,
 	) {
-		return this.httpClient
-			.post(
-				"/find-many-favorite-equation-details",
-				{
-					body,
-				},
-			)
-			.iWantInformation("favoriEquation.findMany.details");
+		return client.post(
+			"/find-many-favorite-equation-name",
+			{
+				body: params,
+			},
+		)
+			.iWantInformationOrThrow("favoriteEquation.name.findMany");
 	}
 
-	public static findOneFavoriteEquation(
-		body: InputFindOneFavoritEquation,
+	export function findManyFavoriteEquationDetails(
+		params: FindRequestBody<"/find-many-favorite-equation-details">,
 	) {
-		return this.httpClient
-			.post(
-				"/find-one-favorite-equation",
-				{
-					body,
-				},
-			)
-			.iWantExpectedResponse();
+		return client.post(
+			"/find-many-favorite-equation-details",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("favoriteEquation.findMany.details");
 	}
 
-	public static createDocumentFolder(input: InputCreateDocumentFolder) {
-		return this.httpClient
-			.post(
-				"/create-document-folder",
-				{
-					body: input,
-
-				},
-			)
-			.iWantExpectedResponse();
-	}
-
-	public static upsertFavoriteEquation(
-		body: InputUpsertFavoritEquation,
+	export function findOneFavoriteEquation(
+		params: FindRequestBody<"/find-one-favorite-equation">,
 	) {
-		return this.httpClient
-			.post(
-				"/upsert-favorite-equation",
-				{
-					body,
-				},
-			)
-			.iWantInformation("favoriteEquation.upsert");
+		return client.post(
+			"/find-one-favorite-equation",
+			{
+				body: params,
+			},
+		).iWantExpectedResponseOrThrow()
+			.then(
+				when(
+					O.discriminate("code", "422"),
+					(response) => {
+						throw new ExtractErrorCoral(response);
+					},
+				),
+			);
 	}
 
-	public static removeFavoriteEquation(
-		body: InputRemoveFavoritEquation,
+	export function createDocumentFolder(params: FindRequestBody<"/create-document-folder">) {
+		return client.post(
+			"/create-document-folder",
+			{
+				body: params,
+			},
+		).iWantExpectedResponseOrThrow()
+			.then(
+				when(
+					O.discriminate("code", "422"),
+					(response) => {
+						throw new ExtractErrorCoral(response);
+					},
+				),
+			);
+	}
+
+	export function upsertFavoriteEquation(
+		params: FindRequestBody<"/upsert-favorite-equation">,
 	) {
-		return this.httpClient
-			.post(
-				"/remove-favorite-equation",
-				{
-					body,
-				},
-			)
-			.iWantExpectedResponse();
+		return client.post(
+			"/upsert-favorite-equation",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("favoriteEquation.upsert");
 	}
 
-	public static findManyDocumentFolder(input: InputFindManyDocumentFolder) {
-		return this.httpClient
-			.post(
-				"/find-many-document-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation("documentFolders.found");
-	}
-
-	public static findManyDocumentFolderDetails(input: InputfindManyDocumentFolderDetails) {
-		return this.httpClient
-			.post(
-				"/find-many-document-folders-details",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation("documentFolders.foundDetails");
-	}
-
-	public static removeDocumentFolder(input: InputRemoveDocumentFolder) {
-		return this.httpClient
-			.post(
-				"/remove-document-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation(["documentFolder.removed", "documentFolder.notfound"]);
-	}
-
-	public static renameDocumentFolder(input: InputRenameDocumentFolder) {
-		return this.httpClient
-			.post(
-				"/rename-document-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation([
-				"documentFolder.renamed",
-				"documentFolder.notfound",
-				"documentFolder.wrongProprietary",
-				"documentFolder.alreadyExists",
-			]);
-	}
-
-	public static findOneDocumentFolder(input: InputFindOneDocumentFolder) {
-		return this.httpClient
-			.post(
-				"/get-document-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantExpectedResponse();
-	}
-
-	public static findManyDocumentInFolder(input: InputFindManyDocumentInFolder) {
-		return this.httpClient
-			.post(
-				"/find-many-document-in-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation("documentsInFolder.found");
-	}
-
-	public static findManyDocumentInFolderDetails(input: InputFindManyDocumentInFolderDetails) {
-		return this.httpClient
-			.post(
-				"/find-many-document-in-folder-details",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation("documentsInFolder.foundDetails");
-	}
-
-	public static removeDocumentInFolder(input: InputRemoveDocumentInFolder) {
-		return this.httpClient
-			.post(
-				"/remove-document-in-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation("documentInFolder.removed");
-	}
-
-	public static renameDocumentInFolder(input: InputRenameDocumentInFolder) {
-		return this.httpClient
-			.post(
-				"/rename-document-in-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation(["documentInFolder.renamed", "documentFolder.notfound", "documentFolder.wrongProprietary", "documentInFolder.notfound"]);
-	}
-
-	public static createManyDocumentInFolder(input: InputCreateManyDocumentInFolder) {
-		return this.httpClient
-			.post(
-				"/create-many-document-in-folder",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation([
-				"documentInFolder.created",
-				"documentFolder.noneFound",
-				"documentFolder.noneCapacity",
-			]);
-	}
-
-	public static findManyDocumentFoldersInWichDocumentExist(input: InputFindManyDocumentFoldersInWichDocumentExist) {
-		return this.httpClient
-			.post(
-				"/find-many-document-folders-in-which-document-exist",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation("documentFolders.found");
-	}
-
-	public static findManyDocumentFoldersInWichDocumentExistDetails(
-		input: InputFindManyDocumentFoldersInWichDocumentExistDetails,
+	export function removeFavoriteEquation(
+		params: FindRequestBody<"/remove-favorite-equation">,
 	) {
-		return this.httpClient
-			.post(
-				"/find-many-document-folders-in-which-document-exist-details",
-				{
-					body: input,
-				},
-			)
-			.iWantInformation("documentFolders.foundDetails");
+		return client.post(
+			"/remove-favorite-equation",
+			{
+				body: params,
+			},
+		).iWantExpectedResponseOrThrow()
+			.then(
+				when(
+					O.discriminate("code", "422"),
+					(response) => {
+						throw new ExtractErrorCoral(response);
+					},
+				),
+			);
 	}
 
-	public static nodeSameRawDocumentIdsHaveDocumentInFolder(
-		body: InputNodeSameRawDocumentIdsHaveDocumentInFolder,
+	export function findManyDocumentFolder(params: FindRequestBody<"/find-many-document-folder">) {
+		return client.post(
+			"/find-many-document-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("documentFolders.found");
+	}
+
+	export function findManyDocumentFolderDetails(
+		params: FindRequestBody<"/find-many-document-folders-details">,
 	) {
-		return this.httpClient
-			.post(
-				"/node-same-raw-document-ids-have-document-in-folder",
-				{ body },
-			)
-			.iWantInformation("nodeSameRawDocumentIdsHaveDocumentInFolder.found");
+		return client.post(
+			"/find-many-document-folders-details",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("documentFolders.foundDetails");
 	}
 
-	static {
-		this.httpClient = new HttpClient({
-			baseUrl: envs.CORAL_BASE_URL,
-		});
+	export function removeDocumentFolder(params: FindRequestBody<"/remove-document-folder">) {
+		return client.post(
+			"/remove-document-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow(["documentFolder.removed", "documentFolder.notfound"]);
+	}
+
+	export function renameDocumentFolder(params: FindRequestBody<"/rename-document-folder">) {
+		return client.post(
+			"/rename-document-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow([
+			"documentFolder.renamed",
+			"documentFolder.notfound",
+			"documentFolder.wrongProprietary",
+			"documentFolder.alreadyExists",
+		]);
+	}
+
+	export function findOneDocumentFolder(params: FindRequestBody<"/find-one-document-folder">) {
+		return client.post(
+			"/find-one-document-folder",
+			{
+				body: params,
+			},
+		).iWantExpectedResponseOrThrow()
+			.then(
+				when(
+					O.discriminate("information", "extract-error"),
+					(response) => {
+						throw new ExtractErrorCoral(response);
+					},
+				),
+			);
+	}
+
+	export function findManyDocumentInFolder(
+		params: FindRequestBody<"/find-many-document-in-folder">,
+	) {
+		return client.post(
+			"/find-many-document-in-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("documentsInFolder.found");
+	}
+
+	export function findManyDocumentInFolderDetails(
+		params: FindRequestBody<"/find-many-document-in-folder-details">,
+	) {
+		return client.post(
+			"/find-many-document-in-folder-details",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("documentsInFolder.foundDetails");
+	}
+
+	export function removeDocumentInFolder(params: FindRequestBody<"/remove-document-in-folder">) {
+		return client.post(
+			"/remove-document-in-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("documentInFolder.removed");
+	}
+
+	export function renameDocumentInFolder(params: FindRequestBody<"/rename-document-in-folder">) {
+		return client.post(
+			"/rename-document-in-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow([
+			"documentInFolder.renamed",
+			"documentFolder.notfound",
+			"documentFolder.wrongProprietary",
+			"documentInFolder.notfound",
+		]);
+	}
+
+	export function createManyDocumentInFolder(
+		params: FindRequestBody<"/create-many-document-in-folder">,
+	) {
+		return client.post(
+			"/create-many-document-in-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow([
+			"documentInFolder.created",
+			"documentFolder.noneFound",
+			"documentFolder.noneCapacity",
+		]);
+	}
+
+	export function findManyDocumentFoldersInWhichDocumentExist(
+		params: FindRequestBody<"/find-many-document-folders-in-which-document-exist">,
+	) {
+		return client.post(
+			"/find-many-document-folders-in-which-document-exist",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("documentFolders.found");
+	}
+
+	export function findManyDocumentFoldersInWhichDocumentExistDetails(
+		params: FindRequestBody<"/find-many-document-folders-in-which-document-exist-details">,
+	) {
+		return client.post(
+			"/find-many-document-folders-in-which-document-exist-details",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("documentFolders.foundDetails");
+	}
+
+	export function nodeSameRawDocumentIdsHaveDocumentInFolder(
+		params: FindRequestBody<"/node-same-raw-document-ids-have-document-in-folder">,
+	) {
+		return client.post(
+			"/node-same-raw-document-ids-have-document-in-folder",
+			{
+				body: params,
+			},
+		).iWantInformationOrThrow("nodeSameRawDocumentIdsHaveDocumentInFolder.found");
 	}
 }

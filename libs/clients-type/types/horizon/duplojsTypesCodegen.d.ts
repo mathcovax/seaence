@@ -1103,7 +1103,7 @@ type CodegenRoutes = ({
         information: "documentFolder.wrongProprietary";
         body?: undefined;
     } | {
-        code: 200;
+        code: 204;
         information: "documentFolder.renamed";
         body?: undefined;
     };

@@ -1,6 +1,6 @@
 import { BodyLimitDescription } from "@interfaces/http/plugins/bodyLimit";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { favoriteEquationRules } from "@vendors/entity-rules";
 import { operatorContentSchema } from "@vendors/types-advanced-query";
 
@@ -23,7 +23,7 @@ useMustBeConnectedBuilder()
 			const { user } = pickup(["user"]);
 			const { favoriteEquationName, equation } = pickup("body");
 
-			await CoralAPI.upsertFavoriteEquation({
+			await CoralProvider.upsertFavoriteEquation({
 				userId: user.id,
 				favoriteEquationName,
 				equation,

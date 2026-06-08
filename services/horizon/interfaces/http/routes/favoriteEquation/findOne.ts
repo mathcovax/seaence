@@ -1,7 +1,8 @@
 import { FavoriteEquation } from "@business/entities/favoriteEquation";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { match } from "ts-pattern";
+import { D, O } from "@duplojs/utils";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/find-one-favorite-equation/{favoriteEquationId}")
@@ -14,7 +15,7 @@ useMustBeConnectedBuilder()
 		async({ pickup, dropper }) => {
 			const { user, favoriteEquationId } = pickup(["user", "favoriteEquationId"]);
 
-			const result = await CoralAPI.findOneFavoriteEquation({
+			const result = await CoralProvider.findOneFavoriteEquation({
 				userId: user.id,
 				favoriteEquationId,
 			});
@@ -44,7 +45,14 @@ useMustBeConnectedBuilder()
 		(pickup) => {
 			const { favoriteEquation } = pickup(["favoriteEquation"]);
 
-			return new OkHttpResponse("favoriteEquation.found", favoriteEquation);
+			return new OkHttpResponse(
+				"favoriteEquation.found",
+				O.transformProperty(
+					favoriteEquation,
+					"addedAt",
+					D.toISOString,
+				),
+			);
 		},
 		makeResponseContract(OkHttpResponse, "favoriteEquation.found", FavoriteEquation.index),
 	);
