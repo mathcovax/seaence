@@ -20,8 +20,6 @@
   },
   "vue.codeActions.askNewComponentName": false,
   "prettier.enable": false,
-  "javascript.format.enable": false,
-  "typescript.format.enable": false,
   "html.format.enable": false,
   "json.format.enable": false,
   "eslint.workingDirectories": [
@@ -51,6 +49,14 @@
 	"services/beacon",
 	"e2e",
   ],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.format.enabled": false,
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "cSpell.words": [
+	"ABYS",
+	"Codegen",
+	"GLITCHTIP",
+	"pubmed",
+	"uuidv"
+],
 }

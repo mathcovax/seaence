@@ -1,0 +1,109 @@
+{
+	"init-entity-file": {
+		"prefix": "ief",
+		"scope": "typescript",
+		"body": [
+			"import { C, DPE } from \"@duplojs/utils\";",
+			"",
+			"export namespace $1 {",
+			"\texport const Id = C.createNewType(\"$1Id\", DPE.string(), C.Uuid);",
+			"\texport type Id = C.GetNewType<typeof Id>;",
+			"",
+			"\texport const Entity = C.createEntity(",
+			"\t\t\"$1\",",
+			"\t\t() => ({",
+			"\t\t\tid: Id,",
+			"\t\t}),",
+			"\t);",
+			"\texport type Entity = C.GetEntity<typeof Entity>;",
+			"}",
+			"",
+		]
+	},
+	"create-new-type": {
+		"prefix": "cnt",
+		"scope": "typescript",
+		"body": [
+			"export const $1 = C.createNewType(\"$2$1\", DPE.string());",
+			"export type $1 = C.GetNewType<typeof $1>;",
+		]
+	},
+	"create-entity-flag": {
+		"prefix": "cef",
+		"scope": "typescript",
+		"body": [
+			"export const $1 = C.createFlag<Entity, \"$1\">(\"$1\");",
+			"export type $1 = C.GetFlag<typeof $1>;",
+		]
+	},
+	"create-constrain": {
+		"prefix": "cc",
+		"scope": "typescript",
+		"body": [
+			"export const $1 = C.createConstraint(",
+			"\t\"$1\",",
+			"\tC.$2,",
+			"\t[DP.checker$3()],",
+			");",
+			"export type constra$1in = C.GetConstraint<typeof $1>;",
+		]
+	},
+	"init-use-cases-file": {
+		"prefix": "iucf",
+		"scope": "typescript",
+		"body": [
+			"import { C } from \"@duplojs/utils\";",
+			"",
+			"interface Input {",
+			"",
+			"}",
+			"",
+			"export const $1 = C.createUseCase(",
+			"\t{",
+			"",
+			"\t},",
+			"\t({}) => (input: Input) => {",
+			"",
+			"\t},",
+			");",
+			"",
+		]
+	},
+	"init-use-cases-generic-file": {
+		"prefix": "iucgf",
+		"scope": "typescript",
+		"body": [
+			"import { C } from \"@duplojs/utils\";",
+			"",
+			"interface Input<Generic extends never> {",
+			"",
+			"}",
+			"",
+			"export const $1 = C.createUseCase(",
+			"\t{",
+			"",
+			"\t},",
+			"\t({}) => <",
+			"\t\tGeneric extends unknown,",
+			"\t>(input: Input<Generic>) => {",
+			"",
+			"\t},",
+			");",
+			"",
+		]
+	},
+	"init-repository-file": {
+		"prefix": "irf",
+		"scope": "typescript",
+		"body": [
+			"import { C } from \"@duplojs/utils\";",
+			"",
+			"export interface $1Repository {",
+			"",
+			"}",
+			"",
+			"export const $1Repository = C.createRepository<$1Repository>();",
+			"",
+		]
+	},
+}
