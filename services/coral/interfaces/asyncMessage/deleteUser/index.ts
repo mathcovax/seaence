@@ -1,12 +1,12 @@
-import { userIdObjecter } from "@business/domains/common/user";
+import { UserId } from "@business/domains/common/user";
 import { asyncMessage } from "@interfaces/providers/asyncMessage";
-import { deleteAllUserDataUsecase } from "@interfaces/usecase";
+import { useCases } from "@interfaces/useCases";
 
 asyncMessage.collections.deleteUser.on(
 	async({ value }) => {
-		const userId = userIdObjecter.unsafeCreate(value.userId);
+		const userId = UserId.createOrThrow(value.userId);
 
-		await deleteAllUserDataUsecase.execute({ userId });
+		await useCases.deleteAllUserDataUseCase({ userId });
 	},
 );
 

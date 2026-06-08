@@ -1,21 +1,16 @@
-import { documentInFolderRepository } from "@business/applications/repositories/documentInFolder";
-import { type UserId } from "@business/domains/common/user";
-import { type NodeSameRawDocumentId } from "@business/domains/entities/documentInFolder";
-import { UsecaseHandler } from "@vendors/clean";
+import { C } from "@duplojs/utils";
+import { DocumentInFolderRepository } from "@business/applications/repositories/documentInFolder";
+import type { UserId } from "@business/domains/common/user";
+import type { NodeSameRawDocumentId } from "@business/domains/common/nodeSameRawDocument";
 
 interface Input {
 	userId: UserId;
 	nodeSameRawDocumentIds: NodeSameRawDocumentId[];
 }
-
-export class NodeSameRawDocumentIdsHaveDocumentInFolderUsecase extends UsecaseHandler.create({
-	documentInFolderRepository,
-}) {
-	public execute({ userId, nodeSameRawDocumentIds }: Input) {
-		return this.documentInFolderRepository
-			.nodeSameRawDocumentIdsHaveDocumentInFolder(
-				userId,
-				nodeSameRawDocumentIds,
-			);
-	}
-}
+export const NodeSameRawDocumentIdsHaveDocumentInFolderUseCase = C.createUseCase(
+	{ DocumentInFolderRepository },
+	({
+		documentInFolderRepository,
+	}) => (input: Input) => documentInFolderRepository
+		.nodeSameRawDocumentIdsHaveDocumentInFolder(input),
+);

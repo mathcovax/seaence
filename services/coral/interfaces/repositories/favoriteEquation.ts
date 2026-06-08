@@ -1,106 +1,102 @@
-import { uuidv7 } from "uuidv7";
-import { favoriteEquationRepository } from "@business/applications/repositories/favoriteEquation";
-import { FavoriteEquationEntity, favoriteEquationIdObjecter } from "@business/domains/entities/favoriteEquation";
+import { FavoriteEquationRepository } from "@business/applications/repositories/favoriteEquation";
+import { FavoriteEquation } from "@business/domains/entities/favoriteEquation";
+import { A, C, D, escapeRegExp, toNative, unwrap, unwrapGroup } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler, intObjecter } from "@vendors/clean";
-import { escapeRegExp } from "@duplojs/utils";
+import { uuidv7 } from "uuidv7";
 
-favoriteEquationRepository.default = {
-	generateFavoriteEquationId() {
-		return favoriteEquationIdObjecter.unsafeCreate(uuidv7());
+export const favoriteEquationRepository = FavoriteEquationRepository.createImplementation({
+	generateId() {
+		return FavoriteEquation.Id.createOrThrow(uuidv7());
 	},
-	async save(favoriEquationEntity) {
-		const simpleFavoriEquation = favoriEquationEntity.toSimpleObject();
-
-		await mongo.favoriteEquation.updateOne(
-			{ id: simpleFavoriEquation.id },
-			{ $set: simpleFavoriEquation },
-			{ upsert: true },
-		);
-
-		return favoriEquationEntity;
-	},
-	async delete(favoriteEquationEntity) {
-		await mongo.favoriteEquation.deleteOne({
-			id: favoriteEquationEntity.id.value,
-		});
-	},
-	async findOneFavoriteEquationById(favoriteEquationId) {
-		const favoriteEquation = await mongo.favoriteEquation.findOne({
-			id: favoriteEquationId.value,
+	async findOneById(id) {
+		const result = await mongo.favoriteEquation.findOne({
+			id: unwrap(id),
 		});
 
-		if (!favoriteEquation) {
-			return null;
+		if (!result) {
+			return C.none("favoriteEquation");
 		}
 
-		return EntityHandler.unsafeMapper(
-			FavoriteEquationEntity,
-			favoriteEquation,
-		);
+		return C.some(FavoriteEquation.Entity.mapOrThrow(result));
 	},
-	async findOneFavoriteEquation(userId, favoriteEquationName) {
-		const favoriteEquation = await mongo.favoriteEquation.findOne({
-			userId: userId.value,
-			name: favoriteEquationName.value,
-		});
-
-		if (!favoriteEquation) {
-			return null;
-		}
-
-		return EntityHandler.unsafeMapper(
-			FavoriteEquationEntity,
-			favoriteEquation,
-		);
-	},
-	async findManyFavoriteEquation(input) {
-		const { userId, partialFavoriteEquationName, page, quantityPerPage } = input;
-
-		const mongoFavoriEquations = await mongo.favoriteEquation
+	async findMany(params) {
+		const { userId, partialFavoriteEquationName, page, quantityPerPage } = unwrapGroup(params);
+		const result = await mongo.favoriteEquation
 			.find(
 				{
-					userId: userId.value,
+					userId,
 					name: {
-						$regex: new RegExp(escapeRegExp(partialFavoriteEquationName.value), "i"),
+						$regex: new RegExp(escapeRegExp(partialFavoriteEquationName), "i"),
 					},
 				},
 			)
 			.sort({ addedAt: -1 })
-			.skip(page.value * quantityPerPage.value)
-			.limit(quantityPerPage.value)
+			.skip(page * quantityPerPage)
+			.limit(quantityPerPage)
 			.toArray();
 
-		const favoriEquations = mongoFavoriEquations.map(
-			(mongoFavoriEquation) => EntityHandler.unsafeMapper(
-				FavoriteEquationEntity,
-				mongoFavoriEquation,
-			),
+		return A.map(
+			result,
+			FavoriteEquation.Entity.mapOrThrow,
 		);
-
-		return favoriEquations;
 	},
-	async countResultOfSearchFavoriteEquation(userId, partialFavoriteEquationName) {
-		const numberOfFavoriEquation = await mongo.favoriteEquation
-			.countDocuments(
-				{
-					userId: userId.value,
-					name: {
-						$regex: new RegExp(escapeRegExp(partialFavoriteEquationName.value), "i"),
-					},
-				},
-			)
-			.then(
-				(numberOfFavoriEquation) => intObjecter.unsafeCreate(numberOfFavoriEquation),
-			);
+	async findByName(params) {
+		const { userId, favoriteEquationName: name } = unwrapGroup(params);
 
-		return numberOfFavoriEquation;
+		const result = await mongo.favoriteEquation.findOne({
+			userId,
+			name,
+		});
+
+		if (!result) {
+			return C.none("favoriteEquation");
+		}
+
+		return C.some(FavoriteEquation.Entity.mapOrThrow(result));
+	},
+	async remove(favoriteEquation) {
+		await mongo.favoriteEquation.deleteOne({
+			id: unwrap(favoriteEquation.id),
+		});
 	},
 	async deleteAllByUserId(userId) {
 		await mongo.favoriteEquation.deleteMany(
 			{
-				userId: userId.value,
+				userId: unwrap(userId),
 			},
 		);
 	},
-};
+	async countResultOfFindMany(params) {
+		const { userId, partialFavoriteEquationName } = unwrapGroup(params);
+
+		return mongo.favoriteEquation
+			.countDocuments(
+				{
+					userId,
+					name: {
+						$regex: new RegExp(escapeRegExp(partialFavoriteEquationName), "i"),
+					},
+				},
+			)
+			.then(
+				C.Int.createOrThrow,
+			);
+	},
+	async save(entity) {
+		const simpleEntity = C.unwrapEntity(entity, { transformer: toNative });
+
+		await mongo.favoriteEquation.updateOne(
+			{ id: simpleEntity.id },
+			{
+				$set: {
+					...simpleEntity,
+					updateAt: D.now(),
+
+				},
+			},
+			{ upsert: true },
+		);
+
+		return entity;
+	},
+});

@@ -1,6 +1,8 @@
-import { type EntityToSimpleObject } from "@vendors/clean";
-import { type DocumentFolderEntity } from "@business/domains/entities/documentFolder";
-
-export interface MongoDocumentFolder extends EntityToSimpleObject<typeof DocumentFolderEntity> {
+export interface MongoDocumentFolder {
+	id: string;
+	userId: string;
+	name: string;
+	numberOfDocument: number;
+	createdAt: Date;
 	updatedAt: Date;
 }

@@ -1,4 +1,4 @@
-import { type GetValueObject, zod } from "@vendors/clean";
+import { C, DP } from "@duplojs/utils";
 
-export const userIdObjecter = zod.string().createValueObjecter("userId");
-export type UserId = GetValueObject<typeof userIdObjecter>;
+export const UserId = C.createNewType("userId", DP.string());
+export type UserId = C.GetNewType<typeof UserId>;

@@ -1,4 +1,11 @@
-import { type EntityToSimpleObject } from "@vendors/clean";
-import { type FavoriteEquationEntity } from "@business/domains/entities/favoriteEquation";
+import { type FavoriteEquation } from "@business/domains/entities/favoriteEquation";
+import { type Unwrap } from "@duplojs/utils";
 
-export interface MongoFavoriteEquation extends EntityToSimpleObject<typeof FavoriteEquationEntity> {}
+export interface MongoFavoriteEquation {
+	id: string;
+	userId: string;
+	name: string;
+	equation: Unwrap<FavoriteEquation.Equation>;
+	addedAt: Date;
+	updateAt: Date;
+}

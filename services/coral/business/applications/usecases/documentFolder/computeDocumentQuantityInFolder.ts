@@ -1,19 +1,24 @@
-import { UsecaseHandler } from "@vendors/clean";
-import { type DocumentFolderEntity } from "@business/domains/entities/documentFolder";
-import { documentFolderRepository } from "../../repositories/documentFolder";
+import { asyncPipe, C } from "@duplojs/utils";
+import { DocumentFolderRepository } from "@business/applications/repositories/documentFolder";
+import { DocumentFolder } from "@business/domains/entities/documentFolder";
 
 interface Input {
-	documentFolder: DocumentFolderEntity;
+	documentFolder: DocumentFolder.Entity;
 }
 
-export class ComputeDocumentQuantityInFolderUsecase extends UsecaseHandler.create({
-	documentFolderRepository,
-}) {
-	public async execute({ documentFolder }: Input) {
-		const documentinFolderQuantity = await this.documentFolderRepository.countDocumentsInFolder(documentFolder);
-
-		const updatedDocumentFolder = documentFolder.updateDocumentInFolderQuantity(documentinFolderQuantity);
-
-		await this.documentFolderRepository.save(updatedDocumentFolder);
-	}
-}
+export const ComputeDocumentQuantityInFolderUseCase = C.createUseCase(
+	{ DocumentFolderRepository },
+	(
+		{ documentFolderRepository },
+	) => (input: Input) => asyncPipe(
+		documentFolderRepository.countDocumentInFolder(
+			input.documentFolder,
+		),
+		DocumentFolder.NumberOfDocument.createOrThrow,
+		(countOfDocumentInFolder) => DocumentFolder.updateDocumentInFolderQuantity(
+			input.documentFolder,
+			countOfDocumentInFolder,
+		),
+		documentFolderRepository.save,
+	),
+);
