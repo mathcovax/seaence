@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '22.15.0'
       - run: npm ci
       - run: npm run test:types
 
@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '22.15.0'
       - run: npm ci
       - run: npm run test:lint
 
@@ -29,6 +29,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '22.15.0'
       - run: npm ci
       - run: npm run test:tu

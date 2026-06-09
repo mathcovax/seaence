@@ -3,7 +3,7 @@ import { NodeSameRawDocumentId } from "@business/domains/common/nodeSameRawDocum
 import { UserId } from "@business/domains/common/user";
 import { DocumentFolder } from "@business/domains/entities/documentFolder";
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { asyncPipe, C, DPE, A, pipeCall, unwrap, forwardLog } from "@duplojs/utils";
+import { asyncPipe, C, DPE, A, pipeCall, unwrap } from "@duplojs/utils";
 import { useCases } from "@interfaces/useCases";
 
 useRouteBuilder("POST", "/find-many-document-folder")
