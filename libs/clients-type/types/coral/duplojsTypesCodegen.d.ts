@@ -148,7 +148,7 @@ export type Routes = {
             name: string;
             userId: string;
             equation: OperatorContent;
-            addedAt: ...;
+            addedAt: SerializedTheDate | TheDate;
         };
     } | {
         code: "422";
@@ -249,7 +249,7 @@ export type Routes = {
             userId: string;
             name: string;
             numberOfDocument: number;
-            createdAt: ...;
+            createdAt: SerializedTheDate | TheDate;
         }[];
     };
 } | {
@@ -292,7 +292,7 @@ export type Routes = {
             userId: string;
             name: string;
             numberOfDocument: number;
-            createdAt: ...;
+            createdAt: SerializedTheDate | TheDate;
         }[];
     };
 } | {
@@ -329,7 +329,7 @@ export type Routes = {
             userId: string;
             name: string;
             numberOfDocument: number;
-            createdAt: ...;
+            createdAt: SerializedTheDate | TheDate;
         };
     } | {
         code: "422";
@@ -488,7 +488,7 @@ export type Routes = {
             documentFolderId: string;
             userId: string;
             nodeSameRawDocumentId: string;
-            addedAt: ...;
+            addedAt: SerializedTheDate | TheDate;
         };
     } | {
         code: "422";
@@ -562,7 +562,7 @@ export type Routes = {
             documentFolderId: string;
             userId: string;
             nodeSameRawDocumentId: string;
-            addedAt: ...;
+            addedAt: SerializedTheDate | TheDate;
         }[];
     } | {
         code: "422";

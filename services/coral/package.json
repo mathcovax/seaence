@@ -13,7 +13,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@duplojs/http": "0.13.0",
+    "@duplojs/http": "0.13.1",
     "@duplojs/utils": "1.9.2",
     "@duplojs/server-utils": "0.4.1",
     "mongodb": "7.0.0",
