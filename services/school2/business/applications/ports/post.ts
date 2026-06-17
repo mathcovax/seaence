@@ -10,11 +10,11 @@ export interface FindManyPostByNodeSameRawDocumentParams {
 }
 
 export interface PostPort extends PostRepository, BaseRepositoryPort<Post.Entity> {
-	findOneById(id: Post.Id): Promise<C.Maybe<Post.EntityWithStatus>>;
+	findOneById(id: Post.Id): Promise<C.Maybe<Post.Entity>>;
 	findOldestUnprocessed(): Promise<C.Maybe<Post.Entity & Post.Unprocessed>>;
 	findManyByNodeSameRawDocument(
 		params: FindManyPostByNodeSameRawDocumentParams
-	): Promise<Post.EntityWithStatus[]>;
+	): Promise<Post.Entity[]>;
 	getTotalCountByNodeSameRawDocument(
 		nodeSameRawDocumentId: Post.NodeSameRawDocumentId
 	): Promise<C.PositiveInt>;

@@ -6,8 +6,8 @@
     "dev": "tsx --watch interfaces/main.ts",
     "start": "tsx interfaces/main.ts",
 
-    "http:dev": "tsx --watch interfaces/http/main.ts",
-    "http:start": "tsx interfaces/http/main.ts",
+    "http:dev": "tsx watch --tsconfig interfaces/http/tsconfig.json interfaces/http/main.ts",
+    "http:start": "tsx --tsconfig interfaces/http/tsconfig.json interfaces/http/main.ts",
 
     "test:types": "./.commands/test-types.sh",
     "test:lint": "./.commands/test-lint.sh",

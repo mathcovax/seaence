@@ -1,5 +1,5 @@
 import { PostPort } from "@applications/ports/post";
-import { C, toNative, unwrap } from "@duplojs/utils";
+import { C, pipe, toNative, unwrap } from "@duplojs/utils";
 import { Post } from "@domains/entities/post";
 import { mongo } from "../../providers/mongo";
 import { uuidv7 } from "uuidv7";
@@ -55,11 +55,7 @@ export const postPort = PostPort.createImplementation({
 			return C.none("Post");
 		}
 
-		return C.some(
-			Post.computeStatus(
-				Post.Entity.mapOrThrow(post),
-			),
-		);
+		return C.some(Post.Entity.mapOrThrow(post));
 	},
 	async findOldestUnprocessed() {
 		const post = await mongo.postCollection.findOne(
@@ -77,16 +73,11 @@ export const postPort = PostPort.createImplementation({
 			return C.none("Post");
 		}
 
-		const entity = Post.computeStatus(
-			Post.Entity.mapOrThrow(post),
-		);
-
-		if (!Post.Unprocessed.has(entity)) {
-			throw new Error("oldest-unprocessed-post-status-mismatch");
-		}
-
-		return C.some(
-			entity,
+		return pipe(
+			post,
+			Post.Entity.mapOrThrow,
+			Post.Unprocessed.append,
+			C.some,
 		);
 	},
 	findManyByNodeSameRawDocument(params) {
@@ -102,7 +93,7 @@ export const postPort = PostPort.createImplementation({
 			.sort({ answerCount: -1 })
 			.skip(page * quantityPerPage)
 			.limit(quantityPerPage)
-			.map((post) => Post.computeStatus(Post.Entity.mapOrThrow(post)))
+			.map(Post.Entity.mapOrThrow)
 			.toArray();
 	},
 	async getTotalCountByNodeSameRawDocument(nodeSameRawDocumentId) {

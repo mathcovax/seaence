@@ -86,10 +86,4 @@ export namespace Post {
 			)
 			.exhaustive();
 	}
-
-	export type EntityWithStatus = (
-		| Entity & Compliant
-		| Entity & NotCompliant
-		| Entity & Unprocessed
-	);
 }

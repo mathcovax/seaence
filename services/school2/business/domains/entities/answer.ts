@@ -68,10 +68,4 @@ export namespace Answer {
 			)
 			.exhaustive();
 	}
-
-	export type EntityWithStatus = (
-		| Entity & Compliant
-		| Entity & NotCompliant
-		| Entity & Unprocessed
-	);
 }

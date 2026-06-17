@@ -11,9 +11,9 @@ export interface FindManyAnswerByPostParams {
 }
 
 export interface AnswerPort extends AnswerRepository, BaseRepositoryPort<Answer.Entity> {
-	findOneById(id: Answer.Id): Promise<C.Maybe<Answer.EntityWithStatus>>;
+	findOneById(id: Answer.Id): Promise<C.Maybe<Answer.Entity>>;
 	findOldestUnprocessed(): Promise<C.Maybe<Answer.Entity & Answer.Unprocessed>>;
-	findManyByPost(params: FindManyAnswerByPostParams): Promise<Answer.EntityWithStatus[]>;
+	findManyByPost(params: FindManyAnswerByPostParams): Promise<Answer.Entity[]>;
 	getTotalCountOfUnprocessed(): Promise<C.PositiveInt>;
 }
 

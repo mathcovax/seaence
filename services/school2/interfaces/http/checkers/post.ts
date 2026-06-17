@@ -1,5 +1,5 @@
 import { ResponseContract, createPresetChecker, useCheckerBuilder } from "@duplojs/http";
-import { E, pipe } from "@duplojs/utils";
+import { E } from "@duplojs/utils";
 import { postPort } from "@adapters/ports";
 import { Post } from "@domains/entities/post";
 
@@ -12,19 +12,17 @@ export const postExistChecker = useCheckerBuilder()
 				return output("post.notfound", null);
 			}
 
-			return pipe(
-				E.unwrapRight(result),
-				Post.computeStatus,
-				(post) => output("post.found", post),
-			);
+			return output("post.found", E.unwrapRight(result));
 		},
 	);
 
 export const postStatusIsUnprocessedChecker = useCheckerBuilder()
 	.handler(
-		(post: Post.EntityWithStatus, { output }) => {
-			if (Post.Unprocessed.has(post)) {
-				return output("post.unprocessed", post);
+		(post: Post.Entity, { output }) => {
+			const postWithStatus = Post.computeStatus(post);
+
+			if (Post.Unprocessed.has(postWithStatus)) {
+				return output("post.unprocessed", postWithStatus);
 			}
 
 			return output("post.wrongStatus", null);
@@ -33,9 +31,11 @@ export const postStatusIsUnprocessedChecker = useCheckerBuilder()
 
 export const postStatusIsCompliantChecker = useCheckerBuilder()
 	.handler(
-		(post: Post.EntityWithStatus, { output }) => {
-			if (Post.Compliant.has(post)) {
-				return output("post.compliant", post);
+		(post: Post.Entity, { output }) => {
+			const postWithStatus = Post.computeStatus(post);
+
+			if (Post.Compliant.has(postWithStatus)) {
+				return output("post.compliant", postWithStatus);
 			}
 
 			return output("post.wrongStatus", null);

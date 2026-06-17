@@ -1,5 +1,5 @@
 import { AnswerPort } from "@applications/ports/answer";
-import { C, toNative, unwrap } from "@duplojs/utils";
+import { C, pipe, toNative, unwrap } from "@duplojs/utils";
 import { Answer } from "@domains/entities/answer";
 import { asyncMessage } from "../../providers/asyncMessage";
 import { mongo } from "../../providers/mongo";
@@ -61,11 +61,7 @@ export const answerPort = AnswerPort.createImplementation({
 			return C.none("Answer");
 		}
 
-		return C.some(
-			Answer.computeStatus(
-				Answer.Entity.mapOrThrow(answer),
-			),
-		);
+		return C.some(Answer.Entity.mapOrThrow(answer));
 	},
 	async findOldestUnprocessed() {
 		const answer = await mongo.answerCollection.findOne(
@@ -83,16 +79,11 @@ export const answerPort = AnswerPort.createImplementation({
 			return C.none("Answer");
 		}
 
-		const entity = Answer.computeStatus(
-			Answer.Entity.mapOrThrow(answer),
-		);
-
-		if (!Answer.Unprocessed.has(entity)) {
-			throw new Error("oldest-unprocessed-answer-status-mismatch");
-		}
-
-		return C.some(
-			entity,
+		return pipe(
+			answer,
+			Answer.Entity.mapOrThrow,
+			Answer.Unprocessed.append,
+			C.some,
 		);
 	},
 	findManyByPost(params) {
@@ -105,7 +96,7 @@ export const answerPort = AnswerPort.createImplementation({
 			.sort({ createdAt: -1 })
 			.skip(page * quantityPerPage)
 			.limit(quantityPerPage)
-			.map((answer) => Answer.computeStatus(Answer.Entity.mapOrThrow(answer)))
+			.map(Answer.Entity.mapOrThrow)
 			.toArray();
 	},
 	async getTotalCountOfUnprocessed() {
