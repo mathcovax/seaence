@@ -3,4 +3,4 @@ export const answerRules = {
 		minLength: 5,
 		maxLength: 500,
 	},
-};
+} as const;

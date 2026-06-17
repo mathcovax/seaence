@@ -7,4 +7,4 @@ export const postRules = {
 		minLength: 30,
 		maxLength: 5000,
 	},
-};
+} as const;

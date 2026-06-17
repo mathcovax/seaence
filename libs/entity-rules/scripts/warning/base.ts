@@ -3,4 +3,4 @@ export const baseWarningRules = {
 		min: 5,
 		max: 250,
 	},
-};
+} as const;
