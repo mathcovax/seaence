@@ -6,8 +6,13 @@
     "zod": "3.24.2"
   },
   "devDependencies": {
-    "@duplojs/utils": "1.9.2",
+    "@duplojs/utils": "1.9.7",
     "@types/node": "22.15.0",
     "typescript": "5.9.3"
+  },
+  "exports": {
+    ".": {
+      "import": "./scripts/index.ts"
+    }
   }
 }

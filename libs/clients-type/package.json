@@ -1,3 +1,28 @@
 {
-  "name": "@lib/clients-type"
+  "name": "@lib/clients-type",
+  "type": "module",
+  "exports": {
+    "./abys": "./types/abys/duplojsTypesCodegen.d.ts",
+    "./abys/*": "./types/abys/*.d.ts",
+    "./beacon": "./types/beacon/duplojsTypesCodegen.d.ts",
+    "./beacon/*": "./types/beacon/*.d.ts",
+    "./bottle": "./types/bottle/duplojsTypesCodegen.d.ts",
+    "./bottle/*": "./types/bottle/*.d.ts",
+    "./bridge": "./types/bridge/duplojsTypesCodegen.d.ts",
+    "./bridge/*": "./types/bridge/*.d.ts",
+    "./coral": "./types/coral/duplojsTypesCodegen.d.ts",
+    "./coral/*": "./types/coral/*.d.ts",
+    "./harbor": "./types/harbor/duplojsTypesCodegen.d.ts",
+    "./harbor/*": "./types/harbor/*.d.ts",
+    "./horizon": "./types/horizon/duplojsTypesCodegen.d.ts",
+    "./horizon/*": "./types/horizon/*.d.ts",
+    "./marine-snow": "./types/marine-snow/duplojsTypesCodegen.d.ts",
+    "./marine-snow/*": "./types/marine-snow/*.d.ts",
+    "./rosetta": "./types/rosetta/duplojsTypesCodegen.d.ts",
+    "./rosetta/*": "./types/rosetta/*.d.ts",
+    "./school": "./types/school/duplojsTypesCodegen.d.ts",
+    "./school/*": "./types/school/*.d.ts",
+    "./sea": "./types/sea/duplojsTypesCodegen.d.ts",
+    "./sea/*": "./types/sea/*.d.ts"
+  }
 }

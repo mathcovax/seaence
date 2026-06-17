@@ -14,7 +14,7 @@
   "dependencies": {
     "@duplojs/core": "1.0.3",
     "@duplojs/node": "1.0.3",
-    "@duplojs/utils": "1.9.2",
+    "@duplojs/utils": "1.9.7",
     "@elastic/elasticsearch": "8.18.2",
     "dotenv": "16.4.5",
     "dotenv-expand": "12.0.1",

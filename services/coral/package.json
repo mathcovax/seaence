@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "@duplojs/http": "0.13.1",
-    "@duplojs/utils": "1.9.2",
+    "@duplojs/utils": "1.9.7",
     "@duplojs/server-utils": "0.4.1",
-    "mongodb": "7.0.0",
-    "uuidv7": "1.1.0"
+    "mongodb": "7.3.0",
+    "uuidv7": "1.2.1"
   },
   "devDependencies": {
     "@types/node": "22.15.0",
