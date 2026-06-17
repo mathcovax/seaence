@@ -1,0 +1,33 @@
+{
+  "name": "@service/school2",
+  "description": "Microservice de gestion du contenu éditorial. Nommé d'après les bancs de poissons ('school' en anglais), il orchestre les articles et leurs sujets, reflétant ainsi leur organisation collective et structurée.",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch interfaces/main.ts",
+    "start": "tsx interfaces/main.ts",
+
+    "http:dev": "tsx --watch interfaces/http/main.ts",
+    "http:start": "tsx interfaces/http/main.ts",
+
+    "test:types": "./.commands/test-types.sh",
+    "test:lint": "./.commands/test-lint.sh",
+
+    "fixtures": "tsx interfaces/fixtures/index.ts"
+  },
+  "dependencies": {
+    "@duplojs/http": "0.13.1",
+    "@duplojs/utils": "1.9.7",
+    "@duplojs/server-utils": "0.4.1",
+    "mongodb": "7.3.0",
+    "uuidv7": "1.2.1",
+    "@lib/entity-rules": "file:../libs/entity-rules",
+    "@lib/client-type": "file:../libs/client-type",
+    "@lib/async-message": "file:../libs/async-message",
+    "@lib/eslint": "file:../libs/eslint"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.0",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
+  }
+}

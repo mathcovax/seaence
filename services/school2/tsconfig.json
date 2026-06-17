@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+	{ "path": "./business/domains/tsconfig.json" },
+	{ "path": "./business/applications/tsconfig.json" },
+
+	{ "path": "./interfaces/adapters/tsconfig.json" },
+	{ "path": "./interfaces/providers/tsconfig.json" },
+	{ "path": "./interfaces/http/tsconfig.json" },
+	{ "path": "./interfaces/asyncMessage/tsconfig.json" },
+
+	{ "path": "./interfaces/tsconfig.json" }
+  ],
+}
