@@ -7,6 +7,7 @@
 	  "@applications/*": ["../../business/applications/*"],
 	  "@domains/*": ["../../business/domains/*"],
 	  "@adapters/*": ["../adapters/*"],
+	  "@providers/asyncMessage": ["../providers/asyncMessage/index.ts"],
 	  "@envs": ["../envs.ts"],
     },
   },

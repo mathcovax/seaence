@@ -23,7 +23,8 @@
     "@lib/entity-rules": "file:../libs/entity-rules",
     "@lib/client-type": "file:../libs/client-type",
     "@lib/async-message": "file:../libs/async-message",
-    "@lib/eslint": "file:../libs/eslint"
+    "@lib/eslint": "file:../libs/eslint",
+    "@lib/logger": "file:../libs/backend-logger"
   },
   "devDependencies": {
     "@types/node": "22.15.0",
