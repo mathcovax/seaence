@@ -1,6 +1,6 @@
 import { Duplo } from "@duplojs/core";
 import * as Sentry from "@sentry/node";
-import { logger } from "@vendors/backend-logger/logger";
+import { logger } from "@vendors/backend-logger";
 
 interface DebugOptions {
 	dsn: string;

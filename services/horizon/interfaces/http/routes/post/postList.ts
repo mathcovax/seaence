@@ -1,15 +1,17 @@
+import { A, D, O } from "@duplojs/utils";
 import { BackedDocument } from "@business/entities/bakedDocument";
 import { Post } from "@business/entities/forum/post";
 import { postConfig } from "@interfaces/configs/post";
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
-import { SchoolAPI } from "@interfaces/providers/school";
+import { SchoolProvider } from "@interfaces/providers/school";
 
 useBuilder()
 	.createRoute("POST", "/post-list")
 	.extract({
 		body: {
 			documentId: BackedDocument.id,
-			page: zod.number()
+			page: zod
+				.number()
 				.min(postConfig.findPosts.pageOffset),
 		},
 	})
@@ -21,10 +23,19 @@ useBuilder()
 		async(pickup) => {
 			const { page, document } = pickup(["page", "document"]);
 
-			const { body: posts } = await SchoolAPI.findPosts(
-				document.nodeSameRawDocumentId,
-				postConfig.findPosts.quantityPerPage,
-				page - postConfig.findPosts.pageOffset,
+			const result = await SchoolProvider.findManyPost({
+				nodeSameRawDocumentId: document.nodeSameRawDocumentId,
+				quantityPerPage: postConfig.findPosts.quantityPerPage,
+				page: page - postConfig.findPosts.pageOffset,
+			});
+
+			const posts = A.map(
+				result.body,
+				// theDate translation
+				O.transformProperty(
+					"createdAt",
+					D.toISOString,
+				),
 			);
 
 			return new OkHttpResponse(

@@ -1,25 +1,48 @@
-import { type AnswerId } from "@business/domains/entities/answer";
-import { findAnswerByIdUsecase } from "@interfaces/usecase";
+import { ResponseContract, createPresetChecker, useCheckerBuilder } from "@duplojs/http";
+import { E } from "@duplojs/utils";
+import { answerPort } from "@adapters/ports";
+import { Answer } from "@domains/entities/answer";
 
-export const answerExistCheck = createChecker("answerExist")
+export const answerExistChecker = useCheckerBuilder()
 	.handler(
-		async(input: AnswerId, output) => {
-			const answer = await findAnswerByIdUsecase.execute({ id: input });
+		async(id: Answer.Id, { output }) => {
+			const result = await answerPort.findOneById(id);
 
-			if (answer) {
-				return output("answer.exist", answer);
-			} else {
+			if (E.isLeft(result)) {
 				return output("answer.notfound", null);
 			}
+
+			return output("answer.found", E.unwrapRight(result));
 		},
 	);
 
-export const iWantAnswerExistById = createPresetChecker(
-	answerExistCheck,
+export const iWantAnswerExistsById = createPresetChecker(
+	answerExistChecker,
 	{
-		result: "answer.exist",
-		catch: () => new NotFoundHttpResponse("answer.notfound"),
+		result: "answer.found",
 		indexing: "answer",
+		otherwise: ResponseContract.notFound("answer.notfound"),
 	},
-	makeResponseContract(NotFoundHttpResponse, "answer.notfound"),
+);
+
+export const answerStatusIsUnprocessedChecker = useCheckerBuilder()
+	.handler(
+		(answer: Answer.Entity, { output }) => {
+			const answerWithStatus = Answer.computeStatus(answer);
+
+			if (Answer.Unprocessed.has(answerWithStatus)) {
+				return output("answer.unprocessed", answerWithStatus);
+			}
+
+			return output("answer.wrongStatus", null);
+		},
+	);
+
+export const iWantUnprocessedAnswer = createPresetChecker(
+	answerStatusIsUnprocessedChecker,
+	{
+		result: "answer.unprocessed",
+		indexing: "answer",
+		otherwise: ResponseContract.forbidden("answer.wrongStatus"),
+	},
 );

@@ -76,7 +76,9 @@
 
     "docker:coral": "docker compose up coral",
     
-    "docker:beacon": "docker compose up beacon"
+    "docker:beacon": "docker compose up beacon",
+
+    "docker:install:dependencies": "docker compose up node-installer"
   },
   "workspaces": [
     ".npm-packages",

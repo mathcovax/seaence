@@ -1,86 +1,89 @@
-import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetValueObject, zod } from "@vendors/clean";
-import { postRules } from "@vendors/entity-rules";
-import { userIdObjecter, type Username, usernameObjecter } from "../common/user";
+import { C, createEnum, DPE, P } from "@duplojs/utils";
+import { postRules } from "@lib/entity-rules";
+import { UserId, UserName } from "../common/user";
 
-export const postTopicObjecter = zod.string()
-	.min(postRules.topic.minLength)
-	.max(postRules.topic.maxLength)
-	.createValueObjecter("postTopic");
-export type PostTopic = GetValueObject<typeof postTopicObjecter>;
+export namespace Post {
 
-export const postContentObjecter = zod.string()
-	.min(postRules.content.minLength)
-	.max(postRules.content.maxLength)
-	.createValueObjecter("postContent");
-export type PostContent = GetValueObject<typeof postContentObjecter>;
+	export const Id = C.createNewType("PostId", C.String);
+	export type Id = C.GetNewType<typeof Id>;
 
-export const postIdObjecter = zod.string().createValueObjecter("postId");
-export type PostId = GetValueObject<typeof postIdObjecter>;
+	export const Topic = C.createNewType(
+		"PostTopic",
+		C.String,
+		[
+			C.StringMin(postRules.topic.minLength),
+			C.StringMax(postRules.topic.maxLength),
+		],
+	);
+	export type Topic = C.GetNewType<typeof Topic>;
 
-export const postAnswerCountObjecter = zod.number().createValueObjecter("postAnswerCount");
-export type PostAnswerCount = GetValueObject<typeof postAnswerCountObjecter>;
+	export const Content = C.createNewType(
+		"PostContent",
+		C.String,
+		[
+			C.StringMin(postRules.content.minLength),
+			C.StringMax(postRules.content.maxLength),
+		],
+	);
+	export type Content = C.GetNewType<typeof Content>;
 
-export const nodeSameRawDocumentIdObjecter = zod.string().createValueObjecter("nodeSameRawDocumentId");
-export type NodeSameRawDocumentId = GetValueObject<typeof nodeSameRawDocumentIdObjecter>;
+	export const NodeSameRawDocumentId = C.createNewType("NodeSameRawDocumentId", C.String);
+	export type NodeSameRawDocumentId = C.GetNewType<typeof NodeSameRawDocumentId>;
 
-export const postStatusEnum = createEnum([
-	"compliant",
-	"unprocessed",
-	"notCompliant",
-]);
+	export const AnswerCount = C.createNewType("PostAnswerCount", C.Number, C.PositiveInt);
+	export type AnswerCount = C.GetNewType<typeof AnswerCount>;
 
-export const postStatusObjecter = zod.enum(postStatusEnum.toTuple()).createValueObjecter("postStatus");
-export type PostStatus = GetValueObject<typeof postStatusObjecter>;
+	const statusEnum = createEnum([
+		"compliant",
+		"unprocessed",
+		"notCompliant",
+	]);
 
-const defaultAnswerCount = 0;
+	export const Status = C.createNewType("PostStatus", DPE.literal(statusEnum.toTuple()));
+	export type Status = C.GetNewType<typeof Status>;
 
-type InputCreatePostEntity = Omit<GetEntityProperties<typeof PostEntity>, "answerCount" | "createdAt" | "status">;
+	export const CreatedAt = C.createNewType("PostCreatedAt", C.Date);
+	export type CreatedAt = C.GetNewType<typeof CreatedAt>;
 
-export class PostEntity extends EntityHandler.create({
-	id: postIdObjecter,
-	topic: postTopicObjecter,
-	content: postContentObjecter,
-	nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter,
-	answerCount: postAnswerCountObjecter,
-	authorId: userIdObjecter,
-	authorName: usernameObjecter.nullable(),
-	status: postStatusObjecter,
-	createdAt: commonDateObjecter,
-}) {
-	public static create(params: InputCreatePostEntity) {
-		return new PostEntity({
-			...params,
-			status: postStatusObjecter.unsafeCreate("unprocessed"),
-			answerCount: postAnswerCountObjecter.unsafeCreate(defaultAnswerCount),
-			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-		});
-	}
+	export const Entity = C.createEntity(
+		"Post",
+		({ nullable }) => ({
+			id: Id,
+			topic: Topic,
+			content: Content,
+			nodeSameRawDocumentId: NodeSameRawDocumentId,
+			answerCount: AnswerCount,
+			authorId: UserId,
+			authorName: nullable(UserName),
+			status: Status,
+			createdAt: CreatedAt,
+		}),
+	);
+	export type Entity = C.GetEntity<typeof Entity>;
 
-	public updateAnswerCount(answerCount: PostAnswerCount) {
-		return this.update({
-			answerCount,
-		});
-	}
+	export const Unprocessed = C.createFlag<Entity, "Unprocessed">("Unprocessed");
+	export type Unprocessed = C.GetFlag<typeof Unprocessed>;
 
-	public updateAuthorName(authorName: Username) {
-		return this.update({
-			authorName,
-		});
-	}
+	export const Compliant = C.createFlag<Entity, "Compliant">("Compliant");
+	export type Compliant = C.GetFlag<typeof Compliant>;
 
-	public updateStatus(status: PostStatus["value"]) {
-		return this.update({
-			status: postStatusObjecter.unsafeCreate(status),
-		});
-	}
+	export const NotCompliant = C.createFlag<Entity, "NotCompliant">("NotCompliant");
+	export type NotCompliant = C.GetFlag<typeof NotCompliant>;
 
-	public isUnprocessed() {
-		return this.status.value === "unprocessed";
-	}
-
-	public anonymize() {
-		return this.update({
-			authorName: null,
-		});
+	export function computeStatus(entity: Entity) {
+		return P.match(entity.status)
+			.with(
+				C.equal("compliant"),
+				() => Compliant.append(entity),
+			)
+			.with(
+				C.equal("notCompliant"),
+				() => NotCompliant.append(entity),
+			)
+			.with(
+				C.equal("unprocessed"),
+				() => Unprocessed.append(entity),
+			)
+			.exhaustive();
 	}
 }

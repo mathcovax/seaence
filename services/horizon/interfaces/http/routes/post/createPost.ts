@@ -2,7 +2,7 @@ import { BackedDocument } from "@business/entities/bakedDocument";
 import { Post } from "@business/entities/forum/post";
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { SchoolAPI } from "@interfaces/providers/school";
+import { SchoolProvider } from "@interfaces/providers/school";
 
 useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 	.createRoute("POST", "/create-post")
@@ -20,20 +20,16 @@ useMustBeConnectedBuilder({ unauthorizedBannedUser: true })
 	.handler(
 		async(pickup) => {
 			const { user, body, document } = pickup(["user", "body", "document"]);
-			const { topic, content } = body;
 
-			const createdPost = await SchoolAPI.createPost({
-				topic,
-				content,
+			const result = await SchoolProvider.createPost({
+				topic: body.topic,
+				content: body.content,
 				nodeSameRawDocumentId: document.nodeSameRawDocumentId,
 				authorId: user.id,
 				authorName: user.username,
 			});
 
-			return new CreatedHttpResponse(
-				"post.created",
-				createdPost.body,
-			);
+			return new CreatedHttpResponse("post.created", { id: result.body.id });
 		},
 		makeResponseContract(CreatedHttpResponse, "post.created", Post.createdPost),
 	);

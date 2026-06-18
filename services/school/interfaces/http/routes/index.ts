@@ -1,2 +1,2 @@
-import "@interfaces/http/routes/post";
-import "@interfaces/http/routes/answer";
+export * from "./answer";
+export * from "./post";

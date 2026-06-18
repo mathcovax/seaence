@@ -1,132 +1,136 @@
-import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
+import { createHttpClient } from "@duplojs/http/client";
+import type { Routes } from "@vendors/clients-type/school/duplojsTypesCodegen";
 import { envs } from "@interfaces/envs";
-import { type CodegenRoutes } from "@vendors/clients-type/school/duplojsTypesCodegen";
 
-export type SchoolClientRoute = TransformCodegenRouteToHttpClientRoute<
-	CodegenRoutes
->;
+export namespace SchoolProvider {
+	const client = createHttpClient<Routes>({
+		baseUrl: envs.SCHOOL_BASE_URL,
+	});
 
-interface InputIndicateIsNotCompliantAndCreateWarning {
-	makeUserBan: boolean;
-	reason: string;
-}
-
-interface InputIndicatePostIsNotCompliantAndCreateWarning extends InputIndicateIsNotCompliantAndCreateWarning {
-	postId: string;
-}
-
-interface InputIndicateAnswerIsNotCompliantAndCreateWarning extends InputIndicateIsNotCompliantAndCreateWarning {
-	answerId: string;
-}
-export class SchoolAPI {
-	private static httpClient: HttpClient<SchoolClientRoute>;
-
-	public static findOldestUnprocessedPost() {
-		return this.httpClient
-			.get(
-				"/find-oldest-unprocessed-post",
-			)
-			.iWantExpectedResponse();
+	export function findOldestUnprocessedPost() {
+		return client.post(
+			"/find-oldest-unprocessed-post",
+		).iSelectExpectedResponseByInformationOrThrow({
+			"oldestUnprocessedPost.found": true,
+			"oldestUnprocessedPost.notfound": true,
+		});
 	}
 
-	public static getUnprocessedPostDetails() {
-		return this.httpClient
-			.get(
-				"/unprocessed-post-details",
-			)
-			.iWantExpectedResponse();
+	export function getUnprocessedPostDetails() {
+		return client.post(
+			"/find-unprocessed-post-details",
+		).iSelectExpectedResponseByInformationOrThrow({
+			"unprocessedPost.details": true,
+		});
 	}
 
-	public static indicatePostIsCompliant(postId: string) {
-		return this.httpClient.patch(
-			"/posts/{postId}/is-compliant",
-			{
-				params: {
-					postId,
-				},
-			},
-		).iWantExpectedResponse();
-	}
-
-	public static indicatePostIsNotCompliantAndCreateWarning(params: InputIndicatePostIsNotCompliantAndCreateWarning) {
-		return this.httpClient
-			.patch(
-				"/posts/{postId}/is-not-compliant-and-create-warning",
-				{
-					params: {
-						postId: params.postId,
-					},
-					body: {
-						makeUserBan: params.makeUserBan,
-						reason: params.reason,
-					},
-				},
-			)
-			.iWantExpectedResponse();
-	}
-
-	public static findPostById(postId: string) {
-		return this.httpClient
-			.get(
-				"/posts/{postId}",
-				{
-					params: {
-						postId,
-					},
-				},
-			)
-			.iWantExpectedResponse();
-	}
-
-	public static findOldestUnprocessedAnswer() {
-		return this.httpClient
-			.get(
-				"/find-oldest-unprocessed-answer",
-			)
-			.iWantExpectedResponse();
-	}
-
-	public static getUnprocessedAnswerDetails() {
-		return this.httpClient
-			.get(
-				"/unprocessed-answer-details",
-			)
-			.iWantExpectedResponse();
-	}
-
-	public static indicateAnswerIsCompliant(answerId: string) {
-		return this.httpClient.patch(
-			"/answers/{answerId}/is-compliant",
-			{
-				params: {
-					answerId,
-				},
-			},
-		).iWantExpectedResponse();
-	}
-
-	public static indicateAnswerIsNotCompliantAndCreateWarning(
-		params: InputIndicateAnswerIsNotCompliantAndCreateWarning,
+	export function markPostAsCompliant(
+		params: {
+			postId: string;
+		},
 	) {
-		return this.httpClient
-			.patch(
-				"/answers/{answerId}/is-not-compliant-and-create-warning",
-				{
-					params: {
-						answerId: params.answerId,
-					},
-					body: {
-						makeUserBan: params.makeUserBan,
-						reason: params.reason,
-					},
-				},
-			)
-			.iWantExpectedResponse();
+		return client.post(
+			"/mark-post-as-compliant",
+			{
+				body: params,
+			},
+		).iSelectExpectedResponseByInformationOrThrow({
+			"extract-error": false,
+			"post.markAsCompliant": true,
+			"post.notfound": true,
+			"post.wrongStatus": true,
+		});
 	}
 
-	static {
-		this.httpClient = new HttpClient({
-			baseUrl: envs.SCHOOL_BASE_URL,
+	export function createReportPost(
+		params: {
+			postId: string;
+			level: "ban" | "warning";
+			reason: string;
+		},
+	) {
+		return client.post(
+			"/create-report-post",
+			{
+				body: params,
+			},
+		).iSelectExpectedResponseByInformationOrThrow({
+			"extract-error": false,
+			"post.notfound": true,
+			"post.wrongStatus": true,
+			"report.created": true,
+		});
+	}
+
+	export function findOnePost(
+		params: {
+			postId: string;
+		},
+	) {
+		return client.post(
+			"/find-one-post",
+			{
+				body: params,
+			},
+		).iSelectExpectedResponseByInformationOrThrow({
+			"extract-error": false,
+			"post.found": true,
+			"post.notfound": true,
+		});
+	}
+
+	export function findOldestUnprocessedAnswer() {
+		return client.post(
+			"/find-oldest-unprocessed-answer",
+		).iSelectExpectedResponseByInformationOrThrow({
+			"oldestUnprocessedAnswer.found": true,
+			"oldestUnprocessedAnswer.notfound": true,
+		});
+	}
+
+	export function getUnprocessedAnswerDetails() {
+		return client.post(
+			"/find-unprocessed-answer-details",
+		).iSelectExpectedResponseByInformationOrThrow({
+			"unprocessedAnswer.details": true,
+		});
+	}
+
+	export function markAnswerAsCompliant(
+		params: {
+			answerId: string;
+		},
+	) {
+		return client.post(
+			"/mark-answer-as-compliant",
+			{
+				body: params,
+			},
+		).iSelectExpectedResponseByInformationOrThrow({
+			"answer.markedAsCompliant": true,
+			"answer.notfound": true,
+			"answer.wrongStatus": true,
+			"extract-error": false,
+		});
+	}
+
+	export function createReportAnswer(
+		params: {
+			answerId: string;
+			level: "ban" | "warning";
+			reason: string;
+		},
+	) {
+		return client.post(
+			"/create-report-answer",
+			{
+				body: params,
+			},
+		).iSelectExpectedResponseByInformationOrThrow({
+			"answer.notfound": true,
+			"answer.wrongStatus": true,
+			"extract-error": false,
+			"report.created": true,
 		});
 	}
 }

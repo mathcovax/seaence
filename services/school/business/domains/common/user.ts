@@ -1,7 +1,7 @@
-import { zod, type GetValueObject } from "@vendors/clean";
+import { C } from "@duplojs/utils";
 
-export const userIdObjecter = zod.string().createValueObjecter("userId");
-export const usernameObjecter = zod.string().createValueObjecter("username");
+export const UserId = C.createNewType("UserId", C.String);
+export type UserId = C.GetNewType<typeof UserId>;
 
-export type UserId = GetValueObject<typeof userIdObjecter>;
-export type Username = GetValueObject<typeof usernameObjecter>;
+export const UserName = C.createNewType("UserName", C.String);
+export type UserName = C.GetNewType<typeof UserName>;

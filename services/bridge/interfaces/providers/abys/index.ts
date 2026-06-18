@@ -1,7 +1,7 @@
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
 import { envs } from "@interfaces/envs";
 import { type CodegenRoutes } from "@vendors/clients-type/abys/duplojsTypesCodegen";
-import { type InputTransformeNodeSameRawDocumentToBakedDocument, type InputCookNodeSameRawDocument } from "./types";
+import { type InputCookNodeSameRawDocument } from "./types";
 
 export type AbysClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes

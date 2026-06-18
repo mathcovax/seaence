@@ -1,12 +1,12 @@
-import { SchoolAPI } from "@interfaces/providers/school";
-import { match } from "ts-pattern";
+import { P } from "@duplojs/utils";
+import { SchoolProvider } from "@interfaces/providers/school";
 
 export const postExistCheck = createChecker("postExist")
 	.handler(
-		async(input: string, output) => {
-			const schoolResponse = await SchoolAPI.findPostById(input);
+		async(postId: string, output) => {
+			const schoolResponse = await SchoolProvider.findOnePost({ postId });
 
-			return match(schoolResponse)
+			return P.match(schoolResponse)
 				.with(
 					{ information: "post.found" },
 					({ body }) => output("post.exist", body),

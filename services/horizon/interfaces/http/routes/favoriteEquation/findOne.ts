@@ -47,6 +47,7 @@ useMustBeConnectedBuilder()
 
 			return new OkHttpResponse(
 				"favoriteEquation.found",
+				// theDate translation
 				O.transformProperty(
 					favoriteEquation,
 					"addedAt",

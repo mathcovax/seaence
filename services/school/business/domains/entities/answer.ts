@@ -1,66 +1,71 @@
-import { commonDateObjecter, createEnum, EntityHandler, type GetEntityProperties, type GetEnumValue, type GetValueObject, zod } from "@vendors/clean";
-import { postIdObjecter } from "./post";
-import { answerRules } from "@vendors/entity-rules";
-import { userIdObjecter, type Username, usernameObjecter } from "../common/user";
+import { C, createEnum, DPE, P } from "@duplojs/utils";
+import { answerRules } from "@lib/entity-rules";
+import { Post } from "./post";
+import { UserId, UserName } from "../common/user";
 
-export const answerContentObjecter = zod.string()
-	.min(answerRules.content.minLength)
-	.max(answerRules.content.maxLength)
-	.createValueObjecter("answerContent");
-export const answerIdObjecter = zod.string().createValueObjecter("answerId");
+export namespace Answer {
+	export const Id = C.createNewType("AnswerId", C.String);
+	export type Id = C.GetNewType<typeof Id>;
 
-export const answerStatusEnum = createEnum([
-	"compliant",
-	"unprocessed",
-	"notCompliant",
-]);
+	export const Content = C.createNewType(
+		"AnswerContent",
+		C.String,
+		[
+			C.StringMin(answerRules.content.minLength),
+			C.StringMax(answerRules.content.maxLength),
+		],
+	);
+	export type Content = C.GetNewType<typeof Content>;
 
-export type AnswerStatusEnum = GetEnumValue<typeof answerStatusEnum>;
+	export const statusEnum = createEnum([
+		"compliant",
+		"unprocessed",
+		"notCompliant",
+	]);
 
-export const answerStatusObjecter = zod.enum(answerStatusEnum.toTuple()).createValueObjecter("answerStatus");
+	export const Status = C.createNewType("AnswerStatus", DPE.literal(statusEnum.toTuple()));
+	export type Status = C.GetNewType<typeof Status>;
 
-export type AnswerStatus = GetValueObject<typeof answerStatusObjecter>;
-export type AnswerContent = GetValueObject<typeof answerContentObjecter>;
-export type AnswerId = GetValueObject<typeof answerIdObjecter>;
+	export const CreatedAt = C.createNewType("AnswerCreatedAt", C.Date);
+	export type CreatedAt = C.GetNewType<typeof CreatedAt>;
 
-type InputCreateAnswerEntity = Omit<GetEntityProperties<typeof AnswerEntity>, "createdAt" | "status">;
+	export const Entity = C.createEntity(
+		"Answer",
+		({ nullable }) => ({
+			id: Id,
+			postId: Post.Id,
+			authorId: UserId,
+			authorName: nullable(UserName),
+			content: Content,
+			status: Status,
+			createdAt: CreatedAt,
+		}),
+	);
+	export type Entity = C.GetEntity<typeof Entity>;
 
-export class AnswerEntity extends EntityHandler.create({
-	id: answerIdObjecter,
-	postId: postIdObjecter,
-	content: answerContentObjecter,
-	authorId: userIdObjecter,
-	authorName: usernameObjecter.nullable(),
-	status: answerStatusObjecter,
-	createdAt: commonDateObjecter,
-}) {
-	public static create(params: InputCreateAnswerEntity) {
-		return new AnswerEntity({
-			...params,
-			status: answerStatusObjecter.unsafeCreate("unprocessed"),
-			createdAt: commonDateObjecter.unsafeCreate(new Date()),
-		});
-	}
+	export const Unprocessed = C.createFlag<Entity, "Unprocessed">("Unprocessed");
+	export type Unprocessed = C.GetFlag<typeof Unprocessed>;
 
-	public updateAuthorName(authorName: Username) {
-		return this.update({
-			authorName,
-		});
-	}
+	export const Compliant = C.createFlag<Entity, "Compliant">("Compliant");
+	export type Compliant = C.GetFlag<typeof Compliant>;
 
-	public updateStatus(status: AnswerStatus["value"]) {
-		return this.update({
-			status: answerStatusObjecter.unsafeCreate(status),
-		});
-	}
+	export const NotCompliant = C.createFlag<Entity, "NotCompliant">("NotCompliant");
+	export type NotCompliant = C.GetFlag<typeof NotCompliant>;
 
-	public isUnprocessed() {
-		return this.status.value === "unprocessed";
-	}
-
-	public anonymize() {
-		return this.update({
-			authorName: null,
-		});
+	export function computeStatus(entity: Entity) {
+		return P.match(entity.status)
+			.with(
+				C.equal("compliant"),
+				() => Compliant.append(entity),
+			)
+			.with(
+				C.equal("notCompliant"),
+				() => NotCompliant.append(entity),
+			)
+			.with(
+				C.equal("unprocessed"),
+				() => Unprocessed.append(entity),
+			)
+			.exhaustive();
 	}
 }

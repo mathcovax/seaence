@@ -7,7 +7,7 @@ import { iWantPostExistById } from "@interfaces/http/checkers/post";
 import { tryAuthenticationProcess } from "@interfaces/http/security/authentication";
 import { BottleAPI } from "@interfaces/providers/bottle";
 import { createBakedDocumentId } from "@interfaces/utils/createBakedDocumentId";
-import { match } from "ts-pattern";
+import { P, O, D } from "@duplojs/utils";
 
 useBuilder()
 	.createRoute("POST", "/post-page")
@@ -68,7 +68,7 @@ useBuilder()
 					postId: post.id,
 				})
 				.then(
-					({ information }) => match(information)
+					({ information }) => P.match(information)
 						.with(
 							"replyPostNotificationSetting.found",
 							() => true,
@@ -88,10 +88,17 @@ useBuilder()
 		(pickup) => {
 			const { post, document, notificationOfPostIsActivate } = pickup(["post", "document", "notificationOfPostIsActivate"]);
 
+			// theDate translation
+			const ntm = O.transformProperty(
+				post,
+				"createdAt",
+				D.toISOString,
+			);
+
 			return new OkHttpResponse(
 				"postPage.found",
 				{
-					post,
+					post: ntm,
 					document: {
 						id: document.id,
 						title: document.title,

@@ -1,6 +1,6 @@
 import { HttpClient, type TransformCodegenRouteToHttpClientRoute } from "@duplojs/http-client";
-import { envs } from "@interfaces/envs";
-import { type CodegenRoutes } from "@vendors/clients-type/harbor/duplojsTypesCodegen";
+import { envs } from "@envs";
+import { type CodegenRoutes } from "@lib/clients-type/harbor/duplojsTypesCodegen";
 
 export type HarborClientRoute = TransformCodegenRouteToHttpClientRoute<
 	CodegenRoutes

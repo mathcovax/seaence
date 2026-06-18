@@ -18,6 +18,7 @@ export const eslintConfig = [
 			"@typescript-eslint/no-empty-object-type": "off",
 			"@typescript-eslint/no-namespace": "off",
 			"new-cap": "off",
+			"@typescript-eslint/await-thenable": "off",
 		},
 	},
 ];

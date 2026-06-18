@@ -1,5 +1,3 @@
-import { type PostStatus } from "@business/domains/entities/post";
-
 export interface MongoPost {
 	id: string;
 	topic: string;
@@ -8,6 +6,6 @@ export interface MongoPost {
 	authorId: string;
 	authorName: string | null;
 	answerCount: number;
-	status: PostStatus["value"];
+	status: "compliant" | "unprocessed" | "notCompliant";
 	createdAt: Date;
 }

@@ -1,8 +1,9 @@
 import { documentConfig } from "@interfaces/configs/document";
 import { iWantDocumentExistById } from "../checkers/document";
-import { SchoolAPI } from "@interfaces/providers/school";
 import { BackedDocument } from "@business/entities/bakedDocument";
 import { Page } from "@business/entities/page";
+import { SchoolProvider } from "@interfaces/providers/school";
+import { A, D, O } from "@duplojs/utils";
 
 useBuilder()
 	.createRoute("POST", "/document-page")
@@ -17,12 +18,21 @@ useBuilder()
 	)
 	.handler(
 		async(pickup) => {
-			const { document } = pickup(["document"]);
+			const document = pickup("document");
 
-			const { body: posts } = await SchoolAPI.findPosts(
-				document.nodeSameRawDocumentId,
-				documentConfig.findPosts.quantityPerPage,
-				documentConfig.findPosts.defaultPage,
+			const result = await SchoolProvider.findManyPost({
+				nodeSameRawDocumentId: document.nodeSameRawDocumentId,
+				quantityPerPage: documentConfig.findPosts.quantityPerPage,
+				page: documentConfig.findPosts.defaultPage,
+			});
+
+			// theDate translation
+			const posts = A.map(
+				result.body,
+				O.transformProperty(
+					"createdAt",
+					D.toISOString,
+				),
 			);
 
 			return new OkHttpResponse("documentPage.found", {

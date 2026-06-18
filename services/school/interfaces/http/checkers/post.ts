@@ -1,25 +1,70 @@
-import { type PostId } from "@business/domains/entities/post";
-import { findPostByIdUsecase } from "@interfaces/usecase";
+import { ResponseContract, createPresetChecker, useCheckerBuilder } from "@duplojs/http";
+import { E } from "@duplojs/utils";
+import { postPort } from "@adapters/ports";
+import { Post } from "@domains/entities/post";
 
-export const postExistCheck = createChecker("postExist")
+export const postExistChecker = useCheckerBuilder()
 	.handler(
-		async(input: PostId, output) => {
-			const post = await findPostByIdUsecase.execute({ id: input });
+		async(id: Post.Id, { output }) => {
+			const result = await postPort.findOneById(id);
 
-			if (post) {
-				return output("post.exist", post);
-			} else {
+			if (E.isLeft(result)) {
 				return output("post.notfound", null);
 			}
+
+			return output("post.found", E.unwrapRight(result));
 		},
 	);
 
-export const iWantPostExistById = createPresetChecker(
-	postExistCheck,
+export const postStatusIsUnprocessedChecker = useCheckerBuilder()
+	.handler(
+		(post: Post.Entity, { output }) => {
+			const postWithStatus = Post.computeStatus(post);
+
+			if (Post.Unprocessed.has(postWithStatus)) {
+				return output("post.unprocessed", postWithStatus);
+			}
+
+			return output("post.wrongStatus", null);
+		},
+	);
+
+export const postStatusIsCompliantChecker = useCheckerBuilder()
+	.handler(
+		(post: Post.Entity, { output }) => {
+			const postWithStatus = Post.computeStatus(post);
+
+			if (Post.Compliant.has(postWithStatus)) {
+				return output("post.compliant", postWithStatus);
+			}
+
+			return output("post.wrongStatus", null);
+		},
+	);
+
+export const iWantPostExistsById = createPresetChecker(
+	postExistChecker,
 	{
-		result: "post.exist",
-		catch: () => new NotFoundHttpResponse("post.notfound"),
+		result: "post.found",
 		indexing: "post",
+		otherwise: ResponseContract.notFound("post.notfound"),
 	},
-	makeResponseContract(NotFoundHttpResponse, "post.notfound"),
+);
+
+export const iWantUnprocessedPost = createPresetChecker(
+	postStatusIsUnprocessedChecker,
+	{
+		result: "post.unprocessed",
+		indexing: "post",
+		otherwise: ResponseContract.forbidden("post.wrongStatus"),
+	},
+);
+
+export const iWantCompliantPost = createPresetChecker(
+	postStatusIsCompliantChecker,
+	{
+		result: "post.compliant",
+		indexing: "post",
+		otherwise: ResponseContract.forbidden("post.wrongStatus"),
+	},
 );
