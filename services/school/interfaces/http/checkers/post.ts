@@ -29,19 +29,6 @@ export const postStatusIsUnprocessedChecker = useCheckerBuilder()
 		},
 	);
 
-export const postStatusIsCompliantChecker = useCheckerBuilder()
-	.handler(
-		(post: Post.Entity, { output }) => {
-			const postWithStatus = Post.computeStatus(post);
-
-			if (Post.Compliant.has(postWithStatus)) {
-				return output("post.compliant", postWithStatus);
-			}
-
-			return output("post.wrongStatus", null);
-		},
-	);
-
 export const iWantPostExistsById = createPresetChecker(
 	postExistChecker,
 	{
@@ -55,15 +42,6 @@ export const iWantUnprocessedPost = createPresetChecker(
 	postStatusIsUnprocessedChecker,
 	{
 		result: "post.unprocessed",
-		indexing: "post",
-		otherwise: ResponseContract.forbidden("post.wrongStatus"),
-	},
-);
-
-export const iWantCompliantPost = createPresetChecker(
-	postStatusIsCompliantChecker,
-	{
-		result: "post.compliant",
 		indexing: "post",
 		otherwise: ResponseContract.forbidden("post.wrongStatus"),
 	},

@@ -8,7 +8,10 @@ import { Post } from "../entities/post";
 
 interface ReplyToPostParams {
 	id: C.GetEvidenceResult<AnswerRepository["generateId"], "generated">;
-	post: Post.Entity & Post.Compliant;
+	post: (
+		| Post.Entity & Post.Compliant
+		| Post.Entity & Post.Unprocessed
+	);
 	postAnswerCount: C.GetEvidenceResult<PostRepository["getAnswerCount"], "count">;
 	content: Answer.Content;
 	authorId: UserId;
@@ -46,7 +49,6 @@ export function replyToPost(params: ReplyToPostParams) {
 				Post.Entity.update({
 					answerCount: postAnswerCount,
 				}),
-				Post.Compliant.append,
 			);
 
 			return E.right("reply-post", {

@@ -7,7 +7,10 @@ import type { UserId, UserName } from "@domains/common/user";
 import type { Post } from "@domains/entities/post";
 
 interface Input {
-	post: Post.Entity & Post.Compliant;
+	post: (
+		| Post.Entity & Post.Compliant
+		| Post.Entity & Post.Unprocessed
+	);
 	content: Answer.Content;
 	authorId: UserId;
 	authorName: UserName;
