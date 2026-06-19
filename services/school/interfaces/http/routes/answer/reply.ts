@@ -4,7 +4,7 @@ import { useCases } from "@adapters/useCases";
 import { Answer } from "@domains/entities/answer";
 import { Post } from "@domains/entities/post";
 import { UserId, UserName } from "@domains/common/user";
-import { iWantPostExistsById } from "@http/checkers";
+import { iWantPostExistsById, iWantPostWithAvailableStatus } from "@http/checkers";
 
 useRouteBuilder("POST", "/reply-to-post")
 	.extract({
@@ -19,18 +19,9 @@ useRouteBuilder("POST", "/reply-to-post")
 		iWantPostExistsById,
 		({ body }) => body.postId,
 	)
-	.cut(
-		ResponseContract.forbidden("post.wrongStatus"),
-		({ post }, { output, response }) => {
-			if (
-				Post.Compliant.has(post)
-				|| Post.Unprocessed.has(post)
-			) {
-				return output({ post });
-			}
-
-			return response("post.wrongStatus");
-		},
+	.presetCheck(
+		iWantPostWithAvailableStatus,
+		(floor) => floor.post,
 	)
 	.handler(
 		[

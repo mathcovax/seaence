@@ -1,6 +1,6 @@
 import { pipe } from "@duplojs/utils";
-import { Answer } from "../entities/answer";
-import { Report } from "../entities/report";
+import { Answer } from "@domains/entities/answer";
+import { Report } from "@domains/entities/report";
 
 interface CreateReportAnswerParams {
 	answer: Answer.Entity & Answer.Unprocessed;

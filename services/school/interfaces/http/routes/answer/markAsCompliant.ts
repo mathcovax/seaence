@@ -2,7 +2,7 @@ import { ResponseContract, useRouteBuilder } from "@duplojs/http";
 import { DPE } from "@duplojs/utils";
 import { useCases } from "@adapters/useCases";
 import { Answer } from "@domains/entities/answer";
-import { iWantAnswerExistsById, iWantUnprocessedAnswer } from "@http/checkers";
+import { iWantAnswerExistsById, iWantAnswerWithUnprocessedStatus } from "@http/checkers";
 
 useRouteBuilder("POST", "/mark-answer-as-compliant")
 	.extract({
@@ -15,8 +15,8 @@ useRouteBuilder("POST", "/mark-answer-as-compliant")
 		({ body }) => body.answerId,
 	)
 	.presetCheck(
-		iWantUnprocessedAnswer,
-		({ answer }) => answer,
+		iWantAnswerWithUnprocessedStatus,
+		(floor) => floor.answer,
 	)
 	.handler(
 		ResponseContract.noContent("answer.markedAsCompliant"),

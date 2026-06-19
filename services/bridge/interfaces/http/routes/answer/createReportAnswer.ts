@@ -33,10 +33,6 @@ useBuilder()
 
 			return P.match(schoolResponse)
 				.with(
-					{ information: "answer.wrongStatus" },
-					() => new ForbiddenHttpResponse("answer.wrongStatus"),
-				)
-				.with(
 					{ information: "answer.notfound" },
 					() => new NotFoundHttpResponse("answer.notfound"),
 				)

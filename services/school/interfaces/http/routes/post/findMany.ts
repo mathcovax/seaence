@@ -1,9 +1,10 @@
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { A, C, DPE, pipeCall, unwrap } from "@duplojs/utils";
+import { A, C, DPE, E, innerPipe, O, pipeCall, unwrap } from "@duplojs/utils";
 import { postPort } from "@adapters/ports";
 import { Post } from "@domains/entities/post";
+import { useCases } from "@adapters/useCases";
 
-useRouteBuilder("POST", "/find-many-post-by-node-same-raw-document")
+useRouteBuilder("POST", "/find-many-available-post-by-node-same-raw-document")
 	.extract({
 		body: DPE.object({
 			nodeSameRawDocumentId: Post.NodeSameRawDocumentId.toExtractParser(),
@@ -13,10 +14,16 @@ useRouteBuilder("POST", "/find-many-post-by-node-same-raw-document")
 	})
 	.handler(
 		ResponseContract.ok("posts.found", Post.Entity.toEndpointSchema().array()),
-		({ body }, { response }) => postPort
-			.findManyByNodeSameRawDocument(body)
+		({ body }, { response }) => useCases
+			.findManyAvailablePostByNodeSameRawDocumentUseCase(body)
 			.then(
-				A.map(pipeCall(C.unwrapEntity)),
+				E.whenHasInformation(
+					"find-many-available-post-by-node-same-raw-document-success",
+					innerPipe(
+						O.getProperty("posts"),
+						A.map(pipeCall(C.unwrapEntity)),
+					),
+				),
 			)
 			.then(
 				(posts) => response("posts.found", posts),
@@ -27,7 +34,7 @@ const detailsDataParser = DPE.object({
 	totalCount: DPE.number(),
 });
 
-useRouteBuilder("POST", "/find-many-post-by-node-same-raw-document-details")
+useRouteBuilder("POST", "/find-many-available-post-by-node-same-raw-document-details")
 	.extract({
 		body: DPE.object({
 			nodeSameRawDocumentId: Post.NodeSameRawDocumentId.toExtractParser(),
@@ -36,7 +43,7 @@ useRouteBuilder("POST", "/find-many-post-by-node-same-raw-document-details")
 	.handler(
 		ResponseContract.ok("posts.foundDetails", detailsDataParser),
 		({ body }, { response }) => postPort
-			.getTotalCountByNodeSameRawDocument(body.nodeSameRawDocumentId)
+			.getTotalCountAvailableByNodeSameRawDocument(body.nodeSameRawDocumentId)
 			.then(
 				(totalCount) => response("posts.foundDetails", {
 					totalCount: unwrap(totalCount),

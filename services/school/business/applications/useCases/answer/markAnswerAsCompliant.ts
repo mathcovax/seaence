@@ -1,5 +1,5 @@
 import { C } from "@duplojs/utils";
-import { markAnswerAsCompliant } from "@domains/aggregates/markAnswerAsCompliant";
+import { markAnswerAsCompliant } from "@domains/aggregates/answer/markAnswerAsCompliant";
 import { AnswerPort } from "@applications/ports/answer";
 import type { Answer } from "@domains/entities/answer";
 

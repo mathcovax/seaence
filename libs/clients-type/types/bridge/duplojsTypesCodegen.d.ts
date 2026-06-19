@@ -116,10 +116,6 @@ type CodegenRoutes = ({
         postId: string;
     };
     response: {
-        code: 403;
-        information: "post.wrongStatus";
-        body?: undefined;
-    } | {
         code: 404;
         information: "post.notfound";
         body?: undefined;
@@ -137,10 +133,6 @@ type CodegenRoutes = ({
     response: {
         code: 404;
         information: "post.notfound";
-        body?: undefined;
-    } | {
-        code: 403;
-        information: "post.wrongStatus";
         body?: undefined;
     } | {
         code: 200;
@@ -180,10 +172,6 @@ type CodegenRoutes = ({
     response: {
         code: 404;
         information: "answer.notfound";
-        body?: undefined;
-    } | {
-        code: 403;
-        information: "answer.wrongStatus";
         body?: undefined;
     } | {
         code: 200;

@@ -3,7 +3,7 @@ import { DPE } from "@duplojs/utils";
 import { useCases } from "@adapters/useCases";
 import { Answer } from "@domains/entities/answer";
 import { Report } from "@domains/entities/report";
-import { iWantAnswerExistsById, iWantUnprocessedAnswer } from "@http/checkers";
+import { iWantAnswerExistsById, iWantAnswerWithUnprocessedStatus } from "@http/checkers";
 
 useRouteBuilder("POST", "/create-report-answer")
 	.extract({
@@ -18,8 +18,8 @@ useRouteBuilder("POST", "/create-report-answer")
 		({ body }) => body.answerId,
 	)
 	.presetCheck(
-		iWantUnprocessedAnswer,
-		({ answer }) => answer,
+		iWantAnswerWithUnprocessedStatus,
+		(floor) => floor.answer,
 	)
 	.handler(
 		ResponseContract.created("report.created"),

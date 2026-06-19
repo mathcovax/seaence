@@ -86,4 +86,9 @@ export namespace Post {
 			)
 			.exhaustive();
 	}
+
+	export type AvailableEntity = (
+		| Entity & Unprocessed
+		| Entity & Compliant
+	);
 }

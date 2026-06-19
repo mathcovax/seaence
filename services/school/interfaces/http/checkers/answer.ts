@@ -1,5 +1,5 @@
 import { ResponseContract, createPresetChecker, useCheckerBuilder } from "@duplojs/http";
-import { E } from "@duplojs/utils";
+import { E, P } from "@duplojs/utils";
 import { answerPort } from "@adapters/ports";
 import { Answer } from "@domains/entities/answer";
 
@@ -25,24 +25,31 @@ export const iWantAnswerExistsById = createPresetChecker(
 	},
 );
 
-export const answerStatusIsUnprocessedChecker = useCheckerBuilder()
+export const computeStatusAnswerChecker = useCheckerBuilder()
 	.handler(
-		(answer: Answer.Entity, { output }) => {
-			const answerWithStatus = Answer.computeStatus(answer);
-
-			if (Answer.Unprocessed.has(answerWithStatus)) {
-				return output("answer.unprocessed", answerWithStatus);
-			}
-
-			return output("answer.wrongStatus", null);
-		},
+		(answer: Answer.Entity, { output }) => P.match(
+			Answer.computeStatus(answer),
+		)
+			.when(
+				Answer.Unprocessed.has,
+				(answer) => output("answer.unprocessed", answer),
+			)
+			.when(
+				Answer.Compliant.has,
+				(answer) => output("answer.compliant", answer),
+			)
+			.when(
+				Answer.NotCompliant.has,
+				(answer) => output("answer.notCompliant", answer),
+			)
+			.exhaustive(),
 	);
 
-export const iWantUnprocessedAnswer = createPresetChecker(
-	answerStatusIsUnprocessedChecker,
+export const iWantAnswerWithUnprocessedStatus = createPresetChecker(
+	computeStatusAnswerChecker,
 	{
 		result: "answer.unprocessed",
+		otherwise: ResponseContract.notFound("answer.notfound"),
 		indexing: "answer",
-		otherwise: ResponseContract.forbidden("answer.wrongStatus"),
 	},
 );

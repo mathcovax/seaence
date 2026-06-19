@@ -1,5 +1,5 @@
 import { C } from "@duplojs/utils";
-import { renameAuthor } from "@domains/aggregates/renameAuthor";
+import { renameAuthor } from "@domains/aggregates/author/renameAuthor";
 import { AuthorPort } from "@applications/ports/author";
 import type { UserId, UserName } from "@domains/common/user";
 

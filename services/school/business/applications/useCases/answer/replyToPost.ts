@@ -1,5 +1,5 @@
 import { C, E } from "@duplojs/utils";
-import { replyToPost } from "@domains/aggregates/replyToPost";
+import { replyToPost } from "@domains/aggregates/answer/replyToPost";
 import { AnswerPort } from "@applications/ports/answer";
 import { PostPort } from "@applications/ports/post";
 import type { Answer } from "@domains/entities/answer";
@@ -7,10 +7,7 @@ import type { UserId, UserName } from "@domains/common/user";
 import type { Post } from "@domains/entities/post";
 
 interface Input {
-	post: (
-		| Post.Entity & Post.Compliant
-		| Post.Entity & Post.Unprocessed
-	);
+	post: Post.AvailableEntity;
 	content: Answer.Content;
 	authorId: UserId;
 	authorName: UserName;

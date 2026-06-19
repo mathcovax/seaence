@@ -33,10 +33,6 @@ useBuilder()
 
 			return P.match(schoolResponse)
 				.with(
-					{ information: "post.wrongStatus" },
-					() => new ForbiddenHttpResponse("post.wrongStatus"),
-				)
-				.with(
 					{ information: "post.notfound" },
 					() => new NotFoundHttpResponse("post.notfound"),
 				)
@@ -47,10 +43,7 @@ useBuilder()
 				.exhaustive();
 		},
 		undefined,
-		[
-			...makeResponseContract(ForbiddenHttpResponse, "post.wrongStatus"),
-			...makeResponseContract(NotFoundHttpResponse, "post.notfound"),
-		],
+		makeResponseContract(NotFoundHttpResponse, "post.notfound"),
 	)
 	.handler(
 		() => new OkHttpResponse("post.updated"),

@@ -68,4 +68,9 @@ export namespace Answer {
 			)
 			.exhaustive();
 	}
+
+	export type AvailableEntity = (
+		| Entity & Unprocessed
+		| Entity & Compliant
+	);
 }

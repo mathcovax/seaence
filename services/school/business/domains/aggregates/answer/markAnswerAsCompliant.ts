@@ -1,5 +1,5 @@
 import { pipe } from "@duplojs/utils";
-import { Answer } from "../entities/answer";
+import { Answer } from "../../entities/answer";
 
 const compliantStatus = Answer.Status.createOrThrow("compliant");
 

@@ -23,7 +23,7 @@ useBuilder()
 		async(pickup) => {
 			const { page, document } = pickup(["page", "document"]);
 
-			const result = await SchoolProvider.findManyPost({
+			const result = await SchoolProvider.findManyAvailablePost({
 				nodeSameRawDocumentId: document.nodeSameRawDocumentId,
 				quantityPerPage: postConfig.findPosts.quantityPerPage,
 				page: page - postConfig.findPosts.pageOffset,

@@ -11,6 +11,7 @@
 
     "test:types": "./.commands/test-types.sh",
     "test:lint": "./.commands/test-lint.sh",
+    "test:lint:fix": "./.commands/test-lint.sh --fix",
 
     "fixtures": "tsx interfaces/fixtures/index.ts"
   },

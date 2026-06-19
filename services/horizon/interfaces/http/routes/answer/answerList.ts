@@ -16,7 +16,7 @@ useBuilder()
 		async({ pickup, dropper }) => {
 			const { postId, page } = pickup(["postId", "page"]);
 
-			const result = await SchoolProvider.findManyAnswer({
+			const result = await SchoolProvider.findManyAvailableAnswer({
 				postId,
 				quantityPerPage: answerConfig.findAnswers.quantityPerPage,
 				page,

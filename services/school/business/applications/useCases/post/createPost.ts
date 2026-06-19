@@ -1,5 +1,5 @@
 import { C } from "@duplojs/utils";
-import { createPost } from "@domains/aggregates/createPost";
+import { createPost } from "@domains/aggregates/post/createPost";
 import { PostPort } from "@applications/ports/post";
 import { NotificationSettingPort } from "@applications/ports/notificationSetting";
 import type { UserId, UserName } from "@domains/common/user";

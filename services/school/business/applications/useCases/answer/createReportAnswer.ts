@@ -1,5 +1,5 @@
 import { C } from "@duplojs/utils";
-import { createReportAnswer } from "@domains/aggregates/createReportAnswer";
+import { createReportAnswer } from "@domains/aggregates/answer/createReportAnswer";
 import { AnswerPort } from "@applications/ports/answer";
 import { ReportPort } from "@applications/ports/report";
 import type { Answer } from "@domains/entities/answer";

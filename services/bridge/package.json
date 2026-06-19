@@ -9,6 +9,7 @@
 
     "test:lint": "eslint",
     "test:types": "tsc",
+    "test:lint:fix": "eslint --fix",
 
     "postinstall": "npm run duplo:generate"
   },

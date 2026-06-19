@@ -20,20 +20,13 @@ useBuilder()
 					() => new NotFoundHttpResponse("answer.notfound"),
 				)
 				.with(
-					{ information: "answer.wrongStatus" },
-					() => new ForbiddenHttpResponse("answer.wrongStatus"),
-				)
-				.with(
 					{ information: "answer.markedAsCompliant" },
 					() => dropper(null),
 				)
 				.exhaustive();
 		},
 		undefined,
-		[
-			...makeResponseContract(NotFoundHttpResponse, "answer.notfound"),
-			...makeResponseContract(ForbiddenHttpResponse, "answer.wrongStatus"),
-		],
+		makeResponseContract(NotFoundHttpResponse, "answer.notfound"),
 	)
 	.handler(
 		() => new OkHttpResponse(

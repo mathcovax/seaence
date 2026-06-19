@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import { type C, D, pipe } from "@duplojs/utils";
-import type { UserName, UserId } from "../common/user";
-import { Post } from "../entities/post";
-import { NotificationSetting } from "../entities/notificationSetting";
-import type { PostRepository } from "../repositories/post";
+import type { UserName, UserId } from "../../common/user";
+import { Post } from "../../entities/post";
+import { NotificationSetting } from "../../entities/notificationSetting";
+import type { PostRepository } from "../../repositories/post";
 
 interface CreatePostParams {
 	id: C.GetEvidenceResult<PostRepository["generateId"], "generated">;

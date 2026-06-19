@@ -1,5 +1,5 @@
 import { C } from "@duplojs/utils";
-import { markPostAsCompliant } from "@domains/aggregates/markPostAsCompliant";
+import { markPostAsCompliant } from "@domains/aggregates/post/markPostAsCompliant";
 import { PostPort } from "@applications/ports/post";
 import type { Post } from "@domains/entities/post";
 

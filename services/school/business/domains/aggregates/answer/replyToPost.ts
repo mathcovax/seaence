@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import { C, D, E, pipe } from "@duplojs/utils";
-import type { AnswerRepository } from "../repositories/answer";
-import type { PostRepository } from "../repositories/post";
-import { Answer } from "../entities/answer";
-import type { UserId, UserName } from "../common/user";
-import { Post } from "../entities/post";
+import { Answer } from "@domains/entities/answer";
+import { Post } from "@domains/entities/post";
+import type { AnswerRepository } from "@domains/repositories/answer";
+import type { PostRepository } from "@domains/repositories/post";
+import type { UserId, UserName } from "@domains/common/user";
 
 interface ReplyToPostParams {
 	id: C.GetEvidenceResult<AnswerRepository["generateId"], "generated">;
-	post: (
-		| Post.Entity & Post.Compliant
-		| Post.Entity & Post.Unprocessed
-	);
+	post: Post.AvailableEntity;
 	postAnswerCount: C.GetEvidenceResult<PostRepository["getAnswerCount"], "count">;
 	content: Answer.Content;
 	authorId: UserId;

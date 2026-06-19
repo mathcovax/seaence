@@ -1,5 +1,5 @@
 import { PostPort } from "@applications/ports/post";
-import { C, pipe, toNative, unwrap } from "@duplojs/utils";
+import { C, forwardAsserts, innerPipe, pipe, toNative, unwrap } from "@duplojs/utils";
 import { Post } from "@domains/entities/post";
 import { mongo } from "../../providers/mongo";
 import { uuidv7 } from "uuidv7";
@@ -57,6 +57,27 @@ export const postPort = PostPort.createImplementation({
 
 		return C.some(Post.Entity.mapOrThrow(post));
 	},
+	async findOneAvailableById(id) {
+		const post = await mongo.postCollection.findOne({
+			id: unwrap(id),
+			status: { $in: ["compliant", "unprocessed"] },
+		});
+
+		if (!post) {
+			return C.appendEvidence(C.none("Post"), "one-available");
+		}
+
+		return pipe(
+			post,
+			Post.Entity.mapOrThrow,
+			Post.computeStatus,
+			forwardAsserts(
+				(post) => Post.Unprocessed.has(post) || Post.Compliant.has(post),
+			),
+			C.some,
+			C.appendEvidence("one-available"),
+		);
+	},
 	async findOldestUnprocessed() {
 		const post = await mongo.postCollection.findOne(
 			{
@@ -70,17 +91,19 @@ export const postPort = PostPort.createImplementation({
 		);
 
 		if (!post) {
-			return C.none("Post");
+			return C.appendEvidence(C.none("Post"), "oldest-unprocessed");
 		}
 
 		return pipe(
 			post,
 			Post.Entity.mapOrThrow,
-			Post.Unprocessed.append,
+			Post.computeStatus,
+			forwardAsserts(Post.Unprocessed.has),
 			C.some,
+			C.appendEvidence("oldest-unprocessed"),
 		);
 	},
-	findManyByNodeSameRawDocument(params) {
+	async findManyAvailableByNodeSameRawDocument(params) {
 		const nodeSameRawDocumentId = unwrap(params.nodeSameRawDocumentId);
 		const page = unwrap(params.page);
 		const quantityPerPage = unwrap(params.quantityPerPage);
@@ -88,17 +111,25 @@ export const postPort = PostPort.createImplementation({
 		return mongo.postCollection
 			.find({
 				nodeSameRawDocumentId,
-				status: { $ne: "notCompliant" },
+				status: { $in: ["compliant", "unprocessed"] },
 			})
 			.sort({ answerCount: -1 })
 			.skip(page * quantityPerPage)
 			.limit(quantityPerPage)
-			.map(Post.Entity.mapOrThrow)
-			.toArray();
+			.map(innerPipe(
+				Post.Entity.mapOrThrow,
+				Post.computeStatus,
+				forwardAsserts(
+					(post) => Post.Unprocessed.has(post) || Post.Compliant.has(post),
+				),
+			))
+			.toArray()
+			.then((posts) => C.appendEvidence({ posts }, "many-available"));
 	},
-	async getTotalCountByNodeSameRawDocument(nodeSameRawDocumentId) {
+	async getTotalCountAvailableByNodeSameRawDocument(nodeSameRawDocumentId) {
 		const count = await mongo.postCollection.countDocuments({
 			nodeSameRawDocumentId: unwrap(nodeSameRawDocumentId),
+			status: { $in: ["compliant", "unprocessed"] },
 		});
 
 		return C.PositiveInt.createOrThrow(count);

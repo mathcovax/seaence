@@ -1,5 +1,5 @@
 import { AnswerPort } from "@applications/ports/answer";
-import { C, pipe, toNative, unwrap } from "@duplojs/utils";
+import { C, forwardAsserts, innerPipe, pipe, toNative, unwrap } from "@duplojs/utils";
 import { Answer } from "@domains/entities/answer";
 import { asyncMessage } from "../../providers/asyncMessage";
 import { mongo } from "../../providers/mongo";
@@ -76,18 +76,20 @@ export const answerPort = AnswerPort.createImplementation({
 		);
 
 		if (!answer) {
-			return C.none("Answer");
+			return C.appendEvidence(C.none("Answer"), "oldest-unprocessed");
 		}
 
 		return pipe(
 			answer,
 			Answer.Entity.mapOrThrow,
-			Answer.Unprocessed.append,
+			Answer.computeStatus,
+			forwardAsserts(Answer.Unprocessed.has),
 			C.some,
+			C.appendEvidence("oldest-unprocessed"),
 		);
 	},
-	findManyByPost(params) {
-		const postId = unwrap(params.postId);
+	async findManyAvailableByAvailablePost(params) {
+		const postId = unwrap(params.post.id);
 		const page = unwrap(params.page);
 		const quantityPerPage = unwrap(params.quantityPerPage);
 
@@ -96,8 +98,20 @@ export const answerPort = AnswerPort.createImplementation({
 			.sort({ createdAt: -1 })
 			.skip(page * quantityPerPage)
 			.limit(quantityPerPage)
-			.map(Answer.Entity.mapOrThrow)
-			.toArray();
+			.map(
+				innerPipe(
+					Answer.Entity.mapOrThrow,
+					Answer.computeStatus,
+					forwardAsserts(
+						(answer) => Answer.Unprocessed.has(answer)
+							|| Answer.Compliant.has(answer),
+					),
+				),
+			)
+			.toArray()
+			.then(
+				(answers) => C.appendEvidence({ answers }, "many-available"),
+			);
 	},
 	async getTotalCountOfUnprocessed() {
 		const count = await mongo.answerCollection.countDocuments({

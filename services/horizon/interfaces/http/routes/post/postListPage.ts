@@ -19,7 +19,7 @@ useBuilder()
 	.cut(
 		async({ pickup, dropper }) => {
 			const { nodeSameRawDocumentId } = pickup("document");
-			const details = await SchoolProvider.findManyPostDetails({ nodeSameRawDocumentId });
+			const details = await SchoolProvider.findManyAvailablePostDetails({ nodeSameRawDocumentId });
 
 			return P.match(details)
 				.with(

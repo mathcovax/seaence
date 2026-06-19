@@ -1,5 +1,5 @@
 import { C } from "@duplojs/utils";
-import { anonymiseAuthor } from "@domains/aggregates/anonymiseAuthor";
+import { anonymiseAuthor } from "@domains/aggregates/author/anonymiseAuthor";
 import { AuthorPort } from "@applications/ports/author";
 import type { UserId } from "@domains/common/user";
 

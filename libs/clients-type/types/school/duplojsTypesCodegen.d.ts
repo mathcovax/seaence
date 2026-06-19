@@ -17,8 +17,8 @@ export type Routes = {
         information: "answer.notfound";
         body?: undefined;
     } | {
-        code: "403";
-        information: "answer.wrongStatus";
+        code: "404";
+        information: "answer.notfound";
         body?: undefined;
     } | {
         code: "201";
@@ -27,17 +27,7 @@ export type Routes = {
     };
 } | {
     method: "POST";
-    path: "/find-unprocessed-answer-details";
-    responses: {
-        code: "200";
-        information: "unprocessedAnswer.details";
-        body: {
-            totalCount: number;
-        };
-    };
-} | {
-    method: "POST";
-    path: "/find-many-answer-by-post";
+    path: "/find-many-available-answer-by-available-post";
     body: {
         postId: string;
         page: number;
@@ -46,6 +36,10 @@ export type Routes = {
     responses: {
         code: "422";
         information: "extract-error";
+        body?: undefined;
+    } | {
+        code: "404";
+        information: "post.notfound";
         body?: undefined;
     } | {
         code: "404";
@@ -86,6 +80,16 @@ export type Routes = {
     };
 } | {
     method: "POST";
+    path: "/find-unprocessed-answer-details";
+    responses: {
+        code: "200";
+        information: "unprocessedAnswer.details";
+        body: {
+            totalCount: number;
+        };
+    };
+} | {
+    method: "POST";
     path: "/mark-answer-as-compliant";
     body: {
         answerId: string;
@@ -99,8 +103,8 @@ export type Routes = {
         information: "answer.notfound";
         body?: undefined;
     } | {
-        code: "403";
-        information: "answer.wrongStatus";
+        code: "404";
+        information: "answer.notfound";
         body?: undefined;
     } | {
         code: "204";
@@ -125,8 +129,8 @@ export type Routes = {
         information: "post.notfound";
         body?: undefined;
     } | {
-        code: "403";
-        information: "post.wrongStatus";
+        code: "404";
+        information: "post.notfound";
         body?: undefined;
     } | {
         code: "201";
@@ -183,8 +187,8 @@ export type Routes = {
         information: "post.notfound";
         body?: undefined;
     } | {
-        code: "403";
-        information: "post.wrongStatus";
+        code: "404";
+        information: "post.notfound";
         body?: undefined;
     } | {
         code: "201";
@@ -193,17 +197,7 @@ export type Routes = {
     };
 } | {
     method: "POST";
-    path: "/find-unprocessed-post-details";
-    responses: {
-        code: "200";
-        information: "unprocessedPost.details";
-        body: {
-            totalCount: number;
-        };
-    };
-} | {
-    method: "POST";
-    path: "/find-many-post-by-node-same-raw-document";
+    path: "/find-many-available-post-by-node-same-raw-document";
     body: {
         nodeSameRawDocumentId: string;
         page: number;
@@ -230,7 +224,7 @@ export type Routes = {
     };
 } | {
     method: "POST";
-    path: "/find-many-post-by-node-same-raw-document-details";
+    path: "/find-many-available-post-by-node-same-raw-document-details";
     body: {
         nodeSameRawDocumentId: string;
     };
@@ -269,6 +263,16 @@ export type Routes = {
     };
 } | {
     method: "POST";
+    path: "/find-unprocessed-post-details";
+    responses: {
+        code: "200";
+        information: "unprocessedPost.details";
+        body: {
+            totalCount: number;
+        };
+    };
+} | {
+    method: "POST";
     path: "/find-one-post";
     body: {
         postId: string;
@@ -298,6 +302,35 @@ export type Routes = {
     };
 } | {
     method: "POST";
+    path: "/find-one-available-post";
+    body: {
+        postId: string;
+    };
+    responses: {
+        code: "422";
+        information: "extract-error";
+        body?: undefined;
+    } | {
+        code: "200";
+        information: "availablePost.found";
+        body: {
+            id: string;
+            topic: string;
+            content: string;
+            nodeSameRawDocumentId: string;
+            answerCount: number;
+            authorId: string;
+            authorName: string | null;
+            status: "compliant" | "unprocessed" | "notCompliant";
+            createdAt: SerializedTheDate | TheDate;
+        };
+    } | {
+        code: "404";
+        information: "availablePost.notfound";
+        body?: undefined;
+    };
+} | {
+    method: "POST";
     path: "/mark-post-as-compliant";
     body: {
         postId: string;
@@ -311,8 +344,8 @@ export type Routes = {
         information: "post.notfound";
         body?: undefined;
     } | {
-        code: "403";
-        information: "post.wrongStatus";
+        code: "404";
+        information: "post.notfound";
         body?: undefined;
     } | {
         code: "204";

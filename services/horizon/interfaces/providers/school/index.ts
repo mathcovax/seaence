@@ -7,7 +7,7 @@ export namespace SchoolProvider {
 		baseUrl: envs.SCHOOL_BASE_URL,
 	});
 
-	export function findManyPost(
+	export function findManyAvailablePost(
 		params: {
 			nodeSameRawDocumentId: string;
 			page: number;
@@ -15,7 +15,7 @@ export namespace SchoolProvider {
 		},
 	) {
 		return client.post(
-			"/find-many-post-by-node-same-raw-document",
+			"/find-many-available-post-by-node-same-raw-document",
 			{
 				body: params,
 			},
@@ -25,13 +25,13 @@ export namespace SchoolProvider {
 		});
 	}
 
-	export function findManyPostDetails(
+	export function findManyAvailablePostDetails(
 		params: {
 			nodeSameRawDocumentId: string;
 		},
 	) {
 		return client.post(
-			"/find-many-post-by-node-same-raw-document-details",
+			"/find-many-available-post-by-node-same-raw-document-details",
 			{
 				body: params,
 			},
@@ -61,7 +61,7 @@ export namespace SchoolProvider {
 		});
 	}
 
-	export function findManyAnswer(
+	export function findManyAvailableAnswer(
 		params: {
 			postId: string;
 			page: number;
@@ -69,7 +69,7 @@ export namespace SchoolProvider {
 		},
 	) {
 		return client.post(
-			"/find-many-answer-by-post",
+			"/find-many-available-answer-by-available-post",
 			{
 				body: params,
 			},
@@ -93,7 +93,7 @@ export namespace SchoolProvider {
 			{
 				body: params,
 			},
-		// big difference
+			// big difference
 		).iSelectExpectedResponseByInformationOrThrow({
 			"answer.created": true,
 			"post.notfound": true,
@@ -103,20 +103,20 @@ export namespace SchoolProvider {
 		});
 	}
 
-	export function findOnePost(
+	export function findOneAvailablePost(
 		params: {
 			postId: string;
 		},
 	) {
 		return client.post(
-			"/find-one-post",
+			"/find-one-available-post",
 			{
 				body: params,
 			},
 		)
 			.iSelectExpectedResponseByInformationOrThrow({
-				"post.found": true,
-				"post.notfound": true,
+				"availablePost.found": true,
+				"availablePost.notfound": true,
 				"extract-error": false,
 			});
 	}
