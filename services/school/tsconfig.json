@@ -8,6 +8,7 @@
 	{ "path": "./interfaces/providers/tsconfig.json" },
 	{ "path": "./interfaces/http/tsconfig.json" },
 	{ "path": "./interfaces/asyncMessage/tsconfig.json" },
+	{ "path": "./interfaces/fixtures/tsconfig.json" },
 
 	{ "path": "./interfaces/tsconfig.json" }
   ],

@@ -9,5 +9,10 @@
   },
   "devDependencies": {
     "@faker-js/faker": "9.7.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./scripts/index.ts"
+    }
   }
 }

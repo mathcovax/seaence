@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+	"types": ["node"],
+    "baseUrl": "./",
+    "paths": {
+	  "@fixtures/*": ["./*"],
+	  "@domains/*": ["../../business/domains/*"],
+	  "@applications/*": ["../../business/applications/*"],
+	  "@adapters/*": ["../adapters/*"],
+	  "@providers/*": ["../providers/*"],
+	  "@envs": ["../envs.ts"],
+    },
+  },
+  "include": [
+	"**/*.ts", 
+	"../../business/domains/**/*.ts", 
+	"../../business/applications/**/*.ts", 
+	"../adapters/**/*.ts",
+	"../providers/**/*.ts",
+	"../envs.ts",
+  ],
+}
