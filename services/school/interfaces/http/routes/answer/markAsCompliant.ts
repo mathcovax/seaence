@@ -1,5 +1,5 @@
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { DPE } from "@duplojs/utils";
+import { asyncPipe, DPE, E } from "@duplojs/utils";
 import { useCases } from "@adapters/useCases";
 import { Answer } from "@domains/entities/answer";
 import { iWantAnswerExistsById, iWantAnswerWithUnprocessedStatus } from "@http/checkers";
@@ -20,9 +20,12 @@ useRouteBuilder("POST", "/mark-answer-as-compliant")
 	)
 	.handler(
 		ResponseContract.noContent("answer.markedAsCompliant"),
-		({ answer }, { response }) => useCases
-			.markAnswerAsCompliantUseCase({ answer })
-			.then(
-				() => response("answer.markedAsCompliant"),
-			),
+		({ answer }, { response }) => asyncPipe(
+			useCases.markAnswerAsCompliantUseCase({ answer }),
+			E.unwrapSelectionOrThrow({
+				success: true,
+				"answer.compliant.wrongStatus": false,
+			}),
+			() => response("answer.markedAsCompliant"),
+		),
 	);

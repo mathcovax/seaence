@@ -14,5 +14,5 @@ export interface PostRepository {
 	findOldestUnprocessed(): Promise<C.Maybe<Post.Entity & Post.Unprocessed> & C.Evidence<"oldest-unprocessed">>;
 	findManyAvailableByNodeSameRawDocument(
 		params: FindManyAvailablePostByNodeSameRawDocumentParams
-	): Promise<{ posts: Post.AvailableEntity[] } & C.Evidence<"many-available">>;
+	): Promise<Post.AvailableEntity[] & C.Evidence<"many-available">>;
 }

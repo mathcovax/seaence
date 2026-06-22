@@ -18,7 +18,7 @@ export type Routes = {
         body?: undefined;
     } | {
         code: "404";
-        information: "answer.notfound";
+        information: "answer.unprocessed.wrongStatus";
         body?: undefined;
     } | {
         code: "201";
@@ -104,7 +104,7 @@ export type Routes = {
         body?: undefined;
     } | {
         code: "404";
-        information: "answer.notfound";
+        information: "answer.unprocessed.wrongStatus";
         body?: undefined;
     } | {
         code: "204";
@@ -135,10 +135,6 @@ export type Routes = {
     } | {
         code: "201";
         information: "answer.created";
-        body?: undefined;
-    } | {
-        code: "422";
-        information: "replyToPost.failed";
         body?: undefined;
     };
 } | {
@@ -188,7 +184,7 @@ export type Routes = {
         body?: undefined;
     } | {
         code: "404";
-        information: "post.notfound";
+        information: "post.unprocessed.wrongStatus";
         body?: undefined;
     } | {
         code: "201";
@@ -345,7 +341,7 @@ export type Routes = {
         body?: undefined;
     } | {
         code: "404";
-        information: "post.notfound";
+        information: "post.unprocessed.wrongStatus";
         body?: undefined;
     } | {
         code: "204";

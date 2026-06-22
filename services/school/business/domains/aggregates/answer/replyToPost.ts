@@ -28,7 +28,12 @@ export function replyToPost(params: ReplyToPostParams) {
 			),
 		}),
 		({ answerCreatedAt, postAnswerCount }) => {
-			const answer = pipe(
+			const post = Post.Entity.update(
+				params.post,
+				{ answerCount: postAnswerCount },
+			);
+
+			return pipe(
 				Answer.Entity.new({
 					id: params.id,
 					postId: params.post.id,
@@ -38,20 +43,16 @@ export function replyToPost(params: ReplyToPostParams) {
 					status: defaultAnswerStatus,
 					createdAt: answerCreatedAt,
 				}),
-				Answer.Unprocessed.append,
+				Answer.computeStatus,
+				E.whenHasInformationOtherwise(
+					"answer.unprocessed",
+					(answer) => E.right("replyPost", {
+						answer,
+						post,
+					}),
+					(result) => E.left("replyPost.answer.wrongStatus", result),
+				),
 			);
-
-			const updatedPost = pipe(
-				params.post,
-				Post.Entity.update({
-					answerCount: postAnswerCount,
-				}),
-			);
-
-			return E.right("reply-post", {
-				answer,
-				post: updatedPost,
-			});
 		},
 	);
 }

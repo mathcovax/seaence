@@ -1,5 +1,5 @@
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { A, C, DPE, E, innerPipe, O, pipeCall } from "@duplojs/utils";
+import { A, asyncPipe, C, DPE, E } from "@duplojs/utils";
 import { Answer } from "@domains/entities/answer";
 import { Post } from "@domains/entities/post";
 import { iWantPostExistsById, iWantPostWithAvailableStatus } from "@http/checkers";
@@ -23,22 +23,16 @@ useRouteBuilder("POST", "/find-many-available-answer-by-available-post")
 	)
 	.handler(
 		ResponseContract.ok("answers.found", Answer.Entity.toEndpointSchema().array()),
-		({ body, post }, { response }) => useCases
-			.findManyAvailableAnswerByAvailablePost({
+		({ body, post }, { response }) => asyncPipe(
+			useCases.findManyAvailableAnswerByAvailablePost({
 				post,
 				page: body.page,
 				quantityPerPage: body.quantityPerPage,
-			})
-			.then(
-				E.whenHasInformation(
-					"find-many-available-answer-by-available-post-success",
-					innerPipe(
-						O.getProperty("answers"),
-						A.map(pipeCall(C.unwrapEntity)),
-					),
-				),
-			)
-			.then(
-				(answers) => response("answers.found", answers),
-			),
+			}),
+			E.unwrapSelectionOrThrow({
+				"find-many-available-answer-by-available-post-success": true,
+			}),
+			A.map((answer) => C.unwrapEntity(answer)),
+			(answers) => response("answers.found", answers),
+		),
 	);

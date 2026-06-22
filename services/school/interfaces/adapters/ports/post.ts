@@ -1,5 +1,5 @@
 import { PostPort } from "@applications/ports/post";
-import { C, forwardAsserts, innerPipe, pipe, toNative, unwrap } from "@duplojs/utils";
+import { C, E, forwardAsserts, innerPipe, pipe, toNative, unwrap } from "@duplojs/utils";
 import { Post } from "@domains/entities/post";
 import { mongo } from "../../providers/mongo";
 import { uuidv7 } from "uuidv7";
@@ -69,10 +69,15 @@ export const postPort = PostPort.createImplementation({
 
 		return pipe(
 			post,
-			Post.Entity.mapOrThrow,
-			Post.computeStatus,
-			forwardAsserts(
-				(post) => Post.Unprocessed.has(post) || Post.Compliant.has(post),
+			Post.Entity.mapOrThrow(
+				innerPipe(
+					Post.computeStatus,
+					E.whenHasInformationOtherwise(
+						["post.unprocessed", "post.compliant"],
+						E.success,
+						(result) => E.left("post.wrongStatus", result),
+					),
+				),
 			),
 			C.some,
 			C.appendEvidence("one-available"),
@@ -96,9 +101,16 @@ export const postPort = PostPort.createImplementation({
 
 		return pipe(
 			post,
-			Post.Entity.mapOrThrow,
-			Post.computeStatus,
-			forwardAsserts(Post.Unprocessed.has),
+			Post.Entity.mapOrThrow(
+				innerPipe(
+					Post.computeStatus,
+					E.whenHasInformationOtherwise(
+						"post.unprocessed",
+						E.success,
+						(result) => E.left("post.wrongStatus", result),
+					),
+				),
+			),
 			C.some,
 			C.appendEvidence("oldest-unprocessed"),
 		);
@@ -116,15 +128,20 @@ export const postPort = PostPort.createImplementation({
 			.sort({ answerCount: -1 })
 			.skip(page * quantityPerPage)
 			.limit(quantityPerPage)
-			.map(innerPipe(
-				Post.Entity.mapOrThrow,
-				Post.computeStatus,
-				forwardAsserts(
-					(post) => Post.Unprocessed.has(post) || Post.Compliant.has(post),
+			.map(
+				Post.Entity.mapOrThrow(
+					innerPipe(
+						Post.computeStatus,
+						E.whenHasInformationOtherwise(
+							["post.unprocessed", "post.compliant"],
+							E.success,
+							(result) => E.left("post.wrongStatus", result),
+						),
+					),
 				),
-			))
+			)
 			.toArray()
-			.then((posts) => C.appendEvidence({ posts }, "many-available"));
+			.then(C.appendEvidence("many-available"));
 	},
 	async getTotalCountAvailableByNodeSameRawDocument(nodeSameRawDocumentId) {
 		const count = await mongo.postCollection.countDocuments({

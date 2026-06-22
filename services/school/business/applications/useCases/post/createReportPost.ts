@@ -1,4 +1,4 @@
-import { C } from "@duplojs/utils";
+import { C, E, promiseObject } from "@duplojs/utils";
 import { createReportPost } from "@domains/aggregates/post/createReportPost";
 import { PostPort } from "@applications/ports/post";
 import { ReportPort } from "@applications/ports/report";
@@ -16,15 +16,12 @@ export const CreateReportPostUseCase = C.createUseCase(
 		PostPort,
 		ReportPort,
 	},
-	({ postPort, reportPort }) => async(input: Input) => {
-		const result = createReportPost(input);
-
-		const post = await postPort.save(result.post);
-		const report = await reportPort.save(result.report);
-
-		return {
-			post,
-			report,
-		};
-	},
+	({ postPort, reportPort }) => (input: Input) => E.rightAsyncPipe(
+		createReportPost(input),
+		({ post, report }) => promiseObject({
+			report: reportPort.save(report),
+			post: postPort.save(post),
+		}),
+		(result) => E.right("post.report", result),
+	),
 );

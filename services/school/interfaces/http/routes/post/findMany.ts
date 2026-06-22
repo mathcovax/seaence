@@ -1,5 +1,5 @@
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { A, C, DPE, E, innerPipe, O, pipeCall, unwrap } from "@duplojs/utils";
+import { A, asyncPipe, C, DPE, E, unwrap } from "@duplojs/utils";
 import { postPort } from "@adapters/ports";
 import { Post } from "@domains/entities/post";
 import { useCases } from "@adapters/useCases";
@@ -14,25 +14,15 @@ useRouteBuilder("POST", "/find-many-available-post-by-node-same-raw-document")
 	})
 	.handler(
 		ResponseContract.ok("posts.found", Post.Entity.toEndpointSchema().array()),
-		({ body }, { response }) => useCases
-			.findManyAvailablePostByNodeSameRawDocumentUseCase(body)
-			.then(
-				E.whenHasInformation(
-					"find-many-available-post-by-node-same-raw-document-success",
-					innerPipe(
-						O.getProperty("posts"),
-						A.map(pipeCall(C.unwrapEntity)),
-					),
-				),
-			)
-			.then(
-				(posts) => response("posts.found", posts),
-			),
+		({ body }, { response }) => asyncPipe(
+			useCases.findManyAvailablePostByNodeSameRawDocumentUseCase(body),
+			E.unwrapSelectionOrThrow({
+				"find-many-available-post-by-node-same-raw-document-success": true,
+			}),
+			A.map((post) => C.unwrapEntity(post)),
+			(posts) => response("posts.found", posts),
+		),
 	);
-
-const detailsDataParser = DPE.object({
-	totalCount: DPE.number(),
-});
 
 useRouteBuilder("POST", "/find-many-available-post-by-node-same-raw-document-details")
 	.extract({
@@ -41,7 +31,7 @@ useRouteBuilder("POST", "/find-many-available-post-by-node-same-raw-document-det
 		}),
 	})
 	.handler(
-		ResponseContract.ok("posts.foundDetails", detailsDataParser),
+		ResponseContract.ok("posts.foundDetails", DPE.object({ totalCount: DPE.number() })),
 		({ body }, { response }) => postPort
 			.getTotalCountAvailableByNodeSameRawDocument(body.nodeSameRawDocumentId)
 			.then(

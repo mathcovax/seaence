@@ -6,7 +6,7 @@
     "zod": "3.24.2"
   },
   "devDependencies": {
-    "@duplojs/utils": "1.9.7",
+    "@duplojs/utils": "1.9.9",
     "@types/node": "22.15.0",
     "typescript": "5.9.3"
   },

@@ -5,7 +5,7 @@
     "test": "playwright test"
   },
   "devDependencies": {
-    "@duplojs/utils": "1.9.7",
+    "@duplojs/utils": "1.9.9",
     "@duplojs/server-utils": "0.4.1",
     "@duplojs/playwright": "0.2.0",
     "playwright": "1.60.0",

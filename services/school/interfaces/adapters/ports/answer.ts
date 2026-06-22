@@ -1,5 +1,5 @@
 import { AnswerPort } from "@applications/ports/answer";
-import { C, forwardAsserts, innerPipe, pipe, toNative, unwrap } from "@duplojs/utils";
+import { C, E, forward, forwardAsserts, innerPipe, pipe, toNative, unwrap } from "@duplojs/utils";
 import { Answer } from "@domains/entities/answer";
 import { asyncMessage } from "../../providers/asyncMessage";
 import { mongo } from "../../providers/mongo";
@@ -81,9 +81,16 @@ export const answerPort = AnswerPort.createImplementation({
 
 		return pipe(
 			answer,
-			Answer.Entity.mapOrThrow,
-			Answer.computeStatus,
-			forwardAsserts(Answer.Unprocessed.has),
+			Answer.Entity.mapOrThrow(
+				innerPipe(
+					Answer.computeStatus,
+					E.whenHasInformationOtherwise(
+						"answer.unprocessed",
+						E.success,
+						(result) => E.left("answer.wrongStatus", result),
+					),
+				),
+			),
 			C.some,
 			C.appendEvidence("oldest-unprocessed"),
 		);
@@ -99,19 +106,19 @@ export const answerPort = AnswerPort.createImplementation({
 			.skip(page * quantityPerPage)
 			.limit(quantityPerPage)
 			.map(
-				innerPipe(
-					Answer.Entity.mapOrThrow,
-					Answer.computeStatus,
-					forwardAsserts(
-						(answer) => Answer.Unprocessed.has(answer)
-							|| Answer.Compliant.has(answer),
+				Answer.Entity.mapOrThrow(
+					innerPipe(
+						Answer.computeStatus,
+						E.whenHasInformationOtherwise(
+							["answer.unprocessed", "answer.compliant"],
+							E.success,
+							(result) => E.left("answer.wrongStatus", result),
+						),
 					),
 				),
 			)
 			.toArray()
-			.then(
-				(answers) => C.appendEvidence({ answers }, "many-available"),
-			);
+			.then(C.appendEvidence("many-available"));
 	},
 	async getTotalCountOfUnprocessed() {
 		const count = await mongo.answerCollection.countDocuments({

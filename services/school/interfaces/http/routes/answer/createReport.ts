@@ -1,5 +1,5 @@
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { DPE } from "@duplojs/utils";
+import { asyncPipe, DPE, E } from "@duplojs/utils";
 import { useCases } from "@adapters/useCases";
 import { Answer } from "@domains/entities/answer";
 import { Report } from "@domains/entities/report";
@@ -23,13 +23,16 @@ useRouteBuilder("POST", "/create-report-answer")
 	)
 	.handler(
 		ResponseContract.created("report.created"),
-		({ body, answer }, { response }) => useCases
-			.createReportAnswerUseCase({
+		({ body, answer }, { response }) => asyncPipe(
+			useCases.createReportAnswerUseCase({
 				answer,
 				level: body.level,
 				reason: body.reason,
-			})
-			.then(
-				() => response("report.created"),
-			),
+			}),
+			E.unwrapSelectionOrThrow({
+				"answer.report.wrongStatus": false,
+				"post.report": true,
+			}),
+			() => response("report.created"),
+		),
 	);

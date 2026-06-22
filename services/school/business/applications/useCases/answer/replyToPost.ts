@@ -1,4 +1,4 @@
-import { C, E } from "@duplojs/utils";
+import { C, E, promiseObject } from "@duplojs/utils";
 import { replyToPost } from "@domains/aggregates/answer/replyToPost";
 import { AnswerPort } from "@applications/ports/answer";
 import { PostPort } from "@applications/ports/post";
@@ -18,27 +18,16 @@ export const ReplyToPostUseCase = C.createUseCase(
 		AnswerPort,
 		PostPort,
 	},
-	({ answerPort, postPort }) => async(input: Input) => {
-		const result = replyToPost({
+	({ answerPort, postPort }) => async(input: Input) => E.rightAsyncPipe(
+		replyToPost({
 			...input,
 			id: answerPort.generateId(),
 			postAnswerCount: await postPort.getAnswerCount(input.post),
-		});
-
-		if (E.isLeft(result)) {
-			return result;
-		}
-
-		const { answer, post } = E.unwrapRight(result);
-
-		const [savedAnswer, savedPost] = await Promise.all([
-			answerPort.save(answer),
-			postPort.save(post),
-		]);
-
-		return E.right("reply-post", {
-			answer: savedAnswer,
-			post: savedPost,
-		});
-	},
+		}),
+		({ answer, post }) => promiseObject({
+			post: postPort.save(post),
+			answer: answerPort.save(answer),
+		}),
+		(result) => E.right("replyPost", result),
+	),
 );

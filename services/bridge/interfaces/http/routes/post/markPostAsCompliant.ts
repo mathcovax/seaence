@@ -1,4 +1,4 @@
-import { P } from "@duplojs/utils";
+import { O, P } from "@duplojs/utils";
 import { SchoolProvider } from "@interfaces/providers/school";
 
 useBuilder()
@@ -15,12 +15,15 @@ useBuilder()
 			const result = await SchoolProvider.markPostAsCompliant({ postId });
 
 			return P.match(result)
-				.with(
-					{ information: "post.notfound" },
+				.when(
+					O.discriminate(
+						"information",
+						["post.notfound", "post.unprocessed.wrongStatus"],
+					),
 					() => new NotFoundHttpResponse("post.notfound"),
 				)
-				.with(
-					{ information: "post.markAsCompliant" },
+				.when(
+					O.discriminate("information", "post.markAsCompliant"),
 					() => dropper(null),
 				)
 				.exhaustive();

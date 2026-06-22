@@ -1,4 +1,4 @@
-import { C } from "@duplojs/utils";
+import { C, E } from "@duplojs/utils";
 import { markAnswerAsCompliant } from "@domains/aggregates/answer/markAnswerAsCompliant";
 import { AnswerPort } from "@applications/ports/answer";
 import type { Answer } from "@domains/entities/answer";
@@ -9,7 +9,8 @@ interface Input {
 
 export const MarkAnswerAsCompliantUseCase = C.createUseCase(
 	{ AnswerPort },
-	({ answerPort }) => (input: Input) => answerPort.save(
+	({ answerPort }) => (input: Input) => E.rightPipe(
 		markAnswerAsCompliant(input.answer),
+		answerPort.save,
 	),
 );

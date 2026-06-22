@@ -1,4 +1,4 @@
-import { C, createEnum, DPE, P } from "@duplojs/utils";
+import { C, createEnum, DPE, E, P } from "@duplojs/utils";
 import { answerRules } from "@lib/entity-rules";
 import { Post } from "./post";
 import { UserId, UserName } from "../common/user";
@@ -43,30 +43,24 @@ export namespace Answer {
 	);
 	export type Entity = C.GetEntity<typeof Entity>;
 
-	export const Unprocessed = C.createFlag<Entity, "Unprocessed">("Unprocessed");
+	const Unprocessed = C.createFlag<Entity, "Unprocessed">("Unprocessed");
 	export type Unprocessed = C.GetFlag<typeof Unprocessed>;
 
-	export const Compliant = C.createFlag<Entity, "Compliant">("Compliant");
+	const Compliant = C.createFlag<Entity, "Compliant">("Compliant");
 	export type Compliant = C.GetFlag<typeof Compliant>;
 
-	export const NotCompliant = C.createFlag<Entity, "NotCompliant">("NotCompliant");
+	const NotCompliant = C.createFlag<Entity, "NotCompliant">("NotCompliant");
 	export type NotCompliant = C.GetFlag<typeof NotCompliant>;
 
 	export function computeStatus(entity: Entity) {
-		return P.match(entity.status)
-			.with(
-				C.equal("compliant"),
-				() => Compliant.append(entity),
-			)
-			.with(
-				C.equal("notCompliant"),
-				() => NotCompliant.append(entity),
-			)
-			.with(
-				C.equal("unprocessed"),
-				() => Unprocessed.append(entity),
-			)
-			.exhaustive();
+		return C.matchWithString(
+			entity.status,
+			{
+				compliant: () => E.result("answer.compliant", Compliant.append(entity)),
+				notCompliant: () => E.result("answer.notCompliant", NotCompliant.append(entity)),
+				unprocessed: () => E.result("answer.unprocessed", Unprocessed.append(entity)),
+			},
+		);
 	}
 
 	export type AvailableEntity = (

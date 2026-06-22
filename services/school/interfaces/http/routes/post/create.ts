@@ -1,5 +1,5 @@
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { DPE, C } from "@duplojs/utils";
+import { asyncPipe, C, DPE, E } from "@duplojs/utils";
 import { useCases } from "@adapters/useCases";
 import { Post } from "@domains/entities/post";
 import { UserId, UserName } from "@domains/common/user";
@@ -16,9 +16,12 @@ useRouteBuilder("POST", "/create-post")
 	})
 	.handler(
 		ResponseContract.created("post.created", Post.Entity.toEndpointSchema()),
-		({ body }, { response }) => useCases
-			.createPostUseCase(body)
-			.then(
-				({ post }) => response("post.created", C.unwrapEntity(post)),
-			),
+		({ body }, { response }) => asyncPipe(
+			useCases.createPostUseCase(body),
+			E.unwrapSelectionOrThrow({
+				"post.create.wrongStatus": false,
+				"post.created": true,
+			}),
+			({ post }) => response("post.created", C.unwrapEntity(post)),
+		),
 	);

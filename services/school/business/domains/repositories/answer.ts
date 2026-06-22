@@ -14,6 +14,6 @@ export interface AnswerRepository {
 		C.Maybe<Answer.Entity & Answer.Unprocessed> & C.Evidence<"oldest-unprocessed">
 	>;
 	findManyAvailableByAvailablePost(params: FindManyAvailableByAvailablePostParams): Promise<
-		{ answers: Answer.AvailableEntity[] } & C.Evidence<"many-available">
+		Answer.AvailableEntity[] & C.Evidence<"many-available">
 	>;
 }

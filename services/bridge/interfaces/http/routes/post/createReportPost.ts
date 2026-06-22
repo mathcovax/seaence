@@ -1,4 +1,4 @@
-import { P } from "@duplojs/utils";
+import { O, P } from "@duplojs/utils";
 import { SchoolProvider } from "@interfaces/providers/school";
 import { baseWarningRules } from "@vendors/entity-rules";
 
@@ -32,12 +32,15 @@ useBuilder()
 			});
 
 			return P.match(schoolResponse)
-				.with(
-					{ information: "post.notfound" },
+				.when(
+					O.discriminate(
+						"information",
+						["post.notfound", "post.unprocessed.wrongStatus"],
+					),
 					() => new NotFoundHttpResponse("post.notfound"),
 				)
-				.with(
-					{ information: "report.created" },
+				.when(
+					O.discriminate("information", "report.created"),
 					() => dropper(null),
 				)
 				.exhaustive();

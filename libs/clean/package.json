@@ -8,7 +8,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@duplojs/utils": "1.9.7",
+    "@duplojs/utils": "1.9.9",
     "zod": "3.24.2"
   }
 }

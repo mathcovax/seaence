@@ -1,5 +1,5 @@
 import { ResponseContract, useRouteBuilder } from "@duplojs/http";
-import { DPE, E } from "@duplojs/utils";
+import { asyncPipe, DPE, E } from "@duplojs/utils";
 import { useCases } from "@adapters/useCases";
 import { Answer } from "@domains/entities/answer";
 import { Post } from "@domains/entities/post";
@@ -24,24 +24,19 @@ useRouteBuilder("POST", "/reply-to-post")
 		(floor) => floor.post,
 	)
 	.handler(
-		[
-			ResponseContract.created("answer.created"),
-			ResponseContract.unprocessableContent("replyToPost.failed"),
-		],
-		({ body, post }, { response }) => useCases
-			.replyToPostUseCase({
+		ResponseContract.created("answer.created"),
+		({ body, post }, { response }) => asyncPipe(
+			useCases.replyToPostUseCase({
 				post,
 				content: body.content,
 				authorId: body.authorId,
 				authorName: body.authorName,
-			})
-			.then(
-				(result) => {
-					if (E.isLeft(result)) {
-						return response("replyToPost.failed");
-					}
-
-					return response("answer.created");
-				},
-			),
+			}),
+			E.unwrapSelectionOrThrow({
+				"replyPost.answer.wrongStatus": false,
+				createNewTypeError: false,
+				replyPost: true,
+			}),
+			() => response("answer.created"),
+		),
 	);

@@ -38,7 +38,7 @@ export namespace SchoolProvider {
 			"extract-error": false,
 			"post.markAsCompliant": true,
 			"post.notfound": true,
-			"post.wrongStatus": true,
+			"post.unprocessed.wrongStatus": true,
 		});
 	}
 
@@ -57,7 +57,7 @@ export namespace SchoolProvider {
 		).iSelectExpectedResponseByInformationOrThrow({
 			"extract-error": false,
 			"post.notfound": true,
-			"post.wrongStatus": true,
+			"post.unprocessed.wrongStatus": true,
 			"report.created": true,
 		});
 	}
@@ -109,7 +109,7 @@ export namespace SchoolProvider {
 		).iSelectExpectedResponseByInformationOrThrow({
 			"answer.markedAsCompliant": true,
 			"answer.notfound": true,
-			"answer.wrongStatus": true,
+			"answer.unprocessed.wrongStatus": true,
 			"extract-error": false,
 		});
 	}
@@ -128,7 +128,7 @@ export namespace SchoolProvider {
 			},
 		).iSelectExpectedResponseByInformationOrThrow({
 			"answer.notfound": true,
-			"answer.wrongStatus": true,
+			"answer.unprocessed.wrongStatus": true,
 			"extract-error": false,
 			"report.created": true,
 		});

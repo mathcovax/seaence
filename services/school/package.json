@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@duplojs/http": "0.13.1",
-    "@duplojs/utils": "1.9.7",
+    "@duplojs/utils": "1.9.9",
     "@duplojs/server-utils": "0.4.1",
     "mongodb": "7.3.0",
     "uuidv7": "1.2.1",

@@ -1,4 +1,4 @@
-import { pipe } from "@duplojs/utils";
+import { E, pipe } from "@duplojs/utils";
 import { Post } from "@domains/entities/post";
 import { Report } from "@domains/entities/report";
 
@@ -19,15 +19,18 @@ export function createReportPost(params: CreateReportPostParams) {
 		reason: params.reason,
 	});
 
-	const updatedPost = pipe(
+	return pipe(
 		params.post,
 		Post.Entity.update({ status: notCompliantPostStatus }),
-		Post.NotCompliant.append,
+		Post.computeStatus,
+		E.whenHasInformationOtherwise(
+			"post.notCompliant",
+			(post) => E.right("post.report", {
+				post,
+				report,
+			}),
+			(result) => E.left("post.report.wrongStatus", result),
+		),
 	);
-
-	return {
-		report,
-		post: updatedPost,
-	};
 }
 

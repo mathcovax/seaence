@@ -1,4 +1,4 @@
-import { C } from "@duplojs/utils";
+import { C, E, promiseObject } from "@duplojs/utils";
 import { createPost } from "@domains/aggregates/post/createPost";
 import { PostPort } from "@applications/ports/post";
 import { NotificationSettingPort } from "@applications/ports/notificationSetting";
@@ -18,20 +18,15 @@ export const CreatePostUseCase = C.createUseCase(
 		PostPort,
 		NotificationSettingPort,
 	},
-	({ postPort, notificationSettingPort }) => async(input: Input) => {
-		const result = createPost({
+	({ postPort, notificationSettingPort }) => (input: Input) => E.rightAsyncPipe(
+		createPost({
 			...input,
 			id: postPort.generateId(),
-		});
-
-		const post = await postPort.save(result.post);
-		const notificationSetting = await notificationSettingPort.save(
-			result.notificationSetting,
-		);
-
-		return {
-			post,
-			notificationSetting,
-		};
-	},
+		}),
+		({ post, notificationSetting }) => promiseObject({
+			post: postPort.save(post),
+			notificationSetting: notificationSettingPort.save(notificationSetting),
+		}),
+		(result) => E.right("post.created", result),
+	),
 );
