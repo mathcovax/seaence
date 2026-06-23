@@ -1,5 +1,5 @@
 import { C, D, DPE } from "@duplojs/utils";
-import { documentFolderRules } from "@vendors/entity-rules";
+import { documentFolderRules } from "@lib/entity-rules";
 import { UserId } from "../common/user";
 
 export namespace DocumentFolder {

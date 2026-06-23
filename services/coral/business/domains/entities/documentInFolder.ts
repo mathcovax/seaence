@@ -1,5 +1,5 @@
 import { C, D, DPE } from "@duplojs/utils";
-import { documentInFolderRules } from "@vendors/entity-rules";
+import { documentInFolderRules } from "@lib/entity-rules";
 import { DocumentFolder } from "./documentFolder";
 import { UserId } from "../common/user";
 import { NodeSameRawDocumentId } from "../common/nodeSameRawDocument";
