@@ -33,7 +33,6 @@ useRouteBuilder("POST", "/reply-to-post")
 				authorName: body.authorName,
 			}),
 			E.unwrapSelectionOrThrow({
-				"replyPost.answer.wrongStatus": false,
 				createNewTypeError: false,
 				replyPost: true,
 			}),

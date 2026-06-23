@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-import { type C, D, E, pipe } from "@duplojs/utils";
+import { type C, D } from "@duplojs/utils";
 import type { UserName, UserId } from "../../common/user";
 import { Post } from "../../entities/post";
 import { NotificationSetting } from "../../entities/notificationSetting";
@@ -18,24 +18,18 @@ const defaultPostAnswerCount = Post.AnswerCount.createOrThrow(0);
 const defaultPostStatus = Post.Status.createOrThrow("unprocessed");
 
 export function createPost(params: CreatePostParams) {
-	return pipe(
-		Post.Entity.new({
-			...params,
-			answerCount: defaultPostAnswerCount,
-			status: defaultPostStatus,
-			createdAt: Post.CreatedAt.createOrThrow(D.now()),
+	const post = Post.Entity.new({
+		...params,
+		answerCount: defaultPostAnswerCount,
+		status: defaultPostStatus,
+		createdAt: Post.CreatedAt.createOrThrow(D.now()),
+	});
+
+	return {
+		post,
+		notificationSetting: NotificationSetting.Entity.new({
+			postId: post.id,
+			userId: post.authorId,
 		}),
-		Post.computeStatus,
-		E.whenHasInformationOtherwise(
-			"post.unprocessed",
-			(post) => E.right("post.created", {
-				post,
-				notificationSetting: NotificationSetting.Entity.new({
-					postId: post.id,
-					userId: post.authorId,
-				}),
-			}),
-			(result) => E.left("post.create.wrongStatus", result),
-		),
-	);
+	};
 }

@@ -33,8 +33,9 @@ export function replyToPost(params: ReplyToPostParams) {
 				{ answerCount: postAnswerCount },
 			);
 
-			return pipe(
-				Answer.Entity.new({
+			return {
+				post,
+				answer: Answer.Entity.new({
 					id: params.id,
 					postId: params.post.id,
 					authorId: params.authorId,
@@ -43,16 +44,7 @@ export function replyToPost(params: ReplyToPostParams) {
 					status: defaultAnswerStatus,
 					createdAt: answerCreatedAt,
 				}),
-				Answer.computeStatus,
-				E.whenHasInformationOtherwise(
-					"answer.unprocessed",
-					(answer) => E.right("replyPost", {
-						answer,
-						post,
-					}),
-					(result) => E.left("replyPost.answer.wrongStatus", result),
-				),
-			);
+			};
 		},
 	);
 }

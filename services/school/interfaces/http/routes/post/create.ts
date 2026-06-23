@@ -19,7 +19,6 @@ useRouteBuilder("POST", "/create-post")
 		({ body }, { response }) => asyncPipe(
 			useCases.createPostUseCase(body),
 			E.unwrapSelectionOrThrow({
-				"post.create.wrongStatus": false,
 				"post.created": true,
 			}),
 			({ post }) => response("post.created", C.unwrapEntity(post)),

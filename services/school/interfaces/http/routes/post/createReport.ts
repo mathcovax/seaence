@@ -30,7 +30,6 @@ useRouteBuilder("POST", "/create-report-post")
 				reason: body.reason,
 			}),
 			E.unwrapSelectionOrThrow({
-				"post.report.wrongStatus": false,
 				"post.report": true,
 			}),
 			() => response("report.created"),
