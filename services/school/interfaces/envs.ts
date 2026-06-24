@@ -1,25 +1,23 @@
-import { zod } from "@duplojs/core";
-import { config as importEnvFile } from "dotenv";
-import { expand as expandEnv } from "dotenv-expand";
+import { DPE } from "@duplojs/utils";
+import { environmentVariableOrThrow } from "@duplojs/server-utils";
 
-for (const pathEnv of [".env.local", ".env"]) {
-	expandEnv(
-		importEnvFile({ path: pathEnv }),
-	);
-}
-
-export const envs = zod
-	.object({
-		PORT: zod.coerce.number(),
-		HOST: zod.enum(["0.0.0.0"]),
-		ENVIRONMENT: zod.enum(["DEV", "PROD"]),
-		MONGO_DATABASE_URL: zod.string(),
-		MONGO_DB: zod.string(),
-		DB_CONNECTION: zod.booleanInString(),
-		ASYNC_MESSAGE_MONGO_URL: zod.string(),
-		SERVICE_NAME: zod.literal("school").default("school"),
-		GLITCHTIP_DSN: zod.string(),
-		BOTTLE_BASE_URL: zod.string().url(),
-		HARBOR_BASE_URL: zod.string().url(),
-	})
-	.parse(process.env);
+export const envs = await environmentVariableOrThrow(
+	{
+		PORT: DPE.coerce.number(),
+		HOST: DPE.literal(["0.0.0.0", "localhost", "127.0.0.1"]),
+		ENVIRONMENT: DPE.literal(["DEV", "PROD"]),
+		MONGO_DATABASE_URL: DPE.string(),
+		MONGO_DB: DPE.string(),
+		DB_CONNECTION: DPE.coerce.boolean(),
+		ASYNC_MESSAGE_MONGO_URL: DPE.string(),
+		SERVICE_NAME: DPE.literal("school"),
+		GLITCHTIP_DSN: DPE.string(),
+		BOTTLE_BASE_URL: DPE.url(),
+		HARBOR_BASE_URL: DPE.url(),
+		CODEGEN_PATH: DPE.string(),
+	},
+	{
+		paths: [".env"],
+		justRead: true,
+	},
+);

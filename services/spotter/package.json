@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@duplojs/http-client": "1.2.3",
-    "@duplojs/utils": "1.9.2",
+    "@duplojs/utils": "1.9.9",
     "@mdi/js": "7.4.47",
     "@sentry/vue": "9.22.0",
     "@tailwindcss/vite": "4.0.14",

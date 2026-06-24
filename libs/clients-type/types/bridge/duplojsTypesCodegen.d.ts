@@ -5,75 +5,6 @@
 /* v8 ignore start */
 // noinspection JSUnusedGlobalSymbols
 // @ts-nocheck
-type ReportingBakedDocumentTranslationListPage = {
-    countTotal: number;
-    quantityPerPage: number;
-};
-
-export { ReportingBakedDocumentTranslationListPage };
-
-type ReportingBakedDocumentTranslationAggregateListRow = {
-    bakedDocumentTitle: string | null;
-    bakedDocumentId: string;
-    reportingQuantity: number;
-};
-
-export { ReportingBakedDocumentTranslationAggregateListRow };
-
-type ReportingBakedDocumentTranslationPage = {
-    bakedDocument: {
-        id: string;
-        cookingMode: CookingMode;
-        nodeSameRawDocumentId: string;
-        language: BakedDocumentLanguage;
-        title: string;
-        abstract: string | null;
-        abstractDetails: {
-            name: string;
-            label: string;
-            content: string;
-        }[] | null;
-        keywords: string[];
-    };
-    reporting: {
-        countTotal: number;
-        quantityPerPage: number;
-    };
-};
-
-export { ReportingBakedDocumentTranslationPage };
-
-type CookingMode = "default" | "libretranslate" | "googleScrape";
-
-export { CookingMode };
-
-type BakedDocumentLanguage = "fr-FR" | "en-US";
-
-export { BakedDocumentLanguage };
-
-type ReportingBakedDocumentTranslationListRow = {
-    id: string;
-    userId: string;
-    bakedDocumentId: string;
-    details: string;
-};
-
-export { ReportingBakedDocumentTranslationListRow };
-
-type BakedDocumentNewTranslation = {
-    cookingMode: CookingMode;
-    title: string;
-    abstract: string | null;
-    abstractDetails: {
-        name: string;
-        label: string;
-        content: string;
-    }[] | null;
-    keywords: string[];
-};
-
-export { BakedDocumentNewTranslation };
-
 type PostModerationPage = {
     post: {
         id: string;
@@ -105,87 +36,107 @@ type AnswerModerationPage = {
 
 export { AnswerModerationPage };
 
+type BakedDocumentLanguage = "fr-FR" | "en-US";
+
+export { BakedDocumentLanguage };
+
+type CookingMode = "default" | "libretranslate" | "googleScrape";
+
+export { CookingMode };
+
+type BakedDocumentNewTranslation = {
+    cookingMode: CookingMode;
+    title: string;
+    abstract: string | null;
+    abstractDetails: {
+        name: string;
+        label: string;
+        content: string;
+    }[] | null;
+    keywords: string[];
+};
+
+export { BakedDocumentNewTranslation };
+
+type ReportingBakedDocumentTranslationAggregateListRow = {
+    bakedDocumentTitle: string | null;
+    bakedDocumentId: string;
+    reportingQuantity: number;
+};
+
+export { ReportingBakedDocumentTranslationAggregateListRow };
+
+type ReportingBakedDocumentTranslationListPage = {
+    countTotal: number;
+    quantityPerPage: number;
+};
+
+export { ReportingBakedDocumentTranslationListPage };
+
+type ReportingBakedDocumentTranslationListRow = {
+    id: string;
+    userId: string;
+    bakedDocumentId: string;
+    details: string;
+};
+
+export { ReportingBakedDocumentTranslationListRow };
+
+type ReportingBakedDocumentTranslationPage = {
+    bakedDocument: {
+        id: string;
+        cookingMode: CookingMode;
+        nodeSameRawDocumentId: string;
+        language: BakedDocumentLanguage;
+        title: string;
+        abstract: string | null;
+        abstractDetails: {
+            name: string;
+            label: string;
+            content: string;
+        }[] | null;
+        keywords: string[];
+    };
+    reporting: {
+        countTotal: number;
+        quantityPerPage: number;
+    };
+};
+
+export { ReportingBakedDocumentTranslationPage };
+
 type CodegenRoutes = ({
     method: "POST";
-    path: "/reporting-baked-document-translation-aggregate-list-page";
-    response: {
-        code: 200;
-        information: "reportingBakedDocumentTranslationAggregateListPage.found";
-        body: ReportingBakedDocumentTranslationListPage;
-    };
-}) | ({
-    method: "POST";
-    path: "/reporting-baked-document-translation-aggregate-list";
+    path: "/posts/{postId}/is-not-compliant-and-create-warning";
     body: {
-        page: number;
-    };
-    response: {
-        code: 200;
-        information: "reportingBakeDocumentTranslationAggregateList.found";
-        body: ReportingBakedDocumentTranslationAggregateListRow[];
-    };
-}) | ({
-    method: "POST";
-    path: "/reporting-baked-document-translation-page";
-    body: {
-        bakedDocumentId: string;
-    };
-    response: {
-        code: 404;
-        information: "bakedDocument.notfound";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "reportingBakedDocumentTranslationPage.found";
-        body: ReportingBakedDocumentTranslationPage;
-    };
-}) | ({
-    method: "POST";
-    path: "/reporting-baked-document-translation-list";
-    body: {
-        bakedDocumentId: string;
-        page: number;
-    };
-    response: {
-        code: 200;
-        information: "reportingDakedDocumentTranslationList.found";
-        body: ReportingBakedDocumentTranslationListRow[];
-    };
-}) | ({
-    method: "POST";
-    path: "/get-new-baked-document-translation";
-    body: {
-        nodeSameRawDocumentId: string;
-        bakedDocumentLanguage: BakedDocumentLanguage;
-        cookingMode: CookingMode;
-    };
-    response: {
-        code: 404;
-        information: "nodeSameRawDocument.notfound";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "bakedDocument.getNewTranslation";
-        body: BakedDocumentNewTranslation;
-    };
-}) | ({
-    method: "POST";
-    path: "/baked-document-translation-reporting-aggregate/process/{bakedDocumentId}";
-    body: {
-        nodeSameRawDocumentId: string;
-        bakedDocumentLanguage: BakedDocumentLanguage;
-        cookingMode: CookingMode;
+        makeUserBan: boolean;
+        reason: string;
     };
     params: {
-        bakedDocumentId: string;
+        postId: string;
     };
     response: {
         code: 404;
-        information: "nodeSameRawDocument.notfound";
+        information: "post.notfound";
         body?: undefined;
     } | {
-        code: 204;
-        information: "bakedDocumentTranslationReportingAggregate.processed";
+        code: 200;
+        information: "post.updated";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/posts/{postId}/is-compliant";
+    params: {
+        postId: string;
+    };
+    response: {
+        code: 404;
+        information: "post.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "post.updated";
         body?: undefined;
     };
 }) | ({
@@ -199,48 +150,6 @@ type CodegenRoutes = ({
         code: 200;
         information: "postModerationPage.found";
         body: PostModerationPage;
-    };
-}) | ({
-    method: "POST";
-    path: "/posts/{postId}/is-compliant";
-    params: {
-        postId: string;
-    };
-    response: {
-        code: 404;
-        information: "post.notfound";
-        body?: undefined;
-    } | {
-        code: 403;
-        information: "post.wrongStatus";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "post.updated";
-        body?: undefined;
-    };
-}) | ({
-    method: "POST";
-    path: "/posts/{postId}/is-not-compliant-and-create-warning";
-    body: {
-        makeUserBan: boolean;
-        reason: string;
-    };
-    params: {
-        postId: string;
-    };
-    response: {
-        code: 403;
-        information: "post.wrongStatus";
-        body?: undefined;
-    } | {
-        code: 404;
-        information: "post.notfound";
-        body?: undefined;
-    } | {
-        code: 200;
-        information: "post.updated";
-        body?: undefined;
     };
 }) | ({
     method: "POST";
@@ -265,10 +174,6 @@ type CodegenRoutes = ({
         information: "answer.notfound";
         body?: undefined;
     } | {
-        code: 403;
-        information: "answer.wrongStatus";
-        body?: undefined;
-    } | {
         code: 200;
         information: "answer.updated";
         body?: undefined;
@@ -289,15 +194,94 @@ type CodegenRoutes = ({
         body?: undefined;
     } | {
         code: 404;
-        information: "answer.postMismatch";
-        body?: undefined;
-    } | {
-        code: 404;
         information: "answer.notfound";
         body?: undefined;
     } | {
         code: 200;
         information: "answer.updated";
+        body?: undefined;
+    };
+}) | ({
+    method: "POST";
+    path: "/get-new-baked-document-translation";
+    body: {
+        nodeSameRawDocumentId: string;
+        bakedDocumentLanguage: BakedDocumentLanguage;
+        cookingMode: CookingMode;
+    };
+    response: {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "bakedDocument.getNewTranslation";
+        body: BakedDocumentNewTranslation;
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-aggregate-list";
+    body: {
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "reportingBakeDocumentTranslationAggregateList.found";
+        body: ReportingBakedDocumentTranslationAggregateListRow[];
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-aggregate-list-page";
+    response: {
+        code: 200;
+        information: "reportingBakedDocumentTranslationAggregateListPage.found";
+        body: ReportingBakedDocumentTranslationListPage;
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-list";
+    body: {
+        bakedDocumentId: string;
+        page: number;
+    };
+    response: {
+        code: 200;
+        information: "reportingDakedDocumentTranslationList.found";
+        body: ReportingBakedDocumentTranslationListRow[];
+    };
+}) | ({
+    method: "POST";
+    path: "/reporting-baked-document-translation-page";
+    body: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 404;
+        information: "bakedDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 200;
+        information: "reportingBakedDocumentTranslationPage.found";
+        body: ReportingBakedDocumentTranslationPage;
+    };
+}) | ({
+    method: "POST";
+    path: "/baked-document-translation-reporting-aggregate/process/{bakedDocumentId}";
+    body: {
+        nodeSameRawDocumentId: string;
+        bakedDocumentLanguage: BakedDocumentLanguage;
+        cookingMode: CookingMode;
+    };
+    params: {
+        bakedDocumentId: string;
+    };
+    response: {
+        code: 404;
+        information: "nodeSameRawDocument.notfound";
+        body?: undefined;
+    } | {
+        code: 204;
+        information: "bakedDocumentTranslationReportingAggregate.processed";
         body?: undefined;
     };
 });

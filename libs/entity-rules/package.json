@@ -1,4 +1,9 @@
 {
   "name": "@lib/entity-rules",
-  "type": "module"
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./scripts/index.ts"
+    }
+  }
 }

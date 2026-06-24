@@ -18,5 +18,5 @@ await createHttpServer(
 	},
 )
 	.then(
-		() => void console.log("Coral service is running !"),
+		() => void console.log(`${envs.SERVICE_NAME} service is running !`),
 	);

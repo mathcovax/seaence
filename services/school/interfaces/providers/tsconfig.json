@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+	  "@providers/*": ["./*"],
+	  "@envs": ["../envs.ts"],
+    },
+  },
+  "include": [
+	"**/*.ts",
+	"../envs.ts",
+  ],
+}

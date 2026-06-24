@@ -1,5 +1,5 @@
 import { envs } from "@interfaces/envs";
-import { AsyncMessage } from "@vendors/async-message";
+import { AsyncMessage } from "@lib/async-message";
 
 export const asyncMessage = new AsyncMessage({
 	currentServiceName: envs.SERVICE_NAME,

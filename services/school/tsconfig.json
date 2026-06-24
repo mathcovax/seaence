@@ -1,39 +1,15 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"lib": [
-			"ESNext"
-		],
-		"moduleDetection": "force",
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
-		"types": [
-			"node"
-		],
-		"noEmit": true,
-		"esModuleInterop": true,
-		"strict": true,
-		"skipLibCheck": true,
-		"paths": {
-			"@vendors/*": [
-				"./vendors/*"
-			],
-			"@business/*": [
-				"./business/*"
-			],
-			"@interfaces/*": [
-				"./interfaces/*"
-			],
-			"@providers/*": [
-				"./interfaces/providers/*"
-			],
-		}
-	},
-	"include": [
-		"**/*.ts",
-		"eslint.config.ts"
-	],
-	"exclude": [
-		"vendors/**/*.test.ts",
-	]
+  "files": [],
+  "references": [
+	{ "path": "./business/domains/tsconfig.json" },
+	{ "path": "./business/applications/tsconfig.json" },
+
+	{ "path": "./interfaces/adapters/tsconfig.json" },
+	{ "path": "./interfaces/providers/tsconfig.json" },
+	{ "path": "./interfaces/http/tsconfig.json" },
+	{ "path": "./interfaces/asyncMessage/tsconfig.json" },
+	{ "path": "./interfaces/fixtures/tsconfig.json" },
+
+	{ "path": "./interfaces/tsconfig.json" }
+  ],
 }

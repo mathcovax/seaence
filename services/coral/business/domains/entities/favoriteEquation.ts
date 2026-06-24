@@ -1,5 +1,5 @@
 import { C, D, DPE } from "@duplojs/utils";
-import { favoriteEquationRules } from "@vendors/entity-rules";
+import { favoriteEquationRules } from "@lib/entity-rules";
 import { UserId } from "../common/user";
 import { operatorContentSchema } from "../common/typesAdvancedQuery/operator";
 

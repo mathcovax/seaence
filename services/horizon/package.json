@@ -7,12 +7,15 @@
     "duplo:dev": "tsx --watch interfaces/http/main.ts",
     "duplo:generate": "duplojs-types-codegen --import @duplojs/node/globals --require interfaces/http/plugins/generate.ts --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/horizon/duplojsTypesCodegen.d.ts",
     "test:lint": "eslint",
+    "test:lint:fix": "eslint --fix",
     "test:types": "tsc",
     "postinstall": "npm run duplo:generate"
   },
   "dependencies": {
     "@duplojs/http": "0.13.1",
+    "@duplojs/utils": "1.9.9",
     "@duplojs/server-utils": "0.4.1",
+
     "@duplojs/core": "1.0.3",
     "@duplojs/http-client": "1.2.3",
     "@duplojs/node": "1.0.3",

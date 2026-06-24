@@ -1,14 +1,15 @@
-import { type GetValueObject, zod } from "@vendors/clean";
-import { baseWarningRules } from "@vendors/entity-rules";
+import { C } from "@duplojs/utils";
+import { baseWarningRules } from "@lib/entity-rules";
 
-export const warningReasonObjecter = zod
-	.string()
-	.min(baseWarningRules.reason.min)
-	.max(baseWarningRules.reason.max)
-	.createValueObjecter("warningReason");
-export type WarningReason = GetValueObject<typeof warningReasonObjecter>;
+export const WarningReason = C.createNewType(
+	"WarningReason",
+	C.String,
+	[
+		C.StringMin(baseWarningRules.reason.min),
+		C.StringMax(baseWarningRules.reason.max),
+	],
+);
+export type WarningReason = C.GetNewType<typeof WarningReason>;
 
-export const warningMakeUserBanObjecter = zod
-	.boolean()
-	.createValueObjecter("warningMakeUserBan");
-export type WarningMakeUserBan = GetValueObject<typeof warningMakeUserBanObjecter>;
+export const WarningMakeUserBan = C.createNewType("WarningMakeUserBan", C.Boolean);
+export type WarningMakeUserBan = C.GetNewType<typeof WarningMakeUserBan>;

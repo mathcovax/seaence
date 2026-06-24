@@ -3,32 +3,34 @@
   "description": "Microservice de gestion du contenu éditorial. Nommé d'après les bancs de poissons ('school' en anglais), il orchestre les articles et leurs sujets, reflétant ainsi leur organisation collective et structurée.",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --clear-screen=false --include interfaces/http/main.ts,interfaces/asyncMessage/main.ts interfaces/main.ts",
-    "start": "tsx interfaces/main.ts",
-    "duplo:dev": "tsx --watch interfaces/http/main.ts",
-    "duplo:start": "tsx interfaces/http/main.ts",
-    "duplo:generate": "DB_CONNECTION=false duplojs-types-codegen --import @duplojs/node/globals --include interfaces/http/routes/index.ts --output ../../libs/clients-type/types/school/duplojsTypesCodegen.d.ts",
+    "dev": "tsx --watch interfaces/main.js",
+    "start": "tsx interfaces/main.js",
 
-    "test:lint": "eslint",
-    "test:types": "tsc",
+    "http:dev": "tsx watch --tsconfig interfaces/http/tsconfig.json interfaces/http/main.ts",
+    "http:start": "tsx --tsconfig interfaces/http/tsconfig.json interfaces/http/main.ts",
 
-    "fixtures": "tsx interfaces/fixtures/index.ts",
+    "test:types": "./.commands/test-types.sh",
+    "test:lint": "./.commands/test-lint.sh",
+    "test:lint:fix": "./.commands/test-lint.sh --fix",
 
-    "postinstall": "npm run duplo:generate"
+    "fixtures": "tsx interfaces/fixtures/index.ts"
   },
   "dependencies": {
-    "@duplojs/core": "1.0.3",
-    "@duplojs/node": "1.0.3",
-    "dotenv": "16.4.5",
-    "dotenv-expand": "12.0.1",
-    "mongodb": "6.15.0",
-    "uuidv7": "1.0.2",
-    "ts-pattern": "5.7.0"
+    "@duplojs/http": "0.13.1",
+    "@duplojs/utils": "1.9.9",
+    "@duplojs/server-utils": "0.4.1",
+    "mongodb": "7.3.0",
+    "uuidv7": "1.2.1",
+    "@lib/entity-rules": "file:../libs/entity-rules",
+    "@lib/client-type": "file:../libs/client-type",
+    "@lib/async-message": "file:../libs/async-message",
+    "@lib/eslint": "file:../libs/eslint",
+    "@lib/logger": "file:../libs/backend-logger",
+    "@lib/fixture": "file:../libs/fixture"
   },
   "devDependencies": {
-    "@duplojs/types-codegen": "1.1.3",
-    "@types/node": "22.13.10",
-    "tsx": "4.19.3",
-    "typescript": "5.8.2"
+    "@types/node": "22.15.0",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
   }
 }

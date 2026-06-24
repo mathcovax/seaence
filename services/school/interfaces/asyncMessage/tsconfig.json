@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+	  "@http/*": ["./*"],
+	  "@applications/*": ["../../business/applications/*"],
+	  "@domains/*": ["../../business/domains/*"],
+	  "@adapters/*": ["../adapters/*"],
+	  "@providers/asyncMessage": ["../providers/asyncMessage/index.ts"],
+	  "@envs": ["../envs.ts"],
+    },
+  },
+  "include": [
+	"**/*.ts", 
+	"../../business/domains/**/*.ts", 
+	"../../business/applications/**/*.ts", 
+	"../adapters/**/*.ts",
+	"../envs.ts",
+  ],
+}

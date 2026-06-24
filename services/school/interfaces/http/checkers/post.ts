@@ -1,25 +1,57 @@
-import { type PostId } from "@business/domains/entities/post";
-import { findPostByIdUsecase } from "@interfaces/usecase";
+import { ResponseContract, createPresetChecker, useCheckerBuilder } from "@duplojs/http";
+import { E } from "@duplojs/utils";
+import { postPort } from "@adapters/ports";
+import { Post } from "@domains/entities/post";
 
-export const postExistCheck = createChecker("postExist")
+export const postExistChecker = useCheckerBuilder()
 	.handler(
-		async(input: PostId, output) => {
-			const post = await findPostByIdUsecase.execute({ id: input });
+		async(id: Post.Id, { output }) => {
+			const result = await postPort.findOneById(id);
 
-			if (post) {
-				return output("post.exist", post);
-			} else {
+			if (E.isLeft(result)) {
 				return output("post.notfound", null);
 			}
+
+			return output("post.found", E.unwrapRight(result));
 		},
 	);
 
-export const iWantPostExistById = createPresetChecker(
-	postExistCheck,
+export const iWantPostExistsById = createPresetChecker(
+	postExistChecker,
 	{
-		result: "post.exist",
-		catch: () => new NotFoundHttpResponse("post.notfound"),
+		result: "post.found",
+		indexing: "post",
+		otherwise: ResponseContract.notFound("post.notfound"),
+	},
+);
+
+export const computePostStatusChecker = useCheckerBuilder()
+	.handler(
+		(post: Post.Entity, { output }) => E.matchInformation(
+			Post.computeStatus(post),
+			{
+				"post.compliant": (answer) => output("post.compliant", answer),
+				"post.notCompliant": (answer) => output("post.notCompliant", answer),
+				"post.unprocessed": (answer) => output("post.unprocessed", answer),
+			},
+		),
+	);
+
+export const iWantPostWithAvailableStatus = createPresetChecker(
+	computePostStatusChecker,
+	{
+		result: ["post.unprocessed", "post.compliant"],
+		otherwise: ResponseContract.notFound("post.notfound"),
 		indexing: "post",
 	},
-	makeResponseContract(NotFoundHttpResponse, "post.notfound"),
 );
+
+export const iWantPostWithUnprocessedStatus = createPresetChecker(
+	computePostStatusChecker,
+	{
+		result: "post.unprocessed",
+		otherwise: ResponseContract.notFound("post.unprocessed.wrongStatus"),
+		indexing: "post",
+	},
+);
+

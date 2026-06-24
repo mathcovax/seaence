@@ -1,11 +1,11 @@
-import { SchoolAPI } from "@interfaces/providers/school";
+import { SchoolProvider } from "@interfaces/providers/school";
 
 export const postExistCheck = createChecker("postExist")
 	.handler(
-		async(input: string, output) => {
-			const schoolResponse = await SchoolAPI.findPost(input);
+		async(postId: string, output) => {
+			const schoolResponse = await SchoolProvider.findOneAvailablePost({ postId });
 
-			if (schoolResponse.information === "post.found") {
+			if (schoolResponse.information === "availablePost.found") {
 				return output("post.exist", schoolResponse.body);
 			} else {
 				return output("post.notfound", null);

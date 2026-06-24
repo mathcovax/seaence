@@ -1,6 +1,6 @@
 import { C, E } from "@duplojs/utils";
 import { DocumentFolder } from "@business/domains/entities/documentFolder";
-import { documentFolderRules } from "@vendors/entity-rules";
+import { documentFolderRules } from "@lib/entity-rules";
 
 interface Input<
 	GenericDocumentFolder extends DocumentFolder.Entity,

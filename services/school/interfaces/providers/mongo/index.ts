@@ -1,4 +1,4 @@
-import { envs } from "@interfaces/envs";
+import { envs } from "@envs";
 import { MongoClient } from "mongodb";
 import { type MongoPost } from "./entities/post";
 import { type MongoAnswer } from "./entities/answer";

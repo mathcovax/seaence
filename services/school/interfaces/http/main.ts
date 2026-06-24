@@ -1,26 +1,22 @@
-import "@duplojs/node";
-import "@duplojs/node/globals";
-import { Duplo, useProcessBuilder, useRouteBuilder } from "@duplojs/core";
+import { createHub, routeStore } from "@duplojs/http";
+import { codeGeneratorPlugin } from "@duplojs/http/codeGenerator";
+import { createHttpServer } from "@duplojs/http/node";
 import { envs } from "../envs";
+
 import "./routes";
-import { debug } from "@vendors/duplo-plugins/debug";
+import "./plugins/generate";
 
-const duplo = new Duplo({
-	environment: envs.ENVIRONMENT,
-	host: envs.HOST,
-	port: envs.PORT,
-	plugins: [
-		debug({
-			dsn: envs.GLITCHTIP_DSN,
-		}),
-	],
-});
+const hub = createHub({ environment: "DEV" })
+	.plug(codeGeneratorPlugin({ outputFile: envs.CODEGEN_PATH }))
+	.register(routeStore.getAll());
 
-duplo.register(
-	...useProcessBuilder.getAllCreatedProcess(),
-	...useRouteBuilder.getAllCreatedRoute(),
-);
-
-await duplo.launch(
-	() => void console.log("School service is running !"),
-);
+await createHttpServer(
+	hub,
+	{
+		host: envs.HOST,
+		port: envs.PORT,
+	},
+)
+	.then(
+		() => void console.log(`${envs.SERVICE_NAME} service is running !`),
+	);

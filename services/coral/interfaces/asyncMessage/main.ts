@@ -1,2 +1,3 @@
-import "@vendors/backend-logger";
+import "@lib/logger";
+
 import "./deleteUser";

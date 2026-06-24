@@ -1,14 +1,14 @@
 import { Page } from "@business/entities/page";
-import { SchoolAPI } from "@interfaces/providers/school";
-import { match } from "ts-pattern";
+import { D, O, P } from "@duplojs/utils";
+import { SchoolProvider } from "@interfaces/providers/school";
 
 useBuilder()
 	.createRoute("POST", "/post-moderation-page")
 	.cut(
 		async({ dropper }) => {
-			const schoolResponse = await SchoolAPI.findOldestUnprocessedPost();
+			const schoolResponse = await SchoolProvider.findOldestUnprocessedPost();
 
-			return match(schoolResponse)
+			return P.match(schoolResponse)
 				.with(
 					{ information: "oldestUnprocessedPost.notfound" },
 					() => new NotFoundHttpResponse("postModerationPage.notfound"),
@@ -24,9 +24,9 @@ useBuilder()
 	)
 	.cut(
 		async({ dropper }) => {
-			const schoolResponse = await SchoolAPI.getUnprocessedPostDetails();
+			const schoolResponse = await SchoolProvider.getUnprocessedPostDetails();
 
-			return match(schoolResponse)
+			return P.match(schoolResponse)
 				.with(
 					{ information: "unprocessedPost.details" },
 					({ body }) => dropper({
@@ -41,13 +41,20 @@ useBuilder()
 	)
 	.handler(
 		(pickup) => {
-			const { details, post } = pickup(["details", "post"]);
+			const floorFragment = pickup(["details", "post"]);
+
+			// theDate translation
+			const post = O.transformProperty(
+				floorFragment.post,
+				"createdAt",
+				D.toISOString,
+			);
 
 			return new OkHttpResponse(
 				"postModerationPage.found",
 				{
 					post,
-					unprocessedTotalCount: details.totalCount,
+					unprocessedTotalCount: floorFragment.details.totalCount,
 				},
 			);
 		},

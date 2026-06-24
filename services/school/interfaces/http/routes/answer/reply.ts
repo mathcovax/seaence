@@ -1,0 +1,41 @@
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { asyncPipe, DPE, E } from "@duplojs/utils";
+import { useCases } from "@adapters/useCases";
+import { Answer } from "@domains/entities/answer";
+import { Post } from "@domains/entities/post";
+import { UserId, UserName } from "@domains/common/user";
+import { iWantPostExistsById, iWantPostWithAvailableStatus } from "@http/checkers";
+
+useRouteBuilder("POST", "/reply-to-post")
+	.extract({
+		body: DPE.object({
+			postId: Post.Id.toExtractParser(),
+			content: Answer.Content.toExtractParser(),
+			authorId: UserId.toExtractParser(),
+			authorName: UserName.toExtractParser(),
+		}),
+	})
+	.presetCheck(
+		iWantPostExistsById,
+		({ body }) => body.postId,
+	)
+	.presetCheck(
+		iWantPostWithAvailableStatus,
+		(floor) => floor.post,
+	)
+	.handler(
+		ResponseContract.created("answer.created"),
+		({ body, post }, { response }) => asyncPipe(
+			useCases.replyToPostUseCase({
+				post,
+				content: body.content,
+				authorId: body.authorId,
+				authorName: body.authorName,
+			}),
+			E.unwrapSelectionOrThrow({
+				createNewTypeError: false,
+				replyPost: true,
+			}),
+			() => response("answer.created"),
+		),
+	);

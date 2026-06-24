@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+	  "@http/*": ["./*"],
+	  "@applications/*": ["../../business/applications/*"],
+	  "@domains/*": ["../../business/domains/*"],
+	  "@adapters/*": ["../adapters/*"],
+	  "@envs": ["../envs.ts"],
+    },
+  },
+  "include": [
+	"**/*.ts", 
+	"../../business/domains/**/*.ts", 
+	"../../business/applications/**/*.ts", 
+	"../adapters/**/*.ts",
+	"../envs.ts",
+  ],
+}

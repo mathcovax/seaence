@@ -1,5 +1,14 @@
-import { forwardLogger, logger } from "./logger";
-export * from "./logger";
+export function logger(...args: any[]) {
+	console.dir(
+		args[1]
+			? args
+			: args[0],
+		{
+			depth: 10,
+			colors: true,
+		},
+	);
+}
 
 process.on(
 	"uncaughtException",
@@ -8,11 +17,3 @@ process.on(
 		process.exit(process.exitCode);
 	},
 );
-
-declare global {
-	// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-	const forwardLogger: typeof import("./logger").forwardLogger;
-}
-
-// @ts-expect-error global error
-global.forwardLogger = forwardLogger;

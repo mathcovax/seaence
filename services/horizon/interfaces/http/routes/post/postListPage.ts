@@ -1,9 +1,9 @@
+import { P } from "@duplojs/utils";
 import { BackedDocument } from "@business/entities/bakedDocument";
 import { Page } from "@business/entities/page";
 import { postConfig } from "@interfaces/configs/post";
 import { iWantDocumentExistById } from "@interfaces/http/checkers/document";
-import { SchoolAPI } from "@interfaces/providers/school";
-import { match } from "ts-pattern";
+import { SchoolProvider } from "@interfaces/providers/school";
 
 useBuilder()
 	.createRoute("POST", "/post-list-page")
@@ -18,12 +18,12 @@ useBuilder()
 	)
 	.cut(
 		async({ pickup, dropper }) => {
-			const { document } = pickup(["document"]);
-			const details = await SchoolAPI.findDocumentPostsDetails(document.nodeSameRawDocumentId);
+			const { nodeSameRawDocumentId } = pickup("document");
+			const details = await SchoolProvider.findManyAvailablePostDetails({ nodeSameRawDocumentId });
 
-			return match(details)
+			return P.match(details)
 				.with(
-					{ information: "document.posts.details" },
+					{ information: "posts.foundDetails" },
 					({ body }) => dropper({ documentPostsDetails: body }),
 				)
 				.exhaustive();
