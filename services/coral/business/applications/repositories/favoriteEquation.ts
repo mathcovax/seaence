@@ -1,30 +1,45 @@
-import { type UserId } from "@business/domains/common/user";
-import { type FavoriteEquationId, type FavoriteEquationEntity, type FavoriteEquationName } from "@business/domains/entities/favoriteEquation";
-import { createRepositoryHandler, type Text, type Int, type PositiveInt, type RepositoryBase } from "@vendors/clean";
+import { C } from "@duplojs/utils";
+import type { UserId } from "@business/domains/common/user";
+import { FavoriteEquation } from "@business/domains/entities/favoriteEquation";
 
-interface InputFindFavoriteEquations {
-	userId: UserId;
-	partialFavoriteEquationName: Text;
-	page: Int;
-	quantityPerPage: PositiveInt;
-}
+export const PartialFavoriteEquationNameConstraint = C.createConstraintsSet(
+	C.String,
+	[FavoriteEquation.Name.getConstraint("string-max-350")],
+);
+export type PartialFavoriteEquationNameConstraint = C.GetConstraints<
+		typeof PartialFavoriteEquationNameConstraint
+>;
 
-export interface FavoriteEquationRepository extends RepositoryBase<FavoriteEquationEntity> {
-	generateFavoriteEquationId(): FavoriteEquationId;
-	delete(favoriteEquation: FavoriteEquationEntity): Promise<void>;
-	findOneFavoriteEquationById(favoriteEquationId: FavoriteEquationId): Promise<FavoriteEquationEntity | null>;
-	findOneFavoriteEquation(
-		userId: UserId,
-		favoriteEquationName: FavoriteEquationName
-	): Promise<FavoriteEquationEntity | null>;
-	findManyFavoriteEquation(
-		input: InputFindFavoriteEquations,
-	): Promise<FavoriteEquationEntity[]>;
-	countResultOfSearchFavoriteEquation(
-		userId: UserId,
-		partialFavoriteEquationName: Text
-	): Promise<Int>;
+export interface FavoriteEquationRepository {
+	findMany(
+		params: {
+			partialFavoriteEquationName: PartialFavoriteEquationNameConstraint;
+			userId: UserId;
+			page: C.Int;
+			quantityPerPage: C.PositiveInt;
+		},
+	): Promise<FavoriteEquation.Entity[]>;
+	countResultOfFindMany(
+		params: {
+			userId: UserId;
+			partialFavoriteEquationName: PartialFavoriteEquationNameConstraint;
+		},
+	): Promise<C.Int>;
+	findOneById(
+		id: FavoriteEquation.Id,
+	): Promise<C.Maybe<FavoriteEquation.Entity>>;
+	remove(
+		favoriteEquation: FavoriteEquation.Entity,
+	): Promise<void>;
+	findByName(
+		params: {
+			userId: UserId;
+			favoriteEquationName: FavoriteEquation.Name;
+		}
+	): Promise<C.Maybe<FavoriteEquation.Entity>>;
+	generateId(): FavoriteEquation.Id;
+	save(entity: FavoriteEquation.Entity): Promise<FavoriteEquation.Entity>;
 	deleteAllByUserId(userId: UserId): Promise<void>;
 }
 
-export const favoriteEquationRepository = createRepositoryHandler<FavoriteEquationRepository>();
+export const FavoriteEquationRepository = C.createRepository<FavoriteEquationRepository>();

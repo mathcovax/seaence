@@ -1,85 +1,85 @@
-import { userIdObjecter } from "@business/domains/common/user";
-import { documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
-import { nodeSameRawDocumentIdObjecter, documentInFolderNameObjecter } from "@business/domains/entities/documentInFolder";
-import { endpointCreateManyDocumentInFolderSchema } from "@interfaces/http/schemas/documentInFolder";
-import { userCheckManyDocumentFolderCapacityUsecase, userCreateDocumentInManyFoldersUsecase, userFindManyDocumentFolderByIdsUsecase } from "@interfaces/usecase";
+import { NodeSameRawDocumentId } from "@business/domains/common/nodeSameRawDocument";
+import { UserId } from "@business/domains/common/user";
+import { DocumentFolder } from "@business/domains/entities/documentFolder";
+import { DocumentInFolder } from "@business/domains/entities/documentInFolder";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { A, DPE } from "@duplojs/utils";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/create-many-document-in-folder")
+const defaultCountErrors = 0;
+
+const endpointDataParser = DPE.object({
+	capacityError: DPE.number(),
+	foundError: DPE.number(),
+});
+
+useRouteBuilder("POST", "/create-many-document-in-folder")
 	.extract({
-		body: zod.object({
-			documentFolderIds: documentFolderIdObjecter.array().toZodSchema(),
-			userId: userIdObjecter.toZodSchema(),
-			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
-			documentInFolderName: documentInFolderNameObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			nodeSameRawDocumentId: NodeSameRawDocumentId.toExtractParser(),
+			documentInFolderName: DocumentInFolder.Name.toExtractParser(),
+			documentFolderIds: DocumentFolder.Id.toExtractParser().array(),
 		}),
 	})
 	.cut(
-		async({ pickup, dropper }) => {
-			const { documentFolderIds, userId } = pickup("body");
+		ResponseContract.notFound("documentFolder.noneFound"),
+		async({ body }, { output, response }) => {
+			const { ownerDocumentFolders, errors } = await useCases.ownerFindManyDocumentFolderUseCase({
+				userId: body.userId,
+				documentFolderIds: body.documentFolderIds,
+			});
 
-			const { userDocumentFolders, errors } = await userFindManyDocumentFolderByIdsUsecase
-				.execute({
-					userId,
-					documentFolderIds,
-				});
-
-			if (!userDocumentFolders.length) {
-				return new NotFoundHttpResponse("documentFolder.noneFound");
+			if (!ownerDocumentFolders) {
+				return response("documentFolder.noneFound");
 			}
 
-			return dropper({
-				userDocumentFolders,
+			return output({
+				ownerDocumentFolders,
 				foundErrors: errors,
 			});
 		},
-		["userDocumentFolders", "foundErrors"],
-		makeResponseContract(NotFoundHttpResponse, "documentFolder.noneFound"),
 	)
 	.cut(
-		({ pickup, dropper }) => {
-			const { userDocumentFolders } = pickup(["userDocumentFolders"]);
+		ResponseContract.forbidden("documentFolder.noneCapacity"),
+		async({ ownerDocumentFolders }, { output, response }) => {
+			const { ownerDocumentFoldersWithCapacity, errors } = await useCases.checkManyDocumentFolderCapacityUseCase({
+				documentFolders: ownerDocumentFolders,
+			});
 
-			const { userDocumentFoldersWithCapacity, errors } = userCheckManyDocumentFolderCapacityUsecase
-				.execute({
-					userDocumentFolders,
-				});
-
-			if (!userDocumentFoldersWithCapacity.length) {
-				return new ForbiddenHttpResponse("documentFolder.noneCapacity");
+			if (!ownerDocumentFoldersWithCapacity) {
+				return response("documentFolder.noneCapacity");
 			}
 
-			return dropper({
-				userDocumentFoldersWithCapacity,
-				capacityError: errors,
+			return output({
+				ownerDocumentFoldersWithCapacity,
+				capacityErrors: errors,
 			});
 		},
-		["userDocumentFoldersWithCapacity", "capacityError"],
-		makeResponseContract(ForbiddenHttpResponse, "documentFolder.noneCapacity"),
 	)
 	.handler(
-		async(pickup) => {
-			const {
+		ResponseContract.ok("documentInFolder.created", endpointDataParser),
+		(
+			{
 				body: { nodeSameRawDocumentId, documentInFolderName },
-				userDocumentFoldersWithCapacity,
 				foundErrors,
-				capacityError,
-			} = pickup(["body", "userDocumentFoldersWithCapacity", "capacityError", "foundErrors"]);
-
-			await userCreateDocumentInManyFoldersUsecase.execute({
-				userDocumentFoldersWithCapacity,
-				nodeSameRawDocumentId,
-				documentInFolderName,
-			});
-
-			return new OkHttpResponse("documentInFolder.created", {
-				capacityError: capacityError.length,
-				foundError: foundErrors.length,
-			});
-		},
-		makeResponseContract(
-			OkHttpResponse,
-			"documentInFolder.created",
-			endpointCreateManyDocumentInFolderSchema,
-		),
+				capacityErrors,
+				ownerDocumentFoldersWithCapacity,
+			},
+			{ response },
+		) => useCases.ownerCreateDocumentInManyFolderUseCase({
+			ownerDocumentFoldersWithCapacity,
+			nodeSameRawDocumentId,
+			documentInFolderName,
+		})
+			.then(
+				() => response("documentInFolder.created", {
+					foundError: foundErrors
+						? A.length(foundErrors)
+						: defaultCountErrors,
+					capacityError: capacityErrors
+						? A.length(capacityErrors)
+						: defaultCountErrors,
+				}),
+			),
 	);

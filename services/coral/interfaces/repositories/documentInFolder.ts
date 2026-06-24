@@ -1,103 +1,100 @@
-import { documentInFolderRepository } from "@business/applications/repositories/documentInFolder";
-import { DocumentInFolderEntity, nodeSameRawDocumentIdObjecter } from "@business/domains/entities/documentInFolder";
-import { escapeRegExp } from "@duplojs/utils";
+import { A, C, escapeRegExp, toNative, unwrap, unwrapGroup } from "@duplojs/utils";
+import { DocumentInFolderRepository } from "@business/applications/repositories/documentInFolder";
 import { mongo } from "@interfaces/providers/mongo";
-import { EntityHandler, intObjecter, toSimpleObject } from "@vendors/clean";
+import { DocumentInFolder } from "@business/domains/entities/documentInFolder";
+import { NodeSameRawDocumentId } from "@business/domains/common/nodeSameRawDocument";
 
-documentInFolderRepository.default = {
-	async save(documentInFolderEntity) {
-		const simpledocumentInFolder = documentInFolderEntity.toSimpleObject();
+export const documentInFolderRepository = DocumentInFolderRepository.createImplementation({
+	async findMany(params) {
+		const { partialDocumentInFolderName, documentFolder, page, quantityPerPage } = unwrapGroup(params);
+
+		return mongo.documentInFolder
+			.find(
+				{
+					documentFolderId: unwrap(documentFolder.id),
+					name: {
+						$regex: escapeRegExp(partialDocumentInFolderName),
+						$options: "i",
+					},
+				},
+			)
+			.sort({ addedAt: -1 })
+			.skip(page * quantityPerPage)
+			.limit(quantityPerPage)
+			.toArray()
+			.then(
+				A.map(DocumentInFolder.Entity.mapOrThrow),
+			);
+	},
+	async countResultOfFindMany(params) {
+		const { partialDocumentInFolderName, documentFolder } = unwrapGroup(params);
+
+		return mongo.documentInFolder
+			.countDocuments(
+				{
+					documentFolderId: unwrap(documentFolder.id),
+					name: {
+						$regex: escapeRegExp(partialDocumentInFolderName),
+						$options: "i",
+					},
+				},
+			)
+			.then(
+				C.Int.createOrThrow,
+			);
+	},
+	async findOne(params) {
+		const result = await mongo.documentInFolder.findOne({
+			documentFolderId: unwrap(params.documentFolder.id),
+			nodeSameRawDocumentId: unwrap(params.nodeSameRawDocumentId),
+		});
+
+		if (!result) {
+			return C.none("documentInFolder");
+		}
+
+		return C.some(DocumentInFolder.Entity.mapOrThrow(result));
+	},
+	async remove(entity) {
+		await mongo.documentInFolder.deleteOne({
+			nodeSameRawDocumentId: unwrap(entity.nodeSameRawDocumentId),
+		});
+	},
+	async deleteAllByUserId(userId) {
+		await mongo.documentInFolder.deleteMany(
+			{
+				userId: unwrap(userId),
+			},
+		);
+	},
+	async save(entity) {
+		const simpleEntity = C.unwrapEntity(entity, { transformer: toNative });
 
 		await mongo.documentInFolder.updateOne(
 			{
-				documentFolderId: simpledocumentInFolder.documentFolderId,
-				nodeSameRawDocumentId: simpledocumentInFolder.nodeSameRawDocumentId,
+				documentFolderId: simpleEntity.documentFolderId,
+				nodeSameRawDocumentId: simpleEntity.nodeSameRawDocumentId,
 			},
 			{
 				$set: {
-					...simpledocumentInFolder,
+					...simpleEntity,
 					updatedAt: new Date(),
 				},
 			},
 			{ upsert: true },
 		);
 
-		return documentInFolderEntity;
+		return entity;
 	},
-	async delete(documentInFolderEntity) {
-		await mongo.documentInFolder.deleteOne({
-			nodeSameRawDocumentId: documentInFolderEntity.nodeSameRawDocumentId.value,
-		});
-	},
-	async findDocumentInFolder(documentFolderId, nodeSameRawDocumentId) {
-		const documentInFolder = await mongo.documentInFolder.findOne({
-			documentFolderId: documentFolderId.value,
-			nodeSameRawDocumentId: nodeSameRawDocumentId.value,
-		});
-
-		if (!documentInFolder) {
-			return null;
-		}
-
-		return EntityHandler.unsafeMapper(
-			DocumentInFolderEntity,
-			documentInFolder,
-		);
-	},
-	async searchDocuments(input) {
-		const { documentFolder, partialDocumentInFolderName, quantityPerPage, page } = input;
-
-		const mongoDocumentsInFolder = await mongo.documentInFolder
-			.find(
-				{
-					documentFolderId: documentFolder.id.value,
-					name: {
-						$regex: escapeRegExp(partialDocumentInFolderName.value),
-						$options: "i",
-					},
-				},
-			)
-			.sort({ addedAt: -1 })
-			.skip(page.value * quantityPerPage.value)
-			.limit(quantityPerPage.value)
-			.toArray();
-
-		const documentsInFolder = mongoDocumentsInFolder.map(
-			(mongoDocumentInFolder) => EntityHandler.unsafeMapper(
-				DocumentInFolderEntity,
-				mongoDocumentInFolder,
-			),
-		);
-
-		return documentsInFolder;
-	},
-	async countResultOfSearchDocumentInFolder(documentFolder, partialDocumentInFolderName) {
-		const numberOfDocumentsInFolder = await mongo.documentInFolder
-			.countDocuments(
-				{
-					documentFolderId: documentFolder.id.value,
-					name: partialDocumentInFolderName
-						? {
-							$regex: escapeRegExp(partialDocumentInFolderName.value),
-							$options: "i",
-						}
-						: undefined,
-				},
-			)
-			.then(
-				(numberOfDocumentsInFolder) => intObjecter.unsafeCreate(numberOfDocumentsInFolder),
-			);
-
-		return numberOfDocumentsInFolder;
-	},
-	nodeSameRawDocumentIdsHaveDocumentInFolder(userId, nodeSameRawDocumentIds) {
+	async nodeSameRawDocumentIdsHaveDocumentInFolder(params) {
+		const { userId, nodeSameRawDocumentIds } = unwrapGroup(params);
 		return mongo.documentInFolder
 			.aggregate<{ _id: string }>([
 				{
 					$match: {
-						userId: userId.value,
+						userId,
 						nodeSameRawDocumentId: {
-							$in: toSimpleObject(nodeSameRawDocumentIds),
+							$in: nodeSameRawDocumentIds,
 						},
 					},
 				},
@@ -109,17 +106,7 @@ documentInFolderRepository.default = {
 			])
 			.toArray()
 			.then(
-				(result) => result
-					.map(
-						({ _id }) => nodeSameRawDocumentIdObjecter.unsafeCreate(_id),
-					),
+				A.map(NodeSameRawDocumentId.createOrThrow),
 			);
 	},
-	async deleteAllByUserId(userId) {
-		await mongo.documentInFolder.deleteMany(
-			{
-				userId: userId.value,
-			},
-		);
-	},
-};
+});

@@ -1,5 +1,5 @@
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { match } from "ts-pattern";
 
 useMustBeConnectedBuilder()
@@ -13,7 +13,7 @@ useMustBeConnectedBuilder()
 		async({ pickup, dropper }) => {
 			const { user, favoriteEquationId } = pickup(["user", "favoriteEquationId"]);
 
-			const result = await CoralAPI.removeFavoriteEquation({
+			const result = await CoralProvider.removeFavoriteEquation({
 				userId: user.id,
 				favoriteEquationId,
 			});

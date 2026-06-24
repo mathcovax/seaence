@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { ReportingBakedDocumentTranslationPage } from "@vendors/clients-type/bridge/duplojsTypesCodegen";
 import { reportingBakedDocumentTranslationPage } from "../router";
-import type { PartialKeys } from "@duplojs/utils";
+import type { O } from "@duplojs/utils";
 
 interface Props {
-	bakedDocument: PartialKeys<
+	bakedDocument: O.PartialKeys<
 		ReportingBakedDocumentTranslationPage["bakedDocument"],
         | "id"
         | "nodeSameRawDocumentId"

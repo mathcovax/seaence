@@ -1,7 +1,7 @@
+import { asyncPipe, O, when } from "@duplojs/utils";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { documentFolderRules } from "@vendors/entity-rules";
-import { match } from "ts-pattern";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/rename-document-folder")
@@ -14,43 +14,37 @@ useMustBeConnectedBuilder()
 				.max(documentFolderRules.name.maxLength),
 		}),
 	})
-	.cut(
-		async({ pickup, dropper }) => {
-			const { user, body: { documentFolderId, newDocumentFolderName } } = pickup(["body", "user"]);
-
-			const result = await CoralAPI.renameDocumentFolder({
+	.handler(
+		async(pickup) => asyncPipe(
+			pickup(["body", "user"]),
+			(
+				{ user, body: { documentFolderId, newDocumentFolderName } },
+			) => CoralProvider.renameDocumentFolder({
 				userId: user.id,
 				documentFolderId,
 				newDocumentFolderName,
-			});
-
-			return match(result)
-				.with(
-					{ information: "documentFolder.notfound" },
-					() => new NotFoundHttpResponse("documentFolder.notfound"),
-				)
-				.with(
-					{ information: "documentFolder.wrongProprietary" },
-					() => new ForbiddenHttpResponse("documentFolder.wrongProprietary"),
-				)
-				.with(
-					{ information: "documentFolder.alreadyExists" },
-					() => new ConflictHttpResponse("documentFolder.alreadyExists"),
-				)
-				.with(
-					{ information: "documentFolder.renamed" },
-					() => dropper(null),
-				)
-				.exhaustive();
-		},
-		[],
+			}),
+			when(
+				O.discriminate("information", "documentFolder.notfound"),
+				() => new NotFoundHttpResponse("documentFolder.notfound"),
+			),
+			when(
+				O.discriminate("information", "documentFolder.wrongProprietary"),
+				() => new ForbiddenHttpResponse("documentFolder.wrongProprietary"),
+			),
+			when(
+				O.discriminate("information", "documentFolder.alreadyExists"),
+				() => new ConflictHttpResponse("documentFolder.alreadyExists"),
+			),
+			when(
+				O.discriminate("information", "documentFolder.renamed"),
+				() => new NoContentHttpResponse("documentFolder.renamed"),
+			),
+		),
 		[
 			...makeResponseContract(NotFoundHttpResponse, "documentFolder.notfound"),
 			...makeResponseContract(ConflictHttpResponse, "documentFolder.alreadyExists"),
 			...makeResponseContract(ForbiddenHttpResponse, "documentFolder.wrongProprietary"),
+			...makeResponseContract(NoContentHttpResponse, "documentFolder.renamed"),
 		],
-	)
-	.handler(
-		() => new OkHttpResponse("documentFolder.renamed"),
-		makeResponseContract(OkHttpResponse, "documentFolder.renamed"),
 	);

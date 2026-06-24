@@ -2,7 +2,7 @@ import { DocumentInFolder } from "@business/entities/documentInFolder";
 import { documentInFolderConfig } from "@interfaces/configs/documentInFolder";
 import { iWantNodeSameRawDocumentExist } from "@interfaces/http/checkers/nodeSameRawDocument";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { documentInFolderRules } from "@vendors/entity-rules";
 import { match } from "ts-pattern";
 
@@ -25,14 +25,14 @@ useMustBeConnectedBuilder()
 		iWantNodeSameRawDocumentExist,
 		(pickup) => pickup("body").nodeSameRawDocumentId,
 	)
-	.cut(
-		async({ pickup, dropper }) => {
+	.handler(
+		async(pickup) => {
 			const {
 				user,
 				body: { nodeSameRawDocumentId, documentInFolderName, documentFolderIds },
 			} = pickup(["body", "user"]);
 
-			const response = await CoralAPI.createManyDocumentInFolder({
+			const response = await CoralProvider.createManyDocumentInFolder({
 				userId: user.id,
 				documentFolderIds,
 				documentInFolderName,
@@ -50,28 +50,13 @@ useMustBeConnectedBuilder()
 				)
 				.with(
 					{ information: "documentInFolder.created" },
-					({ body }) => dropper(body),
+					(response) => new OkHttpResponse("documentInFolder.created", response.body),
 				)
 				.exhaustive();
 		},
-		["capacityError", "foundError"],
 		[
 			...makeResponseContract(NotFoundHttpResponse, "documentFolder.noneFound"),
 			...makeResponseContract(ForbiddenHttpResponse, "documentFolder.noneCapacity"),
+			...makeResponseContract(OkHttpResponse, "documentInFolder.created", DocumentInFolder.createManyResult),
 		],
-	)
-	.handler(
-		(pickup) => {
-			const { capacityError, foundError } = pickup(["capacityError", "foundError"]);
-
-			return new OkHttpResponse("documentInFolder.created", {
-				capacityError,
-				foundError,
-			});
-		},
-		makeResponseContract(
-			OkHttpResponse,
-			"documentInFolder.created",
-			DocumentInFolder.createManyResult,
-		),
 	);

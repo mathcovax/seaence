@@ -1,6 +1,6 @@
 import { type ScienceDatabaseRepository } from "@business/applications/repositories/scienceDatabase";
 import { type ArticleReferenceEntity } from "@business/domains/entities/articleReference";
-import { getTypedEntries } from "@duplojs/utils";
+import { A, O } from "@duplojs/utils";
 import { RepositoryError, TechnicalError } from "@vendors/clean";
 import { match } from "ts-pattern";
 import { sendPubmedArticle } from "./pubmed/send";
@@ -14,13 +14,13 @@ export function exportArticleReferences(
 ) {
 	return Promise
 		.all(
-			getTypedEntries(
-				Object.groupBy(
+			O.entries(
+				A.group(
 					articleReferences,
-					({ provider }) => provider.value,
+					(articleReference, { output }) => output(articleReference.provider.value, articleReference),
 				),
 			).map(
-				([provider, groupedArticleReferences]) => match(provider)
+				([provider, groupedArticleReferences = []]) => match(provider)
 					.returnType<Result>()
 					.with(
 						"pubmed",

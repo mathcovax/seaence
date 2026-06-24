@@ -7,7 +7,7 @@ export interface UpdateUserMessageValue {
 	language?: "fr-FR" | "en-US";
 }
 
-export class UpdateUserMessageColletion extends MessageCollection<UpdateUserMessageValue> {
+export class UpdateUserMessageCollection extends MessageCollection<UpdateUserMessageValue> {
 	public static readonly oneWeekInSecond = 604800;
 
 	public constructor(asyncMessage: AsyncMessage) {
@@ -15,7 +15,7 @@ export class UpdateUserMessageColletion extends MessageCollection<UpdateUserMess
 			asyncMessage,
 			{
 				name: "updateUser",
-				expireIn: UpdateUserMessageColletion.oneWeekInSecond,
+				expireIn: UpdateUserMessageCollection.oneWeekInSecond,
 			},
 		);
 	}

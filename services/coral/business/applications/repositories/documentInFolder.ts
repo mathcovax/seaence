@@ -1,33 +1,49 @@
-import { type UserId } from "@business/domains/common/user";
-import { type DocumentFolderEntity, type DocumentFolderId } from "@business/domains/entities/documentFolder";
-import { type NodeSameRawDocumentId, type DocumentInFolderEntity } from "@business/domains/entities/documentInFolder";
-import { createRepositoryHandler, type Text, type Int, type PositiveInt, type RepositoryBase } from "@vendors/clean";
+import { C } from "@duplojs/utils";
+import type { NodeSameRawDocumentId } from "@business/domains/common/nodeSameRawDocument";
+import type { DocumentFolder } from "@business/domains/entities/documentFolder";
+import { DocumentInFolder } from "@business/domains/entities/documentInFolder";
+import type { UserId } from "@business/domains/common/user";
 
-interface InputFindDocuments {
-	documentFolder: DocumentFolderEntity;
-	partialDocumentInFolderName: Text;
-	quantityPerPage: PositiveInt;
-	page: Int;
-}
+export const PartialDocumentInFolderNameConstraint = C.createConstraintsSet(
+	C.String,
+	[DocumentInFolder.Name.getConstraint("string-max-350")],
+);
+export type PartialDocumentInFolderNameConstraint = C.GetConstraints<
+	typeof PartialDocumentInFolderNameConstraint
+>;
 
-export interface DocumentInFolderRepository extends RepositoryBase<DocumentInFolderEntity> {
-	delete(documentInFolderEntity: DocumentInFolderEntity): Promise<void>;
-	findDocumentInFolder(
-		documentFolderId: DocumentFolderId,
-		nodeSameRawDocumentId: NodeSameRawDocumentId,
-	): Promise<DocumentInFolderEntity | null>;
-	searchDocuments(
-		input: InputFindDocuments,
-	): Promise<DocumentInFolderEntity[]>;
-	countResultOfSearchDocumentInFolder(
-		documentFolder: DocumentFolderEntity,
-		partialDocumentInFolderName: Text | null,
-	): Promise<Int>;
-	nodeSameRawDocumentIdsHaveDocumentInFolder(
-		userId: UserId,
-		nodeSameRawDocumentIds: NodeSameRawDocumentId[]
-	): Promise<NodeSameRawDocumentId[]>;
+export interface DocumentInFolderRepository {
+	findMany(
+		params: {
+			documentFolder: DocumentFolder.Entity;
+			partialDocumentInFolderName: PartialDocumentInFolderNameConstraint;
+			page: C.Int;
+			quantityPerPage: C.PositiveInt;
+		}
+	): Promise<DocumentInFolder.Entity[]>;
+	findOne(
+		params: {
+			documentFolder: DocumentFolder.Entity;
+			nodeSameRawDocumentId: NodeSameRawDocumentId;
+		}
+	): Promise<C.Maybe<DocumentInFolder.Entity>>;
+	save(entity: DocumentInFolder.Entity): Promise<DocumentInFolder.Entity>;
+	remove(entity: DocumentInFolder.Entity): Promise<void>;
+	countResultOfFindMany(
+		params: {
+			documentFolder: DocumentFolder.Entity;
+			partialDocumentInFolderName: PartialDocumentInFolderNameConstraint;
+		},
+	): Promise<C.Int>;
 	deleteAllByUserId(userId: UserId): Promise<void>;
+	nodeSameRawDocumentIdsHaveDocumentInFolder(
+		params: {
+			userId: UserId;
+			nodeSameRawDocumentIds: NodeSameRawDocumentId[];
+		}
+	): Promise<NodeSameRawDocumentId[]>;
 }
 
-export const documentInFolderRepository = createRepositoryHandler<DocumentInFolderRepository>();
+export const DocumentInFolderRepository = C.createRepository<
+	DocumentInFolderRepository
+>();

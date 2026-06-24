@@ -6,6 +6,7 @@ services:
     command: npm -w services/coral run dev
     depends_on:
       - coral-mongo
+      - async-message-mongo
   coral-mongo:
     extends:
       file: ${TEMPLATE_COMPOSE_MONGO_DEV}

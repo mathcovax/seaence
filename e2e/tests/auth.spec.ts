@@ -1,11 +1,9 @@
-import { testCLient, Actions } from "@playwright";
-import { homePageEngine } from "@pages/home";
-import { headerEngine } from "@components/header";
-import { authDialogEngine } from "@components/auth/authDialog";
+import { Actions, Assertions } from "@duplojs/playwright";
+import { testClient } from "@client";
+import { homePage } from "@pages";
+import { headerComponent, sonnerComponent, accountDropdownComponent } from "@components";
+import { authDialogComponent } from "@components/auth";
 import { createFirebaseUser, deleteFirebaseUser, initFirebaseAuth, setupFirebaseAuth } from "@providers/firebase";
-import { Assertions } from "../playwright/assertions";
-import { sonnerEngine } from "@components/sonner";
-import { accountDropdownEngine } from "@components/accountDropdown";
 
 const { firebaseAuth } = await initFirebaseAuth();
 
@@ -14,72 +12,72 @@ const { userFirebaseUid, customToken } = await createFirebaseUser({
 	testUserId: Date.now().toString(),
 });
 
-testCLient.describe(
+testClient.describe(
 	"Auth",
 	() => {
-		testCLient.afterAll(async() => {
+		testClient.afterAll(async() => {
 			await deleteFirebaseUser({
 				firebaseAuth,
 				userFirebaseUid,
 			});
 		});
 
-		testCLient("register and disconnect", async({ webSite, page }) => {
-			await webSite.iNavigateTo(homePageEngine);
+		testClient("register and disconnect", async({ website, page }) => {
+			await website.iNavigateTo(homePage);
 
-			const sonner = await webSite.iWantToExist(sonnerEngine);
+			const sonner = await website.iWantToExist(sonnerComponent);
 
 			await setupFirebaseAuth({
 				playwrightPage: page,
 				customToken,
 			});
 
-			const header = await webSite.iWantToSee(headerEngine);
+			const header = await website.iWantToSee(headerComponent);
 
 			await Actions.click(header, "signButton");
 
-			const authDialog = await webSite.iWantToSee(authDialogEngine);
+			const authDialog = await website.iWantToSee(authDialogComponent);
 
 			await Actions.click(authDialog, "googleLoginButton");
 
 			await Assertions.toBeVisible(authDialog, "registerForm");
 
 			await Actions
-				.withStepContent("fill short username")
+				.withStep("fill short username")
 				.fill(authDialog, "registerFormUsername", "A");
 
 			await Actions.click(authDialog, "registerFormSubmitButton");
 
 			await Assertions
-				.withStepContent("alert a short username")
-				.toHaveText(authDialog, "registerFormUsernameHint");
+				.withStep("alert a short username")
+				.toHaveText(authDialog, "registerFormUsernameHint", "Doit faire au moins 3 caractères.");
 
 			await Actions
-				.withStepContent("fill too long username")
+				.withStep("fill too long username")
 				.fill(authDialog, "registerFormUsername", "thisIsATooLongUsernameForEndToEndTest");
 
 			await Assertions
-				.withStepContent("alert too long username")
-				.toHaveText(authDialog, "registerFormUsernameHint");
+				.withStep("alert too long username")
+				.toHaveText(authDialog, "registerFormUsernameHint", "Doit faire au plus 35 caractères.");
 
 			await Actions
-				.withStepContent("fill good username")
+				.withStep("fill good username")
 				.fill(authDialog, "registerFormUsername", userFirebaseUid);
 
 			await Assertions
-				.withStepContent("no hint")
+				.withStep("no hint")
 				.toHaveNoText(authDialog, "registerFormUsernameHint");
 
 			await Actions
-				.withStepContent("open select language")
+				.withStep("open select language")
 				.click(authDialog, "registerFormTriggerSelectLanguage");
 
 			await Actions
-				.withStepContent("select french")
+				.withStep("select french")
 				.click(authDialog, "registerFormSelectLanguageFranceOption");
 
 			await Actions
-				.withStepContent("valide CGU")
+				.withStep("valide CGU")
 				.click(authDialog, "registerFormValideCGU");
 
 			await Actions.click(authDialog, "registerFormSubmitButton");
@@ -87,7 +85,7 @@ testCLient.describe(
 			await Assertions
 				.toBeVisible(sonner, "firstDefault");
 
-			const accountDropdown = await webSite.iWantToSee(accountDropdownEngine);
+			const accountDropdown = await website.iWantToSee(accountDropdownComponent);
 
 			await Actions.click(accountDropdown, "button");
 
@@ -96,28 +94,28 @@ testCLient.describe(
 			await Assertions.toBeVisible(header, "signButton");
 		});
 
-		testCLient("login and disconnect", async({ webSite, page }) => {
-			await webSite.iNavigateTo(homePageEngine);
+		testClient("login and disconnect", async({ website, page }) => {
+			await website.iNavigateTo(homePage);
 
-			const sonner = await webSite.iWantToExist(sonnerEngine);
+			const sonner = await website.iWantToExist(sonnerComponent);
 
 			await setupFirebaseAuth({
 				playwrightPage: page,
 				customToken,
 			});
 
-			const header = await webSite.iWantToSee(headerEngine);
+			const header = await website.iWantToSee(headerComponent);
 
 			await Actions.click(header, "signButton");
 
-			const authDialog = await webSite.iWantToSee(authDialogEngine);
+			const authDialog = await website.iWantToSee(authDialogComponent);
 
 			await Actions.click(authDialog, "googleLoginButton");
 
 			await Assertions
 				.toBeVisible(sonner, "firstDefault");
 
-			const accountDropdown = await webSite.iWantToSee(accountDropdownEngine);
+			const accountDropdown = await website.iWantToSee(accountDropdownComponent);
 
 			await Actions.click(accountDropdown, "button");
 

@@ -1,4 +1,4 @@
-import { type MybePromise } from "@duplojs/utils";
+import { type MaybePromise } from "@duplojs/utils";
 import { type ChangeStream, type Collection, type CollectionOptions } from "mongodb";
 import { type AsyncMessage } from "./asyncMessage";
 
@@ -20,7 +20,7 @@ export type MessageCollectionCallBack<
 	GenericMessageValue extends unknown = unknown,
 > = (
 	message: Message<GenericMessageValue>
-) => MybePromise<void>;
+) => MaybePromise<void>;
 
 export class MessageCollection<
 	GenericMessageValue extends unknown,

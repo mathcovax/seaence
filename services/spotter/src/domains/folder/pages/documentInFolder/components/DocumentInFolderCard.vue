@@ -34,6 +34,7 @@ function handleRename() {
 	<div
 		class="group px-4 py-2 flex gap-4 items-center bg-muted/50 cursor-pointer hover:bg-muted rounded-md transition-colors"
 		@click="handleClick"
+		:data-testid="`document-in-folder-card-${documentInFolder.nodeSameRawDocumentId}`"
 	>
 		<div class="shrink-0">
 			<DSIcon
@@ -46,6 +47,7 @@ function handleRename() {
 			<p
 				class="truncate"
 				:title="documentInFolder.name"
+				data-testid="document-in-folder-card-name"
 			>
 				{{ documentInFolder.name }}
 			</p>
@@ -70,16 +72,23 @@ function handleRename() {
 						square
 						icon="dotsVertical"
 						@click.stop
+						data-testid="document-in-folder-card-menu-button"
 					/>
 				</DSDropdownMenuTrigger>
 
 				<DSDropdownMenuContent>
-					<DSDropdownMenuItem @click="handleRename">
+					<DSDropdownMenuItem
+						@click="handleRename"
+						data-testid="document-in-folder-card-rename-button"
+					>
 						<DSIcon name="rename" />
 						{{ $t("cta.rename") }}
 					</DSDropdownMenuItem>
 
-					<DSDropdownMenuItem @click="handleDelete">
+					<DSDropdownMenuItem
+						@click="handleDelete"
+						data-testid="document-in-folder-card-delete-button"
+					>
 						<DSIcon name="delete" />
 						{{ $t("cta.delete") }}
 					</DSDropdownMenuItem>

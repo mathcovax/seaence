@@ -1,17 +1,17 @@
-import { mustBeUserFavoriteEquationExistProcess } from "@interfaces/http/processes/mustBeUserFavoriteEquationExist";
-import { endpointFindOneFavoriteEquationSchema } from "@interfaces/http/schemas/favoriteEquation";
+import { FavoriteEquation } from "@business/domains/entities/favoriteEquation";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { C } from "@duplojs/utils";
+import { mustBeOwnerFavoriteEquationProcess } from "@interfaces/http/process/mustBeOwnerFavoriteEquation";
 
-useBuilder()
-	.createRoute("POST", "/find-one-favorite-equation")
-	.execute(
-		mustBeUserFavoriteEquationExistProcess,
-		{ pickup: ["userFavoriteEquation"] },
+useRouteBuilder("POST", "/find-one-favorite-equation")
+	.exec(
+		mustBeOwnerFavoriteEquationProcess,
+		{ imports: ["ownerFavoriteEquation"] },
 	)
 	.handler(
-		(pickup) => {
-			const { userFavoriteEquation } = pickup(["userFavoriteEquation"]);
-
-			return new OkHttpResponse("favoriteEquation.findOne", userFavoriteEquation.value.toSimpleObject());
-		},
-		makeResponseContract(OkHttpResponse, "favoriteEquation.findOne", endpointFindOneFavoriteEquationSchema),
+		ResponseContract.ok("favoriteEquation.findOne", FavoriteEquation.Entity.toEndpointSchema()),
+		(floor, { response }) => response(
+			"favoriteEquation.findOne",
+			C.unwrapEntity(floor.ownerFavoriteEquation),
+		),
 	);

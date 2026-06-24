@@ -6,7 +6,7 @@ import { Facet } from "@business/entities/facets";
 import { operatorContentSchema } from "@vendors/types-advanced-query";
 import { BodyLimitDescription } from "../plugins/bodyLimit";
 import { tryAuthenticationProcess } from "../security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 
 useBuilder()
 	.createRoute("POST", "/search-details")
@@ -112,7 +112,7 @@ useBuilder()
 			});
 
 			const likedDocumentInFolder = user && results.length
-				? await CoralAPI
+				? await CoralProvider
 					.nodeSameRawDocumentIdsHaveDocumentInFolder({
 						userId: user.id,
 						nodeSameRawDocumentIds: results.map(

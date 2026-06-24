@@ -1,6 +1,6 @@
 import { iWantDocumentFolderExist } from "@interfaces/http/checkers/documentFolder";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/remove-document-in-folder")
@@ -21,7 +21,7 @@ useMustBeConnectedBuilder()
 		async(pickup) => {
 			const { documentFolder, user, body: { nodeSameRawDocumentId } } = pickup(["documentFolder", "user", "body"]);
 
-			await CoralAPI.removeDocumentInFolder({
+			await CoralProvider.removeDocumentInFolder({
 				userId: user.id,
 				documentFolderId: documentFolder.id,
 				nodeSameRawDocumentId,

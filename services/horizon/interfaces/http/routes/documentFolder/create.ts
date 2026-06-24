@@ -1,7 +1,7 @@
+import { asyncPipe, O, when } from "@duplojs/utils";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { documentFolderRules } from "@vendors/entity-rules";
-import { match } from "ts-pattern";
 
 useMustBeConnectedBuilder()
 	.createRoute("POST", "/create-document-folder")
@@ -13,37 +13,32 @@ useMustBeConnectedBuilder()
 				.max(documentFolderRules.name.maxLength),
 		}),
 	})
-	.cut(
-		async({ pickup, dropper }) => {
-			const { user, body: { documentFolderName } } = pickup(["user", "body"]);
-
-			const result = await CoralAPI.createDocumentFolder({
+	.handler(
+		async(pickup) => asyncPipe(
+			pickup(["user", "body"]),
+			({
+				user,
+				body: { documentFolderName },
+			}) => CoralProvider.createDocumentFolder({
 				userId: user.id,
-				documentFolderName: documentFolderName,
-			});
-
-			return match(result)
-				.with(
-					{ information: "documentFolder.alreadyExists" },
-					() => new ConflictHttpResponse("documentFolder.alreadyExists"),
-				)
-				.with(
-					{ information: "documentFolder.maxQuantity" },
-					() => new ForbiddenHttpResponse("documentFolder.maxQuantity"),
-				)
-				.with(
-					{ information: "documentFolder.created" },
-					() => dropper(null),
-				)
-				.exhaustive();
-		},
-		[],
+				documentFolderName,
+			}),
+			when(
+				O.discriminate("information", "documentFolder.alreadyExists"),
+				() => new ConflictHttpResponse("documentFolder.alreadyExists"),
+			),
+			when(
+				O.discriminate("information", "documentFolder.maxQuantity"),
+				() => new ForbiddenHttpResponse("documentFolder.maxQuantity"),
+			),
+			when(
+				O.discriminate("information", "documentFolder.created"),
+				() => new CreatedHttpResponse("documentFolder.created"),
+			),
+		),
 		[
 			...makeResponseContract(ConflictHttpResponse, "documentFolder.alreadyExists"),
 			...makeResponseContract(ForbiddenHttpResponse, "documentFolder.maxQuantity"),
+			...makeResponseContract(CreatedHttpResponse, "documentFolder.created"),
 		],
-	)
-	.handler(
-		() => new CreatedHttpResponse("documentFolder.created"),
-		makeResponseContract(CreatedHttpResponse, "documentFolder.created"),
 	);

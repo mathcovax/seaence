@@ -1,4 +1,4 @@
-import { hasKey } from "@duplojs/utils";
+import { S } from "@duplojs/utils";
 import { type RawDocument } from "@interfaces/providers/abys";
 import { type ArticlePayload } from "@interfaces/providers/scienceDatabase/pubmed/types/article";
 import { TechnicalError } from "@vendors/clean";
@@ -58,7 +58,8 @@ export function formatePubmedArticle(
 
 	let uniqueArticleField = articleIds
 		.reduce<RawDocument["uniqueArticleField"] | null>(
-			(pv, { name, value }) => !pv && hasKey(uniqueFieldNameMapper, name)
+			(pv, { name, value }) => !pv
+				&& S.isKeyof(name, uniqueFieldNameMapper)
 				? {
 					name: uniqueFieldNameMapper[name],
 					value,

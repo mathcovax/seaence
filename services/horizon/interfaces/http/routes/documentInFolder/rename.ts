@@ -1,5 +1,5 @@
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { documentInFolderRules } from "@vendors/entity-rules";
 import { match } from "ts-pattern";
 
@@ -15,11 +15,11 @@ useMustBeConnectedBuilder()
 				.max(documentInFolderRules.name.maxLength),
 		}),
 	})
-	.cut(
-		async({ pickup, dropper }) => {
+	.handler(
+		async(pickup) => {
 			const { user, body: { documentFolderId, nodeSameRawDocumentId, newDocumentInFolderName } } = pickup(["body", "user"]);
 
-			const result = await CoralAPI.renameDocumentInFolder({
+			const result = await CoralProvider.renameDocumentInFolder({
 				userId: user.id,
 				documentFolderId,
 				nodeSameRawDocumentId,
@@ -41,18 +41,14 @@ useMustBeConnectedBuilder()
 				)
 				.with(
 					{ information: "documentInFolder.renamed" },
-					() => dropper(null),
+					() => new OkHttpResponse("documentInFolder.renamed"),
 				)
 				.exhaustive();
 		},
-		[],
 		[
 			...makeResponseContract(NotFoundHttpResponse, "documentFolder.notfound"),
 			...makeResponseContract(ForbiddenHttpResponse, "documentFolder.wrongProprietary"),
 			...makeResponseContract(NotFoundHttpResponse, "documentInFolder.notfound"),
+			...makeResponseContract(OkHttpResponse, "documentInFolder.renamed"),
 		],
-	)
-	.handler(
-		() => new OkHttpResponse("documentInFolder.renamed"),
-		makeResponseContract(OkHttpResponse, "documentInFolder.renamed"),
 	);

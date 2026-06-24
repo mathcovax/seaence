@@ -1,142 +1,105 @@
-import { documentFolderRepository } from "@business/applications/repositories/documentFolder";
-import { DocumentFolderEntity, documentFolderIdObjecter } from "@business/domains/entities/documentFolder";
-import { ZodAccelerator, zod } from "@duplojs/core";
-import { escapeRegExp } from "@duplojs/utils";
+import { DocumentFolderRepository } from "@business/applications/repositories/documentFolder";
+import { DocumentFolder } from "@business/domains/entities/documentFolder";
+import { A, C, D, DPE, escapeRegExp, O, pipe, pipeCall, toNative, unwrap, unwrapGroup } from "@duplojs/utils";
 import { mongo } from "@interfaces/providers/mongo";
-import { type MongoDocumentFolder } from "@interfaces/providers/mongo/entities/documentFolder";
-import { EntityHandler, intObjecter, TechnicalError } from "@vendors/clean";
 import { uuidv7 } from "uuidv7";
+import { TechnicalError } from "./utils";
+import { type MongoDocumentFolder } from "@interfaces/providers/mongo/entities/documentFolder";
 
-const defaultCountResult = 0;
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
+const defaultCountResult = C.Int.createOrThrow(0);
 
-const countResultSchema = ZodAccelerator.build(
-	zod.object({
-		folder: zod.number(),
-	}),
-);
+const countResultDataParser = DPE.object({
+	folder: DPE.number(),
+});
 
-documentFolderRepository.default = {
-	generateDocumentFolderId() {
-		return documentFolderIdObjecter.unsafeCreate(uuidv7());
+export const documentFolderRepository = DocumentFolderRepository.createImplementation({
+	generateId() {
+		return DocumentFolder.Id.createOrThrow(uuidv7());
 	},
-	async save(documentFolderEntity) {
-		const simpleDocumentFolder = documentFolderEntity.toSimpleObject();
+	async findByName(params) {
+		const { userId, documentFolderName: name } = unwrapGroup(params);
 
-		await mongo.documentFolder.updateOne(
-			{
-				id: simpleDocumentFolder.id,
-			},
-			{
-				$set: {
-					...simpleDocumentFolder,
-					updatedAt: new Date(),
-				},
-			},
-			{ upsert: true },
-		);
-
-		return documentFolderEntity;
-	},
-	async delete(documentFolderEntity) {
-		await mongo.documentInFolder.deleteMany({
-			documentFolderId: documentFolderEntity.id.value,
+		const result = await mongo.documentFolder.findOne({
+			userId,
+			name,
 		});
 
-		await mongo.documentFolder.deleteOne({
-			id: documentFolderEntity.id.value,
-		});
-	},
-
-	async countDocumentsInFolder(documentFolderEntity) {
-		const documentInFolderCount = await mongo.documentInFolder.countDocuments({
-			documentFolderId: documentFolderEntity.id.value,
-		});
-
-		return intObjecter.unsafeCreate(documentInFolderCount);
-	},
-	async findDocumentFolder(userId, documentFolderName) {
-		const documentFolder = await mongo.documentFolder.findOne({
-			userId: userId.value,
-			name: documentFolderName.value,
-		});
-
-		if (!documentFolder) {
-			return null;
+		if (!result) {
+			return C.none("documentFolder");
 		}
 
-		return EntityHandler.unsafeMapper(
-			DocumentFolderEntity,
-			documentFolder,
-		);
+		return C.some(DocumentFolder.Entity.mapOrThrow(result));
 	},
-	async findDocumentFolderById(documentFolderId) {
-		const documentFolder = await mongo.documentFolder.findOne({
-			id: documentFolderId.value,
-		});
+	async findMany(params) {
+		const { userId, partialDocumentFolderName, page, quantityPerPage } = unwrapGroup(params);
 
-		if (!documentFolder) {
-			return null;
-		}
-
-		return EntityHandler.unsafeMapper(
-			DocumentFolderEntity,
-			documentFolder,
-		);
-	},
-	async searchDocumentFolders(input) {
-		const { userId, partialDocumentFolderName, page, quantityPerPage } = input;
-
-		const mongoDocumentFolders = await mongo.documentFolder
+		const result = await mongo.documentFolder
 			.find(
 				{
-					userId: userId.value,
+					userId,
 					name: {
-						$regex: escapeRegExp(partialDocumentFolderName.value),
+						$regex: escapeRegExp(partialDocumentFolderName),
 						$options: "i",
 					},
 				},
 			)
 			.sort({ createdAt: -1 })
-			.skip(page.value * quantityPerPage.value)
-			.limit(quantityPerPage.value)
+			.skip(page * quantityPerPage)
+			.limit(quantityPerPage)
 			.toArray();
 
-		const documentFolders = mongoDocumentFolders.map(
-			(mongoDocumentFolder) => EntityHandler.unsafeMapper(
-				DocumentFolderEntity,
-				mongoDocumentFolder,
-			),
+		return A.map(
+			result,
+			DocumentFolder.Entity.mapOrThrow,
 		);
-
-		return documentFolders;
 	},
-	async countResultOfSearchDocumentFolder(userId, documentFolderName) {
-		const numberOfDocumentFolders = await mongo.documentFolder
+	async findOneById(id) {
+		const result = await mongo.documentFolder.findOne({
+			id: unwrap(id),
+		});
+
+		if (!result) {
+			return C.none("documentFolder");
+		}
+
+		return C.some(DocumentFolder.Entity.mapOrThrow(result));
+	},
+	async getQuantityOfOwner(userId) {
+		return mongo.documentFolder
 			.countDocuments(
 				{
-					userId: userId.value,
-					name: documentFolderName
-						? {
-							$regex: escapeRegExp(documentFolderName.value),
-						}
-						: undefined,
+					userId: unwrap(userId),
 				},
 			)
-			.then(
-				(numberOfDocumentFolders) => intObjecter.unsafeCreate(numberOfDocumentFolders),
-			);
-
-		return numberOfDocumentFolders;
+			.then(C.PositiveInt.createOrThrow);
 	},
-	async findManyFolderInWhichDocumentExist(input) {
-		const { userId, page, partialDocumentFolderName, quantityPerPage, nodeSameRawDocumentId } = input;
+	async getByDocumentInFolder(documentInFolder) {
+		const result = await mongo.documentFolder.findOne({
+			id: unwrap(documentInFolder.documentFolderId),
+		});
 
-		const mongoDocumentFolders = await mongo.documentInFolder
+		if (!result) {
+			throw new TechnicalError("document-folder-is-missing", { from: documentInFolder });
+		}
+
+		return DocumentFolder.Entity.mapOrThrow(result);
+	},
+	async countDocumentInFolder(entity) {
+		return mongo.documentInFolder.countDocuments({
+			documentFolderId: unwrap(entity.id),
+		})
+			.then(C.Int.createOrThrow);
+	},
+	async findManyByNodeSameRawDocument(params) {
+		const { nodeSameRawDocumentId, page, userId, quantityPerPage, partialDocumentFolderName } = unwrapGroup(params);
+
+		return mongo.documentInFolder
 			.aggregate<MongoDocumentFolder>([
 				{
 					$match: {
-						nodeSameRawDocumentId: nodeSameRawDocumentId.value,
-						userId: userId.value,
+						nodeSameRawDocumentId,
+						userId,
 					},
 				},
 				{
@@ -153,10 +116,10 @@ documentFolderRepository.default = {
 				{
 					$match: {
 						"folder.name": {
-							$regex: escapeRegExp(partialDocumentFolderName.value),
+							$regex: escapeRegExp(partialDocumentFolderName),
 							$options: "i",
 						},
-						"folder.userId": userId.value,
+						"folder.userId": userId,
 					},
 				},
 				{
@@ -165,34 +128,44 @@ documentFolderRepository.default = {
 					},
 				},
 				{
-					$skip: page.value * quantityPerPage.value,
+					$skip: page * quantityPerPage,
 				},
 				{
-					$limit: quantityPerPage.value,
+					$limit: quantityPerPage,
 				},
 				{
 					$replaceRoot: {
 						newRoot: "$folder",
 					},
 				},
-			]).toArray();
-
-		return mongoDocumentFolders.map(
-			(mongoDocumentFolder) => EntityHandler.throwMapper(
-				DocumentFolderEntity,
-				mongoDocumentFolder,
-			),
-		);
+			])
+			.toArray()
+			.then(A.map(DocumentFolder.Entity.mapOrThrow));
 	},
-	async countResultOfFindManyFolderInWhichDocumentExist(input) {
-		const { userId, partialDocumentFolderName, nodeSameRawDocumentId } = input;
+	async countResultOfFindMany(params) {
+		const { userId, partialDocumentFolderName } = unwrapGroup(params);
 
+		return mongo.documentFolder
+			.countDocuments(
+				{
+					userId,
+					name: {
+						$regex: escapeRegExp(partialDocumentFolderName),
+					},
+				},
+			)
+			.then(C.Int.createOrThrow);
+	},
+	async countResultOfFindManyByNodeSameRawDocument(params) {
+		const { userId, partialDocumentFolderName, nodeSameRawDocumentId } = unwrapGroup(params);
+
+		// system D
 		const [result] = await mongo.documentInFolder
 			.aggregate([
 				{
 					$match: {
-						nodeSameRawDocumentId: nodeSameRawDocumentId.value,
-						userId: userId.value,
+						nodeSameRawDocumentId,
+						userId,
 					},
 				},
 				{
@@ -209,10 +182,10 @@ documentFolderRepository.default = {
 				{
 					$match: {
 						"folder.name": {
-							$regex: escapeRegExp(partialDocumentFolderName.value),
+							$regex: escapeRegExp(partialDocumentFolderName),
 							$options: "i",
 						},
-						"folder.userId": userId.value,
+						"folder.userId": userId,
 					},
 				},
 				{
@@ -221,32 +194,50 @@ documentFolderRepository.default = {
 			]).toArray();
 
 		if (!result) {
-			return intObjecter.unsafeCreate(defaultCountResult);
+			return defaultCountResult;
 		}
 
-		const countResult = countResultSchema.parse(result);
-
-		return intObjecter.throwCreate(countResult.folder);
+		return pipe(
+			result,
+			countResultDataParser.parseOrThrow,
+			O.getProperty("folder"),
+			pipeCall(C.Int.createOrThrow),
+		);
 	},
-	async getDocumentFolderByDocumentInFolder(documentInFolder) {
-		const documentFolder = await mongo.documentFolder.findOne({
-			id: documentInFolder.documentFolderId.value,
+	async remove(entity) {
+		const id = unwrap(entity.id);
+
+		await mongo.documentInFolder.deleteMany({
+			documentFolderId: id,
 		});
 
-		if (!documentFolder) {
-			throw new TechnicalError("document-folder-is-missing", { from: documentInFolder });
-		}
-
-		return EntityHandler.unsafeMapper(
-			DocumentFolderEntity,
-			documentFolder,
-		);
+		await mongo.documentFolder.deleteOne({
+			id,
+		});
 	},
 	async deleteAllByUserId(userId) {
 		await mongo.documentFolder.deleteMany(
 			{
-				userId: userId.value,
+				userId: unwrap(userId),
 			},
 		);
 	},
-};
+	async save(entity) {
+		const simpleEntity = C.unwrapEntity(entity, { transformer: toNative });
+
+		await mongo.documentFolder.updateOne(
+			{
+				id: simpleEntity.id,
+			},
+			{
+				$set: {
+					...simpleEntity,
+					updatedAt: D.now(),
+				},
+			},
+			{ upsert: true },
+		);
+
+		return entity;
+	},
+});

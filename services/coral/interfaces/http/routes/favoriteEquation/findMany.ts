@@ -1,67 +1,53 @@
-import { userIdObjecter } from "@business/domains/common/user";
-import { endpointFindManyFavoriteEquationDetailsSchema, endpointFindManyFavoriteEquationNameSchema } from "@interfaces/http/schemas/favoriteEquation";
-import { userCountResultOfFindManyFavoriteEquationUsecase, userFindManyFavoriteEquationUsecase } from "@interfaces/usecase";
-import { intObjecter, positiveIntObjecter, textObjecter } from "@vendors/clean";
+import { PartialFavoriteEquationNameConstraint } from "@business/applications/repositories/favoriteEquation";
+import { UserId } from "@business/domains/common/user";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { asyncPipe, C, DPE, innerPipe, O, A, unwrapGroup, unwrap } from "@duplojs/utils";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/find-many-favorite-equation-name")
+const endpointDataParser = DPE.object({
+	id: DPE.string(),
+	name: DPE.string(),
+}).array();
+
+useRouteBuilder("POST", "/find-many-favorite-equation-name")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			partialFavoriteEquationName: textObjecter.toZodSchema(),
-			page: intObjecter.toZodSchema(),
-			quantityPerPage: positiveIntObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			partialFavoriteEquationName: PartialFavoriteEquationNameConstraint.toExtractParser(),
+			page: C.Int.toExtractParser(),
+			quantityPerPage: C.PositiveInt.toExtractParser(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { userId, partialFavoriteEquationName, page, quantityPerPage } = pickup("body");
-
-			const favoriEquations = await userFindManyFavoriteEquationUsecase.execute({
-				partialFavoriteEquationName,
-				page,
-				quantityPerPage,
-				userId,
-			});
-
-			const favoriEquationNames = favoriEquations.map(
-				(favoriEquation) => ({
-					id: favoriEquation.id.value,
-					name: favoriEquation.name.value,
-				}),
-			);
-
-			return new OkHttpResponse("favoriteEquation.name.findMany", favoriEquationNames);
-		},
-		makeResponseContract(
-			OkHttpResponse,
-			"favoriteEquation.name.findMany",
-			endpointFindManyFavoriteEquationNameSchema,
+		ResponseContract.ok("favoriteEquation.name.findMany", endpointDataParser),
+		({ body }, { response }) => asyncPipe(
+			useCases.ownerFindManyFavoriteEquationUseCase(body),
+			A.map(
+				innerPipe(
+					O.pick(["id", "name"]),
+					unwrapGroup,
+				),
+			),
+			(result) => response("favoriteEquation.name.findMany", result),
 		),
 	);
 
-useBuilder()
-	.createRoute("POST", "/find-many-favorite-equation-details")
+const endpointDetailsDataParser = DPE.object({
+	total: DPE.number(),
+});
+
+useRouteBuilder("POST", "/find-many-favorite-equation-details")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			partialFavoriteEquationName: textObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			partialFavoriteEquationName: PartialFavoriteEquationNameConstraint.toExtractParser(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { userId, partialFavoriteEquationName } = pickup("body");
-
-			const numberOfFavoriEquation = await userCountResultOfFindManyFavoriteEquationUsecase.execute({
-				partialFavoriteEquationName,
-				userId,
-			});
-
-			return new OkHttpResponse("favoriEquation.findMany.details", { total: numberOfFavoriEquation.value });
-		},
-		makeResponseContract(
-			OkHttpResponse,
-			"favoriEquation.findMany.details",
-			endpointFindManyFavoriteEquationDetailsSchema,
+		ResponseContract.ok("favoriteEquation.findMany.details", endpointDetailsDataParser),
+		({ body }, { response }) => asyncPipe(
+			useCases.ownerCountResultOfFindManyFavoriteEquationUseCase(body),
+			unwrap,
+			(total) => response("favoriteEquation.findMany.details", { total }),
 		),
 	);

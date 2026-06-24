@@ -3,7 +3,7 @@ import { createEnum, type GetEnumValue } from "@vendors/clean";
 import { type Facet, type FacetValue, type AggregationWrappedBucketsResult } from ".";
 import { type estypes } from "@elastic/elasticsearch";
 import { availableFieldEnum } from "@interfaces/providers/elastic/indexes/document";
-import { getTypedEntries } from "@duplojs/utils";
+import { O } from "@duplojs/utils";
 
 export const genderEnum = createEnum(["male", "female"]);
 
@@ -29,7 +29,7 @@ export interface GenderAggregationsResults {
 export function buildGenderAggregation(language: Language) {
 	return {
 		filters: {
-			filters: getTypedEntries(languageToGenderFacetValue[language])
+			filters: O.entries(languageToGenderFacetValue[language])
 				.reduce<Partial<Record<Gender, estypes.QueryDslQueryContainer>>>(
 					(acc, [key, value]) => {
 						acc[key] = {

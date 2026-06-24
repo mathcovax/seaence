@@ -1,16 +1,18 @@
-import { resolve } from "path";
 import { Worker } from "worker_threads";
+import { Path } from "@duplojs/utils";
 
 new Worker(
-	resolve(import.meta.dirname, "./asyncMessage/main.js"),
+	Path.resolveRelative([import.meta.dirname, "./asyncMessage/main.js"]),
 	{},
-).on("exit", () => {
+).on("exit", (error) => {
+	console.log(error);
 	throw new Error("Exit process.");
 });
 
 new Worker(
-	resolve(import.meta.dirname, "./http/main.js"),
+	Path.resolveRelative([import.meta.dirname, "./http/main.js"]),
 	{},
-).on("exit", () => {
+).on("exit", (error) => {
+	console.log(error);
 	throw new Error("Exit process.");
 });

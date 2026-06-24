@@ -8,10 +8,10 @@ export namespace Facet {
 		"range",
 	]);
 
-	export const gendeValueEnum = createEnum(["male", "female"]);
+	export const genderValueEnum = createEnum(["male", "female"]);
 
 	export const genderValue = zod
-		.enum(gendeValueEnum.toTuple());
+		.enum(genderValueEnum.toTuple());
 
 	export const gender = zod
 		.object({

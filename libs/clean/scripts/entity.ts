@@ -1,7 +1,7 @@
 import { z as zod, type ZodType } from "zod";
 import { toJSON, type ToSimpleObject, type ToJSON, toSimpleObject, type AnyRecord, setProperty, type AttributeError, applyAttributes, type ApplyValueObjecterAttribute } from "./utils";
-import { EntityObjecter, ValueObject, type ValueObjectError, type ValueObjecter } from "./valueObject";
-import { type UnionToIntersection, type SimplifyObjectTopLevel, type AnyFunction, type IsEqual, getTypedEntries } from "@duplojs/utils";
+import { EntityObjecter, type ValueObjectError, type ValueObjecter } from "./valueObject";
+import { type UnionToIntersection, type SimplifyTopLevel, type AnyFunction, type IsEqual, O } from "@duplojs/utils";
 import { CleanError } from "./error";
 
 export type EntityPropertiesDefinition = Record<string, ValueObjecter | EntityObjecter>;
@@ -25,7 +25,7 @@ export type EntityPropertiesDefinitionToRawProperties<
 
 export type EntityPropertiesToRawProperties<
 	GenericPropertiesDefinition extends EntityPropertiesDefinition,
-> = SimplifyObjectTopLevel<
+> = SimplifyTopLevel<
 	{
 		[Prop in keyof GenericPropertiesDefinition]: ApplyValueObjecterAttribute<
 			ReturnType<GenericPropertiesDefinition[Prop]["unsafeCreate"]>["value"],
@@ -41,12 +41,12 @@ export interface EntityInstanceBase<
 	GenericProperties extends EntityProperties = EntityProperties,
 > {
 	update(
-		values: SimplifyObjectTopLevel<
+		values: SimplifyTopLevel<
 			Partial<GenericProperties>
 		>
 	): this;
 	toJSON(): ToJSON<
-		SimplifyObjectTopLevel<
+		SimplifyTopLevel<
 			GenericProperties
 		>
 	>;
@@ -98,14 +98,14 @@ export class EntityHandler {
 		propertiesDefinition: GenericPropertiesDefinition,
 		Parent: GenericEntityParent = (EntityHandler) as any,
 	) {
-		type PropertiesDefinition = SimplifyObjectTopLevel<
+		type PropertiesDefinition = SimplifyTopLevel<
 			UnionToIntersection<
 				| GenericPropertiesDefinition
 				| GenericEntityParent["propertiesDefinition"]
 			> & {}
 		>;
 
-		type Properties = SimplifyObjectTopLevel<
+		type Properties = SimplifyTopLevel<
 			UnionToIntersection<
 				| EntityPropertiesDefinitionToEntityProperties<GenericPropertiesDefinition>
 				| EntityPropertiesDefinitionToEntityProperties<
@@ -136,7 +136,7 @@ export class EntityHandler {
 				const updatedEntity = new constructor({
 					...this,
 					...Object.fromEntries(
-						getTypedEntries(values)
+						O.entries(values)
 							.filter(([_key, value]) => value !== undefined),
 					) as Properties,
 				});
@@ -331,7 +331,7 @@ export class EntityHandler {
 export type GetEntityProperties<
 	GenericEntityInstance extends EntityClass<any, any, any>,
 > = GenericEntityInstance extends EntityClass<infer InferedEntityPropertiesDefinition, any, any>
-	? SimplifyObjectTopLevel<
+	? SimplifyTopLevel<
 		EntityPropertiesDefinitionToEntityProperties<
 			InferedEntityPropertiesDefinition
 		>

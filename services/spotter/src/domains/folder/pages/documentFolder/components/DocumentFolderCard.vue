@@ -31,6 +31,7 @@ function onRename() {
 	<div
 		class="group cursor-pointer"
 		@click="onClick"
+		:data-testid="`document-folder-card-${documentFolder.id}`"
 	>
 		<DSCard
 			class=" flex flex-col hover:shadow-md transition-shadow"
@@ -45,6 +46,7 @@ function onRename() {
 					<h3
 						class="font-medium truncate"
 						:title="documentFolder.name"
+						data-testid="document-folder-card-name"
 					>
 						{{ documentFolder.name }}
 					</h3>
@@ -57,16 +59,23 @@ function onRename() {
 							icon="dotsVertical"
 							square
 							@click.stop
+							data-testid="document-folder-card-menu-button"
 						/>
 					</DSDropdownMenuTrigger>
 
 					<DSDropdownMenuContent>
-						<DSDropdownMenuItem @click="onRename">
+						<DSDropdownMenuItem
+							@click="onRename"
+							data-testid="document-folder-card-rename-button"
+						>
 							<DSIcon name="rename" />
 							{{ $t("cta.rename") }}
 						</DSDropdownMenuItem>
 
-						<DSDropdownMenuItem @click="onDelete">
+						<DSDropdownMenuItem
+							@click="onDelete"
+							data-testid="document-folder-card-delete-button"
+						>
 							<DSIcon name="delete" />
 							{{ $t("cta.delete") }}
 						</DSDropdownMenuItem>
@@ -74,7 +83,10 @@ function onRename() {
 				</DSDropdownMenu>
 			</div>
 
-			<div class="p-2 bg-muted rounded-md border border-border">
+			<div
+				class="p-2 bg-muted rounded-md border border-border"
+				data-testid="document-folder-card-count"
+			>
 				{{ $t("documentFolderCard.items", documentFolder.numberOfDocument) }}
 			</div>
 

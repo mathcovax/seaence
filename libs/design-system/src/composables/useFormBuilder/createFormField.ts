@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { type IsEqual, type SimplifyObjectTopLevel } from "@duplojs/utils";
+import { type IsEqual, type SimplifyTopLevel } from "@duplojs/utils";
 import { h, ref, type DefineComponent } from "vue";
 import { type FormFieldInstance, type FormField, type FormFieldParams, type ExposedProperties } from "./formField";
 
@@ -20,7 +20,7 @@ type GetValueType<
 
 type GetPropFromInputComponentInstance<
 	GenericInputComponentInstance extends InputComponentInstance = InputComponentInstance,
-> = SimplifyObjectTopLevel<
+> = SimplifyTopLevel<
 	Omit<
 		GenericInputComponentInstance["$props"],
 			| "modelValue"

@@ -1,9 +1,10 @@
 import { DocumentInFolder } from "@business/entities/documentInFolder";
+import { D } from "@duplojs/utils";
 import { documentInFolderConfig } from "@interfaces/configs/documentInFolder";
 import { iWantDocumentFolderExist } from "@interfaces/http/checkers/documentFolder";
 import { useMustBeConnectedBuilder } from "@interfaces/http/security/authentication";
 import { AbysAPI } from "@interfaces/providers/abys";
-import { CoralAPI } from "@interfaces/providers/coral";
+import { CoralProvider } from "@interfaces/providers/coral";
 import { createBakedDocumentId } from "@interfaces/utils/createBakedDocumentId";
 
 useMustBeConnectedBuilder()
@@ -28,7 +29,7 @@ useMustBeConnectedBuilder()
 		async(pickup) => {
 			const { user, documentFolder, body: { page, partialDocumentInFolderName } } = pickup(["body", "documentFolder", "user"]);
 
-			const { body: list } = await CoralAPI.findManyDocumentInFolder({
+			const { body: list } = await CoralProvider.findManyDocumentInFolder({
 				userId: user.id,
 				documentFolderId: documentFolder.id,
 				partialDocumentInFolderName,
@@ -52,6 +53,7 @@ useMustBeConnectedBuilder()
 			const formatedList = list.map(
 				(documentInFolder): typeof DocumentInFolder.list["_output"][number] => ({
 					...documentInFolder,
+					addedAt: D.toISOString(documentInFolder.addedAt),
 					bakedDocumentTitle: backedTitleWrapper[
 						createBakedDocumentId({
 							nodeSameRawDocumentId: documentInFolder.nodeSameRawDocumentId,
@@ -88,7 +90,7 @@ useMustBeConnectedBuilder()
 		async(pickup) => {
 			const { user, documentFolder, body: { partialDocumentInFolderName } } = pickup(["body", "documentFolder", "user"]);
 
-			const { body: { total } } = await CoralAPI.findManyDocumentInFolderDetails({
+			const { body: { total } } = await CoralProvider.findManyDocumentInFolderDetails({
 				userId: user.id,
 				documentFolderId: documentFolder.id,
 				partialDocumentInFolderName,

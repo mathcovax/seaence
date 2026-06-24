@@ -1,22 +1,17 @@
-import { mustBeUserFavoriteEquationExistProcess } from "@interfaces/http/processes/mustBeUserFavoriteEquationExist";
-import { userRemoveFavoriteEquationUsecase } from "@interfaces/usecase";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { mustBeOwnerFavoriteEquationProcess } from "@interfaces/http/process/mustBeOwnerFavoriteEquation";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/remove-favorite-equation")
-	.execute(
-		mustBeUserFavoriteEquationExistProcess,
-		{ pickup: ["userFavoriteEquation"] },
+useRouteBuilder("POST", "/remove-favorite-equation")
+	.exec(
+		mustBeOwnerFavoriteEquationProcess,
+		{ imports: ["ownerFavoriteEquation"] },
 	)
 	.handler(
-		async(pickup) => {
-			const { userFavoriteEquation } = pickup(["userFavoriteEquation"]);
-
-			await userRemoveFavoriteEquationUsecase.execute({
-				userFavoriteEquation,
-			});
-
-			return new OkHttpResponse("favoriteEquation.removed");
-		},
-		makeResponseContract(OkHttpResponse, "favoriteEquation.removed"),
+		ResponseContract.noContent("favoriteEquation.removed"),
+		(floor, { response }) => useCases
+			.ownerRemoveFavoriteEquationUseCase(floor)
+			.then(
+				() => response("favoriteEquation.removed"),
+			),
 	);
-

@@ -1,115 +1,86 @@
-import { userIdObjecter } from "@business/domains/common/user";
-import { nodeSameRawDocumentIdObjecter } from "@business/domains/entities/documentInFolder";
-import { endpointFindManyDocumentFolderDetailsRouteSchema, endpointFindManyDocumentFolderRouteSchema, endpointFindManyDocumentInWichDocumentExistDetailsRouteSchema, endpointFindManyDocumentInWichDocumentExistRouteSchema } from "@interfaces/http/schemas/documentFolder";
-import { countResultOfFindManyDocumentFolderInWichDocumentExistUsecase, findManyDocumentFolderInWichDocumentExistUsecase, userCountResultOfSearchDocumentFolderUsecase, userSearchDocumentFolderUsecase } from "@interfaces/usecase";
-import { intObjecter, positiveIntObjecter, textObjecter } from "@vendors/clean";
+import { PartialDocumentFolderNameConstraint } from "@business/applications/repositories/documentFolder";
+import { NodeSameRawDocumentId } from "@business/domains/common/nodeSameRawDocument";
+import { UserId } from "@business/domains/common/user";
+import { DocumentFolder } from "@business/domains/entities/documentFolder";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { asyncPipe, C, DPE, A, pipeCall, unwrap } from "@duplojs/utils";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/find-many-document-folder")
+useRouteBuilder("POST", "/find-many-document-folder")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			partialDocumentFolderName: textObjecter.toZodSchema(),
-			page: intObjecter.toZodSchema(),
-			quantityPerPage: positiveIntObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			partialDocumentFolderName: PartialDocumentFolderNameConstraint.toExtractParser(),
+			page: C.Int.toExtractParser(),
+			quantityPerPage: C.PositiveInt.toExtractParser(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { userId, partialDocumentFolderName, page, quantityPerPage } = pickup("body");
-
-			const documentFolders = await userSearchDocumentFolderUsecase.execute({
-				userId,
-				partialDocumentFolderName,
-				page,
-				quantityPerPage,
-			});
-
-			const simpleDocumentFolders = documentFolders.map(
-				(documentFolder) => documentFolder.toSimpleObject(),
-			);
-
-			return new OkHttpResponse("documentFolders.found", simpleDocumentFolders);
-		},
-		makeResponseContract(OkHttpResponse, "documentFolders.found", endpointFindManyDocumentFolderRouteSchema),
+		ResponseContract.ok("documentFolders.found", DocumentFolder.Entity.toEndpointSchema().array()),
+		({ body }, { response }) => asyncPipe(
+			useCases.ownerSearchDocumentFolderUseCase(body),
+			A.map(
+				pipeCall(C.unwrapEntity),
+			),
+			(result) => response("documentFolders.found", result),
+		),
 	);
 
-useBuilder()
-	.createRoute("POST", "/find-many-document-folders-details")
+const endpointDetailsDataParser = DPE.object({
+	total: DPE.number(),
+});
+
+useRouteBuilder("POST", "/find-many-document-folders-details")
 	.extract({
-		body: zod.object({
-			userId: userIdObjecter.toZodSchema(),
-			partialDocumentFolderName: textObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			partialDocumentFolderName: PartialDocumentFolderNameConstraint.toExtractParser(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { userId, partialDocumentFolderName } = pickup("body");
-
-			const numberOfDocumentFolders = await userCountResultOfSearchDocumentFolderUsecase.execute({
-				userId,
-				partialDocumentFolderName,
-			});
-
-			return new OkHttpResponse("documentFolders.foundDetails", { total: numberOfDocumentFolders.value });
-		},
-		makeResponseContract(OkHttpResponse, "documentFolders.foundDetails", endpointFindManyDocumentFolderDetailsRouteSchema),
+		ResponseContract.ok("documentFolders.foundDetails", endpointDetailsDataParser),
+		({ body }, { response }) => useCases
+			.ownerCountResultOfSearchDocumentUseCase(body)
+			.then(
+				(total) => response("documentFolders.foundDetails", { total: unwrap(total) }),
+			),
 	);
 
-useBuilder()
-	.createRoute("POST", "/find-many-document-folders-in-which-document-exist")
+useRouteBuilder("POST", "/find-many-document-folders-in-which-document-exist")
 	.extract({
-		body: zod.object({
-			page: intObjecter.toZodSchema(),
-			quantityPerPage: positiveIntObjecter.toZodSchema(),
-			partialDocumentFolderName: textObjecter.toZodSchema(),
-			userId: userIdObjecter.toZodSchema(),
-			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			nodeSameRawDocumentId: NodeSameRawDocumentId.toExtractParser(),
+			partialDocumentFolderName: PartialDocumentFolderNameConstraint.toExtractParser(),
+			page: C.Int.toExtractParser(),
+			quantityPerPage: C.PositiveInt.toExtractParser(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { page, quantityPerPage, partialDocumentFolderName, userId, nodeSameRawDocumentId } = pickup("body");
-
-			const documentFolders = await findManyDocumentFolderInWichDocumentExistUsecase
-				.execute({
-					page,
-					quantityPerPage,
-					nodeSameRawDocumentId,
-					userId,
-					partialDocumentFolderName,
-				});
-
-			const simpleDocumentFolders = documentFolders.map(
-				(documentFolder) => documentFolder.toSimpleObject(),
-			);
-
-			return new OkHttpResponse("documentFolders.found", simpleDocumentFolders);
-		},
-		makeResponseContract(OkHttpResponse, "documentFolders.found", endpointFindManyDocumentInWichDocumentExistRouteSchema),
+		ResponseContract.ok("documentFolders.found", DocumentFolder.Entity.toEndpointSchema().array()),
+		({ body }, { response }) => asyncPipe(
+			useCases.ownerSearchIfNodeSameRawDocumentExistInTheseDocumentFoldersUseCase(body),
+			A.map(
+				pipeCall(C.unwrapEntity),
+			),
+			(result) => response("documentFolders.found", result),
+		),
 	);
 
-useBuilder()
-	.createRoute("POST", "/find-many-document-folders-in-which-document-exist-details")
+useRouteBuilder("POST", "/find-many-document-folders-in-which-document-exist-details")
 	.extract({
-		body: zod.object({
-			partialDocumentFolderName: textObjecter.toZodSchema(),
-			userId: userIdObjecter.toZodSchema(),
-			nodeSameRawDocumentId: nodeSameRawDocumentIdObjecter.toZodSchema(),
+		body: DPE.object({
+			userId: UserId.toExtractParser(),
+			partialDocumentFolderName: PartialDocumentFolderNameConstraint.toExtractParser(),
+			nodeSameRawDocumentId: NodeSameRawDocumentId.toExtractParser(),
 		}),
 	})
 	.handler(
-		async(pickup) => {
-			const { partialDocumentFolderName, userId, nodeSameRawDocumentId } = pickup("body");
-
-			const numberOfDocumentFolders = await countResultOfFindManyDocumentFolderInWichDocumentExistUsecase
-				.execute({
-					nodeSameRawDocumentId,
-					userId,
-					partialDocumentFolderName,
-				});
-
-			return new OkHttpResponse("documentFolders.foundDetails", { total: numberOfDocumentFolders.value });
-		},
-		makeResponseContract(OkHttpResponse, "documentFolders.foundDetails", endpointFindManyDocumentInWichDocumentExistDetailsRouteSchema),
+		ResponseContract.ok("documentFolders.foundDetails", endpointDetailsDataParser),
+		({ body }, { response }) => useCases
+			.countResultOfOwnerSearchIfNodeSameRawDocumentExistInTheseDocumentFoldersUseCase(body)
+			.then(
+				(total) => response("documentFolders.foundDetails", { total: unwrap(total) }),
+			),
 	);
+

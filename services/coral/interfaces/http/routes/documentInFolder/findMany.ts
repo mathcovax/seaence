@@ -1,66 +1,49 @@
-import { mustBeUserDocumentFolderExistProcess } from "@interfaces/http/processes/mustBeUserDocumentFolderExistProcess";
-import { endpointGetCountSearchDocumentInFolderRouteSchema, endpointSearchDocumentInFolderRouteSchema } from "@interfaces/http/schemas/documentInFolder";
-import { userCountResultOfSearchDocumentInFolderUsecase, userSearchDocumentInFolderUsecase } from "@interfaces/usecase";
-import { intObjecter, positiveIntObjecter, textObjecter } from "@vendors/clean";
+import { PartialDocumentInFolderNameConstraint } from "@business/applications/repositories/documentInFolder";
+import { DocumentInFolder } from "@business/domains/entities/documentInFolder";
+import { ResponseContract, useRouteBuilder } from "@duplojs/http";
+import { A, asyncPipe, C, DPE, pipeCall, unwrap } from "@duplojs/utils";
+import { mustBeOwnerDocumentFolderProcess } from "@interfaces/http/process/mustBeOwnerDocumentFolder";
+import { useCases } from "@interfaces/useCases";
 
-useBuilder()
-	.createRoute("POST", "/find-many-document-in-folder")
-	.execute(
-		mustBeUserDocumentFolderExistProcess,
-		{ pickup: ["userDocumentFolder"] },
-	)
-	.extract({
-		body: zod.object({
-			partialDocumentInFolderName: textObjecter.toZodSchema(),
-			page: intObjecter.toZodSchema(),
-			quantityPerPage: positiveIntObjecter.toZodSchema(),
-		}),
-	})
-	.handler(
-		async(pickup) => {
-			const { partialDocumentInFolderName, page, quantityPerPage } = pickup("body");
-			const { userDocumentFolder } = pickup(["userDocumentFolder"]);
-
-			const documentsInFolder = await userSearchDocumentInFolderUsecase.execute({
-				userDocumentFolder,
-				partialDocumentInFolderName,
-				page,
-				quantityPerPage,
-			});
-
-			const simpleDocumentsInFolder = documentsInFolder.map(
-				(documentInFolder) => documentInFolder.toSimpleObject(),
-			);
-
-			return new OkHttpResponse("documentsInFolder.found", simpleDocumentsInFolder);
-		},
-		makeResponseContract(OkHttpResponse, "documentsInFolder.found", endpointSearchDocumentInFolderRouteSchema),
-	);
-
-useBuilder()
-	.createRoute("POST", "/find-many-document-in-folder-details")
-	.execute(
-		mustBeUserDocumentFolderExistProcess,
-		{ pickup: ["userDocumentFolder"] },
+useRouteBuilder("POST", "/find-many-document-in-folder")
+	.exec(
+		mustBeOwnerDocumentFolderProcess,
+		{ imports: ["ownerDocumentFolder"] },
 	)
 	.extract({
 		body: {
-			partialDocumentInFolderName: textObjecter.toZodSchema(),
+			partialDocumentInFolderName: PartialDocumentInFolderNameConstraint.toExtractParser(),
+			page: C.Int.toExtractParser(),
+			quantityPerPage: C.PositiveInt.toExtractParser(),
 		},
 	})
 	.handler(
-		async(pickup) => {
-			const {
-				userDocumentFolder,
-				partialDocumentInFolderName,
-			} = pickup(["userDocumentFolder", "partialDocumentInFolderName"]);
+		ResponseContract.ok("documentsInFolder.found", DocumentInFolder.Entity.toEndpointSchema().array()),
+		(floor, { response }) => asyncPipe(
+			useCases.ownerSearchDocumentInFolderUseCase(floor),
+			A.map(pipeCall(C.unwrapEntity)),
+			(result) => response("documentsInFolder.found", result),
+		),
+	);
 
-			const numberOfDocumentsInFolder = await userCountResultOfSearchDocumentInFolderUsecase.execute({
-				userDocumentFolder,
-				partialDocumentInFolderName,
-			});
+const endpointDetailDataParser = DPE.object({
+	total: DPE.number(),
+});
 
-			return new OkHttpResponse("documentsInFolder.foundDetails", { total: numberOfDocumentsInFolder.value });
+useRouteBuilder("POST", "/find-many-document-in-folder-details")
+	.exec(
+		mustBeOwnerDocumentFolderProcess,
+		{ imports: ["ownerDocumentFolder"] },
+	)
+	.extract({
+		body: {
+			partialDocumentInFolderName: PartialDocumentInFolderNameConstraint.toExtractParser(),
 		},
-		makeResponseContract(OkHttpResponse, "documentsInFolder.foundDetails", endpointGetCountSearchDocumentInFolderRouteSchema),
+	})
+	.handler(
+		ResponseContract.ok("documentsInFolder.foundDetails", endpointDetailDataParser),
+		(floor, { response }) => useCases.countResultOfOwnerSearchDocumentInFolderUseCase(floor)
+			.then(
+				(count) => response("documentsInFolder.foundDetails", { total: unwrap(count) }),
+			),
 	);
