@@ -4,4 +4,4 @@ export const userRules = {
 		minLength: 3,
 	},
 	updateDelay: 3_600_000,
-};
+} as const;
