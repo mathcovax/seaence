@@ -19,6 +19,7 @@
     "@duplojs/http": "0.13.1",
     "@duplojs/utils": "1.9.9",
     "@duplojs/server-utils": "0.4.1",
+    "@duplojs/http-client": "1.2.3",
     "mongodb": "7.3.0",
     "uuidv7": "1.2.1",
     "@lib/entity-rules": "file:../libs/entity-rules",

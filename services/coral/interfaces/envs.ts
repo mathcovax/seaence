@@ -15,7 +15,7 @@ export const envs = await environmentVariableOrThrow(
 		SERVICE_NAME: DPE.literal("coral"),
 	},
 	{
-		paths: [".env"],
+		paths: [".env", ".env.local"],
 		justRead: true,
 	},
 );

@@ -1,7 +1,7 @@
 import { createHub, routeStore } from "@duplojs/http";
 import { codeGeneratorPlugin } from "@duplojs/http/codeGenerator";
 import { createHttpServer } from "@duplojs/http/node";
-import { envs } from "../envs";
+import { envs } from "@envs";
 
 import "./routes";
 import "./plugins/generate";

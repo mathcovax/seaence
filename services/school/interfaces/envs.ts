@@ -17,7 +17,7 @@ export const envs = await environmentVariableOrThrow(
 		CODEGEN_PATH: DPE.string(),
 	},
 	{
-		paths: [".env"],
+		paths: [".env", ".env.local"],
 		justRead: true,
 	},
 );
